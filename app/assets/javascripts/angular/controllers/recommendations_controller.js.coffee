@@ -30,11 +30,18 @@
 
   # )
 
-  $controller('GalleryBaseController', {$scope: $scope});
   $scope.galleryService = csGalleryService
+  csGalleryService.$scope = $scope
   $scope.resourceName = "Recommendation"
   $scope.resource = $scope.Recommendation
   $scope.objectMethods = ActivityMethods
+
+  $scope.itemImageURL = (item, width) ->
+    fpfile = $scope.objectMethods.itemImageFpfile(item)
+    height = width * 9.0 / 16.0
+    return (window.cdnURL(fpfile.url) + "/convert?fit=crop&w=#{width}&h=#{height}&quality=90&cache=true") if (fpfile? && fpfile.url?)
+    $scope.objectMethods.placeHolderImage()
+
 
   $scope.cancel = ->
     $modalInstance.dismiss('cancel')

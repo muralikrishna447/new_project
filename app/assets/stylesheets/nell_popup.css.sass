@@ -18,7 +18,7 @@
 
   background-color: white
   position: fixed
-  z-index: 2000
+  z-index: 9999
   border: 1px solid $light-gray
   border-top: 4px solid $orange
   border-bottom: 2px solid $light-gray
@@ -55,6 +55,7 @@
     //margin-bottom: $baseline
     padding: $baseline
     //margin: $baseline $horz-baseline-large
+    @include boxsizing
 
   .nell-card-media
     @include flex(1 0 250px)
@@ -62,11 +63,13 @@
     //min-width: 250px
     //margin-bottom: $baseline
     //margin: 0px $horz-baseline-large
+    @include boxsizing
 
   .nell-card-text
     //padding: 0px $horz-baseline-large
     @include flex(1 0 250px)
     padding: $baseline
+    @include boxsizing
     .short-summary
       max-height: 18 * $baseline
     .needs-work

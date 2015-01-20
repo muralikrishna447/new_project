@@ -19,7 +19,7 @@
     mixpanel.track('Video Embed Loaded', mixpanelProperties) 
  
     createPlayer = ->
-      if window.youtubeAPIReady
+      if window.youtubeAPIReady && attrs.videoId
         console.log('createPlayer')
         player = new YT.Player( 
           playerId,

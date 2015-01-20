@@ -4,13 +4,13 @@
   .activity-description-wrapper
     .activity-description.maximize-description#activity-description
       .aside.right.rightInset.noprint(ng-show="(! editMode) && (activityColumns < 3)")
-        = render 'activities/tools'
+        = render 'shared/tools'
       %div.content-activity-description(  ng-show="!! activity.description || editMode"
                                           ng-model="activity.description" 
                                           cs-contenteditable = "editMode"
                                           placeholder="'Click to write main description'" )
 -if can? :update, @activity
-  .section
+  .section(ng-show="csAuthentication.isAdmin()")
 
     %div(ng-show="!!activity.author_notes || editMode")
       %h4 Private Notes

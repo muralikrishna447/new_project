@@ -1,0 +1,64 @@
+@import 'mixins'
+
+.video-loop-player
+  position: relative
+  margin-bottom: $baseline
+  video
+    width: 100%
+    display: block
+    background-color: black
+
+  .video-loop-display
+    position: absolute
+    top: 0px
+    left: 0px
+    width: 100%
+    height: 100%
+    @include display-flex
+    @include align-content(center)
+    @include justify-content(center)
+    @include align-items(center)
+    pointer-events: none
+    .display-item
+      @include flex(0 1 auto)
+      font-size: 2*$baseline
+      color: white
+
+  .video-loop-controls
+    position: absolute
+    bottom: 0px
+    left: 0px
+    width: 100%
+    height: 4*$baseline
+    font-size: 2*$baseline
+    @include display-flex
+    @include justify-content(space-between)
+
+    .video-loop-control
+      @include boxsizing
+
+    .video-loop-control.video-loop-button
+      color: white
+      padding: $baseline
+      @include boxsizing
+      &:hover
+        cursor: pointer
+        color: $orange
+
+    .video-loop-control.video-loop-slider
+      @include flex(1 1 auto)
+      input[type="range"]
+        width: 100%
+        height: 2px
+        vertical-align: -3px
+        border-radius: 0px
+        border: none
+        @include boxsizing
+        &:hover
+          cursor: pointer
+      input[type="range"]::-webkit-slider-thumb
+        height: $baseline
+        width: $baseline
+        background: white
+        &:hover
+          background: $orange

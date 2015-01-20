@@ -4,69 +4,76 @@
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
-.container.gallery-wrapper.relative(ng-controller='GalleryController')
-  .row(ng-cloak)
-    .span12
-      %div
-        .gallery-filter.navbar
-          %ul.nav.left-group
+.gallery-wrapper.relative(ng-controller='GalleryController' ng-cloak)
 
-            %form.navbar-search.relative(ng-click="collapseFilters = true")
-              %input.search-query(type="search" placeholder="Search..." ng-model="filters.search_all" ui-event='{blur: "trackSearch()"}')
-              %a.clear-search(ng-click="filters.search_all = ''" ng-show="filters.search_all || '' != ''")
-                %i.icon-remove
+  .gallery-controls.navbar
 
-            %li.relative(ng-mouseenter="collapseFilters = false" ng-mouseleave="collapseFilters = true")
-              .filter-collapser(ng-click="collapseFilters = ! collapseFilters")
-                FILTER
-                %i.icon-angle-down(ng-show="collapseFilters")
-                %i.icon-angle-up(ng-hide="collapseFilters")
-              .filters-group.anim-filters(ng-show="!collapseFilters")
-                %csRadioButtons.first-separate(ng-model="typeChoices" active="filters.activity_type")
-                %csRadioButtons.first-separate(ng-model="difficultyChoices" active="filters.difficulty")
-                %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
-                -if can? :update, User
-                  %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
+    %ul.search-group
+      %form.navbar-search.relative
+        .input-group
+          %input.cs-nav-search-input(  ng-model='input' 
+                                ng-change='search(input)' 
+                                placeholder='search')
+          %a.clear-search(ng-click="clearSearch()")
+            %i.icon-remove
 
-            %li.relative(ng-mouseenter="collapseSort = false" ng-mouseleave="collapseSort = true")
-              .filter-collapser(ng-click="collapseSort = ! collapseSort")
-                SORT
-                %i.icon-angle-down(ng-show="collapseSort")
-                %i.icon-angle-up(ng-hide="collapseSort")
+        .filter-toggle(ng-click="filtersCollapsed = ! filtersCollapsed")
+          FILTERS
+          %i.icon-angle-down(ng-show="filtersCollapsed")
+          %i.icon-angle-up(ng-hide="filtersCollapsed")
 
-              .filters-group.anim-filters(ng-show="!collapseSort")        
-                .btn( ng-repeat="choice in getSortChoices()" 
-                      ng-click="filters.sort = choice" 
-                      ng-class="{active: filters.sort == choice}")
-                  {{choice}}
-            .current-filter(ng-repeat="(k, f) in nonDefaultFilters()")
-              {{f}}
-              %span.reset-filter(ng-click="resetFilter(k)")
-                %i.icon-remove
-        .add-group.btn-group.pull-right(ng-show="(filters.generator != 'ChefSteps') || csAuthentication.isAdmin()")
-          %a.btn.btn-secondary.add-button(href="/activities/new")
-            Add Recipe
+    %ul.nav.filters-group(ng-class="{'filters-collapsed' : filtersCollapsed}")
+      %li
+        %h5 Popular
+        %a( ng-repeat="x in suggestedSearches" 
+            ng-click="search(x, true)" 
+            ng-class="{'active' : filters['search_all'].toLowerCase() == x.toLowerCase()}")
+          %span {{x}}
 
-  .row(ng-cloak ng-show="(galleryItems.length == 0) && initialLoadDone" ng-click="collapseFilters = true")
-    .section
-    .span12
-      %h3 No results found, but perhaps you'd enjoy these recipes?
+      %li
+        %h5 Difficulty
+        %csRadioButtons(ng-model="difficultyChoices" active="filters.difficulty")
 
-  .row.gallery-contents(ng-cloak ng-click="collapseFilters = true")
-    .span12
-      %div(galleryscroll='loadData()')
-        %div.anim-basic-fade(ng-repeat='activity in getDisplayItems()')
-          %csGalleryItem( title="activity.title"
-                          href="activity.gallery_path"
-                          image="itemImageURL(activity, 400)"
-                          summary="activity.description"
-                          footer-left="activity.difficulty"
-                          footer-right="getFooterRightContents(activity)"
-                          sash = "getSashContents(activity)"
-                        )
-  .row
-    .span2.offset5
-      .gallery-spinner(ng-show='(spinner != 0) || (! initialLoadDone)')
-        %i.icon-page-load
+      %li
+        %h5 Source
+        %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
 
-= render 'home/madlib_popup', registration_source: 'gallery'
+      %li(ng-if="csAuthentication.isAdmin()")
+        %h5 Admin
+        %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
+
+      %li
+        %h5 Sort
+        %a( ng-repeat="choice in getSortChoices()" 
+            ng-click="filters.sort = choice" 
+            ng-class="{active: filters.sort.toLowerCase() == choice.toLowerCase()}") 
+          %span {{choice}}
+
+      %li
+        %a.blue-link(href="/activities/new") Add New Recipe
+
+  .gallery-results(ng-class="{'reloading' : reloading}")
+    .gallery-madlib(ng-if="! csAuthentication.loggedIn()")          
+      %div.noprint( ng-controller="LoginController" 
+                    ng-init="registrationSource ='gallery'; setIntent('ftue');"
+                    ng-hide="editMode || authentication.currentUser()" )
+        = render "devise/sessions/new_angular"
+        = render 'home/madlib'
+    .no-results(ng-show='noResults()')
+      %h3 No results found. Here are some of our most popular recipes:
+
+    .gallery-items( infinite-scroll='next()' 
+                    infinite-scroll-disabled='dataLoading' 
+                    infinite-scroll-immediate-check='true' 
+                    infinite-scroll-distance='1')
+
+      %div(ng-repeat='activity in getResults() track by activity.id')
+        %cs-index-item.cs-index-item( cs-title='activity.title' 
+                                      url='activity.url' 
+                                      image='activity.image' 
+                                      hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
+
+    .load-checker                                
+    .loading-icon-group(ng-show="dataLoading > 0")
+      %i.icon-page-load
+

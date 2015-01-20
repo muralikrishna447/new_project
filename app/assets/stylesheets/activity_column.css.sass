@@ -7,7 +7,8 @@
 .master-column
   @include boxsizing
   width: 100%
-  max-width: $desktop-standard-item-width + (2 * $aside-width) + (2 * $aside-margin)
+  padding: 20px
+  //max-width: $desktop-standard-item-width + (2 * $aside-width) + (2 * $aside-margin)
   @include horizontal-center
 
 .base-item
@@ -47,6 +48,12 @@
   width: 170px
   &:not(:first-child-of-type)
     margin-left: 30px
+
+
+.edit-mode
+  .half-medium-item, .medium-item, .quarter-medium-item
+    @extend .base-item
+    width: $desktop-standard-item-width
 
 .activity-columns-1
   .leftInset, .rightInset

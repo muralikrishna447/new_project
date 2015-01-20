@@ -1,0 +1,22 @@
+.video-loop-player(ng-show="videoLoaded")
+
+  %video(cs-looping-video preload="auto" loop webkit-playsinline poster="{{videoImage}}")
+    %source(ng-src="{{trustedVideoUrl(source)}}" ng-repeat="source in sources")
+
+  .video-loop-display(ng-show="showDisplay")
+    .display-item
+      speed: {{playbackRate}}x
+
+  .video-loop-controls
+    .video-loop-control.video-loop-button(ng-click="toggle()")
+      %i.fa.fa-pause.fa(ng-show="playing")
+      %i.fa.fa-play.fa(ng-show="!playing")
+
+    .video-loop-control.video-loop-slider
+      %input(type='range' min='0' max='100' ng-model='sliderValue' ng-mousedown="onmousedown($event)" ng-mouseup="onmouseup($event)")
+
+    .video-loop-control.video-loop-button(ng-click="slowDown()")
+      %i.fa.fa-minus.fa
+
+    .video-loop-control.video-loop-button(ng-click="speedUp()")
+      %i.fa.fa-plus.fa

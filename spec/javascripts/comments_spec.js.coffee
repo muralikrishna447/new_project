@@ -1,26 +1,38 @@
 describe "cscomments", ->
-  $compile = undefined
-  $rootScope = undefined
-  $httpBackend = undefined
+  scope = null
+  $_compile = null
+  $_rootScope = null
+  $_httpBackend = null
 
-  beforeEach module("ChefStepsApp")
+  # you need to indicate your module in a test
+  beforeEach(angular.mock.module('ChefStepsApp'))
 
-  beforeEach inject((_$compile_, _$rootScope_, _$httpBackend_, $injector) ->
-    $compile = _$compile_
-    $rootScope = _$rootScope_
-    $httpBackend = _$httpBackend_
-    $httpBackend = $injector.get('$httpBackend')
-    $httpBackend.when('GET', 'http://production-bloom.herokuapp.com/discussion/activity_2434/comments?apiKey=xchefsteps').respond("[{'content':'hello'}, {'content': 'sup'}]")
+
+  beforeEach angular.mock.inject(($compile, $rootScope, $httpBackend) ->
+    $_compile = $compile
+    $_rootScope = $rootScope
+    $_httpBackend = $httpBackend
+
+    scope = $rootScope.$new()
+    $httpBackend.whenGET(/.*/).respond ->
+      [200, {"commentCount":0,"comments":[{"content" : "zzzyfzzy"}], "lastOpened":null}]
   )
 
+  afterEach ->
+    $_httpBackend.verifyNoOutstandingExpectation();
+    $_httpBackend.verifyNoOutstandingRequest();
+
+
   it "should render seo comments when brombone is true", ->
-    element = $compile("<cscomments comments-type='activity' comments-id='2434' seo-bot='true'></cscomments>")($rootScope)
-    $rootScope.$digest()
-    expect(element.html()).toContain('hello')
+    element = $_compile("<cscomments comments-type='activity' comments-id='2434' seo-bot='true'></cscomments>")(scope)
+    $_httpBackend.flush()
+    scope.$digest()
+    console.log("*** expecty")
+    expect(element.html()).toContain('zzzyfzzy')
 
   it "should render bloom comments iframe when brombone is false", ->
-    element = $compile("<cscomments comments-type='activity' comments-id='2434' seo-bot='false'></cscomments>")($rootScope)
-    $rootScope.$watch 'commentsId', (newValue, oldValue) ->
+    element = $_compile("<cscomments comments-type='activity' comments-id='2434' seo-bot='false'></cscomments>")($_rootScope)
+    $_rootScope.$watch 'commentsId', (newValue, oldValue) ->
       if newValue
-        $rootScope.$digest()
+        $_rootScope.$digest()
         expect(Bloom.installComments()).toHaveBeenCalled()

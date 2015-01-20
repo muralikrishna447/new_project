@@ -41,7 +41,10 @@
             .page.anim-basic-fade(ng-switch-when="white")
               %h4.text-center What texture would you like your egg white?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity" item-width="300")
-                %video(ng-src="{{trustedVideo(whiteVideo.video)}}" autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="whiteVideo in whiteVideos" )
+                %video(autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="whiteVideo in whiteVideos" )
+                  %source(ng-src="{{trustedVideo(whiteVideo.video.mp4)}}" type="video/mp4")
+                  %source(ng-src="{{trustedVideo(whiteVideo.video.webm)}}" type="video/webm")
+                  Looks like your browser does not support the video tag.
               .control-group.text-center
                 .controls
                   %a(ng-click="incrementWhite(-1)")
@@ -59,8 +62,10 @@
             .page.anim-basic-fade(ng-switch-when="yolk")
               %h4.text-center What texture would you like your egg yolk?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1" item-width="300")
-                %video(ng-src="{{trustedVideo(yolkVideo)}}" autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="yolkVideo in yolkVideos" )
-
+                %video(autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="yolkVideo in yolkVideos" )
+                  %source(ng-src="{{trustedVideo(yolkVideo.video.mp4)}}" type="video/mp4")
+                  %source(ng-src="{{trustedVideo(yolkVideo.video.webm)}}" type="video/webm")
+                  Looks like your browser does not support the video tag.
               .control-group.text-center
                 .controls
                   %a(ng-click="incrementYolk(-1)")
@@ -80,18 +85,19 @@
 
             .page.anim-basic-fade(ng-switch-when="results")
               .section
+                .labeled-time
+                  %span Cook at
                 %h2.text-center(ng-bind-html="utils.formatTemp(water_temp, inputs.units)")
-              .section
                 .labeled-time
-                  %span Ice and reheat
-                  %h3(ng-show="loading")
-                    %i.icon-spinner.icon-spin
-                  %h3(ng-show="! loading") {{utils.formatTime(output.items[4], needsSeconds())}}
-                .labeled-time
-                  %span Serve immediately
                   %h3(ng-show="! loading") {{utils.formatTime(output.items[1], needsSeconds())}}
                   %h3(ng-show="loading")
                     %i.icon-spinner.icon-spin
+              %div
+                .labeled-time
+                  %span Or, to ice and reheat
+                  %h3(ng-show="loading")
+                    %i.icon-spinner.icon-spin
+                  %h3(ng-show="! loading") {{utils.formatTime(output.items[4], needsSeconds())}}
               .section-tiny.text-center
                 Add data for more accurate time:
                 .btn.btn-circle.medium(ng-click="goState('size')" ng-class="stateVisited('size')")
@@ -111,13 +117,14 @@
                 %h4 Share the egg calculator on your social networks:
               .section
                 //= render 'layouts/social_buttons', media_object: nil
+                %div(ng-include="'_egg_timer_social.html'")
               .egg-footer
                 .btn.btn-primary(ng-click="goState('white')")
                   NEW EGG
 
             .page.anim-basic-fade(ng-switch-when="size")
               %h4.text-center What (US) size is your egg?
-              .section.text-center
+              .section.text-center.egg-size
                 %ul.nav.nav-tabs.underline
                   %li(  ng-repeat="choice in eggService.sizeChoices" 
                         ng-click="inputs.circumference = choice['mm']" 
@@ -140,17 +147,17 @@
 
             .page.anim-basic-fade(ng-switch-when="startTemp")
               %h4.text-center What temperature is your egg?
-              .section.text-center
-                %ul.nav.nav-tabs.underline.text-center.inline
+              .section.text-center.egg-start-temp
+                %ul.nav.nav-tabs.underline.text-center
                   %li(ng-click="inputs.start_temp = 5" ng-class="{'active': inputs.start_temp == 5}")
                     %a Refrigerated
                   %li(ng-click="inputs.start_temp = 22" ng-class="{'active': inputs.start_temp == 22}")
                     %a Room Temperature
-              .div(ng-hide="inputs.units == 'f'")
+              %div(ng-hide="inputs.units == 'f'")
                 .section.text-center
                   OR
                 .section.text-center
-                  %input.tiny-input(type="number" ng-model="inputs.start_temp") &deg;C
+                  %input.tiny-input.egg-start-temp-input(type="number" ng-model="inputs.start_temp") &deg;C
               .egg-footer
                 .btn.btn-secondary(ng-click="goState('bathType')")
                   ADD BATH TYPE

@@ -33,14 +33,15 @@ window.deepCopy = (obj) ->
     h = 495
     if w < 650
       h = w * 9.0 / 16.0
-    url += "/convert?fit=crop&h=#{h}&w=#{w}"
+    url += "/convert?fit=crop&h=#{h}&w=#{w}&quality=90&cache=true"
     window.cdnURL(url)
 
 ]
 
+# This controller is a freaking abomination and needs to be broken up into about 5 different services and directives.
 
-@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService"
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService) ->
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "$anchorScroll", "$window",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, $anchorScroll, $window) ->
 
   $scope.heroMedia = csEditableHeroMediaService
 
@@ -56,11 +57,16 @@ window.deepCopy = (obj) ->
   $scope.csAuthentication = csAuthentication
   $scope.csAlertService = csAlertService
   $rootScope.loading = 0
+  reportedCooked = false
 
   $scope.csTagService = csTagService
 
   $scope.getObject = ->
     $scope.activity
+
+  $scope.getObjectTypeName = ->
+    "Activity"
+
   csEditableHeroMediaService.getObject = $scope.getObject
 
   $scope.hasFeaturedImage = ->
@@ -152,7 +158,9 @@ window.deepCopy = (obj) ->
     true
 
   $scope.endEditMode = ->
-    console.log "ACTIVITY SAVE START"
+    console.log "ACTIVITY SAVE START - Here's the JSON ---------"
+    console.log JSON.stringify($scope.activity)
+    console.log "-----------------------------------------------"
     $scope.alerts = []
     $scope.normalizeModel()
     $scope.normalizeWeightUnits()
@@ -373,6 +381,7 @@ window.deepCopy = (obj) ->
 
     if preloaded_activity
       $scope.activity = new Activity(JSON.parse(preloaded_activity))
+      $scope.activity?.printed = false
       $scope.activity.is_new = ($scope.activity.title.length == 0)
       true
     else
@@ -402,9 +411,12 @@ window.deepCopy = (obj) ->
 
   $scope.makeActivityActive = (id) ->
     return if id == $scope.activity?.id
+    $scope.trackActivityEngagementFinal() if $scope.activity?.id
+    reportedCooked = false
     $scope.activity = $scope.activities[id]
+    $scope.activity.printed = false
     cs_event.track(id, 'Activity', 'show')
-    mixpanel.track('Activity Viewed', {'context' : 'course', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
+    mixpanel.track('Activity Viewed', $scope.getEventData());
     $scope.csGlobals.units = "grams"
     $scope.csGlobals.scaling = 1
     $timeout ->
@@ -428,11 +440,12 @@ window.deepCopy = (obj) ->
     $scope.updateCommentCount()
     $scope.$broadcast('resetVideo')
 
+
   $scope.commentCount = -1
   $scope.updateCommentCount = -> 
     if $scope.activity?
-      $http.get("http://api.usebloom.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
-        $scope.commentCount = data.length
+      $http.get("//ancient-sea-7316.herokuapp.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
+        $scope.commentCount = data["commentCount"]
       )
 
   $scope.$on 'loadActivityEvent', (event, activity_id) ->
@@ -513,6 +526,17 @@ window.deepCopy = (obj) ->
     $rootScope.$broadcast "showNellPopup", 
       include: view
 
+  $scope.showTitle = ->
+    if $scope.activity
+      switch $scope.activity.title
+        when 'FAQ'
+          false
+        when 'Discussion'
+          false
+        else
+          true
+
+
   # Why by weight was removed but can always be added back by adding reached-screen-callback="maybeShowWhyByWeight()" as a attribute
   $scope.maybeShowWhyByWeight = ->
     return if localStorageService.get('whyByWeightShown')
@@ -522,10 +546,93 @@ window.deepCopy = (obj) ->
       include: '_why_by_weight.html'
     localStorageService.set('whyByWeightShown', true)
 
+
+  # Keep track of when the activity was loaded
+  $scope.resetPageLoadedTime = ->
+    $scope.lastActiveTime = $scope.pageLoadedTime = Date.now()
+  $scope.resetPageLoadedTime()
+
+  # Keep track of last time the user was active on the page
+  $scope.activeMinutes = ->
+    Math.floor(($scope.lastActiveTime - $scope.pageLoadedTime) / (1000 * 60.0))
+
+  $scope.updateActiveTime = ->
+    $scope.lastActiveTime = Date.now() 
+    $scope.maybeReportCooked()
+
+  angular.element($window).on 'scroll', _.throttle($scope.updateActiveTime, 10000)
+  $('.course-content-wrapper').on 'scroll', _.throttle($scope.updateActiveTime, 10000)
+
+  $scope.probablyCooked = ->
+    $scope.activity.printed || ($scope.activeMinutes() >= 15)
+
+  $scope.maybeReportCooked = ->
+    return if reportedCooked
+    if $scope.probablyCooked()
+      reportedCooked = true
+      eventData = $scope.getExtendedEventData()
+      mixpanel?.track "Activity Probably Cooked2", eventData
+      Intercom?('trackEvent', "probably-cooked", eventData)
+      Intercom?('trackEvent', "probably-cooked-souffle", eventData) if eventData.slug == "molten-chocolate-souffle"
+      Intercom?('update')      
+
+  # various ways of tracking printing; if you google it you'll find out how unreliable they all are
+  window.onbeforeprint = ->
+    $scope.activity?.printed = true
+    $scope.maybeReportCooked()
+
+  if window.matchMedia
+    window.matchMedia("print").addListener (mql) ->
+      if mql.matches
+        # In chrome "matches" never seems to be true. But we've also instrumented the print button in the tools menu so maybe that helps.
+        $scope.activity?.printed = true
+        $scope.maybeReportCooked()
+
+  $scope.doPrint = ->
+    $scope.activity?.printed = true
+    window.print()
+    $scope.maybeReportCooked()
+
+  # Track everything we know about the user engagement on this activity, then reset it
+  # in case loading new activity in class
+  $scope.trackActivityEngagementFinal =  ->
+    mixpanel?.track "Activity Engagement Final", $scope.getExtendedEventData()
+    $scope.resetPageLoadedTime()
+    $scope.activity.printed = false
+
+  $(window).unload ->
+    $scope.trackActivityEngagementFinal()
+
+    # http://stackoverflow.com/questions/8350215/delay-page-close-with-javascript
+    # Without this, a lot of times the mixpanel event doesn't get recorded; request shows as cancelled in network tab
+    # Hmm, and even with this it doesn't work in mobile safari. I tried 'pagehide' stuff but didn't have any luck
+    # with that either; so now we track this final engagement when we can but also track send an event as soon
+    # as we think we've cooked, see maybeReportCooked()
+    start = Date.now()
+    while ((Date.now() - start) < 250)
+      ;
+
+  $scope.getEventData = ->
+    'context' : if $scope.course then 'course' else 'naked'
+    'classTitle' : $scope.course?.title
+    'title' : $scope.activity.title, 
+    'slug' : $scope.activity.slug
+    'isRecipe' : $scope.activity.ingredients?.length > 1
+
+  $scope.getExtendedEventData = ->
+    activeMinutes = $scope.activeMinutes()
+    probablyCooked = $scope.probablyCooked()
+    eventData = $scope.getEventData()
+
+    angular.extend eventData, 
+                    printed: $scope.activity.printed
+                    activeMinutes: activeMinutes
+                    probablyCooked: probablyCooked   
+
   # One time stuff
   if $scope.parsePreloaded()
     $scope.schedulePostPlayEvent()
-    mixpanel?.track('Activity Viewed', {'context' : 'naked', 'title' : $scope.activity.title, 'slug' : $scope.activity.slug});
+    mixpanel?.track('Activity Viewed', $scope.getEventData());
 
     if ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()
@@ -533,5 +640,31 @@ window.deepCopy = (obj) ->
       if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
         $scope.startEditMode()
         $scope.editMeta = true
+
+  # Scroll to comment. Very hacky but it works
+  $scope.scrollToComments = ->
+    # Super hacky, without the condition, it creates some really really bad looking/long urls
+    if $location.path() && (($location.path() == 'discussion') || ($location.path().indexOf('/numbered-step-') == 0))
+      anchor = $location.path().replace(/\//g,'')
+      $location.path('')
+      $location.hash(anchor)
+    
+    # Regardless, make sure we get to our anchor
+    $anchorScroll()
+    $location.hash('')
+
+  # Attempt at a universal anchor scroll
+  # Usage http://localhost:3000/activities/creme-brulee/#/?anchor=strain will scroll to the div with id="strain"
+  $scope.anchor = ->
+    if $location.search() && $location.search().anchor
+      anchor = $location.search().anchor
+      $location.hash(anchor)
+
+  # Not particularly proud of this.  Had to bump up the timeout time. window.onload doesn't seem to work.  If we start using ng-view more, we should use this: http://stackoverflow.com/questions/21715256/angularjs-event-to-call-after-content-is-loaded
+  $timeout ( ->
+    $scope.scrollToComments()
+    $scope.anchor()
+  ), 3000
+  
 ]
 

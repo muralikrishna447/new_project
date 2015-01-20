@@ -30,6 +30,7 @@ gem 'comma'
 
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-access-control-headers'
+gem "rack-timeout"
 
 gem 'pg_search'                             # Postgres text search
 gem 'acts-as-taggable-on'                   # Taggable models
@@ -42,8 +43,6 @@ gem 'acts_as_revisionable'
 gem 'coffee-filter'
 gem 'client_side_validations'
 gem 'client_side_validations-formtastic'
-gem 'split', require: 'split/dashboard'
-gem 'redis'
 gem 'merit'
 gem 'has_scope'
 gem 'mixpanel-ruby'
@@ -64,6 +63,7 @@ gem 'nori'
 # gem 'elasticsearch'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
+gem 'aws-sdk'
 
 group :development do
   gem 'spring'
@@ -73,6 +73,8 @@ end
 
 group :development, :test do
   gem "simplecov", require: false
+  gem 'angularjs-rails'
+  gem 'jquery-rails'
 end
 
 # Gems used only for assets and not required

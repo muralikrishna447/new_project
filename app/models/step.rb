@@ -7,7 +7,7 @@ class Step < ActiveRecord::Base
   has_many :ingredients, class_name: StepIngredient, dependent: :destroy, inverse_of: :step
 
   attr_accessible :title, :youtube_id, :directions, :image_id, :image_description,
-    :ingredient_ids, :activity_id, :step_order_position, :transcript, :audio_clip, :audio_title, :subrecipe_title, :hide_number, :is_aside, :presentation_hints
+    :ingredient_ids, :activity_id, :step_order_position, :transcript, :audio_clip, :audio_title, :subrecipe_title, :hide_number, :is_aside, :presentation_hints, :extra
 
   serialize :presentation_hints, JSON
 

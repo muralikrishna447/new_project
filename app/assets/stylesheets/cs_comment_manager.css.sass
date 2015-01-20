@@ -1,0 +1,101 @@
+@import 'mixins'
+
+.comment-manager
+  position: relative
+
+  .comment-icon-group
+    @include transition(all 300ms ease-in-out)
+    @include unselectable
+    cursor: pointer
+    position: relative
+
+    &:hover
+      i, .plus
+        opacity: 1
+
+    i
+      font-size: 25px !important
+      position: absolute
+      top: 0
+      cursor: pointer
+
+    i, .plus
+      @include transition(opacity 100ms ease-in-out)
+      cursor: pointer
+      color: #29b99a
+      opacity: 0.5
+
+      &:hover
+        opacity: 1
+
+    .comments-with-count, .comments-no-count
+      position: relative
+      width: 25px
+
+  .comment-count, .plus
+    position: relative
+    text-align: center
+    top: -1px
+    z-index: 2
+    font-size: 13px
+    &.three-digits
+      font-size: 9px
+
+  .comment-count
+    color: white
+
+  .plus
+    color: $light-gray
+    font-size: 15px
+
+  .comment-container
+    position: absolute
+    right: -410px
+    top: 0px
+    z-index: 99
+    @include transition(opacity 300ms ease-in-out)
+    background-color: white
+    padding: 0
+    @include boxsizing
+    width: 400px
+
+    i.icon-cs-close
+      position: absolute
+      top: 0px
+      left: -28px
+      z-index: 1
+      cursor: pointer
+
+.comments-slide
+  position: relative
+  left: 0
+
+  &.open
+
+    .aside-separate, .aside-inset, .hide-on-comment-slide
+      opacity: 0
+
+    .comment-icon-group
+      opacity: 0
+      z-index: -1
+
+    .tools-list
+      li:not(.comment-list), .comment-list .tool-name
+        opacity: 0
+      li
+        border: none !important
+
+@media (max-width: 768px)
+  .comment-icon-group
+    .comments-no-count-maybe-hover.ng-hide
+      display: block !important
+      opacity: 1 !important
+
+@media (max-width: 460px)
+  .comment-manager
+    .comment-container
+      width: 288px
+      right: -298px
+      i.icon-cs-close
+        left: 2px
+        top: -22px

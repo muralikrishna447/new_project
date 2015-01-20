@@ -1,0 +1,40 @@
+@import 'mixins'
+
+.labeled-price-group
+  .labeled-price
+    margin-right: $horz-baseline-large * 2
+
+.labeled-price
+  display: inline-block
+
+.sale-price
+  color: $orange
+
+.regular-price
+  color: $orange
+
+.regular-price.struck
+  color: $dark-gray
+
+  .labeled-price-label
+    color: $dark-gray
+
+  .labeled-price-price
+    position: relative
+    margin-left: 2px
+
+  .labeled-price-strike
+    position: absolute
+    left: -2px
+    right: 0
+    top: 11px
+    width: 40px
+    border: 1px solid $dark-gray
+
+.labeled-price-label
+  color: black
+  font-size: 13px
+  @include primary-font-bold
+
+.labeled-price-price
+  font-size: 23px

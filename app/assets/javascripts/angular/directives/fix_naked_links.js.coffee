@@ -1,13 +1,10 @@
-angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootScope","$location", "$anchorScroll", ($window, $rootScope, $location, $anchorScroll) ->
+angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootScope","$location", "$anchorScroll", "$http", ($window, $rootScope, $location, $anchorScroll, $http) ->
 
   restrict: 'A',
   replace: true,
 
   link:  (scope, element, attrs) ->
     $(element).on 'click', 'a', (event)->
-
-      if $(event.currentTarget).attr('no-nell-popup')
-        return
 
       slug = event.currentTarget.href?.match('/activities/([^/]*)')?[1] 
       slug = event.currentTarget.href?.match('/classes/[^/].*/([^/]*)')?[1] if ! slug
@@ -21,15 +18,20 @@ angular.module('ChefStepsApp').directive 'csfixnakedlinks', ["$window", "$rootSc
         $anchorScroll()
         return
 
+      # First try override for load directly in class frame...
+      if slug && scope.overrideLoadActivityBySlug?(slug)
+        event.preventDefault()
+        return
+
+      # We should really make this work in reverse and not override default link behavior.  Explicitly specificy which links open a nell card.
+      return if $(event.currentTarget).attr('no-nell-popup')
+ 
       if slug 
-        # Activity link
-        # First try override for load directly in class frame...
-        if ! scope.overrideLoadActivityBySlug?(slug)
-          # ... otherwise show card
-          $rootScope.$broadcast "showNellPopup", 
-            resourceClass: 'Activity'
-            include: '_activity_popup_card.html'
-            slug: slug
+        # Activity link, show card
+        $rootScope.$broadcast "showNellPopup", 
+          resourceClass: 'Activity'
+          include: '_activity_popup_card.html'
+          slug: slug
         event.preventDefault()
         
       else 

@@ -1,5 +1,5 @@
 class GiftCertificate < ActiveRecord::Base
-  attr_accessible :purchaser_id, :assembly_id, :price, :sales_tax, :recipient_email, :recipient_name, :recipient_message, :redeemed
+  attr_accessible :purchaser_id, :assembly_id, :price, :sales_tax, :recipient_email, :recipient_name, :recipient_message, :redeemed, :email_to_recipient
   belongs_to :user, foreign_key: :purchaser_id, inverse_of: :gift_certificates
   belongs_to :assembly, inverse_of: :gift_certificates
 
@@ -7,6 +7,7 @@ class GiftCertificate < ActiveRecord::Base
   scope :unredeemed, -> { where(redeemed: false) }
   scope :one_week_old, -> { where('created_at < ?', 1.week.ago)}
   scope :not_followed_up, -> { where(followed_up: false)}
+  scope :recipients_to_email, -> { where(email_to_recipient: true) }
 
   include ActsAsChargeable
 
@@ -24,7 +25,7 @@ class GiftCertificate < ActiveRecord::Base
     end
   end
 
-  def self.purchase(purchaser, ip_address, assembly, discounted_price, stripe_token, gift_info)
+  def self.purchase(purchaser, ip_address, assembly, discounted_price, stripe_token, gift_info, existing_card=nil)
 
     # We create the gift cert first, but wrap this whole block in a transaction, so if the stripe chage then fails,
     # the enrollment is rolled back. The exception will then be re-raised and should be handled
@@ -40,10 +41,11 @@ class GiftCertificate < ActiveRecord::Base
               sales_tax: tax,
               recipient_email: gift_info["recipientEmail"],
               recipient_name: gift_info["recipientName"],
-              recipient_message: gift_info["recipientMessage"]
+              recipient_message: gift_info["recipientMessage"],
+              email_to_recipient: gift_info["emailToRecipient"]
             )
       unless purchaser.admin?
-        collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, purchaser, stripe_token)
+        collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, purchaser, stripe_token, existing_card)
       end
       gc.send_email(gift_info["emailToRecipient"])
     end

@@ -5,7 +5,7 @@
 
 .activity_show, .action-jobs
   .nav-spacer
-    height: 60px
+    height: $baseline * 7
 
 $banner-height: $baseline * 45
 
@@ -15,6 +15,7 @@ $banner-height: $baseline * 45
   position: relative
   margin-bottom: $baseline
   cursor: pointer
+  min-height: 500px
 
   img
     // Allowing a stretch here, but it is only effective temporarily because
@@ -63,6 +64,22 @@ $banner-height: $baseline * 45
   padding-top: $baseline * 2
   width: 100%
 
+.step-row
+  width: 100%
+
+.step-content-group
+  position: relative
+
+  .comment-manager
+    position: absolute
+    right: -40px
+    top: 0
+
+@media (max-width:320px)
+  .step-content-group
+    .comment-manager
+      right: -38px
+
 .step-number
   margin-left: auto
   margin-right: auto
@@ -75,6 +92,10 @@ $banner-height: $baseline * 45
   height: 70px
   border-radius: 50%
   @include boxsizing
+
+.tools-aside
+  margin-right: 100px
+
 
 .tools-list
   position: relative
@@ -92,6 +113,12 @@ $banner-height: $baseline * 45
     .tool-group
       @include display-flex
       @include align-items(baseline)
+
+      .comment-icon-group
+        .plus, .comment-count
+          opacity: 0
+        i
+          font-size: 16px !important
 
     &:hover
       color: $orange !important
@@ -122,6 +149,7 @@ $banner-height: $baseline * 45
   top: 0
   right: 100%
   margin-right: 22px
+  min-width: 200px
 
 .left, .leftInset
   .step-edit-tools
@@ -137,8 +165,14 @@ $banner-height: $baseline * 45
   i.active
     color: $orange
 
+
+// Fix so that asides are always on top.  Triggered with isSeparateAside($index + 1)
+.is-aside
+  z-index: 999
+
 @media (max-width: 900px)
   .banner-image
+    min-height: 260px
     > img
       display: none
 
@@ -156,6 +190,8 @@ $banner-height: $baseline * 45
       z-index: 1
 
 @media (max-width: 480px)
+  .banner-image
+    min-height: 100px
   .activity-columns-1
     .aside.rightInset
       margin-right: -16%

@@ -50,9 +50,10 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     else
       newPath = "/" + includable_type.toLowerCase() + "/" + $scope.currentIncludable.includable_slug
     $location.path(newPath) if $location.path() != newPath
-
+    window.Intercom?('update')
+    
     # Title tag
-    document.title = $scope.currentIncludable.includable_title + ' - ' + $scope.course.title + ' Class - ChefSteps'
+    document.title = $scope.currentIncludable.includable_title + ' | ' + $scope.course.title + ' Class | ChefSteps'
 
     console.log "switching to " + includable_type + ' with slug ' + includable_slug
     $scope.view_inclusion = includable_type

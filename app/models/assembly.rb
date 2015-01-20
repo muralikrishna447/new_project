@@ -95,6 +95,11 @@ class Assembly < ActiveRecord::Base
     activity_videos_count + activity_step_videos_count
   end
 
+  def sciences
+    assembly_activities = leaf_activities
+    assembly_activities.select{|a| a.activity_type.include?("Science")}
+  end
+
   def badge
     b = Merit::Badge.find(self.badge_id)
     if self.badge_id && b
@@ -112,8 +117,8 @@ class Assembly < ActiveRecord::Base
     self.assembly_inclusions.map(&:includable_type).include?('Assembly') ? false : true
   end
 
-  def paid_class?
-    (assembly_type == "Course" && (price  && price > 0))
+  def paid?
+    price && price > 0
   end
 
   def self.free_trial_hours(b64string)
@@ -123,4 +128,22 @@ class Assembly < ActiveRecord::Base
   def self.free_trial_assembly(b64string)
     Assembly.find(Base64.decode64(b64string).split('-').map(&:to_i)[0])
   end 
+
+    # This is obviously a very short term solution to price testing!
+  # We'll need to make some sort of admin for this or use an off the shelf solution.
+
+  def discounted_price(coupon)
+    return 0 if ! self.price
+
+    pct = 1
+    case coupon
+    when 'a2a72a39da72'
+      pct = 0.75
+    when 'b1b01d389a50'
+      pct = 0.5
+    end
+
+    (self.price * pct).round(2)
+  end
+
 end

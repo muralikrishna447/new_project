@@ -2,9 +2,19 @@
 
 // Bootstrap override
 .modal
+  z-index: 100001
+  .modal-header
+    min-height: 2*$baseline
   .modal-content
     .modal-footer
       max-height: 80px
+
+.modal.fade.in
+  top: 80px
+  position: absolute
+
+.modal-backdrop
+  z-index: 100000
 
 .takeover-modal
   position: fixed !important
@@ -132,7 +142,7 @@ html
     top: 0px
     left: 0px
     padding: 0px
-    padding-top: 40px
+    padding-top: 100px
     padding-bottom: 140px
     @include boxsizing
   .modal-footer

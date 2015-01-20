@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140619202821) do
+ActiveRecord::Schema.define(:version => 20141223074816) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -241,6 +241,8 @@ ActiveRecord::Schema.define(:version => 20140619202821) do
     t.datetime "trial_expires_at"
   end
 
+  add_index "enrollments", ["enrollable_type", "enrollable_id", "user_id"], :name => "enrollable_user_index", :unique => true
+
   create_table "equipment", :force => true do |t|
     t.string   "title"
     t.string   "product_url"
@@ -292,17 +294,18 @@ ActiveRecord::Schema.define(:version => 20140619202821) do
 
   create_table "gift_certificates", :force => true do |t|
     t.integer  "purchaser_id"
-    t.string   "recipient_email",                                 :default => "",    :null => false
-    t.string   "recipient_name",                                  :default => "",    :null => false
-    t.text     "recipient_message",                               :default => ""
+    t.string   "recipient_email",                                  :default => "",    :null => false
+    t.string   "recipient_name",                                   :default => "",    :null => false
+    t.text     "recipient_message",                                :default => ""
     t.integer  "assembly_id"
-    t.decimal  "price",             :precision => 8, :scale => 2, :default => 0.0
-    t.decimal  "sales_tax",         :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "price",              :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",          :precision => 8, :scale => 2, :default => 0.0
     t.string   "token"
-    t.boolean  "redeemed",                                        :default => false
-    t.datetime "created_at",                                                         :null => false
-    t.datetime "updated_at",                                                         :null => false
-    t.boolean  "followed_up",                                     :default => false
+    t.boolean  "redeemed",                                         :default => false
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
+    t.boolean  "followed_up",                                      :default => false
+    t.boolean  "email_to_recipient"
   end
 
   add_index "gift_certificates", ["token"], :name => "index_gift_certificates_on_token"
@@ -502,6 +505,7 @@ ActiveRecord::Schema.define(:version => 20140619202821) do
     t.integer  "featured_activity_3_id"
     t.text     "global_message"
     t.boolean  "global_message_active",  :default => false
+    t.boolean  "forum_maintenance"
   end
 
   create_table "step_ingredients", :force => true do |t|
@@ -537,6 +541,7 @@ ActiveRecord::Schema.define(:version => 20140619202821) do
     t.boolean  "hide_number"
     t.boolean  "is_aside"
     t.text     "presentation_hints", :default => "{}"
+    t.text     "extra"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
@@ -552,12 +557,15 @@ ActiveRecord::Schema.define(:version => 20140619202821) do
     t.datetime "created_at"
   end
 
-  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], :name => "taggings_idx", :unique => true
   add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", :force => true do |t|
-    t.string "name"
+    t.string  "name"
+    t.integer "taggings_count", :default => 0
   end
+
+  add_index "tags", ["name"], :name => "index_tags_on_name", :unique => true
 
   create_table "uploads", :force => true do |t|
     t.integer  "activity_id"

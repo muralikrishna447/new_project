@@ -77,7 +77,7 @@
     .page
       width: 300px
       height: 400px
-      top: $baseline * 6
+      top: $baseline * 4
       left: 11px
       overflow: hidden
       position: absolute
@@ -105,7 +105,7 @@
     .labeled-time
       text-align: center
       display: inline-block
-      width: 49%
+      width: 100%
 
     h2,h3
       font-weight: bold
@@ -114,9 +114,24 @@
       width: 90%
       margin-left: 5%
 
+  .egg-size
+    ul
+      li
+        width: 25%
+        font-size: 11px
+
+  .egg-start-temp
+    ul
+      li
+        width: 50%
+        font-size: 12px
+
+  .egg-start-temp-input
+    margin: 0
+
   .egg-footer
     position: absolute
-    bottom: $baseline
+    bottom: 0
     left: 0
     right: 0
     color: white
@@ -152,6 +167,8 @@
 
   .control-group
     margin-top: $baseline * 2
+    .controls
+      font-size: 1.2rem
 
   .btn-circle.medium
     background-color: white
@@ -260,3 +277,16 @@ input[type="range"]
       .egg-footer
         margin-top: 40px
         position: relative
+
+@media (max-width:1265px)
+  .aside
+    .egg-app
+      width: 300px
+      margin-left: 25%
+
+@media (max-width:1600px)
+  .course-wrapper
+    .aside
+      .egg-app
+        width: 300px
+        margin-left: 25%

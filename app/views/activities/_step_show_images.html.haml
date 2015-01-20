@@ -12,4 +12,4 @@
 
   .step-image-outer(ng-switch="!! step.image_id")
     .step-image(id="{{'step-image-' + $index}}" ng-switch-when="true")
-      %img(ng-src="{{stepImageURL(step, 480)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}" itemprop="image")
+      %img(ng-src="{{stepImageURL(step, 480)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}")

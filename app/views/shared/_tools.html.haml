@@ -1,0 +1,77 @@
+%ul.no-bullet.tools-list(ng-controller="SocialButtonsController")
+
+  %li#like-button(ng-controller='LikesController'
+        ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
+        ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)'
+        ng-if="! inClass")
+    .tool-group
+      .icon-holder
+        %i.icon-heart-empty(ng-if="!current_user_likes")
+        %i.icon-heart(ng-if="current_user_likes")
+      .tool-name(ng-pluralize
+              count='getObject().likes_count || 0'
+              when="  { '0' : 'Be the first to like', '1' : '1 Like', 'other' : '{} Likes'}")
+
+
+  %li(ng-if="! inClass")
+    %a(cs-smooth-scroll-to='#discussion')
+      .tool-group
+        .icon-holder
+          %i.icon-cs-comment-filled
+        .tool-name(ng-pluralize
+                  count='commentCount'
+                  when="  { '-1' : 'Comments', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")  
+
+  %li(ng-if="getObjectTypeName() != 'Upload' && ! inClass")
+    %a(href='#user-creations')
+      .tool-group
+        .icon-holder
+          %i.icon-picture
+        .tool-name(ng-pluralize
+                  count='activity.upload_count'
+                  when="  {'0' : 'Add your creation', '1' : '1 User creation', 'other' : '{} User creations'}")  
+
+  %li(ng-if="getObjectTypeName() != 'Upload'"
+      ng-click="doPrint()")
+    .tool-group
+      .icon-holder
+        %i.icon-print
+      .tool-name
+        Print
+
+  %li(ng-click="shareEmail()")
+    .tool-group
+      .icon-holder
+        %i.icon-envelope-alt
+      .tool-name
+        Email
+
+  -if can?(:update, @activity) && @include_edit_toolbar
+    %li(  ng-click="maybeStartEditMode()"
+          tooltip="Edit this recipe"
+          tooltip-placement="left")
+      .tool-group
+        .icon-holder
+          %i.icon-edit
+        .tool-name
+          Edit
+
+  -if can?(:update, Activity) && @include_edit_toolbar
+    %li(  ng-show="hasActivityType('Recipe')"
+          ng-click="fork()"
+          tooltip="Edit a copy of this recipe"
+          tooltip-placement="left")
+      .tool-group
+        .icon-holder
+          %i.icon-code-fork
+        .tool-name
+          Fork this recipe
+
+  - if @container_path && @container_name
+    %br
+    .text-center.well-border
+      %h5
+        = "This is part of the #{@container_path} #{@container_name}.".html_safe
+
+
+

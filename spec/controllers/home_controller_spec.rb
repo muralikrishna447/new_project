@@ -19,5 +19,9 @@ describe HomeController do
     it "should redirect to the root url" do
       # expect(response).to redirect_to(root_path)
     end
+
+    it 'shows smart app add' do
+      assigns(:show_app_add).should_not be_nil
+    end
   end
 end

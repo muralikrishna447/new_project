@@ -72,7 +72,7 @@ angular.module('ChefStepsApp').controller 'EquipmentIndexController', ["$scope",
     ]
 
   $scope.equipmentChanged =  (equipment) ->
-    csUrlService.fixAmazonLink(equipment)
+    csUrlService.fixAffiliateLink(equipment)
     $scope.csAdminTable.startLoading($scope)
     equipment.$update  # Want to try to move this into the equipment factory
       id: equipment.id

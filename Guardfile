@@ -46,7 +46,7 @@ guard 'rspec', cli: "--profile --color --drb --fail-fast -f #{ENV['RSPEC_FORMAT'
   watch('app/controllers/application_controller.rb') { "spec/controllers" }
 end
 
-guard 'jasmine', jasmine_url: 'http://localhost:3000/jasmine', port: 80, server_env: :test, all_on_start: false do
+guard 'jasmine', server_env: :test, server: :thin, all_on_start: false do #, jasmine_url: 'http://localhost:3000/jasmine', port: 80, all_on_start: false do
   watch(%r{spec/javascripts/spec\.(js\.coffee|js|coffee)$})        { "spec/javascripts" }
   watch(%r{^spec/javascripts/(.+)_spec\.(js\.coffee|js|coffee)$})
   watch(%r{app/assets/javascripts/(.+?)\.(js\.coffee|js|coffee)$}) { |m| "spec/javascripts/#{m[1]}_spec.#{m[2]}" }

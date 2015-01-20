@@ -1,0 +1,29 @@
+.container.classes-index(ng-controller="CourseIndexItemController" ng-cloak ng-init="assembly=#{course.to_json}; discounted_price=#{course.discounted_price(session[:coupon])};")
+  .row.section
+    .span6
+      = render 'shared/media_box_2', url: landing_class_path(course), image: course.image_id, object: course
+    .span6
+      .title-group
+        %h3.inline-group= course.title
+        -if course.average_rating > 0
+          .nowrap
+            .rating.inline-group
+              %csrating(value="#{course.average_rating}" readonly="true")
+            %a
+              = link_to 'See all reviews', landing_class_path(course, anchor: "reviews")
+      %p= course.short_description
+      .section-tiny
+        .labeled-price-group
+          .labeled-price.sale-price(ng-if='discounted()')
+            .labeled-price-label SALE
+            .labeled-price-price {{discounted_price | niceDollars}}
+          .labeled-price.regular-price(ng-class='{struck: discounted()}')
+            .labeled-price-label {{priceLabel()}}
+            .labeled-price-price(ng-if="assembly.price > 0") 
+              {{assembly.price | niceDollars}}
+              .labeled-price-strike
+
+            .labeled-price-price(ng-if="assembly.price <= 0") Free
+      %a(href="#{landing_class_path(course)}")
+        .btn.btn-primary.btn-large
+          Learn More

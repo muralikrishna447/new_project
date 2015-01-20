@@ -1,0 +1,16 @@
+.section-large
+.container
+  .span6.offset3.text-center
+    %h3 We've replaced this old sous vide class with two brand new ones.
+.container
+  %hr
+- @new_classes.each do |assembly|
+  .container
+    .row.section
+      .span4
+        = render 'shared/media_box_2', url: landing_assembly_path(assembly), title: assembly.title, image: assembly.featured_image, object: assembly
+      .span8
+        %h3= assembly.title
+        %p
+          = assembly.short_description
+        = link_to "View the Class", landing_assembly_path(assembly), class: 'btn btn-primary btn-large'

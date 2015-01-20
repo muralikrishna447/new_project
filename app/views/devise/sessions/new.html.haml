@@ -3,15 +3,5 @@
 .container#main-container
   .row
     .span6.offset3.registration
-      %div(ng-controller="LoginController" ng-init="registrationSource='oldSignInPage'; authentication.setCurrentUser(#{current_user.to_json}); openModal('login')")
-        %h3 Sign into Chefsteps
-        %a
-          .btn.btn-primary.btn-large(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Click Here to Sign In
+      %div(ng-controller="LoginController" ng-init="registrationSource='oldSignInPage'; authentication.setCurrentUser(#{current_user.to_json}); openModal('login'); returnTo='#{request.referrer || params[:returnTo]}'")
         = render "devise/sessions/new_angular"
-      %hr
-      %h3 Don't have an account?
-      =link_to new_user_registration_path do
-        .btn.btn-primary
-          Sign up
-      %hr
-      %div= "Forgot your password? #{link_to 'Reset password', new_user_password_path}".html_safe

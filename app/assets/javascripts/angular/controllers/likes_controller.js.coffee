@@ -5,29 +5,30 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
   $scope.showAlert = true
 
   $scope.likeObject = (likeable_type, likeable_id) ->
-    if ! csAuthentication.loggedIn()  
+    if ! csAuthentication.loggedIn()
       csAlertService.addAlert({message: "<a href='/sign_up'>Create an account</a> or <a href='/sign_in'>sign in</a> to like this.", type: "error"}) if $scope.showAlert
       return
 
     url = "/likes?likeable_type=#{likeable_type}&likeable_id=#{likeable_id}"
     $scope.current_user_likes = true
-    $scope.activity.likes_count += 1
+    $scope.getObject().likes_count += 1
 
     $http(
       method: 'POST'
       url: url
     ).success((data, status, headers, config) ->
-        mixpanel.track('Liked', {'Activity': likeable_type + "_" + likeable_id})
+        eventData = {'Activity': likeable_type + "_" + likeable_id}
+        Intercom?('trackEvent', 'liked', eventData)
+        mixpanel.track('Liked', eventData)
         mixpanel.people.set('Liked':likeable_type + "_" + likeable_id)
         mixpanel.people.increment('Liked Count')
-        $http.get('/splitty/finished?experiment=recommended_vs_curated')
     )
 
 
   $scope.unlikeObject = (likeable_type, likeable_id) ->
     url = "/likes/unlike?likeable_type=#{likeable_type}&likeable_id=#{likeable_id}"
     $scope.current_user_likes = false
-    $scope.activity.likes_count -= 1
+    $scope.getObject().likes_count -= 1
 
     $http(
       method: 'POST'

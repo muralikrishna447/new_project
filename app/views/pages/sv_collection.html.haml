@@ -2,16 +2,26 @@
 - content_for :description, "Sous vide is a modernist technique that slowly cooks packaged foods to a particular temperature in a heated water bath. It prevents overcooking, preserves flavor, and yields inimitable texture. Many people believe that sous vide cooking is inherently expensive, and requires lots of gadgets. But often you can cook sous vide with nothing more than an inexpensive digital thermometer. Other times, dedicated sous vide equipment is the only practical way to do the job. Either way, having proper sous vide cooking equipment is invaluable if you frequently cook sous vide, and if you’ve never tried it, we highly recommend you do. It’s a simple technique that’s revolutionizing kitchens worldwide, and for good reason: it works."
 
 .container
-  .row.section#knife-intro
+  .row.section
     .span5
       = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/wzElPtvhT9v6hUeDNgfQ'
     .span7
       %h1 ChefSteps Sous Vide Collection
       /= render 'product_collection_social', title: 'Chefsteps product Collection', image: 'http://placehold.it/1170x737', likeable_object: @product_page
-      %p.section-small Sous vide is a modernist technique that slowly cooks packaged foods to a particular temperature in a heated water bath. It prevents overcooking, preserves flavor, and yields inimitable texture. Having proper equipment is invaluable if you frequently cook sous vide, and if you’ve never tried it, we highly recommend you do. It’s a simple technique that’s revolutionizing kitchens worldwide, and for good reason: it works. 
+      %p.section-small Sous vide is a modernist technique that slowly cooks packaged foods to a particular temperature in a heated water bath. It prevents overcooking, preserves flavor, and yields inimitable texture. Having proper equipment is invaluable if you frequently cook sous vide, and if you’ve never tried it, we highly recommend you do. It’s a simple technique that’s revolutionizing kitchens worldwide, and for good reason: it works.
+
+.container
+  .row.section
+    %hr
+    .span12
+      %h2 Here are some of our latest Sous Vide Recipes:
+      %br
+      %cssearchindex(query='{"search_all": "sous vide", "per": "6", "sort": "latest"}')
+      %a.btn.btn-large.btn-outline-blue-large(href='/gallery#?published_status=published&generator=chefsteps&search_all=sous%20vide&sort=newest')
+        See More
 // Start SVS //
 
-.knife.first.section
+.knife
   .knife-content
     %h3.media-heading SousVide Supreme Water Ovens
     %p SousVide Supreme brings sous vide cooking into your home with simplicity, convenience, and style. This countertop water oven allows you to cook nearly anything to perfection, with the click of a button. Just season your dish, place it in a food-grade pouch or plastic bag, cook in the water bath, sear or sauce if desired, and serve.
@@ -93,7 +103,7 @@
             /= render 'product_collection_social', title: 'PolyScience Creative', image: 'http://placehold.it/1170x737'
             %p.section The PolyScience Creative Series offers consistent, high-quality results at an affordable price. Precise temperature control, a quiet motor, and convenient operation make this the best option for enthusiastic home cooks, or professionals trying sous vide for the first time. 
             .btn.btn-primary.btn-large.btn-block
-              = link_to("Buy Now for $399", "https://www.cuisinetechnology.com/sousvide-creative.php?affid=chef-steps001", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Creative'});")
+              = link_to("Buy Now for $399", "http://www.amazon.com/gp/product/B00CC2OLHC/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00CC2OLHC&linkCode=as2&tag=delvkitc-20", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Creative'});")
 
           .annotation-slider-note.note-center
             %a.annotation-close-btn
@@ -110,7 +120,7 @@
             /= render 'product_collection_social', title: 'PolyScience Chef', image: 'http://placehold.it/1170x737'
             %p.section The PolyScience Chef Series was developed to meet the standards of the world’s best chefs. Its aesthetics, easy handling, and flexibility are unmatched. With an accuracy of 1/10th of a degree and higher power output than the Creative Series, this is an excellent tool for home and professional kitchens alike. 
             .btn.btn-primary.btn-large.btn-block
-              = link_to("Buy Now for $799", "https://www.cuisinetechnology.com/sousvide.php?affid=chef-steps001", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Chef'});")
+              = link_to("Buy Now for $799", "http://www.amazon.com/gp/product/B0082DNGN0/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B0082DNGN0&linkCode=as2&tag=delvkitc-20", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Chef'});")
 
           .annotation-slider-note.note-right
             %a.annotation-close-btn
@@ -125,7 +135,7 @@
             /= render 'product_collection_social', title: 'PolyScience Classic', image: 'http://placehold.it/1170x737'
             %p.section The highest standard for sous vide cooking on the market, the PolyScience Classic Series is a popular choice among professional chefs due to its unmatched precision, durability, consistency, and power. The Classic Series heats water quickly and accurately, every time. Controls liquid heating within .09 °F; heats to 300 °F.  
             .btn.btn-primary.btn-large.btn-block
-              = link_to("Buy Now for $1128", "https://www.cuisinetechnology.com/sousvide-thermal-circulator.php?affid=chef-steps001", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Classic'});")
+              = link_to("Buy Now for $1128", "http://www.amazon.com/gp/product/B00DY7TKN4/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00DY7TKN4&linkCode=as2&tag=delvkitc-20", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Classic'});")
 
           .annotation-slider-image
             .annotation-slider-sub-image.annotation-slider-image-left
@@ -134,12 +144,13 @@
               = image_tag ('//d3awvtnmmsvyot.cloudfront.net/api/file/5WRvTSxJRpSsAY0iQFO7')
             .annotation-slider-sub-image.annotation-slider-image-right
               = image_tag ('//d3awvtnmmsvyot.cloudfront.net/api/file/f4e2hwQQ6uTk0aqtog1Q')
-
 // End PolySci //
 
 .section
 
 = render 'layouts/footer'
+%div(ng-controller="StandaloneMadlibController")
+  = render 'home/madlib_popup', registration_source: 'sv-collection-madlib'
 
 // Lightbox //
 

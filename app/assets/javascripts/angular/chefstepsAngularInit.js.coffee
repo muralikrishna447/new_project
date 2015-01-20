@@ -1,7 +1,7 @@
 # Angular.js stuff. This can't wait til after page load, it needs to happen in the <head>
 
 
-@app = angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "ui.select2", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable", "ngSanitize", "ngRoute", "ngAnimate", "once"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
+@app = angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "ui.select2", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable", "ngSanitize", "ngRoute", "ngAnimate", "once", "cs.api"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
 
   #window.logPerf("ANGULAR INIT")
   #angular.element(document).ready ->
@@ -26,12 +26,16 @@
 # http://stackoverflow.com/questions/14210218/http-get-to-a-rails-applicationcontroller-gives-http-error-406-not-acceptable
 @app.config ["$httpProvider", ($httpProvider) ->
   $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"
+
+  # http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on    
+  # This seems weird since we already have this in application_controller.rb, but this fixes the issue where people couldn't enroll into a class on Firefox    
+  $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
 ]
 
 angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
   # Split test params, b/c they often go across controllers
   $rootScope.splits = {}
-  $rootScope.splits = { meatLandingFancy : Math.random() > 0.5}
+  # $rootScope.splits = { meatLandingFancy : Math.random() > 0.5}
 
   # Set configuration options from the environment
   $rootScope.environmentConfiguration =
@@ -54,6 +58,12 @@ angular.module('ChefStepsApp').run ["$window", "$rootScope", "csFacebook", ($win
 
   $window.facebookLoginStatus =  (loggedIn) ->
     csFacebook.setLoggedIn(loggedIn)
+]
+
+# For permissions
+angular.module('ChefStepsApp').run ["$rootScope", "csPermissions", ($rootScope, csPermissions) ->
+  $rootScope.hasPermission = (action) ->
+    csPermissions.check(action)
 ]
 
 @$$parse = (url) ->

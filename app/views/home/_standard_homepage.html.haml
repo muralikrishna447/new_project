@@ -1,13 +1,10 @@
-- if @returning_visitor
-  = render 'hero_carousel'
-- else
-  .container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='homeMadlib'; setIntent('ftue')")
-    = render "devise/sessions/new_angular"
-    .row-fluid
-      .container
-        .row
-          .span10.offset1.relative
-            = render 'madlib'
+.container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='homeMadlib'; setIntent('ftue')")
+  = render "devise/sessions/new_angular"
+  .row-fluid
+    .container
+      .row
+        .span10.offset1.relative
+          = render 'madlib'
 
 .container
   .row.section
@@ -97,14 +94,7 @@
 .container
   .row.section
     .span8#discussion
-      %h3 Latest From Our Forums:
-      %h4.discussion-name
-      %blockquote.word-wrap
-        %p.discussion-body
-        %small
-          %cite
-            .discussion-author
-      = link_to 'Join the Discussion', '#', class: 'btn btn-primary discussion-link'
+      = render 'shared/bloom_hot'
       %hr
       - if @status
         - cache @status, expires: 10.minutes do

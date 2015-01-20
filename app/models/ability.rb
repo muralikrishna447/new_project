@@ -11,6 +11,9 @@ class Ability
     elsif (user.role? :moderator)
       can :manage, Activity
       can :manage, Ingredient
+    elsif (user.role? :collaborator)
+      can :manage, Activity
+      can :manage, Ingredient
     else
       can :manage, Activity, creator: user
       can :create, Activity

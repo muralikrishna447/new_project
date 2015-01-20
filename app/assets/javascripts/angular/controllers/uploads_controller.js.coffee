@@ -37,7 +37,9 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
         photo_uploaded_for = 'Course - ' + data.course.title
       else if data.activity.title.length > 0
         photo_uploaded_for = 'Activity - ' + data.activity.title
-      mixpanel.people.set('Uploaded Photo For' : photo_uploaded_for)
+      eventData = {'Uploaded Photo For' : photo_uploaded_for}
+      mixpanel.people.set(eventData)
+      Intercom?('trackEvent', 'activity-photo-uploaded', eventData)
     )
 
   $scope.photoPreview = (file) ->
@@ -51,5 +53,5 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
 
   $scope.socialURL = ->
     'http://www.chefsteps.com' + $scope.upload.path
-  
+
 ]

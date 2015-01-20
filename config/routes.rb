@@ -1,14 +1,31 @@
 Delve::Application.routes.draw do
-  # Sets bloom forum to bloom.chefsteps.com/forum with angularJS html5mode
-  match '/forum', to: 'bloom#forum', constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
-  match '/forum/*path', to: 'bloom#forum', constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
-  match "/forum/*path" => redirect("/?goto=%{path}"), constraints: lambda { |r| r.subdomain.present? && r.subdomain == 'bloom' }
+
+  # Redirect old forum.chefsteps.com to new forum
+  constraints :subdomain => "forum" do
+    root to: redirect(:subdomain => 'www', :path => "/forum")
+    match "*any", to: redirect(:subdomain => 'www', :path => "/forum")
+  end
+
+  root to: "home#index"
+
   match '/forum', to: 'bloom#forum'
   match '/forum/*path', to: 'bloom#forum'
   match "/forum/*path" => redirect("/?goto=%{path}")
-  root to: "home#index"
+  match '/betainvite', to: 'bloom#betainvite'
+  match '/content-discussion/:id', to: 'bloom#content_discussion'
+  match '/content/:id', to: 'bloom#content'
+  match 'whats-for-dinner', to: 'bloom#whats_for_dinner'
+  match 'hot', to: 'bloom#hot'
+
+  resources :featured, only: [:index] do
+    collection do
+      get 'cover-photo' => 'featured#cover'
+    end
+  end
 
   ActiveAdmin.routes(self)
+
+  match '/become', to: 'admin#become'
 
   # Redirects
   match '/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-cooking-running-water-method',
@@ -26,6 +43,10 @@ Delve::Application.routes.draw do
   match '/activities/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
     to: redirect('/activities/sous-vide-pork-cheek-celery-root-pickled-apples')
 
+  # Route to redirect old sous vide cooking classes to the landing because we have 2 new classes
+  match '/classes/sous-vide-cooking',
+    to: redirect('/classes/sous-vide-cooking/landing')
+
 
   get "styleguide" => "styleguide#index"
 
@@ -38,6 +59,7 @@ Delve::Application.routes.draw do
   }
 
   devise_scope :user do
+    get "sign-in", :to => "users/sessions#new"
     get "sign_in", :to => "users/sessions#new"
     get "sign_up", to: 'users/registrations#new'
     get "sign_out", to: 'users/sessions#destroy'
@@ -53,6 +75,7 @@ Delve::Application.routes.draw do
   end
 
   get 'users/verify' => 'tokens#verify', as: 'verify'
+  get 'getUser' => 'users#get_user'
   resources :users, only: [:index, :show] do
     collection do
       get 'cs' => 'users#cs'
@@ -73,7 +96,6 @@ Delve::Application.routes.draw do
   get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
   get 'kiosk' => 'home#kiosk', as: 'kiosk'
-  get 'discussion' => 'forum#discussion', as: 'discussion'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'ftue' => 'dashboard#ftue', as: 'ftue'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
@@ -91,13 +113,6 @@ Delve::Application.routes.draw do
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
   get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle|timf/
-
-  # resources :courses, only: [:index, :show] do
-  #   resources :activities, only: [:show], path: ''
-  #   member do
-  #     post 'enroll' => 'courses#enroll'
-  #   end
-  # end
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
@@ -203,12 +218,10 @@ Delve::Application.routes.draw do
   match "/gift", to: 'assemblies#redeem_index'
   match "/trial/:trial_token", to: 'assemblies#trial'
 
-  resources :projects, controller: :assemblies
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'
 
   resources :sitemaps, :only => :show
-  mount Split::Dashboard, at: 'split'
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
   match "/splitty/finished", :controller => "splitty", :action => "finish_split"
 
@@ -230,6 +243,12 @@ Delve::Application.routes.draw do
     member do
       get 'landing', to: 'assemblies#landing'
       get 'show_as_json', to: 'assemblies#show_as_json'
+    end
+  end
+
+  resources :projects, controller: :assemblies do
+    member do
+      get 'landing', to: 'assemblies#landing'
     end
   end
 
@@ -259,6 +278,12 @@ Delve::Application.routes.draw do
 
   match "/reports/stripe" => "reports#stripe"
 
+  resources :stripe do
+    collection do
+      get 'current_customer'
+    end
+  end
+
   resources :dashboard, only: [:index] do
     collection do
       get 'comments', to: 'dashboard#comments'
@@ -267,6 +292,22 @@ Delve::Application.routes.draw do
 
   resources :settings, only: [:index]
 
+  resources :playground, only: [:index]
+
+  resources :locations do
+    collection do
+      get 'autocomplete', to: 'locations#autocomplete'
+    end
+  end
+
+  namespace :api do
+    namespace :v0 do
+      resources :activities, only: [:index, :show]
+      resources :ingredients, only: [:index, :show]
+      resources :search, only: [:index]
+    end
+  end
+
   if Rails.env.angular? || Rails.env.development?
     get "start_clean" => "application#start_clean"
     get "end_clean" => "application#end_clean"
@@ -274,5 +315,8 @@ Delve::Application.routes.draw do
 
   # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
   match '/*path' => 'application#options', :via => :options
+
+  # http://techoctave.com/c7/posts/36-rails-3-0-rescue-from-routing-error-solution
+  match '*a', to: 'errors#routing', constraints: lambda { |r| ! r.url.match(/jasmine/) }
 end
 

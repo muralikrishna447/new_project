@@ -30,6 +30,7 @@ class GalleryController < ApplicationController
   end
 
   def index
+    @show_app_add = true
     @recipes = []
    end
 

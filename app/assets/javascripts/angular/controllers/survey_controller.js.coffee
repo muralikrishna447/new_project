@@ -32,7 +32,7 @@
   question1.type = 'select'
   question1.copy = 'What kind of cook are you?'
   question1.searchScope = 'difficulty'
-  question1.options = ['Amateur', 'Home Cook', 'Culinary Student', 'Professional']
+  question1.options = ['Home Cook', 'Cooking Enthusiast', 'Culinary Student', 'Professional']
   $scope.questions.push(question1)
 
   # question2 = {}
@@ -112,11 +112,11 @@
   ]
   $scope.questions.push(question4)
 
-  question5 = {}
-  question5.slug = 'Bio'
-  question5.type = 'open-ended'
-  question5.copy = 'Tell us more about yourself:'
-  $scope.questions.push(question5)
+  # question5 = {}
+  # question5.slug = 'Bio'
+  # question5.type = 'open-ended'
+  # question5.copy = 'Where do you cook? This will show up in your bio on your profile page.'
+  # $scope.questions.push(question5)
 
   $scope.loadResults = ->
     angular.forEach $scope.questions, (question, index) ->
@@ -161,10 +161,19 @@
     $scope.getResults()
     mixpanel.track('Survey Answered', $scope.survey_results)
 
-    data = {'survey_results': $scope.survey_results}
+    data = {'survey_results': $scope.survey_results, 'location': $scope.location.input, 'bio': $scope.bio}
     $http.post('/user_surveys', data).success((data) ->
-
+      mixpanel.people.set('location', $scope.location.input)
     )
+
+  $scope.getPredictions = (input) ->
+    url = "/locations/autocomplete?input=#{input.replace(/\W/g, '')}"
+    console.log "URL IS: ", url
+    $http.get(url).then (response) ->
+      predictions = []
+      angular.forEach response.data.predictions, (item) ->
+        predictions.push(item.description)
+      $scope.predictions = predictions
 
   $scope.cancel = ->
     $modalInstance.dismiss('cancel')

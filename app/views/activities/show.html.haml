@@ -1,6 +1,6 @@
 -################################ HEADER / LAYOUT STUFF ################################
 
-- content_for :title, "#{@activity.title} - #{@activity.activity_type.first}".html_safe
+- content_for :title, "#{@activity.title} | #{@activity.activity_type.first}".html_safe
 - content_for :description, @activity.description.to_s != "" ? @activity.description.html_safe : @activity.title.html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
 - content_for :keywords, @activity.tag_list.join(',')
@@ -29,7 +29,7 @@
     - else
       %meta{property: 'twitter:card', content: 'summary_large_image'}
 
-- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-click' => "bodyClick()", :'ng-class' => '{"activity_show" : true}' }
+- @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-class' => '{"activity_show" : true}' }
 
 -# This is how search engine crawlers know to request the _escaped_fragment_ page
 - content_for :ajax_seo do
@@ -42,112 +42,114 @@
 
 -################################ PRIMARY CONTENT ################################
 
-= render 'activities/banner_image'
+.schema-container{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : "http://schema.org/Article")}
+  .recipe-container
 
-.banner-spacer.noprint( ng-if="heroMedia.heroDisplayType() == 'none'" )
+    = render 'activities/banner_image'
 
-#activity-title(data-activity="#{@activity.title}")
-%form.printable(ng-cloak name="activityForm" csfixnakedlinks)
-         
-  -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
-  %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
+    .banner-spacer.noprint( ng-if="heroMedia.heroDisplayType() == 'none'" )
 
-  #activity-body.recipe_schema(ng-class="addEditModeClass()"){:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : nil), data: {:'activity-id' => @activity.id}}
-    = render 'activities/main_activity_content', activity: @activity
+    .comments-slide(ng-class="{'open' : anyCommentsOpen}")
+      #activity-title(data-activity="#{@activity.title}")
+      %form.printable(ng-cloak name="activityForm" csfixnakedlinks)
+               
+        -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
+        %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
-
-    -# Big spinner until the activity loads. By not cloaking but using angular to hide, it
-    -# disappears roughly when the page is ready.
-    .row.activity-loading-spinner(ng-hide="! loading")
-      .span12
-        %i.icon-page-load
+        #activity-body.recipe_schema(ng-class="addEditModeClass()"){data: {:'activity-id' => @activity.id}}
+          = render 'activities/main_activity_content', activity: @activity
 
 
-%div(nell-popup) 
+          -# Big spinner until the activity loads. By not cloaking but using angular to hide, it
+          -# disappears roughly when the page is ready.
+          .row.activity-loading-spinner(ng-hide="! loading")
+            .span12
+              %i.icon-page-load
 
--################################ BOTTOM OF PAGE CONTENT ################################
 
-- content_for :bottom do
-  - if ! @minimal
-    .row#user-creations(ng-hide="editMode" ng-cloak)
-      .span12
-        .section
-        %h3 User Creations
-        = link_to 'ADD YOUR OWN', '#', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}, onclick: "mixpanel.people.set({ 'photo upload intent': '#{@activity.title}' }); mixpanel.track('Photo Upload Intent', { 'photo upload intent': '#{@activity.title}' });"
-        #user-creations-carousel
-          - if @activity.uploads.approved.any?
-            .horizontal-slider{data: {direction: 'right'}}
-              .horizontal-slider-wrap
-                - @activity.uploads.approved.includes(:user).order('created_at DESC').each do |upload|
-                  = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
-              %div{class: "horizontal-slider-btn-right btn btn-circle"}
-                %i{class: "icon-chevron-right"}
-              %div{class: "horizontal-slider-shadow-overlay-right"}
+  %div(nell-popup) 
 
-    - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @popular_recipes && @random_recipes
-      .row(ng-hide="editMode" ng-cloak)
+  -################################ BOTTOM OF PAGE CONTENT ################################
+
+  - content_for :bottom do
+    - if ! @minimal
+      .row#user-creations(ng-hide="editMode" ng-cloak)
         .span12
-          %h3 Popular Recipes
-          #technique-carousel
-            = render 'shared/horizontal_slider', items: @popular_recipes, direction: 'right'
+          .text-center
+            %h3 User Creations
+            = link_to 'ADD YOUR OWN', '#', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}, onclick: "mixpanel.people.set({ 'photo upload intent': '#{@activity.title}' }); mixpanel.track('Photo Upload Intent', { 'photo upload intent': '#{@activity.title}' });"
+          #user-creations-carousel.section
+            - if @activity.uploads.approved.any?
+              .horizontal-slider{data: {direction: 'right'}}
+                .horizontal-slider-wrap
+                  - @activity.uploads.approved.includes(:user).order('created_at DESC').each do |upload|
+                    = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
+                %div{class: "horizontal-slider-btn-right btn btn-circle"}
+                  %i{class: "icon-chevron-right"}
+                %div{class: "horizontal-slider-shadow-overlay-right"}
+      %hr
+      / - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @popular_recipes && @random_recipes
+      /   .row(ng-hide="editMode" ng-cloak)
+      /     .span12
+      /       %h3 Popular Recipes
+      /       .section#technique-carousel
+      /         = render 'shared/horizontal_slider', items: @popular_recipes, direction: 'right'
 
-          %h3 From The Archives
-          #related-carousel
-            = render 'shared/horizontal_slider', items: @random_recipes, direction: 'right'
-    - if ! ENV["CS_NO_DISQUS"]
-      .row(ng-hide="editMode" ng-cloak)
-        .span12
-          %h3 Discussion
+      /       %h3 From The Archives
+      /       .section#related-carousel
+      /         = render 'shared/horizontal_slider', items: @random_recipes, direction: 'right'
+      - if ! ENV["CS_NO_DISQUS"]
+        .row.noprint(ng-hide="editMode" ng-cloak)
+          .span8.offset2
+            %h3 Discussion
+            #discussion
+              %cscomments(comments-type="activity" comments-id="{{activity.id}}" seo-bot="#{is_brombone}")
+              
 
-          .section#comments
-            %a(name='discussion')
-            %cscomments(comments-type="activity" comments-id="{{activity.id}}" seo-bot="#{is_brombone}")
-            
+  = content_for :footer do
+    = render 'layouts/footer'
 
-= content_for :footer do
-  = render 'layouts/footer'
-
-= render 'home/madlib_popup', registration_source: 'activityMadlib'
+  = render 'home/madlib_popup', registration_source: 'activityMadlib'
 
 
--################################ MODALS  ################################
+  -################################ MODALS  ################################
 
-- if @course
-  .modal.hide.fade#syllabus-modal
+  - if @course
+    .modal.hide.fade#syllabus-modal
+      .modal-header
+        = button_tag "X", class: 'close', data: {dismiss:'modal'}
+        %h3= @course.title
+      .modal-body
+        = course_syllabus(@course)
+
+
+
+  //////// UPLOAD MODAL /////////
+  - if params[:action] == 'show'
+    .modal.hide.fade#upload-user-creation
+      .modal-header
+        %h3= "Share your #{@activity.title} creation"
+      .modal-body
+        = render 'shared/uploads'
+    
+  = render 'cancel_edit_modal'
+  = render 'restore_autosave.html.haml'
+  = render 'already_editing_modal.html.haml'
+
+  %div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
     .modal-header
-      = button_tag "X", class: 'close', data: {dismiss:'modal'}
-      %h3= @course.title
-    .modal-body
-      = course_syllabus(@course)
+      %h2 Choose Tags
+      Pick all that apply. It is ok to have more than one in a category.
+    .modal-body.tag-bg
+      %csTagChooser(  ng-model="activity.tags" 
+                      options="csTagService.activitySuggestedTags")
+    .modal-footer
+      %button.btn(ng-click="showTagsModal = false") Done
 
+  -################################ PRELOADED JSON FOR SPEED ################################
 
-
-//////// UPLOAD MODAL /////////
-- if params[:action] == 'show'
-  .modal.hide.fade#upload-user-creation
-    .modal-header
-      %h3= "Share your #{@activity.title} creation"
-    .modal-body
-      = render 'shared/uploads'
-  
-= render 'cancel_edit_modal'
-= render 'restore_autosave.html.haml'
-= render 'already_editing_modal.html.haml'
-
-%div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
-  .modal-header
-    %h2 Choose Tags
-    Pick all that apply. It is ok to have more than one in a category.
-  .modal-body.tag-bg
-    %csTagChooser(  ng-model="activity.tags" 
-                    options="csTagService.activitySuggestedTags")
-  .modal-footer
-    %button.btn(ng-click="showTagsModal = false") Done
-
--################################ PRELOADED JSON FOR SPEED ################################
-
-#preloaded-activity-json.hide
-  = @activity.to_json
+  #preloaded-activity-json.hide
+    = @activity.to_json
 
 
 

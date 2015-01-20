@@ -1,4 +1,11 @@
+/* CHEFSTEPS NOTE !!!!!
+** 
+** mnatkin 12/5/2014 - added hack to allow client to force a recheck with a broadcase.
+**
+*/
+
 /* ng-infinite-scroll - v1.0.0 - 2013-02-23 */
+
 var mod;
 
 mod = angular.module('infinite-scroll', []);
@@ -33,6 +40,7 @@ mod.directive('infiniteScroll', [
           remaining = elementBottom - windowBottom;
           shouldScroll = remaining <= $window.height() * scrollDistance;
           if (shouldScroll && scrollEnabled) {
+            /* console.log("SCROLLING " + elementBottom + " " + $window.height()); */
             if ($rootScope.$$phase) {
               return scope.$eval(attrs.infiniteScroll);
             } else {
@@ -43,6 +51,10 @@ mod.directive('infiniteScroll', [
           }
         };
         $window.on('scroll', handler);
+
+        /* mnatkin 12/5/2014 */
+        $rootScope.$on('infiniteScrollCheck', handler);
+
         scope.$on('$destroy', function() {
           return $window.off('scroll', handler);
         });

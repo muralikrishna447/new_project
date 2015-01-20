@@ -1,4 +1,7 @@
 - content_for :title, "Profile - #{@user.name}"
+/ Don't index user profiles - we don't want to leak Google juice from serious content pages onto profiles, and also some users get upset when they see their profile indexed.
+- content_for :extra_head_tags, '<META NAME="ROBOTS" CONTENT="NOINDEX">'.html_safe
+
 .hide
   / Automatically logs in user into forum
   %iframe{src:'http://forum.chefsteps.com/entry/jsconnect?client_id=1924714588&Target=%2F'}
@@ -31,10 +34,9 @@
       - if current_user
         - if current_user == @user
           = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-secondary btn-block'
-          - ab_test('recommended_vs_curated', 'recommended', 'curated') do |recommendation_type|
-            %div(ng-controller='ProfileRecommendationsModalController' ng-init="init('#{recommendation_type}')")
-              %btn.btn.btn-secondary.btn-block(ng-click='open()')
-                Recipe Recommendations
+          %div(ng-controller='ProfileRecommendationsModalController' ng-init="init('recommended')")
+            %btn.btn.btn-secondary.btn-block(ng-click='open()')
+              Recipe Recommendations
           -# %div(ng-controller='FtueModalController')
           -#   %btn.btn.btn-secondary.btn-block(ng-click='start()')
           -#     FTUE

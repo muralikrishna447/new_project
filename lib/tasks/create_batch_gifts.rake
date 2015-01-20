@@ -1,4 +1,4 @@
-task :create_batch_gifts, [:course_slug, :num] => [:environment]  do |t, args|
+task :create_batch_gifts, [:course_slug, :num, :recipient_name] => [:environment]  do |t, args|
   puts args.num
   assembly = Assembly.find(args.course_slug)
   args.num.to_i.times do
@@ -8,7 +8,7 @@ task :create_batch_gifts, [:course_slug, :num] => [:environment]  do |t, args|
             price: 0,
             sales_tax: 0,
             recipient_email: "",
-            recipient_name: "Gilt Recipient",
+            recipient_name: args.recipient_name,
             recipient_message: ""
           )
     puts gc.token

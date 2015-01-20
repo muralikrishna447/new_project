@@ -1,19 +1,21 @@
-- content_for :title, "#{@course.title.html_safe} - Class"
+- assembly_type_name = @assembly.assembly_type == 'Course' ? 'Class' : @assembly.assembly_type
+
+- content_for :title, "#{@course.title.html_safe} - #{assembly_type_name}"
 - content_for :description, @course.short_description.to_s != "" ? strip_tags(markdown(@course.short_description)) : @course.title.html_safe
 - content_for :keywords, @course.leaf_activities.map(&:title).join(',')
 - content_for :facebook_og do
   %meta{property: 'og:url', content: landing_class_url(@course)}
-  %meta{property: 'og:title', content: "#{@course.title.html_safe} - Class"}
+  %meta{property: 'og:title', content: "#{@course.title.html_safe} - #{assembly_type_name}"}
   %meta{property: 'og:description', content: @course.short_description.to_s != "" ? strip_tags(markdown(@course.short_description)) : @course.title.html_safe}
   %meta{property: 'og:image', content: filepicker_hero_image(@course.image_id)}
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
-%div(ng-controller="AssemblyLandingPageController" ng-init='assembly=#{@assembly.to_json};')
-  %div(ng-switch="(#{@course.id} != 67) || (! splits.meatLandingFancy)")
+%div(ng-controller="AssemblyLandingPageController" ng-init='assembly=#{@assembly.to_json}; discounted_price=#{@discounted_price};')
+  %div(ng-switch="(#{@course.id} != 67)")
     %div(ng-switch-when="true")
       - if !current_user && session[:free_trial] && @hours
-        %div.free-trial-landing-page(ng-controller="BuyAssemblyStripeController" ng-cloak ng-init='logged_in=#{current_user.present?}; assemblyPath="#{class_url(@assembly, protocol: "http")}"; freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; freeTrialHours="#{@hours}"; freeTrialLogger();')
+        %div.free-trial-landing-page(ng-controller="BuyAssemblyStripeController" ng-cloak ng-init='logged_in=#{current_user.present?}; assemblyPath="#{class_url(@assembly, protocol: "http")}"; freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; freeTrialHours="#{@hours}"; freeTrialLogger(); assemblyTypeName=#{assembly_type_name};')
           %div(ng-controller="LoginController" ng-init="registrationSource='freeTrial'")
             = landing_page_content(@course)
             = render "devise/sessions/new_angular"
@@ -36,26 +38,28 @@
               .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
                 .buy-box
                   - discounted_price = @course.price ? @discounted_price : 0
-                  = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate, free_trial_hours: @free_trial_hours
+                  = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate, free_trial_hours: @free_trial_hours, assembly_type_name: assembly_type_name
                   .text-center.enroll-count.section
                     %h4= "#{@course.enrollments.count} Enrolled"
                   .text-center.section(ng-show="#{@assembly.average_rating} > 0" ng-click="switchTab('reviews', 'Reviews')")
                     %csrating.rating(value="#{@assembly.average_rating}" readonly="true")
                     %div (#{pluralize(@assembly.comments.count, 'review')})
-                  %h5 Class Includes:
+                  %h5= "#{assembly_type_name} Includes"
                   %ul
                     - if @course.price
                       %li
                         Unlimited Access
                     %li= "#{@course.video_count} HD Videos"
+                    - included_sciences = @course.sciences
+                    - if included_sciences
+                      - included_sciences.each do |science|
+                        %li= "#{science.title}"
                     / %li Three Fundamental Fillings Explained
                     = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
-                    - if @course.price
-                      %li Q&A Support
                   - if @course.price
                     %h4 100% satisfaction guaranteed or your money back
-                .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/classes/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
-                  = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/classes/#{@course.  slug}/landing"
+                .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/#{assembly_type_name.downcase.pluralize}/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+                  = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/#{assembly_type_name.downcase.pluralize}/#{@course.slug}/landing"
                 .testimonials.well(ng-click="switchTab('reviews', 'Reviews')" ng-show="#{!@course.testimonial_copy.blank?}" ng-bind-html="'#{@course.testimonial_copy}'")
 
             .row

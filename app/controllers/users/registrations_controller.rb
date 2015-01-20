@@ -28,10 +28,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_in @user
       email_list_signup(@user.name, @user.email, "ajax_signup_form")
       cookies.delete(:viewed_activities)
-      cookies[:returning_visitor] = true
       mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
       mixpanel.track(@user.email, 'Signed Up')
-      finished('counter_split', :reset => false)
       unless request.xhr?
         if session[:user_return_to] && (session[:user_return_to] != root_url && session[:user_return_to] != sign_in_url)
           redirect_to session[:user_return_to], notice: "Thanks for joining the ChefSteps community!"

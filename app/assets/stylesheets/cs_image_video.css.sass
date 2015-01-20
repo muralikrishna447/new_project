@@ -1,0 +1,111 @@
+@import 'mixins'
+
+@mixin sixteen-nine
+  cs-image-video
+    .cs-image-video-container
+      &:after
+        padding-top: 56.25%
+      .cs-video
+        width: 100%
+        padding-left: 0
+
+@mixin two-one
+  cs-image-video
+    .cs-image-video-container
+      &:after
+        padding-top: 50%
+      .cs-video
+        width: 88.8889%
+        padding-left: 5.5556%
+
+@mixin three-one
+  cs-image-video
+    .cs-image-video-container
+      &:after
+        padding-top: 33.3333%
+      .cs-video
+        width: 59.2592%
+        padding-left: 20.3704%
+
+cs-image-video
+  width: 100%
+  height: 100%
+  position: relative
+  clear: both
+  display: block
+  .cs-image-video-container
+    // height: 100%
+    width: 100%
+    display: inline-block
+    position: relative
+    &:after
+      padding-top: 56.25%
+      display: block
+      content: ''
+    .cs-image-video-play-button
+      position: absolute
+      font-size: 100px
+      color: #b4d8d8
+      z-index: 9999
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      @include transition(all 300ms ease-in-out)
+      @include center-only-child
+      &.button-active
+        opacity: 1
+        pointer-events: auto
+      &.button-inactive
+        opacity: 0
+        pointer-events: none
+      &:hover
+        color: $orange
+        cursor: pointer
+    .cs-image-video-image
+      // width: 100%
+      // height: 100%
+      // overflow: hidden
+      // position: relative
+      // clear: both
+      // display: block
+      position: absolute
+      top: 0
+      bottom: 0
+      right: 0
+      left: 0
+      @include transition(all 500ms ease-in-out)
+      &.image-active
+        opacity: 1
+        pointer-events: auto
+      &.image-inactive
+        opacity: 0
+        pointer-events: none
+      img
+        width: 100%
+    .cs-video
+      position: absolute
+      top: 0px
+      left: 0px
+      width: 100%
+      padding-left: 0
+      height: 100%
+      @include transition(all 500ms ease-in-out)
+      &.video-active
+        opacity: 1
+        pointer-events: auto
+      &.video-inactive
+        opacity: 0
+        pointer-events: none
+
+@media (min-width: 1000px)
+  cs-image-video
+    @include two-one
+
+  .course-wrapper
+    cs-image-video
+      @include sixteen-nine
+
+@media (min-width: 1500px)
+  .course-wrapper
+    @include three-one

@@ -3,6 +3,15 @@ module ApplicationHelper
     "//d2eud0b65jr0pw.cloudfront.net/#{image_id}"
   end
 
+  def filepicker_to_s3_url(fpfile)
+    if fpfile && !fpfile.blank?
+      url = ActiveSupport::JSON.decode(fpfile)["url"]
+      url.gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    else
+      nil
+    end
+  end
+
   def filepicker_arbitrary_image(fpfile, width, fit='max')
     if ! fpfile
       ""
@@ -16,10 +25,16 @@ module ApplicationHelper
       end
     else
       url = ActiveSupport::JSON.decode(fpfile)["url"]
-      url = url + "/convert?fit=#{fit}&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&cache=true"
+      url = url + "/convert?fit=#{fit}&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&quality=90&cache=true"
       # Route through CDN
       url.gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
     end
+  end
+
+  def filepicker_cropped_image(fpfile, width, height)
+    url = ActiveSupport::JSON.decode(fpfile)["url"]
+    url = url + "/convert?fit=crop&w=#{width}&h=#{height}&cache=true"
+    url.gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
   end
 
   def filepicker_hero_image(fpfile)
@@ -241,14 +256,27 @@ module ApplicationHelper
 
   def assembly_type_path(assembly)
     if assembly.assembly_type?
-      if assembly.assembly_type == 'Recipe Development'
-        assembly_type_path = 'recipe-development'
+      if assembly.assembly_type == 'Course'
+        assembly_type_path = 'classes'
       else
         assembly_type_path = assembly.assembly_type.downcase.pluralize.gsub(' ', '-')
       end
       assembly_path(assembly).gsub('/assemblies', "/#{assembly_type_path}")
     else
       assembly_path(assembly)
+    end
+  end
+
+  def assembly_type_url(assembly)
+    if assembly.assembly_type?
+      if assembly.assembly_type == 'Course'
+        assembly_type_url = 'classes'
+      else
+        assembly_type_url = assembly.assembly_type.downcase.pluralize.gsub(' ', '-')
+      end
+      assembly_url(assembly).gsub('/assemblies', "/#{assembly_type_url}")
+    else
+      assembly_url(assembly)
     end
   end
 
@@ -320,6 +348,8 @@ module ApplicationHelper
     case assembly.assembly_type
     when 'Course'
       landing_class_path(assembly)
+    when 'Project'
+      landing_project_path(assembly)
     when 'Recipe Development'
       recipe_development_path(assembly)
     end

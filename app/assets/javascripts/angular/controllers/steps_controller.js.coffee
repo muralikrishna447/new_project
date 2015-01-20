@@ -1,9 +1,5 @@
 angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$location", "$anchorScroll", ($scope, $location, $anchorScroll) ->
 
-  $scope.fuckMe = (idx) ->
-    alert("FUCK ME" + idx)
-    $scope.addStep(idx, -1)
-
   $scope.stepNumber = (index) ->
     return "" if $scope.activity.steps[index].hide_number
     _.filter($scope.activity.steps[0...index], (step) -> (! (step.hide_number || step.is_aside))).length + 1
@@ -35,12 +31,12 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
    
   # Whether this step has an aside, *not* whether it is an aside
   $scope.hasAside = (idx) ->
-    return $scope.isAside(idx + 1)
+    return $scope.isAside(idx - 1)
 
   $scope.canMakeAside = (idx) ->
-    return false if idx == 0
-    return false if $scope.hasAside(idx)
-    return false if $scope.isAside(idx - 1)
+    return false if idx == $scope.activity.steps.length - 1
+    # return false if $scope.hasAside(idx)
+    return false if $scope.isAside(idx + 1)
     true
 
   $scope.canMoveStep = (idx, direction) ->
@@ -52,7 +48,7 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
     true
 
   $scope.addStep = (idx, direction) ->
-    newStep = angular.extend({}, {ingredients: [], id: (Math.random() * 999999999).toString()})
+    newStep = angular.extend({}, {ingredients: [], id: "NEW_" + (Math.random() * 999999999).toString()})
     if $scope.activity.steps.length == 0
       $scope.activity.steps.push(newStep)
     else
@@ -69,6 +65,8 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
       $scope.activity.steps.splice(newIdx, 0, newStep)
 
   $scope.reorderStep = (idx, direction) ->
+    # Fairly complex because of asides.  I think we should eventually move asides into their own model.  Also it's very brittle.
+
     # If moving a step with an aside have to bring the aside along.
     # But if moving an aside, it just moves by itself. This feels logical.
     numToMove = if $scope.hasAside(idx) then 2 else 1
@@ -79,12 +77,22 @@ angular.module('ChefStepsApp').controller 'StepsController', ["$scope", "$locati
       newIdx = idx - 2
 
     # If moving down and next step has an aside, have to move down 2
-    if direction == 1 && $scope.hasAside(idx + (if $scope.hasAside(idx) then 2 else 1))
+    if direction == 1 && $scope.hasAside(idx + (if $scope.isAside(idx) then 2 else 1))
       newIdx = idx + 2
 
-    movers = $scope.activity.steps.splice(idx, numToMove)
-    $scope.activity.steps.splice(newIdx, 0, movers[0])
-    $scope.activity.steps.splice(newIdx + 1, 0, movers[1]) if numToMove > 1
+    if $scope.hasAside(idx)
+      moveIndex = idx - 1
+    else
+      moveIndex = idx
+    movers = $scope.activity.steps.splice(moveIndex, numToMove)
+
+    if numToMove > 1
+      if direction == -1
+        $scope.activity.steps.splice(newIdx, 0, movers[0], movers[1])
+      else
+        $scope.activity.steps.splice(newIdx - 1, 0, movers[0], movers[1])
+    else
+      $scope.activity.steps.splice(newIdx, 0, movers[0])
 
   $scope.effectiveAsideType = (index) ->
     return null if ! $scope.isAside(index)

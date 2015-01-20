@@ -1,0 +1,20 @@
+%div(ng-controller='BloomHotnessController' ng-cloak)
+  %h3 From our community
+  %cs-index-item.cs-index-item(ng-repeat='post in posts' cs-title='post.title' url='postUrl(post)' image='post.image' likes-count='post.likes.length')
+  / .bloom-hot(ng-repeat='post in posts')
+  /   %a.black-link(ng-href="/forum/posts/{{post.slug}}" target='_blank' ng-click='track(post)')
+  /     %h5
+  /       {{post.title}}
+  /     .bloom-hot-author
+  /       %img(ng-src='{{post.author.avatarUrl}}' style='width:30px;')
+  /       %small
+  /         {{post.author.name}}
+  /     %hr
+  /     .bloom-hot-content(ng-bind-html='post.content')
+  /     .bloom-hot-actions
+  /       .pull-right
+  /         %i.fa.fa-heart
+  /         {{post.likes.length}}
+  /         &nbsp;
+  /         %i.fa.fa-comment-o
+  /         {{post.commentCount}}
