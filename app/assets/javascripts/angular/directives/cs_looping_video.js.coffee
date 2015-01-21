@@ -34,7 +34,7 @@
 
 # To use as a shortcode:
 # [videoLoop somevideoname]
-@app.directive 'csLoopingVideoPlayer', ['$sce', 'LoopingVideoManager', '$timeout', ($sce, LoopingVideoManager, $timeout) ->
+@app.directive 'csLoopingVideoPlayer', ['$sce', 'LoopingVideoManager', '$timeout', '$location', ($sce, LoopingVideoManager, $timeout, $location) ->
   restrict: 'A'
   scope: {
     videoName: '@'
@@ -84,13 +84,16 @@
     scope.toggle = ->
       if scope.playing
         LoopingVideoManager.pause(scope)
+        mixpanel.track "Video Loop Paused", {"name": scope.videoName, "url": $location.absUrl()}
       else
         LoopingVideoManager.play(scope)
+        mixpanel.track "Video Loop Played", {"name": scope.videoName, "url": $location.absUrl()}
 
     scope.setRate = (rate) ->
       scope.playbackRate = rate
       scope.video[0].playbackRate = rate
       scope.showDisplay = true
+      mixpanel.track "Video Loop Playback Rate Changed", {"name": scope.videoName, "rate": rate, "url": $location.absUrl()}
       $timeout (->
         scope.showDisplay = false
       ), 1000
@@ -131,10 +134,5 @@
     # If the directive element is removed from dom, $destroy will be called and we'll make sure the scope is removed from the Looping Video Manager
     element.bind '$destroy', ->
       LoopingVideoManager.removeScope(scope)
-
-    scope.video[0].onloadeddata = ->
-      scope.videoLoaded = true
-      scope.$apply()
-
 ]
 
