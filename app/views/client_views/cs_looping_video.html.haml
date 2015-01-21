@@ -10,7 +10,7 @@
   .video-loop-controls
     .video-loop-control.video-loop-button(ng-click="toggle()")
       %i.fa.fa-pause.fa(ng-show="playing")
-      %i.fa.fa-play.fa(ng-show="!playing")
+      %i.fa.fa-refresh.fa(ng-show="!playing")
 
     .video-loop-control.video-loop-slider
       %input(type='range' min='0' max='100' ng-model='sliderValue' ng-mousedown="onmousedown($event)" ng-mouseup="onmouseup($event)")
