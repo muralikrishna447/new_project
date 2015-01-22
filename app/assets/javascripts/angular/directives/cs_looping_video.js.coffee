@@ -48,7 +48,7 @@
     LoopingVideoManager.addVideoScope($scope)
     $scope.playing = false
     $scope.sliderValue = 0
-    $scope.baseUrl = "https://s3.amazonaws.com/chefsteps-videos-transcoded/"
+    $scope.baseUrl = "https://d29uyzek4esgj1.cloudfront.net/"
 
     if $scope.videoName
       $scope.sources = [
