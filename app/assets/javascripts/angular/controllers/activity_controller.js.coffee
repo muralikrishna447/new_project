@@ -574,6 +574,7 @@ window.deepCopy = (obj) ->
       mixpanel?.track "Activity Probably Cooked2", eventData
       Intercom?('trackEvent', "probably-cooked", eventData)
       Intercom?('trackEvent', "probably-cooked-souffle", eventData) if eventData.slug == "molten-chocolate-souffle"
+      Intercom?('trackEvent', "probably-cooked-standing-rib-roast", eventData) if eventData.slug == "standing-rib-roast"
       Intercom?('update')      
 
   # various ways of tracking printing; if you google it you'll find out how unreliable they all are
