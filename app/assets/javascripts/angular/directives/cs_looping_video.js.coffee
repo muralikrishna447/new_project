@@ -1,5 +1,5 @@
 # Video Looping service that allows only one looping video to play at a time.
-@app.service 'LoopingVideoManager', [ ->
+@app.service 'LoopingVideoManager', ['$document', '$location', ($document, $location) ->
   this.videos = []
 
   this.addVideoScope = (scope) ->
@@ -16,6 +16,7 @@
       if scope == currentScope
         scope.video[0].play()
         scope.playing = true
+        mixpanel.track "Video Loop Played", {"name": scope.videoName, "url": $location.absUrl()}
       else
         scope.video[0].pause()
         scope.playing = false
@@ -23,6 +24,20 @@
   this.pause = (currentScope) ->
     currentScope.video[0].pause()
     currentScope.playing = false
+    mixpanel.track "Video Loop Paused", {"name": currentScope.videoName, "url": $location.absUrl()}
+
+  angular.element($document[0].body).on 'click', (e) =>
+    videos = this.videos
+    service = this
+    console.log "clicked the body: #{e}"
+    isVideoLoop = angular.element(e.target).inheritedData('videoLoop')
+    console.log "isVideoLoop: #{isVideoLoop}"
+    if isVideoLoop != true
+      console.log "pausing video"
+      videos.forEach (scope, i) ->
+        if scope.playing
+          service.pause scope
+      # this.pause()
 
   this
 ]
@@ -77,6 +92,7 @@
           $scope.sliderValue = $scope.timeToSlider(currentTime)
   ]
   link: (scope, element, attrs) ->
+    element.data('videoLoop', true)
 
     scope.trustedVideoUrl = (videoUrl) ->
       $sce.trustAsResourceUrl(videoUrl)
@@ -84,10 +100,9 @@
     scope.toggle = ->
       if scope.playing
         LoopingVideoManager.pause(scope)
-        mixpanel.track "Video Loop Paused", {"name": scope.videoName, "url": $location.absUrl()}
+        
       else
         LoopingVideoManager.play(scope)
-        mixpanel.track "Video Loop Played", {"name": scope.videoName, "url": $location.absUrl()}
 
     scope.setRate = (rate) ->
       scope.playbackRate = rate

@@ -24,6 +24,12 @@
       font-size: 2*$baseline
       color: white
 
+  .video-loop-overlay
+    position: absolute
+    top: 0px
+    width: 100%
+    height: 100%
+
   .video-loop-controls
     position: absolute
     bottom: 0px
@@ -40,6 +46,15 @@
     .video-loop-control.video-loop-button
       color: white
       padding: $baseline
+      @include boxsizing
+      &:hover
+        cursor: pointer
+        color: $orange
+
+    .video-loop-control.video-loop-button-toggle
+      color: white
+      padding: 7px 10px
+      font-size: 30px
       @include boxsizing
       &:hover
         cursor: pointer

@@ -7,8 +7,10 @@
     .display-item
       speed: {{playbackRate}}x
 
+  .video-loop-overlay(ng-click="toggle()")
+
   .video-loop-controls
-    .video-loop-control.video-loop-button(ng-click="toggle()")
+    .video-loop-control.video-loop-button-toggle(ng-click="toggle()")
       %i.fa.fa-pause.fa(ng-show="playing")
       %i.fa.fa-refresh.fa(ng-show="!playing")
 
