@@ -72,32 +72,6 @@
   -################################ BOTTOM OF PAGE CONTENT ################################
 
   - content_for :bottom do
-    /   - if ! @minimal
-    /     .row#user-creations(ng-hide="editMode" ng-cloak)
-    /       .span12
-    /         .text-center
-    /           %h3 User Creations
-    /           = link_to 'ADD YOUR OWN', '#', class: 'btn btn-primary', data: {toggle: 'modal', target: '#upload-user-creation'}, onclick: "mixpanel.people.set({ 'photo upload intent': '#{@activity.title}' }); mixpanel.track('Photo Upload Intent', { 'photo upload intent': '#{@activity.title}' });"
-    /         #user-creations-carousel.section
-    /           - if @activity.uploads.approved.any?
-    /             .horizontal-slider{data: {direction: 'right'}}
-    /               .horizontal-slider-wrap
-    /                 - @activity.uploads.approved.includes(:user).order('created_at DESC').each do |upload|
-    /                   = render 'shared/media_box', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id
-    /               %div{class: "horizontal-slider-btn-right btn btn-circle"}
-    /                 %i{class: "icon-chevron-right"}
-    /               %div{class: "horizontal-slider-shadow-overlay-right"}
-    %hr
-    / - if (! ENV["CS_NO_SUGGESTED_ACTIVITIES"]) && @popular_recipes && @random_recipes
-    /   .row(ng-hide="editMode" ng-cloak)
-    /     .span12
-    /       %h3 Popular Recipes
-    /       .section#technique-carousel
-    /         = render 'shared/horizontal_slider', items: @popular_recipes, direction: 'right'
-
-    /       %h3 From The Archives
-    /       .section#related-carousel
-    /         = render 'shared/horizontal_slider', items: @random_recipes, direction: 'right'
     - if ! ENV["CS_NO_DISQUS"]
       .row.section
         .text-center
