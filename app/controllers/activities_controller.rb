@@ -5,7 +5,7 @@ class ActivitiesController < ApplicationController
 
   before_filter :maybe_redirect_activity, only: :show
 
-  after_filter :track_iphone_app_activity
+  # after_filter :track_iphone_app_activity
 
   def maybe_redirect_activity
     @activity = Activity.find params[:id]
