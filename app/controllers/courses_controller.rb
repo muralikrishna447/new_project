@@ -6,7 +6,8 @@ class CoursesController < ApplicationController
       session[:coupon] = 'a1b71d389a50'
       session[:ambassador] = params[:ambassador]
       flash.now[:notice] = "Welcome! You will receive a 25% discount on any paid class."
-      mixpanel.track(mixpanel_anonymous_id, 'Ambassador Landing Viewed', {ambassador: params[:ambassador]})
+      # TODO MIXPANEL
+      # mixpanel.track(mixpanel_anonymous_id, 'Ambassador Landing Viewed', {ambassador: params[:ambassador]})
     end
   end
 

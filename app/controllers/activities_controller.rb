@@ -1,4 +1,5 @@
 class ActivitiesController < ApplicationController
+  # TODO MIXPANEL
   # expose(:activity) { Activity.find_published(params[:id], params[:token]) }
   expose(:cache_show) { params[:token].blank? }
   expose(:version) { Version.current }
@@ -162,10 +163,10 @@ class ActivitiesController < ApplicationController
     unless @activity.containing_course && current_user && current_user.enrollments.where(enrollable_id: @activity.containing_course.id, enrollable_type: @activity.containing_course.class).first.try(:free_trial_expired?) && @activity.containing_course.price > 0
       render :json => @activity.to_json
     else
-      if mixpanel_anonymous_id
-        mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.slug})
-        mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
-      end
+      # if mixpanel_anonymous_id
+      #   mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.slug})
+      #   mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
+      # end
       render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden
     end
   end

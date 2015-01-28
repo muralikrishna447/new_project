@@ -62,8 +62,9 @@ class Users::SessionsController < Devise::SessionsController
 
   def remember_and_track
     remember_me(current_user)
-    mixpanel.track(current_user.email, 'Signed In')
-    mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
+    # TODO MIXPANEL
+    # mixpanel.track(current_user.email, 'Signed In')
+    # mixpanel.people.increment(current_user.email, {'Signed In Count' => 1})
   end
 
 end
