@@ -166,9 +166,9 @@ private
 
   def mixpanel
     if Rails.env.production?
-      @mixpanel ||= Mixpanel::Tracker.new '84272cf32ff65b70b86639dacd53c0e0'
+      @mixpanel ||= ChefstepsMixpanel.new '84272cf32ff65b70b86639dacd53c0e0'
     else
-      @mixpanel ||= Mixpanel::Tracker.new 'd6d82f805f7d8a138228a52f17d6aaec'
+      @mixpanel ||= ChefstepsMixpanel.new 'd6d82f805f7d8a138228a52f17d6aaec'
     end
   end
 
@@ -267,8 +267,7 @@ private
   def set_referrer_in_mixpanel(key)
     if session[:referred_from] && session[:referred_by]
       referrer = User.find(session[:referred_by])
-      # TODO MIXPANEL
-      # mixpanel.people.increment(referrer.email, {key => 1})
+      mixpanel.people.increment(referrer.email, {key => 1})
     end
   end
 

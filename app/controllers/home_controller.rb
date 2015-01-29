@@ -158,8 +158,7 @@ class HomeController < ApplicationController
       session[:referrer_id] = referrer.id
       session[:referred_from] = params[:referred_from]
       set_referrer_in_mixpanel("#{session[:referred_from]} invitee visited")
-      # TODO MIXPANEL
-      # mixpanel.people.set(mixpanel_anonymous_id, {invited_from: params[:referred_from], invited_by: referrer.email, invited_by_id: referrer.id})
+      mixpanel.people.set(mixpanel_anonymous_id, {invited_from: params[:referred_from], invited_by: referrer.email, invited_by_id: referrer.id})
     end
     index
     render("home/index")

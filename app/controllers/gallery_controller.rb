@@ -1,6 +1,5 @@
 class GalleryController < ApplicationController
-  # TODO MIXPANEL
-  # after_filter :track_iphone_app_activity, only: :index_as_json
+  after_filter :track_iphone_app_activity, only: :index_as_json
 
   has_scope :sort do |controller, scope, value|
     case value
