@@ -115,11 +115,10 @@ describe ChargesController do
           assigns(:enrollment).trial_expires_at.should_not be nil
         end
 
-        # TODO MIXPANEL
-        # it "should call mixpanel track" do
-        #   ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
-        #   subject
-        # end
+        it "should call mixpanel track" do
+          ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
+          subject
+        end
       end
 
       context "normal enrollment" do
@@ -157,11 +156,10 @@ describe ChargesController do
             assigns(:enrollment).trial_expires_at.should be nil
           end
 
-          # TODO MIXPANEL
-          # it "should call mixpanel track" do
-          #   ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
-          #   subject
-          # end
+          it "should call mixpanel track" do
+            ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
+            subject
+          end
         end
       end
     end
