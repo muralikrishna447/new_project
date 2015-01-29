@@ -103,8 +103,7 @@ class AssembliesController < ApplicationController
     else
       # flash[:notice] = "Click Free Trial to start your #{hours.hours_to_pretty_time} trial"
       appended_params = params.reject{|k,v| [:controller, :action, :trial_token].include?(k.to_sym)}
-      # TODO MIXPANEL
-      # mixpanel.track(mixpanel_anonymous_id, "Free Trial Offered Server-Side", {slug: @assembly.slug, length: hours.to_s}.merge(appended_params))
+      mixpanel.track(mixpanel_anonymous_id, "Free Trial Offered Server-Side", {slug: @assembly.slug, length: hours.to_s}.merge(appended_params))
       redirect_to landing_class_url(@assembly, appended_params)
     end
   end
