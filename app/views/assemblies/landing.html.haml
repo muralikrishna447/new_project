@@ -78,6 +78,7 @@
                   %div(ng-show="tab=='menu'")
                     :markdown
                       #{apply_shortcodes(@course.description)}
+                      #{apply_shortcodes(@course.description_alt)}
                     - if @course.landing_bottom
                       .section
                         :markdown
