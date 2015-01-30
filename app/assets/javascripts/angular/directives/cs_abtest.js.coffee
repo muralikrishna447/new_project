@@ -7,7 +7,7 @@
 #   %div(cs-abtest-item)
 #     Hi I am test item 2
 
-@app.directive 'csAbtest', ['localStorageService', (localStorageService) ->
+@app.directive 'csAbtest', ['localStorageService', '$rootScope', (localStorageService, $rootScope) ->
   restrict: 'A'
   scope: {
     testName: '@'
@@ -19,7 +19,7 @@
       $scope.items.push item
   ]
   link: (scope, element, attrs) ->
-    testName = attrs.testName
+    testName = "Split Test: #{attrs.testName}"
 
     # If user has visited the page, make sure they see the same test when the revisit the same page
     localItem = localStorageService.get(testName)
@@ -33,7 +33,7 @@
 
     itemToBeShown = scope.items[showIndex]
     itemToBeShown.showItem = true
-    mixpanel.track "AB Test: #{attrs.testName}", {index: showIndex, content: itemToBeShown.content}
+    $rootScope.splits[testName] = showIndex
 
 ]
 
@@ -43,7 +43,6 @@
   restrict: 'A'
   scope: {}
   link: (scope, element, attrs, csAbtest) ->
-    scope.content = angular.element(element).children().html()
     csAbtest.addItem(scope)
 
   template:
