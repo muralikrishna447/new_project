@@ -10,7 +10,7 @@
 @app.directive 'csAbtest', ['localStorageService', (localStorageService) ->
   restrict: 'A'
   scope: {
-    testName: '='
+    testName: '@'
   }
   controller: ['$scope', ($scope) ->
     $scope.items = []
@@ -24,8 +24,10 @@
     # If user has visited the page, make sure they see the same test when the revisit the same page
     localItem = localStorageService.get(testName)
     if localItem
+      console.log "Local item found"
       showIndex = localItem
     else
+      console.log "Local item not found"
       showIndex = _.random 0, (scope.items.length - 1)
       localStorageService.add(testName, showIndex)
 
