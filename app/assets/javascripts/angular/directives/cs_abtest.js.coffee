@@ -43,7 +43,7 @@
   restrict: 'A'
   scope: {}
   link: (scope, element, attrs, csAbtest) ->
-    scope.content = angular.element(element).text()
+    scope.content = angular.element(element).children().html()
     csAbtest.addItem(scope)
 
   template:
