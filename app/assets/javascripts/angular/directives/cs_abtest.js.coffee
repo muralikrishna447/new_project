@@ -1,3 +1,12 @@
+# A/B Testing Directive
+# Usage:
+#
+# %div(cs-abtest test-name="Test Name")
+#   %div(cs-abtest-item)
+#     Hi I am test item 1
+#   %div(cs-abtest-item)
+#     Hi I am test item 2
+
 @app.directive 'csAbtest', ['localStorageService', (localStorageService) ->
   restrict: 'A'
   scope: {
@@ -11,6 +20,8 @@
   ]
   link: (scope, element, attrs) ->
     testName = attrs.testName
+
+    # If user has visited the page, make sure they see the same test when the revisit the same page
     localItem = localStorageService.get(testName)
     if localItem
       showIndex = localItem
