@@ -5,7 +5,17 @@ module Api
         begin
           user = User.find_by_email(params[:user][:email])
           if user.valid_password?(params[:user][:password])
-            render json: {token: "Some Token"}, status: 200
+            exp = ((Time.now + 1.year).to_f * 1000).to_i
+            payload = { 
+              exp: exp,
+              user: {
+                id: user.id,
+                name: user.name,
+                role: user.role
+              }
+            }
+            token = JWT.encode(payload.as_json, "SomeSecret")
+            render json: {token: token}, status: 200
           else
             render json: {status: '401 Unauthorized'}, status: 401
           end

@@ -18,12 +18,28 @@ describe Api::V0::AuthController do
       response.code.should eq("401")
     end
 
-    it 'should return a token if a user is found with the correct password' do
-      post :authenticate, {user: {email: 'johndoe@chefsteps.com', password: '123456'}}
-      response.should be_success
-      response.code.should eq("200")
-      json_response = JSON.parse(response.body)
-      json_response['token'].should_not be_empty
+    describe 'token' do
+      
+      before :each do
+        post :authenticate, {user: {email: 'johndoe@chefsteps.com', password: '123456'}}
+        response.should be_success
+        response.code.should eq("200")
+        @json_response = JSON.parse(response.body)
+      end
+
+      it 'should be returned' do
+        @json_response['token'].should_not be_empty
+        puts response.body
+      end
+
+      it 'should be authenticatable with a valid secret' do
+        token = @json_response['token']
+        token.should_not be_empty
+        decoded = JWT.decode(token, "SomeSecret")
+        name = decoded['user']['name']
+        name.should eq(@user.name)
+      end
+
     end
 
   end
