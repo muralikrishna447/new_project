@@ -76,8 +76,16 @@
 
                 .tab-content#class-overview
                   %div(ng-show="tab=='menu'")
-                    :markdown
-                      #{apply_shortcodes(@course.description)}
+                    %div(cs-abtest test-name="{{assembly.title}} Description" ng-if="assembly.description_alt")
+                      %div(cs-abtest-item)
+                        :markdown
+                          #{apply_shortcodes(@course.description)}
+                      %div(cs-abtest-item)
+                        :markdown
+                          #{apply_shortcodes(@course.description_alt)}
+                    %div(ng-if="!assembly.description_alt")
+                      :markdown
+                        #{apply_shortcodes(@course.description)}
                     - if @course.landing_bottom
                       .section
                         :markdown
