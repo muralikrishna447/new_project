@@ -8,8 +8,9 @@ module Api
             exp = ((Time.now + 1.year).to_f * 1000).to_i
             payload = { 
               exp: exp,
-              user: user.as_json
+              user: user
             }
+            puts "payload: #{payload.as_json}"
             token = JWT.encode(payload.as_json, "SomeSecret")
             render json: {token: token}, status: 200
           else
