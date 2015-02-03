@@ -6,9 +6,13 @@ module Api
 
       def ensure_authorized
         begin
-          decoded = JWT.decode(params[:token_auth], 'SomeSecret')
+          token = request.authorization()
+          puts "TOKEN IS: "
+          puts token
+          decoded = JWT.decode(token, 'SomeSecret')
           user = User.find decoded['user']['id']
-        rescue JWT::DecodeError, StandardError
+        rescue Exception => e
+          puts e
           render json: {status: '401 Unauthorized'}, status: 401
         end
 
