@@ -50,10 +50,6 @@
                       %li
                         Unlimited Access
                     %li= "#{@course.video_count} HD Videos"
-                    - included_sciences = @course.sciences
-                    - if included_sciences
-                      - included_sciences.each do |science|
-                        %li= "#{science.title}"
                     / %li Three Fundamental Fillings Explained
                     = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
                   - if @course.price
