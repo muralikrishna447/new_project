@@ -13,7 +13,7 @@ describe Api::V0::AuthController do
     end
 
     it 'should return a status 401 Unauthorized if the password is incorrect' do
-      post :authenticate, {email: 'johndoe@chefsteps.com', password: 'abcdef'}
+      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: 'abcdef'}
       response.should_not be_success
       response.code.should eq("401")
     end
@@ -21,7 +21,7 @@ describe Api::V0::AuthController do
     describe 'token' do
       
       before :each do
-        post :authenticate, {email: 'johndoe@chefsteps.com', password: '123456'}
+        post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}
         response.should be_success
         response.code.should eq("200")
         @json_response = JSON.parse(response.body)

@@ -3,8 +3,8 @@ module Api
     class AuthController < ActionController::Base
       def authenticate
         begin
-          user = User.find_by_email(params[:email])
-          if user.valid_password?(params[:password])
+          user = User.find_by_email(params[:user][:email])
+          if user.valid_password?(params[:user][:password])
             exp = ((Time.now + 1.year).to_f * 1000).to_i
             payload = { 
               exp: exp,

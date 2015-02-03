@@ -3,7 +3,7 @@
   $scope.activity = Activity.get({id: 'beef-tartare'})
 
   $scope.getToken = (user) ->
-    $http.post('/api/v0/authenticate', $.param($scope.user), {
+    $http.post('/api/v0/authenticate', $.param({user: $scope.user}), {
       headers: {
         "content-type" : "application/x-www-form-urlencoded"
       }
