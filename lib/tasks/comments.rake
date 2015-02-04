@@ -1,3 +1,16 @@
+namespace :comments do
+  task :set_include_to_true => :environment do
+    inclusions = AssemblyInclusion.all
+    inclusions.each do |inclusion|
+      inclusion.include_disqus = true
+      inclusion.save
+      puts "Updated Inclusion:"
+      puts inclusion.inspect
+      puts "-"*20
+    end
+  end
+end
+
 # namespace :comments do
 #   require 'nokogiri'
 #   require 'json'

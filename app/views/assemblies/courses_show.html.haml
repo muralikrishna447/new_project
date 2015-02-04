@@ -23,7 +23,7 @@
                   %cs-image-video(image='currentIncludable.includable_image_id || currentIncludable.includable.featured_image' video='currentIncludable.includable.youtube_id')
                   %div(csFixNakedLinks="")
                     = render 'activities/main_activity_content'
-                  .comments-container.section.noprint#comments
+                  .comments-container.section.noprint#comments(ng-if="currentIncludable.include_disqus")
                     .standard-item
                       %h3 Discussion
                       %cscomments(comments-type="activity" comments-id="{{currentIncludable.includable_id}}" seo-bot="#{is_brombone}")

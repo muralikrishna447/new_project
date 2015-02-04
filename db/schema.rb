@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150129232709) do
+ActiveRecord::Schema.define(:version => 20150204222833) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -151,9 +151,9 @@ ActiveRecord::Schema.define(:version => 20150129232709) do
     t.integer  "includable_id"
     t.integer  "assembly_id"
     t.integer  "position"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
-    t.boolean  "include_disqus",  :default => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.boolean  "include_disqus",  :default => true
   end
 
   add_index "assembly_inclusions", ["assembly_id"], :name => "index_assembly_inclusions_on_assembly_id"
