@@ -17,7 +17,7 @@ class AssembliesController < ApplicationController
     @hide_nav = true
     @upload = Upload.new
     if current_user
-      if (current_user.enrolled?(@assembly)) || current_user.admin?
+      if (current_user.enrolled?(@assembly)) || current_user.admin? || current_user.role == "collaborator"
         case @assembly.assembly_type
         when 'Course', 'Project', 'Recipe Development'
           render "courses_#{params[:action]}"
@@ -154,7 +154,8 @@ private
   def load_assembly
 
     begin
-      @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], can?(:update, @activity))
+      @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], true)
+      raise "Viewed Unplublished Assembly" if !@assembly.published? && cannot?(:update, @assembly)
       # Once verified that coupons are working everywhere, delete the following:
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = @assembly.discounted_price(session[:coupon])
