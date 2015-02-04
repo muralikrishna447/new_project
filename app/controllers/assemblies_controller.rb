@@ -155,7 +155,7 @@ private
 
     begin
       @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], true)
-      raise if !@assembly.published? && cannot?(:update, @assembly)
+      raise "Viewed Unplublished Assembly" if !@assembly.published? && cannot?(:update, @assembly)
       # Once verified that coupons are working everywhere, delete the following:
       session[:coupon] = params[:coupon] || session[:coupon]
       @discounted_price = @assembly.discounted_price(session[:coupon])
