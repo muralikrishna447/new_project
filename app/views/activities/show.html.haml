@@ -77,7 +77,7 @@
         .text-center
           .section
             %strong 
-              Have a question about the recipe? 
+              Have a question about a recipe? 
               %br
                 %a(href="//chefsteps.com/forum" onclick="mixpanel.track('Question to Forum', {'title' : '#{@activity.title}'});")
                   Please ask us on the forum
@@ -107,16 +107,6 @@
         %h3= @course.title
       .modal-body
         = course_syllabus(@course)
-
-
-
-  //////// UPLOAD MODAL /////////
-  - if params[:action] == 'show'
-    .modal.hide.fade#upload-user-creation
-      .modal-header
-        %h3= "Share your #{@activity.title} creation"
-      .modal-body
-        = render 'shared/uploads'
     
   = render 'cancel_edit_modal'
   = render 'restore_autosave.html.haml'
