@@ -22,14 +22,6 @@
                   count='commentCount'
                   when="  { '-1' : 'Comments', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")  
 
-  %li(ng-if="getObjectTypeName() != 'Upload' && ! inClass")
-    %a(href='#user-creations')
-      .tool-group
-        .icon-holder
-          %i.icon-picture
-        .tool-name(ng-pluralize
-                  count='activity.upload_count'
-                  when="  {'0' : 'Add your creation', '1' : '1 User creation', 'other' : '{} User creations'}")  
 
   %li(ng-if="getObjectTypeName() != 'Upload'"
       ng-click="doPrint()")
