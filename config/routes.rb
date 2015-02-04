@@ -1,4 +1,15 @@
+require 'resque/server'
+
 Delve::Application.routes.draw do
+
+  resque_constraint = lambda do |request|
+    request.env['warden'].authenticate? and request.env['warden'].user.admin?
+  end
+
+  constraints resque_constraint do
+    mount Resque::Server.new, :at => "/resque"
+  end
+
 
   # Redirect old forum.chefsteps.com to new forum
   constraints :subdomain => "forum" do
@@ -276,7 +287,10 @@ Delve::Application.routes.draw do
 
   get "/invitations/welcome" => "home#welcome"
 
+
   match "/reports/stripe" => "reports#stripe"
+  resources :reports
+
 
   resources :stripe do
     collection do

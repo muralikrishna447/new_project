@@ -65,6 +65,9 @@ gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 gem 'aws-sdk'
 
+gem 'ar-octopus', require: 'octopus'
+gem 'resque'
+
 group :development do
   gem 'spring'
   gem "letter_opener"

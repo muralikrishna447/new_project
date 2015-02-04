@@ -1,0 +1,21 @@
+.container#main-container
+  .row
+    #rails-flash
+      = flash[:notice]
+  .row
+    .span6.offset3.registration
+      = form_tag("/reports/stripe", id: "stripe_form") do
+        .input
+          Report Type
+          = select_tag('report_type', options_for_select(["stripe", "sales"]), class: "admin-input")
+        .input
+          Start Date
+          %input.admin-input(name="start_date" type="date")
+        .input
+          End Date
+          %input.admin-input(name="end_date" type="date")
+        .input
+          Email will be sent to:
+          = current_user.email
+        .input
+          = submit_tag("Generate Report")
