@@ -14,6 +14,7 @@ class Ability
     elsif (user.role? :collaborator)
       can :manage, Activity
       can :manage, Ingredient
+      can :manage, Assembly
     else
       can :manage, Activity, creator: user
       can :create, Activity
