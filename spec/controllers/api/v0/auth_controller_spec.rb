@@ -24,19 +24,23 @@ describe Api::V0::AuthController do
         post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}
         response.should be_success
         response.code.should eq("200")
-        @json_response = JSON.parse(response.body)
+        @token = JSON.parse(response.body)['token']
+        @key = OpenSSL::PKey::RSA.new File.read('/Users/hnguyen/Desktop/rsa.pem'), 'cooksmarter'
       end
 
       it 'should be returned' do
-        @json_response['token'].should_not be_empty
-        puts response.body
+        @token.should_not be_empty
       end
 
       it 'should be authenticatable with a valid secret' do
-        token = @json_response['token']
-        token.should_not be_empty
-        decoded = JWT.decode(token, "SomeSecret")
-        name = decoded['user']['name']
+        # First decode encryption
+        decoded = JSON::JWT.decode(@token, @key)
+        # puts "Decoded: #{decoded}"
+
+        # Then decode signature
+        verified = JSON::JWT.decode(decoded.to_s, @key.to_s)
+        # puts "Verified: #{verified}"
+        name = verified['user']['name']
         name.should eq(@user.name)
       end
 

@@ -4,19 +4,33 @@ module Api
       def authenticate
         begin
           user = User.find_by_email(params[:user][:email])
-          if user.valid_password?(params[:user][:password])
-            exp = ((Time.now + 1.year).to_f * 1000).to_i
-            payload = { 
+          if user && user.valid_password?(params[:user][:password])
+            # Will move this into a environment variable
+            key = OpenSSL::PKey::RSA.new File.read('/Users/hnguyen/Desktop/rsa.pem'), 'cooksmarter'
+            # exp = ((Time.now + 1.year).to_f * 1000).to_i
+            exp = 1454672001825
+            claim = {
               exp: exp,
-              user: user
+              user: {
+                id: user.id,
+                name: user.name,
+                email: user.email
+              }
             }
-            token = JWT.encode(payload.as_json, "SomeSecret")
-            render json: {token: token}, status: 200
+
+            jws = JSON::JWT.new(claim.as_json).sign(key.to_s)
+            jwe = jws.encrypt(key.public_key)
+            jwt = jwe.to_s
+            # puts "JWS: #{jws}"
+            # puts "JWE: #{jwe}"
+            # puts "JWT: #{jwt}"
+
+            render json: {status: '200 Success', token: jwt}, status: 200
           else
             render json: {status: '401 Unauthorized'}, status: 401
           end
         rescue Exception => e
-          puts "Exception: "
+          puts "Authenticate Exception: "
           puts e
           render json: {status: '400 Bad Request'}, status: 400
         end

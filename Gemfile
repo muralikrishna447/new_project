@@ -64,7 +64,8 @@ gem 'nori'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 gem 'aws-sdk'
-gem 'jwt'
+gem 'json-jwt'
+gem 'sshkey'
 
 group :development do
   gem 'spring'
