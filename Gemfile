@@ -65,7 +65,7 @@ gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 gem 'aws-sdk'
 
-gem 'ar-octopus', require: 'octopus'
+# gem 'ar-octopus', :git => 'https://github.com/tchandy/octopus.git'
 gem 'resque'
 
 group :development do
@@ -77,13 +77,15 @@ end
 group :development, :test do
   gem "simplecov", require: false
   gem 'angularjs-rails'
+end
+
+group :assets, :angular, :test, :development do
   gem 'jquery-rails'
 end
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets, :angular do
-  gem 'jquery-rails'
   gem 'jquery-ui-rails'
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
