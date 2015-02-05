@@ -65,7 +65,6 @@ gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 gem 'aws-sdk'
 gem 'json-jwt'
-gem 'sshkey'
 
 group :development do
   gem 'spring'
