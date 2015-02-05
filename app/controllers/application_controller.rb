@@ -158,11 +158,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  helper_method :intercom_secret
   def intercom_secret
     case Rails.env
     when "production"
-      'nm4NWnIuoxEtq3Dlwlupnv1BucWzAhHGfBHDBYMh'
+      ENV["INTERCOM_SECRET"]
     else
       "TXpMDZMi8_y5HVUNzfveHtWTEVFys9iF8tSurskP"
     end
