@@ -1,7 +1,7 @@
 class StripeReport
   class << self
     def quickbooks_report(start_date, end_date)
-      raise "Date format Invalid" if !start_date.match(/\d{4}-\d{2}-\d{2}/) || !end_date.match(/\d{4}-\d{2}-\d{2}/)
+      raise "Date format Invalid" unless start_date.match(/\d{4}-\d{2}-\d{2}/) && end_date.match(/\d{4}-\d{2}-\d{2}/)
       start_time = Time.parse(start_date).beginning_of_day
       end_time = Time.parse(end_date).end_of_day
       stripe_csv = generate_csv(start_time, end_time)
