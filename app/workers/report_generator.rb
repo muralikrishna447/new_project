@@ -4,7 +4,7 @@ class ReportGenerator
     case type
     when "stripe"
       user = User.find(user_id)
-      stripe_data = Stripe.quickbooks_report(start_date, end_date)
+      stripe_data = StripeReport.quickbooks_report(start_date, end_date)
       ReportMailer.send_report_file(user.email, 'stripe_data', 'here is the stripe data', "quickbooks-file-#{start_date}-#{end_date}.tsv", stripe_data).deliver
     when "sales"
     end
