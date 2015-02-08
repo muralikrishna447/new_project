@@ -19,11 +19,9 @@ module Api
       private
 
       def create_token(user)
-        # Will move this into a environment variable
-        key = OpenSSL::PKey::RSA.new File.read('/Users/hnguyen/Desktop/rsa.pem'), 'cooksmarter'
-        # exp = ((Time.now + 1.year).to_f * 1000).to_i
-        # exp = 1454672001825
+        key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
         issued_at = (Time.now.to_f * 1000).to_i
+        
         claim = {
           iat: issued_at,
           user: {

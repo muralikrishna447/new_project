@@ -6,8 +6,7 @@ module Api
 
       def ensure_authorized
         begin
-          # Will move this into a environment variable
-          key = OpenSSL::PKey::RSA.new File.read('/Users/hnguyen/Desktop/rsa.pem'), 'cooksmarter'
+          key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
           token = request.authorization().split(' ').last
 
           # First decode encryption

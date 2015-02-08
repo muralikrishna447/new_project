@@ -25,7 +25,8 @@ describe Api::V0::AuthController do
         response.should be_success
         response.code.should eq("200")
         @token = JSON.parse(response.body)['token']
-        @key = OpenSSL::PKey::RSA.new File.read('/Users/hnguyen/Desktop/rsa.pem'), 'cooksmarter'
+        @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+        
       end
 
       it 'should be returned' do
