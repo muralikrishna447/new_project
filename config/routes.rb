@@ -306,7 +306,7 @@ Delve::Application.routes.draw do
       resources :activities, only: [:index, :show]
       resources :ingredients, only: [:index, :show]
       resources :search, only: [:index]
-      resources :users, only: [:index]
+      resources :users, only: [:index, :current, :create]
     end
   end
 

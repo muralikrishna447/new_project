@@ -1,10 +1,13 @@
 describe Api::V0::UsersController do
 
+  before :each do
+    @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+  end
+
   context 'GET /index' do
 
     before :each do
       @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
-      @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
       issued_at = (Time.now.to_f * 1000).to_i
       claim = { 
         iat: issued_at,
@@ -33,26 +36,18 @@ describe Api::V0::UsersController do
       response.should_not be_success
     end
 
-    it 'should respond with error when token does not match user' do
-      fake_user = {
-        id: 101,
-        email: 'fakejohndoe@chefsteps.com',
-        name: 'Fake John Doe'
-      }
-      issued_at = (Time.now.to_f * 1000).to_i
-      fake_claim = { 
-        iat: issued_at,
-        user: fake_user
-      }
-      jws = JSON::JWT.new(fake_claim.as_json).sign(@key.to_s)
-      jwe = jws.encrypt(@key.public_key)
-      fake_token = 'Bearer ' + jwe.to_s
+  end
 
-      request.env['HTTP_AUTHORIZATION'] = fake_token
-      get :index
-      response.should_not be_success
+  context 'POST /create' do
+    it 'should create a user' do
+      post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      response.should be_success
     end
 
+    it 'should not create a user if require fields are missing' do
+      post :create, user: {email: "newuser@chefsteps.com", password: "newUserPassword"}
+      response.should_not be_success
+    end
   end
 
 end
