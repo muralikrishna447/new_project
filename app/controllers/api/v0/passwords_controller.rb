@@ -10,6 +10,15 @@ module Api::V0
     end
 
     def reset
+      @user = User.find_by_email params[:email]
+      # Todo Generate Real Password reset token
+      token = "hello"
+      if @user
+        UserMailer.reset_password(@user.email, token).deliver
+        render json: { status: '200 Success'}, status: 200
+      else
+        render json: {status: '401 Unauthorized'}, status: 401
+      end
     end
   end
 end

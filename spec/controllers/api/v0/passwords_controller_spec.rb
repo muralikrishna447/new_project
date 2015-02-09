@@ -22,4 +22,11 @@ describe Api::V0::PasswordsController do
 
   end
 
+  context 'POST /reset' do
+    it 'should send a password reset email' do
+      post :reset, email: @user.email
+      response.should be_success
+    end
+  end
+
 end

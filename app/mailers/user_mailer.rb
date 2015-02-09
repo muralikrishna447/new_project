@@ -7,4 +7,9 @@ class UserMailer < ActionMailer::Base
     @custom_text = custom_text
     mail(bcc: to, subject: "Join #{@sender.name} on ChefSteps and cook smarter")
   end
+
+  def reset_password(to, token)
+    @token = token
+    mail(bcc: to, subject: "ChefSteps Password Reset")
+  end
 end
