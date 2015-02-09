@@ -305,6 +305,9 @@ Delve::Application.routes.draw do
       post :authenticate, to: 'auth#authenticate'
       resources :activities, only: [:index, :show]
       resources :ingredients, only: [:index, :show]
+      resources :passwords, only: [:update] do
+        post :reset, on: :member
+      end
       resources :search, only: [:index]
       resources :users, only: [:index, :current, :create]
     end
