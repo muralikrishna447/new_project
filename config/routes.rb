@@ -302,9 +302,15 @@ Delve::Application.routes.draw do
 
   namespace :api do
     namespace :v0 do
+      post :authenticate, to: 'auth#authenticate'
       resources :activities, only: [:index, :show]
       resources :ingredients, only: [:index, :show]
+      resources :passwords, only: [:update] do
+        post :reset, on: :collection
+        put :update_from_reset, on: :collection
+      end
       resources :search, only: [:index]
+      resources :users, only: [:index, :create]
     end
   end
 

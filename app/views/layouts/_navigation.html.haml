@@ -13,19 +13,22 @@
 
       .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
         - if current_user
-          .cs-nav-profile
-            = link_to user_profile_url(current_user) do
-              .profile-image
-                = image_tag current_user.avatar_url
+          = link_to user_profile_url(current_user) do
+            - if current_user.image_id.blank?
+              .profile-button
+                Profile
+            - else
+              .cs-nav-profile
+                .profile-image
+                  = image_tag current_user.avatar_url
           / .cs-nav-notifs
           /   %csnotifs
         - else
           %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
           = render "devise/sessions/new_angular"
-          .cs-nav-profile(ng-if="authentication.currentUser()")
-            %a(ng-href="{{'/profiles/' + authentication.currentUser().slug}}")
-              // Place holder for now until we write a filepicker service
-              %img(src="//d3awvtnmmsvyot.cloudfront.net/api/file/U2RccgsARPyMmzJ5Ao0c/convert?fit=max&w=75&h=75&cache=true")
+          %a(ng-href="{{'/profiles/' + authentication.currentUser().slug}}" ng-if="authentication.currentUser()")
+            .profile-button
+              Profile
           / .cs-nav-notifs(ng-if="authentication.currentUser()")
           /   %csnotifs
 
@@ -45,6 +48,9 @@
                 %i.fa.fa-times
           .cs-nav-links(ng-hide="showSearch")
             %li
+              = link_to courses_url do
+                Classes
+            %li
               = link_to gallery_index_url do
                 Recipes
             %li
@@ -61,10 +67,6 @@
                       %i.fa.fa-leaf
                       Ingredient Wiki
                   %li
-                    = link_to courses_url do
-                      %i.fa.fa-film
-                      Classes
-                  %li
                     = link_to projects_url do
                       %i.fa.fa-cubes
                       Projects
@@ -80,11 +82,11 @@
                 
                   %li
                     = link_to knife_collection_url do
-                      = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/F0T93X9wSdGBCXEwBPWY", width: "15px"
+                      = image_tag "https://d92f495ogyf88.cloudfront.net/static/nav-knife-icon.png", width: "15px"
                       Knife Collection
                   %li
                     = link_to sv_collection_url do
-                      = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/Obli4MvVSqKIhOsSFhny", width: "15px"
+                      = image_tag "https://d92f495ogyf88.cloudfront.net/static/nav-circulator-icon.png", width: "15px"
                       Sous Vide Collection
                   %li
                     %a(href="http://store.chefsteps.com/collections/cookbooks-we-love")

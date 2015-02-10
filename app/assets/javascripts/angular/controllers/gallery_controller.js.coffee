@@ -28,6 +28,10 @@
   $scope.doQuery = (params) ->
     Activity.query(params)
 
+  $scope.focusSearch = ->
+    $('.focusme').focus()
+    true
+
   $controller('GalleryBaseController', {$scope: $scope});
 
   $timeout ( -> 

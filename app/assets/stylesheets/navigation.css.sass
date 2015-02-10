@@ -208,6 +208,17 @@ input:focus
       width: 100%
       border-radius: 100%
 
+.profile-button
+  display: block
+  text-transform: none
+  color: $light-black
+  font-size: 16px
+  font-weight: 600
+  padding: 19px 15px
+  @include transition(all .3s)
+  &:hover
+    color: $orange
+    cursor: pointer
 
 .cs-nav-search.cs-nav-search-open
   width: 475px
@@ -263,7 +274,7 @@ input:focus
           line-height: 1.6rem
           text-transform: none
 
-@media(max-width: 767px)
+@media(max-width: 825px)
 
 
   .cs-nav
@@ -369,6 +380,9 @@ input:focus
 
   .cs-nav-click-box
     display: block
+
+  .profile-button
+    padding: 19px 0px
 
 @media(max-width: 700px) 
   .cs-nav

@@ -1,5 +1,5 @@
 # Video Looping service that allows only one looping video to play at a time.
-@app.service 'LoopingVideoManager', [ ->
+@app.service 'LoopingVideoManager', ['$document', '$location', ($document, $location) ->
   this.videos = []
 
   this.addVideoScope = (scope) ->
@@ -16,6 +16,7 @@
       if scope == currentScope
         scope.video[0].play()
         scope.playing = true
+        mixpanel.track "Video Loop Played", {"name": scope.videoName, "url": $location.absUrl()}
       else
         scope.video[0].pause()
         scope.playing = false
@@ -23,6 +24,20 @@
   this.pause = (currentScope) ->
     currentScope.video[0].pause()
     currentScope.playing = false
+    mixpanel.track "Video Loop Paused", {"name": currentScope.videoName, "url": $location.absUrl()}
+
+  angular.element($document[0].body).on 'click', (e) =>
+    videos = this.videos
+    service = this
+    console.log "clicked the body: #{e}"
+    isVideoLoop = angular.element(e.target).inheritedData('videoLoop')
+    console.log "isVideoLoop: #{isVideoLoop}"
+    if isVideoLoop != true
+      console.log "pausing video"
+      videos.forEach (scope, i) ->
+        if scope.playing
+          service.pause scope
+      # this.pause()
 
   this
 ]
@@ -34,7 +49,7 @@
 
 # To use as a shortcode:
 # [videoLoop somevideoname]
-@app.directive 'csLoopingVideoPlayer', ['$sce', 'LoopingVideoManager', '$timeout', ($sce, LoopingVideoManager, $timeout) ->
+@app.directive 'csLoopingVideoPlayer', ['$sce', 'LoopingVideoManager', '$timeout', '$location', ($sce, LoopingVideoManager, $timeout, $location) ->
   restrict: 'A'
   scope: {
     videoName: '@'
@@ -48,7 +63,7 @@
     LoopingVideoManager.addVideoScope($scope)
     $scope.playing = false
     $scope.sliderValue = 0
-    $scope.baseUrl = "https://s3.amazonaws.com/chefsteps-videos-transcoded/"
+    $scope.baseUrl = "https://d29uyzek4esgj1.cloudfront.net/"
 
     if $scope.videoName
       $scope.sources = [
@@ -77,6 +92,7 @@
           $scope.sliderValue = $scope.timeToSlider(currentTime)
   ]
   link: (scope, element, attrs) ->
+    element.data('videoLoop', true)
 
     scope.trustedVideoUrl = (videoUrl) ->
       $sce.trustAsResourceUrl(videoUrl)
@@ -84,6 +100,7 @@
     scope.toggle = ->
       if scope.playing
         LoopingVideoManager.pause(scope)
+        
       else
         LoopingVideoManager.play(scope)
 
@@ -91,6 +108,7 @@
       scope.playbackRate = rate
       scope.video[0].playbackRate = rate
       scope.showDisplay = true
+      mixpanel.track "Video Loop Playback Rate Changed", {"name": scope.videoName, "rate": rate, "url": $location.absUrl()}
       $timeout (->
         scope.showDisplay = false
       ), 1000
@@ -131,11 +149,5 @@
     # If the directive element is removed from dom, $destroy will be called and we'll make sure the scope is removed from the Looping Video Manager
     element.bind '$destroy', ->
       LoopingVideoManager.removeScope(scope)
-
-    scope.video[0].onloadeddata = ->
-      scope.videoLoaded = true
-      scope.video[0].poster = scope.videoImage
-      scope.$apply()
-
 ]
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141223074816) do
+ActiveRecord::Schema.define(:version => 20150129232709) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(:version => 20141223074816) do
     t.text     "testimonial_copy"
     t.text     "prereg_image_id"
     t.string   "prereg_email_list_id"
+    t.text     "description_alt"
   end
 
   create_table "assembly_inclusions", :force => true do |t|

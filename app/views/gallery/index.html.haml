@@ -11,10 +11,12 @@
     %ul.search-group
       %form.navbar-search.relative
         .input-group
-          %input.cs-nav-search-input(  ng-model='input' 
+          %a.search-icon(ng-click='focusSearch()')
+            %i.icon-search
+          %input.cs-nav-search-input.focusme(  ng-model='input' 
                                 ng-change='search(input)' 
                                 placeholder='search')
-          %a.clear-search(ng-click="clearSearch()")
+          %a.clear-search.anim-basic-fade(ng-click="clearSearch()" ng-show="input.length")
             %i.icon-remove
 
         .filter-toggle(ng-click="filtersCollapsed = ! filtersCollapsed")
