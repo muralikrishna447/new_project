@@ -1,7 +1,7 @@
 module Api
   module V0
     class BaseController < ActionController::Base
-
+      skip_before_filter :verify_authenticity_token
       protected
 
       def ensure_authorized

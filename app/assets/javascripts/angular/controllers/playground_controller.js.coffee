@@ -20,6 +20,7 @@
   $scope.testToken = (token) ->
     $http.get(
       '/api/v0/users'
+      headers: { 'Authorization': 'Bearer ' + token }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
