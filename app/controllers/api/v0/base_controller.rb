@@ -6,14 +6,11 @@ module Api
 
       def ensure_authorized
         begin
-          key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
           token = request.authorization().split(' ').last
 
-          # First decode encryption
-          decoded = JSON::JWT.decode(token, key)
-
-          # Then decode signature
-          verified = JSON::JWT.decode(decoded.to_s, key.to_s)
+          unless valid_token?(token)
+            raise "INVALID TOKEN"
+          end
         rescue Exception => e
           puts e
           render json: {status: '401 Unauthorized'}, status: 401
@@ -34,7 +31,6 @@ module Api
         }
         claim[:exp] = exp if exp
         claim[:restrictTo] = restrict_to if restrict_to
-        puts "CLAIM IS: #{claim}"
 
         jws = JSON::JWT.new(claim.as_json).sign(key.to_s)
         jwe = jws.encrypt(key.public_key)
@@ -42,6 +38,22 @@ module Api
         # puts "JWS: #{jws}"
         # puts "JWE: #{jwe}"
         # puts "JWT: #{jwt}"
+      end
+
+      def valid_token?(token)
+        puts "token from validate: #{token}"
+        key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+        puts "key: #{key}"
+        decoded = JSON::JWT.decode(token, key)
+        puts "decoded: #{decoded}"
+        verified = JSON::JWT.decode(decoded.to_s, key.to_s)
+        puts "verified: #{verified}"
+        time_now = (Time.now.to_f * 1000).to_i
+        if verified['exp'] && verified['exp'] >= time_now
+          return false
+        else
+          return true
+        end
       end
 
     end
