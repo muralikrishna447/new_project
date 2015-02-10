@@ -10,7 +10,7 @@ class UserMailer < ActionMailer::Base
 
   def reset_password(to, token)
     @token = token
-    @update_password_link = "http://localhost:3000?token=#{token}"
+    @update_password_link = "https://chefsteps.com/api/v0/passwords/update_from_reset?token=#{token}"
     mail(to: to, subject: "ChefSteps Password Reset")
   end
 end

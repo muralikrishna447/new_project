@@ -50,7 +50,7 @@ module Api
         elsif verified['restrictTo'] && verified['restrictTo'] != restrict_to
           return false
         else
-          return true
+          return verified
         end
       end
 
