@@ -18,12 +18,9 @@
 
   $scope.testTokenStatus = null
   $scope.testToken = (token) ->
-    $http(
-      method: 'GET'
-      url: '/api/v0/users'
-      headers: {
-        'Authorization': token
-      }
+    $http.get(
+      '/api/v0/users'
+      headers: { 'Authorization': 'Bearer ' + token }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
@@ -31,6 +28,7 @@
     ).error (data, status, headers, cfg) ->
       console.log "error: "
       console.log data
+      console.log headers
       $scope.testTokenStatus = "Error: #{JSON.stringify(data)}"
 
   $scope.newUser = {}

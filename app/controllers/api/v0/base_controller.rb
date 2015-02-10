@@ -5,6 +5,7 @@ module Api
       protected
 
       def ensure_authorized
+        puts "STARTED ensure_authorized"
         begin
           token = request.authorization().split(' ').last
 
