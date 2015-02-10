@@ -22,6 +22,8 @@ describe Api::V0::UsersController do
       request.env['HTTP_AUTHORIZATION'] = @token
       get :index
       response.should be_success
+
+
     end
 
     it 'should respond with error when provided incorrect token' do

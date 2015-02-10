@@ -41,15 +41,11 @@ module Api
       end
 
       def valid_token?(token)
-        puts "token from validate: #{token}"
         key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
-        puts "key: #{key}"
         decoded = JSON::JWT.decode(token, key)
-        puts "decoded: #{decoded}"
         verified = JSON::JWT.decode(decoded.to_s, key.to_s)
-        puts "verified: #{verified}"
         time_now = (Time.now.to_f * 1000).to_i
-        if verified['exp'] && verified['exp'] >= time_now
+        if verified['exp'] && verified['exp'] <= time_now
           return false
         else
           return true
