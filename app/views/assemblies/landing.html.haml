@@ -37,6 +37,8 @@
 
               .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
                 .buy-box
+                  -# abtest here just to record the split, no difference in ui
+                  %div(cs-abtest test-name="Madlib Signup Incentive")
                   - discounted_price = @course.price ? @discounted_price : 0
                   = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate, free_trial_hours: @free_trial_hours, assembly_type_name: assembly_type_name
                   .text-center.enroll-count.section
@@ -118,7 +120,7 @@
                           :markdown
                             #{@course.preview_copy}
     %div(ng-switch-when="false")
-      = render 'steak_landing_a'                    
+      = render 'steak_landing_a'
 
   = render 'layouts/footer'
 
