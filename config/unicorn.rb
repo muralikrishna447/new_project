@@ -1,4 +1,4 @@
-worker_processes 4 # amount of unicorn workers to spin up
+worker_processes 3 # amount of unicorn workers to spin up
 timeout 35         # restarts workers that hang for 35 seconds, 5 seconds longer than heroku timeout
 
 preload_app true
