@@ -309,7 +309,7 @@ Delve::Application.routes.draw do
         post :reset, on: :member
       end
       resources :search, only: [:index]
-      resources :users, only: [:index, :current, :create]
+      resources :users, only: [:index, :create]
     end
   end
 

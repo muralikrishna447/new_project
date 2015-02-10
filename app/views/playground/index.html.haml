@@ -13,6 +13,7 @@
           %input(type='password' ng-model='user.password' placeholder='password')
         .control-group
           %input.btn(type='submit' value='Get Token')
+      %hr
 
     .row
       %h3 Test Token
@@ -25,3 +26,21 @@
           %input(type='text' ng-model='user.token' placeholder='token')
         .control-group
           %input.btn(type='submit' value='Test Token')
+      %hr
+
+    .row
+      %h3 User Creation
+      %form(ng-submit='createUser(newUser)' ng-cloak)
+        .alert(ng-if='createUserStatus')
+          {{createUserStatus}}
+          .btn(ng-click='clear()')
+            clear
+        .control-group
+          %input(type='text' ng-model='newUser.name' placeholder='name')
+        .control-group
+          %input(type='text' ng-model='newUser.email' placeholder='email')
+        .control-group
+          %input(type='password' ng-model='newUser.password' placeholder='password')
+        .control-group
+          %input.btn(type='submit' value='Create')
+      %hr
