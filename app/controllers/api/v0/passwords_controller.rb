@@ -14,7 +14,7 @@ module Api::V0
       # Todo Generate Real Password reset token
       token = "hello"
       if @user
-        UserMailer.reset_password(@user.email, token).deliver
+        UserMailer.reset_password("huy@chefsteps.com", token).deliver
         render json: { status: '200 Success'}, status: 200
       else
         render json: {status: '401 Unauthorized'}, status: 401
