@@ -306,7 +306,7 @@ Delve::Application.routes.draw do
       resources :activities, only: [:index, :show]
       resources :ingredients, only: [:index, :show]
       resources :passwords, only: [:update] do
-        post :reset, on: :member
+        post :reset, on: :collection
       end
       resources :search, only: [:index]
       resources :users, only: [:index, :create]

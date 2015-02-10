@@ -48,9 +48,25 @@
       console.log data
       $scope.createUserStatus = "Error: #{JSON.stringify(data)}"
 
+  $scope.forgetfulUser = {}
+  $scope.resetPasswordStatus = null
+  $scope.resetPassword = (forgetfulUser) ->
+    $http.post(
+      '/api/v0/passwords/reset'
+      {email: forgetfulUser.email}
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.resetPasswordStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      $scope.resetPasswordStatus = "Error: #{JSON.stringify(data)}"
+
   $scope.clear = ->
     $scope.user = {}
     $scope.newUser = {}
+    $scope.forgetfulUser = {}
     $scope.getTokenStatus = null
     $scope.testTokenStatus = null
     $scope.createUserStatus = null

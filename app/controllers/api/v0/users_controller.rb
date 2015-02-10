@@ -11,7 +11,7 @@ module Api
 
       def create
         @user = User.new(params[:user])
-        if @user.save!
+        if @user.save
           render json: {status: '200 Success', token: create_token(@user)}, status: 200
         else
           render json: {status: '400 Bad Request'}, status: 400
