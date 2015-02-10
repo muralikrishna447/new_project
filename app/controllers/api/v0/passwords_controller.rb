@@ -11,8 +11,8 @@ module Api::V0
 
     def reset
       @user = User.find_by_email params[:email]
-      # Todo Generate Real Password reset token
-      token = "hello"
+      exp = ((Time.now + 1.day).to_f * 1000).to_i
+      token = create_token(@user, exp, 'Password Reset')
       if @user
         UserMailer.reset_password("huy@chefsteps.com", token).deliver
         render json: { status: '200 Success'}, status: 200

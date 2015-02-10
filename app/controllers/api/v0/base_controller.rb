@@ -20,7 +20,7 @@ module Api
         end
       end
 
-      def create_token(user)
+      def create_token(user, exp=nil, restrict_to=nil)
         key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
         issued_at = (Time.now.to_f * 1000).to_i
         
@@ -32,6 +32,9 @@ module Api
             email: user.email
           }
         }
+        claim[:exp] = exp if exp
+        claim[:restrictTo] = restrict_to if restrict_to
+        puts "CLAIM IS: #{claim}"
 
         jws = JSON::JWT.new(claim.as_json).sign(key.to_s)
         jwe = jws.encrypt(key.public_key)
