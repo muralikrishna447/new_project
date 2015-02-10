@@ -49,6 +49,7 @@ describe Api::V0::PasswordsController do
       put :update_from_reset, {id: @user.id, new_password: 'SomeNewPassword', token: @expired_password_token}
       response.should_not be_success
     end
+    
   end
 
   context 'POST /reset' do

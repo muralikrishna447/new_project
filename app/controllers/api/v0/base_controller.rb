@@ -40,12 +40,14 @@ module Api
         # puts "JWT: #{jwt}"
       end
 
-      def valid_token?(token)
+      def valid_token?(token, restrict_to = nil)
         key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
         decoded = JSON::JWT.decode(token, key)
         verified = JSON::JWT.decode(decoded.to_s, key.to_s)
         time_now = (Time.now.to_f * 1000).to_i
         if verified['exp'] && verified['exp'] <= time_now
+          return false
+        elsif verified['restrictTo'] && verified['restrictTo'] != restrict_to
           return false
         else
           return true

@@ -36,7 +36,7 @@ module Api::V0
     private
 
     def ensure_password_token
-      if !params[:token] || !valid_token?(params[:token])
+      if !params[:token] || !valid_token?(params[:token], 'Password Reset')
         render json: {status: '401 Unauthorized'}, status: 401
       end
     end
