@@ -47,6 +47,12 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
         $scope.loginState = null
         $scope.freeTrial()
       else
+        # This is unfortunate; it is replicating logic on the server in Assembly#discounted_price
+        # it can be made better but since this is kind of a skunk test and this code all needs
+        # to be thrown out anyhow, I'm going to love with it.
+        if data.user.signup_incentive_available
+          $scope.discounted_price = $scope.assembly.price / 2.0
+
         if $scope.waitingForFreeEnrollment
           $scope.waitingForFreeEnrollment = false
           $scope.free_enrollment()
@@ -96,7 +102,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.createCharge(null, $scope.selectedCard)
 
   $scope.trackEnrollmentWorkaround = (eventData) ->
-    # This is a workaround for the fact that intercom can't segment based on the eventData, so 
+    # This is a workaround for the fact that intercom can't segment based on the eventData, so
     # also tracking the same data right in the event name.
     Intercom?('trackEvent', "class-enrolled-#{$scope.assembly.slug}", eventData)
 
