@@ -1,7 +1,9 @@
 module Api
   module V0
     class AuthController < BaseController
-
+      skip_before_filter :verify_authenticity_token
+      before_filter :cors_preflight_check
+      after_filter :cors_set_access_control_headers
       def authenticate
         begin
           user = User.find_by_email(params[:user][:email])
