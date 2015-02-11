@@ -14,13 +14,14 @@ module Api
       end
      
       def cors_preflight_check
+        put "CORS PREFLIGHT CHECK BFORE"
+
+        headers['Access-Control-Allow-Origin'] = '*'
+        headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+        headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
+        headers['Access-Control-Max-Age'] = '1728000'
         if request.method == 'OPTIONS'
-          puts "CORS PREFLIGHT CHECK CALLED"
-          headers['Access-Control-Allow-Origin'] = '*'
-          headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-          headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
-          headers['Access-Control-Max-Age'] = '1728000'
-     
+          puts "CORS PREFLIGHT CHECK CALLED AFTER OPTIONS"
           render :text => '', :content_type => 'text/plain'
         end
       end
