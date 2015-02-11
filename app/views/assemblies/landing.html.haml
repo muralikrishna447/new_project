@@ -37,8 +37,8 @@
 
               .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
                 .buy-box
-                  .section(ng-hide="#{current_user.present?}")
-                  %h4 New users receive 50% discount on first class purchased.
+                  %h4.text-center(ng-hide="#{current_user.present?}")
+                    50% off on your first class.
 
                   -# abtest here just to record the split, no difference in ui
                   %div(cs-abtest test-name="Madlib Signup Incentive")
