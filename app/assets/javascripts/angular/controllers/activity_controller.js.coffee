@@ -431,7 +431,7 @@ window.deepCopy = (obj) ->
       console.log "Cached"
       $rootScope.loading += 1
       console.log "Loading count #{$rootScope.loading}"
-      $timeout (  -> 
+      $timeout (  ->
         $rootScope.loading -= 1
         console.log "Loading count #{$rootScope.loading}"
       ), 500
@@ -442,7 +442,7 @@ window.deepCopy = (obj) ->
 
 
   $scope.commentCount = -1
-  $scope.updateCommentCount = -> 
+  $scope.updateCommentCount = ->
     if $scope.activity?
       $http.get("//ancient-sea-7316.herokuapp.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["commentCount"]
@@ -510,7 +510,6 @@ window.deepCopy = (obj) ->
     window.setMaximizeDescription($scope.maximizeDescription)
     if $scope.maximizeDescription
      mixpanel.track('Activity Description Maximized', {'slug' : $scope.activity.slug});
-     mixpanel.people.increment('Activity Description Maximized Count')
 
   $scope.ingredientSpanClass = ->
     if $scope.activity && $scope.activity.description
@@ -523,7 +522,7 @@ window.deepCopy = (obj) ->
     mixpanel.track('Why By Weight Tell Me More', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
 
   $scope.showNell = (view) ->
-    $rootScope.$broadcast "showNellPopup", 
+    $rootScope.$broadcast "showNellPopup",
       include: view
 
   $scope.showTitle = ->
@@ -542,7 +541,7 @@ window.deepCopy = (obj) ->
     return if localStorageService.get('whyByWeightShown')
     return if csAuthentication.loggedIn()
     return if ! $scope.activity || ! $scope.activity.ingredients?.length > 0
-    $rootScope.$broadcast "showNellPopup", 
+    $rootScope.$broadcast "showNellPopup",
       include: '_why_by_weight.html'
     localStorageService.set('whyByWeightShown', true)
 
@@ -557,7 +556,7 @@ window.deepCopy = (obj) ->
     Math.floor(($scope.lastActiveTime - $scope.pageLoadedTime) / (1000 * 60.0))
 
   $scope.updateActiveTime = ->
-    $scope.lastActiveTime = Date.now() 
+    $scope.lastActiveTime = Date.now()
     $scope.maybeReportCooked()
 
   angular.element($window).on 'scroll', _.throttle($scope.updateActiveTime, 10000)
@@ -575,7 +574,7 @@ window.deepCopy = (obj) ->
       Intercom?('trackEvent', "probably-cooked", eventData)
       Intercom?('trackEvent', "probably-cooked-souffle", eventData) if eventData.slug == "molten-chocolate-souffle"
       Intercom?('trackEvent', "probably-cooked-standing-rib-roast", eventData) if eventData.slug == "standing-rib-roast"
-      Intercom?('update')      
+      Intercom?('update')
 
   # various ways of tracking printing; if you google it you'll find out how unreliable they all are
   window.onbeforeprint = ->
@@ -616,7 +615,7 @@ window.deepCopy = (obj) ->
   $scope.getEventData = ->
     'context' : if $scope.course then 'course' else 'naked'
     'classTitle' : $scope.course?.title
-    'title' : $scope.activity.title, 
+    'title' : $scope.activity.title,
     'slug' : $scope.activity.slug
     'isRecipe' : $scope.activity.ingredients?.length > 1
 
@@ -625,10 +624,10 @@ window.deepCopy = (obj) ->
     probablyCooked = $scope.probablyCooked()
     eventData = $scope.getEventData()
 
-    angular.extend eventData, 
+    angular.extend eventData,
                     printed: $scope.activity.printed
                     activeMinutes: activeMinutes
-                    probablyCooked: probablyCooked   
+                    probablyCooked: probablyCooked
 
   # One time stuff
   if $scope.parsePreloaded()
@@ -649,7 +648,7 @@ window.deepCopy = (obj) ->
       anchor = $location.path().replace(/\//g,'')
       $location.path('')
       $location.hash(anchor)
-    
+
     # Regardless, make sure we get to our anchor
     $anchorScroll()
     $location.hash('')
@@ -666,6 +665,6 @@ window.deepCopy = (obj) ->
     $scope.scrollToComments()
     $scope.anchor()
   ), 3000
-  
+
 ]
 

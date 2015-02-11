@@ -134,15 +134,11 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.processing = false
       $scope.enrolled = true unless $scope.isGift
       $scope.state = "thanks"
-      mixpanel.people.track_charge($scope.discounted_price)
       eventData = _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'price': $scope.assembly.price, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador, 'chargedWith' : $scope.chargedWith}, $rootScope.splits)
       mixpanel.track('Course Purchased', eventData)
       Intercom?('trackEvent', 'course-purchased', eventData)
       $scope.trackEnrollmentWorkaround(eventData)
 
-      mixpanel.people.append('Classes Purchased', $scope.assembly.title)
-      mixpanel.people.append('Classes Enrolled', $scope.assembly.title)
-      mixpanel.people.set('Paid Course Abandoned' : false)
       _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
       $scope.shareASale($scope.discounted_price, response.id)
       # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
@@ -224,7 +220,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.buyModalOpen = false
     if abandon
       mixpanel.track('Modal Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
-      mixpanel.people.set('Paid Course Abandoned' : $scope.assembly.title)
 
   # Free enrollment, either for a free class or redeeming a gift
   $scope.enroll = ->
@@ -313,7 +308,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.freeTrialLogger = ->
     if $scope.freeTrialCode && (! $scope.isExpired()) && (! $scope.trialNotificationSent)
       mixpanel.track('Free Trial Offered', {context:'course', title: $scope.assembly.title, slug: $scope.assembly.slug, length: $scope.freeTrialHours})
-      mixpanel.people.set('Free Trial Offered': $scope.assembly.title)
       $scope.trialNotificationSent = true
 
 ]

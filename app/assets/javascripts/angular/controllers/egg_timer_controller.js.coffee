@@ -69,7 +69,6 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       $scope.loading = false
       mixpanel.track('Egg Calculated', angular.extend({},  $scope.inputs, {water_temp: $scope.water_temp}, $scope.output))
       Intercom?('trackEvent', 'egg-calculated')
-      mixpanel.people.increment('Egg Calculated')
 
     ).error((data, status, headers, config) ->
       debugger
@@ -95,7 +94,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
   $scope.incrementYolk= (increment) ->
     pyv = parseInt($scope.inputs.perceptual_yolk_viscosity)
     $scope.inputs.perceptual_yolk_viscosity = Math.max(Math.min(pyv + increment, 7), 1)
-    
+
   # Social share callbacks
   $scope.socialURL = ->
     window.location.href

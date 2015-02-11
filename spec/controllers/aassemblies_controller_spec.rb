@@ -8,7 +8,7 @@ describe AssembliesController do
 
   describe 'discount' do
     context "price computation" do
-      it "should compute the right discount" do
+      it "should compute the right discount for a coupon" do
         get :show, id: @assembly.id, coupon: 'b1b01d389a50'
         assigns(:discounted_price).should eq(19.5)
       end
@@ -25,7 +25,7 @@ describe AssembliesController do
       it "should set flash" do
         expect{get :redeem, gift_token: "madeup"}.to change{flash[:error]}.to("Invalid gift code. Contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>.")
       end
-    end          
+    end
 
     context "valid gift certificate" do
       before(:each) do

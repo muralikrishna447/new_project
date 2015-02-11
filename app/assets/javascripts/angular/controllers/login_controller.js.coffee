@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "csIntent", "csFtue", "$modal", "csDataLoading", "csAdwords", "csFacebookConversion", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, csIntent, csFtue, $modal, csDataLoading, csAdwords, csFacebookConversion) ->
+angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootScope", "$http", "csAuthentication", "csFacebook", "csAlertService", "$q", "$timeout", "csUrlService", "csIntent", "csFtue", "$modal", "csDataLoading", "csAdwords", "csFacebookConversion", "localStorageService", ($scope, $rootScope, $http, csAuthentication, csFacebook, csAlertService, $q, $timeout, csUrlService, csIntent, csFtue, $modal, csDataLoading, csAdwords, csFacebookConversion, localStorageService) ->
   $scope.returnTo = null
 
   $scope.dataLoading = 0
@@ -37,9 +37,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
   $scope.waitingForGoogle = false
 
   trackRegistration = (source, method) ->
-    properties = {source : source, method: method}
-    mixpanel.track('Signed Up JS', _.extend(properties, $rootScope.splits))
+    properties = _.extend({source : source, method: method}, $rootScope.splits)
+    mixpanel.track('Signed Up JS', properties)
     _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
+    # Hack to allow Tim & Christof to distinguish old unincentivized signups so they can trigger a new intercom-based CTA
+    Intercom?('trackEvent', "signed-up-no-incentive", properties) if localStorageService.get("Split Test: Madlib Signup Incentive") == "0"
 
   $scope.setIntent = (intent) ->
     $scope.intent = intent
@@ -78,7 +80,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $scope.reset_users()
     if abandon
       mixpanel.track('Modal Abandoned')
-      mixpanel.people.set('Login Modal Abandoned')
     if form == "login"
       $scope.showForm = "signIn"
       $scope.loginModalOpen = false
@@ -394,7 +395,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $scope.invitationsNextText = "Next"
     $scope.facebook.friendInvites($scope.authentication.currentUser().id).then( ->
       mixpanel.track("Facebook Invites Sent")
-      mixpanel.people.increment('Facebook Invites Sent')
     )
     #This is a promise so you can do promisey stuff with it.
     # This version uses the chefsteps styling
@@ -416,7 +416,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
         emails: friendEmails
     ).success( (data, status) ->
       mixpanel.track("Google Invites Sent")
-      mixpanel.people.increment("Google Invitations", friendEmails.length)
       $scope.dataLoading -= 1
       $scope.switchModal('googleInvite', 'welcome')
     )
