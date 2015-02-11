@@ -1,11 +1,13 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
+  host = 'http://localhost:3000'
+  # host = '//staging2-chefsteps.herokuapp.com'
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
     $http.post(
-      'http://localhost:3000/api/v0/authenticate'
+      host + '/api/v0/authenticate'
       $.param({user: $scope.user})
-      headers: { "Content-Type" : "application/x-www-form-urlencoded" }
+      headers: { "Content-Type" : "application/x-www-form-urlencoded", "x-csrf-token":undefined }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
@@ -19,7 +21,7 @@
   $scope.testTokenStatus = null
   $scope.testToken = (token) ->
     $http.get(
-      'http://localhost:3000/api/v0/users'
+      host + '/api/v0/users'
       headers: { 'Authorization': 'Bearer ' + token }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
@@ -35,7 +37,7 @@
   $scope.createUserStatus = null
   $scope.createUser = (newUser) ->
     $http.post(
-      'http://localhost:3000/api/v0/users'
+      host + '/api/v0/users'
       {user: $scope.newUser}
     ).success((data, status, headers, cfg) ->
       console.log "success: "
