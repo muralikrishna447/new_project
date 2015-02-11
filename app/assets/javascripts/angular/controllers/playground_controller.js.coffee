@@ -3,7 +3,7 @@
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
     $http.post(
-      '//staging2-chefsteps.herokuapp.com/api/v0/auth/authenticate'
+      '//staging2-chefsteps.herokuapp.com/api/v0/authenticate'
       $.param({user: $scope.user})
       headers: { "Content-Type" : "application/x-www-form-urlencoded" }
     ).success((data, status, headers, cfg) ->
