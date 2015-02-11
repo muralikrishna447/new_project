@@ -15,11 +15,8 @@
           %p.bubble(ng-show="register_error.errors.email")
             {{register_error.errors.email[0]}}
         &#46;
-      %div(cs-abtest test-name="Madlib Signup Incentive")
-        .madlib-item(cs-abtest-item)
-          I want to join {{getTotalUsers() | number}} others and learn how to be a better cook.
-        .madlib-item(cs-abtest-item)
-          I want 50% off my first class!
+      .madlib-item
+        I want to join {{getTotalUsers() | number}} others and learn how to be a better cook.
       .madlib-item#madlib-password-wrapper(ng-show="showMadlibPassword")
         Please set my password to
         %span.input-underlined.input-append.relative
@@ -30,4 +27,8 @@
 
       .button-row
         %button.inline#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register(registrationSource)" ng-disabled="dataLoading") Sign Up Now
+        %div.inline(cs-abtest test-name="Madlib Signup Incentive2")
+          .madlib-item(cs-abtest-item)
+          .madlib-incentive.inline(cs-abtest-item)
+            %h5 &hellip; And Get 50% Off Your First Class
       %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")

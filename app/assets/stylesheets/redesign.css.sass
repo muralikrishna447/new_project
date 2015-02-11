@@ -13,7 +13,7 @@ body
 // F-ing bootstrap wants to put 20px padding on the body, which makes it impossible to have
 // non-fixed position stuff that goes all the way across exactly.
 @media(max-width: 767px)
-  body  
+  body
     // To deal with bootstrap stupid body padding
     .banner-image
       width: calc(100% + 40px)
@@ -50,7 +50,7 @@ div:not(.redactor_box)
 
 .nav-spacer
   height: $baseline * 9
-  
+
 .top-container
   margin-top: $baseline * 7
 
@@ -416,6 +416,11 @@ a:hover
 .madlib-item
   margin-bottom: $baseline
 
+.madlib-incentive
+  @extend .madlib-item
+  color: $orange
+  font-size: 75%
+
 .input-underlined
   input[type=text], input[type=email], input[type=password]
     border: none
@@ -698,7 +703,7 @@ csembedyoutube
       font-size: 30px
       line-height: 30px
       padding-top: 20px
- 
+
     .step-content
       width: 90%
       padding: 20px 10px 0px 5px
@@ -1274,7 +1279,7 @@ csembedyoutube
     position: fixed
     top: 10px
     left: 10px
-    
+
     .loading-no-logo
       display: none
     .is-loading.is-fullscreen
@@ -1361,7 +1366,7 @@ csequipmenteditpair
     .btn
       background-color: white
       border-bottom: none
-      
+
   .edit-pair-edit
     input, select
       display: inline-block
@@ -1500,7 +1505,7 @@ input.summary-tweet
 
   &.ng-hide-add, &.ng-hide-remove
     display: block !important
-    
+
   &.ng-hide-add.ng-hide-add-active, &.ng-hide-remove.ng-hide-remove-active
     @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms)
 
@@ -1518,7 +1523,7 @@ input.summary-tweet
 
   &.ng-move
     opacity: 0.2
-  
+
   &.ng-move.ng-move-active
     opacity: 1
 
@@ -1528,7 +1533,7 @@ input.summary-tweet
 
   &.ng-hide-add, &.ng-hide-remove
     display: block !important
-    
+
   &.ng-hide-add.ng-hide-add-active, &.ng-hide-remove.ng-hide-remove-active
     @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms)
 
@@ -1548,7 +1553,7 @@ input.summary-tweet
 
   &.ng-move
     opacity: 0.2
-  
+
   &.ng-move.ng-move-active
     opacity: 1
 
@@ -1582,7 +1587,7 @@ input.summary-tweet
 
 @media (max-width: 767px)
   .desktop-banner-retina
-    display: none 
+    display: none
 
   .desktop-banner
     display: none
@@ -1593,7 +1598,7 @@ input.summary-tweet
 @media (-webkit-min-device-pixel-ratio: 2) and (min-resolution: 192dpi) and (min-width: 767px)
   .desktop-banner-retina
     display: inline-block
-    width: 921px  
+    width: 921px
 
   .mobile-banner
     display: none
@@ -1784,7 +1789,7 @@ input.summary-tweet
 /* Landscape phones and down */
 @media (max-width: 480px)
 
-  body  
+  body
     // To deal with bootstrap stupid body padding
     .banner-image
       width: 480px
@@ -1918,7 +1923,7 @@ body
   position: relative
 
 .cs-require-confirm-popup
-  @include popup-card    
+  @include popup-card
   width: 500px
 
 
