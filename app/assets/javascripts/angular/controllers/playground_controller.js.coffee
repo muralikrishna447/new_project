@@ -3,7 +3,7 @@
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
     $http.post(
-      '/api/v0/authenticate'
+      '/api/v0/auth/authenticate'
       $.param({user: $scope.user})
       headers: { "content-type" : "application/x-www-form-urlencoded" }
     ).success((data, status, headers, cfg) ->
