@@ -26,7 +26,7 @@
     $scope.survey_results = $scope.currentUser.survey_results
   else
     $scope.survey_results = []
-  
+
   question1 = {}
   question1.slug = 'Skill Level'
   question1.type = 'select'
@@ -142,9 +142,8 @@
       switch question.type
         when 'select'
           survey_result.answer = question.answer
-          # mixpanel.people.set(question.slug, survey_result.answer)
         when 'multiple-select'
-          answers = [] 
+          answers = []
           angular.forEach question.options, (option, index) ->
             if option.checked
               answers.push(option.name)
@@ -153,7 +152,6 @@
           survey_result.answer = question.answer
       $scope.survey_results.push(survey_result)
       console.log question.slug
-      mixpanel.people.set(question.slug, survey_result.answer)
       console.log 'its set'
     $scope.currentUser.survey_results = $scope.survey_results
 
@@ -163,7 +161,6 @@
 
     data = {'survey_results': $scope.survey_results, 'location': $scope.location.input, 'bio': $scope.bio}
     $http.post('/user_surveys', data).success((data) ->
-      mixpanel.people.set('location', $scope.location.input)
     )
 
   $scope.getPredictions = (input) ->

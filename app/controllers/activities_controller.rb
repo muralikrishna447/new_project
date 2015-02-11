@@ -58,7 +58,7 @@ class ActivitiesController < ApplicationController
 
   # This is absurd, should be part of the activity serializer, but that is used in different
   # cases and we need to untangle what info should be passed into what view and then set up a way
-  # 
+  #
   def add_extra_json_info
     @activity[:used_in] = @activity.used_in_activities.published
     @activity[:forks] = @activity.published_variations
@@ -163,7 +163,6 @@ class ActivitiesController < ApplicationController
       render :json => @activity.to_json
     else
       if mixpanel_anonymous_id
-        mixpanel.people.append(current_user.email, {'Free Trial Expired' => @activity.containing_course.slug})
         mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
       end
       render :json => {error: "No longer have access", path: landing_class_url(@activity.containing_course)}, status: :forbidden

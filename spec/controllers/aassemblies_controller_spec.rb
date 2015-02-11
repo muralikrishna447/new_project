@@ -8,9 +8,14 @@ describe AssembliesController do
 
   describe 'discount' do
     context "price computation" do
-      it "should compute the right discount" do
-        get :show, id: @assembly.id, coupon: 'b1b01d389a50'
-        assigns(:discounted_price).should eq(19.5)
+      it "should compute the right discount for a coupon" do
+        get :show, id: @assembly.id, coupon: 'a2a72a39da72'
+        assigns(:discounted_price).should eq(29.25)
+      end
+
+      it "should not offer the signup incentive since we aren't signed in" do
+        get :show, id: @assembly.id
+        assigns(:discounted_price).should eq(39.00)
       end
     end
   end
@@ -25,7 +30,7 @@ describe AssembliesController do
       it "should set flash" do
         expect{get :redeem, gift_token: "madeup"}.to change{flash[:error]}.to("Invalid gift code. Contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>.")
       end
-    end          
+    end
 
     context "valid gift certificate" do
       before(:each) do
@@ -93,6 +98,11 @@ describe AssembliesController do
 
         it "should set the flash notice" do
           expect{get :redeem, gift_token: "used"}.to change{flash[:notice]}.to("Gift code already used; click the orange button below to continue your class. If you need assistance, contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>.")
+        end
+
+        it "should offer the signup incentive for new user" do
+          get :show, id: @assembly.id
+          assigns(:discounted_price).should eq(19.50)
         end
       end
     end

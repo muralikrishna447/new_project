@@ -127,20 +127,23 @@ class Assembly < ActiveRecord::Base
 
   def self.free_trial_assembly(b64string)
     Assembly.find(Base64.decode64(b64string).split('-').map(&:to_i)[0])
-  end 
+  end
 
-    # This is obviously a very short term solution to price testing!
-  # We'll need to make some sort of admin for this or use an off the shelf solution.
-
-  def discounted_price(coupon)
+  def discounted_price(coupon, signup_incentive_available)
     return 0 if ! self.price
 
+    # Coupons
     pct = 1
     case coupon
     when 'a2a72a39da72'
       pct = 0.75
     when 'b1b01d389a50'
       pct = 0.5
+    end
+
+    # New users who haven't used their enrollment incentive yet always get 50%
+    if signup_incentive_available
+      pct = 0.5 unless pct < 0.5
     end
 
     (self.price * pct).round(2)
