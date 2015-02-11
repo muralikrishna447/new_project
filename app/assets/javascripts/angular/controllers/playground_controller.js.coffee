@@ -1,6 +1,6 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
-  host = 'http://localhost:3000'
-  # host = '//staging2-chefsteps.herokuapp.com'
+  # host = 'http://localhost:3000'
+  host = '//staging2-chefsteps.herokuapp.com'
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
