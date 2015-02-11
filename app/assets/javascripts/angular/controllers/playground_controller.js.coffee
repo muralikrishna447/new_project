@@ -70,4 +70,16 @@
     $scope.getTokenStatus = null
     $scope.testTokenStatus = null
     $scope.createUserStatus = null
+
+  $scope.getActivities = ->
+    $http.get(
+      host + '/api/v0/activities'
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.createUserStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      $scope.createUserStatus = "Error: #{JSON.stringify(data)}"
 ]
