@@ -1,6 +1,11 @@
 %div(ng-controller='PlaygroundController')
   .container
     .row
+      %h3 Get Activities
+      .btn(ng-click='getActivities()')
+        Get Acitivites
+        
+    .row
       %h3 Get Token
       %form(ng-submit='getToken()' ng-cloak)
         .alert(ng-if='getTokenStatus')
