@@ -302,7 +302,7 @@ Delve::Application.routes.draw do
 
   namespace :api do
     namespace :v0 do
-      match '/authenticate', to: 'auth#authenticate', via: [:post, :option]
+      match '/authenticate', to: 'auth#authenticate', via: [:post]
       resources :activities, only: [:index, :show]
       resources :ingredients, only: [:index, :show]
       resources :passwords, only: [:update] do
@@ -311,6 +311,7 @@ Delve::Application.routes.draw do
       end
       resources :search, only: [:index]
       resources :users, only: [:index, :create]
+      match '/*path' => 'base#options', :via => :options
     end
   end
 

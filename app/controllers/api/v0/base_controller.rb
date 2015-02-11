@@ -21,6 +21,10 @@ module Api
         headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
         headers['Access-Control-Max-Age'] = '1728000'
       end
+
+      def options
+        render :text => '', :content_type => 'text/plain'
+      end
       
       protected
 
