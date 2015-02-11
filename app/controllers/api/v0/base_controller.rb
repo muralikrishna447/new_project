@@ -14,7 +14,7 @@ module Api
       end
      
       def cors_preflight_check
-        put "CORS PREFLIGHT CHECK BFORE"
+        puts "CORS PREFLIGHT CHECK BFORE"
 
         headers['Access-Control-Allow-Origin'] = '*'
         headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
