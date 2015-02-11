@@ -2,7 +2,7 @@
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
-    $http.post('/api/v0/authenticate', $.param({user: $scope.user}), {
+    $http.post('https://staging2-chefsteps.herokuapp.com/api/v0/authenticate', $.param({user: $scope.user}), {
       headers: {
         "content-type" : "application/x-www-form-urlencoded"
       }
@@ -19,7 +19,7 @@
   $scope.testTokenStatus = null
   $scope.testToken = (token) ->
     $http.get(
-      '/api/v0/users'
+      'https://staging2-chefsteps.herokuapp.com/api/v0/users'
       headers: { 'Authorization': 'Bearer ' + token }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
