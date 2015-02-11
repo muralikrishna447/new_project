@@ -129,7 +129,7 @@ class Assembly < ActiveRecord::Base
     Assembly.find(Base64.decode64(b64string).split('-').map(&:to_i)[0])
   end
 
-  def discounted_price(coupon, signup_incentive_available)
+  def discounted_price(coupon, signup_incentive_available = nil)
     return 0 if ! self.price
 
     # Coupons

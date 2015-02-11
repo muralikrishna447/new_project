@@ -37,10 +37,7 @@
 
               .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
                 .buy-box
-                  %h4.text-center(ng-hide="#{current_user.present?}")
-                    50% off on your first class.
-
-                  -# abtest here just to record the split, no difference in ui
+                  -# abtest here just to record the split in mixpanel, no difference in ui
                   %div(cs-abtest test-name="Madlib Signup Incentive")
                   - discounted_price = @course.price ? @discounted_price : 0
                   = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate, free_trial_hours: @free_trial_hours, assembly_type_name: assembly_type_name
