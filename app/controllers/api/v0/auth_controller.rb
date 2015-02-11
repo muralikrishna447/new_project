@@ -2,7 +2,7 @@ module Api
   module V0
     class AuthController < BaseController
       def authenticate
-        logger.debug "AUTHENtICATE ACTION"
+        puts "AUTHENtICATE ACTION"
         begin
           user = User.find_by_email(params[:user][:email])
           if user && user.valid_password?(params[:user][:password])
