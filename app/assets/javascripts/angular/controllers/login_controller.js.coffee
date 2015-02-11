@@ -37,9 +37,24 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
   $scope.waitingForGoogle = false
 
   trackRegistration = (source, method) ->
-    properties = {source : source, method: method}
-    mixpanel.track('Signed Up JS', _.extend(properties, $rootScope.splits))
-    _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true]);
+    properties = _.extend({source : source, method: method}, $rootScope.splits)
+    mixpanel.track('Signed Up JS', properties)
+    _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true])
+
+    # Minimal intercom settings here; all of their details will be filled in from
+    # _intercom.html.haml on their next full page load. But we were finding that quite a few
+    # users never had a next page view, so the Intercom new user count was much lower than mixpanel.
+    u = $scope.authentication.currentUser()
+    if u
+      intercomData = _.extend(window.intercomSettings,
+        name: u.name,
+        email: u.email
+        user_id: u.id
+        user_hash: u.intercom_user_hash
+        created_at: Math.floor(new Date() / 1000)
+      )
+      # http://docs.intercom.io/install-on-your-web-product/integrating-intercom-in-one-page-app
+      Intercom?('boot', intercomData)
 
   $scope.setIntent = (intent) ->
     $scope.intent = intent
@@ -209,6 +224,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
               window.location.reload()
             ,5000)
           else
+            $scope.authentication.setCurrentUser(data.user)
             trackRegistration(source, "standard")
             # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
             csAdwords.track(998032928,'77TfCIjjrAgQoIzz2wM')
@@ -217,7 +233,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
             $scope.closeModal('login', false)
             $timeout( -> # Done so that the modal has time to close before triggering events
               $scope.$apply()
-              $scope.authentication.setCurrentUser(data.user)
               unless $scope.formFor == "purchase"
                 if $scope.intent == 'ftue'
                   csIntent.setIntent('ftue')
@@ -297,10 +312,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
         $scope.logged_in = true
         $scope.closeModal('login', false)
         unless source == "socialConnect"
+          $scope.authentication.setCurrentUser(data.user)
           $scope.alertService.addAlert({message: "You have been logged in through Facebook.", type: "success"}) unless data.new_user
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.dataLoadingService.stop()
-            $scope.authentication.setCurrentUser(data.user)
             if $scope.formFor != "purchase" && data.new_user
               csIntent.setIntent('ftue')
               csFtue.start()
@@ -354,9 +369,9 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
         $scope.logged_in = true
         $scope.closeModal('login', false)
         $scope.alertService.addAlert({message: "You have been logged in through Google.", type: "success"}) unless data.new_user
+      $scope.authentication.setCurrentUser(data.user)
       $timeout( -> # Done so that the modal has time to close before triggering events
         $scope.dataLoadingService.stop()
-        $scope.authentication.setCurrentUser(data.user)
         $scope.$broadcast('socialConnect', {})
         if $scope.inviteModalOpen
           $scope.loadGoogleContacts()

@@ -65,12 +65,12 @@
         data:
           user: user
       ).success( (data, status) ->
+        $scope.authentication.setCurrentUser(data.user)
         $scope.logged_in = true
         $scope.closeModal('login', false)
         unless source == "socialConnect"
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.dataLoadingService.stop()
-            $scope.authentication.setCurrentUser(data.user)
             if $scope.formFor != "purchase" && data.new_user
               $scope.loadFriends()
           , 300)
@@ -119,12 +119,12 @@
       data:
         google: eventData
     ).success( (data, status) ->
+      $scope.authentication.setCurrentUser(data.user)
       unless $scope.inviteModalOpen
         $scope.logged_in = true
         $scope.closeModal('login', false)
       $timeout( -> # Done so that the modal has time to close before triggering events
         $scope.dataLoadingService.stop()
-        $scope.authentication.setCurrentUser(data.user)
         if $scope.inviteModalOpen
           $scope.loadGoogleContacts()
         else if $scope.formFor != "purchase" && data.new_user
