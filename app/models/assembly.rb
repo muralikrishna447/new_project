@@ -143,7 +143,7 @@ class Assembly < ActiveRecord::Base
 
     # New users who haven't used their enrollment incentive yet always get 50%
     if signup_incentive_available
-      pct = 0.5
+      pct = 0.5 unless pct < 0.5
     end
 
     (self.price * pct).round(2)
