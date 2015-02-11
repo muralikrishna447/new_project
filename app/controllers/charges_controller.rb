@@ -2,7 +2,7 @@ class ChargesController < ApplicationController
 
   respond_to :json
 
-  # Very temporary hack to deal with: Enrollment failed with error: undefined method `enrollments' for nil:NilClass 
+  # Very temporary hack to deal with: Enrollment failed with error: undefined method `enrollments' for nil:NilClass
   skip_before_filter :verify_authenticity_token
 
   def create
@@ -22,12 +22,10 @@ class ChargesController < ApplicationController
       @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, 0, nil, hours)
       session.delete(:free_trial)
       if @enrollment && mixpanel_anonymous_id
-        mixpanel.people.append(current_user.email, {'Free Trial Enrolled' => assembly.slug})
         mixpanel.track(current_user.email, 'Free Trial Enrolled', {slug: assembly.slug, length: hours.to_s})
       end
     else # Normal course enrollment (paid or free)
       if current_user.enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first.try(:free_trial?) && assembly.paid? && mixpanel_anonymous_id
-        mixpanel.people.append(current_user.email, {'Free Trial Converted' => assembly.slug})
         mixpanel.track(current_user.email, "Free Trial Conversion", {slug: assembly.slug, length: current_user.class_enrollment(assembly).free_trial_length.to_s})
       end
       if assembly.paid?

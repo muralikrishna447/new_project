@@ -12,12 +12,14 @@
   scope: {
     testName: '@'
   }
+
   controller: ['$scope', ($scope) ->
     $scope.items = []
 
     addItem: (item)->
       $scope.items.push item
   ]
+
   link: (scope, element, attrs) ->
     testName = "Split Test: #{attrs.testName}"
 
@@ -32,9 +34,8 @@
       localStorageService.add(testName, showIndex)
 
     itemToBeShown = scope.items[showIndex]
-    itemToBeShown.showItem = true
+    itemToBeShown.showItem = true if itemToBeShown
     $rootScope.splits[testName] = showIndex
-
 ]
 
 @app.directive 'csAbtestItem', [ ->

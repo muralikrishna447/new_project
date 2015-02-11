@@ -41,9 +41,6 @@ describe "LoginController", ->
     gapi = { auth: jasmine.createSpyObj("auth", ["signIn"]) }
     mixpanel = {
       track: jasmine.createSpy("mixpanel.track")
-      people:
-        increment: jasmine.createSpy("mixpanel.people.increment")
-        set: jasmine.createSpy("mixpanel.people.set")
     }
     $window.gapi = gapi
     $window.mixpanel = mixpanel
@@ -373,9 +370,6 @@ describe "LoginController", ->
 
     it "should call mixpanel track", ->
       expect(window.mixpanel.track).toHaveBeenCalledWith("Google Invites Sent")
-
-    it "should call mixpanel people increment", ->
-      expect(window.mixpanel.people.increment).toHaveBeenCalledWith("Google Invitations", 2)
 
     it "should call switchModal", ->
       expect(scope.switchModal).toHaveBeenCalledWith("googleInvite", "welcome")

@@ -2,11 +2,16 @@
 - content_for :description, "Become a better cook with our online classes"
 - content_for :keywords, @assembly_courses.map(&:title).to_sentence
 
-.container
+.container(ng-cloak)
   .row.section-large
     .text-center
-      %h1(ng-cloak)
+      %h1
         Classes
+      %div(ng-show="#{current_user && current_user.signup_incentive_available}")
+        .section-small
+        %h3 Thanks for joining the ChefSteps community!
+        %h3 Enjoy a 50% discount on your first class.
+        .section-small
   /     %a(href="/courses" onclick="mixpanel.track('Class Banner Clicked');")
   /       %img.desktop-banner-retina(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/TiAbyp35QD2bwph7kXds")
   /       %img.desktop-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/5NwrXpzgSuWOeCvPh6FJ")

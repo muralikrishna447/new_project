@@ -20,8 +20,6 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
         eventData = {'Activity': likeable_type + "_" + likeable_id}
         Intercom?('trackEvent', 'liked', eventData)
         mixpanel.track('Liked', eventData)
-        mixpanel.people.set('Liked':likeable_type + "_" + likeable_id)
-        mixpanel.people.increment('Liked Count')
     )
 
 
@@ -35,8 +33,6 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
       url: url
     ).success((data, status, headers, config) ->
         mixpanel.track('Unliked', {'Activity': likeable_type + "_" + likeable_id})
-        mixpanel.people.set('Liked':likeable_type + "_" + likeable_id)
-        mixpanel.people.increment('Liked Count', - 1)
     )
 
   $scope.toggleLikeObject = (likeable_type, likeable_id) ->

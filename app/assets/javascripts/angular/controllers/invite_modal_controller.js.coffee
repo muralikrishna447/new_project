@@ -44,7 +44,6 @@
     $scope.inviteSite = 'facebook'
     $scope.facebook.friendInvites($scope.authentication.currentUser().id).then( ->
       mixpanel.track("Facebook Invites Sent")
-      mixpanel.people.increment('Facebook Invites Sent')
     )
     #This is a promise so you can do promisey stuff with it.
     # This version uses the chefsteps styling
@@ -65,12 +64,12 @@
         data:
           user: user
       ).success( (data, status) ->
+        $scope.authentication.setCurrentUser(data.user)
         $scope.logged_in = true
         $scope.closeModal('login', false)
         unless source == "socialConnect"
           $timeout( -> # Done so that the modal has time to close before triggering events
             $scope.dataLoadingService.stop()
-            $scope.authentication.setCurrentUser(data.user)
             if $scope.formFor != "purchase" && data.new_user
               $scope.loadFriends()
           , 300)
@@ -119,12 +118,12 @@
       data:
         google: eventData
     ).success( (data, status) ->
+      $scope.authentication.setCurrentUser(data.user)
       unless $scope.inviteModalOpen
         $scope.logged_in = true
         $scope.closeModal('login', false)
       $timeout( -> # Done so that the modal has time to close before triggering events
         $scope.dataLoadingService.stop()
-        $scope.authentication.setCurrentUser(data.user)
         if $scope.inviteModalOpen
           $scope.loadGoogleContacts()
         else if $scope.formFor != "purchase" && data.new_user
@@ -183,7 +182,6 @@
         from: "google_invite"
     ).success( (data, status) ->
       mixpanel.track("Google Invites Sent")
-      mixpanel.people.increment("Google Invitations", friendEmails.length)
       $scope.dataLoadingService.stop()
       $scope.showThankYou = true
     )
@@ -206,7 +204,6 @@
         from: "email_invite"
     ).success( (data, status) ->
       mixpanel.track("Email Invites Sent")
-      mixpanel.people.increment("Email Invitations", $scope.emailObject.emailToAddresses)
       $scope.dataLoadingService.stop()
       $scope.showThankYou = true
     )

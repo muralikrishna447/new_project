@@ -15,8 +15,11 @@
           %p.bubble(ng-show="register_error.errors.email")
             {{register_error.errors.email[0]}}
         &#46;
-      .madlib-item
-        I want to join {{getTotalUsers() | number}} others and learn how to be a better cook.
+      %div(cs-abtest test-name="Madlib Signup Incentive")
+        .madlib-item(cs-abtest-item)
+          I want to join {{getTotalUsers() | number}} others and learn how to be a better cook.
+        .madlib-item(cs-abtest-item)
+          I want 50% off my first class!
       .madlib-item#madlib-password-wrapper(ng-show="showMadlibPassword")
         Please set my password to
         %span.input-underlined.input-append.relative
