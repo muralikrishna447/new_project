@@ -302,7 +302,7 @@ Delve::Application.routes.draw do
 
   namespace :api do
     namespace :v0 do
-      match '/authenticate', to: 'auth#authenticate', via: [:post]
+      match '/authenticate', to: 'auth#authenticate', via: [:post, :option]
       resources :activities, only: [:index, :show]
       resources :ingredients, only: [:index, :show]
       resources :passwords, only: [:update] do
