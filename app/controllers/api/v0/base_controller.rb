@@ -1,7 +1,8 @@
 module Api
   module V0
     class BaseController < ActionController::Base
-      skip_before_filter :verify_authenticity_token
+      before_filter :add_allow_credentials_headers
+      
       protected
 
       def ensure_authorized
@@ -54,6 +55,11 @@ module Api
           return verified
         end
       end
+
+      def add_allow_credentials_headers                                                                                                                                                                                                                                          
+        response.headers['Access-Control-Allow-Origin'] = request.headers['Origin'] || '*'                                                                                                                                                                                                     
+        response.headers['Access-Control-Allow-Credentials'] = 'true'                                                                                                                                                                                                                          
+      end 
 
     end
   end
