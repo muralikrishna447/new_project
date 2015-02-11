@@ -22,7 +22,7 @@
   $scope.testToken = (token) ->
     $http.get(
       host + '/api/v0/users'
-      headers: { 'Authorization': 'Bearer ' + token }
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
