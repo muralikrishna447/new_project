@@ -58,7 +58,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       Intercom?('boot', intercomData)
 
       # Hack to allow Tim & Christof to distinguish old unincentivized signups so they can trigger a new intercom-based CTA
-      Intercom?('trackEvent', "signed-up-no-incentive", properties) if localStorageService.get("Split Test: Madlib Signup Incentive3") == "0"
+      Intercom?('trackEvent', "signed-up-no-incentive", properties) if localStorageService.get("Split Test: Madlib Signup Incentive4") == "0"
 
   $scope.setIntent = (intent) ->
     $scope.intent = intent
