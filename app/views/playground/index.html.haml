@@ -1,4 +1,4 @@
-%div(ng-controller='PlaygroundController')
+%div(ng-controller='PlaygroundController' ng-cloak)
   .container
     .row
       %h3 Get Activities
@@ -7,12 +7,12 @@
         .btn(ng-click='clear()')
           clear
       .btn(ng-click='getActivities()')
-        Get Acitivites
+        Get Activities
       %hr
         
     .row
       %h3 Get Token
-      %form(ng-submit='getToken()' ng-cloak)
+      %form(ng-submit='getToken()')
         .alert(ng-if='getTokenStatus')
           {{getTokenStatus}}
           .btn(ng-click='clear()')
@@ -27,7 +27,7 @@
 
     .row
       %h3 Test Token
-      %form(ng-submit='testToken(user.token)' ng-cloak)
+      %form(ng-submit='testToken(user.token)')
         .alert(ng-if='testTokenStatus')
           {{testTokenStatus}}
           .btn(ng-click='clear()')
@@ -40,7 +40,7 @@
 
     .row
       %h3 User Creation
-      %form(ng-submit='createUser(newUser)' ng-cloak)
+      %form(ng-submit='createUser(newUser)')
         .alert(ng-if='createUserStatus')
           {{createUserStatus}}
           .btn(ng-click='clear()')
@@ -57,7 +57,7 @@
 
     .row
       %h3 Reset Password
-      %form(ng-submit='resetPassword(forgetfulUser)' ng-cloak)
+      %form(ng-submit='resetPassword(forgetfulUser)')
         .alert(ng-if='resetPasswordStatus')
           {{resetPasswordStatus}}
           .btn(ng-click='clear()')

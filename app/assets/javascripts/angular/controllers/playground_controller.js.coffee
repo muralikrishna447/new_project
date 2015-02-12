@@ -70,6 +70,7 @@
     $scope.getTokenStatus = null
     $scope.testTokenStatus = null
     $scope.createUserStatus = null
+    $scope.getActivitiesStatus = null
 
   $scope.getActivities = ->
     $http.get(
