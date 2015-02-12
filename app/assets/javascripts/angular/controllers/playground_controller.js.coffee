@@ -38,7 +38,8 @@
   $scope.createUser = (newUser) ->
     $http.post(
       host + '/api/v0/users'
-      {user: $scope.newUser}
+      $.param({user: $scope.newUser})
+      headers: { "Content-Type" : "application/x-www-form-urlencoded", "x-csrf-token":undefined }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
@@ -54,6 +55,7 @@
     $http.post(
       '/api/v0/passwords/reset'
       {email: forgetfulUser.email}
+      headers: { "x-csrf-token":undefined }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
