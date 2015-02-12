@@ -7,9 +7,11 @@
           = render 'madlib'
 
 .container
-  .row.section
-    .span12
+  .row.section(cs-abtest test-name="Madlib Signup Incentive4" ng-cloak)
+    .span12(cs-abtest-item)
       %h1.text-orange Check out our classes
+    .span12(cs-abtest-item)
+      %h1.text-orange Check out our classes - new users save 50%!
   .row.section
     - if @classes.any?
       - @classes.each do |assembly_class|
@@ -20,7 +22,7 @@
         %h4
           = link_to 'See More', courses_path
       .span10.offset1
-        %p.lead 
+        %p.lead
           %br
           %h4 With Award-Winning Chefs to Help You Succeed
           %p.lead The James Beard award-winning culinary team at ChefSteps, along with its active global community of both novice and experienced cooks, will help you become more confident and creative in the kitchen.
@@ -68,7 +70,7 @@
       .row.section-large
         .span8.offset2
           .lead
-            = link_to 'http://forum.chefsteps.com' do 
+            = link_to 'http://forum.chefsteps.com' do
               .lead
               %h4 Get Involved with a Passionate Community
               %p.lead.black-link
@@ -82,7 +84,7 @@
 /    .row.section
 /      .span6
 /        %p.lead
-/          Yes, ChefSteps is entirely free-to-learn. Our goal is to collaborate with the global community of curious cooks to create original recipes, invent new techniques, and help us all become better cooks. 
+/          Yes, ChefSteps is entirely free-to-learn. Our goal is to collaborate with the global community of curious cooks to create original recipes, invent new techniques, and help us all become better cooks.
 /          / Skeptical? Read more here about how we plan to keep ChefSteps going without compromise.
 /      .span5.offset1
 /        %p.lead Keep up to date with the latest from ChefSteps.
