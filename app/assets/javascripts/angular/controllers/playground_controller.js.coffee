@@ -78,9 +78,9 @@
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
-      $scope.createUserStatus = "Success: #{JSON.stringify(data)}"
+      $scope.getActivitiesStatus = "Success: #{JSON.stringify(data)}"
     ).error (data, status, headers, cfg) ->
       console.log "error: "
       console.log data
-      $scope.createUserStatus = "Error: #{JSON.stringify(data)}"
+      $scope.getActivitiesStatus = "Error: #{JSON.stringify(data)}"
 ]
