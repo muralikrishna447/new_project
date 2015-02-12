@@ -1,6 +1,6 @@
 module Api
   module V0
-    class ActivitiesController < ApplicationController
+    class ActivitiesController < BaseController
       
       has_scope :sort, default: 'newest' do |controller, scope, value|
         case value

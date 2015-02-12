@@ -2,8 +2,13 @@
   .container
     .row
       %h3 Get Activities
+      .alert(ng-if='getActivitiesStatus')
+        {{getActivitiesStatus}}
+        .btn(ng-click='clear()')
+          clear
       .btn(ng-click='getActivities()')
         Get Acitivites
+      %hr
         
     .row
       %h3 Get Token
