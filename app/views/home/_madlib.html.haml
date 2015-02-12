@@ -25,10 +25,11 @@
           %p.bubble.passbubble(ng-show="register_error.errors.password")
             {{register_error.errors.password[0]}}
 
-      .button-row
-        %button.inline#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register(registrationSource)" ng-disabled="dataLoading") Sign Up Now
-        %div.inline(cs-abtest test-name="Madlib Signup Incentive2")
-          .madlib-item(cs-abtest-item)
-          .madlib-incentive.inline(cs-abtest-item)
+      .button-row(cs-abtest test-name="Madlib Signup Incentive3")
+        %div(cs-abtest-item)
+          %button#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register(registrationSource)" ng-disabled="dataLoading") Sign Up Now
+        %div(cs-abtest-item)
+          %button.inline#subscribe-email.btn.btn-primary.btn-large.signin(ng-click="register(registrationSource)" ng-disabled="dataLoading") Sign Up For Free Now
+          .madlib-incentive.inline
             %h5 &hellip; And Get 50% Off Your First Class
       %i.loading-spinner.icon-spinner.icon-spin(ng-show="dataLoading")
