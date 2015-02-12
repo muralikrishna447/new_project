@@ -24,7 +24,7 @@ module Api
 
       def options
         puts "OPTIONS CALLED"
-        head :status => 200, :'Access-Control-Allow-Headers' => 'Origin, Content-Type, Accept, Authorization, Token'
+        render :text => '', :content_type => 'text/plain'
       end
       
       protected
