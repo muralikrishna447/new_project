@@ -153,7 +153,11 @@ ActiveRecord::Schema.define(:version => 20150209233616) do
     t.integer  "position"
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
+<<<<<<< HEAD
     t.boolean  "include_disqus",  :default => true
+=======
+    t.boolean  "include_disqus",  :default => false
+>>>>>>> a1bd5dd0284fc19d726c4c91aadf89b13e5ea9ff
   end
 
   add_index "assembly_inclusions", ["assembly_id"], :name => "index_assembly_inclusions_on_assembly_id"
