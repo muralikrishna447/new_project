@@ -2,30 +2,30 @@ module Api
   module V0
     class BaseController < ActionController::Base
       # skip_before_filter :verify_authenticity_token
-      # before_filter :cors_preflight_check
-      # after_filter :cors_set_access_control_headers
+      before_filter :cors_preflight_check
+      after_filter :cors_set_access_control_headers
      
-      # def cors_set_access_control_headers
-      #   puts "CORS SET ACCESS CONTROL HEADERS CALLED"
-      #   headers['Access-Control-Allow-Origin'] = '*'
-      #   headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-      #   headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token'
-      #   headers['Access-Control-Max-Age'] = "1728000"
-      # end
+      def cors_set_access_control_headers
+        puts "CORS SET ACCESS CONTROL HEADERS CALLED"
+        headers['Access-Control-Allow-Origin'] = '*'
+        headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+        headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token'
+        headers['Access-Control-Max-Age'] = "1728000"
+      end
      
-      # def cors_preflight_check
-      #   puts "CORS PREFLIGHT CHECK BEFORE"
+      def cors_preflight_check
+        puts "CORS PREFLIGHT CHECK BEFORE"
 
-      #   headers['Access-Control-Allow-Origin'] = '*'
-      #   headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-      #   headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
-      #   headers['Access-Control-Max-Age'] = '1728000'
-      # end
+        headers['Access-Control-Allow-Origin'] = '*'
+        headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+        headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
+        headers['Access-Control-Max-Age'] = '1728000'
+      end
 
-      # def options
-      #   puts "OPTIONS CALLED"
-      #   head :status => 200, :'Access-Control-Allow-Headers' => 'Origin, Content-Type, Accept, Authorization, Token'
-      # end
+      def options
+        puts "OPTIONS CALLED"
+        head :status => 200, :'Access-Control-Allow-Headers' => 'Origin, Content-Type, Accept, Authorization, Token'
+      end
       
       protected
 
