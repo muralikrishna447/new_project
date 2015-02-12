@@ -74,6 +74,7 @@
   $scope.getActivities = ->
     $http.get(
       host + '/api/v0/activities'
+      headers: { "x-csrf-token":undefined }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
