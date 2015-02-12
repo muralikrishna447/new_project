@@ -1,6 +1,6 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
   # host = 'http://localhost:3000'
-  host = '//staging2-chefsteps.herokuapp.com'
+  host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
@@ -38,7 +38,8 @@
   $scope.createUser = (newUser) ->
     $http.post(
       host + '/api/v0/users'
-      {user: $scope.newUser}
+      $.param({user: $scope.newUser})
+      headers: { "Content-Type" : "application/x-www-form-urlencoded", "x-csrf-token":undefined }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
@@ -54,6 +55,7 @@
     $http.post(
       '/api/v0/passwords/reset'
       {email: forgetfulUser.email}
+      headers: { "x-csrf-token":undefined }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
