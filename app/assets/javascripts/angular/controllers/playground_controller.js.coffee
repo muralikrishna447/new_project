@@ -7,7 +7,7 @@
     $http.post(
       host + '/api/v0/authenticate'
       $.param({user: $scope.user})
-      headers: { "Content-Type" : "application/x-www-form-urlencoded", "x-csrf-token":undefined }
+      headers: { "Content-Type" : "application/x-www-form-urlencoded", "x-csrf-token":undefined, 'Authentication': 'Basic ZGVsdmU6aG93dG9jaGVmMjI=' }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
@@ -78,7 +78,7 @@
     console.log "HOST IS: #{host}"
     $http.get(
       host + '/api/v0/activities'
-      headers: { 'Content-Type': 'application/json; charset=utf-8', "x-csrf-token":undefined, 'Authentication': 'Basic ZGVsdmU6aG93dG9jaGVmMjI=' }
+      headers: { "x-csrf-token":undefined, 'Authentication': 'Basic ZGVsdmU6aG93dG9jaGVmMjI=' }
       withCredentials: true
       transformRequest: (data, headersGetter) ->
         headers = headersGetter()
