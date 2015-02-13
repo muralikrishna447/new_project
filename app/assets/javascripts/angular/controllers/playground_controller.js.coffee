@@ -75,9 +75,15 @@
     $scope.getActivitiesStatus = null
 
   $scope.getActivities = ->
+    console.log "HOST IS: #{host}"
     $http.get(
       host + '/api/v0/activities'
-      headers: { "x-csrf-token":undefined }
+      headers: { 'Content-Type': 'application/json; charset=utf-8', "x-csrf-token":undefined, 'Authentication': 'Basic ZGVsdmU6aG93dG9jaGVmMjI=' }
+      withCredentials: true
+      transformRequest: (data, headersGetter) ->
+        headers = headersGetter()
+        console.log "headers:"
+        console.log headers
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data
@@ -85,5 +91,11 @@
     ).error (data, status, headers, cfg) ->
       console.log "error: "
       console.log data
+      console.log "status: "
+      console.log status
+      console.log "headers: "
+      console.log headers()
+      console.log "config: "
+      console.log cfg
       $scope.getActivitiesStatus = "Error: #{JSON.stringify(data)}"
 ]
