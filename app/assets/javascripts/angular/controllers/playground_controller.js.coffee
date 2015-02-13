@@ -1,6 +1,7 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
   # host = 'http://localhost:3000'
-  host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
+  # host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
+  host = '//staging2-chefsteps.herokuapp.com'
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
@@ -75,7 +76,6 @@
     $scope.getActivitiesStatus = null
 
   $scope.getActivities = ->
-    console.log "HOST IS: #{host}"
     $http.get(
       host + '/api/v0/activities'
       headers: { "x-csrf-token":undefined, 'Authentication': 'Basic ZGVsdmU6aG93dG9jaGVmMjI=' }

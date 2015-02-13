@@ -2,9 +2,7 @@ module Api
   module V0
     class BaseController < ActionController::Base
       skip_before_filter :verify_authenticity_token
-      # before_filter :cors_preflight_check
-      # after_filter :cors_set_access_control_headers
-      before_filter :cors_set_access_control_headers
+      # before_filter :cors_set_access_control_headers
      
       def cors_set_access_control_headers
         puts "CORS SET ACCESS CONTROL HEADERS CALLED"
@@ -16,17 +14,6 @@ module Api
           render :text => '', :content_type => 'text/plain'
         end
       end
-     
-      # def cors_preflight_check
-      #   puts "CORS PREFLIGHT CHECK BEFORE"
-      #   if request.method == 'OPTIONS'
-      #     headers['Access-Control-Allow-Origin'] = '*'
-      #     headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-      #     headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
-      #     headers['Access-Control-Max-Age'] = '1728000'
-      #     render :text => '', :content_type => 'text/plain'
-      #   end
-      # end
 
       def options
         puts "OPTIONS CALLED"
