@@ -57,6 +57,11 @@ describe Api::V0::PasswordsController do
       post :reset, email: @user.email
       response.should be_success
     end
+
+    it 'should return an error if user does not exist for email provided' do
+      post :reset, email: 'some_random@email.com'
+      response.should_not be_success
+    end
   end
 
 end
