@@ -23,9 +23,9 @@ module Api::V0
 
     def reset
       @user = User.find_by_email params[:email]
-      exp = ((Time.now + 1.day).to_f * 1000).to_i
-      token = create_token(@user, exp, 'Password Reset')
       if @user
+        exp = ((Time.now + 1.day).to_f * 1000).to_i
+        token = create_token(@user, exp, 'Password Reset')
         UserMailer.reset_password(@user.email, token).deliver
         render json: { status: '200 Success'}, status: 200
       else
