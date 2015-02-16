@@ -54,7 +54,7 @@
   $scope.resetPasswordStatus = null
   $scope.resetPassword = (forgetfulUser) ->
     $http.post(
-      '/api/v0/passwords/reset'
+      host + '/api/v0/passwords/send_reset_email'
       {email: forgetfulUser.email}
       headers: { "x-csrf-token":undefined }
     ).success((data, status, headers, cfg) ->

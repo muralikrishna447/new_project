@@ -21,7 +21,7 @@ module Api::V0
       end
     end
 
-    def reset
+    def send_reset_email
       @user = User.find_by_email params[:email]
       if @user
         exp = ((Time.now + 1.day).to_f * 1000).to_i
