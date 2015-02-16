@@ -54,12 +54,12 @@ describe Api::V0::PasswordsController do
 
   context 'POST /reset' do
     it 'should send a password reset email' do
-      post :reset, email: @user.email
+      post :send_reset_email, email: @user.email
       response.should be_success
     end
 
     it 'should return an error if user does not exist for email provided' do
-      post :reset, email: 'some_random@email.com'
+      post :send_reset_email, email: 'some_random@email.com'
       response.should_not be_success
     end
   end
