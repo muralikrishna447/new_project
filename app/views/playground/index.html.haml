@@ -39,6 +39,19 @@
             clear
           %div
             {{getTokenStatus}}
+
+    %hr
+
+    .row
+      .span8.well-border
+        %h4 Authenticating a user with Facebook
+        .btn(ng-click='getTokenFacebook()')
+          Log in with Facebook
+        .alert(ng-if='getTokenStatusFacebook')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{getTokenStatusFacebook}}
     %hr
 
     .row
