@@ -23,6 +23,18 @@
                   %cs-image-video(image='currentIncludable.includable_image_id || currentIncludable.includable.featured_image' video='currentIncludable.includable.youtube_id')
                   %div(csFixNakedLinks="")
                     = render 'activities/main_activity_content'
+                .prev-next-group(ng-class="{'hide-when-menu-showing': showCourseMenu}" ng-cloak)
+                  .row-fluid.section
+                    .span12
+                      .course-nav-bottom
+                        .course-nav-bottom-center.non-responsive
+                          %h3
+                            .course-nav-item.btn.btn-primary(ng-class="{disabled: ! prevInclusion()}" ng-click="loadPrevInclusion()")
+                              PREVIOUS
+                            .course-nav-item(ng-bind-html="currentIncludable.includable_title")
+                            .course-nav-item.btn.btn-primary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
+                              NEXT
+                          %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html="'NEXT: ' + nextInclusion().includable_title")
                   .comments-container.section.noprint#comments(ng-if="currentIncludable.include_disqus")
                     .standard-item
                       %h3 Discussion
@@ -54,18 +66,7 @@
                         %i.icon-edit
                         edit
 
-        .prev-next-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
-          .row-fluid.section
-            .span12
-              .course-nav-bottom
-                .course-nav-bottom-center.non-responsive
-                  %h3
-                    .course-nav-item.btn.btn-primary(ng-class="{disabled: ! prevInclusion()}" ng-click="loadPrevInclusion()")
-                      PREVIOUS
-                    .course-nav-item(ng-bind-html="currentIncludable.includable_title")
-                    .course-nav-item.btn.btn-primary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
-                      NEXT
-                  %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html="'NEXT: ' + nextInclusion().includable_title")
+     
         / - if @course.id == 100
         /   .row-fluid.section
         /     .span12.course-comments
