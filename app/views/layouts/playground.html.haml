@@ -125,6 +125,24 @@
         xfbml: true,
         version: 'v2.1'
       });
+
+      FB.getLoginStatus(function(response) {
+        var facebookResponse;
+        facebookResponse = {};
+        facebookResponse.user = {} 
+        if (response.status === 'connected') {
+          facebookResponse.status = 'connected';
+          facebookResponse.user.facebook_user_id = response.authResponse.userID
+          facebookResponse.user.authentication_token = response.authResponse.accessToken
+        } else if (response.status === 'not_authorized') {
+          facebookResponse.status = 'not authorized';
+        } else {
+          facebookResponse.status = 'not connected';
+        }
+        window.facebookResponse = facebookResponse
+        console.log("window.facebookResponse: ");
+        console.log(window.facebookResponse);
+      });
     };
 
     (function(d, s, id) {

@@ -1,4 +1,4 @@
-%div(ng-controller='PlaygroundController' ng-cloak)
+%div(ng-controller='PlaygroundController' ng-cloak ng-init='init()')
   .container
     .row
       .span12
@@ -47,11 +47,11 @@
         %h4 Authenticating a user with Facebook
         .btn(ng-click='getTokenFacebook()')
           Log in with Facebook
-        .alert(ng-if='getTokenStatusFacebook')
+        .alert(ng-if='getTokenFacebookStatus')
           .btn(ng-click='clear()')
             clear
           %div
-            {{getTokenStatusFacebook}}
+            {{getTokenFacebookStatus}}
     %hr
 
     .row
