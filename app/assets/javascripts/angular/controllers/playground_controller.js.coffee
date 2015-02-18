@@ -1,7 +1,8 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
   # host = 'http://localhost:3000'
   # host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
-  host = '//staging2-chefsteps.herokuapp.com'
+  # host = '//staging2-chefsteps.herokuapp.com'
+  host = 'http://chefsteps.dev'
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
@@ -34,6 +35,7 @@
         $scope.getTokenFacebookStatus = "Successfully get user info from Facebook: #{JSON.stringify(user)}"
         $scope.$apply()
     else
+      # New user from Facebook, so we'll create an account for them
       FB.login ( (loginResponse) ->
         if loginResponse.authResponse
           console.log 'loginResponse: '
@@ -46,8 +48,20 @@
             console.log meResponse
             user.name = meResponse.first_name + ' ' + meResponse.last_name
             user.email = meResponse.email
+            console.log "user: "
             console.log user
-            $scope.getTokenFacebookStatus = "Successfully get user info from Facebook: #{JSON.stringify(user)}"
+            $http.post(
+              host + '/api/v0/users'
+              $.param({user: user})
+              headers: { "Content-Type" : "application/x-www-form-urlencoded", "x-csrf-token":undefined }
+            ).success((data, status, headers, cfg) ->
+              console.log "success: "
+              console.log data
+              $scope.getTokenFacebookStatus = "Success: #{JSON.stringify(data)}"
+            ).error (data, status, headers, cfg) ->
+              console.log "error: "
+              console.log data
+              $scope.getTokenFacebookStatus = "Error: #{JSON.stringify(data)}"
             $scope.$apply()
       ), {scope: 'email'}
 
