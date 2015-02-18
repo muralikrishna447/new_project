@@ -27,7 +27,7 @@ describe Api::V0::PasswordsController do
 
   end
 
-  context 'PUT /update_from_reset' do
+  context 'PUT /update_from_email' do
     before :each do
       valid_exp = ((Time.now + 1.day).to_f * 1000).to_i
       invalid_exp = ((Time.now - 1.day).to_f * 1000).to_i
@@ -36,17 +36,17 @@ describe Api::V0::PasswordsController do
     end
 
     it 'should not update a user password if token is not present' do
-      put :update_from_reset, {id: @user.id, new_password: 'SomeNewPassword'}
+      post :update_from_email, {id: @user.id, password: 'SomeNewPassword'}
       response.should_not be_success
     end
 
     it 'should update a user password if a valid token is present' do
-      put :update_from_reset, {id: @user.id, new_password: 'SomeNewPassword', token: @password_token}
+      post :update_from_email, {id: @user.id, password: 'SomeNewPassword', token: @password_token}
       response.should be_success
     end
 
     it 'should not update a user password if valid token has expired' do
-      put :update_from_reset, {id: @user.id, new_password: 'SomeNewPassword', token: @expired_password_token}
+      post :update_from_email, {id: @user.id, password: 'SomeNewPassword', token: @expired_password_token}
       response.should_not be_success
     end
     

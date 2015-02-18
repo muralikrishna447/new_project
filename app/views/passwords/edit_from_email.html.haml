@@ -1,0 +1,13 @@
+.container
+  %h3 Choose a new password:
+  %div(ng-controller='PasswordsController')
+    %form(ng-submit='updateFromEmail()')
+      .control-group
+        %input(type='password' ng-model='password' placeholder='password')
+      .control-group
+        %input.btn(type='submit' value='Update')
+    .alert(ng-if='updatePasswordStatus')
+      .btn(ng-click='clear()')
+        clear
+      %div
+        {{updatePasswordStatus}}

@@ -1,7 +1,7 @@
 module Api::V0
   class PasswordsController < BaseController
     before_filter :ensure_authorized, only: [:update]
-    before_filter :ensure_password_token, only: [:update_from_reset]
+    before_filter :ensure_password_token, only: [:update_from_email]
 
     def update
       @user = User.find params[:id]
@@ -12,9 +12,10 @@ module Api::V0
       end
     end
 
-    def update_from_reset
+    def update_from_email
       @user = User.find_by_email @user_email
-      if @user.update_attribute(:password, params[:new_password])
+      @user.password = params[:password]
+      if @user.save!
         render json: { status: '200 Success'}, status: 200
       else
         render json: {status: '401 Unauthorized'}, status: 401
