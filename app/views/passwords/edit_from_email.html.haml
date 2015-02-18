@@ -1,13 +1,10 @@
 .container
   %h3 Choose a new password:
-  %div(ng-controller='PasswordsController')
-    %form(ng-submit='updateFromEmail()')
+  %div(ng-controller='PasswordsController' ng-cloak)
+    %form(ng-submit='updateFromEmail()' ng-hide="updateFromEmailStatus.status=='success'")
       .control-group
         %input(type='password' ng-model='password' placeholder='password')
       .control-group
         %input.btn(type='submit' value='Update')
-    .alert(ng-if='updatePasswordStatus')
-      .btn(ng-click='clear()')
-        clear
-      %div
-        {{updatePasswordStatus}}
+    .alert(ng-if='updateFromEmailStatus.status' ng-class="alertClass()")
+      {{updateFromEmailStatus.message}}
