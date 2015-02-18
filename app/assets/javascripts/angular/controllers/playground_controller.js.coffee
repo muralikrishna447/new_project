@@ -19,6 +19,38 @@
       console.log data
       $scope.getTokenStatus = "Error: #{JSON.stringify(data)}"
 
+  $scope.getTokenFacebookStatus = null
+  $scope.getTokenFacebook = (user) ->
+    user = {}
+    status = window.facebookResponse.status
+    if status == 'connected'
+      user = window.facebookResponse.user
+      FB.api '/me', (meResponse) ->
+        console.log "meResponse: "
+        console.log meResponse
+        user.name = meResponse.first_name + ' ' + meResponse.last_name
+        user.email = meResponse.email
+        console.log user
+        $scope.getTokenFacebookStatus = "Successfully get user info from Facebook: #{JSON.stringify(user)}"
+        $scope.$apply()
+    else
+      FB.login ( (loginResponse) ->
+        if loginResponse.authResponse
+          console.log 'loginResponse: '
+          console.log loginResponse
+          user.authentication_token = loginResponse.authResponse.accessToken
+          user.facebook_user_id = loginResponse.authResponse.userID
+          user.provider = "facebook"
+          FB.api '/me', (meResponse) ->
+            console.log "meResponse: "
+            console.log meResponse
+            user.name = meResponse.first_name + ' ' + meResponse.last_name
+            user.email = meResponse.email
+            console.log user
+            $scope.getTokenFacebookStatus = "Successfully get user info from Facebook: #{JSON.stringify(user)}"
+            $scope.$apply()
+      ), {scope: 'email'}
+
   $scope.testTokenStatus = null
   $scope.testToken = (token) ->
     $http.get(
