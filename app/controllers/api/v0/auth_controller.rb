@@ -16,6 +16,20 @@ module Api
         end
       end
 
+      def authenticate_facebook
+        puts "USER EMAILS BEFORE"
+        puts params[:user][:email]
+        user = User.find_by_email(params[:user][:email])
+        puts "USER EMAILS"
+        puts user
+        puts params[:user][:email]
+        if user && user.provider == 'facebook' && user.authentication_token == params[:user][:authentication_token]
+          render json: {status: '200 Success', token: create_token(user)}, status: 200
+        else
+          render json: {status: "401 Unauthorized user: #{user.inspect}, u: #{params[:user][:email]}"}, status: 401
+        end
+      end
+
     end
   end
 end

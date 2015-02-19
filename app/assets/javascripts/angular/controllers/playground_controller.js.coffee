@@ -1,8 +1,8 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
   # host = 'http://localhost:3000'
   # host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
-  # host = '//staging2-chefsteps.herokuapp.com'
-  host = 'http://chefsteps.dev'
+  host = '//staging2-chefsteps.herokuapp.com'
+  # host = 'http://chefsteps.dev'
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
@@ -25,14 +25,28 @@
     user = {}
     status = window.facebookResponse.status
     if status == 'connected'
+      # Existing user who has already connected with Facebook
       user = window.facebookResponse.user
       FB.api '/me', (meResponse) ->
         console.log "meResponse: "
         console.log meResponse
         user.name = meResponse.first_name + ' ' + meResponse.last_name
         user.email = meResponse.email
+        console.log 'HERE IS THE USER'
         console.log user
-        $scope.getTokenFacebookStatus = "Successfully get user info from Facebook: #{JSON.stringify(user)}"
+        $http.post(
+          host + '/api/v0/authenticate_facebook'
+          $.param({user: user})
+          headers: { "Content-Type" : "application/x-www-form-urlencoded", "x-csrf-token":undefined }
+        ).success((data, status, headers, cfg) ->
+          console.log "success: "
+          console.log data
+          $scope.getTokenFacebookStatus = "Success: #{JSON.stringify(data)}"
+          $scope.user.token = data.token
+        ).error (data, status, headers, cfg) ->
+          console.log "error: "
+          console.log data
+          $scope.getTokenFacebookStatus = "Error: #{JSON.stringify(data)}"
         $scope.$apply()
     else
       # New user from Facebook, so we'll create an account for them

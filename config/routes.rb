@@ -307,6 +307,7 @@ Delve::Application.routes.draw do
   namespace :api do
     namespace :v0 do
       match '/authenticate', to: 'auth#authenticate', via: [:post, :options]
+      match '/authenticate_facebook', to: 'auth#authenticate_facebook', via: [:post, :options]
       resources :activities, only: [:index, :show]
       resources :ingredients, only: [:index, :show]
       resources :passwords, only: [:update] do
