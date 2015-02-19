@@ -55,7 +55,7 @@
           console.log 'loginResponse: '
           console.log loginResponse
           user.authentication_token = loginResponse.authResponse.accessToken
-          user.facebook_user_id = loginResponse.authResponse.userID
+          user.user_id = loginResponse.authResponse.userID
           user.provider = "facebook"
           FB.api '/me', (meResponse) ->
             console.log "meResponse: "
@@ -134,6 +134,7 @@
     $scope.testTokenStatus = null
     $scope.createUserStatus = null
     $scope.getActivitiesStatus = null
+    $scope.getTokenFacebookStatus = null
 
   $scope.getActivities = ->
     $http.get(

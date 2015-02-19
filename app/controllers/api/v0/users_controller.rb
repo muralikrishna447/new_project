@@ -13,18 +13,13 @@ module Api
         # Todo, dry this up
         if params[:user][:provider] && params[:user][:provider] == 'facebook'
           @user = User.facebook_connect(params[:user])
-          if @user
-            render json: {status: '200 Success', token: create_token(@user)}, status: 200
-          else
-            render json: {status: '400 Bad Request'}, status: 400
-          end
         else
           @user = User.new(params[:user])
-          if @user.save
-            render json: {status: '200 Success', token: create_token(@user)}, status: 200
-          else
-            render json: {status: '400 Bad Request'}, status: 400
-          end
+        end
+        if @user.save
+          render json: {status: '200 Success', token: create_token(@user)}, status: 200
+        else
+          render json: {status: '400 Bad Request'}, status: 400
         end
       end
 

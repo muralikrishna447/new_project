@@ -132,7 +132,7 @@
         facebookResponse.user = {} 
         if (response.status === 'connected') {
           facebookResponse.status = 'connected';
-          facebookResponse.user.facebook_user_id = response.authResponse.userID
+          facebookResponse.user.user_id = response.authResponse.userID
           facebookResponse.user.authentication_token = response.authResponse.accessToken
         } else if (response.status === 'not_authorized') {
           facebookResponse.status = 'not authorized';

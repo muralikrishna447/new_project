@@ -23,10 +23,10 @@ module Api
         puts "USER EMAILS"
         puts user
         puts params[:user][:email]
-        if user && user.provider == 'facebook' && user.authentication_token == params[:user][:authentication_token]
+        if user && user.provider == 'facebook' && user.facebook_user_id == params[:user][:user_id]
           render json: {status: '200 Success', token: create_token(user)}, status: 200
         else
-          render json: {status: "401 Unauthorized user: #{user.inspect}, u: #{params[:user][:email]}"}, status: 401
+          render json: {status: "401 Unauthorized user: #{user.inspect}, u: #{params[:user]}"}, status: 401
         end
       end
 
