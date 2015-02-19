@@ -1,6 +1,6 @@
 module Api
   module V0
-    class IngredientsController < ApplicationController
+    class IngredientsController < BaseController
 
       def index
         per = params[:per] ? params[:per] : 12

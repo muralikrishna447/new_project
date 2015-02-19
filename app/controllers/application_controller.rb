@@ -283,6 +283,7 @@ private
   end
 
   def cors_set_access_control_headers
+    puts "CORS SET FROM ApplicationController"
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
     headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type, Authorization'
