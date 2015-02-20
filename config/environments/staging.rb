@@ -86,5 +86,12 @@ Delve::Application.configure do
   end
 
   DISQUS_SHORTNAME = "delvestaging"
+
+  config.middleware.insert_before ActionDispatch::Static, Rack::Cors, debug: true do
+    allow do
+      origins '*'
+      resource '/api/v0/*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete]
+    end
+  end
 end
 
