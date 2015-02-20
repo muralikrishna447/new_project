@@ -36,6 +36,7 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     $scope.openSocialWindow 'Email', "mailto:?subject="+ encodeURIComponent($scope.emailSubject()) + "&body=" + encodeURIComponent($scope.emailBody())
 
   $scope.shareEmbedly = ->
+    mixpanel.track('Share', { 'Network': 'Embedly', 'URL' : $scope.socialURL()})
     embedly 'modal',
       url: $scope.socialURL() + "?utm_source=embedly"
 
