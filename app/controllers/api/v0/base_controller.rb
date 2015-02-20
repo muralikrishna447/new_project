@@ -67,6 +67,8 @@ module Api
         puts secret
         puts secret.class
         key = OpenSSL::PKey::RSA.new secret, 'cooksmarter'
+        puts key
+        puts key.class
         issued_at = (Time.now.to_f * 1000).to_i
         
         claim = {
