@@ -81,4 +81,11 @@ Delve::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   DISQUS_SHORTNAME = "chefstepsproduction"
+
+  config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
+    allow do
+      origins '*'
+      resource '/api/v0/*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete]
+    end
+  end
 end
