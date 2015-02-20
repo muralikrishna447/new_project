@@ -13,5 +13,8 @@
     .btn-holder
       .btn.btn-secondary.btn-social.btn-social-gplus.pulse-anim-before(ng-click="shareGooglePlus()")
         = render 'layouts/social_button', icon: "google-plus", networkFriendlyName: "Google+"
+    .btn-holder
+      .btn.btn-secondary.btn-social.btn-social-embedly.pulse-anim-before(ng-click="shareEmbedly()")
+        = render 'layouts/social_button', icon: "external-link", networkFriendlyName: "Embedly"
 
 
