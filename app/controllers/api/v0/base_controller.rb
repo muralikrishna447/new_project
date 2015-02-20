@@ -85,7 +85,9 @@ module Api
       end
 
       def valid_token?(token, restrict_to = nil)
-        key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+        puts "HERE IS THE KEY:"
+        puts ENV["AUTH_SECRET_KEY"]
+        key = OpenSSL::PKey::RSA.new(Base64.decode64(ENV["AUTH_SECRET_KEY"]), 'cooksmarter')
         decoded = JSON::JWT.decode(token, key)
         verified = JSON::JWT.decode(decoded.to_s, key.to_s)
         time_now = (Time.now.to_f * 1000).to_i
