@@ -20,7 +20,7 @@
           %i.icon-cs-comment-filled
         .tool-name(ng-pluralize
                   count='commentCount'
-                  when="  { '-1' : 'Comments', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")  
+                  when="  { '-1' : 'Comments', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")
 
 
   %li(ng-if="getObjectTypeName() != 'Upload'"
@@ -37,6 +37,13 @@
         %i.icon-envelope-alt
       .tool-name
         Email
+
+  %li(ng-click="shareEmbedly()")
+    .tool-group
+      .icon-holder
+        %i.fa.fa-code
+      .tool-name
+        Embed this recipe
 
   -if can?(:update, @activity) && @include_edit_toolbar
     %li(  ng-click="maybeStartEditMode()"
