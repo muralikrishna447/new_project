@@ -7,4 +7,12 @@ class UserMailer < ActionMailer::Base
     @custom_text = custom_text
     mail(bcc: to, subject: "Join #{@sender.name} on ChefSteps and cook smarter")
   end
+
+  def reset_password(to, token)
+    @token = token
+    # host = 'https://chefsteps.com'
+    host = 'https://staging2-chefsteps.herokuapp.com'
+    @update_password_link = host + "/passwords/edit_from_email/#/?token=#{token}"
+    mail(to: to, subject: "ChefSteps Password Reset")
+  end
 end

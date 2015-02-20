@@ -64,6 +64,7 @@ gem 'nori'
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 gem 'aws-sdk'
+gem 'json-jwt'
 
 # gem 'ar-octopus', :git => 'https://github.com/tchandy/octopus.git'
 gem 'resque'

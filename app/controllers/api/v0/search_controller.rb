@@ -1,6 +1,6 @@
 module Api
   module V0
-    class SearchController < ApplicationController
+    class SearchController < BaseController
 
       def index
         @results = Activity.published.search_all(params[:query]).page(params[:page]).per(12)
