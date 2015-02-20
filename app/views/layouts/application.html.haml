@@ -12,7 +12,7 @@
       window.lastPerfTime = new Date();
       window.logPerf = function(where) {d2 = new Date(); console.log(where + ": " + (d2 - window.lastPerfTime)); window.lastPerfTime = d2;};
       logPerf("HEAD");
-      
+
     %title= "#{yield :title} | ChefSteps"
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
@@ -109,7 +109,7 @@
       %i.icon-page-load
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
-  
+
   = render "layouts/login_hack"
   %script(src="//afternoon-meadow-1250.herokuapp.com/export/loader.js")
   = javascript_include_tag 'application'
@@ -124,9 +124,8 @@
     = render 'layouts/facebook_remarketing'
 
   = render 'layouts/stripe'
-  = render 'layouts/inspectlet'
-  = render 'layouts/crazyegg'
   = render 'layouts/intercom'
+  = render 'layouts/embedly'
   = yield(:custom_js)
 
 -# This load on every page, so a convenient place to make sure mixpanel identity is known

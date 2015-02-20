@@ -35,6 +35,10 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
   $scope.shareEmail = ->
     $scope.openSocialWindow 'Email', "mailto:?subject="+ encodeURIComponent($scope.emailSubject()) + "&body=" + encodeURIComponent($scope.emailBody())
 
+  $scope.shareEmbedly = ->
+    embedly 'modal',
+      url: $scope.socialURL() + "?utm_source=embedly"
+
   # Maybe make this a service with caching?
   $scope.getSocialCounts = ->
     www_url = encodeURIComponent($scope.socialURL().replace("//chefsteps", "//www.chefsteps"))
