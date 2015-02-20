@@ -10,13 +10,14 @@ module Api
       end
 
       def create
-        # Todo, dry this up
+        params[:source] ||= "api_standard"
         if params[:user][:provider] && params[:user][:provider] == 'facebook'
           @user = User.facebook_connect(params[:user])
         else
           @user = User.new(params[:user])
         end
         if @user.save
+          email_list_signup(@user.name, @user.email, params[:source])
           render json: {status: '200 Success', token: create_token(@user)}, status: 200
         else
           render json: {status: '400 Bad Request'}, status: 400
