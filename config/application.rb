@@ -120,7 +120,7 @@ module Delve
     if Rails.env.test?
       ENV["AUTH_SECRET_KEY"] = File.read("config/rsa_test.pem")
     else
-      ENV["AUTH_SECRET_KEY"] = File.read("config/auth_key.pem")
+      ENV["AUTH_SECRET_KEY"] = File.read(Rails.root.join('.ssh', 'auth_key.pem'))
     end
   end
 end
