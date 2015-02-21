@@ -5,14 +5,18 @@ module Api
         puts "AUTHENtICATE ACTION"
         begin
           user = User.find_by_email(params[:user][:email])
-          if user && user.valid_password?(params[:user][:password])
-            render json: {status: '200 Success', token: create_token(user)}, status: 200
+          if user
+            if user.valid_password?(params[:user][:password])
+              render json: {status: '200 Success', token: create_token(user)}, status: 200
+            else
+              render json: {status: '401 Unauthorized', message: 'Password provided was invalid.'}, status: 401
+            end
           else
-            render json: {status: '401 Unauthorized'}, status: 401
+            render json: {status: '401 Unauthorized', message: 'User was not found for email provided.'}, status: 401
           end
         rescue Exception => e
           puts "Authenticate Exception: #{e.class} #{e}"
-          render json: {status: '400 Bad Request'}, status: 400
+          render json: {status: '400 Bad Request', message: 'There was an error processing this request. Please provide a valid email and password.'}, status: 400
         end
       end
 

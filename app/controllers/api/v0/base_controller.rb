@@ -62,7 +62,8 @@ module Api
       end
 
       def create_token(user, exp=nil, restrict_to=nil)
-        key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+        secret = ENV["AUTH_SECRET_KEY"]
+        key = OpenSSL::PKey::RSA.new secret, 'cooksmarter'
         issued_at = (Time.now.to_f * 1000).to_i
         
         claim = {
