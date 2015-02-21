@@ -20,7 +20,7 @@ module Api
           email_list_signup(@user.name, @user.email, params[:source])
           render json: {status: '200 Success', token: create_token(@user)}, status: 200
         else
-          render json: {status: '400 Bad Request'}, status: 400
+          render json: {status: '400 Bad Request', message: 'An error occured when trying to create this user.'}, status: 400
         end
       end
 
