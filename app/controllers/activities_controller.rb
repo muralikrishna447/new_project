@@ -111,10 +111,16 @@ class ActivitiesController < ApplicationController
 
         @user_activity = UserActivity.new
 
-        # cookies.delete(:viewed_activities)
-        @viewed_activities = cookies[:viewed_activities].blank? ? [] : JSON.parse(cookies[:viewed_activities])
-        @viewed_activities << [@activity.id, DateTime.now]
-        cookies[:viewed_activities] = @viewed_activities.to_json
+        if current_user && cookies[:viewed_activities]
+          cookies.delete(:viewed_activities)
+        else
+          @viewed_activities = cookies[:viewed_activities].blank? ? [] : JSON.parse(cookies[:viewed_activities])
+          @viewed_activities << [@activity.id, DateTime.now]
+          if @viewed_activities.length > 3
+            @viewed_activities.shift
+          end
+          cookies[:viewed_activities] = @viewed_activities.to_json
+        end
 
         if ! @course
           @include_edit_toolbar = true
