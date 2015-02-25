@@ -249,6 +249,7 @@ Delve::Application.routes.draw do
   get '/courses/:id/:activity_id', to: redirect('/classes/%{id}#/%{activity_id}')
 
   resources :courses, only: [:index], controller: :courses
+  match '/classes', to: 'courses#index'
 
   resources :classes, controller: :assemblies do
     member do

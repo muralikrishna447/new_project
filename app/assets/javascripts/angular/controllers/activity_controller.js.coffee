@@ -107,12 +107,15 @@ window.deepCopy = (obj) ->
     "Adjust based on recipe " + $scope.maybeDisplayCurrentScaling()
 
   $scope.fork = ->
-    $rootScope.loading += 1
-    $scope.activity.$update({fork: true},
-    ((response) ->
-      # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
-      window.location = response.redirect_to if response.redirect_to)
-    )
+    if $scope.csAuthentication.currentUser()
+      $rootScope.loading += 1
+      $scope.activity.$update({fork: true},
+      ((response) ->
+        # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
+        window.location = response.redirect_to if response.redirect_to)
+      )
+    else
+      $scope.$emit 'openLoginModal'
 
   # Overall edit mode
   $scope.startEditMode = ->
