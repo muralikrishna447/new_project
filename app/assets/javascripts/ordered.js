@@ -4,7 +4,6 @@
 //= require namespace
 //= require factory
 //= require base_router
-//= require router
 //= require recipe_units
 //= require translate
 //= require handlebar_helpers
