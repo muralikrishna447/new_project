@@ -1,8 +1,0 @@
-= hb 'if key_image' do
-  %i.icon-star{ data: {behavior: 'toggle-key-image'} }
-= hb 'unless key_image' do
-  %i.icon-star-empty{ data: {behavior: 'toggle-key-image'} }
-
-%img.img-polaroid{ src: hb('url') }
-%span.key-explanation{ data: {behavior: 'edit-explanation'} }= hb("default_value key_explanation '<i>Enter key explanation:</i>'")
-

@@ -1,3 +1,0 @@
-%form#key-explanation
-  %textarea{name: 'key_explanation'}= hb 'key_explanation'
-

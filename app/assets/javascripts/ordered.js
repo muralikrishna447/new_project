@@ -1,16 +1,10 @@
 //= require stick_to_top
-//= require array_remove
 //= require click_toggle
 //= require container_height
 //= require namespace
 //= require factory
 //= require base_router
 //= require router
-//= require backbone/views/templated_view
 //= require recipe_units
 //= require translate
 //= require handlebar_helpers
-//= require_tree ./backbone/models
-//= require ./backbone/views/question
-//= require_tree ./backbone
-//= require_tree ./templates

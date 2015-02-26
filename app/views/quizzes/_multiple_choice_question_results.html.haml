@@ -1,8 +1,0 @@
-- if !results.empty?
-  .results-header.row-fluid
-    .span6
-      .center
-        Multiple Choice Questions:
-
-  - results.each_with_index do |result, index|
-    = render 'quizzes/multiple_choice_question_result', result: result, count: index + 1
