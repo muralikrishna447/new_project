@@ -74,6 +74,11 @@ class ActivitiesController < ApplicationController
   end
 
   def show
+    if params[:start_in_edit]
+      unless can?(:update, @activity)
+        redirect_to activity_path(@activity)
+      end
+    end
     @show_app_add = true
     @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
     add_extra_json_info

@@ -26,6 +26,47 @@ describe ActivitiesController do
         get :show, id: @activity.slug
         assigns(:show_app_add).should_not be_nil
       end
+
+      context 'start in edit' do
+        before :each do
+          @admin = Fabricate :user, name: 'An Admin', email: 'admin@chefsteps.com', role: 'admin'
+          @user1 = Fabricate :user, name: 'A User', email: 'user@user.com', role: 'user'
+          @user2 = Fabricate :user, name: 'Another User', email: 'anotheruser@user.com', role: 'user'
+          @chefsteps_activity = Fabricate :activity, title: 'A New Recipe', published: true
+          @user1_activity = Fabricate :activity, title: 'A User Recipe', creator: @user1, published: true
+        end
+
+        it 'redirects if a non admin tries to edit a chefsteps activity' do
+          sign_in @user1
+          get :show, id: @chefsteps_activity.slug, start_in_edit: true
+          expect(response).to redirect_to(@chefsteps_activity)
+        end
+
+        it 'redirects if a user tries to edit another users activity' do
+          sign_in @user2
+          get :show, id: @user1_activity.slug, start_in_edit: true
+          expect(response).to redirect_to(@user1_activity)
+        end
+
+        it 'allows a user to edit their own activity' do
+          sign_in @user1
+          get :show, id: @user1_activity.slug, start_in_edit: true
+          expect(response).to be_success
+        end
+
+        it 'allows admin to edit a chefsteps activity' do
+          sign_in @admin
+          get :show, id: @chefsteps_activity.slug, start_in_edit: true
+          expect(response).to be_success
+        end
+
+        it 'allows admin to edit any activity' do
+          sign_in @admin
+          get :show, id: @user1_activity.slug, start_in_edit: true
+          expect(response).to be_success
+        end
+
+      end
     end
 
     context 'within an assembly' do
