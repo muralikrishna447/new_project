@@ -206,6 +206,10 @@ class ActivitiesController < ApplicationController
 
       @activity = Activity.find(params[:id])
 
+      # unless current_user && (current_user.role == 'admin' || @activity.creator == current_user)
+      unless can?(:update, @activity)
+        render nothing: true, status: 401 and return
+      end
       respond_to do |format|
         format.json do
 

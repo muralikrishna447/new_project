@@ -106,4 +106,29 @@ describe ActivitiesController do
 
   end
 
+  describe 'update' do
+    context 'update_as_json' do
+      before :each do
+        @admin = Fabricate :user, name: 'An Admin', email: 'admin@chefsteps.com', role: 'admin'
+        @user1 = Fabricate :user, name: 'A User', email: 'user@user.com', role: 'user'
+        @user2 = Fabricate :user, name: 'Another User', email: 'anotheruser@user.com', role: 'user'
+        @chefsteps_activity = Fabricate :activity, title: 'A New Recipe', published: true
+        @user1_activity = Fabricate :activity, title: 'A User Recipe', creator: @user1, published: true
+      end
+
+      it 'does not allow a non admin to update a chefsteps recipe' do
+        sign_in @user1
+        put :update_as_json, id: @chefsteps_activity.slug, activity: {title: 'New Title'}
+        expect(response).to_not be_success
+      end
+
+      it 'does not allow a user to update another users activity' do
+        sign_in @user2
+        put :update_as_json, id: @user1_activity.slug, activity: {title: 'New Title'}
+        expect(response).to_not be_success
+      end
+
+    end
+  end
+
 end
