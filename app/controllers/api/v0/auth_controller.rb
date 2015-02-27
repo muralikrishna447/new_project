@@ -1,6 +1,8 @@
 module Api
   module V0
     class AuthController < BaseController
+      before_filter :ensure_authorized, only: [:validate]
+
       def authenticate
         puts "AUTHENtICATE ACTION"
         begin
@@ -31,6 +33,17 @@ module Api
           render json: {status: '200 Success', token: create_token(user)}, status: 200
         else
           render json: {status: "401 Unauthorized user: #{user.inspect}, u: #{params[:user]}"}, status: 401
+        end
+      end
+
+      def validate
+        token = request.authorization().split(' ').last
+        if token
+          if valid_token?(token)
+            render json: {status: '200 Success', tokenValid: true}, status: 200
+          end
+        else
+          render json: {status: '400 Bad Request', message: 'Please provide a valid token.'}, status: 400
         end
       end
 
