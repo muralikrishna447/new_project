@@ -50,6 +50,25 @@ describe Api::V0::UsersController do
       post :create, user: {email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should_not be_success
     end
+
+    it 'should respond with an error if user already exists' do
+      post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      post :create, user: {name: "Another New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      response.should_not be_success
+    end
+
+    it 'should create a new Facebook user' do
+      post :create, user: {name: "New Facebook User", email: "newfb@user.com", password: "newUserPassword", provider: "facebook"}
+      response.should be_success
+      expect(JSON.parse(response.body)['token'].length).to be > 0
+    end
+
+    it 'should connect an existing Facebook user' do
+      post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
+      post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
+      response.should be_success
+      expect(JSON.parse(response.body)['token'].length).to be > 0
+    end
   end
 
 end
