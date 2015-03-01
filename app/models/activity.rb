@@ -1,6 +1,13 @@
 class Activity < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
+
+  include ActsAsSanitized
+
+  before_save do
+    sanitize_input :title, :description, :timing, :yield
+  end
+
   acts_as_taggable
   acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}, :quizzes], :dependent => :keep, :on_destroy => true
 
@@ -407,7 +414,7 @@ class Activity < ActiveRecord::Base
     # we don't expect it to be a very common request. At least there is an index.
     ai = AssemblyInclusion.where(includable_type: "Activity", includable_id: self.id).first
     parent = ai.assembly
-   
+
     begin
       return parent if parent.assembly_type == "Course" || parent.assembly_type == "Project" || parent.assembly_type == "Recipe Development"
       ai = AssemblyInclusion.where(includable_type: "Assembly", includable_id: parent.id).first

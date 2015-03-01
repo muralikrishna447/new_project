@@ -11,6 +11,10 @@ class Step < ActiveRecord::Base
 
   serialize :presentation_hints, JSON
 
+  before_save do
+    sanitize_input :title, :directions, :image_description, :extra
+  end
+
   scope :ordered, rank(:step_order)
   scope :activity_id_not_nil, where('activity_id IS NOT NULL')
 
@@ -40,7 +44,7 @@ class Step < ActiveRecord::Base
           title.strip!
 
           the_ingredient = Ingredient.find_or_create_by_id_or_subactivity_or_ingredient_title(i[:ingredient][:id], title)
- 
+
           StepIngredient.create!({
                                     step_id: self.id,
                                     ingredient_id: the_ingredient.id,

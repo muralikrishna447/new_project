@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150209233616) do
+ActiveRecord::Schema.define(:version => 20150210010611) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -593,25 +593,25 @@ ActiveRecord::Schema.define(:version => 20150209233616) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                        :default => "",   :null => false
-    t.string   "encrypted_password",           :default => "",   :null => false
+    t.string   "email",                      :default => "",   :null => false
+    t.string   "encrypted_password",         :default => "",   :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                :default => 0
+    t.integer  "sign_in_count",              :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
-    t.string   "name",                         :default => "",   :null => false
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
+    t.string   "name",                       :default => "",   :null => false
     t.string   "provider"
     t.string   "facebook_user_id"
-    t.string   "location",                     :default => ""
-    t.string   "website",                      :default => ""
-    t.text     "quote",                        :default => ""
-    t.string   "chef_type",                    :default => "",   :null => false
+    t.string   "location",                   :default => ""
+    t.string   "website",                    :default => ""
+    t.text     "quote",                      :default => ""
+    t.string   "chef_type",                  :default => "",   :null => false
     t.string   "slug"
     t.boolean  "from_aweber"
     t.text     "viewed_activities"
@@ -619,7 +619,7 @@ ActiveRecord::Schema.define(:version => 20150209233616) do
     t.text     "image_id"
     t.text     "bio"
     t.integer  "sash_id"
-    t.integer  "level",                        :default => 0
+    t.integer  "level",                      :default => 0
     t.string   "role"
     t.string   "stripe_id"
     t.string   "authentication_token"
@@ -633,12 +633,13 @@ ActiveRecord::Schema.define(:version => 20150209233616) do
     t.string   "twitter_user_id"
     t.string   "twitter_auth_token"
     t.string   "twitter_user_name"
-    t.boolean  "eligible_discount_enrollment", :default => true
-    t.boolean  "signup_incentive_available",   :default => true
+    t.boolean  "signup_incentive_available", :default => true
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["facebook_user_id"], :name => "index_users_on_facebook_user_id"
+  add_index "users", ["google_user_id"], :name => "index_users_on_google_user_id"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["survey_results"], :name => "index_users_on_survey_results"
 
