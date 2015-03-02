@@ -21,6 +21,7 @@ describe 'csContenteditable directive', ->
 
   it "Does sanitize <script> tag by default", ->
     expect(getHTML('<b>Catfood<script>danger!</script></b>')).toNotContain 'script'
+
   it "Does not sanitize <script> tag if parent insists safe", =>
     @rootScope.createdByAdmin = -> true
     expect(getHTML('<b>Catfood<script>danger!</script></b>')).toContain 'script'
