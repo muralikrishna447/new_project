@@ -6,7 +6,7 @@ module Api
       def index
         per = params[:per] ? params[:per] : 12
         @users = User.page(params[:page]).per(per)
-        render json: @users
+        render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
       end
 
       def create
