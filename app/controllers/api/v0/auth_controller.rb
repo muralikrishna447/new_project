@@ -4,7 +4,6 @@ module Api
       before_filter :ensure_authorized, only: [:validate]
 
       def authenticate
-        puts "AUTHENtICATE ACTION"
         begin
           user = User.find_by_email(params[:user][:email])
           if user
@@ -23,11 +22,7 @@ module Api
       end
 
       def authenticate_facebook
-        puts "USER EMAILS BEFORE"
-        puts params[:user][:email]
         user = User.find_by_email(params[:user][:email])
-        puts "USER EMAILS"
-        puts user
         puts params[:user][:email]
         if user && user.provider == 'facebook' && user.facebook_user_id == params[:user][:user_id]
           render json: {status: '200 Success', token: create_token(user)}, status: 200
