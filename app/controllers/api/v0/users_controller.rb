@@ -4,9 +4,9 @@ module Api
       before_filter :ensure_authorized, except: [:create]
 
       def me
-        @user = User.find @userid
+        @user = User.find @user_id_from_token
         if @user
-          render json: @user.to_json(only: [:id, :name, :slug], methods: :avatar_url)
+          render json: @user.to_json(only: [:id, :name, :slug], methods: :avatar_url), status: 200
         else
           render json: {status: 501, message: 'User not found.'}, status: 501
         end
@@ -31,6 +31,21 @@ module Api
         else
           @user = User.new(params[:user])
           create_new_user(@user)
+        end
+      end
+
+      def update
+        @user = User.find params[:id]
+        if @user_id_from_token == @user.id
+          puts "Updating user #{@user.inspect}"
+          puts "Updating with: #{params[:user]}"
+          if @user.update_attributes(params[:user])
+            render json: @user.to_json(only: [:id, :name, :slug, :email], methods: :avatar_url), status: 200
+          else
+            render json: {status: 400, message: "Bad Request.  Could not update user with params #{params[:user]}"}, status: 400
+          end
+        else
+          render json: {status: 401, message: 'Unauthorized.'}, status: 401
         end
       end
 
