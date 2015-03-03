@@ -26,7 +26,7 @@ module Api
           if is_new_user
             create_new_user(@user)
           else
-            render json: {status: '200 Success', token: create_token(@user)}, status: 200
+            render json: {status: 200, message: 'Success', token: create_token(@user)}, status: 200
           end
         else
           @user = User.new(params[:user])
@@ -39,9 +39,9 @@ module Api
       def create_new_user(user)
         if user.save
           email_list_signup(user.name, user.email, params[:source])
-          render json: {status: '200 Success', token: create_token(user)}, status: 200
+          render json: {status: 200, message: 'Success', token: create_token(user)}, status: 200
         else
-          render json: {status: '400 Bad Request', message: 'An error occured when trying to create this user.'}, status: 400
+          render json: {status: 400, message: 'Bad Request: An error occured when trying to create this user.'}, status: 400
         end
       end
 
