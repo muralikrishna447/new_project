@@ -1,5 +1,5 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
-  # host = 'http://localhost:3000'
+  # host = '//localhost:3000'
   # host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
   # host = '//staging2-chefsteps.herokuapp.com'
   # host = '//chefsteps.dev'
@@ -80,6 +80,36 @@
             $scope.$apply()
       ), {scope: 'email'}
 
+  $scope.validateTokenStatus = null
+  $scope.validateToken = (token) ->
+    $http.get(
+      host + '/api/v0/validate'
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.validateTokenStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      console.log headers
+      $scope.validateTokenStatus = "Error: #{JSON.stringify(data)}"
+
+  $scope.getMeStatus = null
+  $scope.getMe = (token) ->
+    $http.get(
+      host + '/api/v0/users/me'
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.getMeStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      console.log headers
+      $scope.getMeStatus = "Error: #{JSON.stringify(data)}"
+
   $scope.testTokenStatus = null
   $scope.testToken = (token) ->
     $http.get(
@@ -136,6 +166,8 @@
     $scope.createUserStatus = null
     $scope.getActivitiesStatus = null
     $scope.getTokenFacebookStatus = null
+    $scope.getMeStatus = null
+    $scope.validateTokenStatus = null
 
   $scope.getActivities = ->
     $http.get(
