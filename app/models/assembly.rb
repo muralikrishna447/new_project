@@ -5,7 +5,6 @@ class Assembly < ActiveRecord::Base
   attr_accessible :description, :image_id, :prereg_image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets, :preview_copy, :testimonial_copy, :prereg_email_list_id, :description_alt
   has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
-  has_many :quizzes, through: :assembly_inclusions, source: :includable, source_type: 'Quiz'
   has_many :pages, through: :assembly_inclusions, source: :includable, source_type: 'Page'
   has_many :assignments, through: :assembly_inclusions, source: :includable, source_type: 'Assignment'
 
@@ -27,7 +26,7 @@ class Assembly < ActiveRecord::Base
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 
   ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group', 'Recipe Development', 'Kit']
-  INCLUDABLE_TYPE_SELECTION = ['Activity', 'Quiz', 'Assembly', 'Page', 'Assignment']
+  INCLUDABLE_TYPE_SELECTION = ['Activity', 'Assembly', 'Page', 'Assignment']
 
   def ingredients
     activities.map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}.reject{|i| i.unit == 'recipe'}

@@ -1,4 +1,0 @@
-%img{ src: '{{image_url}}' }
-.caption
-  .num
-  {{image_caption}}

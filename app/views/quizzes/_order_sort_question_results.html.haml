@@ -1,8 +1,0 @@
--if results.count > 0
-  .results-header.row-fluid
-    .span6
-      .center
-        Order Sorting:
-
-- results.each_with_index do |result, index|
-  = render 'quizzes/order_sort_question_result', result: result, count: index + 1

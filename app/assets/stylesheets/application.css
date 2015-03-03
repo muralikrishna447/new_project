@@ -17,14 +17,10 @@
 
  *= require redesign
  *= require application/responsiveslides
- *= require application/quizzes/_overview
- *= require application/quizzes/_question
- *= require application/quizzes/_results
  *= require application/assemblies/course_assembly
  *= require application/_dials
  *= require application/_checkboxes
  *= require admin_table
- *= require mobile
  *= require diffview
  *= require media_objects
  *= require horizontal_slider

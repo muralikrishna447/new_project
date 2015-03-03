@@ -12,11 +12,6 @@
         .row-fluid
           .span12.relative.course-content.printable(ng-controller='ActivityController')
             %div(ng-switch on='view_inclusion')
-              %div(ng-switch-when="Quiz")
-                .row-fluid
-                  .span12
-                    %iframe#course-quiz(ng-src="{{'/quizzes/' + currentIncludable.includable_id}}" style='width: 100%; border: none; min-height: 1000px; overflow: hidden;' cssetiframeheight)
-
               %div(ng-switch-when="Activity")
                 .class-activity-wrapper.comments-slide(ng-class="{'open' : anyCommentsOpen}")
                   / = render 'activities/banner_image'
@@ -59,10 +54,6 @@
                         edit
                     %div(ng-switch-when='Page')
                       %a(ng-href="/admin/pages/{{currentIncludable.includable_slug}}/edit" target="_blank")
-                        %i.icon-edit
-                        edit
-                    %div(ng-switch-when='Quiz')
-                      %a(ng-href="/admin/quizzes/{{currentIncludable.includable_slug}}/edit" target="_blank")
                         %i.icon-edit
                         edit
 

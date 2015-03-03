@@ -1,6 +1,0 @@
-= hb "> templates.admin.box_sort_image_top"
-.image-controls
-  %i.icon-ban-circle.delete-image{ data: {confirm: "Are you sure?"} }
-%form
-  %input{type: 'text', name: 'caption', value: hb('caption')}
-

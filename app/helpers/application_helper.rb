@@ -335,8 +335,6 @@ module ApplicationHelper
       edit_admin_assignment_path(includable)
     when 'Assembly'
       edit_admin_assembly_path(includable)
-    when 'Quiz'
-      edit_admin_quiz_path(includable)
     when 'Page'
       edit_admin_page_path(includable)
     else
