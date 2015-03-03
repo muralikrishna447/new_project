@@ -321,7 +321,7 @@ Delve::Application.routes.draw do
       end
       resources :search, only: [:index]
       resources :users, only: [:index, :create] do
-        get 'me', to: 'users#me'
+        get :me, on: :collection
       end
       match '/*path' => 'base#options', :via => :options
 
