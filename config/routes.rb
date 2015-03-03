@@ -119,8 +119,6 @@ Delve::Application.routes.draw do
   match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
   match '/PS', to: redirect('/courses/accelerated-sous-vide-cooking-course')
 
-  resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
-
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
   get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle|timf/
@@ -153,15 +151,6 @@ Delve::Application.routes.draw do
   # stopped working
   namespace :admin do
     resources :questions
-  end
-
-  resources :quizzes, only: [:show] do
-    member do
-      post 'start' => 'quizzes#start'
-      post 'finish' => 'quizzes#finish'
-      get 'results' => 'quizzes#results'
-      get 'retake' => 'quizzes#retake'
-    end
   end
 
   resources :equipment, only: [:index, :update, :destroy] do

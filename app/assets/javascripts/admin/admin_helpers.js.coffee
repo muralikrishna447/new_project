@@ -236,9 +236,6 @@ $ ->
     scheduleDiff()
     $('#loading-right').fadeOut()
 
-$ ->
-  $('#quiz_activity_id').select2({width: "300px"})
-
 
 
 
