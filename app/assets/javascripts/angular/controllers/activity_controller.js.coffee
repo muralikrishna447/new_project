@@ -117,6 +117,11 @@ window.deepCopy = (obj) ->
     else
       $scope.$emit 'openLoginModal'
 
+  $scope.createdByAdmin = ->
+    return true if $scope.activity.creator == null
+    false
+
+
   # Overall edit mode
   $scope.startEditMode = ->
     if ! $scope.editMode
