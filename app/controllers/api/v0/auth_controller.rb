@@ -9,16 +9,16 @@ module Api
           user = User.find_by_email(params[:user][:email])
           if user
             if user.valid_password?(params[:user][:password])
-              render json: {status: '200 Success', token: create_token(user)}, status: 200
+              render json: {status: 200, message: 'Success.', token: create_token(user)}, status: 200
             else
-              render json: {status: '401 Unauthorized', message: 'Password provided was invalid.'}, status: 401
+              render json: {status: 401, message: 'Unauthorized: Password provided was invalid.'}, status: 401
             end
           else
-            render json: {status: '401 Unauthorized', message: 'User was not found for email provided.'}, status: 401
+            render json: {status: 401, message: 'Unauthorized: User was not found for email provided.'}, status: 401
           end
         rescue Exception => e
           puts "Authenticate Exception: #{e.class} #{e}"
-          render json: {status: '400 Bad Request', message: 'There was an error processing this request. Please provide a valid email and password.'}, status: 400
+          render json: {status: 400, message: 'Bad Request: There was an error processing this request. Please provide a valid email and password.'}, status: 400
         end
       end
 
@@ -32,7 +32,7 @@ module Api
         if user && user.provider == 'facebook' && user.facebook_user_id == params[:user][:user_id]
           render json: {status: '200 Success', token: create_token(user)}, status: 200
         else
-          render json: {status: "401 Unauthorized user: #{user.inspect}, u: #{params[:user]}"}, status: 401
+          render json: {status: 401, message: 'Unauthorized.'}, status: 401
         end
       end
 
@@ -40,10 +40,10 @@ module Api
         token = request.authorization().split(' ').last
         if token
           if valid_token?(token)
-            render json: {status: '200 Success', tokenValid: true}, status: 200
+            render json: {status: 200, message: 'Success.', tokenValid: true}, status: 200
           end
         else
-          render json: {status: '400 Bad Request', message: 'Please provide a valid token.'}, status: 400
+          render json: {status: 400, message: 'Bad Request: Please provide a valid token.'}, status: 400
         end
       end
 
