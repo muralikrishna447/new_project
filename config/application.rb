@@ -117,7 +117,7 @@ module Delve
     # Prefix each log line with a per-request UUID
     config.log_tags = [:uuid ]
 
-    if Rails.env.test?
+    if Rails.env.test? || Rails.env.development?
       ENV["AUTH_SECRET_KEY"] = File.read("config/rsa_test.pem")
     end
   end

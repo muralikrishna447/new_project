@@ -1,5 +1,5 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
-  # host = 'http://localhost:3000'
+  # host = '//localhost:3000'
   # host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
   # host = '//staging2-chefsteps.herokuapp.com'
   # host = '//chefsteps.dev'

@@ -3,6 +3,15 @@ module Api
     class UsersController < BaseController
       before_filter :ensure_authorized, except: [:create]
 
+      def me
+        @user = User.find @userid
+        if @user
+          render json: @user.to_json(only: [:id, :name, :slug], methods: :avatar_url)
+        else
+          render json: {status: 'User not found.'}
+        end
+      end
+
       def index
         per = params[:per] ? params[:per] : 12
         @users = User.page(params[:page]).per(per)

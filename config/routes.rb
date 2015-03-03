@@ -331,7 +331,9 @@ Delve::Application.routes.draw do
         post :update_from_email, on: :collection
       end
       resources :search, only: [:index]
-      resources :users, only: [:index, :create]
+      resources :users, only: [:index, :create] do
+        get 'me', to: 'users#me'
+      end
       match '/*path' => 'base#options', :via => :options
 
       # match 'activities/', to: 'activities#index', via: [:get, :options]

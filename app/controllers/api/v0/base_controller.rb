@@ -65,7 +65,6 @@ module Api
         secret = ENV["AUTH_SECRET_KEY"]
         key = OpenSSL::PKey::RSA.new secret, 'cooksmarter'
         issued_at = (Time.now.to_f * 1000).to_i
-        
         claim = {
           iat: issued_at,
           user: {
@@ -90,11 +89,12 @@ module Api
         decoded = JSON::JWT.decode(token, key)
         verified = JSON::JWT.decode(decoded.to_s, key.to_s)
         time_now = (Time.now.to_f * 1000).to_i
-        if verified['exp'] && verified['exp'] <= time_now
+        if verified[:exp] && verified[:exp] <= time_now
           return false
         elsif verified['restrictTo'] && verified['restrictTo'] != restrict_to
           return false
         else
+          @userid = verified[:user][:id]
           return verified
         end
       end

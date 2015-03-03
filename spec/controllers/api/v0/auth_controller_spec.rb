@@ -41,8 +41,8 @@ describe Api::V0::AuthController do
         # Then decode signature
         verified = JSON::JWT.decode(decoded.to_s, @key.to_s)
         # puts "Verified: #{verified}"
-        name = verified['user']['name']
-        name.should eq(@user.name)
+        id = verified['user']['id']
+        id.should eq(@user.id)
       end
 
     end
