@@ -57,6 +57,25 @@
 
     .row
       .span8.well-border
+        %h4 Validating a token
+        %p
+          %i example: GET /api/v0/validate
+        %p Returns validity of a token
+        %form(ng-submit='validateToken(user.token)')
+          .control-group
+            %input(type='text' ng-model='user.token' placeholder='token')
+          .control-group
+            %input.btn(type='submit' value='Validate')
+        .alert(ng-if='validateTokenStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{validateTokenStatus}}
+
+    %hr
+
+    .row
+      .span8.well-border
         %h4 Get Me
         %p
           %i example: GET /api/v0/users/me
