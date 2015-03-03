@@ -8,7 +8,7 @@ module Api
         if @user
           render json: @user.to_json(only: [:id, :name, :slug], methods: :avatar_url)
         else
-          render json: {status: 'User not found.'}
+          render json: {status: 501, message: 'User not found.'}, status: 501
         end
       end
 
