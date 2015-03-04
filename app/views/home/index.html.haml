@@ -1,11 +1,7 @@
 - content_for :title, "Cook Smarter"
 - content_for :description, "A team of award-winning chefs, filmmakers, scientists, designers, and engineers focused on revolutionizing the way people cook."
 
-/ = render 'standard_homepage'
-- if current_user
-  = render 'signed_in_homepage'
-- else
-  = render 'standard_homepage'
+= render 'homepage'
 
 = content_for :footer do
   = render 'layouts/footer'

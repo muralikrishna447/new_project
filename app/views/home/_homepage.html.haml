@@ -1,5 +1,12 @@
-.container.home-signed-in
+.container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='homeMadlib'; setIntent('ftue')")
+  = render "devise/sessions/new_angular"
+  .row-fluid
+    .container
+      .row
+        .span10.offset1.relative
+          = render 'madlib'
 
+.container.home-signed-in
   .row
     .span8
       .home-section
