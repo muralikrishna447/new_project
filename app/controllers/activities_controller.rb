@@ -221,6 +221,7 @@ class ActivitiesController < ApplicationController
 
             begin
               @activity.last_edited_by = current_user
+              @activity.bypass_sanitization = (current_user && current_user.role == "admin")
               equip = params[:activity].delete(:equipment)
               ingredients = params[:activity].delete(:ingredients)
               steps = params.delete(:steps)

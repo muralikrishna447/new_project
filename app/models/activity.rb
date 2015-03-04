@@ -522,6 +522,7 @@ class Activity < ActiveRecord::Base
         step_id = nil
       end
       step = steps.find_or_create_by_id(step_id)
+      step.bypass_sanitization = self.creator.blank?
       step.update_attributes(
         title: step_attr[:title],
         directions: step_attr[:directions],
