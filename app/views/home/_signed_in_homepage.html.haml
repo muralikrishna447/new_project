@@ -1,16 +1,5 @@
 .container.home-signed-in
 
-  /.row.section
-  /  .text-center
-  /    %a(href="/courses" onclick="mixpanel.track('Class Banner Clicked');")
-  /      %img.desktop-banner-retina(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/TiAbyp35QD2bwph7kXds")
-  /      %img.desktop-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/5NwrXpzgSuWOeCvPh6FJ")
-  /      %img.mobile-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/78FLYvUqRAK8HVI9Fai7")
-  /.row.section
-  /  .text-center
-  /    %a(href="/courses")
-  /      .btn-outline-green-large Learn More
-
   .row
     .span8
       .home-section
@@ -19,9 +8,7 @@
             = @hero_cms[:title]
         .home-featured-item
           = link_to @hero_cms[:url] do
-            .top-group
-
-            = image_tag @hero_cms[:image]
+            = image_tag filepicker_stream_image(@hero_cms[:image])
             .section.pull-right.home-featured-item-btn
               = link_to @hero_cms[:url] do
                 .btn.btn-primary.btn-large
@@ -29,9 +16,11 @@
           .section
             = @hero_cms[:description]
 
+      .home-section
+        %h3 Classes
         - @classes.each.with_index do |course, index|
           - url = landing_class_path(course)
-          .section-large
+
           .home-standard-item
             .home-standard-item-image
               = link_to url do
@@ -46,19 +35,19 @@
             = link_to 'See more', courses_path
 
 
-        .home-section
-          %h3.section Projects
-          - @projects.each do |project|
-            - url = project_path(project)
-            .home-standard-item
-              .home-standard-item-image
-                = link_to url do
-                  = image_tag filepicker_stream_image(project.featured_image)
-              .home-standard-item-text
-                = link_to url do
-                  %h3= project.title
-                %csrating.rating(value="#{project.average_rating}" readonly="true")
-                %p= project.short_description
+      .home-section
+        %h3 Projects
+        - @projects.each do |project|
+          - url = project_path(project)
+          .home-standard-item
+            .home-standard-item-image
+              = link_to url do
+                = image_tag filepicker_stream_image(project.featured_image)
+            .home-standard-item-text
+              = link_to url do
+                %h3= project.title
+              %csrating.rating(value="#{project.average_rating}" readonly="true")
+              %p= project.short_description
 
     .span4
       .home-section

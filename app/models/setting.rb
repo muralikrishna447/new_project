@@ -32,6 +32,6 @@ class Setting < ActiveRecord::Base
 
   def self.get_hero_cms
     current_settings = Setting.last
-    return { title: current_settings[:hero_cms_title], image: "http://static01.nyt.com/images/2015/03/04/nyregion/SHOVELweb1/SHOVELweb1-largeHorizontal375.jpg", description: current_settings[:hero_cms_description], url: current_settings[:hero_cms_url], button_text: current_settings[:hero_cms_button_text] || "Go"}
+    return { title: current_settings[:hero_cms_title], image: current_settings[:hero_cms_image], description: current_settings[:hero_cms_description], url: current_settings[:hero_cms_url], button_text: current_settings[:hero_cms_button_text] || "Go"}
   end
 end

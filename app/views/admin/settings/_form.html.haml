@@ -3,7 +3,7 @@
   = f.inputs "Site Setting" do
     %h2 Home Page Hero CMS
     = f.input :hero_cms_title
-    = f.input :hero_cms_image
+    = render '/shared/filepicker_group', label_text: "Hero CMS Image", param: "setting[hero_cms_image]", value: @setting[:hero_cms_image]
     = f.input :hero_cms_description
     = f.input :hero_cms_button_text
     = f.input :hero_cms_url
