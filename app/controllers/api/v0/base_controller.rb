@@ -91,7 +91,7 @@ module Api
         elsif verified['restrictTo'] && verified['restrictTo'] != restrict_to
           return false
         else
-          @userid = verified[:user][:id]
+          @user_id_from_token = verified[:user][:id]
           return verified
         end
       end
