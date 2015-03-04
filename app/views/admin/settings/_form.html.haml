@@ -1,19 +1,22 @@
 = render 'layouts/filepicker'
 = semantic_form_for [:admin, @setting] do |f|
   = f.inputs "Site Setting" do
-    %h2 Home Page Hero CMS
-    = f.input :hero_cms_title
-    = render '/shared/filepicker_group', label_text: "Hero CMS Image", param: "setting[hero_cms_image]", value: @setting[:hero_cms_image]
-    = f.input :hero_cms_description
-    = f.input :hero_cms_button_text
-    = f.input :hero_cms_url
+    %li
+      %h1 Home Page Hero CMS
+    = f.input :hero_cms_url, label: "Link URL (blank for no hero)"
+    = f.input :hero_cms_title, label: "Title (optional)"
+    %li
+      = render '/shared/filepicker_group', label_text: "Image (optional)", param: "setting[hero_cms_image]", value: @setting[:hero_cms_image]
+    = f.input :hero_cms_description, label: "Description (optional)"
+    = f.input :hero_cms_button_text, label: "Button text (optional)"
 
-    %h2 Misc
+    %li
+      %h1 Miscellaneous
     = f.input :footer_image
     = f.input :global_message_active
     = f.input :global_message
     = f.input :forum_maintenance
 
-    = f.actions
-  end
+
+  = f.actions
 
