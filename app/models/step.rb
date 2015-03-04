@@ -11,9 +11,8 @@ class Step < ActiveRecord::Base
 
   serialize :presentation_hints, JSON
 
-  before_save do
-    sanitize_input :title, :directions, :image_description, :extra
-  end
+  include ActsAsSanitized
+  sanitize_input :title, :directions, :image_description, :extra
 
   scope :ordered, rank(:step_order)
   scope :activity_id_not_nil, where('activity_id IS NOT NULL')

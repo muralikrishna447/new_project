@@ -3,10 +3,7 @@ class Activity < ActiveRecord::Base
   include PublishableModel
 
   include ActsAsSanitized
-
-  before_save do
-    sanitize_input :title, :description, :timing, :yield
-  end
+  sanitize_input :title, :description, :timing, :yield
 
   acts_as_taggable
   acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}, :quizzes], :dependent => :keep, :on_destroy => true

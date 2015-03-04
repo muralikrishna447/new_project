@@ -1,21 +1,21 @@
 -################################ HEADER / LAYOUT STUFF ################################
 
 - content_for :title, "#{@activity.title} | #{@activity.activity_type.first}".html_safe
-- content_for :description, @activity.description.to_s != "" ? @activity.description.html_safe : @activity.title.html_safe
+- content_for :description, @activity.description.to_s != "" ? sanitize(@activity.description).html_safe : sanitize(@activity.title).html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
 - content_for :keywords, @activity.tag_list.join(',')
 - if @activity.id
   - content_for :facebook_og do
     %meta{property: 'og:url', content: activity_url(@activity)}
     %meta{property: 'og:title', content: @activity.title.html_safe}
-    %meta{property: 'og:description', content: @activity.description.to_s != "" ? @activity.description.html_safe : @activity.title.html_safe}
+    %meta{property: 'og:description', content: @activity.description.to_s != "" ? sanitize(@activity.description).html_safe : sanitize(@activity.title).html_safe}
     - if @activity.image_id?
       %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.image_id)}
     - elsif @activity.featured_image_id?
       %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.featured_image_id)}
   - content_for :twitter_cards do
     %meta{property: 'twitter:site', content: '@chefsteps'}
-    %meta{property: 'twitter:title', content: @activity.title.html_safe }
+    %meta{property: 'twitter:title', content: sanitize(@activity.title).html_safe }
     %meta{property: 'twitter:description', content: @activity.description}
     - if @activity.image_id?
       %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.image_id)}
@@ -52,7 +52,7 @@
     .comments-slide(ng-class="{'open' : anyCommentsOpen}")
       #activity-title(data-activity="#{@activity.title}")
       %form.printable(ng-cloak name="activityForm" csfixnakedlinks)
-               
+
         -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
         %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
@@ -67,7 +67,7 @@
               %i.icon-page-load
 
 
-  %div(nell-popup) 
+  %div(nell-popup)
 
   -################################ BOTTOM OF PAGE CONTENT ################################
 
@@ -76,21 +76,21 @@
       .row.section
         .text-center
           .section
-            %strong 
-              Have a question about a recipe? 
+            %strong
+              Have a question about a recipe?
               %br
                 %a(href="//chefsteps.com/forum" onclick="mixpanel.track('Question to Forum', {'title' : '#{@activity.title}'});")
                   Please ask us on the forum
           .section
-            %strong 
-              Customer service issue? 
+            %strong
+              Customer service issue?
               %br
                 =mail_to "info@chefsteps.com", "Email us at info@chefsteps.com"
         .span8.offset2
           %h3 Comments
           #discussion
             %cscomments(comments-type="activity" comments-id="{{activity.id}}" seo-bot="#{is_brombone}")
-              
+
 
   = content_for :footer do
     = render 'layouts/footer'
@@ -107,7 +107,7 @@
         %h3= @course.title
       .modal-body
         = course_syllabus(@course)
-    
+
   = render 'cancel_edit_modal'
   = render 'restore_autosave.html.haml'
   = render 'already_editing_modal.html.haml'
@@ -117,7 +117,7 @@
       %h2 Choose Tags
       Pick all that apply. It is ok to have more than one in a category.
     .modal-body.tag-bg
-      %csTagChooser(  ng-model="activity.tags" 
+      %csTagChooser(  ng-model="activity.tags"
                       options="csTagService.activitySuggestedTags")
     .modal-footer
       %button.btn(ng-click="showTagsModal = false") Done

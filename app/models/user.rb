@@ -11,9 +11,8 @@ class User < ActiveRecord::Base
 
   CHEF_TYPES = %w[professional_chef culinary_student home_cook novice other]
 
-  before_save do
-    sanitize_input :bio, :name, :location, :website
-  end
+  include ActsAsSanitized
+  sanitize_input :bio, :name, :location, :website
 
   has_many :followerships
   has_many :followers, through: :followerships
