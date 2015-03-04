@@ -1,5 +1,5 @@
 describe Api::V0::ActivitiesController do
-  
+
   before :each do
     @activity1 = Fabricate :activity, title: 'Activity 1', published: true
     @activity2 = Fabricate :activity, title: 'Activity 2', published: false
@@ -14,7 +14,7 @@ describe Api::V0::ActivitiesController do
       activity = JSON.parse(response.body).first
 
       activity['title'].should == 'Activity 1'
-      activity['description'].should == nil
+      activity['description'].should == ''
       activity['image'].should == nil
       activity['url'].should == 'http://test.host/activities/activity-1'
       activity['likesCount'].should == nil
@@ -45,7 +45,7 @@ describe Api::V0::ActivitiesController do
     activity = JSON.parse(response.body).first
 
     activity['title'].should == 'Activity 1'
-    activity['description'].should == nil
+    activity['description'].should == ''
     activity['image'].should == nil
     activity['url'].should == 'http://test.host/activities/activity-1'
     activity['likesCount'].should == nil
