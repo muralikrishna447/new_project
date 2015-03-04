@@ -85,4 +85,42 @@ describe Api::V0::UsersController do
     end
   end
 
+  context 'PUT /update' do
+    it 'should update a user' do
+      request.env['HTTP_AUTHORIZATION'] = @token
+      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }
+      response.should be_success
+      # puts response.body
+      parsed = JSON.parse(response.body)
+      puts parsed
+      expect(parsed['name']).to eq('Joseph Doe')
+      expect(parsed['email']).to eq('mynewemail@user.com')
+    end
+
+    it 'should not update a user without a valid token' do
+      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }
+      response.should_not be_success
+    end
+
+    it 'should not update a user if token belongs to another user' do
+      @another_user = Fabricate :user, id: 105, email: 'jojosmith@chefsteps.com', password: '123456', name: 'Jo Jo smith', role: 'user'
+      issued_at = (Time.now.to_f * 1000).to_i
+      claim = { 
+        iat: issued_at,
+        user: {
+          id: @another_user.id,
+          name: @another_user.name,
+          email: @another_user.email
+        }
+      }
+      jws = JSON::JWT.new(claim.as_json).sign(@key.to_s)
+      jwe = jws.encrypt(@key.public_key)
+      @another_token = 'Bearer ' + jwe.to_s
+      request.env['HTTP_AUTHORIZATION'] = @another_token
+      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }
+      response.should_not be_success
+    end
+
+  end
+
 end
