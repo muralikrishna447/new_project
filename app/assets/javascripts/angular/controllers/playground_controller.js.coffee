@@ -1,9 +1,9 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
-  # host = '//localhost:3000'
+  host = '//localhost:3000'
   # host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
   # host = '//staging2-chefsteps.herokuapp.com'
   # host = '//chefsteps.dev'
-  host = '//www.chefsteps.com'
+  # host = '//www.chefsteps.com'
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
@@ -125,6 +125,23 @@
       console.log headers
       $scope.testTokenStatus = "Error: #{JSON.stringify(data)}"
 
+  $scope.userToUpdate = {}
+  $scope.updateUserStatus = null
+  $scope.updateUserData = {}
+  $scope.updateUser = (userToUpdateData) ->
+    $http.put(
+      host + '/api/v0/users/' + $scope.updateUserData.id
+      $.param({user: $scope.userToUpdate})
+      headers: { "Content-Type" : "application/x-www-form-urlencoded", 'Authorization': 'Bearer ' + $scope.updateUserData.token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.updateUserStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      $scope.updateUserStatus = "Error: #{JSON.stringify(data)}"
+
   $scope.newUser = {}
   $scope.createUserStatus = null
   $scope.createUser = (newUser) ->
@@ -168,6 +185,9 @@
     $scope.getTokenFacebookStatus = null
     $scope.getMeStatus = null
     $scope.validateTokenStatus = null
+    $scope.userToUpdate = {}
+    $scope.updateUserStatus = null
+    $scope.updateUserData = {}
 
   $scope.getActivities = ->
     $http.get(

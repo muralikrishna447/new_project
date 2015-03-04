@@ -45,7 +45,7 @@ module Api
             render json: {status: 400, message: "Bad Request.  Could not update user with params #{params[:user]}"}, status: 400
           end
         else
-          render json: {status: 401, message: 'Unauthorized.'}, status: 401
+          render json: {status: 401, message: 'Unauthorized.', debug: "From token: #{@user_id_from_token}, ID: #{@user.id}"}, status: 401
         end
       end
 
