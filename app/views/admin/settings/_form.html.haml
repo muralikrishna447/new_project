@@ -1,0 +1,19 @@
+= render 'layouts/filepicker'
+= semantic_form_for [:admin, @setting] do |f|
+  = f.inputs "Site Setting" do
+    %h2 Home Page Hero CMS
+    = f.input :hero_cms_title
+    = f.input :hero_cms_image
+    = f.input :hero_cms_description
+    = f.input :hero_cms_button_text
+    = f.input :hero_cms_url
+
+    %h2 Misc
+    = f.input :footer_image
+    = f.input :global_message_active
+    = f.input :global_message
+    = f.input :forum_maintenance
+
+    = f.actions
+  end
+

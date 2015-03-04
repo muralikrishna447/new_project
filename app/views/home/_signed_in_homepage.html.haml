@@ -11,26 +11,25 @@
   /    %a(href="/courses")
   /      .btn-outline-green-large Learn More
 
-  .row     
+  .row
     .span8
       .home-section
-        %h3.section
-          = link_to 'Classes', courses_path, class: 'black-link'
+        %h3
+          %a.black-link(href="#{@hero_cms[:url]}")
+            = @hero_cms[:title]
         .home-featured-item
-          - home_featured_path = landing_class_path(@classes[0])
-          = link_to home_featured_path do
+          = link_to @hero_cms[:url] do
             .top-group
-              / %h3(onclick= 'track_viewed_course_through_signed_in_homepage();')= @classes[0].title
-              / %csrating.rating(value="#{@classes[0].average_rating}" readonly="true")
-            = image_tag filepicker_stream_image(@classes[0].featured_image), onclick: 'track_viewed_course_through_signed_in_homepage();'
-            .section.pull-right.home-featured-item-btn(onclick= 'track_viewed_course_through_signed_in_homepage();')
-              / = where_user_left_off_in_course(@classes[0], current_user, 'btn btn-primary btn-large')
-              = link_to home_featured_path do
+
+            = image_tag @hero_cms[:image]
+            .section.pull-right.home-featured-item-btn
+              = link_to @hero_cms[:url] do
                 .btn.btn-primary.btn-large
-                  View the Class
+                  = @hero_cms[:button_text]
           .section
-            = @classes[0].short_description
-        - @classes.from(1).each.with_index do |course, index|
+            = @hero_cms[:description]
+
+        - @classes.each.with_index do |course, index|
           - url = landing_class_path(course)
           .section-large
           .home-standard-item
@@ -46,7 +45,7 @@
           %h4.section
             = link_to 'See more', courses_path
 
-        
+
         .home-section
           %h3.section Projects
           - @projects.each do |project|
@@ -63,13 +62,13 @@
 
     .span4
       .home-section
-        %h3.section
+        %h3
           = link_to "Latest", gallery_index_path, class: 'black-link'
         .whats-new.section
           - @latest.each.with_index do |item, index|
             = render 'shared/media_box_4', url: activity_path(item), title: item.title, image: item.featured_image, object: item
-        .section.pull-right 
-          %h4.section 
+        .section.pull-right
+          %h4.section
             = link_to 'See more', gallery_index_path
 
       = render 'shared/bloom_hot'
