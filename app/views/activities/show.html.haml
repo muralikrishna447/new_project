@@ -42,6 +42,15 @@
 
 -################################ PRIMARY CONTENT ################################
 
+.container-fluid.well-gradient.full-bleed.no-bottom-margin(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='activityMadlib'; setIntent('ftue')")
+  = render "devise/sessions/new_angular"
+  .row-fluid
+    .container
+      .row
+        .span10.offset1.relative
+          = render 'home/madlib'
+
+
 .schema-container{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : "http://schema.org/Article")}
   .recipe-container
 
@@ -52,7 +61,7 @@
     .comments-slide(ng-class="{'open' : anyCommentsOpen}")
       #activity-title(data-activity="#{@activity.title}")
       %form.printable(ng-cloak name="activityForm" csfixnakedlinks)
-               
+
         -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
         %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
@@ -67,7 +76,7 @@
               %i.icon-page-load
 
 
-  %div(nell-popup) 
+  %div(nell-popup)
 
   -################################ BOTTOM OF PAGE CONTENT ################################
 
@@ -76,21 +85,21 @@
       .row.section
         .text-center
           .section
-            %strong 
-              Have a question about a recipe? 
+            %strong
+              Have a question about a recipe?
               %br
                 %a(href="//chefsteps.com/forum" onclick="mixpanel.track('Question to Forum', {'title' : '#{@activity.title}'});")
                   Please ask us on the forum
           .section
-            %strong 
-              Customer service issue? 
+            %strong
+              Customer service issue?
               %br
                 =mail_to "info@chefsteps.com", "Email us at info@chefsteps.com"
         .span8.offset2
           %h3 Comments
           #discussion
             %cscomments(comments-type="activity" comments-id="{{activity.id}}" seo-bot="#{is_brombone}")
-              
+
 
   = content_for :footer do
     = render 'layouts/footer'
@@ -107,7 +116,7 @@
         %h3= @course.title
       .modal-body
         = course_syllabus(@course)
-    
+
   = render 'cancel_edit_modal'
   = render 'restore_autosave.html.haml'
   = render 'already_editing_modal.html.haml'
@@ -117,7 +126,7 @@
       %h2 Choose Tags
       Pick all that apply. It is ok to have more than one in a category.
     .modal-body.tag-bg
-      %csTagChooser(  ng-model="activity.tags" 
+      %csTagChooser(  ng-model="activity.tags"
                       options="csTagService.activitySuggestedTags")
     .modal-footer
       %button.btn(ng-click="showTagsModal = false") Done
