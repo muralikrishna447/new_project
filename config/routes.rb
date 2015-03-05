@@ -313,14 +313,16 @@ Delve::Application.routes.draw do
       match '/authenticate', to: 'auth#authenticate', via: [:post, :options]
       match '/authenticate_facebook', to: 'auth#authenticate_facebook', via: [:post, :options]
       match '/validate', to: 'auth#validate', via: [:get, :options]
-      resources :activities, only: [:index, :show]
+      resources :activities, only: [:index, :show] do
+        get :likes, on: :member
+      end
       resources :ingredients, only: [:index, :show]
       resources :passwords, only: [:update] do
         post :send_reset_email, on: :collection
         post :update_from_email, on: :collection
       end
       resources :search, only: [:index]
-      resources :users, only: [:index, :create] do
+      resources :users, only: [:index, :create, :update] do
         get :me, on: :collection
       end
       match '/*path' => 'base#options', :via => :options

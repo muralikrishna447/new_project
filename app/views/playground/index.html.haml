@@ -95,6 +95,30 @@
 
     .row
       .span8.well-border
+        %h4 User Update
+        %p
+          %i PUT /api/v0/users/:id
+        %form(ng-submit='updateUser()')
+          .control-group
+            %input(type='text' ng-model='updateUserData.token' placeholder='token')
+          .control-group
+            %input(type='text' ng-model='updateUserData.id' placeholder='id')
+          .control-group
+            %input(type='text' ng-model='userToUpdate.name' placeholder='name')
+          .control-group
+            %input(type='text' ng-model='userToUpdate.email' placeholder='email')
+          .control-group
+            %input.btn(type='submit' value='Update')
+        .alert(ng-if='updateUserStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{updateUserStatus}}
+
+    %hr
+
+    .row
+      .span8.well-border
         %h4 Testing a Token to access and endpoint that requires and authenticated user
         %p
           %i example: GET /api/v0/users
