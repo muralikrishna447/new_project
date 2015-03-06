@@ -93,6 +93,8 @@ class StripeReport
         "Burgers"
       elsif stripe_record["description"].include?("Beyond the Basics")
         "SV201"
+      elsif stripe_record["description"].include?("Coffee")
+        "Coffee"
       else
         "Undefined"
       end
