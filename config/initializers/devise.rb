@@ -216,7 +216,7 @@ Devise.setup do |config|
     config.omniauth :facebook, '642634055780525', ENV["FACEBOOK_SECRET"], {scope: 'email', client_options: {ssl: ssl_options}}
   else
     # Development/Test facebook settings
-    config.omniauth :facebook, '249352241894051', '57601926064dbde72d57fedd0af8914f', {scope: 'email'}
+    config.omniauth :facebook, '249352241894051', '57601926064dbde72d57fedd0af8914f', {scope: 'email', site: 'https://graph.facebook.com/v2.1', authorize_url: 'https://www.facebook.com/v2.1/dialog/oauth'}
   end
 
   # ==> Warden configuration
