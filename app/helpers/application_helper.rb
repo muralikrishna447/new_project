@@ -98,7 +98,7 @@ module ApplicationHelper
   end
 
   def filepicker_stream_image(fpfile)
-    filepicker_arbitrary_image(fpfile, 770, 'crop')
+    filepicker_arbitrary_image(fpfile, 770, 'clip')
   end
 
   def s3_audio_url(audio_clip)
