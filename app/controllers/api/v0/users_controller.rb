@@ -6,7 +6,7 @@ module Api
       def me
         @user = User.find @user_id_from_token
         if @user
-          render json: @user.to_json(only: [:id, :name, :slug], methods: :avatar_url), status: 200
+          render json: @user.to_json(only: [:id, :name, :slug, :email], methods: :avatar_url), status: 200
         else
           render json: {status: 501, message: 'User not found.'}, status: 501
         end
