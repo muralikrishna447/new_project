@@ -16,7 +16,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
   $scope.dataLoadingService = csDataLoading
 
   $scope.modalOptions = {dialogFade:true, backdrop: 'static', dialogClass: "modal login-controller-modal"}
-  $scope.modalOptions.backdrop = false if $scope.formFor == "embed"
   $scope.loginModalOpen = false
   $scope.inviteModalOpen = false
   $scope.googleInviteModalOpen = false
@@ -96,6 +95,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $scope.dataLoadingService.setFullScreen(true)
 
   $scope.openWelcomeOrSignup = ->
+    $scope.modalOptions.backdrop = false if $scope.formFor == "embed"
+
     if (!$scope.authentication.loggedIn())
       $scope.openModal('login')
     else
