@@ -160,7 +160,7 @@ class HomeController < ApplicationController
     @hide_nav = true
   end
 
-  def embeddable_madlib
+  def embeddable_signup
     @hide_nav = true
     render
   end
