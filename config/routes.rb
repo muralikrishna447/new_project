@@ -107,6 +107,7 @@ Delve::Application.routes.draw do
   get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
   get 'kiosk' => 'home#kiosk', as: 'kiosk'
+  get 'embeddable_madlib' => 'home#embeddable_madlib', as: 'embeddable_madlib'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'ftue' => 'dashboard#ftue', as: 'ftue'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'

@@ -1,7 +1,3 @@
-.container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='#{@registration_source}'")
+.madlib-mini(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); registrationSource='embeddableMadlib'; formFor='purchase';")
   = render "devise/sessions/new_angular"
-  .row-fluid
-    .container
-      .row
-        .span10.offset1.relative
-          = render 'madlib'
+  = render 'home/madlib'
