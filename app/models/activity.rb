@@ -3,10 +3,10 @@ class Activity < ActiveRecord::Base
   include PublishableModel
 
   include ActsAsSanitized
-  sanitize_input :title, :description, :timing, :yield
+  sanitize_input :title, :description, :timing, :yield, :summary_tweet, :youtube_id, :difficulty
 
   acts_as_taggable
-  acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}, :quizzes], :dependent => :keep, :on_destroy => true
+  acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}], :dependent => :keep, :on_destroy => true
 
   friendly_id :title, use: [:slugged, :history]
 
@@ -22,8 +22,6 @@ class Activity < ActiveRecord::Base
 
   has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
   has_many :terminal_equipment, class_name: Equipment, through: :equipment, source: :equipment
-
-  has_many :quizzes
 
   has_many :user_activities
   has_many :users, through: :user_activities
@@ -256,10 +254,6 @@ class Activity < ActiveRecord::Base
     steps.ordered.activity_id_not_nil.all
   end
 
-  def has_quizzes?
-    quizzes.present?
-  end
-
   def self.new_content
     published.with_video.order('updated_at DESC').reject{|a| a.youtube_id == Video.featured_id || a.youtube_id.length < 3}.sample(5)
   end
@@ -280,7 +274,6 @@ class Activity < ActiveRecord::Base
     attached_classes = []
     attached_classes << self.class
     attached_classes << 'Recipe' if is_recipe?
-    attached_classes << 'Quiz' if quizzes.any?
     attached_classes*weight
   end
 

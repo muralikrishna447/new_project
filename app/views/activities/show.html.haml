@@ -1,13 +1,14 @@
 -################################ HEADER / LAYOUT STUFF ################################
-
-- content_for :title, "#{@activity.title} | #{@activity.activity_type.first}".html_safe
+-# Sanitize everything in the head so that no javascript gets put in there.  However an admin will have javascript rendered for the rest of the page, while a user will not.
+-# This fixes potential problems for XSS attacks.
+- content_for :title, "#{sanitize(@activity.title)} | #{@activity.activity_type.first}".html_safe
 - content_for :description, @activity.description.to_s != "" ? sanitize(@activity.description).html_safe : sanitize(@activity.title).html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
-- content_for :keywords, @activity.tag_list.join(',')
+- content_for :keywords, sanitize(@activity.tag_list.join(','))
 - if @activity.id
   - content_for :facebook_og do
     %meta{property: 'og:url', content: activity_url(@activity)}
-    %meta{property: 'og:title', content: @activity.title.html_safe}
+    %meta{property: 'og:title', content: sanitize(@activity.title).html_safe}
     %meta{property: 'og:description', content: @activity.description.to_s != "" ? sanitize(@activity.description).html_safe : sanitize(@activity.title).html_safe}
     - if @activity.image_id?
       %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.image_id)}
@@ -41,6 +42,15 @@
 
 
 -################################ PRIMARY CONTENT ################################
+
+.container-fluid.well-gradient.full-bleed.no-bottom-margin(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='activityMadlib'; setIntent('ftue')")
+  = render "devise/sessions/new_angular"
+  .row-fluid
+    .container
+      .row
+        .span10.offset1.relative
+          = render 'home/madlib'
+
 
 .schema-container{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : "http://schema.org/Article")}
   .recipe-container
