@@ -24,7 +24,8 @@
               .btn.btn-primary.btn-large
                 = @hero_cms[:button_text]
       .home-section
-        %h3 Classes
+        %h3
+          = link_to 'Classes', classes_path, class: 'black-link'
         - @classes.each.with_index do |course, index|
           - url = landing_class_path(course)
 
