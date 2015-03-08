@@ -160,6 +160,11 @@ class HomeController < ApplicationController
     @hide_nav = true
   end
 
+  def embeddable_signup
+    @hide_nav = true
+    render
+  end
+
   def jsapi
   end
 end

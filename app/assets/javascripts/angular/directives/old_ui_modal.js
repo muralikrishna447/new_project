@@ -34,7 +34,7 @@ dialogModule.provider("$dialog", function(){
     backdropClass: 'modal-backdrop',
     transitionClass: 'fade',
     triggerClass: 'in',
-    dialogOpenClass: 'modal-open',  
+    dialogOpenClass: 'modal-open',
     resolve:{},
     backdropFade: false,
     dialogFade:false,
@@ -221,9 +221,9 @@ dialogModule.provider("$dialog", function(){
     Dialog.prototype._addElementsToDom = function(){
       body.append(this.modalEl);
 
-      if(this.options.backdrop) { 
+      if(this.options.backdrop) {
         if (activeBackdrops.value === 0) {
-          body.append(this.backdropEl); 
+          body.append(this.backdropEl);
         }
         activeBackdrops.value++;
       }
@@ -234,10 +234,10 @@ dialogModule.provider("$dialog", function(){
     Dialog.prototype._removeElementsFromDom = function(){
       this.modalEl.remove();
 
-      if(this.options.backdrop) { 
+      if(this.options.backdrop) {
         activeBackdrops.value--;
         if (activeBackdrops.value === 0) {
-          this.backdropEl.remove(); 
+          this.backdropEl.remove();
         }
       }
       this._open = false;
@@ -314,7 +314,7 @@ angular.module('ChefStepsApp').directive('modal', ['$parse', '$dialog', function
       // Create a dialog with the template as the contents of the directive
       // Add the current scope as the resolve in order to make the directive scope as a dialog controller scope
       opts = angular.extend(opts, {
-        template: elm.html(), 
+        template: elm.html(),
         resolve: { $scope: function() { return scope; } }
       });
       var dialog = $dialog.dialog(opts);
@@ -326,19 +326,21 @@ angular.module('ChefStepsApp').directive('modal', ['$parse', '$dialog', function
           $parse(attrs.close)(scope);
         };
       } else {
-        setClosed = function() {         
+        setClosed = function() {
           if (angular.isFunction($parse(shownExpr).assign)) {
-            $parse(shownExpr).assign(scope, false); 
+            $parse(shownExpr).assign(scope, false);
           }
         };
       }
 
       scope.$watch(shownExpr, function(isShown, oldShown) {
         if (isShown) {
+          console.log("SHOWING");
           dialog.open().then(function(){
             setClosed();
           });
         } else {
+          console.log("HIDING");
           //Make sure it is not opened
           if (dialog.isOpen()){
             dialog.close();
