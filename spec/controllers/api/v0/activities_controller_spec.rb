@@ -15,7 +15,7 @@ describe Api::V0::ActivitiesController do
 
       activity['title'].should == 'Activity 1'
       activity['description'].should == ''
-      activity['image'].should == nil
+      activity['image'].should == ''
       activity['url'].should == 'http://test.host/activities/activity-1'
       activity['likesCount'].should == nil
     end
@@ -46,7 +46,7 @@ describe Api::V0::ActivitiesController do
 
     activity['title'].should == 'Activity 1'
     activity['description'].should == ''
-    activity['image'].should == nil
+    activity['image'].should == ''
     activity['url'].should == 'http://test.host/activities/activity-1'
     activity['likesCount'].should == nil
 
