@@ -9,7 +9,7 @@ Usage:
 
 ###
 
-@app.directive 'csImage', ['csFilepickerMethods', (csFilepickerMethods) ->
+@app.directive 'csImage', ['csFilepickerMethods', '$window', (csFilepickerMethods, $window) ->
   restrict: 'E'
   scope: {
     url: '='
@@ -19,21 +19,31 @@ Usage:
   link: (scope, element, attrs) ->
     scope.containerStyle = {}
     parent = element.parent()
-    parent.width = $(parent[0]).width()
 
-    if parent.width <= 400
-      finalWidth = 400
-    else if 400 < parent.width <= 800
-      finalWidth = 800
-    else
-      finalWidth = 1200
+    scope.calculateWidth = ->
+      parent.width = $(parent[0]).width()
 
-    if scope.aspect && scope.aspect == "16:9"
-      finalHeight = finalWidth * 9 / 16
-      scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: finalWidth, h: finalHeight, fit: 'clip'})
-    else
-      scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: finalWidth})
-    scope.containerStyle["opacity"] = "1"
+      if parent.width <= 280
+        scope.finalWidth = 280
+      else if 280 < parent.width <= 400
+        scope.finalWidth = 400
+      else if 400 < parent.width <= 800
+        scope.finalWidth = 800
+      else
+        scope.finalWidth = 1200
+
+      if scope.aspect && scope.aspect == "16:9"
+        finalHeight = scope.finalWidth * 9 / 16
+        scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth, h: finalHeight})
+      else
+        scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth})
+      scope.containerStyle["opacity"] = "1"
+
+    angular.element($window).on 'resize', ->
+      scope.calculateWidth()
+      scope.$apply()
+
+    scope.calculateWidth()
 
   template:
     """
