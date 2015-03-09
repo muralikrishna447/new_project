@@ -115,7 +115,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     else if form == "welcome"
       $scope.welcomeModalOpen = false
       if $scope.formFor == 'embed'
-        parent.$('body').trigger('embeddedFormClosed');
+        parent.postMessage('embeddedFormClosed', 'http://blog.chefsteps.com');
     $scope.dataLoadingService.setFullScreen(false)
 
   $scope.togglePassword = ->
