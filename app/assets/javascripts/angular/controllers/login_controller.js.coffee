@@ -95,8 +95,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $scope.dataLoadingService.setFullScreen(true)
 
   $scope.openWelcomeOrSignup = ->
-    $scope.modalOptions.backdrop = false if $scope.formFor == "embed"
-
     if (!$scope.authentication.loggedIn())
       $scope.openModal('login')
     else
@@ -116,6 +114,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       $scope.googleInviteModalOpen = false
     else if form == "welcome"
       $scope.welcomeModalOpen = false
+      if $scope.formFor == 'embed'
+        parent.$('body').trigger('embeddedFormClosed');
     $scope.dataLoadingService.setFullScreen(false)
 
   $scope.togglePassword = ->
