@@ -100,22 +100,26 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     else
       $scope.openModal('welcome');
 
+  $scope.notifyParent = ->
+    if $scope.formFor == 'embed'
+      parent.postMessage('embeddedFormClosed', '*');
+
   $scope.closeModal = (form, abandon=true) ->
     $scope.resetMessages()
     $scope.reset_users()
     if abandon
       mixpanel.track('Modal Abandoned')
-    if form == "login"
+    if form == "login" && $scope.loginModalOpen
       $scope.showForm = "signIn"
       $scope.loginModalOpen = false
+      $scope.notifyParent() if abandon
     else if form == "invite"
       $scope.inviteModalOpen = false
     else if form == "googleInvite"
       $scope.googleInviteModalOpen = false
     else if form == "welcome"
       $scope.welcomeModalOpen = false
-      if $scope.formFor == 'embed'
-        parent.postMessage('embeddedFormClosed', '*');
+      $scope.notifyParent()
     $scope.dataLoadingService.setFullScreen(false)
 
   $scope.togglePassword = ->
