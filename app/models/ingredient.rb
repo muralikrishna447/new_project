@@ -4,8 +4,11 @@ class Ingredient < ActiveRecord::Base
 
   acts_as_taggable
   acts_as_revisionable
-  
+
   friendly_id :title, use: [:slugged, :history]
+
+  include ActsAsSanitized
+  sanitize_input :title, :product_url, :text_fields
 
   has_many :step_ingredients, dependent: :destroy, inverse_of: :ingredient
   has_many :activity_ingredients, dependent: :destroy, inverse_of: :ingredient

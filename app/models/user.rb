@@ -11,6 +11,9 @@ class User < ActiveRecord::Base
 
   CHEF_TYPES = %w[professional_chef culinary_student home_cook novice other]
 
+  include ActsAsSanitized
+  sanitize_input :bio, :name, :location, :website
+
   has_many :followerships
   has_many :followers, through: :followerships
   has_many :inverse_followerships, class_name: 'Followership', foreign_key: 'follower_id'

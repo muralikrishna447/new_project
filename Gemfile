@@ -69,6 +69,8 @@ gem 'json-jwt'
 # gem 'ar-octopus', :git => 'https://github.com/tchandy/octopus.git'
 gem 'resque'
 
+gem 'sanitize'
+
 group :development do
   gem 'spring'
   gem "letter_opener"

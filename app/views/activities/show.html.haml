@@ -1,21 +1,22 @@
 -################################ HEADER / LAYOUT STUFF ################################
-
-- content_for :title, "#{@activity.title} | #{@activity.activity_type.first}".html_safe
-- content_for :description, @activity.description.to_s != "" ? @activity.description.html_safe : @activity.title.html_safe
+-# Sanitize everything in the head so that no javascript gets put in there.  However an admin will have javascript rendered for the rest of the page, while a user will not.
+-# This fixes potential problems for XSS attacks.
+- content_for :title, "#{sanitize(@activity.title)} | #{@activity.activity_type.first}".html_safe
+- content_for :description, @activity.description.to_s != "" ? sanitize(@activity.description).html_safe : sanitize(@activity.title).html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
-- content_for :keywords, @activity.tag_list.join(',')
+- content_for :keywords, sanitize(@activity.tag_list.join(','))
 - if @activity.id
   - content_for :facebook_og do
     %meta{property: 'og:url', content: activity_url(@activity)}
-    %meta{property: 'og:title', content: @activity.title.html_safe}
-    %meta{property: 'og:description', content: @activity.description.to_s != "" ? @activity.description.html_safe : @activity.title.html_safe}
+    %meta{property: 'og:title', content: sanitize(@activity.title).html_safe}
+    %meta{property: 'og:description', content: @activity.description.to_s != "" ? sanitize(@activity.description).html_safe : sanitize(@activity.title).html_safe}
     - if @activity.image_id?
       %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.image_id)}
     - elsif @activity.featured_image_id?
       %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.featured_image_id)}
   - content_for :twitter_cards do
     %meta{property: 'twitter:site', content: '@chefsteps'}
-    %meta{property: 'twitter:title', content: @activity.title.html_safe }
+    %meta{property: 'twitter:title', content: sanitize(@activity.title).html_safe }
     %meta{property: 'twitter:description', content: @activity.description}
     - if @activity.image_id?
       %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.image_id)}
