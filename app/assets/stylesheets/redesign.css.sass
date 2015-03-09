@@ -399,6 +399,14 @@ a:hover
     font-size: 14px
     padding-right: 0px
 
+.madlib-mini
+  .madlib, .madlib input
+    font-size: 20px
+    line-height: 30px
+    input[type='text'], input[type='email']
+      width: 80%
+      font-size: 20px
+
 .madlib-in-content
   @include boxsizing
   //border: 1px solid $light-gray
@@ -489,6 +497,14 @@ a:hover
 
 .section-large
   margin-bottom: $baseline * 4
+
+.no-bottom-margin
+  margin-bottom: 0
+
+.full-bleed
+  position: relative
+  left: -20px
+  width: calc(100% + 20px)
 
 .relative
   position: relative
@@ -1789,7 +1805,7 @@ input.summary-tweet
   body
     // To deal with bootstrap stupid body padding
     .banner-image
-      width: 480px
+      width: calc(100% + 40px)
 
 
   #hero-container

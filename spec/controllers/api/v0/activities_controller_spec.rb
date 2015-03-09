@@ -54,4 +54,30 @@ describe Api::V0::ActivitiesController do
     activity['steps'].should == nil
     activity['equipment'].should == nil
   end
+
+  context 'GET /activities/:id/likes' do
+    before :each do
+      @user1 = Fabricate :user, name: 'User 1', email: 'user1@user1.com', password: '123456'
+      @user2 = Fabricate :user, name: 'User 2', email: 'user2@user2.com', password: '123456'
+      @like1 = Fabricate :like, likeable: @activity1, user: @user1
+      @like2 = Fabricate :like, likeable: @activity1, user: @user2
+      @like3 = Fabricate :like, likeable: @activity2, user: @user1
+    end
+
+    it 'should return users who liked an activity' do
+      get :likes, id: @activity1.id
+      response.should be_success
+      parsed = JSON.parse response.body
+      ids = parsed.map{|user| user['id']}
+      expect(ids.include?(@user1.id)).to be_true
+    end
+
+    it 'should not return users who did not like an activity' do
+      get :likes, id: @activity2.id
+      response.should be_success
+      parsed = JSON.parse response.body
+      ids = parsed.map{|user| user['id']}
+      expect(ids.include?(@user2.id)).to be_false
+    end
+  end
 end

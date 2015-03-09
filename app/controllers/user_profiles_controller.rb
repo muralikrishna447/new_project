@@ -1,15 +1,6 @@
 class UserProfilesController < ApplicationController
   expose(:encourage_profile) { Copy.find_by_location('encourage-profile') }
   expose(:user_presenter) { UserPresenter.new(user)}
-  expose(:started_quizzes) {
-    Quiz.joins(:quiz_sessions).where(quiz_sessions: { user_id: current_user.id, completed: false })
-  }
-
-  expose(:completed_quizzes) {
-    Quiz.joins(:quiz_sessions).where(quiz_sessions: { user_id: current_user.id, completed: true })
-  }
-
-  expose(:quiz_count) { started_quizzes.count + completed_quizzes.count }
 
   def show
     if params[:id] == 'self'

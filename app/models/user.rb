@@ -19,7 +19,6 @@ class User < ActiveRecord::Base
   has_many :inverse_followerships, class_name: 'Followership', foreign_key: 'follower_id'
   has_many :followings, through: :inverse_followerships, source: :user
 
-  has_many :quizzes, class_name: QuizSession, dependent: :destroy, inverse_of: :user
   has_many :user_activities
   has_many :activities, through: :user_activities
   has_many :enrollments
@@ -179,10 +178,6 @@ class User < ActiveRecord::Base
 
   def completed_course?(course)
     self.badges.include?(course.badge)
-  end
-
-  def completed_quiz(quiz)
-    self.quizzes.completed.where(quiz_id: quiz.id).any?
   end
 
   def last_viewed_activity_in_assembly(assembly)

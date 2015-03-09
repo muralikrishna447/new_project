@@ -31,9 +31,7 @@
 @import select2
 
 $redLight:      #e63742
-@import admin/quiz
 @import admin/image_uploader
-@import admin/order_sort_question
 
 .clearfix:after
   content: ""
@@ -98,6 +96,17 @@ body.admin_namespace
 
   fieldset.inputs.no-background
     background: none
+
+  fieldset
+    label
+      background-color: rgb(230, 230, 230)
+      border-radius: 0
+      padding: 7px 0px 7px 7px
+      text-shadow: none
+
+  form legend, form legend span
+    border-bottom: none
+    text-shadow: none !important
 
   a.admin-button, button.admin-button
     @include light-button

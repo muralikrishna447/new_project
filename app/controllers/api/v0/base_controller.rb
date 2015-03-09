@@ -5,7 +5,6 @@ module Api
       # before_filter :cors_set_access_control_headers
      
       def cors_set_access_control_headers
-        puts "CORS SET ACCESS CONTROL HEADERS CALLED"
         headers['Access-Control-Allow-Origin'] = '*'
         headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
         headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Origin, Content-Type, Accept, Authorization, Token'
@@ -16,7 +15,6 @@ module Api
       end
 
       def options
-        puts "OPTIONS CALLED"
         render :text => '', :content_type => 'text/plain'
       end
 
@@ -48,7 +46,6 @@ module Api
       protected
 
       def ensure_authorized
-        puts "STARTED ensure_authorized"
         begin
           token = request.authorization().split(' ').last
 
@@ -57,7 +54,7 @@ module Api
           end
         rescue Exception => e
           puts e
-          render json: {status: '401 Unauthorized'}, status: 401
+          render json: {status: 401, message: 'Unauthorized.'}, status: 401
         end
       end
 
@@ -65,7 +62,6 @@ module Api
         secret = ENV["AUTH_SECRET_KEY"]
         key = OpenSSL::PKey::RSA.new secret, 'cooksmarter'
         issued_at = (Time.now.to_f * 1000).to_i
-        
         claim = {
           iat: issued_at,
           user: {
@@ -90,11 +86,12 @@ module Api
         decoded = JSON::JWT.decode(token, key)
         verified = JSON::JWT.decode(decoded.to_s, key.to_s)
         time_now = (Time.now.to_f * 1000).to_i
-        if verified['exp'] && verified['exp'] <= time_now
+        if verified[:exp] && verified[:exp] <= time_now
           return false
         elsif verified['restrictTo'] && verified['restrictTo'] != restrict_to
           return false
         else
+          @user_id_from_token = verified[:user][:id]
           return verified
         end
       end

@@ -49,6 +49,11 @@ module Api
         @activity = Activity.find(params[:id])
         render json: @activity, serializer: Api::ActivitySerializer
       end
+
+      def likes
+        @activity = Activity.find(params[:id])
+        render json: @activity.likes, each_serializer: Api::ActivityLikeSerializer
+      end
     end
   end
 end

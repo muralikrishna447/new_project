@@ -1,9 +1,0 @@
-= link_to quiz_path(quiz) do
-  %figure.img-polaroid
-    - if quiz.has_image?
-      = filepicker_image_tag quiz.image.url, w: 230, h: 210, fit: 'crop'
-    %figcaption
-      %h5= quiz.title
-      - unless quiz.completed_by?(current_user)
-        %span= "#{quiz.questions_remaining_for_count(current_user)} of #{quiz.question_count} #{"Question".pluralize(quiz.question_count)} Remaining"
-

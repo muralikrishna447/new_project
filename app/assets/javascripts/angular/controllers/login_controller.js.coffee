@@ -16,7 +16,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
   $scope.dataLoadingService = csDataLoading
 
   $scope.modalOptions = {dialogFade:true, backdrop: 'static', dialogClass: "modal login-controller-modal"}
-
   $scope.loginModalOpen = false
   $scope.inviteModalOpen = false
   $scope.googleInviteModalOpen = false
@@ -24,7 +23,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
 
   $scope.passwordType = "password" # Defaults password to the password input type, but lets it switch to just text
 
-  $scope.formFor = "signIn" # [signIn, purchase] # This determines if it's being used for a purchase or if it's being used for signup/signin
+  # [signIn, purchase, embed] # This determines if it's being used for a purchase or if it's being used for signup/signin
+  # signIn - routes through FTUE next
+  # purchase - just closes
+  # embed - routes through Welcome next
+  $scope.formFor = "signIn"
   $scope.invitationsNextText = "Skip"
 
   $scope.inviteFriends = []
@@ -91,6 +94,11 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       $scope.kioskWelcomeModalOpen = true
     $scope.dataLoadingService.setFullScreen(true)
 
+  $scope.openWelcomeOrSignup = ->
+    if (!$scope.authentication.loggedIn())
+      $scope.openModal('login')
+    else
+      $scope.openModal('welcome');
 
   $scope.closeModal = (form, abandon=true) ->
     $scope.resetMessages()
@@ -106,6 +114,8 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       $scope.googleInviteModalOpen = false
     else if form == "welcome"
       $scope.welcomeModalOpen = false
+      if $scope.formFor == 'embed'
+        parent.$('body').trigger('embeddedFormClosed');
     $scope.dataLoadingService.setFullScreen(false)
 
   $scope.togglePassword = ->
@@ -236,12 +246,15 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
             $scope.closeModal('login', false)
             $timeout( -> # Done so that the modal has time to close before triggering events
               $scope.$apply()
-              unless $scope.formFor == "purchase"
-                if $scope.intent == 'ftue'
-                  csIntent.setIntent('ftue')
-                  csFtue.start()
-                else
-                  $scope.loadFriends()
+              if $scope.formFor == 'embed'
+                $scope.openModal('welcome')
+              else
+                unless $scope.formFor == "purchase"
+                  if $scope.intent == 'ftue'
+                    csIntent.setIntent('ftue')
+                    csFtue.start()
+                  else
+                    $scope.loadFriends()
             , 500)
       ).error( (data, status) ->
         $scope.dataLoadingService.stop()

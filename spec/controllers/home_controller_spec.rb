@@ -3,6 +3,7 @@ require 'spec_helper'
 describe HomeController do
   describe '#welcome' do
     before do
+      Fabricate(:setting) # Required for the homepage
       ApplicationController.any_instance.stub(:mixpanel_anonymous_id).and_return(1)
       Fabricate(:user, id: 123)
       get :welcome, referrer_id: "123", referred_from: "facebook"

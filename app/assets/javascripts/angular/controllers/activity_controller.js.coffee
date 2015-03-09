@@ -82,10 +82,6 @@ window.deepCopy = (obj) ->
     url = $scope.baseFeaturedImageURL() + "/convert?fit=max&w=#{width}&cache=true"
     window.cdnURL(url)
 
-  $timeout ( ->
-    $rootScope.$broadcast('showPopupCTA')
-  ), 5000
-
   $scope.csGlobals =
     scaling: 1.0
     units: "grams"
@@ -116,6 +112,11 @@ window.deepCopy = (obj) ->
       )
     else
       $scope.$emit 'openLoginModal'
+
+  $scope.createdByAdmin = ->
+    return true if $scope.activity.creator == null
+    false
+
 
   # Overall edit mode
   $scope.startEditMode = ->

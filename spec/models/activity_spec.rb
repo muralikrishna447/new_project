@@ -383,19 +383,6 @@ describe Activity, "#update_steps" do
   end
 end
 
-describe Activity, 'has_quizzes?' do
-  let(:activity) { Fabricate.build(:activity) }
-
-  it 'returns false if activity has no quizzes' do
-    activity.should_not have_quizzes
-  end
-
-  it 'returns true if activity has quizzes' do
-    activity.quizzes.append(Fabricate.build(:quiz))
-    activity.should have_quizzes
-  end
-end
-
 describe Activity, 'deep_copy' do
   let(:activity) { Fabricate.build(:activity) }
   let(:equipment1) { {title: 'Blender', optional: "true"}  }

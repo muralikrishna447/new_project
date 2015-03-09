@@ -107,6 +107,7 @@ Delve::Application.routes.draw do
   get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
   get 'kiosk' => 'home#kiosk', as: 'kiosk'
+  get 'embeddable_signup' => 'home#embeddable_signup', as: 'embeddable_signup'
   get 'dashboard' => 'dashboard#index', as: 'dashboard'
   get 'ftue' => 'dashboard#ftue', as: 'ftue'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
@@ -118,8 +119,6 @@ Delve::Application.routes.draw do
   match '/MP', to: redirect('/courses/spherification')
   match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
   match '/PS', to: redirect('/courses/accelerated-sous-vide-cooking-course')
-
-  resources :quiz_sessions, only: [:create, :update], path: 'quiz-sessions'
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
@@ -153,15 +152,6 @@ Delve::Application.routes.draw do
   # stopped working
   namespace :admin do
     resources :questions
-  end
-
-  resources :quizzes, only: [:show] do
-    member do
-      post 'start' => 'quizzes#start'
-      post 'finish' => 'quizzes#finish'
-      get 'results' => 'quizzes#results'
-      get 'retake' => 'quizzes#retake'
-    end
   end
 
   resources :equipment, only: [:index, :update, :destroy] do
@@ -323,15 +313,19 @@ Delve::Application.routes.draw do
     namespace :v0 do
       match '/authenticate', to: 'auth#authenticate', via: [:post, :options]
       match '/authenticate_facebook', to: 'auth#authenticate_facebook', via: [:post, :options]
-      match '/validate', to: 'auth#validate', via: [:post, :options]
-      resources :activities, only: [:index, :show]
+      match '/validate', to: 'auth#validate', via: [:get, :options]
+      resources :activities, only: [:index, :show] do
+        get :likes, on: :member
+      end
       resources :ingredients, only: [:index, :show]
       resources :passwords, only: [:update] do
         post :send_reset_email, on: :collection
         post :update_from_email, on: :collection
       end
       resources :search, only: [:index]
-      resources :users, only: [:index, :create]
+      resources :users, only: [:index, :create, :update] do
+        get :me, on: :collection
+      end
       match '/*path' => 'base#options', :via => :options
 
       # match 'activities/', to: 'activities#index', via: [:get, :options]

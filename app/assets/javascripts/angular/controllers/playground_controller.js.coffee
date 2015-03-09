@@ -1,9 +1,9 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
-  # host = 'http://localhost:3000'
+  # host = '//localhost:3000'
   # host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
-  host = '//staging2-chefsteps.herokuapp.com'
-  # host = 'http://chefsteps.dev'
-  # host = 'http://www.chefsteps.com'
+  # host = '//staging2-chefsteps.herokuapp.com'
+  # host = '//chefsteps.dev'
+  host = '//www.chefsteps.com'
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
@@ -80,6 +80,36 @@
             $scope.$apply()
       ), {scope: 'email'}
 
+  $scope.validateTokenStatus = null
+  $scope.validateToken = (token) ->
+    $http.get(
+      host + '/api/v0/validate'
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.validateTokenStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      console.log headers
+      $scope.validateTokenStatus = "Error: #{JSON.stringify(data)}"
+
+  $scope.getMeStatus = null
+  $scope.getMe = (token) ->
+    $http.get(
+      host + '/api/v0/users/me'
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.getMeStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      console.log headers
+      $scope.getMeStatus = "Error: #{JSON.stringify(data)}"
+
   $scope.testTokenStatus = null
   $scope.testToken = (token) ->
     $http.get(
@@ -94,6 +124,23 @@
       console.log data
       console.log headers
       $scope.testTokenStatus = "Error: #{JSON.stringify(data)}"
+
+  $scope.userToUpdate = {}
+  $scope.updateUserStatus = null
+  $scope.updateUserData = {}
+  $scope.updateUser = (userToUpdateData) ->
+    $http.put(
+      host + '/api/v0/users/' + $scope.updateUserData.id
+      $.param({user: $scope.userToUpdate})
+      headers: { "Content-Type" : "application/x-www-form-urlencoded", 'Authorization': 'Bearer ' + $scope.updateUserData.token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.updateUserStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      $scope.updateUserStatus = "Error: #{JSON.stringify(data)}"
 
   $scope.newUser = {}
   $scope.createUserStatus = null
@@ -136,6 +183,11 @@
     $scope.createUserStatus = null
     $scope.getActivitiesStatus = null
     $scope.getTokenFacebookStatus = null
+    $scope.getMeStatus = null
+    $scope.validateTokenStatus = null
+    $scope.userToUpdate = {}
+    $scope.updateUserStatus = null
+    $scope.updateUserData = {}
 
   $scope.getActivities = ->
     $http.get(

@@ -98,7 +98,7 @@ module ApplicationHelper
   end
 
   def filepicker_stream_image(fpfile)
-    filepicker_arbitrary_image(fpfile, 770, 'crop')
+    filepicker_arbitrary_image(fpfile, 770, 'clip')
   end
 
   def s3_audio_url(audio_clip)
@@ -335,8 +335,6 @@ module ApplicationHelper
       edit_admin_assignment_path(includable)
     when 'Assembly'
       edit_admin_assembly_path(includable)
-    when 'Quiz'
-      edit_admin_quiz_path(includable)
     when 'Page'
       edit_admin_page_path(includable)
     else

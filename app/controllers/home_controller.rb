@@ -7,17 +7,9 @@ class HomeController < ApplicationController
     pubbed_assembly_classes = Assembly.pubbed_courses.order('created_at desc').limit(1)
     @assembly_classes = prereg_assembly_classes | pubbed_assembly_classes
     @projects = Assembly.projects.published.order('created_at desc')
+    @hero_cms = Setting.get_hero_cms()
+    @latest = Activity.published.chefsteps_generated.include_in_feeds.order('published_at desc').first(6)
 
-    if current_user
-      @latest = Activity.published.chefsteps_generated.include_in_feeds.order('published_at desc').first(6)
-    else
-      @heroes = Setting.featured_activities
-      @recipes = Activity.published.chefsteps_generated.recipes.include_in_feeds.includes(:steps).last(6) - @heroes
-      @techniques = Activity.published.chefsteps_generated.techniques.include_in_feeds.includes(:steps).last(6) - @heroes
-      @sciences = Activity.published.chefsteps_generated.sciences.include_in_feeds.includes(:steps).last(6) - @heroes
-      @new_visitor = params[:new_visitor]
-      @user = User.new
-    end
   end
 
   def about
@@ -166,6 +158,11 @@ class HomeController < ApplicationController
 
   def kiosk
     @hide_nav = true
+  end
+
+  def embeddable_signup
+    @hide_nav = true
+    render
   end
 
   def jsapi

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150210010611) do
+ActiveRecord::Schema.define(:version => 20150303235719) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -507,6 +507,11 @@ ActiveRecord::Schema.define(:version => 20150210010611) do
     t.text     "global_message"
     t.boolean  "global_message_active",  :default => false
     t.boolean  "forum_maintenance"
+    t.string   "hero_cms_title",         :default => ""
+    t.text     "hero_cms_image",         :default => ""
+    t.text     "hero_cms_description",   :default => ""
+    t.string   "hero_cms_button_text",   :default => ""
+    t.string   "hero_cms_url",           :default => ""
   end
 
   create_table "step_ingredients", :force => true do |t|

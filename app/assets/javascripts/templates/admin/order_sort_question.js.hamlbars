@@ -1,9 +1,0 @@
-.actions
-  %a.admin-button.edit{ href: "/admin/order_sort_questions/#{hb('id')}/edit" } Edit
-  %button.admin-button.delete{ data: {confirm: "Are you sure?"} } Delete
-
-%h3 Order Sort Question
-.question-box
-  %h4= hb!('question') 
-  %ul.options
-    %li.option= hb!('instructions')

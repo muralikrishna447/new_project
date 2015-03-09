@@ -52,6 +52,69 @@
             clear
           %div
             {{getTokenFacebookStatus}}
+
+    %hr
+
+    .row
+      .span8.well-border
+        %h4 Validating a token
+        %p
+          %i example: GET /api/v0/validate
+        %p Returns validity of a token
+        %form(ng-submit='validateToken(user.token)')
+          .control-group
+            %input(type='text' ng-model='user.token' placeholder='token')
+          .control-group
+            %input.btn(type='submit' value='Validate')
+        .alert(ng-if='validateTokenStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{validateTokenStatus}}
+
+    %hr
+
+    .row
+      .span8.well-border
+        %h4 Get Me
+        %p
+          %i example: GET /api/v0/users/me
+        %p Returns current user for token
+        %form(ng-submit='getMe(user.token)')
+          .control-group
+            %input(type='text' ng-model='user.token' placeholder='token')
+          .control-group
+            %input.btn(type='submit' value='Get Me')
+        .alert(ng-if='getMeStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{getMeStatus}}
+
+    %hr
+
+    .row
+      .span8.well-border
+        %h4 User Update
+        %p
+          %i PUT /api/v0/users/:id
+        %form(ng-submit='updateUser()')
+          .control-group
+            %input(type='text' ng-model='updateUserData.token' placeholder='token')
+          .control-group
+            %input(type='text' ng-model='updateUserData.id' placeholder='id')
+          .control-group
+            %input(type='text' ng-model='userToUpdate.name' placeholder='name')
+          .control-group
+            %input(type='text' ng-model='userToUpdate.email' placeholder='email')
+          .control-group
+            %input.btn(type='submit' value='Update')
+        .alert(ng-if='updateUserStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{updateUserStatus}}
+
     %hr
 
     .row
