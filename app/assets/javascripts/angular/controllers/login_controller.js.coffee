@@ -112,14 +112,15 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       , 500)
 
   $scope.closeModal = (form, abandon=true) ->
+
     $scope.resetMessages()
     $scope.reset_users()
     if abandon
       mixpanel.track('Modal Abandoned')
-    if form == "login" && $scope.loginModalOpen
+    if form == "login"
       $scope.showForm = "signIn"
+      $scope.notifyParent() if abandon && $scope.loginModalOpen
       $scope.loginModalOpen = false
-      $scope.notifyParent() if abandon
     else if form == "invite"
       $scope.inviteModalOpen = false
     else if form == "googleInvite"

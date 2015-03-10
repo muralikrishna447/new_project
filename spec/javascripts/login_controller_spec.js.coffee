@@ -84,6 +84,7 @@ describe "LoginController", ->
     it "should set showForm equal to signIn when form is login", ->
       scope.showForm = "signUp"
       scope.closeModal('login')
+      console.log scope.formFor
       expect(scope.showForm).toBe("signIn")
 
     it "should close the invite modal if form is 'incite'", ->
