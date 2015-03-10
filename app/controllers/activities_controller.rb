@@ -95,11 +95,11 @@ class ActivitiesController < ApplicationController
         if containing_class && containing_class.published?
           case containing_class.assembly_type
           when 'Course'
-            path = view_context.link_to containing_class.title, landing_class_path(containing_class), {'no-nell-popup' => true}
+            path = view_context.link_to containing_class.title, landing_class_path(containing_class), {'no-nell-popup' => true, onclick: "mixpanel.track('Clicked Class from Activity', {'class' : '#{containing_class.title}', 'activity': '#{@activity.title}'});"}
           when 'Project'
-            path = view_context.link_to containing_class.title, project_path(containing_class), {'no-nell-popup' => true}
+            path = view_context.link_to containing_class.title, project_path(containing_class), {'no-nell-popup' => true, onclick: "mixpanel.track('Clicked Class from Activity', {'class' : '#{containing_class.title}', 'activity': '#{@activity.title}'});"}
           when 'Recipe Development'
-            path = view_context.link_to containing_class.title, recipe_development_path(containing_class), {'no-nell-popup' => true}
+            path = view_context.link_to containing_class.title, recipe_development_path(containing_class), {'no-nell-popup' => true, onclick: "mixpanel.track('Clicked Class from Activity', {'class' : '#{containing_class.title}', 'activity': '#{@activity.title}'});"}
           end
           container_name = containing_class.assembly_type.to_s
           container_name = "Class" if container_name == "Course"
