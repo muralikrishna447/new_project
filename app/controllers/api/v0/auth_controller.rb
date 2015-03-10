@@ -51,12 +51,10 @@ module Api
         allowed_services = ['Messaging']
         request_auth = request.authorization()
         if request_auth
-          puts "REQUEST AUTH IS: #{request_auth}"
           service_token = request_auth.split(' ').last
           key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
           decoded = JSON::JWT.decode(service_token, key)
           verified = JSON::JWT.decode(decoded.to_s, key.to_s)
-          puts "VERIFIED IS: #{verified.inspect}"
           if allowed_services.include? verified[:service]
             return true
           else
