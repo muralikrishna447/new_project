@@ -34,8 +34,9 @@ module Api
       def validate
         token = request.authorization().split(' ').last
         if token
-          if valid_token?(token)
-            render json: {status: 200, message: 'Success.', tokenValid: true}, status: 200
+          valid_data = valid_token?(token)
+          if valid_data
+            render json: {status: 200, message: 'Success.', tokenValid: true, data: valid_data}, status: 200
           end
         else
           render json: {status: 400, message: 'Bad Request: Please provide a valid token.'}, status: 400
