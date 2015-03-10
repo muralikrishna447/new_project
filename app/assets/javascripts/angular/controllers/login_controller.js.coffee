@@ -96,13 +96,20 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
 
   $scope.openWelcomeOrSignup = ->
     if (!$scope.authentication.loggedIn())
-      $scope.openModal('login')
+      $scope.openModal('signUp')
     else
       $scope.openModal('welcome');
 
   $scope.notifyParent = ->
     if $scope.formFor == 'embed'
       parent.postMessage('embeddedFormClosed', '*');
+      # This is a horrifying hack; we don't want the form to actually close
+      # because we won't know if the user goes to hit the sign up button a second
+      # time, showing the iframe. We could reload, but simpler to just go back to the initial state.
+      # Need the timeout because a second call to closeModal() comes in from low level angular stuff.
+      $timeout( ->
+        $scope.openWelcomeOrSignup()
+      , 500)
 
   $scope.closeModal = (form, abandon=true) ->
     $scope.resetMessages()
