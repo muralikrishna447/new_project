@@ -1,0 +1,77 @@
+@import 'mixins'
+// General Styles
+
+.flex-container
+  display: flex
+  justify-content: center
+  flex-wrap: wrap
+  flex-direction: row
+
+.flex-full
+  flex: 1 100%
+
+.flex-main
+  flex: 0 600px
+
+.flex-aside
+  flex: 1 280px
+
+@media (max-width:1240px)
+  .flex-container
+    flex-direction: column
+
+  .flex-main
+    flex: 1 auto
+    width: 600px
+    align-self: center
+
+  .flex-aside
+    flex: 1 auto
+    width: 600px
+    align-self: center
+
+@media (max-width: 640px)
+  .flex-main
+    width: 100%
+
+  .flex-aside
+    width: 100%
+
+//////////////////////
+// Specific styles ///
+//////////////////////
+
+.flex-title
+  display: flex
+  justify-content: center
+  h1
+    flex: 0 600px
+    margin-bottom: $baseline
+
+.flex-tools
+  display: flex
+  flex-direction: column
+  padding: $baseline
+  .flex-tool
+    align-self: flex-end
+    width: 30px
+    height: 30px
+    font-size: 24px
+
+.flex-social
+  display: flex
+  flex-direction: row
+  padding: $baseline
+  .flex-social-item
+    width: 30px
+    height: 30px
+    font-size: 24px
+
+.flex-suggestions
+  padding: $baseline
+
+@media (max-width:1240px)
+  .flex-tools
+    flex-direction: row
+    .flex-tool
+      align-self: inherit

@@ -2,21 +2,66 @@
   .master-column
     #main-content.main-content-container(ng-cloak)
 
-      .aside.tools-aside.noprint(ng-show="(! editMode) && (activityColumns >= 3)")
-        = render 'shared/tools'
+      -# .aside.tools-aside.noprint(ng-show="(! editMode) && (activityColumns >= 3)")
+      -#   = render 'shared/tools'
 
-      .standard-item
-        = render 'activities/title'
-        -if defined? activity
-          .section-tiny.noprint(ng-hide="editMode")
-            = render 'layouts/social_buttons', media_object: activity
+      -# .standard-item
+      -#   = render 'activities/title'
+      -#   -if defined? activity
+      -#     .section-tiny.noprint(ng-hide="editMode")
+      -#       = render 'layouts/social_buttons', media_object: activity
+
+      -# .flex-container
+      -#   .flex-item.flex-full
+      -#     = render 'activities/title'
+      -#   .flex-item.flex-aside
+      -#     = render 'shared/tools'
+      -#   .flex-item.flex-main
+      -#     = render 'activities/latest/description'
+      -#   .flex-item.flex-aside.noprint(ng-hide="editMode")
+      -#     = render 'layouts/social_buttons', media_object: activity
+      .flex-container
+        .flex-item.flex-full
+          .flex-title
+            %h1
+              {{activity.title}}
+        .flex-item.flex-aside
+          .flex-tools
+            .flex-tool
+              %i.icon-bookmark-empty
+            .flex-tool
+              %i.icon-bookmark-empty
+            .flex-tool
+              %i.icon-bookmark-empty
+            .flex-tool
+              %i.icon-bookmark-empty
+        .flex-item.flex-main
+          = render 'activities/latest/description'
+        .flex-item.flex-aside
+          .flex-social
+            .flex-social-item
+              %i.icon-bookmark-empty
+            .flex-social-item
+              %i.icon-bookmark-empty
+            .flex-social-item
+              %i.icon-bookmark-empty
+            .flex-social-item
+              %i.icon-bookmark-empty
+          .flex-suggestions
+            %strong Here's some suggestions
+            %ol
+              %li Item 1
+              %li Item 2
+              %li Item 3
+              %li Item 4
+              %li Item 5
 
       .standard-item
         = render 'activities/metadata'
 
        
       .standard-item.section
-        = render 'activities/latest/description'
+        -# = render 'activities/latest/description'
 
       .section-large
       .medium-item
