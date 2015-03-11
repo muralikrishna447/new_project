@@ -59,9 +59,11 @@
       .span8.well-border
         %h4 Validating a token
         %p
-          %i example: GET /api/v0/validate
+          %i example: GET /api/v0/validate?token=TOKEN
         %p Returns validity of a token
-        %form(ng-submit='validateToken(user.token)')
+        %form(ng-submit='validateToken(user.serviceToken, user.token)')
+          .control-group
+            %input(type='text' ng-model='user.serviceToken' placeholder='service token')
           .control-group
             %input(type='text' ng-model='user.token' placeholder='token')
           .control-group
