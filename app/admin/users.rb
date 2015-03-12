@@ -1,6 +1,13 @@
 ActiveAdmin.register User do
   actions :all, except: [:destroy]
   menu parent: 'More'
+  filter :email
+  filter :name
+  filter :created_at
+  filter :updated_at
+  filter :provider
+  filter :role
+  filter :referred_from
 
   action_item only: [:show] do
     link_to('Send Password Reset Email', reset_password_admin_user_path(user), method: :post, confirm: 'Are you sure?')

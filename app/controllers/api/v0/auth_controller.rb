@@ -1,7 +1,8 @@
 module Api
   module V0
     class AuthController < BaseController
-      before_filter :ensure_authorized, only: [:validate]
+      # before_filter :ensure_authorized, only: [:validate]
+      before_filter :ensure_authorized_service, only: [:validate]
 
       def authenticate
         begin
@@ -31,14 +32,36 @@ module Api
         end
       end
 
+      # To be used by the Messaging Service
+      # To generate the token, run rake api:generate_service_token[SERVICE_NAME]
       def validate
-        token = request.authorization().split(' ').last
-        if token
-          if valid_token?(token)
-            render json: {status: 200, message: 'Success.', tokenValid: true}, status: 200
+        begin
+          token = params[:token]
+          valid_data = valid_token?(token)
+          render json: {message: 'Success.', tokenValid: true, data: valid_data}, status: 200
+        rescue Exception => e
+          puts "Authenticate Exception: #{e.class} #{e}"
+          render json: {message: 'Bad Request: Please provide a valid token.'}, status: 400
+        end
+      end
+
+      private
+
+      def ensure_authorized_service
+        allowed_services = ['Messaging']
+        request_auth = request.authorization()
+        if request_auth
+          service_token = request_auth.split(' ').last
+          key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+          decoded = JSON::JWT.decode(service_token, key)
+          verified = JSON::JWT.decode(decoded.to_s, key.to_s)
+          if allowed_services.include? verified[:service]
+            return true
+          else
+            render json: {message: 'Invalid Token.'}, status: 401
           end
         else
-          render json: {status: 400, message: 'Bad Request: Please provide a valid token.'}, status: 400
+          render json: {message: 'Please provide a valid service token.'}, status: 401
         end
       end
 
