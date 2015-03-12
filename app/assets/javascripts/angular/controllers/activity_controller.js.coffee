@@ -597,6 +597,13 @@ window.deepCopy = (obj) ->
     window.print()
     $scope.maybeReportCooked()
 
+    # Hack for horrible chrome printing bug
+    # http://stackoverflow.com/questions/18622626/chrome-window-print-print-dialogue-opens-only-after-page-reload-javascript
+    if window.stop
+      window.location.reload()
+      window.stop()
+    false
+
   # Track everything we know about the user engagement on this activity, then reset it
   # in case loading new activity in class
   $scope.trackActivityEngagementFinal =  ->
