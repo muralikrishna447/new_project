@@ -45,10 +45,14 @@
                 %i.fa.fa-file-text-o
                 %div
                   Print
-              .flex-tool
+              .flex-tool.tool-more(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
                 %i.fa.fa-ellipsis-h
                 %div
                   More
+                .tool-more-dropdown(ng-class="{true:'open', false: 'closed'}[toolMoreOpen]")
+                  %ul
+                    %li Edit
+                    %li Edit a copy
         .flex-item.flex-main
           = render 'activities/latest/description'
         .flex-item.flex-aside

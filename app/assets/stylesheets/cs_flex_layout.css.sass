@@ -59,6 +59,26 @@
   .flex-tool
     align-self: center
     text-align: center
+  .tool-more
+    position: relative
+    .tool-more-dropdown
+      position: absolute
+      top: 50px
+      left: 0px
+      background: white
+      padding: $baseline
+      border: 1px solid black
+      white-space: nowrap
+      z-index: 1
+      @include boxsizing
+      ul
+        margin: 0px
+        list-style: none
+        text-align: left
+      &.open
+        display: block
+      &.closed
+        display: none
 
 .flex-social
   display: flex
