@@ -1,36 +1,41 @@
 @import 'mixins'
-// General Styles
+
+//////////////////////
+/// General Styles ///
+//////////////////////
 
 .flex-container
-  display: flex
-  justify-content: center
-  flex-wrap: wrap
-  flex-direction: row
+  @include display-flex
+  @include flex-wrap(wrap)
 
 .flex-full
-  flex: 1 100%
+  @include flex(1 100%)
 
 .flex-main
-  flex: 0 600px
+  @include flex(0 600px)
 
 .flex-aside
-  flex: 1 280px
+  @include flex(1 280px)
 
 @media (max-width:1240px)
   .flex-container
-    flex-direction: column
+    @include flex-direction(column)
+
+  .flex-full
+    @include flex(1 auto)
 
   .flex-main
-    flex: 1 auto
+    @include flex(1 auto)
     width: 600px
-    align-self: center
+    @include align-self(center)
 
   .flex-aside
-    flex: 1 auto
+    @include flex(1 auto)
     width: 600px
-    align-self: center
+    @include align-self(center)
 
 @media (max-width: 640px)
+
   .flex-main
     width: 100%
 
@@ -42,22 +47,22 @@
 //////////////////////
 
 .flex-title
-  display: flex
-  justify-content: center
+  @include display-flex
+  @include justify-content(center)
   h1
-    flex: 0 600px
+    @include flex(0 600px)
     margin-bottom: $baseline
 
 .flex-tools-container
-  display: flex
-  justify-content: flex-end
+  @include display-flex
+  @include justify-content(flex-end)
 
 .flex-tools
-  display: inline-flex
-  flex-direction: column
+  @include display-inline-flex
+  @include flex-direction(column)
   padding: $baseline
   .flex-tool
-    align-self: center
+    @include align-self(center)
     text-align: center
   .tool-more
     position: relative
@@ -81,8 +86,8 @@
         display: none
 
 .flex-social
-  display: flex
-  flex-direction: row
+  @include display-flex
+  @include flex-direction(row)
   padding: $baseline
   .flex-social-item
     width: 30px
@@ -97,8 +102,8 @@
     justify-content: flex-start
 
   .flex-tools
-    flex-direction: row
+    @include flex-direction(row)
+    @include justify-content(space-around)
     width: 100%
-    justify-content: space-around
     .flex-tool
-      align-self: inherit
+      @include align-self(inherit)
