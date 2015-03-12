@@ -48,8 +48,12 @@
     flex: 0 600px
     margin-bottom: $baseline
 
-.flex-tools
+.flex-tools-container
   display: flex
+  justify-content: flex-end
+
+.flex-tools
+  display: inline-flex
   flex-direction: column
   padding: $baseline
   .flex-tool
@@ -69,7 +73,12 @@
   padding: $baseline
 
 @media (max-width:1240px)
+  .flex-tools-container
+    justify-content: flex-start
+
   .flex-tools
     flex-direction: row
+    width: 100%
+    justify-content: space-around
     .flex-tool
       align-self: inherit
