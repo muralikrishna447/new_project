@@ -28,25 +28,39 @@
         .flex-item.flex-aside
           .flex-tools
             .flex-tool
-              %i.icon-bookmark-empty
+              %div(ng-controller='LikesController'
+                    ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
+                    ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)'
+                    ng-if="! inClass")
+                %i.fa.fa-bookmark-o(ng-if="!current_user_likes")
+                %i.fa.fa-bookmark(ng-if="current_user_likes")
+                %div
+                  {{getObject().likes_count || 0}}
             .flex-tool
-              %i.icon-bookmark-empty
+              %i.fa.fa-comments-o
+              %div
+                {{commentCount}}
+            .flex-tool(ng-click="doPrint()")
+              %i.fa.fa-file-text-o
+              %div
+                Print
             .flex-tool
-              %i.icon-bookmark-empty
-            .flex-tool
-              %i.icon-bookmark-empty
+              %i.fa.fa-ellipsis-h
+              %div
+                More
         .flex-item.flex-main
           = render 'activities/latest/description'
         .flex-item.flex-aside
+          %h5 Share
           .flex-social
             .flex-social-item
-              %i.icon-bookmark-empty
+              %i.fa.fa-envelope
             .flex-social-item
-              %i.icon-bookmark-empty
+              %i.fa.fa-facebook
             .flex-social-item
-              %i.icon-bookmark-empty
+              %i.fa.fa-twitter
             .flex-social-item
-              %i.icon-bookmark-empty
+              %i.fa.fa-external-link
           .flex-suggestions
             %strong Here's some suggestions
             %ol
