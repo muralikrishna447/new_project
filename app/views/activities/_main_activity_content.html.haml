@@ -40,7 +40,7 @@
               %i.fa.fa-comments-o
               %div
                 {{commentCount}}
-            .flex-tool(ng-click="doPrint()")
+            .flex-tool(ng-click='doPrint()')
               %i.fa.fa-file-text-o
               %div
                 Print
@@ -52,12 +52,12 @@
           = render 'activities/latest/description'
         .flex-item.flex-aside
           %h5 Share
-          .flex-social
-            .flex-social-item
+          .flex-social(ng-controller='SocialButtonsController')
+            .flex-social-item(ng-click='shareEmail()')
               %i.fa.fa-envelope
-            .flex-social-item
+            .flex-social-item(ng-click='shareFacebook()')
               %i.fa.fa-facebook
-            .flex-social-item
+            .flex-social-item(ng-click='shareTwitter()')
               %i.fa.fa-twitter
             .flex-social-item
               %i.fa.fa-external-link
