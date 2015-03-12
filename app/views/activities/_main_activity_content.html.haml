@@ -45,11 +45,11 @@
                 %i.fa.fa-file-text-o
                 %div
                   Print
-              .flex-tool.tool-more(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
+              .flex-tool.flex-dropdown-toggle(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
                 %i.fa.fa-ellipsis-h
                 %div
                   More
-                .tool-more-dropdown(ng-class="{true:'open', false: 'closed'}[toolMoreOpen]")
+                .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[toolMoreOpen]")
                   %ul
                     %li Edit
                     %li Edit a copy
@@ -64,8 +64,13 @@
               %i.fa.fa-facebook
             .flex-social-item(ng-click='shareTwitter()')
               %i.fa.fa-twitter
-            .flex-social-item
+            .flex-social-item.flex-dropdown-toggle(ng-init='socialMoreOpen=false' ng-click='socialMoreOpen = !socialMoreOpen')
               %i.fa.fa-external-link
+              .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[socialMoreOpen]")
+                %ul
+                  %li Share on Pinterest
+                  %li Share on Google+
+                  %li Embed code
           .flex-suggestions
             %strong Here's some suggestions
             %ol

@@ -17,6 +17,27 @@
 .flex-aside
   @include flex(1 280px)
 
+.flex-dropdown-toggle
+  position: relative
+  .flex-dropdown-menu
+    position: absolute
+    top: 0px
+    left: 0px
+    background: white
+    padding: $baseline
+    border: 1px solid black
+    white-space: nowrap
+    z-index: 1
+    @include boxsizing
+    ul
+      margin: 0px
+      list-style: none
+      text-align: left
+    &.open
+      display: block
+    &.closed
+      display: none
+
 @media (max-width:1240px)
   .flex-container
     @include flex-direction(column)
@@ -64,26 +85,8 @@
   .flex-tool
     @include align-self(center)
     text-align: center
-  .tool-more
-    position: relative
-    .tool-more-dropdown
-      position: absolute
+    .flex-dropdown-menu
       top: 50px
-      left: 0px
-      background: white
-      padding: $baseline
-      border: 1px solid black
-      white-space: nowrap
-      z-index: 1
-      @include boxsizing
-      ul
-        margin: 0px
-        list-style: none
-        text-align: left
-      &.open
-        display: block
-      &.closed
-        display: none
 
 .flex-social
   @include display-flex
@@ -92,7 +95,8 @@
   .flex-social-item
     width: 30px
     height: 30px
-    font-size: 24px
+    .flex-dropdown-menu
+      top: 35px
 
 .flex-suggestions
   padding: $baseline
