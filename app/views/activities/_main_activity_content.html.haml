@@ -33,30 +33,34 @@
                       ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
                       ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)'
                       ng-if="! inClass")
-                  %i.fa.fa-bookmark-o(ng-if="!current_user_likes")
-                  %i.fa.fa-bookmark(ng-if="current_user_likes")
+                  %i.fa.fa-bookmark-o.flex-button-circle(ng-if="!current_user_likes")
+                  %i.fa.fa-bookmark.flex-button-circle(ng-if="current_user_likes")
                   %div
                     {{getObject().likes_count || 0}}
               .flex-tool
-                %i.fa.fa-comments-o
+                %i.fa.fa-comments-o.flex-button-circle
                 %div
                   {{commentCount}}
               .flex-tool(ng-click='doPrint()')
-                %i.fa.fa-file-text-o
+                %i.fa.fa-file-text-o.flex-button-circle
                 %div
                   Print
               .flex-tool.flex-dropdown-toggle(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
-                %i.fa.fa-ellipsis-h
+                %i.fa.fa-ellipsis-h.flex-button-circle
                 %div
                   More
                 .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[toolMoreOpen]")
                   %ul
-                    %li Edit
-                    %li Edit a copy
+                    %li 
+                      %i.fa.fa-edit
+                      Edit
+                    %li
+                      %i.fa.fa-edit
+                      Edit a copy
         .flex-item.flex-main
           = render 'activities/latest/description'
         .flex-item.flex-aside
-          %h5 Share
+          %h5.flex-social-title Share
           .flex-social(ng-controller='SocialButtonsController')
             .flex-social-item(ng-click='shareEmail()')
               %i.fa.fa-envelope

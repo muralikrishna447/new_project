@@ -22,10 +22,11 @@
   .flex-dropdown-menu
     position: absolute
     top: 0px
-    left: 0px
+    right: 0px
     background: white
     padding: $baseline
-    border: 1px solid black
+    border-radius: 2px
+    box-shadow: 1px 1px 5px #ccc
     white-space: nowrap
     z-index: 1
     @include boxsizing
@@ -37,6 +38,16 @@
       display: block
     &.closed
       display: none
+    &:after
+      content: ' '
+      position: absolute
+      top: -7px
+      right: 15px
+      width: 15px
+      height: 15px
+      background: white
+      transform: rotate(45deg)
+      box-shadow: -1px -1px 1px #E8E8E8
 
 @media (max-width:1240px)
   .flex-container
@@ -85,27 +96,39 @@
   .flex-tool
     @include align-self(center)
     text-align: center
-    color: #ccc
+    color: $light-gray
     margin-bottom: 20px
-    i
+    .flex-button-circle
       width: 44px
       height: 44px
       font-size: 30px
-      border: 2px solid #ccc
+      border: 2px solid $light-gray
       border-radius: 22px
       padding: 6px
       margin-bottom: 5px
       @include boxsizing
     .flex-dropdown-menu
-      top: 50px
+      top: 80px
+
+.flex-social-title
+  padding-left: $baseline
+  color: $light-gray
 
 .flex-social
+  width: 175px
+  padding: 0 $baseline
+  color: $light-gray
   @include display-flex
   @include flex-direction(row)
-  padding: $baseline
+  @include justify-content(space-around)
+  @include boxsizing
   .flex-social-item
-    width: 30px
-    height: 30px
+    i
+      width: 22px
+      height: 22px
+      font-size: 22px
+      line-height: 22px
+
     .flex-dropdown-menu
       top: 35px
 
