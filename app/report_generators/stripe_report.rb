@@ -176,7 +176,7 @@ class StripeReport
           # Transfer
           "charge_gross", "charge_fees", "refund_gross", "refund_fees", "charge_count", "refund_count", "net"
         ]
-        gather_charges({created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
+        gather_charges({refunded: false, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
           next unless charge["paid"]
           charge_amount = (charge["amount"].to_i/100.00)
           stripe_csv << [
