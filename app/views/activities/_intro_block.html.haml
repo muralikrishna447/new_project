@@ -8,11 +8,10 @@
   .flex-item.flex-aside
     .flex-tools-container
       .flex-tools
-        .flex-tool
-          %div(ng-controller='LikesController'
+        .flex-tool(ng-if="! inClass")
+          %div( ng-controller='LikesController'
                 ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
-                ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)'
-                ng-if="! inClass")
+                ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
             %i.fa.fa-bookmark-o.flex-button-circle(ng-if="!current_user_likes")
             %i.fa.fa-bookmark.flex-button-circle(ng-if="current_user_likes")
             %div

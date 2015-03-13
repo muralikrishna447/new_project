@@ -95,6 +95,25 @@
   .flex-aside
     width: 100%
 
+///////////////////////////////////////////
+// Flex Layout Styles In a class //
+///////////////////////////////////////////
+.course-wrapper
+  .flex-container
+  
+  .flex-item
+    margin: 0 auto
+    @include flex(0 700px)
+
+  .flex-title
+    @include justify-content(flex-start)
+
+  .flex-tools
+    display: none
+
+  .flex-social
+    display: none
+
 //////////////////////
 // Specific styles ///
 //////////////////////
