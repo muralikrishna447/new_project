@@ -18,8 +18,8 @@ class StripeReport
       CSV.parse(stripe_csv, headers: true).each do |stripe_record|
         if stripe_record["object"] == "charge"
           if transaction_type(stripe_record) == "CHECK"
-            refunds << ["TRNS", "1", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Stripe Account", nil, "ChefSteps", stripe_record["total_refund"], "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
-            refunds << ["SPL", "2", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Returns", "Delve Online", "ChefSteps", stripe_record["refund_revenue"], "Refund of charge #{stripe_record["id"]}"]
+            refunds << ["TRNS", "1", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Stripe Account", nil, "ChefSteps", stripe_record["total_refund"], "Refund of charge #{stripe_record["id"]}"]
+            refunds << ["SPL", "2", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Returns", "Delve Online", "ChefSteps", stripe_record["refund_revenue"], "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
             line_number = 3
             if stripe_record["sales_tax_paid?"] == "true"
               refunds << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "ChefSteps", stripe_record["refund_tax"], "Sales Tax for charge ID: #{stripe_record["id"]}"]
