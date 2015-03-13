@@ -71,12 +71,19 @@
                     More
                 .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[toolMoreOpen]")
                   %ul
-                    %li 
-                      %i.fa.fa-edit
-                      Edit
-                    %li
-                      %i.fa.fa-edit
-                      Edit a copy
+                    -if can?(:update, @activity) && @include_edit_toolbar
+                      %li(  ng-click="maybeStartEditMode()"
+                            tooltip="Edit this recipe"
+                            tooltip-placement="left")
+                        %i.fa.fa-edit
+                        Edit
+                    -if can?(:update, Activity) && @include_edit_toolbar
+                      %li(  ng-show="hasActivityType('Recipe')"
+                            ng-click="fork()"
+                            tooltip="Edit a copy of this recipe"
+                            tooltip-placement="left")
+                        %i.fa.fa-edit
+                        Edit a copy
                     %li.flex-medium-only(ng-click='doPrint()')
                       %i.fa.fa-print
                       Print
@@ -96,9 +103,15 @@
                 %i.fa.fa-external-link
               .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[socialMoreOpen]")
                 %ul
-                  %li Share on Pinterest
-                  %li Share on Google+
-                  %li Embed code
+                  %li(ng-click='sharePinterest()')
+                    %i.fa.fa-pinterest
+                    Pinterest
+                  %li(ng-click='shareGooglePlus()')
+                    %i.fa.fa-google-plus
+                    Share on Google+
+                  %li(ng-click='shareEmbedly()')
+                    %i.fa.fa-code
+                    Embed code
           .flex-suggestions
             %strong Here's some suggestions
             %ol
