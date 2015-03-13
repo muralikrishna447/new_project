@@ -17,7 +17,7 @@
             %i.fa.fa-bookmark.flex-button-circle(ng-if="current_user_likes")
             %div
               {{getObject().likes_count || 0}}
-        .flex-tool
+        .flex-tool(cs-smooth-scroll-to='#discussion')
           %i.fa.fa-comments-o.flex-button-circle
           %div
             {{commentCount}}
