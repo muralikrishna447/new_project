@@ -5,10 +5,10 @@
     .flex-title
       %h1
         {{activity.title}}
-  .flex-item.flex-aside
+  .flex-item.flex-aside(ng-if="! inClass")
     .flex-tools-container
       .flex-tools
-        .flex-tool(ng-if="! inClass")
+        .flex-tool
           %div( ng-controller='LikesController'
                 ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
                 ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
@@ -68,7 +68,7 @@
                 Print
   .flex-item.flex-main
     = render 'activities/latest/description'
-  .flex-item.flex-aside.flex-large-only
+  .flex-item.flex-aside.flex-large-only(ng-if="! inClass")
     %h5.flex-social-title Share
     .flex-social(ng-controller='SocialButtonsController')
       .flex-social-item(ng-click='shareEmail()')
