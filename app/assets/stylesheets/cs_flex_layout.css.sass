@@ -17,8 +17,10 @@
 .flex-aside
   @include flex(1 280px)
 
-.flex-dropdown-toggle
+.flex-dropdown
   position: relative
+  .flex-dropdown-toggle
+    position: relative
   .flex-dropdown-menu
     position: absolute
     top: 0px
@@ -34,6 +36,10 @@
       margin: 0px
       list-style: none
       text-align: left
+      li
+        &:hover
+          color: black
+          cursor: pointer
     &.open
       display: block
     &.closed
@@ -49,6 +55,13 @@
       transform: rotate(45deg)
       box-shadow: -1px -1px 1px #E8E8E8
 
+.flex-large-only
+  display: block
+
+.flex-medium-only
+  display: none
+
+// 20px + 280px + 600px + 280px + 20px (master column padding + aside + main + aside + master column padding)
 @media (max-width:1240px)
   .flex-container
     @include flex-direction(column)
@@ -66,6 +79,13 @@
     width: 600px
     @include align-self(center)
 
+  .flex-large-only
+    display: none
+
+  .flex-medium-only
+    display: block
+
+// 20px + 600px + 20px (master column padding + main + master column padding)
 @media (max-width: 640px)
 
   .flex-main
@@ -136,9 +156,14 @@
       height: 22px
       font-size: 22px
       line-height: 22px
+    &:hover
+      color: black
+      cursor: pointer
 
     .flex-dropdown-menu
+      color: $light-gray
       top: 35px
+      right: -10px
 
 .flex-suggestions
   padding: $baseline
