@@ -81,10 +81,11 @@
       ), {scope: 'email'}
 
   $scope.validateTokenStatus = null
-  $scope.validateToken = (token) ->
+  $scope.validateToken = (serviceToken, token) ->
     $http.get(
       host + '/api/v0/validate'
-      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+      headers: { 'Authorization': 'Bearer ' + serviceToken, "x-csrf-token":undefined }
+      params: {token: token}
     ).success((data, status, headers, cfg) ->
       console.log "success: "
       console.log data

@@ -49,35 +49,48 @@ describe Api::V0::AuthController do
 
   end
 
-  context 'POST /validate' do
+  context 'GET /validate' do
+
     before :each do
-      @user = Fabricate :user, id: 200, email: 'user@chefsteps.com', password: '123456', name: 'A User', role: 'user'
       issued_at = (Time.now.to_f * 1000).to_i
+
+      service_claim = {
+        iat: issued_at,
+        service: 'Messaging'
+      }
+      @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).encrypt(@key.public_key).to_s
+
+
+      @user = Fabricate :user, id: 200, email: 'user@chefsteps.com', password: '123456', name: 'A User', role: 'user'
       claim = { 
         iat: issued_at,
         user: @user
       }
       jws = JSON::JWT.new(claim.as_json).sign(@key.to_s)
       jwe = jws.encrypt(@key.public_key)
-      @valid_token = 'Bearer ' + jwe.to_s
+      @valid_token = jwe.to_s
       @invalid_token = 'Bearer Some Bad Token'
     end
 
-    it 'should validate a valid token' do
-      request.env['HTTP_AUTHORIZATION'] = @valid_token
-      post :validate
+    it 'should validate if provided a valid service token' do
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      get :validate, token: @valid_token
       response.should be_success
-      puts response.body
       expect(JSON.parse(response.body)['tokenValid']).to be_true
     end
 
-    it 'should not validate an invalid token' do
-      request.env['HTTP_AUTHORIZATION'] = @invalid_token
-      post :validate
+    it 'should not validate if no valid service token provided' do
+      get :validate
       response.should_not be_success
-      puts response.body
+    end
+
+    it 'should not validate if valid service token provided but token to be validated is invalid' do
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      get :validate, token: @invalid_token
+      response.should_not be_success
       expect(JSON.parse(response.body)['tokenValid']).to be_false
     end
+
   end
 
 end
