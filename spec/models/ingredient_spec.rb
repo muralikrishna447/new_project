@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe Ingredient do
-  let(:ingredient) { Fabricate(:ingredient, title: 'black Pepper', image_id: "foo", tag_list: "a, b") }
-  let(:ingredient2) { Fabricate(:ingredient, title: 'Black peepper', image_id: "bar", text_fields: "baz", tag_list: "c") }
-  let(:ingredient3) { Fabricate(:ingredient, title: 'Black pepper, whole', density: 1, product_url: "sneegle", tag_list: "c, d") }
+  let(:ingredient) { Fabricate(:ingredient, title: 'black Pepper', image_id: "foo", tag_list: ["a","b"]) }
+  let(:ingredient2) { Fabricate(:ingredient, title: 'Black peepper', image_id: "bar", text_fields: "baz", tag_list: ["c"]) }
+  let(:ingredient3) { Fabricate(:ingredient, title: 'Black pepper, whole', density: 1, product_url: "sneegle", tag_list: ["c", "d"]) }
   let(:activity) { Fabricate(:activity, title: 'foo1') }
   let(:activity2) { Fabricate(:activity, title: 'foo2') }
   let(:activity3) { Fabricate(:activity, title: 'foo3') }
