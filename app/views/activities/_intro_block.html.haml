@@ -5,6 +5,10 @@
     .flex-title
       %h1
         {{activity.title}}
+      %svg.csicon
+        %use(xlink:href="#icon-facebook")
+      %svg.csicon
+        %use(xlink:href="#icon-google")
   .flex-item.flex-aside(ng-if="! inClass")
     .flex-tools-container
       .flex-tools
@@ -17,11 +21,17 @@
             %div
               {{getObject().likes_count || 0}}
         .flex-tool(cs-smooth-scroll-to='#discussion')
-          %i.fa.fa-comments-o.flex-button-circle
+          -# %i.fa.fa-comments-o.flex-button-circle
+          .flex-button-circle
+            %svg.csicon
+              %use(xlink:href="#icon-comment")
           %div
             {{commentCount}}
         .flex-tool.flex-large-only(ng-click='doPrint()')
-          %i.fa.fa-file-text-o.flex-button-circle
+          -# %i.fa.fa-file-text-o.flex-button-circle
+          .flex-button-circle
+            %svg.csicon
+              %use(xlink:href="#icon-print")
           %div
             Print
         .flex-tool.flex-dropdown.flex-medium-only(ng-controller='SocialButtonsController')
