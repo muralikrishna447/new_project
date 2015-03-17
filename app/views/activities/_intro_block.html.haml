@@ -5,10 +5,6 @@
     .flex-title
       %h1
         {{activity.title}}
-      %svg.csicon
-        %use(xlink:href="#icon-facebook")
-      %svg.csicon
-        %use(xlink:href="#icon-google")
   .flex-item.flex-aside(ng-if="! inClass")
     .flex-tools-container
       .flex-tools
@@ -16,21 +12,25 @@
           %div( ng-controller='LikesController'
                 ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
                 ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
-            %i.fa.fa-bookmark-o.flex-button-circle(ng-if="!current_user_likes")
-            %i.fa.fa-bookmark.flex-button-circle(ng-if="current_user_likes")
+            -# %i.fa.fa-bookmark-o.flex-button-circle(ng-if="!current_user_likes")
+            -# %i.fa.fa-bookmark.flex-button-circle(ng-if="current_user_likes")
+            .flex-button-circle
+              %svg.csicon.icon-saved
+                %use(xlink:href="#icon-saved" ng-if="!current_user_likes")
+                %use(xlink:href="#icon-saved" ng-if="current_user_likes")
             %div
               {{getObject().likes_count || 0}}
         .flex-tool(cs-smooth-scroll-to='#discussion')
           -# %i.fa.fa-comments-o.flex-button-circle
           .flex-button-circle
-            %svg.csicon
+            %svg.csicon.icon-comment
               %use(xlink:href="#icon-comment")
           %div
             {{commentCount}}
         .flex-tool.flex-large-only(ng-click='doPrint()')
           -# %i.fa.fa-file-text-o.flex-button-circle
           .flex-button-circle
-            %svg.csicon
+            %svg.csicon.icon-print
               %use(xlink:href="#icon-print")
           %div
             Print
@@ -55,7 +55,10 @@
                 Pinterest
         .flex-tool.flex-dropdown
           .flex-dropdown-toggle(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
-            %i.fa.fa-ellipsis-h.flex-button-circle
+            -# %i.fa.fa-ellipsis-h.flex-button-circle
+            .flex-button-circle
+              %svg.csicon.icon-more
+                %use(xlink:href="#icon-more")
             %div
               More
           .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[toolMoreOpen]")

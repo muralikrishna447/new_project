@@ -101,3 +101,47 @@
   width: 30px;
   height: 30px;
 }
+
+.csicon.icon-facebook {
+  width: 0.5185546875em;
+}
+
+.csicon.icon-saved {
+  width: 0.5em;
+}
+
+.csicon.icon-twitter {
+  width: 1.2314453125em;
+}
+
+.csicon.icon-code {
+  width: 1.947265625em;
+}
+
+.csicon.icon-comment-add {
+  width: 0.9404296875em;
+}
+
+.csicon.icon-comment {
+  width: 0.9404296875em;
+}
+
+.csicon.icon-edit-a-copy {
+  width: 1.1318359375em;
+}
+
+.csicon.icon-edit {
+  width: 0.9580078125em;
+}
+
+.csicon.icon-mail {
+  width: 1.3525390625em;
+}
+
+.csicon.icon-more {
+  width: 1em;
+}
+
+.csicon.icon-print {
+  width: 0.84375em;
+}
