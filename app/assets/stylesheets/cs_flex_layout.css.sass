@@ -38,6 +38,10 @@
       text-align: left
       li
         margin: 5px 0px
+        svg.csicon
+          font-size: 22px
+          height: 22px
+          width: 22px
         &:hover
           color: black
           cursor: pointer
@@ -143,7 +147,7 @@
       border-style: solid
       border-color: $light-gray
       border-radius: 22px
-      padding: 6px
+      padding: 5px
       margin-bottom: 5px
       @include boxsizing
     .flex-dropdown-menu
@@ -168,7 +172,7 @@
   @include justify-content(space-around)
   @include boxsizing
   .flex-social-item
-    i
+    svg.csicon
       width: 22px
       height: 22px
       font-size: 22px

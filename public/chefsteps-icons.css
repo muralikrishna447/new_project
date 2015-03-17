@@ -98,11 +98,12 @@
 
 .csicon {
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
 }
 
-.csicon.icon-facebook {
+/*.csicon.icon-facebook {
   width: 0.5185546875em;
 }
 
@@ -139,9 +140,10 @@
 }
 
 .csicon.icon-more {
-  width: 1em;
+  /*width: 4.775390625em;*/
+  width: 1.59179687em;
 }
 
 .csicon.icon-print {
   width: 0.84375em;
-}
+}*/

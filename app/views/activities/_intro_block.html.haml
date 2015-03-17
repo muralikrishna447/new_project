@@ -67,14 +67,16 @@
                 %li(  ng-click="maybeStartEditMode()"
                       tooltip="Edit this recipe"
                       tooltip-placement="left")
-                  %i.fa.fa-edit
+                  %svg.csicon
+                    %use(xlink:href="#icon-edit")
                   Edit
               -if can?(:update, Activity) && @include_edit_toolbar
                 %li(  ng-show="hasActivityType('Recipe')"
                       ng-click="fork()"
                       tooltip="Edit a copy of this recipe"
                       tooltip-placement="left")
-                  %i.fa.fa-edit
+                  %svg.csicon
+                    %use(xlink:href="#icon-edit-a-copy")
                   Edit a copy
               %li.flex-medium-only(ng-click='doPrint()')
                 %i.fa.fa-print
@@ -85,24 +87,31 @@
     %h5.flex-social-title Share
     .flex-social(ng-controller='SocialButtonsController')
       .flex-social-item(ng-click='shareEmail()')
-        %i.fa.fa-envelope
+        %svg.csicon
+          %use(xlink:href='#icon-mail')
       .flex-social-item(ng-click='shareFacebook()')
-        %i.fa.fa-facebook
+        %svg.csicon
+          %use(xlink:href='#icon-facebook')
       .flex-social-item(ng-click='shareTwitter()')
-        %i.fa.fa-twitter
+        %svg.csicon
+          %use(xlink:href='#icon-twitter')
       .flex-social-item.flex-dropdown
         .flex-dropdown-toggle(ng-init='socialMoreOpen=false' ng-click='socialMoreOpen = !socialMoreOpen')
-          %i.fa.fa-external-link
+          %svg.csicon
+            %use(xlink:href='#icon-share')
         .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[socialMoreOpen]")
           %ul
             %li(ng-click='sharePinterest()')
-              %i.fa.fa-pinterest
+              %svg.csicon
+                %use(xlink:href='#icon-pinterest')
               Pinterest
             %li(ng-click='shareGooglePlus()')
-              %i.fa.fa-google-plus
+              %svg.csicon
+                %use(xlink:href='#icon-google')
               Share on Google+
             %li(ng-click='shareEmbedly()')
-              %i.fa.fa-code
+              %svg.csicon
+                %use(xlink:href='#icon-code')
               Embed code
     -# .flex-suggestions
     -#   %strong Here's some suggestions
