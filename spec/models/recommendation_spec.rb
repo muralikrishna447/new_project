@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Recommendation do
 
   before :each do
-    @user1 = Fabricate :user, name: 'Bob Smith', survey_results: [{"copy"=>"What kind of cook are you?", "answer"=>"Home Cook", 'search_scope'=>'difficulty'}, {"copy"=>"Which culinary topics interest you the most?", "answer"=>['Modernist Cuisine','Food Science']}, {"copy"=>"What equipment do you have in your kitchen?", "search_scope"=>"by_equipment_title", "answer"=>"Immersion Blender,Whipping Siphon"}]
-    @user2 = Fabricate :user, name: 'Bobby Smith', survey_results: [{"copy"=>"Which culinary topics interest you the most?", "answer"=>['Modernist Cuisine','Food Science'], 'search_scope' => 'interests'}]
+    @user1 = Fabricate :user, name: 'Bob Smith', survey_results: [{"copy"=>"What kind of cook are you?", "answer"=>"Home Cook", 'search_scope'=>'difficulty'}, {"copy"=>"Which culinary topics interest you the most?", "answer"=>'Modernist Cuisine,Food Science'}, {"copy"=>"What equipment do you have in your kitchen?", "search_scope"=>"by_equipment_title", "answer"=>"Immersion Blender,Whipping Siphon"}]
+    @user2 = Fabricate :user, name: 'Bobby Smith', survey_results: [{"copy"=>"Which culinary topics interest you the most?", "answer"=>'Modernist Cuisine,Food Science', 'search_scope' => 'interests'}]
     @user3 = Fabricate :user, name: 'Askme Noquestions'
     @activity1 = Fabricate :activity, title: 'Activity 1', published: true, tag_list: ['modernist cuisine','dinner'], difficulty: 'intermediate', likes_count: 10
     @activity2 = Fabricate :activity, title: 'Activity 2', published: true, tag_list: ['butchery'], difficulty: 'advanced', likes_count: 20

@@ -4,7 +4,7 @@ class TagSanitizationParser < ActsAsTaggableOn::GenericParser
       if @tag_list.is_a?(Array)
         tag_list.add @tag_list.map{|s| Sanitize.fragment(s, Sanitize::Config.merge(Sanitize::Config::RELAXED, remove_contents: true)) }
       else
-        tag_list.add @tag_list.split(',').map{&:strip).map{|s| Sanitize.fragment(s, Sanitize::Config.merge(Sanitize::Config::RELAXED, remove_contents: true)) }
+        tag_list.add @tag_list.split(',').map(&:strip).map{|s| Sanitize.fragment(s, Sanitize::Config.merge(Sanitize::Config::RELAXED, remove_contents: true)) }
       end
     end
   end
