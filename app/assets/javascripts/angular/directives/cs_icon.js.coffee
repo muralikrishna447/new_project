@@ -14,7 +14,7 @@
 
   template:
     """
-      <svg class="csicon" width="{{icon.width}}" height="{{icon.height}}">
+      <svg class="csicon" ng-attr-width="{{icon.width}}" ng-attr-height="{{icon.height}}">
         <use xlink:href="{{icon.href}}"></use>
       </svg>
     """
