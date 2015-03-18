@@ -14,24 +14,22 @@
                 ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
             -# %i.fa.fa-bookmark-o.flex-button-circle(ng-if="!current_user_likes")
             -# %i.fa.fa-bookmark.flex-button-circle(ng-if="current_user_likes")
-            .flex-button-circle
-              %svg.csicon.icon-saved
-                %use(xlink:href="#icon-saved" ng-if="!current_user_likes")
-                %use(xlink:href="#icon-saved" ng-if="current_user_likes")
+            .flex-button-circle(ng-if="!current_user_likes")
+              %i(cs-icon='saved')
+            .flex-button-circle(ng-if="current_user_likes")
+              %i(cs-icon='saved')
             %div
               {{getObject().likes_count || 0}}
         .flex-tool(cs-smooth-scroll-to='#discussion')
           -# %i.fa.fa-comments-o.flex-button-circle
           .flex-button-circle
-            %svg.csicon.icon-comment
-              %use(xlink:href="#icon-comment")
+            %i(cs-icon='comment')
           %div
             {{commentCount}}
         .flex-tool.flex-large-only(ng-click='doPrint()')
           -# %i.fa.fa-file-text-o.flex-button-circle
           .flex-button-circle
-            %svg.csicon.icon-print
-              %use(xlink:href="#icon-print")
+            %i(cs-icon='print')
           %div
             Print
         .flex-tool.flex-dropdown.flex-medium-only(ng-controller='SocialButtonsController')
@@ -57,8 +55,7 @@
           .flex-dropdown-toggle(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
             -# %i.fa.fa-ellipsis-h.flex-button-circle
             .flex-button-circle
-              %svg.csicon.icon-more
-                %use(xlink:href="#icon-more")
+              %i(cs-icon='more')
             %div
               More
           .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[toolMoreOpen]")
@@ -67,16 +64,14 @@
                 %li(  ng-click="maybeStartEditMode()"
                       tooltip="Edit this recipe"
                       tooltip-placement="left")
-                  %svg.csicon
-                    %use(xlink:href="#icon-edit")
+                  %i(cs-icon='edit')
                   Edit
               -if can?(:update, Activity) && @include_edit_toolbar
                 %li(  ng-show="hasActivityType('Recipe')"
                       ng-click="fork()"
                       tooltip="Edit a copy of this recipe"
                       tooltip-placement="left")
-                  %svg.csicon
-                    %use(xlink:href="#icon-edit-a-copy")
+                  %i(cs-icon='edit-a-copy')
                   Edit a copy
               %li.flex-medium-only(ng-click='doPrint()')
                 %i.fa.fa-print
@@ -87,31 +82,24 @@
     %h5.flex-social-title Share
     .flex-social(ng-controller='SocialButtonsController')
       .flex-social-item(ng-click='shareEmail()')
-        %svg.csicon
-          %use(xlink:href='#icon-mail')
+        %i(cs-icon='mail')
       .flex-social-item(ng-click='shareFacebook()')
-        %svg.csicon
-          %use(xlink:href='#icon-facebook')
+        %i(cs-icon='facebook')
       .flex-social-item(ng-click='shareTwitter()')
-        %svg.csicon
-          %use(xlink:href='#icon-twitter')
+        %i(cs-icon='twitter')
       .flex-social-item.flex-dropdown
         .flex-dropdown-toggle(ng-init='socialMoreOpen=false' ng-click='socialMoreOpen = !socialMoreOpen')
-          %svg.csicon
-            %use(xlink:href='#icon-share')
+          %i(cs-icon='share')
         .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[socialMoreOpen]")
           %ul
             %li(ng-click='sharePinterest()')
-              %svg.csicon
-                %use(xlink:href='#icon-pinterest')
+              %i(cs-icon='pinterest')
               Pinterest
             %li(ng-click='shareGooglePlus()')
-              %svg.csicon
-                %use(xlink:href='#icon-google')
+              %i(cs-icon='google+')
               Share on Google+
             %li(ng-click='shareEmbedly()')
-              %svg.csicon
-                %use(xlink:href='#icon-code')
+              %i(cs-icon='code')
               Embed code
     -# .flex-suggestions
     -#   %strong Here's some suggestions
