@@ -34,22 +34,23 @@
             Print
         .flex-tool.flex-dropdown.flex-medium-only(ng-controller='SocialButtonsController')
           .flex-dropdown-toggle(ng-init='socialMediumMoreOpen=false' ng-click='socialMediumMoreOpen = !socialMediumMoreOpen')
-            %i.fa.fa-external-link.flex-button-circle
+            .flex-button-circle
+              %i(cs-icon='share')
             %div
               Share
           .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[socialMediumMoreOpen]")
             %ul
               %li(ng-click='shareEmail()')
-                %i.fa.fa-envelope
+                %i.flex-dropdown-icon(cs-icon='mail')
                 Email
               %li(ng-click='shareFacebook()')
-                %i.fa.fa-facebook
+                %i.flex-dropdown-icon(cs-icon='facebook')
                 Facebook
               %li(ng-click='shareTwitter()')
-                %i.fa.fa-twitter
+                %i.flex-dropdown-icon(cs-icon='twitter')
                 Twitter
               %li(ng-click='sharePinterest()')
-                %i.fa.fa-pinterest
+                %i.flex-dropdown-icon(cs-icon='pinterest')
                 Pinterest
         .flex-tool.flex-dropdown
           .flex-dropdown-toggle(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
@@ -64,17 +65,17 @@
                 %li(  ng-click="maybeStartEditMode()"
                       tooltip="Edit this recipe"
                       tooltip-placement="left")
-                  %i(cs-icon='edit')
+                  %i.flex-dropdown-icon(cs-icon='edit')
                   Edit
               -if can?(:update, Activity) && @include_edit_toolbar
                 %li(  ng-show="hasActivityType('Recipe')"
                       ng-click="fork()"
                       tooltip="Edit a copy of this recipe"
                       tooltip-placement="left")
-                  %i(cs-icon='edit-a-copy')
+                  %i.flex-dropdown-icon(cs-icon='edit-a-copy')
                   Edit a copy
               %li.flex-medium-only(ng-click='doPrint()')
-                %i.fa.fa-print
+                %i.flex-dropdown-icon(cs-icon='print')
                 Print
   .flex-item.flex-main
     = render 'activities/latest/description'
@@ -93,13 +94,13 @@
         .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[socialMoreOpen]")
           %ul
             %li(ng-click='sharePinterest()')
-              %i(cs-icon='pinterest')
+              %i.flex-dropdown-icon(cs-icon='pinterest')
               Pinterest
             %li(ng-click='shareGooglePlus()')
-              %i(cs-icon='google+')
+              %i.flex-dropdown-icon(cs-icon='google+')
               Share on Google+
             %li(ng-click='shareEmbedly()')
-              %i(cs-icon='code')
+              %i.flex-dropdown-icon(cs-icon='code')
               Embed code
     -# .flex-suggestions
     -#   %strong Here's some suggestions
