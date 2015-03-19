@@ -48,7 +48,7 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
       method: 'GET'
       url: url
     ).success((data, status, headers, config) ->
-      if data && data == 'true'
+      if data && data[0] == true
         $scope.current_user_likes = true
     )
 
