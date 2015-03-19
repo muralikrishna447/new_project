@@ -44,8 +44,9 @@
         @include align-items(center)
         .flex-dropdown-icon
           margin-right: 10px
+          min-width: 27px
         &:hover
-          color: black
+          color: $light-black
           cursor: pointer
     &.open
       display: block
@@ -135,6 +136,7 @@
 .flex-tools
   @include display-inline-flex
   @include flex-direction(column)
+  width: 60px
   margin-right: 40px
   text-transform: uppercase
   .flex-tool
@@ -152,16 +154,25 @@
       border-radius: 22px
       padding: 8px
       margin-bottom: 5px
+      margin-left: auto
+      margin-right: auto
       @include display-flex
       @include align-items(center)
       @include justify-content(center)
       @include boxsizing
+      &.active
+        color: $light-black
+        border-color: $light-black
     .flex-dropdown-menu
       top: 90px
       color: $light-gray
     &:hover
       color: $light-black
       cursor: pointer
+      .flex-button-circle
+        border-color: $light-black
+    &.active
+      color: $light-black
       .flex-button-circle
         border-color: $light-black
 
@@ -179,13 +190,18 @@
   @include boxsizing
   .flex-social-item
     &:hover
-      color: black
+      color: $light-black
       cursor: pointer
 
     .flex-dropdown-menu
       color: $light-gray
-      top: 35px
+      top: 45px
       right: -10px
+
+    &.active
+      color: $light-black
+      .flex-button-circle
+        border-color: $light-black
 
 .flex-suggestions
   padding: $baseline

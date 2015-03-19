@@ -8,18 +8,17 @@
   .flex-item.flex-aside(ng-if="! inClass")
     .flex-tools-container
       .flex-tools
-        .flex-tool
-          %div( ng-controller='LikesController'
-                ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
+        .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]")
+          %div( ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
                 ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
-            -# %i.fa.fa-bookmark-o.flex-button-circle(ng-if="!current_user_likes")
-            -# %i.fa.fa-bookmark.flex-button-circle(ng-if="current_user_likes")
             .flex-button-circle(ng-if="!current_user_likes")
               %i(cs-icon='saved')
             .flex-button-circle(ng-if="current_user_likes")
               %i(cs-icon='saved')
-            %div
-              {{getObject().likes_count || 0}}
+            %div(ng-if="!current_user_likes")
+              Save
+            %div(ng-if="current_user_likes")
+              Saved
         .flex-tool(cs-smooth-scroll-to='#discussion')
           -# %i.fa.fa-comments-o.flex-button-circle
           .flex-button-circle
@@ -52,9 +51,8 @@
               %li(ng-click='sharePinterest()')
                 %i.flex-dropdown-icon(cs-icon='pinterest')
                 Pinterest
-        .flex-tool.flex-dropdown
+        .flex-tool.flex-dropdown(ng-class="{true:'active', false: 'inactive'}[toolMoreOpen]")
           .flex-dropdown-toggle(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
-            -# %i.fa.fa-ellipsis-h.flex-button-circle
             .flex-button-circle
               %i(cs-icon='more')
             %div
@@ -88,7 +86,7 @@
         %i(cs-icon='facebook')
       .flex-social-item(ng-click='shareTwitter()')
         %i(cs-icon='twitter')
-      .flex-social-item.flex-dropdown
+      .flex-social-item.flex-dropdown(ng-class="{true:'active', false: 'inactive'}[socialMoreOpen]")
         .flex-dropdown-toggle(ng-init='socialMoreOpen=false' ng-click='socialMoreOpen = !socialMoreOpen')
           %i(cs-icon='share')
         .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[socialMoreOpen]")
