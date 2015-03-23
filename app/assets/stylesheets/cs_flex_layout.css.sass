@@ -40,13 +40,15 @@
       text-align: left
       li
         margin: 10px 0px
+        color: rgba(204, 204, 204, 0.5)
+        @include transition(all 300ms)
         @include display-flex
         @include align-items(center)
         .flex-dropdown-icon
           margin-right: 10px
           min-width: 27px
         &:hover
-          color: $light-black
+          color: rgba(204, 204, 204, 1)
           cursor: pointer
     &.open
       display: block
@@ -142,15 +144,17 @@
   .flex-tool
     @include align-self(center)
     text-align: center
-    color: $light-gray
+    color: rgba(204, 204, 204, 0.5)
+    font-weight: 400
     margin-bottom: 20px
+    @include transition(all 300ms)
     .flex-button-circle
       width: 44px
       height: 44px
       font-size: 30px
       border-width: 2px
       border-style: solid
-      border-color: $light-gray
+      border-color: rgba(204, 204, 204, .5)
       border-radius: 22px
       padding: 8px
       margin-bottom: 5px
@@ -161,20 +165,20 @@
       @include justify-content(center)
       @include boxsizing
       &.active
-        color: $light-black
-        border-color: $light-black
+        color: rgba(204, 204, 204, 1)
+        border-color: rgba(204, 204, 204, 1)
     .flex-dropdown-menu
       top: 90px
-      color: $light-gray
+      color: rgba(204, 204, 204, 0.5)
     &:hover
-      color: $light-black
+      color: rgba(204, 204, 204, 1)
       cursor: pointer
       .flex-button-circle
-        border-color: $light-black
+        border-color: rgba(204, 204, 204, 1)
     &.active
-      color: $light-black
+      color: rgba(204, 204, 204, 1)
       .flex-button-circle
-        border-color: $light-black
+        border-color: rgba(204, 204, 204, 1)
 
 .flex-social-title
   margin-bottom: $baseline
@@ -182,26 +186,28 @@
 
 .flex-social
   width: 175px
-  color: $light-gray
   text-transform: uppercase
+  font-weight: 400
   @include display-flex
   @include flex-direction(row)
   @include justify-content(space-between)
   @include boxsizing
   .flex-social-item
+    color: rgba(204, 204, 204, 0.5)
+    @include transition(all 300ms)
     &:hover
-      color: $light-black
+      color: rgba(204, 204, 204, 1)
       cursor: pointer
 
     .flex-dropdown-menu
-      color: $light-gray
+      color: rgba(204, 204, 204, 0.5)
       top: 45px
       right: -10px
 
     &.active
-      color: $light-black
+      color: rgba(204, 204, 204, 1)
       .flex-button-circle
-        border-color: $light-black
+        border-color: rgba(204, 204, 204, 1)
 
 .flex-suggestions
   padding: $baseline
