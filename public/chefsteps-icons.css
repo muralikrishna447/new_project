@@ -96,55 +96,78 @@
   content: "s";
 }
 
-.csicon {
-  display: inline-block;
-  fill: currentColor;
+.cs-icon-code-dims {
+  width: 22px;
+  height: 11.3px;
 }
 
-/*.csicon.csicon-facebook {
-  content: '';
-  background-image: url('./icons/facebook.svg');
+.cs-icon-comment-dims {
+  width: 23px;
+  height: 23.8px;
+}
+
+.cs-icon-comment-add-dims {
+  width: 23px;
+  height: 23.8px;
+}
+
+.cs-icon-edit-dims {
+  width: 19.9px;
+  height: 21.3px;
+}
+
+.cs-icon-edit-a-copy-dims {
+  width: 21.1px;
+  height: 18px;
+}
+
+.cs-icon-facebook-dims {
   width: 11.4px;
   height: 22px;
-}*/
-
-/*.csicon.icon-saved {
-  width: 0.5em;
 }
 
-.csicon.icon-twitter {
-  width: 1.2314453125em;
+.cs-icon-google-plus-dims {
+  width: 20px;
+  height: 20px;
 }
 
-.csicon.icon-code {
-  width: 1.947265625em;
+.cs-icon-mail-dims {
+  width: 26px;
+  height: 20px;
 }
 
-.csicon.icon-comment-add {
-  width: 0.9404296875em;
+.cs-icon-more-dims {
+  width: 19.1px;
+  height: 4px;
 }
 
-.csicon.icon-comment {
-  width: 0.9404296875em;
+.cs-icon-pinterest-dims {
+  width: 20px;
+  height: 20px;
 }
 
-.csicon.icon-edit-a-copy {
-  width: 1.1318359375em;
+.cs-icon-print-dims {
+  width: 22px;
+  height: 28px;
 }
 
-.csicon.icon-edit {
-  width: 0.9580078125em;
+.cs-icon-save-dims {
+  width: 15px;
+  height: 26px;
 }
 
-.csicon.icon-mail {
-  width: 1.3525390625em;
+.cs-icon-saved-dims {
+  width: 15px;
+  height: 26px;
 }
 
-.csicon.icon-more {
-  width: 4.775390625em;
-  width: 1.59179687em;
+.cs-icon-share-dims {
+  width: 19.2px;
+  height: 19.2px;
 }
 
-.csicon.icon-print {
-  width: 0.84375em;
-}*/
+.cs-icon-twitter-dims {
+  width: 27.1px;
+  height: 22px;
+}
+
