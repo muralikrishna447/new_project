@@ -39,6 +39,7 @@
       list-style: none
       text-align: left
       li
+        text-transform: uppercase
         margin: 10px 0px
         color: rgba(204, 204, 204, 0.5)
         @include transition(all 300ms)
@@ -140,7 +141,6 @@
   @include flex-direction(column)
   width: 60px
   margin-right: 40px
-  text-transform: uppercase
   .flex-tool
     @include align-self(center)
     text-align: center
@@ -167,6 +167,8 @@
       &.active
         color: rgba(204, 204, 204, 1)
         border-color: rgba(204, 204, 204, 1)
+    .flex-button-text
+      text-transform: uppercase
     .flex-dropdown-menu
       top: 90px
       color: rgba(204, 204, 204, 0.5)

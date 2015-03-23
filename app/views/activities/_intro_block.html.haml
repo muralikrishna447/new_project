@@ -15,27 +15,27 @@
               %i(cs-icon='saved')
             .flex-button-circle(ng-if="current_user_likes")
               %i(cs-icon='saved')
-            %div(ng-if="!current_user_likes")
+            .flex-button-text(ng-if="!current_user_likes")
               Save
-            %div(ng-if="current_user_likes")
+            .flex-button-text(ng-if="current_user_likes")
               Saved
         .flex-tool(cs-smooth-scroll-to='#discussion')
           -# %i.fa.fa-comments-o.flex-button-circle
           .flex-button-circle
             %i(cs-icon='comment')
-          %div
+          .flex-button-text
             {{commentCount}}
         .flex-tool.flex-large-only(ng-click='doPrint()')
           -# %i.fa.fa-file-text-o.flex-button-circle
           .flex-button-circle
             %i(cs-icon='print')
-          %div
+          .flex-button-text
             Print
         .flex-tool.flex-dropdown.flex-medium-only(ng-controller='SocialButtonsController')
           .flex-dropdown-toggle(ng-init='socialMediumMoreOpen=false' ng-click='socialMediumMoreOpen = !socialMediumMoreOpen')
             .flex-button-circle
               %i(cs-icon='share')
-            %div
+            .flex-button-text
               Share
           .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[socialMediumMoreOpen]")
             %ul
@@ -55,7 +55,7 @@
           .flex-dropdown-toggle(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
             .flex-button-circle
               %i(cs-icon='more')
-            %div
+            .flex-button-text
               More
           .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[toolMoreOpen]")
             %ul
