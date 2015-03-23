@@ -67,9 +67,7 @@
                   Edit
               -if can?(:update, Activity) && @include_edit_toolbar
                 %li(  ng-show="hasActivityType('Recipe')"
-                      ng-click="fork()"
-                      tooltip="Edit a copy of this recipe"
-                      tooltip-placement="left")
+                      ng-click="fork()")
                   %i.flex-dropdown-icon(cs-icon='edit-a-copy')
                   Edit a copy
               %li.flex-medium-only(ng-click='doPrint()')

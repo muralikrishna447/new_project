@@ -15,7 +15,6 @@
   @include flex(0 600px)
 
 .flex-aside
-  padding: 10px
   @include boxsizing
   @include flex(1 280px)
 
@@ -140,7 +139,7 @@
   @include display-inline-flex
   @include flex-direction(column)
   width: 60px
-  margin-right: 40px
+  margin-right: 20px
   .flex-tool
     @include align-self(center)
     text-align: center
@@ -185,11 +184,13 @@
 .flex-social-title
   margin-bottom: $baseline
   color: $light-gray
+  padding-left: 10px
 
 .flex-social
   width: 175px
   text-transform: uppercase
   font-weight: 400
+  padding-left: 10px
   @include display-flex
   @include flex-direction(row)
   @include justify-content(space-between)
