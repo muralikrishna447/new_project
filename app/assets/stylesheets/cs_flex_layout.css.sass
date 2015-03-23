@@ -18,6 +18,12 @@
   @include boxsizing
   @include flex(1 280px)
 
+  &.flex-aside-left
+    padding-right: 20px
+
+  &.flex-aside-right
+    padding-left: 20px
+
 .flex-dropdown
   position: relative
   .flex-dropdown-toggle
@@ -62,7 +68,7 @@
       width: 15px
       height: 15px
       background: white
-      transform: rotate(45deg)
+      @include transform(rotate(45deg))
       box-shadow: -1px -1px 1px #E8E8E8
 
 .flex-large-only
@@ -139,7 +145,6 @@
   @include display-inline-flex
   @include flex-direction(column)
   width: 60px
-  margin-right: 20px
   .flex-tool
     @include align-self(center)
     text-align: center
@@ -184,13 +189,11 @@
 .flex-social-title
   margin-bottom: $baseline
   color: $light-gray
-  padding-left: 10px
 
 .flex-social
   width: 175px
   text-transform: uppercase
   font-weight: 400
-  padding-left: 10px
   @include display-flex
   @include flex-direction(row)
   @include justify-content(space-between)

@@ -5,7 +5,7 @@
     .flex-title
       %h1
         {{activity.title}}
-  .flex-item.flex-aside(ng-if="! inClass")
+  .flex-item.flex-aside.flex-aside-left(ng-if="! inClass")
     .flex-tools-container
       .flex-tools
         .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]")
@@ -31,7 +31,7 @@
             %i(cs-icon='print')
           .flex-button-text
             Print
-        .flex-tool.flex-dropdown.flex-medium-only(ng-controller='SocialButtonsController')
+        .flex-tool.flex-dropdown.flex-medium-only(ng-controller='SocialButtonsController' ng-class="{true:'active', false: 'inactive'}[socialMediumMoreOpen]")
           .flex-dropdown-toggle(ng-init='socialMediumMoreOpen=false' ng-click='socialMediumMoreOpen = !socialMediumMoreOpen')
             .flex-button-circle
               %i(cs-icon='share')
@@ -75,7 +75,7 @@
                 Print
   .flex-item.flex-main
     = render 'activities/latest/description'
-  .flex-item.flex-aside.flex-large-only(ng-if="! inClass")
+  .flex-item.flex-aside.flex-aside-right.flex-large-only(ng-if="! inClass")
     %h5.flex-social-title Share
     .flex-social(ng-controller='SocialButtonsController')
       .flex-social-item(ng-click='shareEmail()')
