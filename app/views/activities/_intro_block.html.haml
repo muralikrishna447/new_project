@@ -51,13 +51,35 @@
               %li(ng-click='sharePinterest()')
                 %i.flex-dropdown-icon(cs-icon='pinterest')
                 Pinterest
-        .flex-tool.flex-dropdown(ng-class="{true:'active', false: 'inactive'}[toolMoreOpen]")
-          .flex-dropdown-toggle(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
+        -# .flex-tool.flex-dropdown(ng-class="{true:'active', false: 'inactive'}[toolMoreOpen]")
+        -#   .flex-dropdown-toggle(ng-init='toolMoreOpen=false' ng-click='toolMoreOpen = !toolMoreOpen')
+        -#     .flex-button-circle
+        -#       %i(cs-icon='more')
+        -#     .flex-button-text
+        -#       More
+        -#   .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[toolMoreOpen]")
+        -#     %ul
+        -#       -if can?(:update, @activity) && @include_edit_toolbar
+        -#         %li(  ng-click="maybeStartEditMode()"
+        -#               tooltip="Edit this recipe"
+        -#               tooltip-placement="left")
+        -#           %i.flex-dropdown-icon(cs-icon='edit')
+        -#           Edit
+        -#       -if can?(:update, Activity) && @include_edit_toolbar
+        -#         %li(  ng-show="hasActivityType('Recipe')"
+        -#               ng-click="fork()")
+        -#           %i.flex-dropdown-icon(cs-icon='edit-a-copy')
+        -#           Edit a copy
+        -#       %li.flex-medium-only(ng-click='doPrint()')
+        -#         %i.flex-dropdown-icon(cs-icon='print')
+        -#         Print
+        .flex-tool.flex-dropdown(cs-flex-dropdown)
+          .flex-dropdown-toggle(cs-flex-dropdown-toggle)
             .flex-button-circle
               %i(cs-icon='more')
             .flex-button-text
               More
-          .flex-dropdown-menu(ng-class="{true:'open', false: 'closed'}[toolMoreOpen]")
+          .flex-dropdown-menu.closed(cs-flex-dropdown-menu)
             %ul
               -if can?(:update, @activity) && @include_edit_toolbar
                 %li(  ng-click="maybeStartEditMode()"
