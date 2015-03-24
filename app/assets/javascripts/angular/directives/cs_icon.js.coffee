@@ -4,15 +4,13 @@
   scope: {
     csIcon: '@'
   }
-  link: (scope, element, attrs, csAbtest) ->
-    scope.icon = {}
-
-    scope.icon.id = scope.csIcon
+  link: (scope, element, attrs) ->
+    scope.csIconId = '#' + scope.csIcon
 
   template:
     """
-      <svg class="cs-icon-{{icon.id}}-dims">
-        <use xlink:href="{{'#' + icon.id}}"></use>
+      <svg class="cs-icon-{{csIcon}}-dims">
+        <use xlink:href={{csIconId}}></use>
       </svg>
     """
 ]
