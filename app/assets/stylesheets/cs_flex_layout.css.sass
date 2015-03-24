@@ -1,0 +1,240 @@
+@import 'mixins'
+
+//////////////////////
+/// General Styles ///
+//////////////////////
+
+.flex-container
+  @include display-flex
+  @include flex-wrap(wrap)
+
+.flex-full
+  @include flex(1 100%)
+
+.flex-main
+  @include flex(0 600px)
+
+.flex-aside
+  @include boxsizing
+  @include flex(1 280px)
+
+  &.flex-aside-left
+    padding-right: 20px
+
+  &.flex-aside-right
+    padding-left: 20px
+
+.flex-dropdown
+  position: relative
+  .flex-dropdown-toggle
+    position: relative
+  .flex-dropdown-menu
+    position: absolute
+    top: 0px
+    right: 0px
+    background: white
+    padding: $baseline
+    border-radius: 2px
+    box-shadow: 1px 1px 5px #ccc
+    white-space: nowrap
+    z-index: 1
+    @include boxsizing
+    ul
+      margin: 0px
+      list-style: none
+      text-align: left
+      li
+        text-transform: uppercase
+        margin: 10px 0px
+        color: rgba(51, 51, 51, 0.5)
+        @include transition(all 300ms)
+        @include display-flex
+        @include align-items(center)
+        .flex-dropdown-icon
+          margin-right: 10px
+          min-width: 27px
+        &:hover
+          color: rgba(51, 51, 51, 1)
+          cursor: pointer
+    &.open
+      display: block
+    &.closed
+      display: none
+    &:after
+      content: ' '
+      position: absolute
+      top: -7px
+      right: 15px
+      width: 15px
+      height: 15px
+      background: white
+      @include transform(rotate(45deg))
+      box-shadow: -1px -1px 1px #E8E8E8
+
+.flex-large-only
+  display: block
+
+.flex-medium-only
+  display: none
+
+// 20px + 280px + 600px + 280px + 20px (master column padding + aside + main + aside + master column padding)
+@media (max-width:1240px)
+  .flex-container
+    @include flex-direction(column)
+
+  .flex-full
+    @include flex(1 auto)
+
+  .flex-main
+    @include flex(1 auto)
+    width: 600px
+    @include align-self(center)
+
+  .flex-aside
+    @include flex(1 auto)
+    width: 600px
+    @include align-self(center)
+
+  .flex-large-only
+    display: none
+
+  .flex-medium-only
+    display: block
+
+// 20px + 600px + 20px (master column padding + main + master column padding)
+@media (max-width: 640px)
+
+  .flex-main
+    width: 100%
+
+  .flex-aside
+    width: 100%
+
+///////////////////////////////////////////
+// Flex Layout Styles In a class //
+///////////////////////////////////////////
+.course-wrapper
+  .flex-container
+  
+  .flex-item
+    margin: 0 auto
+    @include flex(0 700px)
+
+  .flex-item.flex-full
+    @include flex(0 auto)
+
+  .flex-title
+    @include justify-content(flex-start)
+
+//////////////////////
+// Specific styles ///
+//////////////////////
+
+.flex-title
+  // @include display-flex
+  // @include justify-content(center)
+  max-width: 600px
+  margin: 0 auto
+  .flex-title-item
+    // @include flex(0 600px)
+    margin-bottom: $baseline
+
+.flex-tools-container
+  @include display-flex
+  @include justify-content(flex-end)
+
+.flex-tools
+  @include display-inline-flex
+  @include flex-direction(column)
+  width: 60px
+  .flex-tool
+    @include align-self(center)
+    text-align: center
+    color: rgba(51, 51, 51, 0.5)
+    font-weight: 400
+    margin-bottom: 20px
+    @include transition(all 300ms)
+    .flex-button-circle
+      width: 44px
+      height: 44px
+      font-size: 30px
+      border-width: 2px
+      border-style: solid
+      border-color: rgba(51, 51, 51, .5)
+      border-radius: 22px
+      padding: 8px
+      margin-bottom: 5px
+      margin-left: auto
+      margin-right: auto
+      @include transition(all 300ms)
+      @include display-flex
+      @include align-items(center)
+      @include justify-content(center)
+      @include boxsizing
+      svg
+        color: rgba(51, 51, 51, .5)
+        @include transition(all 300ms)
+    .flex-button-text
+      width: 60px
+      text-transform: uppercase
+    .flex-dropdown-menu
+      top: 90px
+      color: rgba(51, 51, 51, 0.5)
+    &:hover
+      color: rgba(51, 51, 51, 1)
+      cursor: pointer
+      .flex-button-circle
+        border-color: rgba(51, 51, 51, 1)
+        svg
+          color: rgba(51, 51, 51, 1) 
+    &.active
+      color: rgba(51, 51, 51, 1)
+      .flex-button-circle
+        border-color: rgba(51, 51, 51, 1)
+        svg
+          color: rgba(51, 51, 51, 1)
+
+.flex-social-title
+  margin-bottom: $baseline
+  color: rgba(51, 51, 51, 0.5)
+
+.flex-social
+  width: 175px
+  text-transform: uppercase
+  font-weight: 400
+  @include display-flex
+  @include flex-direction(row)
+  @include justify-content(space-around)
+  @include boxsizing
+  .flex-social-item
+    color: rgba(51, 51, 51, 0.5)
+    @include transition(all 300ms)
+    &:hover
+      color: rgba(51, 51, 51, 1)
+      cursor: pointer
+
+    .flex-dropdown-menu
+      color: rgba(51, 51, 51, 0.5)
+      top: 45px
+      right: -10px
+
+    &.active
+      color: rgba(51, 51, 51, 1)
+      .flex-button-circle
+        border-color: rgba(51, 51, 51, 1)
+
+.flex-suggestions
+  padding: $baseline
+
+@media (max-width:1240px)
+  .flex-tools-container
+    justify-content: flex-start
+
+  .flex-tools
+    @include flex-direction(row)
+    @include justify-content(space-between)
+    width: 100%
+    margin-right: 0px
+    .flex-tool
+      @include align-self(inherit)
+      margin-bottom: 10px
