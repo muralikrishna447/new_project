@@ -14,7 +14,7 @@
 
 @app.directive 'csFlexDropdown', ['$document', 'csFlexDropdownManager', ($document, csFlexDropdownManager) ->
   scope: {}
-  controller: ($scope) ->
+  controller: ['$scope', ($scope) ->
     csFlexDropdownManager.addScope $scope
 
     $scope.menuOpen = false
@@ -22,6 +22,7 @@
     toggleMenu: ->
       $scope.menuOpen = ! $scope.menuOpen
       $scope.$apply()
+  ]
 
   link: (scope, element, attrs) ->
     dropdown = element.find('.flex-dropdown-menu')
