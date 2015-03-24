@@ -2,21 +2,11 @@
   .master-column
     #main-content.main-content-container(ng-cloak)
 
-      .aside.tools-aside.noprint(ng-show="(! editMode) && (activityColumns >= 3)")
-        = render 'shared/tools'
-
-      .standard-item
-        = render 'activities/title'
-        -if defined? activity
-          .section-tiny.noprint(ng-hide="editMode")
-            = render 'layouts/social_buttons', media_object: activity
+      -# With this intro block, we should be able to get rid of shared/tools, activities/title and eventually make them into directives/components.
+      = render 'activities/intro_block'
 
       .standard-item
         = render 'activities/metadata'
-
-       
-      .standard-item.section
-        = render 'activities/latest/description'
 
       .section-large
       .medium-item

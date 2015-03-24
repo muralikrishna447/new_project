@@ -3,8 +3,8 @@
     Description
   .activity-description-wrapper
     .activity-description.maximize-description#activity-description
-      .aside.right.rightInset.noprint(ng-show="(! editMode) && (activityColumns < 3)")
-        = render 'shared/tools'
+      -# .aside.right.rightInset.noprint(ng-show="(! editMode) && (activityColumns < 3)")
+      -#   = render 'shared/tools'
       %div.content-activity-description(  ng-show="!! activity.description || editMode"
                                           ng-model="activity.description" 
                                           cs-contenteditable = "editMode"
