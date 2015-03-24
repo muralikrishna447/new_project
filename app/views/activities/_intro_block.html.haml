@@ -11,7 +11,7 @@
           %div( ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
                 ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
             .flex-button-circle(ng-if="!current_user_likes")
-              %i(cs-icon='saved')
+              %i(cs-icon='save')
             .flex-button-circle(ng-if="current_user_likes")
               %i(cs-icon='saved')
             .flex-button-text(ng-if="!current_user_likes")

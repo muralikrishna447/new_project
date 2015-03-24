@@ -46,7 +46,7 @@
       li
         text-transform: uppercase
         margin: 10px 0px
-        color: rgba(204, 204, 204, 0.5)
+        color: rgba(51, 51, 51, 0.5)
         @include transition(all 300ms)
         @include display-flex
         @include align-items(center)
@@ -54,7 +54,7 @@
           margin-right: 10px
           min-width: 27px
         &:hover
-          color: rgba(204, 204, 204, 1)
+          color: rgba(51, 51, 51, 1)
           cursor: pointer
     &.open
       display: block
@@ -150,7 +150,7 @@
   .flex-tool
     @include align-self(center)
     text-align: center
-    color: rgba(204, 204, 204, 0.5)
+    color: rgba(51, 51, 51, 0.5)
     font-weight: 400
     margin-bottom: 20px
     @include transition(all 300ms)
@@ -160,37 +160,43 @@
       font-size: 30px
       border-width: 2px
       border-style: solid
-      border-color: rgba(204, 204, 204, .5)
+      border-color: rgba(51, 51, 51, .5)
       border-radius: 22px
       padding: 8px
       margin-bottom: 5px
       margin-left: auto
       margin-right: auto
+      @include transition(all 300ms)
       @include display-flex
       @include align-items(center)
       @include justify-content(center)
       @include boxsizing
+      svg
+        color: rgba(51, 51, 51, .5)
+        @include transition(all 300ms)
       &.active
-        color: rgba(204, 204, 204, 1)
-        border-color: rgba(204, 204, 204, 1)
+        color: rgba(51, 51, 51, 1)
+        border-color: rgba(51, 51, 51, 1)
     .flex-button-text
       text-transform: uppercase
     .flex-dropdown-menu
       top: 90px
-      color: rgba(204, 204, 204, 0.5)
+      color: rgba(51, 51, 51, 0.5)
     &:hover
-      color: rgba(204, 204, 204, 1)
+      color: rgba(51, 51, 51, 1)
       cursor: pointer
       .flex-button-circle
-        border-color: rgba(204, 204, 204, 1)
+        border-color: rgba(51, 51, 51, 1)
+        svg
+          color: rgba(51, 51, 51, 1) 
     &.active
-      color: rgba(204, 204, 204, 1)
+      color: rgba(51, 51, 51, 1)
       .flex-button-circle
-        border-color: rgba(204, 204, 204, 1)
+        border-color: rgba(51, 51, 51, 1)
 
 .flex-social-title
   margin-bottom: $baseline
-  color: $light-gray
+  color: rgba(51, 51, 51, 0.5)
 
 .flex-social
   width: 175px
@@ -198,24 +204,24 @@
   font-weight: 400
   @include display-flex
   @include flex-direction(row)
-  @include justify-content(space-between)
+  @include justify-content(space-around)
   @include boxsizing
   .flex-social-item
-    color: rgba(204, 204, 204, 0.5)
+    color: rgba(51, 51, 51, 0.5)
     @include transition(all 300ms)
     &:hover
-      color: rgba(204, 204, 204, 1)
+      color: rgba(51, 51, 51, 1)
       cursor: pointer
 
     .flex-dropdown-menu
-      color: rgba(204, 204, 204, 0.5)
+      color: rgba(51, 51, 51, 0.5)
       top: 45px
       right: -10px
 
     &.active
-      color: rgba(204, 204, 204, 1)
+      color: rgba(51, 51, 51, 1)
       .flex-button-circle
-        border-color: rgba(204, 204, 204, 1)
+        border-color: rgba(51, 51, 51, 1)
 
 .flex-suggestions
   padding: $baseline
