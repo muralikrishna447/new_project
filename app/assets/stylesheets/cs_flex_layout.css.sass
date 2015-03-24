@@ -121,10 +121,11 @@
     @include flex(0 700px)
 
   .flex-item.flex-full
-    @include flex(0 auto)
 
-  .flex-title
-    @include justify-content(flex-start)
+    .flex-title
+      max-width: 700px
+      margin-bottom: $baseline
+      //@include justify-content(flex-start)
 
 //////////////////////
 // Specific styles ///
