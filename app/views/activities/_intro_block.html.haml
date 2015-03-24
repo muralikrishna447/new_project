@@ -3,7 +3,10 @@
 .flex-container
   .flex-item.flex-full
     .flex-title
-      = render 'title'
+      - if @assembly
+        %h1 {{activity.title}}
+      - else
+        = render 'title'
   .flex-item.flex-aside.flex-aside-left(ng-if="! inClass")
     .flex-tools-container(ng-hide='editMode')
       .flex-tools
