@@ -174,10 +174,8 @@
       svg
         color: rgba(51, 51, 51, .5)
         @include transition(all 300ms)
-      &.active
-        color: rgba(51, 51, 51, 1)
-        border-color: rgba(51, 51, 51, 1)
     .flex-button-text
+      width: 60px
       text-transform: uppercase
     .flex-dropdown-menu
       top: 90px
@@ -193,6 +191,8 @@
       color: rgba(51, 51, 51, 1)
       .flex-button-circle
         border-color: rgba(51, 51, 51, 1)
+        svg
+          color: rgba(51, 51, 51, 1)
 
 .flex-social-title
   margin-bottom: $baseline
