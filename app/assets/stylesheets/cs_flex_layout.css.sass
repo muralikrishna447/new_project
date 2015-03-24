@@ -131,10 +131,12 @@
 //////////////////////
 
 .flex-title
-  @include display-flex
-  @include justify-content(center)
-  h1
-    @include flex(0 600px)
+  // @include display-flex
+  // @include justify-content(center)
+  max-width: 600px
+  margin: 0 auto
+  .flex-title-item
+    // @include flex(0 600px)
     margin-bottom: $baseline
 
 .flex-tools-container
