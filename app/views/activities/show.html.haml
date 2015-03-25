@@ -51,16 +51,13 @@
 -#         .span10.offset1.relative
 -#           = render 'home/madlib'
 
-.flex-full(cs-banner ng-if='!dismissed')
-  %div(ng-if='!dismissed')
-    %h1 Sign up for the latest recipes and techniques.
-    %h2 Join
-    %div(ng-show='dismissed')
-      hey dismissed
-    %div(ng-show='!dismissed')
-      not dismissed
-    %div(cs-banner-close)
-      close
+.cs-banner.banner-signup(ng-controller='csBannerController' ng-hide='banner.dismissed')
+  .cs-banner-msg
+    %h3 Sign up for the latest recipes and techniques.
+  .cs-banner-cta
+    Join
+  .cs-banner-close(ng-click='dismiss()')
+    X
 
 
 .schema-container{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : "http://schema.org/Article")}
