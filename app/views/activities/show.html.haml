@@ -54,10 +54,10 @@
 .cs-banner.banner-signup(ng-controller='csBannerController' ng-hide='banner.dismissed')
   .cs-banner-msg
     %h3 Sign up for the latest recipes and techniques.
-  .cs-banner-cta
+  .cs-banner-cta(ng-controller='csBannerSignupController' ng-click='signup()')
     Join
   .cs-banner-close(ng-click='dismiss()')
-    X
+    %i(cs-icon='x')
 
 
 .schema-container{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : "http://schema.org/Article")}

@@ -5,4 +5,10 @@
 
   $scope.dismiss = ->
     $scope.banner.dismissed = true
+
+]
+
+@app.controller 'csBannerSignupController', ['$scope', ($scope) ->
+  $scope.signup = ->
+    $scope.$emit 'openLoginModal'
 ]
