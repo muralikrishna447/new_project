@@ -4,13 +4,18 @@
   $scope.banner.dismissed = false
 
   $scope.dismiss = ->
+    mixpanel.track 'Banner Dismissed'
     $scope.banner.dismissed = true
 
 ]
 
 @app.controller 'csBannerSignupController', ['$scope', 'csAuthentication', ($scope, csAuthentication) ->
-  console.log "currentUser: ", csAuthentication.currentUser()
   $scope.includeBanner = !csAuthentication.currentUser()
+
   $scope.signup = ->
-    $scope.$emit 'openLoginModal'
+    mixpanel.track 'Banner Signup Clicked'
+    $scope.$emit 'openSignupModal', 'ActivityBanner'
+
+  if $scope.includeBanner
+    mixpanel.track 'Banner Signup Shown'
 ]
