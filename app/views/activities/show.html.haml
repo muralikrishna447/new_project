@@ -51,13 +51,14 @@
 -#         .span10.offset1.relative
 -#           = render 'home/madlib'
 
-.cs-banner.banner-signup(ng-controller='csBannerController' ng-hide='banner.dismissed')
-  .cs-banner-msg
-    %h3 Sign up for the latest recipes and techniques.
-  .cs-banner-cta(ng-controller='csBannerSignupController' ng-click='signup()')
-    Join
-  .cs-banner-close(ng-click='dismiss()')
-    %i(cs-icon='x')
+%div(ng-controller='csBannerSignupController' ng-show='includeBanner' ng-cloak)
+  .cs-banner.banner-signup(ng-controller='csBannerController' ng-class="{true:'inactive', false: 'active'}[banner.dismissed]")
+    .cs-banner-msg
+      %h3 Sign up for the latest recipes and techniques.
+    .cs-banner-cta(ng-click='signup()')
+      Join
+    .cs-banner-close(ng-click='dismiss()')
+      %i(cs-icon='x')
 
 
 .schema-container{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : "http://schema.org/Article")}

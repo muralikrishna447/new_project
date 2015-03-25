@@ -8,7 +8,9 @@
 
 ]
 
-@app.controller 'csBannerSignupController', ['$scope', ($scope) ->
+@app.controller 'csBannerSignupController', ['$scope', 'csAuthentication', ($scope, csAuthentication) ->
+  console.log "currentUser: ", csAuthentication.currentUser()
+  $scope.includeBanner = !csAuthentication.currentUser()
   $scope.signup = ->
     $scope.$emit 'openLoginModal'
 ]

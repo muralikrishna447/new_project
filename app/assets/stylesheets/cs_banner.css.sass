@@ -13,6 +13,12 @@
   @include boxsizing
   @include display-flex
   @include flex-direction(column)
+  @include transition(all 300ms)
+  &.active
+    top: 78px
+  &.inactive
+    top: -80px
+    opacity: 0
   .cs-banner-msg
     margin-bottom: 20px
   .cs-banner-cta
@@ -35,6 +41,7 @@
       cursor: pointer
       background: rgba(255,255,255,1)
       color: $orange
+      font-weight: bold
   .cs-banner-close
     &:hover
       cursor: pointer
