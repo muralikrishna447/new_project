@@ -53,8 +53,8 @@
             .span10.offset1.relative
               = render 'home/madlib'
   %div(cs-abtest-item)
-    %div(ng-controller='csBannerSignupController as banner' ng-show='banner.include' ng-cloak)
-      .cs-banner.banner-signup(ng-class="{true:'inactive', false: 'active'}[dismissed]")
+    %div(ng-controller='csBannerSignupController as banner' ng-show='banner.show' ng-cloak)
+      .cs-banner.banner-signup(ng-class="{true:'inactive', false: 'active'}[banner.dismissed]")
         .cs-banner-msg
           %h3 Sign up for the latest recipes and techniques.
         .cs-banner-cta(ng-click='banner.signup()')
