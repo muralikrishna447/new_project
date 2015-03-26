@@ -94,23 +94,12 @@
 
   -################################ BOTTOM OF PAGE CONTENT ################################
 
-  = render 'discovery_footer'
+  - if @course.blank?
+    = render 'discovery_footer'
 
   - content_for :bottom do
     - if ! ENV["CS_NO_DISQUS"]
       .row.section
-        .text-center
-          .section
-            %strong
-              Have a question about a recipe?
-              %br
-                %a(href="//chefsteps.com/forum" onclick="mixpanel.track('Question to Forum', {'title' : '#{@activity.title}'});")
-                  Please ask us on the forum
-          .section
-            %strong
-              Customer service issue?
-              %br
-                =mail_to "info@chefsteps.com", "Email us at info@chefsteps.com"
         .span8.offset2
           %h3 Comments
           #discussion
