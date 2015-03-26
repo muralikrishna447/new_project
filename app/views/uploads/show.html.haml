@@ -1,4 +1,4 @@
-- content_for :title, "#{@upload.title.html_safe} - Photo"
+- content_for :title, "#{@upload.title.html_safe} - Photo by #{@upload.user.name}"
 - content_for :description, @upload.notes != "" ? @upload.notes.html_safe : @upload.title.html_safe
 - content_for :canonical_link, upload_url(@upload) if @upload.id
 - content_for :keywords, @upload.title.split(' ').join(',')

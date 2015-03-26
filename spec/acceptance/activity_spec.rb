@@ -10,5 +10,5 @@ feature 'activities', :js => true, pending: true do
       page.should have_css('.video-container')
     end
   end
-  
+
 end
