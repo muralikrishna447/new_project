@@ -1,0 +1,21 @@
+@import 'mixins'
+
+.discovery-footer
+  width: 100%
+  margin-bottom: 20px
+  @include display-flex
+  @include justify-content(center)
+
+  .flex-social
+    background: $light-gray
+    padding: 20px 40px
+    border-radius: 40px
+    width: 280px
+
+    .flex-social-item
+      color: rgba(235,235,235,1)
+      &:hover
+        color: rgba(255,255,255,1)
+
+    .flex-social-item.flex-dropdown.active
+      color: rgba(255,255,255,1)

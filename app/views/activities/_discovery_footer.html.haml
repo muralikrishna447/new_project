@@ -1,0 +1,17 @@
+.flex-container
+  .discovery-footer
+    .flex-tools
+      .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]" ng-cloak)
+        %div( ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
+              ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
+          .flex-button-circle(ng-if="!current_user_likes")
+            %i(cs-icon='save')
+          .flex-button-circle(ng-if="current_user_likes")
+            %i(cs-icon='saved')
+          .flex-button-text(ng-if="!current_user_likes")
+            Save
+          .flex-button-text(ng-if="current_user_likes")
+            Saved
+
+  .discovery-footer
+    = render 'social'
