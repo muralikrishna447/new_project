@@ -17,7 +17,7 @@
     = render 'social'
 
   .discovery-footer
-    .text-center.discovery-footer-signup(ng-controller='csBannerSignupController as banner' ng-cloak ng-show='banner.show')
+    .text-center.discovery-footer-signup(ng-controller='csBannerSignupController as banner' ng-cloak ng-show='banner.show' ng-init="banner.source = 'ActivityFooter'")
       .discovery-footer-signup-msg
         %h3 Cooking is fun and easy.
         %h4 So is joining ChefSteps.

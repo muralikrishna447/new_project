@@ -56,6 +56,7 @@
     .cs-banner.banner-signup(ng-controller='csBannerSignupController as banner'
                                             ng-show='banner.show'
                                             ng-class="{true:'inactive', false: 'active'}[banner.dismissed]"
+                                            ng-init="banner.source = 'ActivityBanner'"
                                             ng-cloak
                                             )
       .cs-banner-msg
