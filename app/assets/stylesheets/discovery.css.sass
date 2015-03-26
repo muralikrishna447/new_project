@@ -19,3 +19,32 @@
 
     .flex-social-item.flex-dropdown.active
       color: rgba(255,255,255,1)
+
+
+  .discovery-footer-signup
+    width: 600px
+    @include display-flex
+    @include flex-direction(column)
+
+    .discovery-footer-signup-msg
+      margin-bottom: 20px
+      h3, h4
+        margin: 0
+    .discovery-footer-signup-btn
+      margin-bottom: 20px
+      height: 40px
+      width: 200px
+      border: 1px solid white
+      border-radius: 20px
+      color: white
+      background: $orange
+      text-transform: uppercase
+      @include flex(0 auto)
+      @include align-self(center)
+      @include boxsizing
+      @include display-flex
+      @include flex-direction(column)
+      @include justify-content(center)
+      @include align-content(center)
+      &:hover
+        cursor: pointer

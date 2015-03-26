@@ -15,3 +15,11 @@
 
   .discovery-footer
     = render 'social'
+
+  .discovery-footer
+    .text-center.discovery-footer-signup(ng-controller='csBannerSignupController as banner' ng-cloak)
+      .discovery-footer-signup-msg
+        %h3 Cooking is fun and easy.
+        %h4 So is joining ChefSteps.
+      .discovery-footer-signup-btn(ng-click='banner.signup()')
+        Sign Up
