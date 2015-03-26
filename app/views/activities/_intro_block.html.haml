@@ -80,7 +80,8 @@
   .flex-item.flex-aside.flex-aside-right.flex-large-only(ng-if="! inClass")
     .flex-social-container(ng-hide='editMode')
       %h5.flex-social-title Share
-      = render 'social'
+      - if @course.blank?
+        = render 'social'
     -# .flex-suggestions
     -#   %strong Here's some suggestions
     -#   %ol
