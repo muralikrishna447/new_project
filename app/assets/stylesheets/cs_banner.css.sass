@@ -19,8 +19,10 @@
   &.inactive
     top: -80px
     opacity: 0
+
   .cs-banner-msg
     margin-bottom: 20px
+
   .cs-banner-cta
     margin-bottom: 20px
     height: 40px
@@ -42,7 +44,18 @@
       background: rgba(255,255,255,1)
       color: $orange
       font-weight: bold
+
   .cs-banner-close
     &:hover
       cursor: pointer
+
+@media (max-width: 826px)
+  .cs-banner
+    position: inherit
+    top: 0px
+    margin-left: -20px
+    margin-right: -20px
+    width: calc(100% + 40px)
+    &.inactive
+      display: none
 
