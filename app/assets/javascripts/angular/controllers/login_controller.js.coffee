@@ -586,6 +586,15 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       event.preventDefault()
     $scope.openModal('login')
 
+  $rootScope.$on 'openSignupModal', (event, source) ->
+    if event.defaultPrevented
+      return
+    else
+      event.preventDefault()
+
+    $scope.registrationSource = source
+    $scope.openModal('signUp')
+
   $scope.kioskReload = ->
     window.location.reload()
 ]

@@ -44,7 +44,6 @@
       list-style: none
       text-align: left
       li
-        text-transform: uppercase
         margin: 10px 0px
         color: rgba(51, 51, 51, 0.5)
         @include transition(all 300ms)
@@ -56,6 +55,8 @@
         &:hover
           color: rgba(51, 51, 51, 1)
           cursor: pointer
+      .flex-medium-only
+        display: none
     &.open
       display: block
     &.closed
@@ -201,15 +202,21 @@
 
 .flex-social
   width: 175px
-  text-transform: uppercase
   font-weight: 400
   @include display-flex
   @include flex-direction(row)
-  @include justify-content(space-around)
+  @include justify-content(space-between)
   @include boxsizing
   .flex-social-item
     color: rgba(51, 51, 51, 0.5)
     @include transition(all 300ms)
+    @include display-flex
+    svg
+      @include align-self(center)
+    .flex-dropdown-toggle
+      @include display-flex
+      svg
+        @include align-self(center)
     &:hover
       color: rgba(51, 51, 51, 1)
       cursor: pointer
