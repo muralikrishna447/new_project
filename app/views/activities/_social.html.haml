@@ -1,0 +1,21 @@
+.flex-social(ng-controller='SocialButtonsController' ng-cloak)
+  .flex-social-item(ng-click='shareEmail()')
+    %i(cs-icon='mail')
+  .flex-social-item(ng-click='shareFacebook()')
+    %i(cs-icon='facebook')
+  .flex-social-item(ng-click='shareTwitter()')
+    %i(cs-icon='twitter')
+  .flex-social-item.flex-dropdown(cs-flex-dropdown)
+    .flex-dropdown-toggle(cs-flex-dropdown-toggle)
+      %i(cs-icon='share')
+    .flex-dropdown-menu.closed
+      %ul
+        %li(ng-click='sharePinterest()')
+          %i.flex-dropdown-icon(cs-icon='pinterest')
+          Pinterest
+        %li(ng-click='shareGooglePlus()')
+          %i.flex-dropdown-icon(cs-icon='google-plus')
+          Share on Google+
+        %li(ng-click='shareEmbedly()')
+          %i.flex-dropdown-icon(cs-icon='code')
+          Embed code
