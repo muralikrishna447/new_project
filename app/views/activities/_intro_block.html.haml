@@ -80,27 +80,7 @@
   .flex-item.flex-aside.flex-aside-right.flex-large-only(ng-if="! inClass")
     .flex-social-container(ng-hide='editMode')
       %h5.flex-social-title Share
-      .flex-social(ng-controller='SocialButtonsController')
-        .flex-social-item(ng-click='shareEmail()')
-          %i(cs-icon='mail')
-        .flex-social-item(ng-click='shareFacebook()')
-          %i(cs-icon='facebook')
-        .flex-social-item(ng-click='shareTwitter()')
-          %i(cs-icon='twitter')
-        .flex-social-item.flex-dropdown(cs-flex-dropdown)
-          .flex-dropdown-toggle(cs-flex-dropdown-toggle)
-            %i(cs-icon='share')
-          .flex-dropdown-menu.closed
-            %ul
-              %li(ng-click='sharePinterest()')
-                %i.flex-dropdown-icon(cs-icon='pinterest')
-                Pinterest
-              %li(ng-click='shareGooglePlus()')
-                %i.flex-dropdown-icon(cs-icon='google-plus')
-                Share on Google+
-              %li(ng-click='shareEmbedly()')
-                %i.flex-dropdown-icon(cs-icon='code')
-                Embed code
+      = render 'social'
     -# .flex-suggestions
     -#   %strong Here's some suggestions
     -#   %ol

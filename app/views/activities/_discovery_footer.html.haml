@@ -1,0 +1,25 @@
+.flex-container
+  .discovery-footer
+    .flex-tools
+      .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]" ng-cloak)
+        %div( ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
+              ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
+          .flex-button-circle(ng-if="!current_user_likes")
+            %i(cs-icon='save')
+          .flex-button-circle(ng-if="current_user_likes")
+            %i(cs-icon='saved')
+          .flex-button-text(ng-if="!current_user_likes")
+            Save
+          .flex-button-text(ng-if="current_user_likes")
+            Saved
+
+  .discovery-footer
+    = render 'social'
+
+  .discovery-footer
+    .text-center.discovery-footer-signup(ng-controller='csBannerSignupController as banner' ng-cloak ng-show='banner.show' ng-init="banner.source = 'ActivityFooter'")
+      .discovery-footer-signup-msg
+        %h3 Cooking is fun and easy.
+        %h4 So is joining ChefSteps.
+      .discovery-footer-signup-btn(ng-click='banner.signup()')
+        Sign Up
