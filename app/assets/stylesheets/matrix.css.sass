@@ -70,6 +70,10 @@
   @include justify-content(center)
   @include flex-flow(row wrap)
 
+.cs-container-600
+  @extend .cs-container-standard
+  width: 600px
+
 // Items //
 .cs-item-standard
   max-width: 300px
@@ -96,9 +100,19 @@
   @include flex(0 1 auto)
   @include aspect-1-1
   @include boxsizing
-  .cs-item-content
+  .cs-item-container
     @include aspect-content
     padding: 10px
-    .cs-item-image
-      img
-        width: 100%
+    .cs-item-content
+      width: 100%
+      height: 100%
+      position: relative
+      @include display-flex
+      @include justify-content(center)
+      @include align-items(center)
+      .cs-item-image
+        @include aspect-content
+        img
+          width: 100%
+      .cs-item-text
+        z-index: 1
