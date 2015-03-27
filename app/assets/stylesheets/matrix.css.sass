@@ -1,5 +1,32 @@
 @import 'mixins'
 
+=aspect-1-1
+  position: relative
+  width: 100%
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 100%
+
+=aspect-2-1
+  position: relative
+  width: 100%
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 50%
+
+=aspect-16-9
+  position: relative
+  width: 100%
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 56.25%
+
 =aspect-content
   position: absolute
   top: 0
@@ -7,34 +34,53 @@
   right: 0
   bottom: 0
 
-=aspect-1-1
-  &:before
-    content: ''
-    display: block
-    padding-top: 100%
+.aspect-1-1
+  @include aspect-1-1
 
-=aspect-2-1
-  &:before
-    content: ''
-    display: block
-    padding-top: 50%
-
-.matrix
-  width: 100%
-  @include display-flex
-
-.matrix-hero
-  position: relative
-  width: 100%
+.aspect-2-1
   @include aspect-2-1
 
-  .matrix-hero-content
-    overflow: hidden
+.aspect-content
+  @include aspect-content
+
+// HERO //
+
+.cs-hero
+  position: relative
+  width: 100%
+  margin-bottom: 20px
+  @include display-flex
+  @include aspect-16-9
+
+  .cs-hero-content
     @include aspect-content
-    .matrix-hero-cta
+    .cs-hero-cta
       @include aspect-content
       @include display-flex
       @include flex-direction(column)
       @include justify-content(center)
       padding-left: 5%
       padding-right: 50%
+
+
+// Containers //
+
+// Standard flexbox container. Items are set to max with of 320px
+.cs-container-standard
+  width: 100%
+  margin-bottom: 20px
+  @include display-flex
+  @include justify-content(center)
+  @include flex-flow(row wrap)
+
+  .cs-item-container
+    max-width: 320px
+    padding: 10px
+    @include flex(0 1 auto)
+
+// Items //
+.cs-item-standard
+  .cs-item-title
+    padding: 0px 10px
+  .cs-item-description
+    padding: 0px 10px
