@@ -1,0 +1,40 @@
+@import 'mixins'
+
+=aspect-content
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+
+=aspect-1-1
+  &:before
+    content: ''
+    display: block
+    padding-top: 100%
+
+=aspect-2-1
+  &:before
+    content: ''
+    display: block
+    padding-top: 50%
+
+.matrix
+  width: 100%
+  @include display-flex
+
+.matrix-hero
+  position: relative
+  width: 100%
+  @include aspect-2-1
+
+  .matrix-hero-content
+    overflow: hidden
+    @include aspect-content
+    .matrix-hero-cta
+      @include aspect-content
+      @include display-flex
+      @include flex-direction(column)
+      @include justify-content(center)
+      padding-left: 5%
+      padding-right: 50%
