@@ -2,7 +2,6 @@
 
 =aspect-1-1
   position: relative
-  width: 100%
   overflow: hidden
   &:before
     content: ''
@@ -11,7 +10,6 @@
 
 =aspect-2-1
   position: relative
-  width: 100%
   overflow: hidden
   &:before
     content: ''
@@ -20,7 +18,6 @@
 
 =aspect-16-9
   position: relative
-  width: 100%
   overflow: hidden
   &:before
     content: ''
@@ -73,14 +70,35 @@
   @include justify-content(center)
   @include flex-flow(row wrap)
 
-  .cs-item-container
-    max-width: 320px
-    padding: 10px
-    @include flex(0 1 auto)
-
 // Items //
 .cs-item-standard
-  .cs-item-title
-    padding: 0px 10px
-  .cs-item-description
-    padding: 0px 10px
+  max-width: 300px
+  padding: 10px
+  .cs-item-content
+    @include flex(0 1 auto)
+    .cs-item-image
+      margin-bottom: 10px
+    .cs-item-title
+      padding: 0px 20px
+      margin-bottom: 10px
+      font-weight: bold
+    .cs-item-description
+      padding: 0px 20px
+
+.cs-item-fixed-square
+  max-width: 300px
+  max-height: 300px
+  padding: 10px
+  @include flex(0 1 auto)
+
+.cs-item-flex-square
+  width: 33.333333%
+  @include flex(0 1 auto)
+  @include aspect-1-1
+  @include boxsizing
+  .cs-item-content
+    @include aspect-content
+    padding: 10px
+    .cs-item-image
+      img
+        width: 100%
