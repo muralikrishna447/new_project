@@ -93,6 +93,12 @@ describe ApplicationController do
       get :show, id: 1, '_escaped_fragment_' => ''
       expect(response.body).to include("Fall through")
     end
+
+    it 'sets is_brombone when brombone header is in request' do
+      request.env["X-Crawl-Request"] = 'brombone'
+      get :show, id: 1
+      expect is_brombone.should eq(true)
+    end
   end
 end
 
