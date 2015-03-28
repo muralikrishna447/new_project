@@ -4,6 +4,10 @@
 ]
 
 @app.controller 'ContainerCreatorController', ['$scope', ($scope) ->
+  @containerTypeOptions = [
+    { name: 'hero', url: '/client_views/container_hero_form.html' }
+    { name: 'standard', url: '/client_views/container_standard_form.html' }
+  ]
   @submit = ->
     console.log @form
 
@@ -26,6 +30,18 @@
 
   return this
 
+]
+
+@app.directive 'preview', ['$compile', ($compile) ->
+  scope: {
+    preview: '='
+  }
+  link: (scope, element, attr) ->
+    scope.$watch 'preview', ((newValue, oldValue) ->
+      console.log 'newValue: ', newValue
+      console.log 'oldValue: ', oldValue
+      $compile(element.contents())(scope)
+    ), true
 ]
 
 @app.directive 'csHero', ['$http', ($http) ->

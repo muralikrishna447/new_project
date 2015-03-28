@@ -1,0 +1,27 @@
+%strong Container Hero Form
+
+%form(name='creator.form' ng-submit='creator.submit()')
+
+  %input(type='radio' ng-model='creator.mode' value='api')
+    API
+  
+  %input(type='radio' ng-model='creator.mode' value='custom')
+    Custom
+
+  %div(ng-if="creator.mode=='api'")
+    %label Source
+    %input(ng-model='creator.form.source')
+
+    %label Number of items
+    %input(ng-model='creator.form.numItems')
+
+  %div(ng-if="creator.mode=='custom'")
+    %label Number of items
+    %input(ng-model='creator.form.numItems')
+
+  %button(type='submit')
+    submit
+
+%div(preview='creator.form')
+  {{creator.form}}
+  %div(cs-hero='creator.form')
