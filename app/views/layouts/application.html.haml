@@ -1,7 +1,6 @@
 !!! 5
 %html.no-js{lang: "en", 'xmlns:fb' => "http://ogp.me/ns/fb#", :class => "#{'fs-course' if @hide_nav} chefsteps-main", :style => "font-size: 62.5% !important;"}
   %head
-    = inline_svg('cs-icons.svg')
     -if @show_app_add
       %meta(name="apple-itunes-app" content="app-id=816731096, affiliate-data=at=10lIEQ&ct=MWSmartBanneriPhone, app-argument=http://nytimes.com?fromSmartAppBanner=1")
       %meta(name="apple-mobile-web-app-title" content="ChefSteps")
@@ -32,7 +31,7 @@
     = auto_discovery_link_tag :atom, feed_path
     = auto_discovery_link_tag :rss, feed_path
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
-    %a{href: 'https://plus.google.com/106370441183974123730?rel=author'}
+    %link{href: 'https://plus.google.com/106370441183974123730?rel=author'}
 
     - if Rails.env.development?
       %link{href: "/favicon-dev.png"}
@@ -128,6 +127,7 @@
   = render 'layouts/intercom'
   = render 'layouts/embedly'
   = yield(:custom_js)
+  = inline_svg('cs-icons.svg')
 
 -# This load on every page, so a convenient place to make sure mixpanel identity is known
 - if current_user
