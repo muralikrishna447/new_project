@@ -44,19 +44,50 @@
     ), true
 ]
 
+# @app.directive 'csHero', ['$http', ($http) ->
+#   restrict: 'A'
+#   scope: {
+#     csHero: '@'
+#   }
+#   link: (scope, element, attrs) ->
+#     if scope.csHero.source
+#       $http.get(scope.csHero.source).success((data, status, headers, config) ->
+#         scope.content = data
+#         return
+#       ).error (data, status, headers, config) ->
+#         console.log data
+#         return
+
+#   template:
+#     """
+#       <div class='cs-hero'>
+#         <div class='cs-hero-content'>
+#           <div class='cs-hero-image'>
+#             <img ng-src='{{content.image}}'/>
+#           </div>
+#           <div class='cs-hero-cta'>
+#             <h2>{{content.title}}</h2>
+#             <button>Get the recipe</button
+#           </div>
+#         </div>
+#       </div>
+#     """
+# ]
+
 @app.directive 'csHero', ['$http', ($http) ->
   restrict: 'A'
-  scope: {
-    csHero: '='
-  }
-  link: (scope, element, attrs) ->
-    if scope.csHero.source
-      $http.get(scope.csHero.source).success((data, status, headers, config) ->
-        scope.content = data
-        return
-      ).error (data, status, headers, config) ->
-        console.log data
-        return
+  compile: (element, attrs) ->
+    console.log 'csHero attrs: ', attrs
+    if attrs.csHero && attrs.csHero != '{{creator.form}}'
+      hero = JSON.parse attrs.csHero
+      if hero.source
+        return (scope, $element, $attrs) ->
+          $http.get(hero.source).success((data, status, headers, config) ->
+            scope.content = data
+            return
+          ).error (data, status, headers, config) ->
+            console.log data
+            return
 
   template:
     """
