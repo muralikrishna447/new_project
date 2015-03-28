@@ -19,6 +19,7 @@ Delve::Application.routes.draw do
 
   root to: "home#index"
   match '/new_home', to: 'home#new_home'
+  match '/home_manager', to: 'home#manager'
 
   match '/forum', to: 'bloom#forum'
   match '/forum/*path', to: 'bloom#forum'

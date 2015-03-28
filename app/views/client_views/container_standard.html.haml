@@ -1,0 +1,10 @@
+.cs-container-standard
+  .cs-item-container(ng-repeat='item in content')
+    .cs-item-standard
+      .cs-item-content
+        .cs-item-image
+          %img(ng-src='{{item.image}}')
+        .cs-item-title
+          {{item.title}}
+        .cs-item-description
+          {{item.description}}

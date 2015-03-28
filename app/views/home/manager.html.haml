@@ -1,0 +1,27 @@
+%div(ng-controller='HomeManagerController as manager')
+  %h1 Home Manager
+
+%div(ng-controller='ContainerCreatorController as creator')
+  %h3 Container Creator
+  %form(name='creator.form' ng-submit='creator.submit()')
+    %label Container Type
+    %input(ng-model='creator.containerType')
+    %label Source
+    %input(ng-model='creator.source')
+    %label Number of items
+    %input(ng-model='creator.numItems')
+    %button(type='submit')
+      submit
+  %h3 Raw:
+  {{creator}}
+  %h3 Preview
+  %div(ng-controller='HomeController as home')
+    %div(ng-switch='creator.containerType')
+      %div(cs-hero='creator' ng-switch-when='hero')
+      %div(cs-standard='creator' ng-switch-when='standard')
+
+-# %div(ng-controller='HomeController as home')
+-#   %div(ng-repeat='item in home.content')
+-#     %div(ng-switch='item.containerType')
+-#       %div(cs-hero='item' ng-switch-when='hero')
+-#       %div(cs-standard='item' ng-switch-when='standard')
