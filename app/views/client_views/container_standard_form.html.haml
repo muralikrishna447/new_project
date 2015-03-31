@@ -1,4 +1,4 @@
-%strong Container Hero Form
+%strong Container Standard Form
 
 %form(name='creator.form' ng-submit='creator.submit()')
 
@@ -23,4 +23,4 @@
     submit
 
 %div(preview='creator.form')
-  %div(cs-hero='{{creator.form}}')
+  %div(cs-standard='{{creator.form}}' max-items='{{creator.form.maxItems}}')

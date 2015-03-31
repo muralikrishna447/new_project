@@ -23,7 +23,7 @@
     {
       containerType: 'standard'
       source: 'http://localhost:3000/api/v0/activities'
-      numItems: 3
+      maxItems: 3
       itemType: 'standard'
     }
   ]
@@ -108,15 +108,25 @@
 @app.directive 'csStandard', ['$http', ($http) ->
   restrict: 'A'
   scope: {
-    csStandard: '='
+    maxItems: '@'
   }
-  link: (scope, element, attrs) ->
-    $http.get(scope.csStandard.source).success((data, status, headers, config) ->
-      scope.content = data
-      return
-    ).error (data, status, headers, config) ->
-      console.log data
-      return
+  compile: (element, attrs) ->
+    console.log 'csStandard attrs: ', attrs
+    if attrs.csStandard && attrs.csStandard != '{{creator.form}}'
+      standard = JSON.parse attrs.csStandard
+      if standard.source
+        return (scope, $element, $attrs) ->
+          console.log 'maxItems: ', scope.maxItems
+          $http.get(standard.source).success((data, status, headers, config) ->
+            contentData = data
+            if scope.maxItems
+              contentData = contentData.slice(0, scope.maxItems)
+
+            scope.content = contentData
+            return
+          ).error (data, status, headers, config) ->
+            console.log data
+            return
 
   templateUrl: '/client_views/container_standard.html'
 ]
