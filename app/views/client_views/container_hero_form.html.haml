@@ -2,22 +2,31 @@
 
 %form(name='creator.form' ng-submit='creator.submit()')
 
-  %input(type='radio' ng-model='creator.mode' value='api')
+  %input(type='radio' ng-model='creator.form.mode' value='api')
     API
   
-  %input(type='radio' ng-model='creator.mode' value='custom')
+  %input(type='radio' ng-model='creator.form.mode' value='custom')
     Custom
 
-  %div(ng-if="creator.mode=='api'")
+  // API Mode
+  %div(ng-if="creator.form.mode=='api'")
     %label Source
     %input(ng-model='creator.form.source')
 
-    %label Max number of items
-    %input(ng-model='creator.form.maxItems')
+  // Custom Mode
+  %div(ng-if="creator.form.mode=='custom'")
+    %label Image
+    %input(ng-model='creator.form.image')
 
-  %div(ng-if="creator.mode=='custom'")
-    %label Max number of items
-    %input(ng-model='creator.form.maxItems')
+    %label Title
+    %input(ng-model='creator.form.title')
+
+  // All Modes
+  %label Button Message
+  %input(ng-model='creator.form.buttonMessage')
+
+  %label Button Target URL
+  %input(ng-model='creator.form.targetURL')
 
   %button(type='submit')
     submit

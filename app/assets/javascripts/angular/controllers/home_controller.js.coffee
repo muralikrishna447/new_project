@@ -80,14 +80,26 @@
     console.log 'csHero attrs: ', attrs
     if attrs.csHero && attrs.csHero != '{{creator.form}}'
       hero = JSON.parse attrs.csHero
-      if hero.source
-        return (scope, $element, $attrs) ->
-          $http.get(hero.source).success((data, status, headers, config) ->
-            scope.content = data
-            return
-          ).error (data, status, headers, config) ->
-            console.log data
-            return
+      console.log 'hero data: ', hero  
+      return (scope, $element, $attrs) ->
+        scope.content = {}
+        switch hero.mode
+          when 'api'
+            if hero.source
+              $http.get(hero.source).success((data, status, headers, config) ->
+                scope.content.image = data.image
+                scope.content.title = data.title
+                return
+              ).error (data, status, headers, config) ->
+                console.log data
+                return
+          when 'custom'
+            scope.content.image = hero.image
+            scope.content.title = hero.title
+        
+        # All Modes
+        scope.content.buttonMessage = hero.buttonMessage
+        scope.content.targetURL = hero.targetURL
 
   template:
     """
@@ -98,7 +110,7 @@
           </div>
           <div class='cs-hero-cta'>
             <h2>{{content.title}}</h2>
-            <button>Get the recipe</button
+            <a ng-href='{{content.targetURL}}' class='btn btn-primary'>{{content.buttonMessage}}</a>
           </div>
         </div>
       </div>
