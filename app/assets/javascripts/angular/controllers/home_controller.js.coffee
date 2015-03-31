@@ -14,6 +14,20 @@
   return this
 ]
 
+@app.service 'Preview', [ ->
+  @setContainerType = (containerType) ->
+    @containerType = containerType
+
+  @getContainerType = ->
+    @containerType
+
+  return this
+]
+
+@app.controller 'PreviewController', ['$scope', ($scope) ->
+
+]
+
 @app.controller 'HomeController', ['$scope', ($scope) ->
   @content = [
     {
