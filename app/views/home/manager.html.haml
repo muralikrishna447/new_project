@@ -9,15 +9,10 @@
 
     %div(ng-include="creator.containerType.url")
 
-    -# %div(ng-switch='creator.containerType.name')
-    -#   %div(ng-switch-when='hero')
-    -#     %div(cs-hero='{{creator.form}}' ng-if="creator.containerType.name == 'hero'")
-    -#   %div(ng-switch-when='standard')
-    -#     STANDARD!
-    -#   %div(ng-switch-default)
-    -#     DEFAULT
-    -#     {{creator.containerType.name}}
-
-    -# %div(preview='creator.form')
-    -#   %div(cs-hero='{{creator.form}}' ng-if="creator.containerType.name == 'hero'")
-    -#   %div(cs-standard='{{creator.form}}' max-items='{{creator.form.maxItems}}' ng-if="creator.containerType.name == 'standard'")
+    %div(ng-switch='creator.containerType.name')
+      %div(ng-switch-when='hero')
+        %div(preview='creator.form')
+          %div(cs-hero='{{creator.form}}')
+      %div(ng-switch-when='standard')
+        %div(preview='creator.form')
+          %div(cs-standard='{{creator.form}}' max-items='{{creator.form.maxItems}}')

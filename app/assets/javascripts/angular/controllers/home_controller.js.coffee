@@ -4,6 +4,7 @@
 ]
 
 @app.controller 'ContainerCreatorController', ['$scope', ($scope) ->
+  oldCreator = {}
   @containerTypeOptions = [
     { name: 'hero', url: '/client_views/container_hero_form.html' }
     { name: 'standard', url: '/client_views/container_standard_form.html' }
