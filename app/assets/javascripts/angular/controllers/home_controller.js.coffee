@@ -80,24 +80,52 @@
   restrict: 'A'
   scope: {
     maxItems: '@'
+    csStandard: '@'
   }
-  compile: (element, attrs) ->
-    console.log 'csStandard attrs: ', attrs
-    if attrs.csStandard && attrs.csStandard != '{{creator.form}}'
-      standard = JSON.parse attrs.csStandard
-      if standard.source
-        return (scope, $element, $attrs) ->
-          console.log 'maxItems: ', scope.maxItems
-          $http.get(standard.source).success((data, status, headers, config) ->
-            contentData = data
-            if scope.maxItems
-              contentData = contentData.slice(0, scope.maxItems)
+  link: (scope, $element, $attrs) ->
+    scope.content = {}
+    scope.$watch 'csStandard', (newValue, oldValue) ->
+      if newValue != oldValue
+        standard = JSON.parse(newValue)
+        console.log 'standard: ', standard
+        switch standard.mode
+          when 'api'
+            $http.get(standard.source).success((data, status, headers, config) ->
+              contentData = data
+              if standard.maxItems
+                contentData = contentData.slice(0, standard.maxItems)
 
-            scope.content = contentData
-            return
-          ).error (data, status, headers, config) ->
-            console.log data
-            return
+              scope.content = contentData
+              return
+            ).error (data, status, headers, config) ->
+              console.log data
+              return
 
   templateUrl: '/client_views/container_standard.html'
 ]
+
+# @app.directive 'csStandard', ['$http', ($http) ->
+#   restrict: 'A'
+#   scope: {
+#     maxItems: '@'
+#   }
+#   compile: (element, attrs) ->
+#     console.log 'csStandard attrs: ', attrs
+#     if attrs.csStandard && attrs.csStandard != '{{creator.form}}'
+#       standard = JSON.parse attrs.csStandard
+#       if standard.source
+#         return (scope, $element, $attrs) ->
+#           console.log 'maxItems: ', scope.maxItems
+#           $http.get(standard.source).success((data, status, headers, config) ->
+#             contentData = data
+#             if scope.maxItems
+#               contentData = contentData.slice(0, scope.maxItems)
+
+#             scope.content = contentData
+#             return
+#           ).error (data, status, headers, config) ->
+#             console.log data
+#             return
+
+#   templateUrl: '/client_views/container_standard.html'
+# ]
