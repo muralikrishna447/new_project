@@ -7,6 +7,8 @@
         %h1 {{activity.title}}
       - else
         = render 'title'
+
+.flex-container
   .flex-item.flex-aside.flex-aside-left(ng-if="! inClass")
     .flex-tools-container(ng-hide='editMode')
       .flex-tools
