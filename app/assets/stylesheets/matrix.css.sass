@@ -120,15 +120,12 @@
 // Creator //
 .creator
   position: relative
+  @include display-flex
+  @include flex-direction(row)
 
 .creator-form
-  position: absolute
   width: 320px
   padding: 20px
-  background: rgba(255,255,255,.8)
-  z-index: 1
-  top: 20px
-  left: 20px
   @include boxsizing
 
 .creator-preview

@@ -8,8 +8,6 @@
 
     .creator-preview(ng-switch='creator.containerType.name')
       %div(ng-switch-when='hero')
-        %div(preview='creator.form')
-          %div(cs-hero='{{creator.form}}')
+        %div(cs-hero='{{creator.form}}')
       %div(ng-switch-when='standard')
-        %div(preview='creator.form')
-          %div(cs-standard='{{creator.form}}' max-items='{{creator.form.maxItems}}')
+        %div(cs-standard='{{creator.form}}' max-items='{{creator.form.maxItems}}')

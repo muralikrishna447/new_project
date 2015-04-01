@@ -1,0 +1,9 @@
+.cs-hero
+  .cs-hero-content
+    .cs-hero-image
+      %img(ng-src='{{content.image}}')
+    .cs-hero-cta
+      %h2
+        {{content.title}}
+      %a.btn.btn-primary(ng-href='{{content.targetURL}}')
+        {{content.buttonMessage}}
