@@ -33,7 +33,13 @@ window.deepCopy = (obj) ->
     h = 495
     if w < 650
       h = w * 9.0 / 16.0
-    url += "/convert?fit=crop&h=#{h}&w=#{w}&quality=90&cache=true"
+    if ! $scope.is_brombone
+      url += "/convert?fit=crop&h=#{h}&w=#{w}&quality=90&cache=true"
+    else
+      # For brombone, don't set a height because the arbitrarily wide aspect ratio seems like it might be
+      # preventing google from putting our images in SERPs. It might be afraid of taking a square crop
+      # out of that wide of an image.
+      url += "/convert?fit=crop&w=#{w}&quality=90&cache=true"
     window.cdnURL(url)
 
 ]
