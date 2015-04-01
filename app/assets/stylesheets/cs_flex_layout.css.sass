@@ -81,18 +81,18 @@
 // 20px + 280px + 600px + 280px + 20px (master column padding + aside + main + aside + master column padding)
 @media (max-width:1240px)
   .flex-container
-    @include flex-direction(column)
-
+    @include justify-content(center)
+    
   .flex-full
-    @include flex(1 auto)
+    @include flex(0 1 auto)
 
   .flex-main
-    @include flex(1 auto)
+    @include flex(0 1 auto)
     width: 600px
     @include align-self(center)
 
   .flex-aside
-    @include flex(1 auto)
+    @include flex(0 1 auto)
     width: 600px
     @include align-self(center)
 
