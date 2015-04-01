@@ -5,12 +5,21 @@
 
 @app.controller 'ContainerCreatorController', ['$scope', ($scope) ->
   oldCreator = {}
+
+  @showForm = false
+
   @containerTypeOptions = [
     { name: 'hero', url: '/client_views/container_hero_form.html' }
     { name: 'standard', url: '/client_views/container_standard_form.html' }
   ]
+
+  @toggleForm = ->
+    console.log "Toggle Form"
+    @showForm = ! @showForm
+
   @submit = ->
     console.log @form
+    @showForm = false
 
   return this
 ]
@@ -32,36 +41,6 @@
   return this
 
 ]
-
-# @app.directive 'csHero', ['$http', ($http) ->
-#   restrict: 'A'
-#   compile: (element, attrs) ->
-#     console.log 'csHero attrs: ', attrs
-#     if attrs.csHero && attrs.csHero != '{{creator.form}}'
-#       hero = JSON.parse attrs.csHero
-#       console.log 'hero data: ', hero  
-#       return (scope, $element, $attrs) ->
-#         scope.content = {}
-#         switch hero.mode
-#           when 'api'
-#             if hero.source
-#               $http.get(hero.source).success((data, status, headers, config) ->
-#                 scope.content.image = data.image
-#                 scope.content.title = data.title
-#                 return
-#               ).error (data, status, headers, config) ->
-#                 console.log data
-#                 return
-#           when 'custom'
-#             scope.content.image = hero.image
-#             scope.content.title = hero.title
-        
-#         # All Modes
-#         scope.content.buttonMessage = hero.buttonMessage
-#         scope.content.targetURL = hero.targetURL
-
-#   templateUrl: '/client_views/container_hero.html'
-# ]
 
 @app.directive 'csHero', ['$http', ($http) ->
   restrict: 'A'

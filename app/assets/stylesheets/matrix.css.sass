@@ -120,12 +120,31 @@
 // Creator //
 .creator
   position: relative
+
+.creator-edit-button
+  position: absolute
+  top: 10px
+  left: 10px
+  z-index: 1
+
+.creator-form-container
+  position: absolute
+  top: 0px
+  left: 0px
+  width: 100%
+  z-index: 1
+  padding: 40px
   @include display-flex
-  @include flex-direction(row)
+  @include justify-content(center)
+  @include align-content(center)
+  @include boxsizing
 
 .creator-form
   width: 320px
+  min-height: 200px
   padding: 20px
+  background: white
+  @include any_shadow(-5px 5px 10px rgba(0,0,0,0.5))
   @include boxsizing
 
 .creator-preview

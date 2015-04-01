@@ -1,4 +1,3 @@
-
 %strong Container Hero Form
 
 %form(name='creator.form' ng-submit='creator.submit()')
@@ -29,10 +28,6 @@
   %label Button Target URL
   %input(ng-model='creator.form.targetURL')
 
-  %button(type='submit')
-    submit
-
--# %div(cs-hero='{{creator.form}}')
-
--# %div(preview='creator.form')
--#   %div(cs-hero='{{creator.form}}')
+  %div
+    %button(type='submit')
+      submit

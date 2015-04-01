@@ -1,10 +1,14 @@
 .creator-container(ng-controller='ContainerCreatorController as creator')
   .creator
-    .creator-form
-      %label Container Type
-      %select(ng-options='option.name for option in creator.containerTypeOptions' ng-model='creator.containerType' required)
+    .creator-edit-button.btn.btn-secondary(ng-click='creator.toggleForm()')
+      Edit
+    .creator-form-container(ng-show='creator.showForm')
+      .creator-form
+        %div
+          %label Container Type
+          %select(ng-options='option.name for option in creator.containerTypeOptions' ng-model='creator.containerType' required)
 
-      %div(ng-include="creator.containerType.url")
+        %div(ng-include="creator.containerType.url")
 
     .creator-preview(ng-switch='creator.containerType.name')
       %div(ng-switch-when='hero')
