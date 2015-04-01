@@ -1,5 +1,9 @@
 @app.controller 'HomeManagerController', ['$scope', ($scope) ->
   @content = []
+  @add = (container) ->
+    @content.push container
+    container = {}
+    console.log @content
   return this
 ]
 
@@ -7,6 +11,7 @@
   oldCreator = {}
 
   @showForm = false
+  @form = {}
 
   @containerTypeOptions = [
     { name: 'hero', url: '/client_views/container_hero_form.html' }
@@ -20,6 +25,9 @@
   @submit = ->
     console.log @form
     @showForm = false
+
+  @clear = ->
+    @form = {}
 
   return this
 ]
