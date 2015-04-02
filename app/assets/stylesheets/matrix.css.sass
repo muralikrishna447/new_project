@@ -59,11 +59,6 @@
       padding-left: 5%
       padding-right: 50%
 
-.cs-hero-form
-  @include display-flex
-  @include justify-content(center)
-  @include align-content(center)
-
 // Containers //
 
 // Standard flexbox container. Items are set to max with of 320px
@@ -157,15 +152,39 @@
 
 
 // Form
-.cs-hero-form-container
+.cs-container-editor
   position: relative
-  .cs-hero-preview
-    display: block
-  .cs-hero-form
-    display: none
+  .cs-container-editor-toggle
+    position: absolute
+    top: 5px
+    right: 5px
+    z-index: 1
+    padding: 5px 10px
+    background: white
+    border: 1px solid $orange
+    border-radius: 5px
+    &:hover
+      cursor: pointer
+  .cs-container-editor-preview
+    transform-origin: top left
+    @include transition(all 300ms)
+    @include transform(scale(1,1))
+  .cs-container-editor-form
+    position: absolute
+    top: 0px
+    left: 0px
+    right: 0px
+    bottom: 0px
+    margin-left: 50%
+    padding: 20px
+    opacity: 0
+    @include boxsizing
+    @include transform(translateX(100%))
+    @include transition(all 300ms)
   &.edit
-    .cs-hero-preview
-      display: none
-    .cs-hero-form
-      display: block
+    .cs-container-editor-preview
+      @include transform(scale(.5,.5))
+    .cs-container-editor-form
+      @include transform(translateX(0%))
+      opacity: 1
 
