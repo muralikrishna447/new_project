@@ -1,0 +1,38 @@
+.cs-hero-form-container(ng-class="{new: 'edit', edit: 'edit'}[mode]")
+  .cs-hero-form-toggle(ng-click='toggle()')
+    Edit
+  .cs-hero-preview(cs-hero='{{formData}}')
+
+  .cs-hero-form
+    %form(name='creator.form' ng-submit='creator.submit()')
+      %input(type='hidden' ng-model='creator.form.containerType' ng-init="creator.form.containerType='hero'")
+
+      %input(type='radio' ng-model='creator.form.mode' value='api')
+        API
+      
+      %input(type='radio' ng-model='creator.form.mode' value='custom')
+        Custom
+
+      // API Mode
+      %div(ng-if="creator.form.mode=='api'")
+        %label Source
+        %input(ng-model='creator.form.source')
+
+      // Custom Mode
+      %div(ng-if="creator.form.mode=='custom'")
+        %label Image
+        %input(ng-model='creator.form.image')
+
+        %label Title
+        %input(ng-model='creator.form.title')
+
+      // All Modes
+      %label Button Message
+      %input(ng-model='creator.form.buttonMessage')
+
+      %label Button Target URL
+      %input(ng-model='creator.form.targetURL')
+
+      %div
+        %button(type='submit')
+          submit

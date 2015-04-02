@@ -59,6 +59,10 @@
       padding-left: 5%
       padding-right: 50%
 
+.cs-hero-form
+  @include display-flex
+  @include justify-content(center)
+  @include align-content(center)
 
 // Containers //
 
@@ -150,3 +154,18 @@
 .creator-preview
   width: 100%
   @include boxsizing
+
+
+// Form
+.cs-hero-form-container
+  position: relative
+  .cs-hero-preview
+    display: block
+  .cs-hero-form
+    display: none
+  &.edit
+    .cs-hero-preview
+      display: none
+    .cs-hero-form
+      display: block
+

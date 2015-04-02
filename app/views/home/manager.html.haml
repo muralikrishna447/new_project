@@ -1,26 +1,38 @@
-%div(ng-controller='HomeManagerController as manager')
-  %div(ng-repeat='container in manager.content')
-    {{container}}
-  %div(ng-click='manager.new()')
-    New
+%div(ng-controller='ExampleController as example')
+  %div(cs-hero-form form-data='example.formData' mode='example.mode')
 
-  .creator-container(ng-controller='ContainerCreatorController as creator')
-    %div(ng-click='manager.add(creator.form); creator.clear()')
-      Add
-    .creator
-      .creator-form-container
-        .creator-form
-          %div
-            %label Container Type
-            %select(ng-options='option.name for option in creator.containerTypeOptions' ng-model='creator.containerType' required)
+-# %div(ng-controller='HomeManagerController as manager')
+-#   %div(ng-repeat='container in manager.content')
+-#     {{container}}
+-#     %div(ng-switch='container.containerType')
+-#       %div(ng-switch-when='hero')
+-#         %div(cs-hero='{{container}}')
+-#       %div(ng-switch-when='standard')
+-#         %div(cs-standard='{{container}}')
 
-          %div(ng-include="creator.containerType.url")
+-#   %div(ng-click='manager.new()')
+-#     New
 
-      .creator-preview(ng-switch='creator.containerType.name')
-        %div(ng-switch-when='hero')
-          %div(cs-hero='{{creator.form}}')
-        %div(ng-switch-when='standard')
-          %div(cs-standard='{{creator.form}}' max-items='{{creator.form.maxItems}}')
+-#   .creator-container(ng-controller='ContainerCreatorController as creator')
+-#     %div(ng-click='manager.add(creator.form); creator.clear()')
+-#       Add
+-#     .creator
+-#       .creator-form-container
+-#         .creator-form
+-#           %div
+-#             %label Container Type
+-#             %select(ng-options='option.name for option in creator.containerTypeOptions' ng-model='creator.containerType' required)
+
+-#           %div(ng-include="creator.containerType.url")
+
+-#       .creator-preview(ng-switch='creator.containerType.name')
+-#         %div(ng-switch-when='hero')
+-#           %div(cs-hero='{{creator.form}}')
+-#         %div(ng-switch-when='standard')
+-#           %div(cs-standard='{{creator.form}}' max-items='{{creator.form.maxItems}}')
+
+
+
 
 -# .creator-container(ng-controller='ContainerCreatorController as creator')
 -#   .creator

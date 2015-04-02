@@ -28,6 +28,7 @@
 
   @clear = ->
     @form = {}
+    @form.containerType = @containerType.name
 
   return this
 ]
@@ -46,8 +47,47 @@
     }
   ]
 
+  @example = {
+    containerType: 'hero'
+    mode: 'api'
+    source: 'http://localhost:3000/api/v0/activities/2434'
+    buttonMessage: 'Hello'
+    targetURL: 'hey'
+  }
+
   return this
 
+]
+
+@app.controller 'ExampleController', ['$scope', ($scope) ->
+
+  @formData = {
+    containerType: 'hero'
+    mode: 'api'
+    source: 'http://localhost:3000/api/v0/activities/2434'
+    buttonMessage: 'Hello'
+    targetURL: 'hey'
+  }
+
+  @mode = ''
+
+  return this
+]
+
+@app.directive 'csHeroForm', [ ->
+  restrict: 'A'
+  scope: {
+    formData: '='
+    mode: '='
+  }
+  link: (scope, element, attrs) ->
+    console.log 'scope from csHeroForm', scope
+    scope.toggle = ->
+      if scope.mode == 'edit'
+        scope.mode = ''
+      else
+        scope.mode = 'edit'
+  templateUrl: '/client_views/cs_hero_form.html'
 ]
 
 @app.directive 'csHero', ['$http', ($http) ->
@@ -62,24 +102,23 @@
     scope.$watch 'csHero', (newValue, oldValue) ->
       # console.log 'newValue csHero: ', newValue
       # console.log 'oldValue csHero: ', oldValue
-      if newValue != oldValue
-        hero = JSON.parse(newValue)
-        scope.content.buttonMessage = hero.buttonMessage
-        scope.content.targetURL = hero.targetURL
+      hero = JSON.parse(newValue)
+      scope.content.buttonMessage = hero.buttonMessage
+      scope.content.targetURL = hero.targetURL
 
-        switch hero.mode
-          when 'api'
-            if hero.source
-              $http.get(hero.source).success((data, status, headers, config) ->
-                scope.content.image = data.image
-                scope.content.title = data.title
-                return
-              ).error (data, status, headers, config) ->
-                console.log data
-                return
-          when 'custom'
-            scope.content.image = hero.image
-            scope.content.title = hero.title
+      switch hero.mode
+        when 'api'
+          if hero.source
+            $http.get(hero.source).success((data, status, headers, config) ->
+              scope.content.image = data.image
+              scope.content.title = data.title
+              return
+            ).error (data, status, headers, config) ->
+              console.log data
+              return
+        when 'custom'
+          scope.content.image = hero.image
+          scope.content.title = hero.title
 
   templateUrl: '/client_views/container_hero.html'
 ]
@@ -87,53 +126,26 @@
 @app.directive 'csStandard', ['$http', ($http) ->
   restrict: 'A'
   scope: {
-    maxItems: '@'
     csStandard: '@'
   }
   link: (scope, $element, $attrs) ->
     scope.content = {}
     scope.$watch 'csStandard', (newValue, oldValue) ->
-      if newValue != oldValue
-        standard = JSON.parse(newValue)
-        console.log 'standard: ', standard
-        switch standard.mode
-          when 'api'
-            $http.get(standard.source).success((data, status, headers, config) ->
-              contentData = data
-              if standard.maxItems
-                contentData = contentData.slice(0, standard.maxItems)
+      standard = JSON.parse(newValue)
+      console.log 'standard: ', standard
+      switch standard.mode
+        when 'api'
+          $http.get(standard.source).success((data, status, headers, config) ->
+            contentData = data
+            if standard.maxItems
+              contentData = contentData.slice(0, standard.maxItems)
 
-              scope.content = contentData
-              return
-            ).error (data, status, headers, config) ->
-              console.log data
-              return
+            scope.content = contentData
+            return
+          ).error (data, status, headers, config) ->
+            console.log data
+            return
 
   templateUrl: '/client_views/container_standard.html'
 ]
 
-# @app.directive 'csStandard', ['$http', ($http) ->
-#   restrict: 'A'
-#   scope: {
-#     maxItems: '@'
-#   }
-#   compile: (element, attrs) ->
-#     console.log 'csStandard attrs: ', attrs
-#     if attrs.csStandard && attrs.csStandard != '{{creator.form}}'
-#       standard = JSON.parse attrs.csStandard
-#       if standard.source
-#         return (scope, $element, $attrs) ->
-#           console.log 'maxItems: ', scope.maxItems
-#           $http.get(standard.source).success((data, status, headers, config) ->
-#             contentData = data
-#             if scope.maxItems
-#               contentData = contentData.slice(0, scope.maxItems)
-
-#             scope.content = contentData
-#             return
-#           ).error (data, status, headers, config) ->
-#             console.log data
-#             return
-
-#   templateUrl: '/client_views/container_standard.html'
-# ]
