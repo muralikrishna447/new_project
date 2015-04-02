@@ -4,6 +4,12 @@
     @content.push container
     container = {}
     console.log @content
+
+  @new = ->
+    console.log 'Adding New item'
+    @content.push {containerType: 'hero', formState: 'new'}
+    console.log @content
+
   return this
 ]
 
@@ -78,7 +84,7 @@
   restrict: 'A'
   scope: {
     formData: '='
-    mode: '='
+    formState: '='
   }
   link: (scope, element, attrs) ->
     # console.log 'scope from csHeroForm', scope
@@ -87,10 +93,12 @@
     scope.creator.form = scope.formData
 
     scope.toggle = ->
-      if scope.mode == 'edit'
-        scope.mode = ''
+      if scope.formState == 'edit'
+        scope.formState = ''
+      else if scope.formState == 'new'
+        scope.formState = ''
       else
-        scope.mode = 'edit'
+        scope.formState = 'edit'
   templateUrl: '/client_views/cs_hero_form.html'
 ]
 

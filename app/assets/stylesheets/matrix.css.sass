@@ -151,10 +151,25 @@
   @include boxsizing
 
 
+// Home Manager
+.home-manager
+  .home-manager-new
+    border: 1px solid $orange
+    height: 40px
+    width: 100px
+    border-radius: 25px
+    margin: 0 auto
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    &:hover
+      cursor: pointer
+
 // Form
 .cs-container-editor
   position: relative
-  @include transition(all 300ms)
+  @include boxsizing
+  @include transition(all 300ms ease-in-out)
   .cs-container-editor-toggle
     position: absolute
     top: 10px
@@ -169,7 +184,7 @@
   .cs-container-editor-preview
     padding: 0px
     transform-origin: top left
-    @include transition(all 300ms)
+    @include transition(all 300ms ease-in-out)
     @include transform(scale(1,1))
   .cs-container-editor-form
     position: absolute
@@ -180,10 +195,9 @@
     margin-left: 50%
     padding: 20px
     @include boxsizing
-    @include transition(all 300ms)
   &.edit
-    @include transform(scale(.9,.9))
+    @include transform(scale(.95,.95))
     .cs-container-editor-preview
-      @include transform(scale(.5,.5))
+      @include transform(scale3D(.5,.5, 1))
       @include any_shadow(-5px 5px 20px #ccc)
 
