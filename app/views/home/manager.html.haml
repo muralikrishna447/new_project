@@ -9,8 +9,20 @@
       %div(ng-switch-when='standard')
         %div(cs-standard='{{container}}')
 
-  .home-manager-new(ng-click='manager.new()')
-    New
+  .home-manager-add-toggle(ng-click='manager.addToggle()' ng-cloak)
+    %div(ng-if='!manager.showAddMenu')
+      Add
+    %div(ng-if='manager.showAddMenu')
+      Cancel
+
+  .home-manager-add-menu-container(ng-cloak)
+    .home-manager-add-menu(ng-class="{true: 'active', false: 'inactive'}[manager.showAddMenu]")
+      .home-manager-add-item(ng-click="manager.add('hero')")
+        Hero
+      .home-manager-add-item(ng-click="manager.add('hero')")
+        Standard
+  -# .home-manager-add(ng-click="manager.add('standard')")
+  -#   Standard
 
   -# .creator-container(ng-controller='ContainerCreatorController as creator')
   -#   %div(ng-click='manager.add(creator.form); creator.clear()')

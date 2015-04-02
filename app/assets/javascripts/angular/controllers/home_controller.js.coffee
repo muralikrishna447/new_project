@@ -1,14 +1,13 @@
 @app.controller 'HomeManagerController', ['$scope', ($scope) ->
   @content = []
-  @add = (container) ->
-    @content.push container
-    container = {}
-    console.log @content
+  @showAddMenu = false
 
-  @new = ->
-    console.log 'Adding New item'
-    @content.push {containerType: 'hero', formState: 'new'}
-    console.log @content
+  @addToggle = ->
+    @showAddMenu = ! @showAddMenu
+
+  @add = (containerType) ->
+    @content.push {containerType: containerType, formState: 'new'}
+    @showAddMenu = false
 
   return this
 ]
