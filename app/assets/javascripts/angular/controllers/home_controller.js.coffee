@@ -81,7 +81,11 @@
     mode: '='
   }
   link: (scope, element, attrs) ->
-    console.log 'scope from csHeroForm', scope
+    # console.log 'scope from csHeroForm', scope
+
+    scope.creator = {}
+    scope.creator.form = scope.formData
+
     scope.toggle = ->
       if scope.mode == 'edit'
         scope.mode = ''

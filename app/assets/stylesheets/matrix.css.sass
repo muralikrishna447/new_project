@@ -154,10 +154,11 @@
 // Form
 .cs-container-editor
   position: relative
+  @include transition(all 300ms)
   .cs-container-editor-toggle
     position: absolute
-    top: 5px
-    right: 5px
+    top: 10px
+    right: 10px
     z-index: 1
     padding: 5px 10px
     background: white
@@ -166,6 +167,7 @@
     &:hover
       cursor: pointer
   .cs-container-editor-preview
+    padding: 0px
     transform-origin: top left
     @include transition(all 300ms)
     @include transform(scale(1,1))
@@ -177,14 +179,11 @@
     bottom: 0px
     margin-left: 50%
     padding: 20px
-    opacity: 0
     @include boxsizing
-    @include transform(translateX(100%))
     @include transition(all 300ms)
   &.edit
+    @include transform(scale(.9,.9))
     .cs-container-editor-preview
       @include transform(scale(.5,.5))
-    .cs-container-editor-form
-      @include transform(translateX(0%))
-      opacity: 1
+      @include any_shadow(-5px 5px 20px #ccc)
 
