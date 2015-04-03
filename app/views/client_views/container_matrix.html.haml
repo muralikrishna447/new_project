@@ -1,0 +1,15 @@
+{{content}}
+
+.cs-container-matrix
+  -# .cs-item-container(ng-repeat='item in content')
+  -#   .cs-item-matrix
+  -#     .cs-item-content
+  -#       .cs-item-image
+  -#         %img(ng-src='{{item.image}}')
+  -#       .cs-item-title
+  -#         {{item.title}}
+  -#       .cs-item-description
+  -#         {{item.description}}
+  .cs-content-matrix-row(ng-repeat='row in numToArray(content.rows) track by $index')
+    .cs-content-matrix-item(ng-repeat='column in numToArray(content.columns) track by $index')
+      item

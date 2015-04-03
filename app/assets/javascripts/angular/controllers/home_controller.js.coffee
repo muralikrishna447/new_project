@@ -5,8 +5,9 @@
   @addToggle = ->
     @showAddMenu = ! @showAddMenu
 
-  @add = (containerType) ->
-    @content.push {containerType: containerType, formState: 'new'}
+  @add = (containerType, defaults = {}) ->
+    addData = angular.extend {containerType: containerType, formState: 'new'}, defaults
+    @content.push addData
     @showAddMenu = false
 
   return this
@@ -26,13 +27,20 @@
     }
   ]
 
-  @example = {
-    containerType: 'hero'
-    mode: 'api'
-    source: 'http://localhost:3000/api/v0/activities/2434'
-    buttonMessage: 'Hello'
-    targetURL: 'hey'
-  }
+  @example = [
+    {
+      containerType: 'hero'
+      mode: 'api'
+      source: 'http://localhost:3000/api/v0/activities/2434'
+      buttonMessage: 'Hello'
+      targetURL: 'hey'
+    }
+    {
+      containerType: 'matrix'
+      rows: '2'
+      columns: '3'
+    }
+  ]
 
   return this
 
@@ -45,7 +53,7 @@
     formState: '='
   }
   link: (scope, element, attrs) ->
-
+    # console.log 'formData: ', scope.formData
     scope.container = {}
     scope.container.form = scope.formData
 
@@ -122,5 +130,37 @@
             return
 
   templateUrl: '/client_views/container_list.html'
+]
+
+@app.directive 'containerMatrix', ['$http', ($http) ->
+  restrict: 'A'
+  scope: {
+    containerMatrix: '@'
+  }
+  link: (scope, $element, $attrs) ->
+    scope.numToArray = (num) ->
+      if num
+        return new Array parseInt(num)
+
+    scope.content = {}
+
+    scope.$watch 'containerMatrix', (newValue, oldValue) ->
+      console.log 'newValue: ', newValue
+      matrix = scope.$eval newValue
+      scope.content = matrix
+      switch matrix.mode
+        when 'api'
+          $http.get(matrix.source).success((data, status, headers, config) ->
+            contentData = data
+            if matrix.maxItems
+              contentData = contentData.slice(0, matrix.maxItems)
+
+            scope.content = contentData
+            return
+          ).error (data, status, headers, config) ->
+            console.log data
+            return
+
+  templateUrl: '/client_views/container_matrix.html'
 ]
 

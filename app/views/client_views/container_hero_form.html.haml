@@ -1,6 +1,6 @@
 %strong Container Hero Form
 
-%form(name='container.form' ng-submit='container.submit()')
+%form(ng-submit='container.submit()')
   %input(type='hidden' ng-model='container.form.containerType' ng-init="container.form.containerType='hero'")
 
   %input(type='radio' ng-model='container.form.mode' value='api')

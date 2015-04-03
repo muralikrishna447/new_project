@@ -1,10 +1,10 @@
 .cs-container-editor(ng-class="{new: 'edit', edit: 'edit'}[formState]")
   .cs-container-editor-toggle(ng-click='toggle()')
     Edit
-
   .cs-container-editor-preview
     %div(container-hero='{{container.form}}' ng-if="container.form.containerType == 'hero'")
     %div(container-list='{{container.form}}' ng-if="container.form.containerType == 'list'")
+    %div(container-matrix='{{container.form}}' ng-if="container.form.containerType == 'matrix'")
 
   .cs-container-editor-form(ng-show="formState == 'edit' || formState == 'new'")
     %div(ng-include="includeForm(container.form.containerType)")

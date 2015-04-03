@@ -1,7 +1,6 @@
-%strong Container List Form
-
+%strong Container Matrix
 %form(ng-submit='container.submit()')
-  %input(type='hidden' ng-model='container.form.containerType' ng-init="container.form.containerType='list'")
+  %input(type='hidden' ng-model='container.form.containerType' ng-init="container.form.containerType='matrix'")
 
   %input(type='radio' ng-model='container.form.mode' value='api')
     API
@@ -19,6 +18,14 @@
   %div(ng-if="container.form.mode=='custom'")
     %label Max number of items
     %input(ng-model='container.form.maxItems')
+
+  %div
+    %label Rows
+    %input(ng-model='container.form.rows')
+
+  %div
+    %label Rows
+    %input(ng-model='container.form.columns')
 
   %button(type='submit')
     submit
