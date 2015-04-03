@@ -98,22 +98,22 @@
   templateUrl: '/client_views/container_hero.html'
 ]
 
-@app.directive 'csStandard', ['$http', ($http) ->
+@app.directive 'csList', ['$http', ($http) ->
   restrict: 'A'
   scope: {
-    csStandard: '@'
+    csList: '@'
   }
   link: (scope, $element, $attrs) ->
     scope.content = {}
-    scope.$watch 'csStandard', (newValue, oldValue) ->
-      standard = JSON.parse(newValue)
-      console.log 'standard: ', standard
-      switch standard.mode
+    scope.$watch 'csList', (newValue, oldValue) ->
+      list = JSON.parse(newValue)
+      console.log 'list: ', list
+      switch list.mode
         when 'api'
-          $http.get(standard.source).success((data, status, headers, config) ->
+          $http.get(list.source).success((data, status, headers, config) ->
             contentData = data
-            if standard.maxItems
-              contentData = contentData.slice(0, standard.maxItems)
+            if list.maxItems
+              contentData = contentData.slice(0, list.maxItems)
 
             scope.content = contentData
             return
@@ -121,6 +121,6 @@
             console.log data
             return
 
-  templateUrl: '/client_views/container_standard.html'
+  templateUrl: '/client_views/container_list.html'
 ]
 
