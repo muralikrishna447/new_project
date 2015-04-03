@@ -3,8 +3,8 @@
     Edit
 
   .cs-container-editor-preview
-    %div(cs-hero='{{creator.form}}' ng-if="creator.form.containerType == 'hero'")
-    %div(cs-list='{{creator.form}}' ng-if="creator.form.containerType == 'list'")
-    
+    %div(container-hero='{{container.form}}' ng-if="container.form.containerType == 'hero'")
+    %div(container-list='{{container.form}}' ng-if="container.form.containerType == 'list'")
+
   .cs-container-editor-form(ng-show="formState == 'edit' || formState == 'new'")
-    %div(ng-include="includeForm(creator.form.containerType)")
+    %div(ng-include="includeForm(container.form.containerType)")

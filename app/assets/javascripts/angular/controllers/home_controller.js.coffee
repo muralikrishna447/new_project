@@ -46,8 +46,8 @@
   }
   link: (scope, element, attrs) ->
 
-    scope.creator = {}
-    scope.creator.form = scope.formData
+    scope.container = {}
+    scope.container.form = scope.formData
 
     scope.includePreview = (containerType) ->
       return "/client_views/container_#{containerType}.html"
@@ -65,18 +65,18 @@
   templateUrl: '/client_views/cs_container_form.html'
 ]
 
-@app.directive 'csHero', ['$http', ($http) ->
+@app.directive 'containerHero', ['$http', ($http) ->
   restrict: 'A'
   scope: {
-    csHero: '@'
+    containerHero: '@'
   }
   controller: ['$scope', ($scope) ->
     $scope.content = {}
   ]
   link: (scope, $element, $attrs) ->
-    scope.$watch 'csHero', (newValue, oldValue) ->
-      # console.log 'newValue csHero: ', newValue
-      # console.log 'oldValue csHero: ', oldValue
+    scope.$watch 'containerHero', (newValue, oldValue) ->
+      # console.log 'newValue containerHero: ', newValue
+      # console.log 'oldValue containerHero: ', oldValue
       hero = JSON.parse(newValue)
       scope.content.buttonMessage = hero.buttonMessage
       scope.content.targetURL = hero.targetURL
@@ -98,14 +98,14 @@
   templateUrl: '/client_views/container_hero.html'
 ]
 
-@app.directive 'csList', ['$http', ($http) ->
+@app.directive 'containerList', ['$http', ($http) ->
   restrict: 'A'
   scope: {
-    csList: '@'
+    containerList: '@'
   }
   link: (scope, $element, $attrs) ->
     scope.content = {}
-    scope.$watch 'csList', (newValue, oldValue) ->
+    scope.$watch 'containerList', (newValue, oldValue) ->
       list = JSON.parse(newValue)
       console.log 'list: ', list
       switch list.mode

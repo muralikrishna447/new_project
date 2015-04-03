@@ -1,33 +1,33 @@
 %strong Container Hero Form
 
-%form(name='creator.form' ng-submit='creator.submit()')
-  %input(type='hidden' ng-model='creator.form.containerType' ng-init="creator.form.containerType='hero'")
+%form(name='container.form' ng-submit='container.submit()')
+  %input(type='hidden' ng-model='container.form.containerType' ng-init="container.form.containerType='hero'")
 
-  %input(type='radio' ng-model='creator.form.mode' value='api')
+  %input(type='radio' ng-model='container.form.mode' value='api')
     API
   
-  %input(type='radio' ng-model='creator.form.mode' value='custom')
+  %input(type='radio' ng-model='container.form.mode' value='custom')
     Custom
 
   // API Mode
-  %div(ng-if="creator.form.mode=='api'")
+  %div(ng-if="container.form.mode=='api'")
     %label Source
-    %input(ng-model='creator.form.source')
+    %input(ng-model='container.form.source')
 
   // Custom Mode
-  %div(ng-if="creator.form.mode=='custom'")
+  %div(ng-if="container.form.mode=='custom'")
     %label Image
-    %input(ng-model='creator.form.image')
+    %input(ng-model='container.form.image')
 
     %label Title
-    %input(ng-model='creator.form.title')
+    %input(ng-model='container.form.title')
 
   // All Modes
   %label Button Message
-  %input(ng-model='creator.form.buttonMessage')
+  %input(ng-model='container.form.buttonMessage')
 
   %label Button Target URL
-  %input(ng-model='creator.form.targetURL')
+  %input(ng-model='container.form.targetURL')
 
   %div
     %button(type='submit')
