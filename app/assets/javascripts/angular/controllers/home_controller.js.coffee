@@ -64,19 +64,31 @@
 
 ]
 
-@app.controller 'ExampleController', ['$scope', ($scope) ->
-
-  @formData = {
-    containerType: 'hero'
-    mode: 'api'
-    source: 'http://localhost:3000/api/v0/activities/2434'
-    buttonMessage: 'Hello'
-    targetURL: 'hey'
+@app.directive 'csContainerForm', [ ->
+  restrict: 'A'
+  scope: {
+    formData: '='
+    formState: '='
   }
+  link: (scope, element, attrs) ->
 
-  @mode = ''
+    scope.creator = {}
+    scope.creator.form = scope.formData
 
-  return this
+    scope.includePreview = (containerType) ->
+      return "/client_views/container_#{containerType}.html"
+
+    scope.includeForm = (containerType) ->
+      return "/client_views/container_#{containerType}_form.html"
+
+    scope.toggle = ->
+      if scope.formState == 'edit'
+        scope.formState = ''
+      else if scope.formState == 'new'
+        scope.formState = ''
+      else
+        scope.formState = 'edit'
+  templateUrl: '/client_views/cs_container_form.html'
 ]
 
 @app.directive 'csHeroForm', [ ->
