@@ -1,0 +1,29 @@
+.cs-container-editor(ng-class="{new: 'edit', edit: 'edit'}[formState]")
+  .cs-container-editor-toggle(ng-click='toggle()')
+    Edit
+
+  .cs-container-editor-preview(cs-standard='{{creator.form}}')
+
+  .cs-container-editor-form(ng-show="formState == 'edit' || formState == 'new'")
+    %form(name='creator.form' ng-submit='creator.submit()')
+      %input(type='hidden' ng-model='creator.form.containerType' ng-init="creator.form.containerType='standard'")
+
+      %input(type='radio' ng-model='creator.form.mode' value='api')
+        API
+      
+      %input(type='radio' ng-model='creator.form.mode' value='custom')
+        Custom
+
+      %div(ng-if="creator.form.mode=='api'")
+        %label Source
+        %input(ng-model='creator.form.source')
+
+        %label Max number of items
+        %input(ng-model='creator.form.maxItems')
+
+      %div(ng-if="creator.form.mode=='custom'")
+        %label Max number of items
+        %input(ng-model='creator.form.maxItems')
+
+      %button(type='submit')
+        submit

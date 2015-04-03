@@ -7,7 +7,7 @@
       %div(ng-switch-when='hero')
         %div(cs-hero-form form-data='container' form-state='container.formState')
       %div(ng-switch-when='standard')
-        %div(cs-standard='{{container}}')
+        %div(cs-standard-form form-data='container' form-state='container.formState')
 
   .home-manager-add-toggle(ng-click='manager.addToggle()' ng-cloak)
     %div(ng-if='!manager.showAddMenu')
@@ -19,7 +19,7 @@
     .home-manager-add-menu(ng-class="{true: 'active', false: 'inactive'}[manager.showAddMenu]")
       .home-manager-add-item(ng-click="manager.add('hero')")
         Hero
-      .home-manager-add-item(ng-click="manager.add('hero')")
+      .home-manager-add-item(ng-click="manager.add('standard')")
         Standard
   -# .home-manager-add(ng-click="manager.add('standard')")
   -#   Standard

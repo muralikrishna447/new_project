@@ -101,6 +101,28 @@
   templateUrl: '/client_views/cs_hero_form.html'
 ]
 
+@app.directive 'csStandardForm', [ ->
+  restrict: 'A'
+  scope: {
+    formData: '='
+    formState: '='
+  }
+  link: (scope, element, attrs) ->
+    # console.log 'scope from csHeroForm', scope
+
+    scope.creator = {}
+    scope.creator.form = scope.formData
+
+    scope.toggle = ->
+      if scope.formState == 'edit'
+        scope.formState = ''
+      else if scope.formState == 'new'
+        scope.formState = ''
+      else
+        scope.formState = 'edit'
+  templateUrl: '/client_views/cs_standard_form.html'
+]
+
 @app.directive 'csHero', ['$http', ($http) ->
   restrict: 'A'
   scope: {
