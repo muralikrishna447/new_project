@@ -11,5 +11,6 @@
   -#       .cs-item-description
   -#         {{item.description}}
   .cs-container-matrix-row(ng-repeat='row in numToArray(content.rows) track by $index')
-    .cs-container-matrix-item(ng-repeat='column in numToArray(content.columns) track by $index')
-      item
+    .cs-container-matrix-column(ng-repeat='column in numToArray(content.columns) track by $index')
+      .cs-container-matrix-item
+        hello
