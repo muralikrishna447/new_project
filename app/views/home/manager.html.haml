@@ -1,11 +1,6 @@
 .home-manager(ng-controller='HomeManagerController as manager')
   %div(ng-repeat='container in manager.content')
     %div(cs-container-form form-data='container' form-state='container.formState')
-    -# %div(ng-switch='container.containerType')
-    -#   %div(ng-switch-when='hero')
-    -#     %div(cs-hero-form form-data='container' form-state='container.formState')
-    -#   %div(ng-switch-when='standard')
-    -#     %div(cs-standard-form form-data='container' form-state='container.formState')
 
   .home-manager-add-toggle(ng-click='manager.addToggle()' ng-cloak)
     %div(ng-if='!manager.showAddMenu')
@@ -19,44 +14,3 @@
         Hero
       .home-manager-add-item(ng-click="manager.add('standard')")
         Standard
-  -# .home-manager-add(ng-click="manager.add('standard')")
-  -#   Standard
-
-  -# .creator-container(ng-controller='ContainerCreatorController as creator')
-  -#   %div(ng-click='manager.add(creator.form); creator.clear()')
-  -#     Add
-  -#   .creator
-  -#     .creator-form-container
-  -#       .creator-form
-  -#         %div
-  -#           %label Container Type
-  -#           %select(ng-options='option.name for option in creator.containerTypeOptions' ng-model='creator.containerType' required)
-
-  -#         %div(ng-include="creator.containerType.url")
-
-  -#     .creator-preview(ng-switch='creator.containerType.name')
-  -#       %div(ng-switch-when='hero')
-  -#         %div(cs-hero='{{creator.form}}')
-  -#       %div(ng-switch-when='standard')
-  -#         %div(cs-standard='{{creator.form}}' max-items='{{creator.form.maxItems}}')
-
-
-
-
--# .creator-container(ng-controller='ContainerCreatorController as creator')
--#   .creator
--#     .creator-edit-button.btn.btn-secondary(ng-click='creator.toggleForm()')
--#       Edit
--#     .creator-form-container(ng-show='creator.showForm')
--#       .creator-form
--#         %div
--#           %label Container Type
--#           %select(ng-options='option.name for option in creator.containerTypeOptions' ng-model='creator.containerType' required)
-
--#         %div(ng-include="creator.containerType.url")
-
--#     .creator-preview(ng-switch='creator.containerType.name')
--#       %div(ng-switch-when='hero')
--#         %div(cs-hero='{{creator.form}}')
--#       %div(ng-switch-when='standard')
--#         %div(cs-standard='{{creator.form}}' max-items='{{creator.form.maxItems}}')
