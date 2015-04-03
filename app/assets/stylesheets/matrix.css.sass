@@ -167,7 +167,7 @@
       background: rgba(255,255,255,.8)
       height: 100%
       overflow-y: auto
-      @include any_shadow(5px 0px 20px #ccc)
+      @include any_shadow(5px 0px 20px rgba(0,0,0,0.5))
       @include boxsizing
       @include transition(all 300ms ease-in-out)
       &.active
@@ -234,5 +234,5 @@
     @include transform(scale(.95,.95))
     .cs-container-editor-preview
       @include transform(scale3D(.5,.5, 1))
-      @include any_shadow(-5px 5px 20px #ccc)
+      @include any_shadow(-5px 5px 20px rgba(0,0,0,.3))
 
