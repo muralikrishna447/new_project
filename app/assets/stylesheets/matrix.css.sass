@@ -60,6 +60,17 @@
       padding-right: 50%
 
 // Containers //
+.cs-container-matrix
+  .cs-container-matrix-row
+    @include display-flex
+    @include flex-direction(row)
+    .cs-container-matrix-item
+      @include flex(1 1 auto)
+      @include aspect-1-1
+      border: 1px solid #ccc
+      @include boxsizing
+      padding: 10px
+
 
 // Standard flexbox container. Items are set to max with of 320px
 .cs-container-standard
