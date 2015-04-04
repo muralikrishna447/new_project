@@ -8,19 +8,19 @@
               .span3
                 %h3 About
                 %ul.unstyled
-                  %li= link_to 'About ChefSteps', '/about'
-                  %li= link_to 'Blog', 'http://blog.chefsteps.com'
-                  %li= link_to 'Jobs', '/jobs'
-                  %li= link_to 'Press Kit', 'http://chefsteps.com/pages/presskit'
+                  %li= link_to 'About ChefSteps', '/about', onclick: "mixpanel.track('Footer Link', {'source' : 'About'});"
+                  %li= link_to 'Blog', 'http://blog.chefsteps.com', onclick: "mixpanel.track('Footer Link', {'source' : 'Blog'});"
+                  %li= link_to 'Jobs', '/jobs', onclick: "mixpanel.track('Footer Link', {'source' : 'Jobs'});"
+                  %li= link_to 'Press Kit', 'http://chefsteps.com/pages/presskit', onclick: "mixpanel.track('Footer Link', {'source' : 'Press Kit'});"
 
               .span3
                 %h3 Learn 
                 %ul.unstyled
-                  %li= link_to 'Recipes', gallery_index_url + "#/?activity_type=Recipe"
-                  %li= link_to 'Techniques', gallery_index_url + "#/?activity_type=Technique"
-                  %li= link_to 'Classes', courses_url
-                  %li= link_to 'Science', gallery_index_url + "#/?activity_type=Science"
-                  %li= link_to 'Ingredients', ingredients_url
+                  %li= link_to 'Recipes', gallery_index_url + "#/?activity_type=Recipe", onclick: "mixpanel.track('Footer Link', {'source' : 'Recipes'});"
+                  %li= link_to 'Techniques', gallery_index_url + "#/?activity_type=Technique", onclick: "mixpanel.track('Footer Link', {'source' : 'Techniques'});"
+                  %li= link_to 'Classes', courses_url, onclick: "mixpanel.track('Footer Link', {'source' : 'Classes'});"
+                  %li= link_to 'Science', gallery_index_url + "#/?activity_type=Science", onclick: "mixpanel.track('Footer Link', {'source' : 'Science'});"
+                  %li= link_to 'Ingredients', ingredients_url, onclick: "mixpanel.track('Footer Link', {'source' : 'Ingredients'});"
 
               .span6.section.text-center
                 = image_tag 'https://d92f495ogyf88.cloudfront.net/static/logo-minimal.png'
@@ -38,7 +38,7 @@
                       %i.icon-rss
                         Subscribe to RSS
                     &middot; 
-                    =link_to 'Legal', legal_url
+                    =link_to 'Legal', legal_url, onclick: "mixpanel.track('Footer Link', {'source' : 'Legal'});"
 
           .row
             .span12.section.text-center
