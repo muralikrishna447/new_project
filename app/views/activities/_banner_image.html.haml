@@ -1,15 +1,15 @@
 .banner-image.noprint(  ng-controller="BannerController"
-                        ng-cloak 
-                        ng-click='! editMode && toggleHeroVisual()' 
+                        ng-cloak
+                        ng-click='! editMode && toggleHeroVisual()'
                         ng-if="heroMedia.heroDisplayType() != 'none'"
                         ng-class="{'hero-video-showing' : showHeroVisual()}")
 
-  %img( ng-src="{{bannerImageURL()}}" ng-if="bannerImageURL() != ''"  itemprop="image")
-  / %cs-image(url="activity.image_id" width="parent" aspect="16:9") 
+  %img( ng-src="{{bannerImageURL()}}" ng-if="bannerImageURL() != ''"  itemprop="image" alt="{{getObject().title}}" title="{{getObject().title}}")
+  / %cs-image(url="activity.image_id" width="parent" aspect="16:9")
 
   .play-button-container
     .play-button( ng-if="heroMedia.heroDisplayType() == 'video' && ! showHeroVisual()")
-      %i.fa.fa-play-circle-o  
+      %i.fa.fa-play-circle-o
 
   .hero-video.noprint
     = render 'activities/hero_visual'

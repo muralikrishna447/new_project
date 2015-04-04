@@ -18,6 +18,7 @@ Usage:
 
   link: (scope, element, attrs) ->
     scope.containerStyle = {}
+    scope.attrs = attrs
     parent = element.parent()
 
     scope.calculateWidth = ->
@@ -48,7 +49,7 @@ Usage:
   template:
     """
     <div ng-style="containerStyle" class="cs-image">
-      <img ng-src="{{finalUrl}}">
+      <img ng-src="{{finalUrl}}" alt="{{attrs.alt}}" title="{{attrs.title}}">
     </div>
     """
 
