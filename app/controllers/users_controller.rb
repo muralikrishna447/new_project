@@ -10,8 +10,9 @@ class UsersController < ApplicationController
   def get_user
     if params[:secret] && params[:secret] == 'ilovesousvideYgpsagNPdJ'
       @user = User.find(params[:userId])
-      user_json = {data: {id: @user.id.to_s, name: @user.name, avatarUrl: @user.avatar_url, email: @user.email}}.to_json
-      render text: user_json
+      user_json = {id: @user.id.to_s, name: @user.name, avatarUrl: @user.avatar_url, email: @user.email}
+      user_json.merge!({employee: true}) if @user.role == 'admin' && /@chefsteps.com\z/.match(@user.email)
+      render json: user_json.to_json
     else
       render text: 'Authorized Access', status: 401
     end
