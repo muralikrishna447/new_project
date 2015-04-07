@@ -180,7 +180,8 @@
   ]
   link: (scope, $element, $attrs) ->
 
-    updateItems = ->
+    updateItems = (newItems) ->
+      console.log 'NEW: ', newItems
       if scope.content.rows && scope.content.columns
         # numItems = scope.content.rows * scope.content.columns
         matrix = []
@@ -190,7 +191,11 @@
           j = 0
           while j < scope.content.columns
             console.log 'items: ', scope.content.items
-            if scope.content.items && scope.content.items[i] && scope.content.items[i][j]
+            if newItems
+              index = scope.content.columns*i + j
+              console.log 'new items index: ', index
+              matrix[i][j] = newItems[index]
+            else if scope.content.items && scope.content.items[i] && scope.content.items[i][j]
               matrix[i][j] = scope.content.items[i][j]
             else
               matrix[i][j] = {}
@@ -206,6 +211,17 @@
       console.log 'content: ', newValue
       updateItems()
 
+    scope.$watch 'content.source', (newValue, oldValue) ->
+      console.log 'source: ', newValue
+      if newValue
+        $http.get(newValue).success((data, status, headers, config) ->
+          updateItems(data)
+          return
+        ).error (data, status, headers, config) ->
+          console.log data
+          return
+
+
   templateUrl: '/client_views/container_matrix.html'
 ]
 
@@ -214,6 +230,7 @@
   scope: {
     content: '='
     mode: '='
+    formState: '='
   }
   link: (scope, $element, $attrs) ->
     console.log scope

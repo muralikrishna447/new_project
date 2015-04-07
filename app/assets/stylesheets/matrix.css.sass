@@ -67,10 +67,12 @@
     .cs-container-matrix-column
       @include flex(1 1 auto)
       @include aspect-1-1
-      border: 1px solid #ccc
       @include boxsizing
       .cs-container-matrix-item
         @include aspect-content
+        margin: 10px
+        border: 1px solid #ccc
+        @include boxsizing
 
 
 // Standard flexbox container. Items are set to max with of 320px

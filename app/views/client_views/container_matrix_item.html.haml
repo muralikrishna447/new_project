@@ -1,34 +1,37 @@
-%div(ng-if="mode=='edit'")
-  %strong Container Hero Form
+%div(ng-if="formState=='edit'")
+  %div(ng-if="mode=='api'")
+    {{content}}
+  %div(ng-if="mode=='custom'")
+    %strong Container Hero Form
 
-  %form(ng-submit='container.submit()')
-    %input(type='hidden' ng-model='content.containerType' ng-init="content.containerType='hero'")
+    %form(ng-submit='container.submit()')
+      %input(type='hidden' ng-model='content.containerType' ng-init="content.containerType='hero'")
 
-    %input(type='radio' ng-model='content.mode' value='api')
-      API
-    
-    %input(type='radio' ng-model='content.mode' value='custom')
-      Custom
+      %input(type='radio' ng-model='content.mode' value='api')
+        API
+      
+      %input(type='radio' ng-model='content.mode' value='custom')
+        Custom
 
-    // API Mode
-    %div(ng-if="content.mode=='api'")
-      %label Source
-      %input(ng-model='content.source')
+      // API Mode
+      %div(ng-if="content.mode=='api'")
+        %label Source
+        %input(ng-model='content.source')
 
-    // Custom Mode
-    %div(ng-if="content.mode=='custom'")
-      %label Image
-      %input(ng-model='content.image')
+      // Custom Mode
+      %div(ng-if="content.mode=='custom'")
+        %label Image
+        %input(ng-model='content.image')
 
-      %label Title
-      %input(ng-model='content.title')
+        %label Title
+        %input(ng-model='content.title')
 
-    // All Modes
-    %label Button Message
-    %input(ng-model='content.buttonMessage')
+      // All Modes
+      %label Button Message
+      %input(ng-model='content.buttonMessage')
 
-    %label Button Target URL
-    %input(ng-model='content.targetURL')
+      %label Button Target URL
+      %input(ng-model='content.targetURL')
 
-%div(ng-if="content.formState!='edit'")
-  hello
+%div(ng-if="formState!='edit'")
+  {{content}}
