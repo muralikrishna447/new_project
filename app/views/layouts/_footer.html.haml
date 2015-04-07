@@ -18,7 +18,7 @@
                 %ul.unstyled
                   %li= link_to 'Recipes', gallery_index_url + "#/?activity_type=Recipe", onclick: "mixpanel.track('Footer Link', {'source' : 'Recipes', url: window.location.pathname });"
                   %li= link_to 'Techniques', gallery_index_url + "#/?activity_type=Technique", onclick: "mixpanel.track('Footer Link', {'source' : 'Techniques', url: window.location.pathname});"
-                  %li= link_to 'Classes', courses_url, onclick: "mixpanel.track('Footer Link', {'source' : 'Classes'});"
+                  %li= link_to 'Classes', courses_url, onclick: "mixpanel.track('Footer Link', {'source' : 'Classes', url: window.location.pathname});"
                   %li= link_to 'Science', gallery_index_url + "#/?activity_type=Science", onclick: "mixpanel.track('Footer Link', {'source' : 'Science', url: window.location.pathname});"
                   %li= link_to 'Ingredients', ingredients_url, onclick: "mixpanel.track('Footer Link', {'source' : 'Ingredients', url: window.location.pathname});"
 
