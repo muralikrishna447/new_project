@@ -39,6 +39,7 @@
       containerType: 'matrix'
       rows: '2'
       columns: '3'
+      items: []
     }
   ]
 
@@ -132,35 +133,91 @@
   templateUrl: '/client_views/container_list.html'
 ]
 
+# @app.directive 'containerMatrix', ['$http', ($http) ->
+#   restrict: 'A'
+#   scope: {
+#     containerMatrix: '@'
+#   }
+#   controller: ['$scope', ($scope) ->
+#     $scope.content = {}
+
+#     $scope.createItem = (content, column, row) ->
+#       console.log "Creating Item at [#{column},#{row}]"
+#       $scope.content.items.push {}
+#   ]
+#   link: (scope, $element, $attrs) ->
+#     scope.numToArray = (num) ->
+#       if num
+#         return new Array parseInt(num)
+
+#     scope.$watch 'containerMatrix', (newValue, oldValue) ->
+#       console.log 'newValue: ', newValue
+#       matrix = scope.$eval newValue
+#       scope.content = matrix
+#       switch matrix.mode
+#         when 'api'
+#           $http.get(matrix.source).success((data, status, headers, config) ->
+#             contentData = data
+#             if matrix.maxItems
+#               contentData = contentData.slice(0, matrix.maxItems)
+
+#             scope.content = contentData
+#             return
+#           ).error (data, status, headers, config) ->
+#             console.log data
+#             return
+
+#   templateUrl: '/client_views/container_matrix.html'
+# ]
+
 @app.directive 'containerMatrix', ['$http', ($http) ->
   restrict: 'A'
   scope: {
-    containerMatrix: '@'
+    content: '='
   }
+  controller: ['$scope', ($scope) ->
+
+  ]
   link: (scope, $element, $attrs) ->
-    scope.numToArray = (num) ->
-      if num
-        return new Array parseInt(num)
 
-    scope.content = {}
+    updateItems = ->
+      if scope.content.rows && scope.content.columns
+        # numItems = scope.content.rows * scope.content.columns
+        matrix = []
+        i = 0
+        while i < scope.content.rows
+          matrix[i] = []
+          j = 0
+          while j < scope.content.columns
+            console.log 'items: ', scope.content.items
+            if scope.content.items && scope.content.items[i] && scope.content.items[i][j]
+              matrix[i][j] = scope.content.items[i][j]
+            else
+              matrix[i][j] = {}
+            j++
+          i++
+        scope.content.items = matrix
 
-    scope.$watch 'containerMatrix', (newValue, oldValue) ->
-      console.log 'newValue: ', newValue
-      matrix = scope.$eval newValue
-      scope.content = matrix
-      switch matrix.mode
-        when 'api'
-          $http.get(matrix.source).success((data, status, headers, config) ->
-            contentData = data
-            if matrix.maxItems
-              contentData = contentData.slice(0, matrix.maxItems)
+    scope.$watch 'content.rows', (newValue, oldValue) ->
+      console.log 'content: ', newValue
+      updateItems()
 
-            scope.content = contentData
-            return
-          ).error (data, status, headers, config) ->
-            console.log data
-            return
+    scope.$watch 'content.columns', (newValue, oldValue) ->
+      console.log 'content: ', newValue
+      updateItems()
 
   templateUrl: '/client_views/container_matrix.html'
+]
+
+@app.directive 'containerMatrixItem', ['$http', ($http) ->
+  restrict: 'A'
+  scope: {
+    content: '='
+    mode: '='
+  }
+  link: (scope, $element, $attrs) ->
+    console.log scope
+
+  templateUrl: '/client_views/container_matrix_item.html'
 ]
 

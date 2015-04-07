@@ -1,16 +1,23 @@
 {{content}}
 
+-# .cs-container-matrix
+-#   -# .cs-item-container(ng-repeat='item in content')
+-#   -#   .cs-item-matrix
+-#   -#     .cs-item-content
+-#   -#       .cs-item-image
+-#   -#         %img(ng-src='{{item.image}}')
+-#   -#       .cs-item-title
+-#   -#         {{item.title}}
+-#   -#       .cs-item-description
+-#   -#         {{item.description}}
+-#   .cs-container-matrix-row(ng-repeat='row in numToArray(content.rows) track by $index' ng-init="row.rowNumber=$index")
+-#     .cs-container-matrix-column(ng-repeat='column in numToArray(content.columns) track by $index' ng-init="column.columnNumber=$index")
+-#       -# {{row}}{{column}}
+-#       -# .cs-container-matrix-item(container-matrix-item="{{column}}")
+-#       %div(ng-init="createItem(content, column.columnNumber, row.rowNumber)")
+
 .cs-container-matrix
-  -# .cs-item-container(ng-repeat='item in content')
-  -#   .cs-item-matrix
-  -#     .cs-item-content
-  -#       .cs-item-image
-  -#         %img(ng-src='{{item.image}}')
-  -#       .cs-item-title
-  -#         {{item.title}}
-  -#       .cs-item-description
-  -#         {{item.description}}
-  .cs-container-matrix-row(ng-repeat='row in numToArray(content.rows) track by $index')
-    .cs-container-matrix-column(ng-repeat='column in numToArray(content.columns) track by $index')
+  .cs-container-matrix-row(ng-repeat='row in content.items')
+    .cs-container-matrix-column(ng-repeat='item in row')
       .cs-container-matrix-item
-        hello
+        .cs-container-matrix-item(container-matrix-item content='item' mode='content.formState')
