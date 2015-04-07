@@ -1,6 +1,9 @@
 %div(ng-if="formState=='edit'")
   %div(ng-if="mode=='api'")
-    {{content}}
+    {{content.title}}
+    {{content.image}}
+    {{content.buttonMessage}}
+    {{content.targetURL}}
   %div(ng-if="mode=='custom'")
     %strong Container Hero Form
 
@@ -34,4 +37,7 @@
       %input(ng-model='content.targetURL')
 
 %div(ng-if="formState!='edit'")
-  {{content}}
+  {{content.title}}
+  {{content.image}}
+  {{content.buttonMessage}}
+  {{content.targetURL}}

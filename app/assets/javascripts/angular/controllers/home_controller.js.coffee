@@ -1,3 +1,17 @@
+@app.service 'ApiTransformer', [->
+  @transform = (response) ->
+    result = {}
+    result.title = response.title if response.title
+    result.image = response.image if response.image
+    result.targetURL = response.url if response.url
+    return result
+
+  @getKeys = (response) ->
+    Object.keys(response)
+
+  return this
+]
+
 @app.controller 'HomeManagerController', ['$scope', ($scope) ->
   @content = []
   @showAddMenu = false
@@ -170,7 +184,7 @@
 #   templateUrl: '/client_views/container_matrix.html'
 # ]
 
-@app.directive 'containerMatrix', ['$http', ($http) ->
+@app.directive 'containerMatrix', ['$http', 'ApiTransformer', ($http, ApiTransformer) ->
   restrict: 'A'
   scope: {
     content: '='
@@ -194,7 +208,8 @@
             if newItems
               index = scope.content.columns*i + j
               console.log 'new items index: ', index
-              matrix[i][j] = newItems[index]
+              matrix[i][j] = ApiTransformer.transform(newItems[index])
+              ApiTransformer.customTransform(newItems[index])
             else if scope.content.items && scope.content.items[i] && scope.content.items[i][j]
               matrix[i][j] = scope.content.items[i][j]
             else
