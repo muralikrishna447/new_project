@@ -174,6 +174,7 @@
     left: 0px
     padding-top: 78px
     @include boxsizing
+    @include transition(all 300ms ease-in-out)
     .home-manager-add-menu
       padding: 20px
       background: rgba(255,255,255,.8)
@@ -181,11 +182,6 @@
       overflow-y: auto
       @include any_shadow(5px 0px 20px rgba(0,0,0,0.5))
       @include boxsizing
-      @include transition(all 300ms ease-in-out)
-      &.active
-        @include transform(translateX(0px))
-      &.inactive
-        @include transform(translateX(-320px))
       .home-manager-add-item
         width: 100%
         padding: 10px 0px
@@ -198,6 +194,10 @@
           cursor: pointer
           background: $orange
           color: white
+    &.active
+      @include transform(translateX(0px))
+    &.inactive
+      @include transform(translateX(-320px))
   .home-manager-add-toggle
     border: 1px solid $orange
     padding: 5px 10px
@@ -216,7 +216,6 @@
 .cs-container-editor
   position: relative
   @include boxsizing
-  @include transition(all 300ms ease-in-out)
   .cs-container-editor-toggle
     position: absolute
     top: 10px
@@ -231,20 +230,24 @@
   .cs-container-editor-preview
     padding: 0px
     transform-origin: top left
-    @include transition(all 300ms ease-in-out)
-    // @include transform(scale(1,1))
-  .cs-container-editor-form
-    // position: absolute
-    // top: 0px
-    // left: 0px
-    // right: 0px
-    // bottom: 0px
-    // margin-left: 50%
-    padding: 20px
-    @include boxsizing
+    @include transition(all 300ms)
+    margin: 0px
   &.edit
-    @include transform(scale(.95,.95))
     .cs-container-editor-preview
-      // @include transform(scale3D(.5,.5, 1))
+      margin: 20px
       @include any_shadow(-5px 5px 20px rgba(0,0,0,.3))
 
+.cs-container-editor-form
+  padding: 20px
+  @include boxsizing
+  
+.cs-container-editor-form.ng-hide-add,
+.cs-container-editor-form.ng-hide-remove
+  @include transition(all 300ms)
+  display: block!important
+  max-height: 3000px
+  opacity: 1
+
+.cs-container-editor-form.ng-hide
+  max-height: 0px
+  opacity: 0
