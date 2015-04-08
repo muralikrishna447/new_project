@@ -15,8 +15,9 @@
 @app.directive 'apiConnector', ['$http', ($http) ->
   restrict: 'A'
   scope: {
-    responseKeys: '='
+    response: '='
     componentKeys: '='
+    component: '='
   }
 
   link: (scope, element, attrs) ->
@@ -26,6 +27,17 @@
 
     # )
     scope.connections = {}
+    scope.responseKeys = {}
+
+    scope.$watch 'response', (newValue, oldValue) ->
+      # console.log 'RESPONSE: ', newValue
+      # console.log 'RESPONSE Type: ', typeof newValue
+      # console.log 'RESPONSE Length: ', newValue.length
+      if newValue
+        if newValue.length && newValue.length > 1
+          scope.responseKeys = Object.keys(newValue[0])
+        else
+          scope.responseKeys = Object.keys(newValue)
 
   templateUrl: '/client_views/api_connector.html'
 ]
@@ -226,7 +238,7 @@
             if newItems
               index = scope.content.columns*i + j
               console.log 'new items index: ', index
-              matrix[i][j] = ApiTransformer.transform(newItems[index])
+              matrix[i][j] = newItems[index]
             else if scope.content.items && scope.content.items[i] && scope.content.items[i][j]
               matrix[i][j] = scope.content.items[i][j]
             else
@@ -248,8 +260,7 @@
       if newValue
         $http.get(newValue).success((data, status, headers, config) ->
           updateItems(data)
-          console.log 'Object KEYZZ: ', Object.keys(data)
-          scope.content.responseKeys = Object.keys(data)
+          scope.content.response = data
           return
         ).error (data, status, headers, config) ->
           console.log data

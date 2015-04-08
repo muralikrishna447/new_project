@@ -1,7 +1,5 @@
--# %div(api-connector result-keys="['title', 'image', 'buttonMessage', 'targetURL']")
-
 %div(ng-controller='HomeController as home')
-  {{home.example}}
+  -# {{home.example}}
   %div(ng-repeat='container in home.example')
     %div(cs-container-form form-data='container' form-state='container.formState')
 
