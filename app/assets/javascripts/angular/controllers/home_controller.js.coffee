@@ -39,6 +39,10 @@
         else
           scope.responseKeys = Object.keys(newValue)
 
+    scope.$watch 'connections', (newValue, oldValue) ->
+      if newValue
+        scope.component.connections = newValue
+
   templateUrl: '/client_views/api_connector.html'
 ]
 
