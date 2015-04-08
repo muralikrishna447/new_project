@@ -27,13 +27,13 @@
   else
     $scope.survey_results = []
 
-  question1 = {}
-  question1.slug = 'Skill Level'
-  question1.type = 'select'
-  question1.copy = 'What kind of cook are you?'
-  question1.searchScope = 'difficulty'
-  question1.options = ['Home Cook', 'Cooking Enthusiast', 'Culinary Student', 'Professional']
-  $scope.questions.push(question1)
+  # question1 = {}
+  # question1.slug = 'Skill Level'
+  # question1.type = 'select'
+  # question1.copy = 'What kind of cook are you?'
+  # question1.searchScope = 'difficulty'
+  # question1.options = ['Home Cook', 'Cooking Enthusiast', 'Culinary Student', 'Professional']
+  # $scope.questions.push(question1)
 
   # question2 = {}
   # question2.type = 'multiple-select'
@@ -79,38 +79,38 @@
   ]
   $scope.questions.push(question3)
 
-  question4 = {}
-  question4.slug = 'Equipment'
-  question4.type = 'multiple-select'
-  question4.copy = 'What equipment do you have in your kitchen?'
-  question4.searchScope = 'by_equipment_title'
-  question4.options = [
-    {
-      name: 'Blender'
-      checked: false
-    }
-    {
-      name: 'Immersion Blender'
-      checked: false
-    }
-    {
-      name:'Stand Mixer'
-      checked: false
-    }
-    {
-      name:'Pressure Cooker'
-      checked: false
-    }
-    {
-      name:'Immersion Circulator'
-      checked: false
-    }
-    {
-      name:'Whipping Siphon'
-      checked: false
-    }
-  ]
-  $scope.questions.push(question4)
+  # question4 = {}
+  # question4.slug = 'Equipment'
+  # question4.type = 'multiple-select'
+  # question4.copy = 'What equipment do you have in your kitchen?'
+  # question4.searchScope = 'by_equipment_title'
+  # question4.options = [
+  #   {
+  #     name: 'Blender'
+  #     checked: false
+  #   }
+  #   {
+  #     name: 'Immersion Blender'
+  #     checked: false
+  #   }
+  #   {
+  #     name:'Stand Mixer'
+  #     checked: false
+  #   }
+  #   {
+  #     name:'Pressure Cooker'
+  #     checked: false
+  #   }
+  #   {
+  #     name:'Immersion Circulator'
+  #     checked: false
+  #   }
+  #   {
+  #     name:'Whipping Siphon'
+  #     checked: false
+  #   }
+  # ]
+  # $scope.questions.push(question4)
 
   # question5 = {}
   # question5.slug = 'Bio'
