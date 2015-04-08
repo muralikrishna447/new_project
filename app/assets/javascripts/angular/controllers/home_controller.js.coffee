@@ -12,6 +12,24 @@
   return this
 ]
 
+@app.directive 'apiConnector', ['$http', ($http) ->
+  restrict: 'A'
+  scope: {
+    responseKeys: '='
+    componentKeys: '='
+  }
+
+  link: (scope, element, attrs) ->
+    # scope.connections = {}
+    # $http.get('http://localhost:3000/api/v0/activities/2434').success((data, status, headers, config) ->
+    #   scope.responseKeys = Object.keys data
+
+    # )
+    scope.connections = {}
+
+  templateUrl: '/client_views/api_connector.html'
+]
+
 @app.controller 'HomeManagerController', ['$scope', ($scope) ->
   @content = []
   @showAddMenu = false
@@ -209,7 +227,6 @@
               index = scope.content.columns*i + j
               console.log 'new items index: ', index
               matrix[i][j] = ApiTransformer.transform(newItems[index])
-              ApiTransformer.customTransform(newItems[index])
             else if scope.content.items && scope.content.items[i] && scope.content.items[i][j]
               matrix[i][j] = scope.content.items[i][j]
             else
@@ -231,6 +248,8 @@
       if newValue
         $http.get(newValue).success((data, status, headers, config) ->
           updateItems(data)
+          console.log 'Object KEYZZ: ', Object.keys(data)
+          scope.content.responseKeys = Object.keys(data)
           return
         ).error (data, status, headers, config) ->
           console.log data
