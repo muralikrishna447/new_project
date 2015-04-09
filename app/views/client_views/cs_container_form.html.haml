@@ -4,6 +4,7 @@
 
   .cs-container-editor-form(ng-show="formState == 'edit' || formState == 'new'")
     %div(ng-include="includeForm(container.form.containerType)")
+    {{container.form.connections}}
 
   .cs-container-editor-preview
     %div(container-hero='{{container.form}}' ng-if="container.form.containerType == 'hero'")

@@ -4,15 +4,18 @@
     %div(cs-container-form form-data='container' form-state='container.formState')
 
 .home-manager(ng-controller='HomeManagerController as manager')
+  // Components
   %div(ng-repeat='container in manager.content')
     %div(cs-container-form form-data='container' form-state='container.formState')
 
+  // Menu Toggle
   .home-manager-add-toggle(ng-click='manager.addToggle()' ng-cloak)
     %div(ng-if='!manager.showAddMenu')
       Add
     %div(ng-if='manager.showAddMenu')
       Cancel
 
+  // Menu to add new components
   .home-manager-add-menu-container(ng-cloak ng-class="{true: 'active', false: 'inactive'}[manager.showAddMenu]")
     .home-manager-add-menu
       .home-manager-add-item(ng-click="manager.add('hero')")
