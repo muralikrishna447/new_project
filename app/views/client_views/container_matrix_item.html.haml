@@ -41,11 +41,9 @@
       %input(ng-model='content.targetURL')
 
 %div(ng-if="formState!='edit'")
+  %h5
+    {{content.title}}
   %div
-    title: {{content.title}}
-  %div
-    image: {{content.image}}
-  %div
-    buttonMessage: {{content.buttonMessage}}
-  %div
-    targetURL: {{content.targetURL}}
+    %img(ng-src='{{content.image}}')
+  %a.btn.btn-primary(ng-href='{{content.targetURL}}')
+    {{content.buttonMessage}}

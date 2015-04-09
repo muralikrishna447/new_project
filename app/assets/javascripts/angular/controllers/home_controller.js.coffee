@@ -308,7 +308,7 @@
     formState: '='
   }
   link: (scope, $element, $attrs) ->
-    console.log scope
+    # console.log scope
 
   templateUrl: '/client_views/container_matrix_item.html'
 ]
