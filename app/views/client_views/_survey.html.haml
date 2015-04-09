@@ -21,8 +21,8 @@
             %em It's all optional.
           %form(name='Survey')
 
-            %p Where do you live? This will help us connect you to other ChefSteppers.
-            %input(type="text" ng-model="location.input" placeholder="ex: Seattle, WA" typeahead="prediction for prediction in getPredictions($viewValue)" typeahead-loading="loadingLocations" class="form-control")
+            -# %p Where do you live? This will help us connect you to other ChefSteppers.
+            -# %input(type="text" ng-model="location.input" placeholder="ex: Seattle, WA" typeahead="prediction for prediction in getPredictions($viewValue)" typeahead-loading="loadingLocations" class="form-control")
 
             %div(ng-repeat="question in questions")
               %div(ng-switch on='question.type')
