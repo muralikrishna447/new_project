@@ -51,6 +51,7 @@ class Activity < ActiveRecord::Base
   scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
   scope :newest, order('published_at DESC')
   scope :oldest, order('published_at ASC')
+  scope :by_created_at, -> direction { direction == 'desc' ? order('created_at DESC') : order('created_at ASC')}
   scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
   scope :by_updated_at, -> direction { direction == 'desc' ? order('updated_at DESC') : order('updated_at ASC')}
   scope :randomize, order('random()')

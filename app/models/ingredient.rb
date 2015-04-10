@@ -8,7 +8,7 @@ class Ingredient < ActiveRecord::Base
   friendly_id :title, use: [:slugged, :history]
 
   include ActsAsSanitized
-  sanitize_input :title, :product_url, :text_fields
+  sanitize_input :title, :product_url
 
   has_many :step_ingredients, dependent: :destroy, inverse_of: :ingredient
   has_many :activity_ingredients, dependent: :destroy, inverse_of: :ingredient

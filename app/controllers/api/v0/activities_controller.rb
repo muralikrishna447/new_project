@@ -6,8 +6,10 @@ module Api
         case value
           when "oldest"
             scope.by_published_at("asc")
+            scope.by_created_at("asc")
           when "newest"
             scope.by_published_at("desc")
+            scope.by_created_at("desc")
           when "popular"
             scope.popular
           when "relevance"
