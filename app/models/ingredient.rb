@@ -9,6 +9,7 @@ class Ingredient < ActiveRecord::Base
 
   include ActsAsSanitized
   sanitize_input :title, :product_url
+  before_validation :sanitize_text_fields
 
   has_many :step_ingredients, dependent: :destroy, inverse_of: :ingredient
   has_many :activity_ingredients, dependent: :destroy, inverse_of: :ingredient
@@ -181,6 +182,15 @@ class Ingredient < ActiveRecord::Base
     as_json(
       only: [:title, :text_fields]
     )
+  end
+
+  private
+  def sanitize_text_fields
+    if self.text_fields && self.text_fields.class.to_s == "Hash"
+      self.text_fields.each do |key, value|
+        text_fields[key] = Sanitize.fragment(value, Sanitize::Config::RELAXED)
+      end
+    end
   end
 end
 
