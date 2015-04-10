@@ -87,4 +87,20 @@ describe Ingredient do
     ingredient.product_url.should == "sneegle"
     ingredient.tag_list.should =~ ["a", "b", "c", "d"]
   end
+
+  context "text_fields" do
+    before :each do
+      @ingredient = Fabricate :ingredient, title: 'Some Ingredient', text_fields: {"hello" => "hey"}
+    end
+    it "sanition does not corrupt the hash" do
+      @ingredient.text_fields = {"hello" => "world"}
+      @ingredient.save
+      expect(@ingredient.text_fields["hello"]).to eq("world")
+    end
+    it "sanitizes hash values" do
+      @ingredient.text_fields = {"hello" => "big > small"}
+      @ingredient.save
+      expect(@ingredient.text_fields["hello"]).to eq("big &gt; small")
+    end
+  end
 end
