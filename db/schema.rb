@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150303235719) do
+ActiveRecord::Schema.define(:version => 20150410180303) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -74,7 +74,8 @@ ActiveRecord::Schema.define(:version => 20150303235719) do
   add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
   add_index "activity_equipment", ["equipment_order"], :name => "index_activity_equipment_on_equipment_order"
 
-  create_table "activity_ingredients", :force => true do |t|
+  create_table "activity_ingredients", :id => false, :force => true do |t|
+    t.integer  "id",               :null => false
     t.integer  "activity_id",      :null => false
     t.integer  "ingredient_id",    :null => false
     t.datetime "created_at",       :null => false
@@ -193,6 +194,19 @@ ActiveRecord::Schema.define(:version => 20150303235719) do
 
   add_index "box_sort_images", ["image_order"], :name => "index_box_sort_images_on_image_order"
   add_index "box_sort_images", ["question_id"], :name => "index_box_sort_images_on_question_id"
+
+  create_table "circulator_users", :force => true do |t|
+    t.integer "user_id"
+    t.integer "circulator_id"
+    t.boolean "owner"
+  end
+
+  create_table "circulators", :force => true do |t|
+    t.string   "serialNumber"
+    t.string   "notes"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
   create_table "comments", :force => true do |t|
     t.integer  "user_id"
@@ -479,6 +493,31 @@ ActiveRecord::Schema.define(:version => 20150303235719) do
 
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
+
+  create_table "recipe_ingredients", :force => true do |t|
+    t.integer  "recipe_id",        :null => false
+    t.integer  "ingredient_id",    :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "unit"
+    t.decimal  "quantity"
+    t.integer  "ingredient_order"
+  end
+
+  add_index "recipe_ingredients", ["ingredient_order"], :name => "index_recipe_ingredients_on_ingredient_order"
+  add_index "recipe_ingredients", ["recipe_id", "ingredient_id"], :name => "index_recipe_ingredients_on_recipe_id_and_ingredient_id", :unique => true
+
+  create_table "recipes", :force => true do |t|
+    t.string   "title"
+    t.integer  "activity_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "yield"
+    t.integer  "recipe_order"
+  end
+
+  add_index "recipes", ["activity_id"], :name => "index_recipes_on_activity_id"
+  add_index "recipes", ["recipe_order"], :name => "index_recipes_on_recipe_order"
 
   create_table "revision_records", :force => true do |t|
     t.string   "revisionable_type", :limit => 100,                    :null => false

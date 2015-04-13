@@ -1,0 +1,16 @@
+class CreateCirculators < ActiveRecord::Migration
+  def change
+    create_table :circulators do |t|
+      t.string :serialNumber
+      t.string :notes
+      t.timestamps
+    end
+
+    create_table :circulator_users do |t|
+      t.belongs_to :user, index: true
+      t.belongs_to :circulator, index: true
+
+      t.boolean :owner
+    end
+  end
+end

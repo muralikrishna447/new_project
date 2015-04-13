@@ -3,7 +3,7 @@ module Api
     class BaseController < ActionController::Base
       skip_before_filter :verify_authenticity_token
       # before_filter :cors_set_access_control_headers
-     
+
       def cors_set_access_control_headers
         headers['Access-Control-Allow-Origin'] = '*'
         headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
@@ -47,8 +47,14 @@ module Api
 
       def ensure_authorized
         begin
-          token = request.authorization().split(' ').last
-
+          logger.debug "Ensuring authorization!"
+          logger.info "Ensuring authorization!"
+          if request.authorization()
+            token = request.authorization().split(' ').last
+          else
+            logger.info "Authorization token not set"
+            token = nil
+          end
           unless valid_token?(token)
             raise "INVALID TOKEN"
           end

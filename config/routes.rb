@@ -326,6 +326,11 @@ Delve::Application.routes.draw do
       resources :users, only: [:index, :create, :update] do
         get :me, on: :collection
       end
+
+      resources :circulators, only: [:index, :create] do
+        get :token, on: :member
+      end
+
       match '/*path' => 'base#options', :via => :options
 
       # match 'activities/', to: 'activities#index', via: [:get, :options]
@@ -345,4 +350,3 @@ Delve::Application.routes.draw do
   # http://techoctave.com/c7/posts/36-rails-3-0-rescue-from-routing-error-solution
   match '*a', to: 'errors#routing', constraints: lambda { |r| ! r.url.match(/jasmine/) }
 end
-
