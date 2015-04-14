@@ -42,8 +42,4 @@ Delve::Application.configure do
   ENV["REDISTOGO_URL"] = 'redis://localhost:6379'
 
   config.filepicker_rails.api_key = "ANAsscmHGSKqZCHObvuK6z"
-
-  # config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
-  # config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')
-
 end

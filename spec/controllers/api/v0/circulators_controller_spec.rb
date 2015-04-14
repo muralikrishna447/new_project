@@ -64,6 +64,7 @@ describe Api::V0::CirculatorsController do
 
   it 'should delete the circulator' do
     post :destroy, :id => @circulator.id
+
     result = JSON.parse(response.body)
     Circulator.find_by_id(@circulator.id).should be_nil
     CirculatorUser.find_by_circulator_and_user(@circulator, @user).should be_nil
@@ -74,6 +75,7 @@ describe Api::V0::CirculatorsController do
     @circulator_user.save!
 
     post :destroy, :id => @circulator.id
+
     result = JSON.parse(response.body)
     result['status'].should == 401
     Circulator.find_by_id(@circulator.id).should_not be_nil
