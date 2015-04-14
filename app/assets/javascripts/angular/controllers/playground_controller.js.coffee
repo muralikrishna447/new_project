@@ -1,9 +1,9 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
-  # host = '//localhost:3000'
+  host = '//localhost:3000'
   # host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
   # host = '//staging2-chefsteps.herokuapp.com'
   # host = '//chefsteps.dev'
-  host = '//www.chefsteps.com'
+  #host = '//www.chefsteps.com'
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
@@ -177,10 +177,12 @@
 
   $scope.clear = ->
     $scope.user = {}
+    $scope.circulator = {}
     $scope.newUser = {}
     $scope.forgetfulUser = {}
     $scope.getTokenStatus = null
     $scope.testTokenStatus = null
+    $scope.deleteCirculatorStatus = null
     $scope.createUserStatus = null
     $scope.getActivitiesStatus = null
     $scope.getTokenFacebookStatus = null
@@ -213,4 +215,52 @@
       console.log "config: "
       console.log cfg
       $scope.getActivitiesStatus = "Error: #{JSON.stringify(data)}"
+
+  $scope.getCirculatorsStatus = null
+  $scope.getCirculators = (token) ->
+    $http.get(
+      host + '/api/v0/circulators'
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.getCirculatorsStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      console.log headers
+      $scope.getCirculatorsStatus = "Error: #{JSON.stringify(data)}"
+
+  $scope.createCirculatorStatus = null
+  $scope.createCirculator = (token, serialNumber, notes) ->
+    $http.post(
+      host + '/api/v0/circulators',
+      {serialNumber: serialNumber, notes: notes},
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.createCirculatorStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      console.log headers
+      $scope.createCirculatorStatus = "Error: #{JSON.stringify(data)}"
+
+  $scope.deleteCirculatorStatus = null
+  $scope.deleteCirculator = (token, id) ->
+    $http.delete(
+      host + '/api/v0/circulators/' + id,
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.deleteCirculatorStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      console.log headers
+      $scope.deleteCirculatorStatus = "Error: #{JSON.stringify(data)}"
+
+
 ]

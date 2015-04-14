@@ -12,5 +12,7 @@ class CreateCirculators < ActiveRecord::Migration
 
       t.boolean :owner
     end
+
+    add_index :circulator_users, [:user_id, :circulator_id], :unique => true
   end
 end

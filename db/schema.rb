@@ -201,6 +201,8 @@ ActiveRecord::Schema.define(:version => 20150410180303) do
     t.boolean "owner"
   end
 
+  add_index "circulator_users", ["user_id", "circulator_id"], :name => "index_circulator_users_on_user_id_and_circulator_id", :unique => true
+
   create_table "circulators", :force => true do |t|
     t.string   "serialNumber"
     t.string   "notes"

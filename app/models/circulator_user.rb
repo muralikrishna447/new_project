@@ -3,4 +3,8 @@ class CirculatorUser < ActiveRecord::Base
   belongs_to :user
 
   attr_accessible :owner
+
+  def self.find_by_circulator_and_user(circulator, user)
+    CirculatorUser.where(circulator_id: circulator, user_id: user).first
+  end
 end

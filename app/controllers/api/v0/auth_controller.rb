@@ -1,7 +1,6 @@
 module Api
   module V0
     class AuthController < BaseController
-      # before_filter :ensure_authorized, only: [:validate]
       before_filter :ensure_authorized_service, only: [:validate]
 
       def authenticate

@@ -1,5 +1,5 @@
 class Circulator < ActiveRecord::Base
-  has_many :circulator_users
+  has_many :circulator_users, dependent: :destroy
   has_many :users, through: :circulator_users
 
   include ActsAsSanitized

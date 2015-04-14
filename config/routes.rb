@@ -327,7 +327,7 @@ Delve::Application.routes.draw do
         get :me, on: :collection
       end
 
-      resources :circulators, only: [:index, :create] do
+      resources :circulators, only: [:index, :create, :destroy] do
         get :token, on: :member
       end
 

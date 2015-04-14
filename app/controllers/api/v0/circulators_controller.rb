@@ -9,13 +9,10 @@ module Api
       end
 
       def create
-        # with and without auto-ownership
-        # TODO - where are the transaction boundaries?
         User.transaction do
           user = User.find @user_id_from_token
-          #correctly validate serial number
 
-          # TODO - make it idempotent
+          #TODO correctly validate serial number
           circulator = Circulator.new(params[:circulator])
           logger.info "Creating circulator #{circulator.inspect}}"
 
@@ -25,8 +22,8 @@ module Api
           circulatorUser.user = user
           circulatorUser.circulator = circulator
 
-          if params[:owner]
-            circulator.owner = true
+          unless params[:owner] == false
+            circulatorUser.owner = true
           end
 
           circulatorUser.save!
@@ -35,9 +32,24 @@ module Api
         end
       end
 
+      def destroy
+        circulator_user = CirculatorUser.find_by_circulator_and_user params[:id], @user_id_from_token
+        if circulator_user
+          if circulator_user.owner
+            circulator_user.circulator.destroy
+            render json: {status: 200} , status: 200
+          else
+            render json: {status: 401, message: "Unauthorized: only owner can delete a circulator."}, status: 401
+          end
+        else
+          # Including helpful debug message for now
+          render json: {status: 401, message: "Unauthorized: only owner can delete a circulator."}, status: 401
+        end
+      end
+
       def token
         circulator_id = params[:id]
-        circulator_user = CirculatorUser.where(circulator_id: params[:id], user_id: @user_id_from_token).first
+        circulator_user = CirculatorUser.find_by_circulator_and_user params[:id], @user_id_from_token
         if circulator_user.nil?
           logger.info "Unauthorized access to circulator [#{circulator_id}] by user [#{@user_id_from_token}]"
           render json: {status: 401, message: "Unauthorized"}, status: 401
