@@ -47,8 +47,6 @@ module Api
 
       def ensure_authorized
         begin
-          logger.debug "Ensuring authorization!"
-          logger.info "Ensuring authorization!"
           if request.authorization()
             token = request.authorization().split(' ').last
           else

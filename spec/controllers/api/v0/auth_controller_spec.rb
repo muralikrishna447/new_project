@@ -7,10 +7,10 @@ describe Api::V0::AuthController do
 
   context 'POST /authenticate' do
 
-    it 'should return a status 400 Bad Request' do
+    it 'should return a status 500 internal service error' do
       post :authenticate
       response.should_not be_success
-      response.code.should eq("400")
+      response.code.should eq("500")
     end
 
     it 'should return a status 401 Unauthorized if the password is incorrect' do
@@ -20,13 +20,13 @@ describe Api::V0::AuthController do
     end
 
     describe 'token' do
-      
+
       before :each do
         post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}
         response.should be_success
         response.code.should eq("200")
         @token = JSON.parse(response.body)['token']
-        
+
       end
 
       it 'should be returned' do
@@ -62,7 +62,7 @@ describe Api::V0::AuthController do
 
 
       @user = Fabricate :user, id: 200, email: 'user@chefsteps.com', password: '123456', name: 'A User', role: 'user'
-      claim = { 
+      claim = {
         iat: issued_at,
         user: @user
       }

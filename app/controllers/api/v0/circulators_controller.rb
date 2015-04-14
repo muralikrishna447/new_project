@@ -15,17 +15,12 @@ module Api
           #TODO correctly validate serial number
           circulator = Circulator.new(params[:circulator])
           logger.info "Creating circulator #{circulator.inspect}}"
-
           circulator.save!
 
-          circulatorUser = CirculatorUser.new
-          circulatorUser.user = user
-          circulatorUser.circulator = circulator
-
+          circulatorUser = CirculatorUser.new user: user, circulator: circulator
           unless params[:owner] == false
             circulatorUser.owner = true
           end
-
           circulatorUser.save!
 
           render json: circulator, serializer: Api::CirculatorSerializer
@@ -39,11 +34,11 @@ module Api
             circulator_user.circulator.destroy
             render json: {status: 200} , status: 200
           else
+            # Including overly helpful debug message for now
             render json: {status: 401, message: "Unauthorized: only owner can delete a circulator."}, status: 401
           end
         else
-          # Including helpful debug message for now
-          render json: {status: 401, message: "Unauthorized: only owner can delete a circulator."}, status: 401
+          render json: {status: 401, message: "Unauthorized"}, status: 401
         end
       end
 

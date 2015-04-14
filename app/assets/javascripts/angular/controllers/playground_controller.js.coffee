@@ -1,9 +1,6 @@
 @app.controller 'PlaygroundController', ['$scope', '$http', ($scope, $http) ->
-  host = '//localhost:3000'
-  # host = '//delve:howtochef22@staging2-chefsteps.herokuapp.com'
-  # host = '//staging2-chefsteps.herokuapp.com'
-  # host = '//chefsteps.dev'
-  #host = '//www.chefsteps.com'
+  # Host can be set to a different url as needed
+  host = ""
   $scope.user = {}
   $scope.getTokenStatus = null
   $scope.getToken = (user) ->
@@ -182,6 +179,8 @@
     $scope.forgetfulUser = {}
     $scope.getTokenStatus = null
     $scope.testTokenStatus = null
+    $scope.listCirculatorsStatus = null
+    $scope.createCirculatorStatus = null
     $scope.deleteCirculatorStatus = null
     $scope.createUserStatus = null
     $scope.getActivitiesStatus = null

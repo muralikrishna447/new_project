@@ -3,7 +3,7 @@ class AuthToken
 
   def initialize(claim)
     @claim = claim
-    @token = sign_and_encrypt(@claim)
+    @token = encrypt(@claim)
   end
 
   def [](key)
@@ -40,17 +40,17 @@ class AuthToken
         id: circulator.id
       }
     }
+
     AuthToken.new claim
   end
 
-  def self.from_encrypted(token, verify=true)
+  def self.from_encrypted(token, verify=true, restrict_to = nil)
     claim = decrypt(token)
-
     time_now = (Time.now.to_f * 1000).to_i
     if verify && claim[:exp] && claim[:exp] <= time_now
       return false # probably not right here!
-    # elsif claims['restrictTo'] && verified['restrictTo'] != restrict_to
-    #   return false
+    elsif restrict_to && claims['restrictTo'] && verified['restrictTo'] != restrict_to
+       return false
     end
 
     AuthToken.new claim
@@ -59,13 +59,14 @@ class AuthToken
   private
   def self.decrypt(token)
     key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
-    # NOTE - should be using different keys here
+    # NOTE - we should be using different keys for signing and encrypting
     decoded = JSON::JWT.decode(token, key)
     verified = JSON::JWT.decode(decoded.to_s, key.to_s)
     verified
   end
 
-  def sign_and_encrypt(claim)
+  def encrypt(claim)
+    # Technically it signs and encrypts
     secret = ENV["AUTH_SECRET_KEY"]
     key = OpenSSL::PKey::RSA.new secret, 'cooksmarter'
 
