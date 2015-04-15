@@ -61,32 +61,34 @@
   question3.searchScope = 'interests'
   question3.options = [
     {
+      name: 'Sous Vide'
+      checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/VO5w9ZlJQzSuY39wVjCA'
+    }
+    {
+      name: 'Kitchen Tips'
+      checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/zGFKehokRquV2wqanIj0/convert?fit=crop&h=600&w=600&quality=90&cache=true'
+    }
+    {
       name: 'Traditional Cooking'
       checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xiojrYF1QAemQ0ybBTbl'
     }
     {
       name: 'Modern Cooking'
       checked: false
-    }
-    {
-      name: 'Baking'
-      checked: false
-    }
-    {
-      name: 'Sous Vide'
-      checked: false
-    }
-    {
-      name:'Baking'
-      checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/eXkRnCTNSlKqLwIYYr4n/convert?fit=crop&h=600&w=600&quality=90&cache=true'
     }
     {
       name:'Beverages'
       checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/4kMxDcRFTGmaa55Ro7M5'
     }
     {
-      name: 'Cooking Tips'
+      name: 'Baking'
       checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/ykypDm7TbnEga0m5D9AQ'
     }
   ]
   $scope.questions.push(question3)

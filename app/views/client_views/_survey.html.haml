@@ -26,6 +26,7 @@
                 %div(ng-switch-when='multiple-select')
                   %p.survey-question
                     %div(ng-repeat='option in question.options')
+                      %img(ng-src='{{option.image}}')
                       %label
                         %input(type='checkbox' ng-model="option.checked" )
                         {{option.name}}
