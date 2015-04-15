@@ -61,7 +61,11 @@
   question3.searchScope = 'interests'
   question3.options = [
     {
-      name: 'Modernist Cuisine'
+      name: 'Traditional Cooking'
+      checked: false
+    }
+    {
+      name: 'Modern Cooking'
       checked: false
     }
     {
@@ -69,11 +73,19 @@
       checked: false
     }
     {
-      name:'Butchering'
+      name: 'Sous Vide'
       checked: false
     }
     {
-      name:'Food Science'
+      name:'Baking'
+      checked: false
+    }
+    {
+      name:'Beverages'
+      checked: false
+    }
+    {
+      name: 'Cooking Tips'
       checked: false
     }
   ]
