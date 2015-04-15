@@ -43,4 +43,3 @@ Delve::Application.configure do
 
   config.filepicker_rails.api_key = "ANAsscmHGSKqZCHObvuK6z"
 end
-
