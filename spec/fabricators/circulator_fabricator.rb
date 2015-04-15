@@ -1,4 +1,4 @@
 Fabricator(:circulator) do
-  serialNumber = ""
+  serial_number = ""
   notes = ""
 end

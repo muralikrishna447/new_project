@@ -20,7 +20,7 @@ describe Api::V0::CirculatorsController do
   end
 
   it 'should create circulator' do
-    post :create, circulator: {:serialNumber => 'abc123', :notes => 'red one'}
+    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one'}
 
     returnedCirculator = JSON.parse(response.body)
     circulator = Circulator.find(returnedCirculator['id'])
@@ -38,7 +38,7 @@ describe Api::V0::CirculatorsController do
   end
 
   it 'should create assign ownership correctly' do
-    post :create, {circulator: {:serialNumber => 'abc123', :notes => 'red one'}, :owner => false}
+    post :create, {circulator: {:serial_number => 'abc123', :notes => 'red one'}, :owner => false}
 
     returnedCirculator = JSON.parse(response.body)
     circulator_user = CirculatorUser.find_by_circulator_and_user(returnedCirculator['id'], @user)
@@ -52,6 +52,7 @@ describe Api::V0::CirculatorsController do
     result['token'].should_not be_empty
     token = AuthToken.from_encrypted result['token']
     token['circulator']['id'].should == @circulator.id
+    (token['iat'] - Time.now.to_i).abs.should < 2
   end
 
   it 'should not provide a token if not a user' do

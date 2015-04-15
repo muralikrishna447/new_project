@@ -203,10 +203,10 @@ ActiveRecord::Schema.define(:version => 20150410180303) do
   add_index "circulator_users", ["user_id", "circulator_id"], :name => "index_circulator_users_on_user_id_and_circulator_id", :unique => true
 
   create_table "circulators", :force => true do |t|
-    t.string   "serialNumber"
+    t.string   "serial_number"
     t.string   "notes"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "comments", :force => true do |t|

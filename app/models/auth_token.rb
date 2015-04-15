@@ -44,14 +44,8 @@ class AuthToken
     AuthToken.new claim
   end
 
-  def self.from_encrypted(token, verify=true, restrict_to = nil)
+  def self.from_encrypted(token)
     claim = decrypt(token)
-    time_now = (Time.now.to_f * 1000).to_i
-    if verify && claim[:exp] && claim[:exp] <= time_now
-      return false # probably not right here!
-    elsif restrict_to && claims['restrictTo'] && verified['restrictTo'] != restrict_to
-       return false
-    end
 
     AuthToken.new claim
   end
@@ -77,6 +71,6 @@ class AuthToken
   end
 
   def self.issued_at
-    (Time.now.to_f * 1000).to_i
+    Time.now.to_i
   end
 end

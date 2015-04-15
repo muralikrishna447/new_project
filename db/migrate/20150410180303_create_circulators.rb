@@ -1,7 +1,7 @@
 class CreateCirculators < ActiveRecord::Migration
   def change
     create_table :circulators do |t|
-      t.string :serialNumber
+      t.string :serial_number
       t.string :notes
       t.timestamps
     end
