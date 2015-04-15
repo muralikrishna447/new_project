@@ -20,9 +20,8 @@
     };
 - else
   :javascript
-    window.intercomSettings = {
-      "app_id": "#{intercom_app_id}"
-    };
+    // Setting this here so we can use it later in login_controller.js
+    window.intercomAppId = "#{intercom_app_id}"
 
 :javascript
   (function() {

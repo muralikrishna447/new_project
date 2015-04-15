@@ -50,13 +50,19 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     # users never had a next page view, so the Intercom new user count was much lower than mixpanel.
     u = $scope.authentication.currentUser()
     if u
-      intercomData = _.extend(window.intercomSettings,
+
+      # 4/15/15 Huy - Doing it this way and including the app_id instead of extending window.intercomSettings.
+      # This should fix the user count mismatch.  The previous method of setting intercomSettings without an email was causing an error.
+      # More closely follows example in: http://docs.intercom.io/install-on-your-web-product/integrating-intercom-in-one-page-app
+      intercomData = {
+        app_id: window.intercomAppId
         name: u.name,
         email: u.email
         user_id: u.id
         user_hash: u.intercom_user_hash
         created_at: Math.floor(new Date() / 1000)
-      )
+      }
+
       # http://docs.intercom.io/install-on-your-web-product/integrating-intercom-in-one-page-app
       Intercom?('boot', intercomData)
 
