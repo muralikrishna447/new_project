@@ -1,38 +1,22 @@
-%div
-  -# %img(src='https://d3awvtnmmsvyot.cloudfront.net/api/file/3Gv3inT0S1Kf2rczZaEK?cache=true')
-  .modal-body
-    .container
-      .row
-        .span6.offset3.modal-overlay
-          / .pull-right(ng-click="cancel()")
-          /   %i.icon-remove
-          %h2 Thanks for signing up!
-          %h3 What kinds of things are you most interested in?
-          %p
-            Choose three or more for best results.
-          %form(name='Survey')
+.modal-body
+  .container
+    -# .pull-right(ng-click="cancel()")
+    -#   %i.icon-remove
+    %h2 Thanks for signing up!
+    %h3 What kinds of things are you most interested in?
+    %p
+      Choose three or more for best results.
+    %form(name='Survey')
 
-            -# %p Where do you live? This will help us connect you to other ChefSteppers.
-            -# %input(type="text" ng-model="location.input" placeholder="ex: Seattle, WA" typeahead="prediction for prediction in getPredictions($viewValue)" typeahead-loading="loadingLocations" class="form-control")
-
-            %div(ng-repeat="question in questions")
-              %div(ng-switch on='question.type')
-                -# %div(ng-switch-when='select')
-                -#   %p.survey-question
-                -#     %div
-                -#       {{question.copy}}
-                -#     %div
-                -#       %select(ng-model='question.answer' ng-options='option for option in question.options ')
-                %div(ng-switch-when='multiple-select')
-                  %p.survey-question
-                    %div(ng-repeat='option in question.options')
-                      %img(ng-src='{{option.image}}')
-                      %label
-                        %input(type='checkbox' ng-model="option.checked" )
-                        {{option.name}}
-            -# %p.survey-question
-            -#   Where do you cook? This will show up in your bio on your profile page.
-            -#   %div
-            -#     %textarea.input-block-level(ng-model="bio")
-          / %button.btn.btn-primary.btn-large.btn-block(ng-click='update()')
-          /   Submit!
+      .ftue-survey(ng-repeat="question in questions")
+        .ftue-survey-option(ng-repeat='option in question.options')
+          %img(ng-src='{{option.image}}')
+          .ftue-survey-option-content
+            .ftue-survey-button(  ng-click="option.checked = !option.checked"
+                                  ng-class="{true:'active', false:''}[option.checked]" )
+              %i.fa.fa-check.ftue-survey-button-check(ng-show='option.checked')
+              .ftue-survey-button-text
+                {{option.name}}
+          -# %label
+          -#   %input(type='checkbox' ng-model="option.checked" )
+          -#   {{option.name}}

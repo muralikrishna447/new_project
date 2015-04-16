@@ -63,7 +63,7 @@
     {
       name: 'Sous Vide'
       checked: false
-      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/VO5w9ZlJQzSuY39wVjCA'
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/VO5w9ZlJQzSuY39wVjCA/convert?fit=crop&h=600&w=600&quality=90&cache=true'
     }
     {
       name: 'Kitchen Tips'
@@ -73,7 +73,7 @@
     {
       name: 'Traditional Cooking'
       checked: false
-      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xiojrYF1QAemQ0ybBTbl'
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xiojrYF1QAemQ0ybBTbl/convert?fit=crop&h=600&w=600&quality=90&cache=true'
     }
     {
       name: 'Modern Cooking'
@@ -83,12 +83,12 @@
     {
       name:'Beverages'
       checked: false
-      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/4kMxDcRFTGmaa55Ro7M5'
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/4kMxDcRFTGmaa55Ro7M5/convert?fit=crop&h=600&w=600&quality=90&cache=true'
     }
     {
       name: 'Baking'
       checked: false
-      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/ykypDm7TbnEga0m5D9AQ'
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/ykypDm7TbnEga0m5D9AQ/convert?fit=crop&h=600&w=600&quality=90&cache=true'
     }
   ]
   $scope.questions.push(question3)

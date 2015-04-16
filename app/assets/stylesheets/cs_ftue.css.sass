@@ -54,3 +54,43 @@
     color: $orange
   .ftue-nav-progress
 
+.ftue-survey
+  @include display-flex
+  @include flex-wrap(wrap)
+  .ftue-survey-option
+    @include flex(0 1 25%)
+    position: relative
+    padding: 10px
+    @include boxsizing
+    &:hover
+      cursor: pointer
+    .ftue-survey-option-content
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      @include display-flex
+      @include justify-content(center)
+      @include align-items(center)
+
+    .ftue-survey-button
+      border: 2px solid white
+      border-radius: 3px
+      color: white
+      padding: 5px 10px
+      background-color: none
+      width: 50%
+      @include display-flex
+      @include justify-content(center)
+      .ftue-survey-button-check
+        position: absolute
+      .ftue-survey-button-text
+        @include transition(transform 300ms cubic-bezier(.07,1.65,.72,.82))
+
+
+      &.active
+        background-color: $orange
+        .ftue-survey-button-text
+          @include transform(translateX(20px))
+
