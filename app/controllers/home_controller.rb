@@ -70,12 +70,6 @@ class HomeController < ApplicationController
         bio: "Hans is a multi-instrumentalist, composer, and music producer. He does soundtrack design and audio production for every single ChefSteps video, and performs in local Seattle groups by night. Hans also happens to be a badass bartender, which we take full advantage of here at ChefSteps."
       },
       {
-        name: 'Kristina Krug',
-        title: 'Multimedia Project Manager',
-        image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/qWzHicwzQaqGAnPSthgW/convert?fit=crop&w=400&h=400&cache=true',
-        bio: "Kristina is a multi-talented multimedia expert. A native Oklahoman, Kristina graduated from UW with a degree in communications, and has since tackled a variety of projects for large corporations, art museums, start-up companies, and more. When she's not filming food, she creates legacy films for the elderly, and often corrals the ChefSteps team as its unofficial HR Lady."
-      },
-      {
         name: 'Karen Quinn',
         title: 'Writer/Editor',
         image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/ivvAekO6QGGNo02FR9cA/convert?fit=max&w=400&h=400&cache=true',
