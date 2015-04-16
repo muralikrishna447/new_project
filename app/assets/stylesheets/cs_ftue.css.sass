@@ -75,7 +75,7 @@
       @include align-items(center)
 
     .ftue-survey-button
-      border: 2px solid white
+      border: 2px solid rgba(255,255,255,.8)
       border-radius: 3px
       color: white
       padding: 5px 20px
@@ -85,6 +85,7 @@
       overflow: hidden
       @include display-flex
       @include justify-content(center)
+      @include transition(all 200ms)
 
       .ftue-survey-button-content
         position: relative
@@ -121,4 +122,8 @@
 
         .ftue-survey-button-background
           @include transform(scale(30,30))
+
+      &:hover
+        border: 2px solid rgba(255,255,255,0.9)
+        @include transform(scale(1.03,1.03))
 

@@ -2,9 +2,9 @@
   .container
     -# .pull-right(ng-click="cancel()")
     -#   %i.icon-remove
-    %h2 Thanks for signing up!
-    %h3 What kinds of things are you most interested in?
-    %p
+    %h2.text-center Thanks for joining ChefSteps!
+    %h4.text-center What kinds of things are you most interested in?
+    %p.text-center
       Choose three or more for best results.
     %form(name='Survey')
 
@@ -20,6 +20,6 @@
                 %i.fa.fa-check.ftue-survey-button-check
                 .ftue-survey-button-text
                   {{option.name}}
-          -# %label
-          -#   %input(type='checkbox' ng-model="option.checked" )
-          -#   {{option.name}}
+        .ftue-survey-option
+          %label make a suggestion:
+          %input(ng-model='question.suggestion')
