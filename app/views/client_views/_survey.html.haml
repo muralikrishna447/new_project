@@ -14,9 +14,10 @@
           .ftue-survey-option-content
             .ftue-survey-button(  ng-click="option.checked = !option.checked"
                                   ng-class="{true:'active', false:''}[option.checked]" )
-              %i.fa.fa-check.ftue-survey-button-check(ng-show='option.checked')
-              .ftue-survey-button-text
-                {{option.name}}
+              .ftue-survey-button-content
+                %i.fa.fa-check.ftue-survey-button-check
+                .ftue-survey-button-text
+                  {{option.name}}
           -# %label
           -#   %input(type='checkbox' ng-model="option.checked" )
           -#   {{option.name}}

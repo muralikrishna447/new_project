@@ -78,19 +78,34 @@
       border: 2px solid white
       border-radius: 3px
       color: white
-      padding: 5px 10px
+      padding: 5px 20px
       background-color: none
       width: 50%
       @include display-flex
       @include justify-content(center)
-      .ftue-survey-button-check
-        position: absolute
-      .ftue-survey-button-text
-        @include transition(transform 300ms cubic-bezier(.07,1.65,.72,.82))
+      .ftue-survey-button-content
+        position: relative
+        .ftue-survey-button-check
+          position: absolute
+          top: 0px
+          left: -15px
+          height: 100%
+          @include display-flex
+          @include align-items(center)
+          @include transition(transform 300ms cubic-bezier(.5,4,.8,.9))
+          @include transform(scale(.5,.5))
+          opacity: 0
+        .ftue-survey-button-text
+          @include transition(transform 300ms cubic-bezier(.5,3,.8,.9))
 
 
       &.active
         background-color: $orange
-        .ftue-survey-button-text
-          @include transform(translateX(20px))
+        border: 2px solid $orange
+        .ftue-survey-button-content
+          .ftue-survey-button-check
+            @include transform(scale(1,1))
+            opacity: 1
+          .ftue-survey-button-text
+            @include transform(translateX(10px))
 
