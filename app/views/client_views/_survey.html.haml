@@ -14,6 +14,8 @@
           .ftue-survey-option-content
             .ftue-survey-button(  ng-click="option.checked = !option.checked"
                                   ng-class="{true:'active', false:''}[option.checked]" )
+              %svg.ftue-survey-button-background(height='20' width='20')
+                %circle(cx='10' cy='10' r="10")
               .ftue-survey-button-content
                 %i.fa.fa-check.ftue-survey-button-check
                 .ftue-survey-button-text
