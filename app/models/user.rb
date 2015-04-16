@@ -34,6 +34,9 @@ class User < ActiveRecord::Base
   has_many :created_activities, class_name: 'Activity', foreign_key: 'creator'
   has_many :gift_certificates, inverse_of: :purchaser
 
+  has_many :circulator_users
+  has_many :circulators, through: :circulator_users
+
   serialize :viewed_activities, Array
 
   # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }
@@ -257,4 +260,3 @@ class User < ActiveRecord::Base
     end
   end
 end
-

@@ -3,7 +3,7 @@
     .row
       .span12
         %h2 Client Examples
-        %p The following are example forms for API.  All requests are currently going to staging2 so to test cors, open this page in your local environment.
+        %p The following are example forms for API.
     %hr
 
     .row
@@ -18,9 +18,9 @@
             clear
           %div
             {{getActivitiesStatus}}
-        
+
     %hr
-        
+
     .row
       .span8.well-border
         %h4 Authenticating a user
@@ -173,4 +173,56 @@
             clear
           %div
             {{resetPasswordStatus}}
+
     %hr
+    .row
+      .span8.well-border
+        %h4 List circulators
+        %pc
+          %i GET /api/v0/circulators
+        %form(ng-submit='getCirculators(user.token)')
+          .control-group
+            %input(type='text' ng-model='user.token' placeholder='token')
+          .control-group
+            %input.btn(type='submit' value='List circulators')
+        .alert(ng-if='getCirculatorsStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{getCirculatorsStatus}}
+    %hr
+    .row
+      .span8.well-border
+        %h4 Create circulator
+        %pc
+          %i POST /api/v0/circulators
+        %form(ng-submit='createCirculator(user.token, circulator.serialNumber, circulator.notes)')
+          .control-group
+            %input(type='text' ng-model='user.token' placeholder='token')
+            %input(type='text' ng-model='circulator.serialNumber' placeholder='serialNumber')
+            %input(type='text' ng-model='circulator.notes' placeholder='notes')
+          .control-group
+            %input.btn(type='submit' value='Create circulator')
+        .alert(ng-if='createCirculatorStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{createCirculatorStatus}}
+
+    %hr
+    .row
+      .span8.well-border
+        %h4 Delete circulator
+        %pc
+          %i DELETE /api/v0/circulators
+        %form(ng-submit='deleteCirculator(user.token, circulator.id)')
+          .control-group
+            %input(type='text' ng-model='user.token' placeholder='token')
+            %input(type='text' ng-model='circulator.id' placeholder='circulator id')
+          .control-group
+            %input.btn(type='submit' value='Delete circulator')
+        .alert(ng-if='deleteCirculatorStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{deleteCirculatorStatus}}
