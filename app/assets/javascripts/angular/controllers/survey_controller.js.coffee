@@ -174,7 +174,7 @@
     $scope.getResults()
     mixpanel.track('Survey Answered', $scope.survey_results)
 
-    data = {'survey_results': $scope.survey_results, 'location': $scope.location.input, 'bio': $scope.bio}
+    data = {'survey_results': $scope.survey_results}
     $http.post('/user_surveys', data).success((data) ->
     )
 

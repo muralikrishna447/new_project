@@ -27,5 +27,5 @@
                 %label.ftue-survey-suggestion-label make a suggestion:
                 %input(ng-model='question.suggestion')
 
-        .ftue-survey-done(ng-if="showDone(question)")
+        .ftue-survey-done(ng-if="showDone(question)" ng-click='next();update();')
           Done
