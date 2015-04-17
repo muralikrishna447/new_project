@@ -91,6 +91,7 @@
       image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/ykypDm7TbnEga0m5D9AQ/convert?fit=crop&h=600&w=600&quality=90&cache=true'
     }
   ]
+  question3.suggestion = ""
   $scope.questions.push(question3)
 
   # question4 = {}
@@ -188,6 +189,19 @@
 
   $scope.cancel = ->
     $modalInstance.dismiss('cancel')
+
+  $scope.showDone = (question) ->
+    checks = question.options.map (option) -> option.checked
+    console.log checks
+    if _.contains(checks, true)
+      console.log "SHOW DONE"
+      return true
+    else if question.suggestion.length > 0
+      console.log "SHOW DONE"
+      return true
+    else
+      console.log "DONT SHOW DONE"
+      return false
 
   if $scope.currentUser
     $scope.loadResults()

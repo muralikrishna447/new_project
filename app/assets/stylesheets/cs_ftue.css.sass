@@ -96,7 +96,7 @@
           height: 100%
           @include display-flex
           @include align-items(center)
-          @include transition(transform 300ms cubic-bezier(.5,4,.8,.9))
+          @include transition(transform 300ms cubic-bezier(.5,3,.8,.9))
           @include transform(scale(.5,.5))
           opacity: 0
         .ftue-survey-button-text
@@ -123,7 +123,37 @@
         .ftue-survey-button-background
           @include transform(scale(30,30))
 
+    .ftue-survey-button.inactive
       &:hover
-        border: 2px solid rgba(255,255,255,0.9)
         @include transform(scale(1.03,1.03))
 
+  .ftue-survey-option
+    .ftue-survey-option-content.ftue-survey-suggestion
+      border: 1px solid $orange
+      margin: 10px
+      @include display-flex
+      @include justify-content(center)
+      @include align-items(center)
+      @include flex-direction(column)
+      .ftue-survey-suggestion-input
+        position: relative
+        .ftue-survey-suggestion-label
+          position: absolute
+          top: -20px
+          width: 100%
+          text-align: center
+        input
+          border: 1px solid $light-gray
+          padding: 7px
+
+.ftue-survey-done
+  border: 1px solid $orange
+  padding: 10px
+  border-radius: 40px
+  width: 140px
+  margin: 20px auto
+  color: $orange
+  text-align: center
+  &:hover
+    background-color: $orange
+    color: white
