@@ -4,31 +4,7 @@
     %h4.text-center What kinds of things are you most interested in?
     %p.text-center
       Choose three or more for best results.
-    -# %form(name='Survey')
 
-    -#   .ftue-survey-container(ng-repeat="question in questions")
-    -#     .ftue-survey
-    -#       .ftue-survey-option(ng-repeat='option in question.options')
-    -#         %img(ng-src='{{option.image}}')
-    -#         .ftue-survey-option-content
-    -#           .ftue-survey-button(  ng-click="option.checked = !option.checked"
-    -#                                 ng-class="{true:'active', false:'inactive'}[option.checked]" )
-    -#             %svg.ftue-survey-button-background(height='20' width='20')
-    -#               %circle(cx='10' cy='10' r="10")
-    -#             .ftue-survey-button-content
-    -#               %i.ftue-survey-button-check(cs-icon='tick')
-    -#               .ftue-survey-button-text
-    -#                 {{option.name}}
-    -#       .ftue-survey-option
-    -#         .ftue-survey-option-content.ftue-survey-suggestion
-    -#           .ftue-survey-suggestion-input
-    -#             %label.ftue-survey-suggestion-label make a suggestion:
-    -#             %input(ng-model='question.suggestion')
-
-    -#     .ftue-survey-done(ng-if="showDone(question)" ng-click='next();update();')
-    -#       Done
-
-    {{survey.options}}
     .ftue-survey-container
       .ftue-survey
         .ftue-survey-option(ng-repeat='option in survey.options')

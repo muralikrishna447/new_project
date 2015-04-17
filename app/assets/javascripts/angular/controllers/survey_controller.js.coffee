@@ -73,6 +73,7 @@
       if option.checked
         survey_results.interests.push option.name
     data = { survey_results: survey_results }
+    mixpanel.track('Survey Answered', survey_results)
     $http.post('/user_surveys', data).success (data) ->
       console.log 'Saved data:', data
 
