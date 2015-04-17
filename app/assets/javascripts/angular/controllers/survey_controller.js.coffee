@@ -19,7 +19,8 @@
   $scope.$on('$destroy', unbind)
 ]
 
-@app.controller 'SurveyController', ['$scope', '$http', ($scope, $http) ->
+@app.controller 'SurveyController', ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+  @showSurvey = false
 
   @options = [
     {
@@ -74,8 +75,15 @@
         survey_results.interests.push option.name
     data = { survey_results: survey_results }
     mixpanel.track('Survey Answered', survey_results)
-    $http.post('/user_surveys', data).success (data) ->
-      console.log 'Saved data:', data
+    $http.post('/user_surveys', data)
+
+  @updateStatus = (option) =>
+    option.imageLoaded = true
+    imageLoadedArray = @options.map (option) -> option.imageLoaded
+    if _.contains(imageLoadedArray, false)
+      @showSurvey = false
+    else
+      @showSurvey = true
 
   return this
 ]
@@ -88,4 +96,9 @@
   templateUrl: '/client_views/_survey.html'
 ]
 
-
+@app.directive 'imageonload', ->
+  restrict: 'A'
+  link: (scope, element, attrs) ->
+    element.bind 'load', ->
+      scope.$apply attrs.imageonload
+      console.log 'loaded image: ', element

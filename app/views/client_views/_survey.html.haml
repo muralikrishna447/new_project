@@ -5,10 +5,10 @@
     %p.text-center
       Choose three or more for best results.
 
-    .ftue-survey-container
+    .ftue-survey-container(ng-show='survey.showSurvey')
       .ftue-survey
         .ftue-survey-option(ng-repeat='option in survey.options')
-          %img(ng-src='{{option.image}}')
+          %img(ng-src='{{option.image}}' imageonload='survey.updateStatus(option)')
           .ftue-survey-option-content
             .ftue-survey-button(  ng-click="option.checked = !option.checked"
                                   ng-class="{true:'active', false:'inactive'}[option.checked]" )
