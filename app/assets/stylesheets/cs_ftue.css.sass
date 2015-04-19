@@ -161,3 +161,39 @@
     background-color: $orange
     color: white
     cursor: pointer
+
+// .ftue-survey-container.ng-hide-add, .ftue-survey-container.ng-hide-remove
+//   @include transition(5s linear all)
+//   display: block!important
+
+.ftue-survey-container
+  display: block!important
+  .ftue-survey
+    .ftue-survey-option
+      opacity: 1
+      @include transform(translateY(0px))
+  .ftue-survey .ftue-survey-option:nth-child(1)
+    -webkit-transition-delay: 50ms
+  .ftue-survey .ftue-survey-option:nth-child(2)
+    -webkit-transition-delay: 100ms
+  .ftue-survey .ftue-survey-option:nth-child(3)
+    -webkit-transition-delay: 150ms
+  .ftue-survey .ftue-survey-option:nth-child(4)
+    -webkit-transition-delay: 200ms
+  .ftue-survey .ftue-survey-option:nth-child(5)
+    -webkit-transition-delay: 250ms
+  .ftue-survey .ftue-survey-option:nth-child(6)
+    -webkit-transition-delay: 300ms
+  .ftue-survey .ftue-survey-option:nth-child(7)
+    -webkit-transition-delay: 350ms
+  .ftue-survey .ftue-survey-option:nth-child(8)
+    -webkit-transition-delay: 400ms
+
+.ftue-survey-container, .ftue-survey-container .ftue-survey, .ftue-survey-container .ftue-survey-option
+  @include transition(200ms linear all)
+
+.ftue-survey-container.ng-hide
+  .ftue-survey
+    .ftue-survey-option
+      opacity: 0
+      @include transform(translateY(5px))

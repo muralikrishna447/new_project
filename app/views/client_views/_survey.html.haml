@@ -5,6 +5,9 @@
     %p.text-center
       Choose three or more for best results.
 
+    .btn(ng-click="survey.showSurvey = !survey.showSurvey")
+      Toggle Survey
+
     .ftue-survey-container(ng-show='survey.showSurvey')
       .ftue-survey
         .ftue-survey-option(ng-repeat='option in survey.options')
