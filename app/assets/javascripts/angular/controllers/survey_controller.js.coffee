@@ -19,7 +19,7 @@
   $scope.$on('$destroy', unbind)
 ]
 
-@app.controller 'SurveyController', ['$scope', '$http', '$timeout', ($scope, $http, $timeout) ->
+@app.controller 'SurveyController', ['$scope', '$http', '$timeout', 'csAuthentication', ($scope, $http, $timeout, csAuthentication) ->
   @showSurvey = false
 
   @options = [
@@ -87,6 +87,18 @@
         survey_results.interests.push option.name
     data = { survey_results: survey_results }
     mixpanel.track('Survey Answered', survey_results)
+
+    u = csAuthentication.currentUser()
+    if u
+      intercomData = {
+        email: u.email
+        user_id: u.id
+        interests: survey_results.interests.join(',')
+        suggestion: survey_results.suggestion
+      }
+      # http://docs.intercom.io/install-on-your-web-product/integrating-intercom-in-one-page-app
+      Intercom?('update', intercomData)
+
     $http.post('/user_surveys', data)
 
   @updateStatus = (option) =>
