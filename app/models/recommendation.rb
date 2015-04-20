@@ -5,7 +5,7 @@ class Recommendation
     # popular = Activity.chefsteps_generated.published.not_in_course.popular.first(6)
     activities = Activity.chefsteps_generated.published.not_in_course.popular
     by_interests = interests ? activities.tagged_with(interests, any: true) : []
-    activities = (by_interests).uniq
+    activities = (by_interests).uniq if interests
     activities = activities.sample(limit) if limit
     activities
   end

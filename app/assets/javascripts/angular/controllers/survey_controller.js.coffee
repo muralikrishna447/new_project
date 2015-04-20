@@ -98,7 +98,7 @@
     else
       $timeout(-> 
         that.showSurvey = true
-      , 300)
+      , 100)
 
   return this
 ]
