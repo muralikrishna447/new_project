@@ -44,10 +44,10 @@ angular.module('ChefStepsApp').service 'csFtue', ['$rootScope', 'csIntent', 'csA
     #   name: 'Invite'
     #   title: 'Invite your friends'
     # }
-    # {
-    #   name: 'Recommendations'
-    #   title: 'Get Started'
-    # }
+    {
+      name: 'Recommendations'
+      title: 'Get Started'
+    }
   ]
 
   $scope.prev = ->
