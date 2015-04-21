@@ -24,8 +24,18 @@ describe Recommendation do
       expect(Recommendation.activities_for(@user2)).to include(@activity1)
     end
 
-    it 'doesnt error and returns recommendations if user hasnt filled out survey' do
-      Recommendation.activities_for(@user3).size.should be >= 6
+  end
+
+  context 'by_tags' do
+    it 'only includes matching recipes' do
+      recipes = Recommendation.by_tags(['Modernist', 'dinner'])
+      expect(recipes).to include(@activity7)
+      expect(recipes).to_not include(@activity2)
+    end
+
+    it 'returns nothing when there are no matching recipes' do
+      recipes = Recommendation.by_tags(['bbq'])
+      expect(recipes.size).should eq(0)
     end
 
   end

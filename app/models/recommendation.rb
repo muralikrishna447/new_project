@@ -1,11 +1,13 @@
 class Recommendation
   def self.activities_for(user,limit = nil)
     interests = get_interests(user)
+    suggestion = get_suggestion(user)
 
     # popular = Activity.chefsteps_generated.published.not_in_course.popular.first(6)
     activities = Activity.chefsteps_generated.published.not_in_course.popular
     by_interests = interests ? activities.tagged_with(interests, any: true) : []
-    activities = (by_interests).uniq if interests
+    by_suggestion = suggestion ? activities.tagged_with(suggestion, any: true) : []
+    activities = (by_interests + by_suggestion).uniq
     activities = activities.sample(limit) if limit
     activities
   end
@@ -33,6 +35,21 @@ class Recommendation
     else
       nil
     end
+  end
+
+  def self.get_suggestion(user)
+    suggestion = user.survey_results['suggestion']
+    if suggestion && suggestion.length > 0
+      suggestion
+    else
+      nil
+    end
+  end
+
+  def self.by_tags(tags = [])
+    activities = Activity.chefsteps_generated.published.not_in_course.popular
+    activities = activities.tagged_with(tags, any: true)
+    activities
   end
 
 end
