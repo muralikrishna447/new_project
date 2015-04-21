@@ -3,7 +3,7 @@ Intercom.app_api_key = "149f294a76e91fecb7b66c6bed1889e64f487d07"
 
 namespace :intercom do
   task :survey => :environment do
-    User.find_each do |user|
+    User.where('id > ?', 194448).each do |user|
       # puts user.email
       interests = ''
       equipment = ''
