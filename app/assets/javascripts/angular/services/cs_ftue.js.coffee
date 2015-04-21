@@ -34,16 +34,16 @@ angular.module('ChefStepsApp').service 'csFtue', ['$rootScope', 'csIntent', 'csA
   $scope.items = [
     {
       name: 'Survey'
-      title: 'How do you cook?'
+      title: 'What kinds of things are you most interested in?'
     }
-    {
-      name: 'Connect'
-      title: 'Connect Your Social Networks'
-    }
-    {
-      name: 'Invite'
-      title: 'Invite your friends'
-    }
+    # {
+    #   name: 'Connect'
+    #   title: 'Connect Your Social Networks'
+    # }
+    # {
+    #   name: 'Invite'
+    #   title: 'Invite your friends'
+    # }
     {
       name: 'Recommendations'
       title: 'Get Started'

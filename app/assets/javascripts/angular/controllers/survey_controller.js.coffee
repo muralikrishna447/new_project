@@ -19,174 +19,112 @@
   $scope.$on('$destroy', unbind)
 ]
 
-@app.controller 'SurveyController', ['$scope', '$http', 'csAuthentication', '$rootScope', ($scope, $http, csAuthentication, $rootScope) ->
-  $scope.currentUser = csAuthentication.currentUser()
-  $scope.questions = []
-  if $scope.currentUser && $scope.currentUser.survey_results
-    $scope.survey_results = $scope.currentUser.survey_results
-  else
-    $scope.survey_results = []
+@app.controller 'SurveyController', ['$scope', '$http', '$timeout', 'csAuthentication', ($scope, $http, $timeout, csAuthentication) ->
+  @showSurvey = false
 
-  question1 = {}
-  question1.slug = 'Skill Level'
-  question1.type = 'select'
-  question1.copy = 'What kind of cook are you?'
-  question1.searchScope = 'difficulty'
-  question1.options = ['Home Cook', 'Cooking Enthusiast', 'Culinary Student', 'Professional']
-  $scope.questions.push(question1)
-
-  # question2 = {}
-  # question2.type = 'multiple-select'
-  # question2.copy = 'Dietary Restrictions. Select all that apply to you:'
-  # question2.options = [
-  #   {
-  #     name: 'Vegetarian'
-  #     checked: false
-  #   }
-  #   {
-  #     name: 'Gluten-Free'
-  #     checked: false
-  #   }
-  #   {
-  #     name:'Nut-Allergy'
-  #     checked: false
-  #   }
-  # ]
-  # $scope.questions.push(question2)
-
-  question3 = {}
-  question3.slug = 'Interests'
-  question3.type = 'multiple-select'
-  question3.copy = 'Which culinary topics interest you the most?'
-  question3.searchScope = 'interests'
-  question3.options = [
+  @options = [
     {
-      name: 'Modernist Cuisine'
+      name: 'Sous Vide'
       checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/VO5w9ZlJQzSuY39wVjCA/convert?fit=crop&h=600&w=600&quality=90&cache=true'
+      imageLoaded: false
+    }
+    {
+      name: 'Kitchen Tips'
+      checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/zGFKehokRquV2wqanIj0/convert?fit=crop&h=600&w=600&quality=90&cache=true'
+      imageLoaded: false
+    }
+    {
+      name: 'Traditional Cooking'
+      checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/xiojrYF1QAemQ0ybBTbl/convert?fit=crop&h=600&w=600&quality=90&cache=true'
+      imageLoaded: false
+    }
+    {
+      name: 'Modern Cooking'
+      checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/eXkRnCTNSlKqLwIYYr4n/convert?fit=crop&h=600&w=600&quality=90&cache=true'
+      imageLoaded: false
+    }
+    {
+      name:'Beverages'
+      checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/4kMxDcRFTGmaa55Ro7M5/convert?fit=crop&h=600&w=600&quality=90&cache=true'
+      imageLoaded: false
     }
     {
       name: 'Baking'
       checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/ykypDm7TbnEga0m5D9AQ/convert?fit=crop&h=600&w=600&quality=90&cache=true'
+      imageLoaded: false
     }
     {
-      name:'Butchering'
+      name: 'Behind the Scenes'
       checked: false
-    }
-    {
-      name:'Food Science'
-      checked: false
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/dvc519Tk2h97xIdwj5hg/convert?fit=crop&h=600&w=600&quality=90&cache=true'
+      imageLoaded: false
     }
   ]
-  $scope.questions.push(question3)
 
-  question4 = {}
-  question4.slug = 'Equipment'
-  question4.type = 'multiple-select'
-  question4.copy = 'What equipment do you have in your kitchen?'
-  question4.searchScope = 'by_equipment_title'
-  question4.options = [
-    {
-      name: 'Blender'
-      checked: false
-    }
-    {
-      name: 'Immersion Blender'
-      checked: false
-    }
-    {
-      name:'Stand Mixer'
-      checked: false
-    }
-    {
-      name:'Pressure Cooker'
-      checked: false
-    }
-    {
-      name:'Immersion Circulator'
-      checked: false
-    }
-    {
-      name:'Whipping Siphon'
-      checked: false
-    }
-  ]
-  $scope.questions.push(question4)
+  @suggestion = ""
 
-  # question5 = {}
-  # question5.slug = 'Bio'
-  # question5.type = 'open-ended'
-  # question5.copy = 'Where do you cook? This will show up in your bio on your profile page.'
-  # $scope.questions.push(question5)
+  @showDone = ->
+    checks = @options.map (option) -> option.checked
+    if _.contains(checks, true)
+      return true
+    else if @suggestion.length > 0
+      return true
+    else
+      return false
 
-  $scope.loadResults = ->
-    angular.forEach $scope.questions, (question, index) ->
-      surveyResult = _.where($scope.survey_results, {copy: question.copy})
-      if surveyResult.length > 0
-        switch question.type
-          when 'select'
-            question.answer = surveyResult[0].answer
-          when 'multiple-select'
-            checked =  surveyResult[0].answer.split(',')
-            angular.forEach question.options, (option, index) ->
-              if checked.indexOf(option.name) != -1
-                option.checked = true
-          when 'open-ended'
-            question.answer = surveyResult[0].answer
+  @done = ->
+    survey_results = {}
+    survey_results.interests = []
+    survey_results.suggestion = @suggestion
+    @options.map (option) ->
+      if option.checked
+        survey_results.interests.push option.name
+    data = { survey_results: survey_results }
+    mixpanel.track('Survey Answered', survey_results)
 
-  $scope.getResults = ->
-    $scope.survey_results = []
-    angular.forEach $scope.questions, (question, index) ->
-      survey_result = {}
-      survey_result.copy = question.copy
-      survey_result.search_scope = question.searchScope
-      switch question.type
-        when 'select'
-          survey_result.answer = question.answer
-        when 'multiple-select'
-          answers = []
-          angular.forEach question.options, (option, index) ->
-            if option.checked
-              answers.push(option.name)
-          survey_result.answer = answers.join()
-        when 'open-ended'
-          survey_result.answer = question.answer
-      $scope.survey_results.push(survey_result)
-      console.log question.slug
-      console.log 'its set'
-    $scope.currentUser.survey_results = $scope.survey_results
+    u = csAuthentication.currentUser()
+    if u
+      intercomData = {
+        email: u.email
+        user_id: u.id
+        interests: survey_results.interests.join(',')
+        suggestion: survey_results.suggestion
+      }
+      # http://docs.intercom.io/install-on-your-web-product/integrating-intercom-in-one-page-app
+      Intercom?('update', intercomData)
 
-  $scope.update = ->
-    $scope.getResults()
-    mixpanel.track('Survey Answered', $scope.survey_results)
+    $http.post('/user_surveys', data)
 
-    data = {'survey_results': $scope.survey_results, 'location': $scope.location.input, 'bio': $scope.bio}
-    $http.post('/user_surveys', data).success((data) ->
-    )
+  @updateStatus = (option) =>
+    that = this
+    option.imageLoaded = true
+    imageLoadedArray = @options.map (option) -> option.imageLoaded
+    if _.contains(imageLoadedArray, false)
+      @showSurvey = false
+    else
+      $timeout(-> 
+        that.showSurvey = true
+      , 100)
 
-  $scope.getPredictions = (input) ->
-    url = "/locations/autocomplete?input=#{input.replace(/\W/g, '')}"
-    console.log "URL IS: ", url
-    $http.get(url).then (response) ->
-      predictions = []
-      angular.forEach response.data.predictions, (item) ->
-        predictions.push(item.description)
-      $scope.predictions = predictions
-
-  $scope.cancel = ->
-    $modalInstance.dismiss('cancel')
-
-  if $scope.currentUser
-    $scope.loadResults()
-
-  $rootScope.$on 'closeSurveyFromFtue', ->
-    $scope.update()
+  return this
 ]
 
 @app.directive 'csSurveyModal', [ ->
   restrict: 'E'
   controller: 'SurveyController'
+  controllerAs: 'survey'
   link: (scope, element, attrs) ->
   templateUrl: '/client_views/_survey.html'
 ]
 
-
+@app.directive 'imageonload', ->
+  restrict: 'A'
+  link: (scope, element, attrs) ->
+    element.bind 'load', ->
+      scope.$apply attrs.imageonload

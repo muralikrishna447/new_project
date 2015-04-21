@@ -1,48 +1,31 @@
-%div
-  -# %img(src='https://d3awvtnmmsvyot.cloudfront.net/api/file/3Gv3inT0S1Kf2rczZaEK?cache=true')
-  .modal-body
-    .container
-      .row
-        .span6.offset3.modal-overlay
-          / .pull-right(ng-click="cancel()")
-          /   %i.icon-remove
-          %h2 Thanks for signing up!
-          %div(cs-abtest test-name="Madlib Signup Incentive4")
-            %span(cs-abtest-item)
-            %div(cs-abtest-item)
-              .section-small
-              %h3
-                Visit our
-                %a(href="/courses" target="_none") classes gallery
-                to use your 50% discount.
-              .section-small
-          %p
-            Tell us more about yourself and your cooking style and we'll help you find content you'll love!
-            %em It's all optional.
-          %form(name='Survey')
+.modal-body
+  .container
+    %h2.text-center Thanks for joining ChefSteps!
+    %h4.text-center What kinds of things are you most interested in?
+    %p.text-center
+      Choose three or more for best results.
 
-            %p Where do you live? This will help us connect you to other ChefSteppers.
-            %input(type="text" ng-model="location.input" placeholder="ex: Seattle, WA" typeahead="prediction for prediction in getPredictions($viewValue)" typeahead-loading="loadingLocations" class="form-control")
+    -# .btn(ng-click="survey.showSurvey = !survey.showSurvey")
+    -#   Toggle Survey
 
-            %div(ng-repeat="question in questions")
-              %div(ng-switch on='question.type')
-                %div(ng-switch-when='select')
-                  %p.survey-question
-                    %div
-                      {{question.copy}}
-                    %div
-                      %select(ng-model='question.answer' ng-options='option for option in question.options ')
-                %div(ng-switch-when='multiple-select')
-                  %p.survey-question
-                    %div
-                      {{question.copy}}
-                    %div(ng-repeat='option in question.options')
-                      %label
-                        %input(type='checkbox' ng-model="option.checked" )
-                        {{option.name}}
-            %p.survey-question
-              Where do you cook? This will show up in your bio on your profile page.
-              %div
-                %textarea.input-block-level(ng-model="bio")
-          / %button.btn.btn-primary.btn-large.btn-block(ng-click='update()')
-          /   Submit!
+    .ftue-survey-container(ng-show='survey.showSurvey')
+      .ftue-survey
+        .ftue-survey-option(ng-repeat='option in survey.options')
+          %img(ng-src='{{option.image}}' imageonload='survey.updateStatus(option)')
+          .ftue-survey-option-content
+            .ftue-survey-button(  ng-click="option.checked = !option.checked"
+                                  ng-class="{true:'active', false:'inactive'}[option.checked]" )
+              %svg.ftue-survey-button-background(height='20' width='20')
+                %circle(cx='10' cy='10' r="10")
+              .ftue-survey-button-content
+                %i.ftue-survey-button-check(cs-icon='tick')
+                .ftue-survey-button-text
+                  {{option.name}}
+        .ftue-survey-option
+          .ftue-survey-option-content.ftue-survey-suggestion
+            .ftue-survey-suggestion-input
+              %label.ftue-survey-suggestion-label make a suggestion:
+              %input(ng-model='survey.suggestion')
+
+      .ftue-survey-done(ng-if="survey.showDone()" ng-click='survey.done(); next();')
+        Next
