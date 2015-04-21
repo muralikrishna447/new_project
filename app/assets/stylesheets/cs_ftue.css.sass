@@ -83,6 +83,7 @@
       width: 50%
       position: relative
       overflow: hidden
+      text-align: center
       @include display-flex
       @include justify-content(center)
       @include transition(all 200ms)
@@ -131,23 +132,29 @@
     .ftue-survey-option-content.ftue-survey-suggestion
       border: 1px solid $orange
       margin: 10px
+      padding: 10px
+      min-height: 100px
       @include display-flex
       @include justify-content(center)
       @include align-items(center)
       @include flex-direction(column)
       .ftue-survey-suggestion-input
         position: relative
+        @include boxsizing
         .ftue-survey-suggestion-label
-          color: $orange
           position: absolute
           top: -30px
+          color: $orange
           width: 100%
           text-align: center
           font-weight: bold
+          @include boxsizing
         input
           border: 1px solid $light-gray
           padding: 7px
           text-align: center
+          width: 100%
+          @include boxsizing
 
 .ftue-survey-done
   border: 1px solid $orange
@@ -197,3 +204,13 @@
     .ftue-survey-option
       opacity: 0
       @include transform(translateY(5px))
+
+@media (max-width: 800px)
+  .ftue-survey
+    .ftue-survey-option
+      @include flex(0 1 50%)
+
+@media (max-width: 480px)
+  .ftue-survey
+    .ftue-survey-option
+      @include flex(0 1 100%)
