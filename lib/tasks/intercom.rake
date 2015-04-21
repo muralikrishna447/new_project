@@ -8,18 +8,24 @@ namespace :intercom do
       interests = ''
       equipment = ''
       chef_type = ''
-      if user.survey_results
-        user.survey_results.each do |result|
-          if result['copy'] == "Which culinary topics interest you the most?"
-            interests = result['answer']
-          end
-          if result['copy'] == "What equipment do you have in your kitchen?"
-            equipment = result['answer']
-          end
-          if result['copy'] == "What kind of cook are you?"
-            chef_type = result['answer']
+      begin
+        puts "Getting results for user id: "
+        puts user.id
+        if user.survey_results
+          user.survey_results.each do |result|
+            if result['copy'] == "Which culinary topics interest you the most?"
+              interests = result['answer']
+            end
+            if result['copy'] == "What equipment do you have in your kitchen?"
+              equipment = result['answer']
+            end
+            if result['copy'] == "What kind of cook are you?"
+              chef_type = result['answer']
+            end
           end
         end
+      rescue
+        puts "Error getting survey results"
       end
       begin
         intercom_user = Intercom::User.find(:email => user.email)
