@@ -22,6 +22,7 @@
 @app.controller 'SurveyController', ['$scope', '$http', '$timeout', 'csAuthentication', ($scope, $http, $timeout, csAuthentication) ->
   @showSurvey = false
   @showRecommendations = false
+  @showSuggestionMessage = false
   @recommendations = []
 
   @options = [
@@ -116,8 +117,12 @@
         r.image = image
         return r
       @recommendations = recommendations
-      @showRecommendations = true
       @showSurvey = false
+
+      if @recommendations.length > 0
+        @showRecommendations = true
+      else if @recommendations.length == 0 && survey_results.suggestion
+        @showSuggestionMessage = true
       console.log 'recommendations: ', @recommendations
 
   @updateStatus = (option) =>

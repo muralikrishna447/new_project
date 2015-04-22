@@ -1,15 +1,16 @@
 .modal-body
   .container
-    %h2.text-center Thanks for joining ChefSteps!
-    %h4.text-center What kinds of things are you most interested in?
-    %p.text-center
-      Choose three or more for best results.
+    -# .btn(ng-click="survey.showSurvey = !survey.showSurvey")
+    -#   Toggle Survey
 
-    .btn(ng-click="survey.showSurvey = !survey.showSurvey")
-      Toggle Survey
+    -# .btn(ng-click="survey.showRecommendations = !survey.showRecommendations")
+    -#   Toggle Recommendations
 
-    .btn(ng-click="survey.showRecommendations = !survey.showRecommendations")
-      Toggle Recommendations
+    %div(ng-show='survey.showSurvey')
+      %h2.text-center Thanks for joining ChefSteps!
+      %h4.text-center What kinds of things are you most interested in?
+      %p.text-center
+        Choose three or more for best results.
 
     .ftue-survey-container(ng-show='survey.showSurvey')
       .ftue-survey
@@ -33,6 +34,9 @@
       .ftue-survey-done(ng-if="survey.showDone() && survey.showSurvey" ng-click='survey.done()')
         Next
 
+    %div(ng-show='survey.showRecommendations')
+      %h2 Here are some recommendations:
+
     .ftue-survey-container(ng-show='survey.showRecommendations')
       .ftue-survey
         .ftue-survey-option(ng-repeat='recommendation in survey.recommendations')
@@ -43,3 +47,10 @@
                 .ftue-survey-button-content
                   .ftue-survey-button-text
                     {{recommendation.title}}
+
+    %div(ng-show='survey.showSuggestionMessage')
+      %h2.text-center Thanks for the suggestion!
+      %h4.text-center Who knows what we might do next! :)
+      .ftue-suggested-container
+        .ftue-suggested
+          %h4 {{survey.suggestion}}

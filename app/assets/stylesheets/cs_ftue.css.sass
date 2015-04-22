@@ -212,6 +212,17 @@
       opacity: 0
       @include transform(translateY(5px))
 
+.ftue-suggested-container
+  @include display-flex
+  @include justify-content(center)
+  .ftue-suggested
+    width: 300px
+    height: 300px
+    background-color: $orange
+    color: white
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
 
 @media (max-width: 800px)
   .ftue-survey
