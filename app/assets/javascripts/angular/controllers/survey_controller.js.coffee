@@ -21,6 +21,9 @@
 
 @app.controller 'SurveyController', ['$scope', '$http', '$timeout', 'csAuthentication', ($scope, $http, $timeout, csAuthentication) ->
   @showSurvey = false
+  @showRecommendations = false
+  @showSuggestionMessage = false
+  @recommendations = []
 
   @options = [
     {
@@ -78,7 +81,7 @@
     else
       return false
 
-  @done = ->
+  @done = =>
     survey_results = {}
     survey_results.interests = []
     survey_results.suggestion = @suggestion
@@ -100,6 +103,27 @@
       Intercom?('update', intercomData)
 
     $http.post('/user_surveys', data)
+
+    searchTerms = survey_results.interests
+    searchTerms.push survey_results.suggestion
+    searchParams = {
+      tags: searchTerms.join(',')
+      per: 8
+    }
+
+    $http.get('/api/v0/recommendations', {params: searchParams}).then (response) =>
+      recommendations = response.data.map (r) ->
+        image = r.image + '/convert?fit=crop&h=600&w=600&quality=90&cache=true'
+        r.image = image
+        return r
+      @recommendations = recommendations
+      @showSurvey = false
+
+      if @recommendations.length > 0
+        @showRecommendations = true
+      else if @recommendations.length == 0 && survey_results.suggestion
+        @showSuggestionMessage = true
+      console.log 'recommendations: ', @recommendations
 
   @updateStatus = (option) =>
     that = this
