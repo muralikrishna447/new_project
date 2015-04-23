@@ -44,4 +44,4 @@
   .matrix-button
     {{content.buttonMessage}}
   .matrix-image
-    %img(ng-src='{{content.image}}')
+    %img(ng-src='{{content.image | aspect1to1 }}')

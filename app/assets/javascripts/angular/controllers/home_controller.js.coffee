@@ -1,3 +1,7 @@
+@app.filter 'aspect1to1', ->
+  (image) ->
+    image + '/convert?fit=crop&h=600&w=600&quality=90&cache=true' 
+
 @app.service 'ApiTransformer', [->
   @transform = (response) ->
     result = {}
@@ -329,8 +333,6 @@
     mode: '='
     formState: '='
   }
-  link: (scope, $element, $attrs) ->
-    # console.log scope
 
   templateUrl: '/client_views/container_matrix_item.html'
 ]
