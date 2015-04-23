@@ -26,9 +26,6 @@
               %label.ftue-survey-suggestion-label make a suggestion:
               %input(ng-model='survey.suggestion')
 
-      .ftue-survey-done(ng-if="survey.showDone() && survey.showSurvey" ng-click='survey.done()')
-        Next
-
     %div(ng-show='survey.showRecommendations')
       %h3.text-center Here are some recommendations:
 
@@ -49,3 +46,7 @@
       .ftue-suggested-container
         .ftue-suggested
           %h4 {{survey.suggestion}}
+
+    .ftue-nav
+      .ftue-survey-done(ng-if="survey.showDone() && survey.showSurvey" ng-click='survey.done()')
+        Next

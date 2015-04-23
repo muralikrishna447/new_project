@@ -4,9 +4,9 @@
   position: fixed
   width: 100%
   height: 100px
-  background-color: white
   z-index: 9999
   bottom: 0px
+  left: 0px
   padding: 20px
   @include boxsizing
 
@@ -164,12 +164,14 @@
 
 .ftue-survey-done
   border: 1px solid $orange
+  background-color: white
   padding: 10px
   border-radius: 40px
   width: 140px
-  margin: 20px auto
+  margin: 0 auto
   color: $orange
   text-align: center
+  @include transition(300ms all ease-in-out)
   &:hover
     background-color: $orange
     color: white
