@@ -4,6 +4,13 @@
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
+.gallery-madlib(ng-if="! csAuthentication.loggedIn()" ng-cloak)          
+  %div.noprint( ng-controller="LoginController" 
+                ng-init="registrationSource ='gallery'; setIntent('ftue');"
+                ng-hide="editMode || authentication.currentUser()" )
+    = render "devise/sessions/new_angular"
+    = render 'home/madlib'
+
 .gallery-wrapper.relative(ng-controller='GalleryController' ng-cloak)
 
   .gallery-controls.navbar
@@ -55,12 +62,6 @@
         %a.blue-link(href="/activities/new") Add New Recipe
 
   .gallery-results(ng-class="{'reloading' : reloading}")
-    .gallery-madlib(ng-if="! csAuthentication.loggedIn()")          
-      %div.noprint( ng-controller="LoginController" 
-                    ng-init="registrationSource ='gallery'; setIntent('ftue');"
-                    ng-hide="editMode || authentication.currentUser()" )
-        = render "devise/sessions/new_angular"
-        = render 'home/madlib'
     .no-results(ng-show='noResults()')
       %h3 No results found. Here are some of our most popular recipes:
 
@@ -69,7 +70,7 @@
                     infinite-scroll-immediate-check='true' 
                     infinite-scroll-distance='1')
 
-      %div(ng-repeat='activity in getResults() track by activity.id')
+      .gallery-item(ng-repeat='activity in getResults() track by activity.id')
         %cs-index-item.cs-index-item( cs-title='activity.title' 
                                       url='activity.url' 
                                       image='activity.image' 
