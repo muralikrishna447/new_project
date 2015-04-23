@@ -60,20 +60,42 @@
       padding-right: 50%
 
 // Containers //
-.cs-container-matrix
-  .cs-container-matrix-row
+.matrix
+  .matrix-row
     @include display-flex
     @include flex-direction(row)
-    .cs-container-matrix-column
+    .matrix-column
       @include flex(1 1 auto)
       @include aspect-1-1
       @include boxsizing
-      .cs-container-matrix-item
-        @include aspect-content
-        margin: 10px
-        border: 1px solid #ccc
-        @include boxsizing
+      .matrix-item
 
+.matrix-item
+  @include aspect-content
+  margin: 10px
+  @include boxsizing
+  .matrix-content
+    @include aspect-content
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    .matrix-image
+      @include aspect-content
+    .matrix-button
+      border: 2px solid rgba(255,255,255,.8)
+      border-radius: 3px
+      color: white
+      padding: 5px 20px
+      background-color: none
+      width: 50%
+      z-index: 1
+      text-align: center
+      @include transition(all 300ms)
+      &:hover
+        border: 2px solid $orange
+        background-color: $orange
+        color: white
+        cursor: pointer
 
 // Standard flexbox container. Items are set to max with of 320px
 .cs-container-standard

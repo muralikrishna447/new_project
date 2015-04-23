@@ -40,10 +40,8 @@
       %label Button Target URL
       %input(ng-model='content.targetURL')
 
-%div(ng-if="formState!='edit'")
-  %h5
-    {{content.title}}
-  %div
-    %img(ng-src='{{content.image}}')
-  %a.btn.btn-primary(ng-href='{{content.targetURL}}')
+.matrix-content(ng-if="formState!='edit'" ng-href='{{content.targetURL}}')
+  .matrix-button
     {{content.buttonMessage}}
+  .matrix-image
+    %img(ng-src='{{content.image}}')
