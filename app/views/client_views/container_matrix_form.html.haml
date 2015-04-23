@@ -11,7 +11,8 @@
   %div(ng-if="container.form.mode=='api'")
     %label Source
     %input(ng-model='container.form.source')
-    %div( api-connector 
+    %div( api-connector
+          connections='container.form.connections' 
           component-keys="['title', 'image', 'buttonMessage', 'targetURL']"
           response='container.form.response'
           component='container.form'

@@ -18,6 +18,7 @@
     response: '='
     componentKeys: '='
     component: '='
+    connections: '='
   }
 
   link: (scope, element, attrs) ->
@@ -26,7 +27,7 @@
     #   scope.responseKeys = Object.keys data
 
     # )
-    scope.connections = {}
+    # scope.connections = {}
     scope.responseKeys = {}
 
     scope.$watch 'response', (newValue, oldValue) ->
@@ -87,7 +88,15 @@
       containerType: 'matrix'
       rows: '2'
       columns: '3'
-      items: []
+      source: 'http://localhost:3000/api/v0/activities'
+      mode: 'api'
+      connections: {
+        title: 'title'
+        image: 'image'
+        buttonMessage: 'title'
+        targetURL: 'url'
+      }
+      # items: []
     }
   ]
 
@@ -280,7 +289,7 @@
           return
 
     scope.$watch 'content.connections', ((newValues, oldValues) ->
-      # console.log 'Connection updated to: ', newValues
+      console.log 'Connection updated to: ', newValues
       # console.log 'Response: ', scope.content.response
       # transformed = {}
       # angular.forEach newValues, (componentKey, responsekey) ->
@@ -296,6 +305,19 @@
           console.log 'Transformed Item: ', transformedItem
         updateItems(transformed)
     ), true
+
+    # Initializes the matrix and watches for changes
+    scope.$watch 'content.response', (newValues, oldValues) ->
+      if newValues
+        console.log newValues
+        transformed = []
+        angular.forEach newValues, (item) ->
+          transformedItem = {}
+          angular.forEach scope.content.connections, (responseKey, componentKey) ->
+            transformedItem[componentKey] = item[responseKey]
+          transformed.push transformedItem
+          console.log 'Transformed Item: ', transformedItem
+        updateItems(transformed)
 
   templateUrl: '/client_views/container_matrix.html'
 ]

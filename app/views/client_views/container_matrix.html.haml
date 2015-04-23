@@ -1,4 +1,4 @@
 .cs-container-matrix
-  .cs-container-matrix-row(ng-repeat='row in content.items')
-    .cs-container-matrix-column(ng-repeat='item in row')
+  .cs-container-matrix-row(ng-repeat='row in content.items track by $index')
+    .cs-container-matrix-column(ng-repeat='item in row track by $index')
       .cs-container-matrix-item(container-matrix-item content='item' form-state='content.formState' mode='content.mode')
