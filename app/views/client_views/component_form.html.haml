@@ -8,5 +8,5 @@
 
   .cs-container-editor-preview
     %div(hero='{{container.form}}' ng-if="container.form.containerType == 'hero'")
-    %div(container-list='{{container.form}}' ng-if="container.form.containerType == 'list'")
+    %div(list='{{container.form}}' ng-if="container.form.containerType == 'list'")
     %div(matrix content='container.form' ng-if="container.form.containerType == 'matrix'")
