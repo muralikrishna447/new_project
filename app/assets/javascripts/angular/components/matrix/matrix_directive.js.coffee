@@ -91,6 +91,6 @@
         updateItems(transformed)
 
   # templateUrl: '/client_views/container_matrix.html'
-  templateUrl: 'matrix_template.html'
+  templateUrl: '/client_views/component_matrix.html'
 ]
 

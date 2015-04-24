@@ -6,5 +6,5 @@
     formState: '='
   }
 
-  templateUrl: '/client_views/container_matrix_item.html'
+  templateUrl: '/client_views/component_matrix_item.html'
 ]

@@ -6,11 +6,6 @@ angular.module('templates', []).run(["$templateCache", function($templateCache) 
     $templateCache.put("<%= File.basename(f).gsub(/\.haml$/, '')  %>", <%= Haml::Engine.new(File.read(f)).render.to_json %>);
     <% end %>
 
-    <% Dir.glob(Rails.root.join('app', 'assets', 'javascripts', 'angular', 'components', '*', '*.haml')).each do |f| %>
-    <% depend_on(f) %>
-    $templateCache.put("<%= File.basename(f).gsub(/\.haml$/, '')  %>", <%= Haml::Engine.new(File.read(f)).render.to_json %>);
-    <% end %>
-
     $templateCache.put("template/csrating/csrating.html",
       "<span ng-mouseleave=\"reset()\">\n" +
       " <i ng-repeat=\"number in range\" ng-hide=\"(readonly) && (val == 0.0)\" ng-mouseenter=\"enter(number)\" ng-click=\"rate(number)\" ng-class=\"getIcon(number, val)\"></i>\n" +
