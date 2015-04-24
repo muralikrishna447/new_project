@@ -7,6 +7,6 @@
     {{container.form.connections}}
 
   .cs-container-editor-preview
-    %div(container-hero='{{container.form}}' ng-if="container.form.containerType == 'hero'")
+    %div(hero='{{container.form}}' ng-if="container.form.containerType == 'hero'")
     %div(container-list='{{container.form}}' ng-if="container.form.containerType == 'list'")
     %div(matrix content='container.form' ng-if="container.form.containerType == 'matrix'")
