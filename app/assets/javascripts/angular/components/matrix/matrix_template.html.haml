@@ -1,4 +1,4 @@
 .matrix
   .matrix-row(ng-repeat='row in content.items track by $index')
     .matrix-column(ng-repeat='item in row track by $index')
-      .matrix-item(container-matrix-item content='item' form-state='content.formState' mode='content.mode')
+      .matrix-item(matrix-item content='item' form-state='content.formState' mode='content.mode')
