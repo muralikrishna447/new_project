@@ -1,4 +1,4 @@
-@app.directive 'matrix', ['$http', 'ApiTransformer', ($http, ApiTransformer) ->
+@app.directive 'matrix', ['$http', ($http) ->
   restrict: 'A'
   scope: {
     content: '='

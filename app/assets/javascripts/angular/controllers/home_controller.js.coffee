@@ -108,33 +108,6 @@
 
 ]
 
-@app.directive 'csContainerForm', [ ->
-  restrict: 'A'
-  scope: {
-    formData: '='
-    formState: '='
-  }
-  link: (scope, element, attrs) ->
-    # console.log 'formData: ', scope.formData
-    scope.container = {}
-    scope.container.form = scope.formData
-
-    scope.includePreview = (containerType) ->
-      return "/client_views/container_#{containerType}.html"
-
-    scope.includeForm = (containerType) ->
-      return "/client_views/container_#{containerType}_form.html"
-
-    scope.toggle = ->
-      if scope.formState == 'edit'
-        scope.formState = ''
-      else if scope.formState == 'new'
-        scope.formState = ''
-      else
-        scope.formState = 'edit'
-  templateUrl: '/client_views/cs_container_form.html'
-]
-
 @app.directive 'containerHero', ['$http', ($http) ->
   restrict: 'A'
   scope: {
@@ -193,40 +166,3 @@
 
   templateUrl: '/client_views/container_list.html'
 ]
-
-# @app.directive 'containerMatrix', ['$http', ($http) ->
-#   restrict: 'A'
-#   scope: {
-#     containerMatrix: '@'
-#   }
-#   controller: ['$scope', ($scope) ->
-#     $scope.content = {}
-
-#     $scope.createItem = (content, column, row) ->
-#       console.log "Creating Item at [#{column},#{row}]"
-#       $scope.content.items.push {}
-#   ]
-#   link: (scope, $element, $attrs) ->
-#     scope.numToArray = (num) ->
-#       if num
-#         return new Array parseInt(num)
-
-#     scope.$watch 'containerMatrix', (newValue, oldValue) ->
-#       console.log 'newValue: ', newValue
-#       matrix = scope.$eval newValue
-#       scope.content = matrix
-#       switch matrix.mode
-#         when 'api'
-#           $http.get(matrix.source).success((data, status, headers, config) ->
-#             contentData = data
-#             if matrix.maxItems
-#               contentData = contentData.slice(0, matrix.maxItems)
-
-#             scope.content = contentData
-#             return
-#           ).error (data, status, headers, config) ->
-#             console.log data
-#             return
-
-#   templateUrl: '/client_views/container_matrix.html'
-# ]
