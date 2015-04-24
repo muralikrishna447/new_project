@@ -22,5 +22,5 @@
         scope.formState = ''
       else
         scope.formState = 'edit'
-  templateUrl: '/client_views/cs_container_form.html'
+  templateUrl: '/client_views/component_form.html'
 ]
