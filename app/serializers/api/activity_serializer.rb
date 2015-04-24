@@ -7,7 +7,7 @@ class Api::ActivitySerializer < ApplicationSerializer
   has_many :equipment, serializer: Api::ActivityEquipmentSerializer
 
   def image
-    filepicker_to_s3_url(object.featured_image_id)
+    filepicker_to_s3_url(object.featured_image)
   end
 
   def url
