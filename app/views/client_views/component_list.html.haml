@@ -9,5 +9,9 @@
 -#         .cs-item-description
 -#           {{item.description}}
 
-%h1 List
+%ul.list
+  %li.list-item(ng-repeat='item in content.viewData')
+    %a(ng-href='item.url')
+      {{item.image}}
+      {{item.title}}
 

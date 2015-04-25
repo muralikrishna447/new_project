@@ -32,25 +32,36 @@
 ]
 
 @app.controller 'HomeController', ['$scope', ($scope) ->
-  @content = [
+
+  @components = [
     {
-      containerType: 'hero'
-      source: 'http://localhost:3000/api/v0/activities/2434'
-    }
-    {
-      containerType: 'standard'
-      source: 'http://localhost:3000/api/v0/activities'
-      maxItems: 3
-      itemType: 'standard'
+      componentType: 'list'
+      mode: 'api'
+      metadata: {
+        source: 'http://localhost:3000/api/v0/activities'
+        mapper: {
+          title: 'title'
+          image: 'image'
+          targetURL: 'url'
+        }
+      }
     }
   ]
 
+  # @content = [
+  #   {
+  #     containerType: 'hero'
+  #     source: 'http://localhost:3000/api/v0/activities/2434'
+  #   }
+  #   {
+  #     containerType: 'standard'
+  #     source: 'http://localhost:3000/api/v0/activities'
+  #     maxItems: 3
+  #     itemType: 'standard'
+  #   }
+  # ]
+
   @example = [
-    {
-      containerType: 'list'
-      mode: 'api'
-      source: 'http://localhost:3000/api/v0/activities/2434'
-    }
     # {
     #   containerType: 'hero'
     #   mode: 'api'

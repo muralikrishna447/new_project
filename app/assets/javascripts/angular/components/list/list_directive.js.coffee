@@ -30,7 +30,15 @@
     content: '='
   }
   link: (scope, $element, $attrs) ->
-    console.log scope
+    source = scope.content.metadata.source
+    mapper = scope.content.metadata.mapper
+    $http.get(source).success((data, status, headers, config) ->
+      scope.content.viewData = data.map (item) ->
+        transformedItem = {}
+        angular.forEach mapper, (responseKey, componentKey) ->
+          transformedItem[componentKey] = item[responseKey]
+        return transformedItem
+    )
 
   templateUrl: '/client_views/component_list.html'
 ]
