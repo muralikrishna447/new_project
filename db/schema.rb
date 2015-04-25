@@ -221,6 +221,14 @@ ActiveRecord::Schema.define(:version => 20150427031537) do
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
 
+  create_table "components", :force => true do |t|
+    t.string   "component_type"
+    t.string   "mode"
+    t.hstore   "metadata"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "copies", :force => true do |t|
     t.string   "location"
     t.text     "copy"

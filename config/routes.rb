@@ -325,6 +325,7 @@ Delve::Application.routes.draw do
       resources :activities, only: [:index, :show] do
         get :likes, on: :member
       end
+      resources :components, only: [:show]
       resources :ingredients, only: [:index, :show]
       resources :passwords, only: [:update] do
         post :send_reset_email, on: :collection
