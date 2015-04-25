@@ -47,26 +47,31 @@
 
   @example = [
     {
-      containerType: 'hero'
+      containerType: 'list'
       mode: 'api'
       source: 'http://localhost:3000/api/v0/activities/2434'
-      buttonMessage: 'Hello'
-      targetURL: 'hey'
     }
-    {
-      containerType: 'matrix'
-      rows: '2'
-      columns: '3'
-      source: 'http://localhost:3000/api/v0/activities'
-      mode: 'api'
-      connections: {
-        title: 'title'
-        image: 'image'
-        buttonMessage: 'title'
-        targetURL: 'url'
-      }
-      # items: []
-    }
+    # {
+    #   containerType: 'hero'
+    #   mode: 'api'
+    #   source: 'http://localhost:3000/api/v0/activities/2434'
+    #   buttonMessage: 'Hello'
+    #   targetURL: 'hey'
+    # }
+    # {
+    #   containerType: 'matrix'
+    #   rows: '2'
+    #   columns: '3'
+    #   source: 'http://localhost:3000/api/v0/activities'
+    #   mode: 'api'
+    #   connections: {
+    #     title: 'title'
+    #     image: 'image'
+    #     buttonMessage: 'title'
+    #     targetURL: 'url'
+    #   }
+    #   # items: []
+    # }
   ]
 
   return this
