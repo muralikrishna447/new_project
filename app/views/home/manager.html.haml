@@ -1,6 +1,11 @@
 %div(ng-controller='HomeController as home')
+  %h4 Views
   %div(ng-repeat='component in home.components')
-    %div(list content='component' ng-if="component.componentType == 'list'")
+    %div(list component='component' ng-if="component.componentType == 'list'")
+
+  %h4 Views with forms
+  %div(ng-repeat='component in home.components')
+    %div(component-form component='component' form-state='component.formState')
 
 -# %div(ng-controller='HomeController as home')
 -#   {{home.example}}

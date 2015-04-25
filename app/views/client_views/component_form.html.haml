@@ -3,11 +3,12 @@
     Edit
 
   .cs-container-editor-form(ng-show="formState == 'edit' || formState == 'new'")
-    %div(ng-include="includeForm(container.form.containerType)")
-    {{container.form.connections}}
+    -# %div(ng-include="includeForm(container.form.containerType)")
+    -# %div(ng-include="includeForm(component.componentType)")
+    -# {{container.form.connections}}
+    %div(list-form component='component' ng-if="component.componentType == 'list'")
 
   .cs-container-editor-preview
     %div(hero='{{container.form}}' ng-if="container.form.containerType == 'hero'")
-    -# %div(list='{{container.form}}' ng-if="container.form.containerType == 'list'")
-    %div(list content='container.form' ng-if="container.form.containerType == 'list'")
+    %div(list component='component' ng-if="component.componentType == 'list'")
     %div(matrix content='container.form' ng-if="container.form.containerType == 'matrix'")

@@ -1,19 +1,21 @@
 @app.directive 'componentForm', [ ->
   restrict: 'A'
   scope: {
-    formData: '='
+    component: '='
     formState: '='
   }
   link: (scope, element, attrs) ->
     # console.log 'formData: ', scope.formData
-    scope.container = {}
-    scope.container.form = scope.formData
+    # scope.container = {}
+    # scope.container.form = scope.formData
 
-    scope.includePreview = (containerType) ->
-      return "/client_views/container_#{containerType}.html"
+    # scope.component = scope.formData
 
-    scope.includeForm = (containerType) ->
-      return "/client_views/component_#{containerType}_form.html"
+    scope.includePreview = (componentType) ->
+      return "/client_views/container_#{componentType}.html"
+
+    scope.includeForm = (componentType) ->
+      return "/client_views/component_#{componentType}_form.html"
 
     scope.toggle = ->
       if scope.formState == 'edit'

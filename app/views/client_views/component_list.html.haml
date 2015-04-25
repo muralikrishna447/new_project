@@ -10,7 +10,7 @@
 -#           {{item.description}}
 
 %ul.list
-  %li.list-item(ng-repeat='item in content.viewData')
+  %li.list-item(ng-repeat='item in component.metadata.content')
     %a(ng-href='item.url')
       {{item.image}}
       {{item.title}}

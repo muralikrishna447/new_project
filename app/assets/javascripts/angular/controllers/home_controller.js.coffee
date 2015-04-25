@@ -44,6 +44,7 @@
           image: 'image'
           targetURL: 'url'
         }
+        maxItems: 3
       }
     }
   ]

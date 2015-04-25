@@ -27,18 +27,49 @@
 @app.directive 'list', ['$http', ($http) ->
   restrict: 'A'
   scope: {
-    content: '='
+    component: '='
   }
   link: (scope, $element, $attrs) ->
-    source = scope.content.metadata.source
-    mapper = scope.content.metadata.mapper
-    $http.get(source).success((data, status, headers, config) ->
-      scope.content.viewData = data.map (item) ->
-        transformedItem = {}
-        angular.forEach mapper, (responseKey, componentKey) ->
-          transformedItem[componentKey] = item[responseKey]
-        return transformedItem
-    )
+    if scope.component.mode == 'api'
+      source = scope.component.metadata.source
+      mapper = scope.component.metadata.mapper
+      maxItems = scope.component.metadata.maxItems
+      $http.get(source).success((data, status, headers, config) ->
+        contentData = data
+        if maxItems
+          scope.component.metadata.response = contentData.slice(0, maxItems)
+        scope.component.metadata.content = scope.component.metadata.response.map (item) ->
+          transformedItem = {}
+          angular.forEach mapper, (responseKey, componentKey) ->
+            transformedItem[componentKey] = item[responseKey]
+          return transformedItem
+      )
 
   templateUrl: '/client_views/component_list.html'
+]
+
+@app.directive 'listForm', ['$http', ($http) ->
+  restrict: 'A'
+  scope: {
+    component: '='
+  }
+  link: (scope, $element, $attrs) ->
+    scope.$watch 'component', ((newValue, oldValue) ->
+      if scope.component.mode == 'api'
+        source = scope.component.metadata.source
+        mapper = scope.component.metadata.mapper
+        maxItems = scope.component.metadata.maxItems
+        $http.get(source).success((data, status, headers, config) ->
+          contentData = data
+          if maxItems
+            scope.component.metadata.response = contentData.slice(0, maxItems)
+          scope.component.metadata.content = scope.component.metadata.response.map (item) ->
+            transformedItem = {}
+            angular.forEach mapper, (responseKey, componentKey) ->
+              transformedItem[componentKey] = item[responseKey]
+            return transformedItem
+        )
+      ), true
+
+  templateUrl: '/client_views/component_list_form.html'
 ]
