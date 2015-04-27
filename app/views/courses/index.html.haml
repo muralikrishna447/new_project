@@ -10,7 +10,7 @@
       -# TIMDISCOUNT
       %div(ng-show="#{session[:ambassador] == 'tim' && timf_incentive_maybe_available}")
         .section-small
-        %h3 Welcome Tim Ferriss fan! You may choose any one
+        %h3 Welcome Tim Ferriss fan! Choose any one
         %h3 of our paid classes below for free.
         .section-small
       %div(ng-show="#{session[:ambassador] != 'tim' && current_user && current_user.signup_incentive_available}")
