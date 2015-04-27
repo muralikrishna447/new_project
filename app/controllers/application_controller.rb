@@ -172,6 +172,12 @@ class ApplicationController < ActionController::Base
     Digest::HMAC.hexdigest(user.id.to_s, intercom_secret, Digest::SHA256)
   end
 
+  # TIMDISCOUNT
+  helper_method :timf_incentive_maybe_available
+  def timf_incentive_maybe_available
+    ((! current_user) || current_user.timf_incentive_available)
+  end
+
 
 private
 

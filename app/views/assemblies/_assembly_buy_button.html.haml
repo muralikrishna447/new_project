@@ -10,7 +10,7 @@
   -#
   -# Primary CTA
   -#
-  %div(ng-show="(!gift_certificate && (! enrolled) && assembly.price) && (!freeTrialCode || isExpired())")
+  %div(ng-show="(!gift_certificate && (! enrolled) && assembly.price && discounted_price > 0) && (!freeTrialCode || isExpired())")
     -# Not Signed in, paid class
     .main-cta(ng-controller="LoginController" ng-show="!logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#sign-in-and-buy-button(ng-click="waitForLogin(); openModal('login')")

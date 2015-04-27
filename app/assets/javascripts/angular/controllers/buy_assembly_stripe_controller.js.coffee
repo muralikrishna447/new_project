@@ -49,8 +49,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       else
         # This is unfortunate; it is replicating logic on the server in Assembly#discounted_price
         # it can be made better but since this is kind of a skunk test and this code all needs
-        # to be thrown out anyhow, I'm going to love with it.
-        if data.user.signup_incentive_available
+        # to be thrown out anyhow, I'm going to live with it.
+        if data.user.signup_incentive_available && $scope.discounted_price > ($scope.assembly.price / 2.0)
           $scope.discounted_price = $scope.assembly.price / 2.0
 
         if $scope.waitingForFreeEnrollment
@@ -118,7 +118,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       stripeToken = null
       paymentType = null
       cardType = null
-
     $http(
       method: 'POST'
       params:
@@ -224,6 +223,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   # Free enrollment, either for a free class or redeeming a gift
   $scope.enroll = ->
     $scope.processing = true
+    console.log("BBBB")
     $http(
       method: 'POST'
       params:
@@ -252,6 +252,10 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       eventData = {'class' : $scope.assembly.title}
       mixpanel.track('Class Enrolled', eventData)
       Intercom?('trackEvent', 'free-class-enrolled', eventData)
+      if $scope.assembly.price > 0
+        mixpanel.track('TimF Incentive Enrolled', eventData)
+
+        Intercom?('trackEvent', 'timf-incentive-enrolled', eventData)
       $scope.trackEnrollmentWorkaround(eventData)
 
   $scope.shareASale = (amount, tracking) ->
@@ -284,6 +288,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     )
 
   $scope.freeTrial = ->
+
     $scope.processing = true
     $http(
       method: 'POST'
