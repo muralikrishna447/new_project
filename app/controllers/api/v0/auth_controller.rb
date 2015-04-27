@@ -49,7 +49,6 @@ module Api
       end
 
       private
-
       def ensure_authorized_service
         allowed_services = ['Messaging']
         request_auth = request.authorization()
@@ -68,7 +67,6 @@ module Api
           render json: {status: 401, message: 'Unauthorized'}, status: 401
         end
       end
-
     end
   end
 end
