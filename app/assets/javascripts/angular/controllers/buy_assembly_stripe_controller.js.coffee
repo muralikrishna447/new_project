@@ -223,7 +223,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   # Free enrollment, either for a free class or redeeming a gift
   $scope.enroll = ->
     $scope.processing = true
-    console.log("BBBB")
     $http(
       method: 'POST'
       params:
@@ -288,7 +287,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     )
 
   $scope.freeTrial = ->
-
     $scope.processing = true
     $http(
       method: 'POST'
