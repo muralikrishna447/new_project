@@ -1,0 +1,57 @@
+- content_for :title, 'Welcome Tim Ferriss Fans'
+- content_for :description, "."
+
+.row-fluid
+  = image_tag ('https://d3awvtnmmsvyot.cloudfront.net/api/file/ZB8JNwtgTpeHTt6pfQSg/convert?cache=true&rotate=exif&quality=70')
+.section
+.row-fluid.white-space
+  .span8.offset2
+    .center.section
+      %h2.text-center As a special partnership with Tim Ferriss, we've worked out a deal so that you can get any ChefSteps class for free!
+  .span3.offset4.text-center
+    .btn.btn-primary.btn-large
+      %a(href="/classes" target="_blank") GET YOUR FREE CLASS!
+.section
+.row-fluid
+  .whitespace
+    .span4.offset2.fixed
+      .text-center.section
+        = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/FmzPOjtnQsS23K16xNRR/convert?fit=max&h=200&cache=true&rotate=exif&quality=70', class: 'img-circle', alt: ''
+      %h2.text-center What is ChefSteps?
+      %p.text-center ChefSteps is a James Beard Award–winning team of chefs, filmmakers, designers, writers, and scientists on a mission to help people cook smarter. ChefSteps.com and its companion app are designed to inspire creativity and encourage expertise in the kitchen through high-quality interactive content, classes, tools, and resources that will inspire and educate cooks at any skill level.
+    .span4.fixed
+      .text-center.section
+        = image_tag 'https://d3awvtnmmsvyot.cloudfront.net/api/file/sWcVRp8QTrG2yCBUyJ0f/convert?fit=max&h=200&cache=true&rotate=exif&quality=70', class: 'img-circle', alt: ''
+      %h2.text-center What do Tim Ferriss Fans Get?
+      %p.text-center
+        %a(href="/classes" target="_blank") Choose from any of the paid classes
+        below for free access to tons of recipes, videos, and inspirational content around the topic of your choice. Then, enter our contest (details below) for a chance to win a 14-course dinner for you and three of your friends, plus Tim himself, at the ChefSteps kitchen in Seattle, WA.
+
+.row-fluid
+  .whitespace
+    .section
+      .span8.offset2.well-white-with-border
+        %h2 Enter to win
+        .section
+          = image_tag 'http://d3awvtnmmsvyot.cloudfront.net/api/file/Er69IEeQ7uUXnp3eSQrN/convert?cache=true&rotate=exif&quality=70'
+        %h3 We're having a contest for the best dish!
+        %p.section You can win dinner for four prepared by the ChefSteps team at the ChefSteps kitchen in beautiful Seattle with Tim Ferriss himself and ChefSteps co-founders Chris Young and Grant Crilly. Dinner will take place on a mutually agreeable date. Hotel accommodations will be provided for the winner and guests (up to two standard hotel rooms), but winner will be responsible for his/her own transportation to Seattle.
+        %p Winner may also forgo the dinner, if unable to travel, for $1,000 in cash.
+        %h3 Contest rules
+        %p
+          Create a dish based on what you learn from any ChefSteps class or video—free or paid—
+          %a(href="http://www.chefsteps.com/forum/posts/tim-recipe-contest" target="_blank")and post your results on our forum page dedicated to this giveaway.
+          Post should include images of your dish, details about how you created it, and share it out everywhere and tag it
+          %strong #dinnerwithtim.
+        %p The ChefSteps team will select one winner of their choice from all submissions based on the creativity of the dish, description of how the dish was created, and description of how it was promoted out on social media.
+        %p
+          Deadline is
+          %strong 12 pm Pacific on  May 27, 2015. No exceptions.
+          Winner will be selected by the ChefSteps team and notified no later than 5pm Pacific on June 5, 2015.
+        %small Void where prohibited. No purchase required. You must be over 18.
+
+/ Can we make the discovery footer shared?
+/ =render 'activities/discovery_footer'
+
+=render 'layouts/footer'
+
