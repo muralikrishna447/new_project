@@ -22,7 +22,13 @@ class Enrollment < ActiveRecord::Base
         when assembly.paid? && free_trial_hours > 0 # Paid Class and Free Trial
           free_trial_enrollment(user, ip_address, assembly, discounted_price, stripe_token, free_trial_hours)
         when assembly.paid? && free_trial_hours == 0 # Paid Class and No Free Trial
-          paid_enrollment(user, ip_address, assembly, discounted_price, stripe_token, existing_card)
+          # TIMDISCOUNT
+          if (discounted_price == 0) && user.timf_incentive_available
+            free_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
+            user.update_attributes(timf_incentive_available: false, signup_incentive_available: false)
+          else
+            paid_enrollment(user, ip_address, assembly, discounted_price, stripe_token, existing_card)
+          end
         when !assembly.paid? # Free Class
           free_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
         end
@@ -53,6 +59,7 @@ class Enrollment < ActiveRecord::Base
     end
 
     def free_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
+      logger.info("Creating free enrollment")
       @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: 0, sales_tax: 0)
     end
 

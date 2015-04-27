@@ -138,6 +138,9 @@ class Assembly < ActiveRecord::Base
       pct = 0.75
     when 'b1b01d389a50'
       pct = 0.5
+    # TIMDISCOUNT
+    when 'fb912ad989a0'
+      pct = 0
     end
 
     # New users who haven't used their enrollment incentive yet always get 50%
