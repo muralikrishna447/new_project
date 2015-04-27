@@ -115,6 +115,10 @@ Delve::Application.routes.draw do
   get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
+
+  # TIMDISCOUNT for the 'tim' part only
+
+  get 'tim' => 'courses#tim'
   match '/mp', to: redirect('/courses/spherification')
   match '/MP', to: redirect('/courses/spherification')
   match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
@@ -122,8 +126,7 @@ Delve::Application.routes.draw do
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
-  # TIMDISCOUNT for the 'tim' part only
-  get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle|timf|tim/
+  get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle|timf/
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
