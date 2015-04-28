@@ -210,11 +210,20 @@ class User < ActiveRecord::Base
   def encrypted_bloom_info
     user_json = {'userId' => self.id.to_s}.to_json
     begin
-      response = Faraday.get 'https://ancient-sea-7316.herokuapp.com/encrypt?string=' + user_json + '&secret=ilovesousvideYgpsagNPdJ&apiKey=xchefsteps'
+      # response = Faraday.get 'https://ancient-sea-7316.herokuapp.com/encrypt?string=' + user_json + '&secret=ilovesousvideYgpsagNPdJ&apiKey=xchefsteps'
+      response = Faraday.get do |req|
+        req.url 'https://ancient-sea-7316.herokuapp.com/encrypt?string=' + user_json + '&secret=ilovesousvideYgpsagNPdJ&apiKey=xchefsteps'
+        req.options[:timeout] = 5
+        req.options[:open_timeout] = 2
+      end
       puts "This is the auth for bloom: #{response.body}"
       response.body
+    rescue Faraday::Error::TimeoutError => e
+      logger.warn "Unable to encrypt info for Bloom: #{e}"
+      return ''
     rescue Faraday::Error::ConnectionFailed => e
       logger.warn "Unable to encrypt info for Bloom: #{e}"
+      return ''
     end
   end
 
