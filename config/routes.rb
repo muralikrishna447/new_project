@@ -28,6 +28,8 @@ Delve::Application.routes.draw do
   match 'whats-for-dinner', to: 'bloom#whats_for_dinner'
   match 'hot', to: 'bloom#hot'
 
+  get '/blog', to: redirect('http://blog.chefsteps.com/')
+
   resources :featured, only: [:index] do
     collection do
       get 'cover-photo' => 'featured#cover'
