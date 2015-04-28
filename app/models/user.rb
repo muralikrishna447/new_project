@@ -213,7 +213,7 @@ class User < ActiveRecord::Base
       # response = Faraday.get 'https://ancient-sea-7316.herokuapp.com/encrypt?string=' + user_json + '&secret=ilovesousvideYgpsagNPdJ&apiKey=xchefsteps'
       response = Faraday.get do |req|
         req.url 'https://ancient-sea-7316.herokuapp.com/encrypt?string=' + user_json + '&secret=ilovesousvideYgpsagNPdJ&apiKey=xchefsteps'
-        req.options[:timeout] = 5
+        req.options[:timeout] = 3
         req.options[:open_timeout] = 2
       end
       puts "This is the auth for bloom: #{response.body}"
