@@ -77,8 +77,12 @@
   %body
     - if Setting.first.forum_maintenance
       %div(style="width: 600px; margin: 100 auto; border: 1px solid #ccc; padding: 20px;")
-        %h2.text-center(style="margin: 0")
-          The forum is currently down.  Our engineers are working to resolve the issue.  Please check back soon!
+        %h3.text-center(style="margin: 0")
+          The forum is currently down.  Our engineers are working to resolve the issue.  Check in with 
+          %a(href='https://twitter.com/ChefSteps' target='_blank')
+            @chefsteps
+          for status updates.
+        %h5.text-center Last updated 04/29/15
     - else
       .forum
 
