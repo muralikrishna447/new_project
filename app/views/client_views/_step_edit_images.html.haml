@@ -7,8 +7,10 @@
   %div.anim-basic-fade(ng-show="showMediaEdit")
     .well
       %h4 Video
-      %input.nohtml(type="text" ng-model="step.youtube_id" placeholder="Youtube ID" style="width: 50%;")
-      %input.nohtml(type="text" ng-model="step.vimeo_id" placeholder="Vimeo ID" style="width: 50%;")
+      %h5.inline Youtube ID
+      %input.nohtml.inline(type="text" ng-model="step.youtube_id" placeholder="Youtube ID" style="width: 50%;")
+      %h5.inline Vimeo ID
+      %input.nohtml.inline(type="text" ng-model="step.vimeo_id" placeholder="Vimeo ID" style="width: 50%;")
       %h4 Image
       .csfilepicker(ng-model="step.image_id")
       %input.nohtml(ng-show="!!step.image_id" type="text" ng-model="step.image_description" placeholder="Image description" style="width: 100%;")
