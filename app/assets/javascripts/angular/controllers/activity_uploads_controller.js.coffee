@@ -8,7 +8,7 @@ angular.module('ChefStepsApp').controller 'ActivityUploadsController' , ["$scope
     $scope.upload.id = upload_id
     $scope.upload.likes_count = likes_count
 
-    $http.get("//ancient-sea-7316.herokuapp.com/discussions/upload_#{$scope.upload.id}?apiKey=xchefsteps").success((data, status) ->
+    $http.get("//forum-api.chefsteps.com/discussions/upload_#{$scope.upload.id}?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["commentCount"]
     )
 
