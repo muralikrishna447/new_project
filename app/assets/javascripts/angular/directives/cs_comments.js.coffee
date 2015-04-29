@@ -1,7 +1,7 @@
 @app.directive 'cscomments', ["$compile", "$rootScope", ($compile, $rootScope) ->
   restrict: 'E'
   scope: {
-    commentsType: '@' 
+    commentsType: '@'
     commentsId: '@'
     seoBot: '@'
   }
@@ -11,7 +11,7 @@
       identifier = $scope.commentsType + '_' + $scope.commentsId
       console.log "*** renderseo"
 
-      $http.get('//ancient-sea-7316.herokuapp.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
+      $http.get('//forum-api.chefsteps.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
         comments = response.data.comments
 
         angular.forEach comments, (comment) =>
