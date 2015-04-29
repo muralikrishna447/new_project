@@ -6,13 +6,13 @@ class Step < ActiveRecord::Base
 
   has_many :ingredients, class_name: StepIngredient, dependent: :destroy, inverse_of: :step
 
-  attr_accessible :title, :youtube_id, :directions, :image_id, :image_description,
+  attr_accessible :title, :youtube_id, :vimeo_id, :directions, :image_id, :image_description,
     :ingredient_ids, :activity_id, :step_order_position, :transcript, :audio_clip, :audio_title, :subrecipe_title, :hide_number, :is_aside, :presentation_hints, :extra
 
   serialize :presentation_hints, JSON
 
   include ActsAsSanitized
-  sanitize_input :title, :directions, :image_description, :extra, :youtube_id, :image_id, :image_description, :subrecipe_title, :audio_clip, :audio_title, :presentation_hints
+  sanitize_input :title, :directions, :image_description, :extra, :youtube_id, :vimeo_id, :image_id, :image_description, :subrecipe_title, :audio_clip, :audio_title, :presentation_hints
 
   scope :ordered, rank(:step_order)
   scope :activity_id_not_nil, where('activity_id IS NOT NULL')
