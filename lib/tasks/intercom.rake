@@ -44,6 +44,88 @@ namespace :intercom do
     end
   end
 
+  task :import => :environment do
+    User.find_each do |user|
+      begin
+        intercom_user = Intercom::User.find(:email => user.email)
+      rescue
+        puts "No intercom user found"
+        puts "Importing user with id:"
+        puts user.id
+        paid_classes = user.enrollments.where('price > 0')
+        paid_classes_count = paid_classes.blank? ? "0" : paid_classes.count.to_s
+
+        free_classes = user.enrollments.where(price: 0)
+        free_classes_count = free_classes.blank? ? "0" : free_classes.count.to_s
+
+        uploads = user.uploads
+        uploads_count = uploads.blank? ? "0" : uploads.count.to_s
+
+        recipes_created = user.created_activities
+        recipes_created_count = recipes_created.blank? ? "0" : recipes_created.count.to_s
+
+        recipes_published = user.created_activities.published
+        recipes_published_count = recipes_published.blank? ? "0" : recipes_published.count.to_s
+
+        begin
+          puts "Getting results for user id: "
+          puts user.id
+          interests = nil
+          equipment = nil
+          chef_type = nil
+          if user.survey_results
+            user.survey_results.each do |result|
+              if result['copy'] == "Which culinary topics interest you the most?"
+                interests = result['answer']
+              end
+              if result['copy'] == "What equipment do you have in your kitchen?"
+                equipment = result['answer']
+              end
+              if result['copy'] == "What kind of cook are you?"
+                chef_type = result['answer']
+              end
+            end
+          end
+        rescue
+          puts "Error getting survey results"
+        end
+
+        data = {
+          name: user.name,
+          email: user.email,
+          signed_up_at: user.created_at.to_time.to_i
+        }
+
+        intercom_user = Intercom::User.create(data)
+        puts "created intercom user: "
+        puts intercom_user.inspect
+
+        custom_attributes = {
+          user_id: user.id,
+          paid_classes: paid_classes_count,
+          free_classes: free_classes_count,
+          uploads: uploads_count,
+          recipes_created: recipes_created_count,
+          recipes_published: recipes_published_count,
+          interests: interests.blank? ? '': interests,
+          equipment: equipment.blank? ? '' : equipment,
+          chef_type: chef_type.blank? ? '' : chef_type
+        }
+
+        puts "custom_attributes: ", custom_attributes
+        custom_attributes.each do |key, value|
+          intercom_user.custom_attributes[key] = value
+        end
+
+        intercom_user.save
+        puts 'updated intercome user key values: '
+        puts intercom_user.inspect
+
+        puts '*'*20
+      end
+    end
+  end
+
   task :clean => :environment do
     next_page = true
     page = 1

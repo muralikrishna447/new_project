@@ -1,4 +1,4 @@
-class StripeReport
+  class StripeReport
   class << self
     def quickbooks_report(start_date, end_date)
       raise "Date format Invalid" unless start_date.match(/\d{4}-\d{2}-\d{2}/) && end_date.match(/\d{4}-\d{2}-\d{2}/)
