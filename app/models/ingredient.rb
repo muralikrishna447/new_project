@@ -18,7 +18,7 @@ class Ingredient < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :events, as: :trackable, dependent: :destroy
 
-  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields, :tag_list
+  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :vimeo_id, :text_fields, :tag_list
 
   serialize :text_fields, JSON
 
@@ -120,7 +120,7 @@ class Ingredient < ActiveRecord::Base
     end
   end
 
-  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields, :tag_list
+  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :vimeo_id, :text_fields, :tag_list
 
   def merge_in_useful_details(other)
     self.product_url = other.product_url if self.product_url.to_s == ''

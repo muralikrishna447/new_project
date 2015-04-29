@@ -70,8 +70,7 @@
       %div(ng-if='hasAV()')
         .step-video-outer.noprint(ng-if="!! step.youtube_id || !! step.vimeo_id")
           .new-step-video(id="{{'step-video-' + $index}}")
-            %csembedyoutube(video-id='{{step.youtube_id}}')
-            %csembedvimeo(video-id='{{step.vimeo_id}}')
+            %csembedvideo(vimeo-id='{{step.vimeo_id}}' youtube-id='{{step.youtube_id}}')
 
         -# Image only if there is no video
         .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")

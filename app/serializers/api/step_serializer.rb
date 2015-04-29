@@ -1,6 +1,6 @@
 class Api::StepSerializer < ApplicationSerializer
   format_keys :lower_camel
-  attributes :order, :title, :directions, :image, :is_aside, :youtube_id, :hide_number
+  attributes :order, :title, :directions, :image, :is_aside, :youtube_id, :vimeo_id, :hide_number
 
   def order
     object.step_order

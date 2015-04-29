@@ -4,7 +4,6 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
   $scope.step.presentation_hints.aside_position ?= "left"
 
   $scope.masterSelect = false
-  $scope.step.vimeo_id = "112512630"
 
   $scope.getIngredientsList = ->
     $scope.step.ingredients
