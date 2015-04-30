@@ -26,7 +26,7 @@
   template: """
     <div class="video-iframe-container">
       <div class='video-iframe embed-container'>
-        <iframe cssrcreplacer="{{'//player.vimeo.com/video/' + videoId + '?api=1&autopause=true&badge=0&byline=0&color=e25f25&portrait=0&title=0&player_id=' + playerId}}" width="1466" height="825" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        <iframe cssrcreplacer="{{'//player.vimeo.com/video/' + videoId + '?api=1&autopause=true&badge=0&byline=0&color=e25f25&portrait=0&title=0&player_id=' + playerId + '&autoplay=' + autoplay}}" width="1466" height="825" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
       </div>
     </div>
   """

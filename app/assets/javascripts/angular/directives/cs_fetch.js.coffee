@@ -19,7 +19,7 @@
       <h4 class='fetch-content-loading'>Loading...</h4>
     '''
 
-    scope.getCard = -> 
+    scope.getCard = ->
       attrs.card
 
     scope.fetched = scope.loadingMessage
@@ -28,8 +28,9 @@
       $injector.invoke([attrs.type, (resourceObject) ->
         resourceObject.get_as_json(
           {id: attrs.csFetch}
-          (value) ->         
+          (value) ->
             scope.obj = value
+            scope.obj.hasVideo = value.youtube_id || value.vimeo_id
             if attrs.part? && attrs.part != "null"
               scope.fetched = scope.obj[attrs.part] || scope.obj.text_fields?[attrs.part] || ("<span style='color: red;'>ERROR: couldn't find section named '" + attrs.part + "'</span>")
           (error) ->
