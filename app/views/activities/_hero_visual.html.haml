@@ -6,9 +6,9 @@
 -# pillarbox for no good reason til next resize. Argggh.
 .hero-visual(ng-switch="heroMedia.heroDisplayType()" ng-class="{'negative-z' : ! showHeroVisual()}")
   %csEmbedVideo(  ng-switch-when="video"
-                  youtube-id="{{activity.youtube_id}}"
-                  vimeo-id="{{activity.vimeo_id}}"
-                  container-slug="{{activity.slug}}")
+                  youtube-id="{{getObject().youtube_id}}"
+                  vimeo-id="{{getObject().vimeo_id}}"
+                  container-slug="{{getObject().slug}}")
 
   %img(ng-switch-when="image" ng-src="{{heroMedia.heroImageURL(heroImageSize || 888)}}" alt="{{getObject().title}}" title="{{getObject().title}}")
   %h4.image-loading-indicator(ng-show="editMode") Loading ...
