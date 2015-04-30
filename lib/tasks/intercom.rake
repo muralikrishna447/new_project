@@ -44,10 +44,13 @@ namespace :intercom do
     end
   end
 
-  task :import => :environment do
-    User.find_each do |user|
+  task :import, [:start_id] => :environment do |t, args|
+    start_id = args[:start_id]
+    User.where('id > ?', start_id).each do |user|
       begin
         intercom_user = Intercom::User.find(:email => user.email)
+        puts "intercom user found: #{user.email}"
+        puts '*'*20
       rescue
         puts "No intercom user found"
         puts "Importing user with id:"
@@ -98,7 +101,7 @@ namespace :intercom do
 
         intercom_user = Intercom::User.create(data)
         puts "created intercom user: "
-        puts intercom_user.inspect
+        puts intercom_user.email
 
         custom_attributes = {
           user_id: user.id,
@@ -119,7 +122,7 @@ namespace :intercom do
 
         intercom_user.save
         puts 'updated intercome user key values: '
-        puts intercom_user.inspect
+        puts intercom_user.email
 
         puts '*'*20
       end
