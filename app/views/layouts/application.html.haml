@@ -63,6 +63,10 @@
       }
 
     %script(src='//www.youtube.com/iframe_api' async='true')
+
+    -# Not async on purpose, csembedvimeo assumes loaded
+    %script(src='//f.vimeocdn.com/js/froogaloop2.min.js')
+
     // Send Bloom Encrypted User data
     - if current_user
       :javascript
