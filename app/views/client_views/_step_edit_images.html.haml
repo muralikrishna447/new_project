@@ -4,13 +4,16 @@
     Add Photo or Video
     %i.icon-chevron-up(ng-show="showMediaEdit")
     %i.icon-chevron-down(ng-show="! showMediaEdit")
-  %div.anim-basic-fade(ng-show="showMediaEdit")
+  %div.anim-basic-fade(collapse="showMediaEdit")
     .well
       %h4 Video
-      %h5.inline Youtube ID
-      %input.nohtml.inline(type="text" ng-model="step.youtube_id" placeholder="Youtube ID" style="width: 50%;")
-      %h5.inline Vimeo ID
-      %input.nohtml.inline(type="text" ng-model="step.vimeo_id" placeholder="Vimeo ID" style="width: 50%;")
+      %div
+        %h5.inline Youtube ID
+        %input.nohtml.inline(type="text" ng-model="step.youtube_id" style="width: 50%;")
+      %div
+        %h5.inline Vimeo ID
+        %input.nohtml.inline(type="text" ng-model="step.vimeo_id" placeholder="Vimeo ID" style="width: 50%;")
+      .section
       %h4 Image
       .csfilepicker(ng-model="step.image_id")
       %input.nohtml(ng-show="!!step.image_id" type="text" ng-model="step.image_description" placeholder="Image description" style="width: 100%;")
