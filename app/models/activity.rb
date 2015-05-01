@@ -150,9 +150,9 @@ class Activity < ActiveRecord::Base
   end
 
   def meta_description
-    return short_description if ! short_description.blank?
-    return description if ! description.blank?
-    return title if ! title.blank?
+    return short_description if short_description.present?
+    return description if description.present?
+    return title if title.present?
     ""
   end
 
