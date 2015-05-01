@@ -4,7 +4,7 @@
     = csrf_meta_tags
     %meta(name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width")
     %script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js")
-    %script(src="//community.chefsteps.com/export/loader.js")
+    %script(src="//cs-bloom-community-production.herokuapp.com/export/loader.js")
     %link(rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css")
     %link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
@@ -78,7 +78,7 @@
     - if Setting.first.forum_maintenance
       %div(style="width: 600px; margin: 100 auto; border: 1px solid #ccc; padding: 20px;")
         %h3.text-center(style="margin: 0")
-          The forum is currently down.  Our engineers are working to resolve the issue.  Check in with 
+          The forum is currently down.  Our engineers are working to resolve the issue.  Check in with
           %a(href='https://twitter.com/ChefSteps' target='_blank')
             @chefsteps
           for status updates.

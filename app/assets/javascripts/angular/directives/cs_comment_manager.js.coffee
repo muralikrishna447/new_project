@@ -43,7 +43,7 @@
 
     $scope.updateCommentCount = ->
       identifier = $scope.commentsType + '_' + $scope.commentsId
-      $http.get("https://forum-api.chefsteps.com/discussions/#{identifier}/count?apiKey=xchefsteps").success((data, status) ->
+      $http.get("https://cs-bloom-api-production.herokuapp.com/discussions/#{identifier}/count?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["count"]
       )
 

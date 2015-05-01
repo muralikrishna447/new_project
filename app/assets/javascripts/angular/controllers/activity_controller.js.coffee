@@ -120,7 +120,7 @@ window.deepCopy = (obj) ->
       $scope.$emit 'openLoginModal'
 
   $scope.createdByAdmin = ->
-    return true if $scope.activity.creator == null
+    return true if $scope.activity && $scope.activity.creator == null
     false
 
 
@@ -454,7 +454,7 @@ window.deepCopy = (obj) ->
   $scope.commentCount = -1
   $scope.updateCommentCount = ->
     if $scope.activity?
-      $http.get("//forum-api.chefsteps.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
+      $http.get("//cs-bloom-api-production.herokuapp.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["commentCount"]
       )
 
