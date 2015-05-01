@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150428161705) do
+ActiveRecord::Schema.define(:version => 20150501224129) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20150428161705) do
     t.boolean  "show_only_in_course",    :default => false
     t.string   "summary_tweet"
     t.string   "vimeo_id"
+    t.text     "short_description"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
