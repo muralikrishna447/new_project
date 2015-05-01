@@ -37,6 +37,8 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     console.log "INCLUDABLE: " + $scope.currentIncludable
     if ! $scope.currentIncludable?
       console.log "Couldn't find " + includable_type + " with slug " + includable_slug
+      # Redirect to the landing page if activity isn't found
+      window.location.replace $scope.course.path
       return
     includable_id = $scope.currentIncludable.includable_id
     includable_type = $scope.currentIncludable.includable_type

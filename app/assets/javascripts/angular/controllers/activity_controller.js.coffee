@@ -120,7 +120,7 @@ window.deepCopy = (obj) ->
       $scope.$emit 'openLoginModal'
 
   $scope.createdByAdmin = ->
-    return true if $scope.activity.creator == null
+    return true if $scope.activity && $scope.activity.creator == null
     false
 
 
