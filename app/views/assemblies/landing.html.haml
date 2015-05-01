@@ -25,7 +25,7 @@
     .assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
       .container
         .row
-          -if (! @no_video) && ((! @course.youtube_id.empty?) || (! @course.vimeo_id.empty?))
+          -if (! @no_video) && ((! @course.youtube_id.empty?) || (! @course.vimeo_id.blank?))
             .span8.section.noprint
               %csEmbedVideo(  youtube-id="{{assembly.youtube_id}}"
                               vimeo-id="{{assembly.vimeo_id}}"
