@@ -31,5 +31,10 @@ describe Users::RegistrationsController do
       post :create, user: {email: "test@example.com", password: "apassword", name: "Test User"}
       expect(assigns(:user).referrer_id).to eq 321
     end
+
+    it "should handle empty params" do
+      post :create
+      expect(response.status).to eq 401
+    end
   end
 end
