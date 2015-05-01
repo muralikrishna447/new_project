@@ -46,8 +46,11 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     else
       $scope.transferPossibleIngredients()
 
+  $scope.hasVideo = ->
+    (!! $scope.step.youtube_id) || (!! $scope.step.vimeo_id)
+
   $scope.hasAV = ->
-    (!! $scope.step.youtube_id) || (!! $scope.step.image_id)
+    $scope.hasVideo() || (!! $scope.step.image_id)
 
   $scope.hasIngredients = ->
     $scope.step.ingredients?.length
