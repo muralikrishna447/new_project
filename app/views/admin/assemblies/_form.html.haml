@@ -2,7 +2,7 @@
   = f.semantic_errors *f.object.errors.keys
   = f.inputs do
     = f.input :assembly_type, as: :select, collection: Assembly::ASSEMBLY_TYPE_SELECTION
-    = f.input :published, as: :boolean  
+    = f.input :published, as: :boolean
     = f.input :show_prereg_page_in_index, label: "Show pre-reg in index (only if a course and currently unpublished). Turn on once you are ready for preregistrations to happen and the appropriate aweber list has been created."
     = f.input :title
     = f.input :description
@@ -17,12 +17,13 @@
     = render '/shared/filepicker_group', label_text: "Prereg Image", param: "assembly[prereg_image_id]", value: @assembly.prereg_image_id
     / = f.input :image_id
     = f.input :youtube_id
+    = f.input :vimeo_id
     = f.input :preview_copy, hint: 'This text will appear in the preview tab.'
     = f.input :testimonial_copy, hint: 'This text will appear below the buy box'
     = f.input :upload_copy, hint: 'This text will appear on the top portion of the upload page.'
 
   %h2 Assembly Inclusions
-  
+
   #assembly_inclusions
     = f.semantic_fields_for :assembly_inclusions, @assembly.assembly_inclusions.order('assembly_inclusions.position asc'), id: 'assembly-inclusions' do |builder|
       = render 'assembly_inclusion_fields', f: builder

@@ -2,7 +2,7 @@ class Assembly < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   friendly_id :title, use: [:slugged, :history]
-  attr_accessible :description, :image_id, :prereg_image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets, :preview_copy, :testimonial_copy, :prereg_email_list_id, :description_alt
+  attr_accessible :description, :image_id, :prereg_image_id, :title, :youtube_id, :vimeo_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets, :preview_copy, :testimonial_copy, :prereg_email_list_id, :description_alt
   has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :pages, through: :assembly_inclusions, source: :includable, source_type: 'Page'
@@ -89,7 +89,7 @@ class Assembly < ActiveRecord::Base
 
   def video_count
     assembly_activities = leaf_activities
-    activity_videos_count = assembly_activities.select{|a| a.youtube_id? }.count
+    activity_videos_count = assembly_activities.select{|a| a.youtube_id? || a.vimeo_id? }.count
     activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.map(&:youtube_id).uniq.count
     activity_videos_count + activity_step_videos_count
   end
