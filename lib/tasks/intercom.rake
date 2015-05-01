@@ -46,10 +46,11 @@ namespace :intercom do
 
   task :import, [:start_id] => :environment do |t, args|
     start_id = args[:start_id]
-    User.where('id > ?', start_id).each do |user|
+    User.order('id asc').where('id > ?', start_id).each do |user|
       begin
         intercom_user = Intercom::User.find(:email => user.email)
         puts "intercom user found: #{user.email}"
+        puts "user id: #{user.id}"
         puts '*'*20
       rescue
         puts "No intercom user found"
