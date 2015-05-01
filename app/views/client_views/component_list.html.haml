@@ -12,8 +12,10 @@
 %ul.list
   %li.list-item(ng-repeat='item in component.metadata.content')
     .list-image
-      %img(ng-src="{{item.image}}")
+      %img(ng-src="{{item.image | aspect1to1}}")
     .list-text
       .list-title
         {{item.title}}
+      .list-description
+        {{item.description | words: 30}}
 

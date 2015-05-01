@@ -2,6 +2,18 @@
   (image) ->
     image + '/convert?fit=crop&h=600&w=600&quality=90&cache=true' 
 
+@app.filter 'words', ->
+  (input, words) ->
+    if isNaN(words)
+      return input
+    if words <= 0
+      return ''
+    if input
+      inputWords = input.split(/\s+/)
+      if inputWords.length > words
+        input = inputWords.slice(0, words).join(' ') + '…'
+    input
+
 @app.service 'ApiTransformer', [->
   @transform = (response) ->
     result = {}
@@ -43,6 +55,7 @@
           title: 'title'
           image: 'image'
           targetURL: 'url'
+          description: 'description'
         }
         maxItems: 3
       }
