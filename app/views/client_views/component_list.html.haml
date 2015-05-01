@@ -11,7 +11,9 @@
 
 %ul.list
   %li.list-item(ng-repeat='item in component.metadata.content')
-    %a(ng-href='item.url')
-      {{item.image}}
-      {{item.title}}
+    .list-image
+      %img(ng-src="{{item.image}}")
+    .list-text
+      .list-title
+        {{item.title}}
 
