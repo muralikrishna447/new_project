@@ -46,24 +46,27 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
     else
       $scope.transferPossibleIngredients()
 
-  $scope.hasAV = -> 
-    (!! $scope.step.youtube_id) || (!! $scope.step.image_id)
+  $scope.hasVideo = ->
+    (!! $scope.step.youtube_id) || (!! $scope.step.vimeo_id)
+
+  $scope.hasAV = ->
+    $scope.hasVideo() || (!! $scope.step.image_id)
 
   $scope.hasIngredients = ->
     $scope.step.ingredients?.length
 
   $scope.getStepOpenForEdit = ->
     $scope.editMode && $scope.stepOpenForEdit
- 
+
   $scope.toggleStepOpenForEdit = ->
     if ! $scope.stepOpenForEdit
       $rootScope.$broadcast('closeAllSteps')
     $scope.stepOpenForEdit = ! $scope.stepOpenForEdit
     $scope.stepDetailsOpenForEdit = false
-    
+
   $scope.getStepDetailsOpenForEdit = ->
     $scope.getStepOpenForEdit() && $scope.step.stepDetailsOpenForEdit
- 
+
   $scope.toggleStepDetailsOpenForEdit = ->
     # Store in step so it doesn't change when ng-if creates a new scope
     $scope.step.stepDetailsOpenForEdit = ! $scope.step.stepDetailsOpenForEdit

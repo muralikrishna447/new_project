@@ -1,6 +1,6 @@
 class IngredientSerializer < ApplicationSerializer
 
-  attributes :id, :title, :slug, :product_url, :created_at, :updated_at, :for_sale, :sub_activity_id, :density, :youtube_id, :image_id, :text_fields, :tags
+  attributes :id, :title, :slug, :product_url, :created_at, :updated_at, :for_sale, :sub_activity_id, :density, :youtube_id, :vimeo_id, :image_id, :text_fields, :tags
   attributes :frequently_used_with
   attributes :chefsteps_activities
   attributes :editing_users

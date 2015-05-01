@@ -3,7 +3,7 @@ class Activity < ActiveRecord::Base
   include PublishableModel
 
   include ActsAsSanitized
-  sanitize_input :title, :description, :timing, :yield, :summary_tweet, :youtube_id, :difficulty
+  sanitize_input :title, :description, :timing, :yield, :summary_tweet, :youtube_id, :vimeo_id, :difficulty
 
   acts_as_taggable
   acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}], :dependent => :keep, :on_destroy => true
@@ -43,7 +43,7 @@ class Activity < ActiveRecord::Base
 
   validates :title, presence: true
 
-  scope :with_video, where("youtube_id <> ''")
+  scope :with_video, where("youtube_id <> '' OR vimeo_id <> ''")
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
@@ -69,7 +69,7 @@ class Activity < ActiveRecord::Base
 
   serialize :activity_type, Array
 
-  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
+  attr_accessible :activity_type, :title, :youtube_id, :vimeo_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
   attr_accessible :show_only_in_course, :summary_tweet
 
@@ -222,7 +222,7 @@ class Activity < ActiveRecord::Base
 
   def reject_invalid_steps(step_attrs)
     step_attrs.select! do |step_attr|
-      [:directions, :image_id, :youtube_id, :title].any? do |test|
+      [:directions, :image_id, :youtube_id, :vimeo_id, :title].any? do |test|
         step_attr[test].present?
       end
     end
@@ -521,6 +521,7 @@ class Activity < ActiveRecord::Base
         title: step_attr[:title],
         directions: step_attr[:directions],
         youtube_id: step_attr[:youtube_id],
+        vimeo_id: step_attr[:vimeo_id],
         image_id: step_attr[:image_id],
         image_description: step_attr[:image_description],
         audio_clip: step_attr[:audio_clip],

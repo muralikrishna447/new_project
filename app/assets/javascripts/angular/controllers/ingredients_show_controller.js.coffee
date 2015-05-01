@@ -3,11 +3,11 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
   # This muck will go away when I do deep routing properly
   $scope.url_params = {}
   $scope.url_params = JSON.parse('{"' + decodeURI(location.search.slice(1).replace(/&/g, "\",\"").replace(/\=/g,"\":\"")) + '"}') if location.search.length > 0
-  
+
   $scope.heroMedia = csEditableHeroMediaService
   $scope.alertService = csAlertService
   $scope.densityService = csDensityService
-  $scope.csAuthentication = csAuthentication 
+  $scope.csAuthentication = csAuthentication
   $scope.csTagService = csTagService
 
   $scope.urlAsNiceText = (url) ->
@@ -31,10 +31,13 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.textFieldOptions = ["description", "alternative names", "culinary uses", "preparation tips", "suggested cooking times and temperatures", "substitutions", "purchasing tips", "storage", "production", "safety", "seasonality", "history", "references"]
 
-  $scope.ingredient = Ingredient.get({}, -> 
+  $scope.ingredient = Ingredient.get({}, ->
     mixpanel.track('Ingredient Viewed', {'context' : 'naked', 'title' : $scope.ingredient.title, 'slug' : $scope.ingredient.slug});
     $scope.startEditMode() if $scope.url_params?["edit"]? && csAuthentication.loggedIn()
   )
+
+  $scope.showHeroVisual = ->
+    true
 
   # Overall edit mode
   $scope.startEditMode = ->
@@ -77,7 +80,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   $scope.getObject = ->
     $scope.ingredient
-  
+
   csEditableHeroMediaService.getObject = $scope.getObject
 
   $scope.usedInChefStepsActivities = ->
@@ -96,7 +99,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     $scope.showHeroVisualEdit = false if old_val != new_val
   )
 
-  $scope.tagsSelect2 = -> 
+  $scope.tagsSelect2 = ->
     csTagService.getSelect2Info($scope.ingredient.tags, "/ingredients/all_tags.json")
 
   # Social share callbacks
@@ -117,13 +120,13 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
     if ! $scope.edited then "Check the info for" else "I just edited"
 
   $scope.emailSubject = ->
-    if ! $scope.edited  
-      "I thought you might like " + $scope.socialTitle() 
-    else 
+    if ! $scope.edited
+      "I thought you might like " + $scope.socialTitle()
+    else
       "I just edited " + $scope.socialTitle()
 
   $scope.emailBody = ->
-    if ! $scope.edited  
+    if ! $scope.edited
       "Hey, I thought you might like " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
     else
       "Hey, I just edited " + $scope.socialTitle() + " at ChefSteps.com. Here's the link: " + $scope.socialURL()
@@ -144,7 +147,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
       backdrop: false
       keyboard: false
       windowClass: "takeover-modal"
-      resolve: 
+      resolve:
         ingredient: -> $scope.ingredient
         csTagService: -> $scope.csTagService
       controller: ["$scope", "$modalInstance", "ingredient", "csTagService", ($scope, $modalInstance, ingredient, csTagService) ->

@@ -164,7 +164,7 @@ describe ChargesController do
       end
 
       # TIMDISCOUNT
-      context "Tim Ferriss free enrollment", focus: true do
+      context "Tim Ferriss free enrollment" do
         subject { post :create, assembly_id: assembly.id, discounted_price: 0}
 
         it "should only allow one free enrollment to a paid class" do

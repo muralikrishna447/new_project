@@ -7,7 +7,7 @@
 
   link: ($scope, $element, $attrs) ->
     $scope.csUtilities = csUtilities
-    
+
     $scope.$on 'showNellPopup', (event, _info) ->
       return if $rootScope.showMadlibPopup
       return if $rootScope.nellPopupShowing && (_info.include == $scope.info.include) && (_info.slug == $scope.info.slug)
@@ -17,11 +17,12 @@
       # This could be in a service, though I don't see all that much advantage
       $rootScope.nellPopupShowing = true
       mixpanel.track 'Nell Shown', $scope.info
-      
+
       $scope.obj = null
       if $scope.info.resourceClass
         $scope.nellLoading = true
         $scope.obj = eval($scope.info.resourceClass).get_as_json({id: $scope.info.slug}, ->
+          $scope.obj.hasVideo = $scope.obj.youtube_id || $scope.obj.vimeo_id
           $scope.nellLoading = false
         )
 

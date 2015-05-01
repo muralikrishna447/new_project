@@ -1,17 +1,20 @@
 .section-large.noprint( ng-if="heroMedia.heroDisplayType() == 'none'" )
 .standard-item(ng-cloak ng-if="editMode")
-  .btn.btn-secondary.noprint.section( ng-show="editMode && csAuthentication.isAdmin()" 
+  .btn.btn-secondary.noprint.section( ng-show="editMode && csAuthentication.isAdmin()"
                                       ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
     %i.icon-edit
     Edit hero visual
     %i.icon-chevron-up(ng-show="showHeroVisualEdit")
     %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
 
-  %div.anim-basic-fade.noprint(ng-show="showHeroVisualEdit || ! csAuthentication.isAdmin()" )
+  %div.anim-basic-fade.noprint(collapse="! (showHeroVisualEdit || ! csAuthentication.isAdmin())" )
     %div
       %div.chunk
         %h5 Youtube ID
         %input(type="text" ng-model="getObject().youtube_id")
+      %div.chunk
+        %h5 Vimeo ID
+        %input(type="text" ng-model="getObject().vimeo_id")
       %div.chunk
         %h5 Hero Image
         .csfilepicker(ng-model="getObject().image_id")

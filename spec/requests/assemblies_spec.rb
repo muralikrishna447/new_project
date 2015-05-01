@@ -92,7 +92,7 @@ describe 'Ambassador program' do
       get '/tim'
       expect(session[:coupon]).to eq('fb912ad989a0')
       expect(session[:ambassador]).to eq('tim')
-      expect(response).to render_template("courses/index")
+      expect(response).to render_template("courses/tim_landing")
     end
   end
 end
