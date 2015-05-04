@@ -120,7 +120,7 @@ window.deepCopy = (obj) ->
       $scope.$emit 'openLoginModal'
 
   $scope.createdByAdmin = ->
-    return true if $scope.activity.creator == null
+    return true if $scope.activity && $scope.activity.creator == null
     false
 
 
@@ -478,6 +478,8 @@ window.deepCopy = (obj) ->
     $scope.heroVideoDuration = -1
     if $scope.activity && csEditableHeroMediaService.hasHeroVideo()
       $http.jsonp("//gdata.youtube.com/feeds/api/videos/" + $scope.activity.youtube_id + "?v=2&callback=JSON_CALLBACK").then (response) ->
+        return if _.isEmpty(response.data)
+
         # Good god, parsing XML that contains namespaces in the elements using jquery is a compatibility disaster!
         # See http://stackoverflow.com/questions/853740/jquery-xml-parsing-with-namespaces
         # So for now I'm doing a fugly regexp parse. At least it works.

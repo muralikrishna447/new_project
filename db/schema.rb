@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150427031537) do
+ActiveRecord::Schema.define(:version => 20150501224129) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(:version => 20150427031537) do
     t.integer  "creator",                :default => 0
     t.boolean  "show_only_in_course",    :default => false
     t.string   "summary_tweet"
+    t.string   "vimeo_id"
+    t.text     "short_description"
   end
 
   add_index "activities", ["activity_order"], :name => "index_activities_on_activity_order"
@@ -144,6 +146,7 @@ ActiveRecord::Schema.define(:version => 20150427031537) do
     t.text     "prereg_image_id"
     t.string   "prereg_email_list_id"
     t.text     "description_alt"
+    t.string   "vimeo_id"
   end
 
   create_table "assembly_inclusions", :force => true do |t|
@@ -360,6 +363,7 @@ ActiveRecord::Schema.define(:version => 20150427031537) do
     t.string   "youtube_id"
     t.text     "text_fields"
     t.integer  "comments_count",  :default => 0
+    t.string   "vimeo_id"
   end
 
   add_index "ingredients", ["slug"], :name => "index_ingredients_on_slug"
@@ -563,6 +567,7 @@ ActiveRecord::Schema.define(:version => 20150427031537) do
     t.boolean  "is_aside"
     t.text     "presentation_hints", :default => "{}"
     t.text     "extra"
+    t.string   "vimeo_id"
   end
 
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"

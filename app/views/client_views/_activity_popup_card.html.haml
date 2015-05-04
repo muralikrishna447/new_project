@@ -1,27 +1,28 @@
 .nell-card
 
   .nell-card-header
-    %h6.no-margin-padding 
+    %h6.no-margin-padding
       {{obj.creator && 'COMMUNITY' || 'CHEFSTEPS'}} {{obj.activity_type[0] || "Recipe" | uppercase}}
     %h3 {{obj.title}}
 
   .nell-card-media
-    %img( ng-if='! obj.youtube_id && obj.featured_image_id' 
+    %img( ng-if='! obj.hasVideo && obj.featured_image_id'
           cs-responsive-image='obj.featured_image_id')
 
     // Hide on ! nellPopupShowing to stop video
-    %csEmbedYouTube(  ng-if='nellPopupShowing && obj.youtube_id' 
-                      video-id="{{obj.youtube_id}}" 
+    %csEmbedVideo(  ng-if='nellPopupShowing && obj.hasVideo'
+                      youtube-id="{{obj.youtube_id}}"
+                      vimeo-id="{{obj.vimeo_id}}"
                       container-slug="{{activity.slug}}"
-                      autoplay='1') 
+                      autoplay='1')
 
   .nell-card-text
     .relative
       .short-summary.section(ng-bind-html="obj.description | markdown | shortcode")
-    %a( ng-href='/activities/{{obj.slug}}' 
-        target='_blank' 
-        ng-click='doHideNellPopup()') 
+    %a( ng-href='/activities/{{obj.slug}}'
+        target='_blank'
+        ng-click='doHideNellPopup()')
       %div(ng-switch='obj.activity_type[0] || "Recipe"')
         .btn.btn-large.btn-secondary(ng-switch-when="Recipe") SEE THE RECIPE
         .btn.btn-large.btn-secondary(ng-switch-default) TELL ME MORE
-     
+
