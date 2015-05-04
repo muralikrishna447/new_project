@@ -43,7 +43,6 @@ describe 'ActivityController', ->
     it "reports error and stays in edit mode", inject ($rootScope, $controller, $httpBackend, csAlertService) ->
       $httpBackend.whenGET(/.*bloomApi.*/).respond(200, '')
       $httpBackend.whenJSONP(/.*gdata.youtube.com.*/).respond({})
-
       $httpBackend.expectPUT('/activities/1/notify_start_edit').respond(204, '')
       scope.startEditMode()
 
