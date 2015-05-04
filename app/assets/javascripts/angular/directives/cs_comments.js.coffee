@@ -5,13 +5,13 @@
     commentsId: '@'
     seoBot: '@'
   }
-  controller: [ "$scope", "$http", ($scope, $http) ->
+  controller: [ "$scope", "$http", "csConfig", ($scope, $http, csConfig) ->
     $scope.renderSeoComments = ->
       $scope.seoComments = []
       identifier = $scope.commentsType + '_' + $scope.commentsId
       console.log "*** renderseo"
 
-      $http.get('//cs-bloom-api-production.herokuapp.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
+      $http.get("#{csConfig.bloom_api_endpoint}/discussions/#{identifier}?apiKey=xchefsteps").then (response) =>
         comments = response.data.comments
 
         angular.forEach comments, (comment) =>
@@ -67,4 +67,3 @@
           scope.navigateToContent(comment.dbParams.commentsId)
     }
 ]
-

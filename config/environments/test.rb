@@ -42,4 +42,14 @@ Delve::Application.configure do
   ENV["REDISTOGO_URL"] = 'redis://localhost:6379'
 
   config.filepicker_rails.api_key = "ANAsscmHGSKqZCHObvuK6z"
+
+
+    config.bloom_api_endpoint = "http://localhost:5000"
+    config.bloom_community_endpoint = "http://localhost:9001"
+    config.bloom_env = "dev"
+
+    config.clientConfig = {}
+    config.clientConfig[:bloom_api_endpoint] = config.bloom_api_endpoint
+    config.clientConfig[:bloom_community_endpoint] = config.bloom_community_endpoint
+    config.clientConfig[:bloom_env] = 'dev'
 end
