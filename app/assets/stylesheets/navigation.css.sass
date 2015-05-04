@@ -283,9 +283,8 @@ input:focus
     display: none
 
   .cs-nav
-    position: relative
+    position: absolute
     width: 100%
-
   .cs-nav-items
     ul
       li
@@ -296,7 +295,8 @@ input:focus
     display: inline-block
     font-weight: 600
     font-size: 16px
-    z-index: 1000
+    position: relative
+    z-index: 10000
   .cs-nav-items
     ul.cs-nav-links-container
       background: white
@@ -306,17 +306,14 @@ input:focus
       position: absolute 
       padding-top: 1rem
       text-align: center
-      top: 50px !important
+      top: 75px !important
       width: 100%
-      @include transform(translateY(-120%))
-      @include transition(all 0.3s ease-in-out)
+      @include transition(all .2s ease-in-out)
       @include boxsizing
       @include shadow
 
       &.cs-nav-menu-open
-        top: 75px !important
         opacity: 1
-        @include transform(translateY(0))
 
   .cs-nav-logo
     padding-top: $baseline * 2
