@@ -2,6 +2,11 @@ module Api
   module V0
     class ComponentsController < BaseController
 
+      def index
+        @components = Component.all
+        render json: @components, each_serializer: Api::ComponentSerializer
+      end
+
       def show
         @component = Component.find(params[:id])
         render json: @component, serializer: Api::ComponentSerializer
