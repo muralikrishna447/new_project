@@ -250,19 +250,18 @@ input:focus
   height: 100%
   display: none
 
+.hide-desktop
+  display: none
+
+.hide-mobile
+  display: inline-block
+
 // MEDIA QUERIES //
 
 @media(min-width: 831px)
-  .resources-popover-arrow
-    @include popover-arrow(-5px, 40px)
-
-  .admin-popover-arrow
-    @include popover-arrow(-5px, 38px)
-
   .cs-nav-links
     position: absolute
     right: 120px
-    @include anim-basic-fade(300ms) 
   .cs-nav-items-toggle
     display: none
   .cs-nav-dropdown-menu
@@ -275,7 +274,13 @@ input:focus
           line-height: 1.6rem
           text-transform: none
 
+
 @media(max-width: 830px)
+  .hide-desktop
+    display: inline
+
+  .hide-mobile
+    display: none
 
   .cs-nav
     position: relative
@@ -287,33 +292,32 @@ input:focus
         a
           text-transform: none
           font-weight: 300
-  .resources-popover-arrow
-    display: none
-  .admin-popover-arrow
-    display: none
   .cs-nav-items-toggle
     display: inline-block
     font-weight: 600
     font-size: 16px
+    z-index: 1000
   .cs-nav-items
     ul.cs-nav-links-container
-      background: #fff
-      top: 77px !important
-      opacity: 0
-      display: none
+      background: white
       border-top: 1px solid $orange
-      @include transition(all 300ms $standard-bezier)
-    ul.cs-nav-links-container.cs-nav-menu-open
-      opacity: 1
-      display: block
-      top: 77px !important
-      @include transition(all 300ms $standard-bezier)
+      border-left: none
+      opacity: 0
+      position: absolute 
+      padding-top: 1rem
       text-align: center
-  .cs-nav-dropdown-menu
-    ul
-      // HIDING THE RESOURCES DROPDOWN ON MOBILE
-      @include hide
-      border-top: none
+      top: 50px !important
+      width: 100%
+      @include transform(translateY(-120%))
+      @include transition(all 0.3s ease-in-out)
+      @include boxsizing
+      @include shadow
+
+      &.cs-nav-menu-open
+        top: 75px !important
+        opacity: 1
+        @include transform(translateY(0))
+
   .cs-nav-logo
     padding-top: $baseline * 2
     padding-bottom: $baseline * 2
@@ -326,16 +330,6 @@ input:focus
     margin-left: 0px
   .cs-nav-items
     ul.cs-nav-links-container
-      background: white
-      position: absolute
-      top: 60px
-      right: 0px
-      width: 0px
-      border-left: none
-      border-bottom: none
-      padding-top: 1rem
-      @include boxsizing
-      width: 100%
       li
         width: 100%
         line-height: $baseline * 4
@@ -395,8 +389,8 @@ input:focus
     margin-right: 0px
 
 
-@media(max-width: 320px) and (max-height: 480px)
+@media(max-width: 320px)
   .cs-nav
-    width: calc(100% + 40px)
-    margin-left: -20px
+    width: calc(100% + 50px)
+    margin-left: -30px
 
