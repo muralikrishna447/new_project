@@ -82,6 +82,16 @@ Delve::Application.configure do
 
   DISQUS_SHORTNAME = "chefstepsproduction"
 
+  config.bloom_api_endpoint = "https://cs-bloom-api-production.herokuapp.com"
+  config.bloom_community_endpoint = "https://cs-bloom-community-production.herokuapp.com"
+  config.bloom_env = "production"
+
+  # TODO - where should this live - a helper?
+  config.clientConfig = {}
+  config.clientConfig[:bloom_api_endpoint] = config.bloom_api_endpoint
+  config.clientConfig[:bloom_community_endpoint] = config.bloom_community_endpoint
+  config.clientConfig[:bloom_env] = config.bloom_env
+
   config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
     allow do
       origins '*'

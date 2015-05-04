@@ -46,9 +46,8 @@ window.deepCopy = (obj) ->
 
 # This controller is a freaking abomination and needs to be broken up into about 5 different services and directives.
 
-@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "$anchorScroll", "$window",
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, $anchorScroll, $window) ->
-
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "csConfig", "$anchorScroll", "$window",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, csConfig, $anchorScroll, $window) ->
   $scope.heroMedia = csEditableHeroMediaService
 
   $scope.url_params = {}
@@ -454,7 +453,7 @@ window.deepCopy = (obj) ->
   $scope.commentCount = -1
   $scope.updateCommentCount = ->
     if $scope.activity?
-      $http.get("//cs-bloom-api-production.herokuapp.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
+      $http.get("#{csConfig.bloom_api_endpoint}/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["commentCount"]
       )
 
@@ -684,4 +683,3 @@ window.deepCopy = (obj) ->
   ), 3000
 
 ]
-

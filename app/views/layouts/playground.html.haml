@@ -111,7 +111,7 @@
   / = render 'layouts/app_init'
 
   = render "layouts/login_hack"
-  %script(src="//cs-bloom-community-production.herokuapp.com/export/loader.js")
+  %script(src="#{Rails.application.config.bloom_community_endpoint}/export/loader.js")
   = javascript_include_tag 'application'
   %script(type="text/javascript")
     logPerf("POST APP");

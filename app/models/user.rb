@@ -210,9 +210,8 @@ class User < ActiveRecord::Base
   def encrypted_bloom_info
     user_json = {'userId' => self.id.to_s}.to_json
     begin
-      # response = Faraday.get 'https://cs-bloom-api-production.herokuapp.com/encrypt?string=' + user_json + '&secret=ilovesousvideYgpsagNPdJ&apiKey=xchefsteps'
       response = Faraday.get do |req|
-        req.url 'https://cs-bloom-api-production.herokuapp.com/encrypt?string=' + user_json + '&secret=ilovesousvideYgpsagNPdJ&apiKey=xchefsteps'
+        req.url "#{Rails.application.config.bloom_api_endpoint}/encrypt?string=" + user_json + '&secret=ilovesousvideYgpsagNPdJ&apiKey=xchefsteps'
         req.options[:timeout] = 3
         req.options[:open_timeout] = 2
       end
