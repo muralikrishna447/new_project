@@ -31,4 +31,4 @@ angular.mock.clearDataCache = function() {
 // Mock bloom to get tests to pass
 window.Bloom = jasmine.createSpyObj('Bloom', ['configure', 'installComments']);
 
-angular.module('csConfig', []).constant('csConfig', {bloom_api_endpoint: 'bloomApi', bloom_community_endpoint: 'bloomCommunity'});
+angular.module('csConfig', []).constant('csConfig', {bloom: {env: 'test', api_endpoint: 'bloomApi', community_endpoint: 'bloomCommunity'}});

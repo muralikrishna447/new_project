@@ -16,3 +16,9 @@ staging:
 
 staging2:
   <<: *staging_bloom
+
+test:
+  bloom:
+    api_endpoint: "bloomAPI"
+    community_endpoint: "communityAPI"
+    env: "test"
