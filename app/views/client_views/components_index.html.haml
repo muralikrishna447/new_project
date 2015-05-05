@@ -1,3 +1,5 @@
 %h1 Components Manager
+%div(ng-repeat='component in components.index')
+  {{component}}
 %a(ui-sref='components.new')
   Add New Component

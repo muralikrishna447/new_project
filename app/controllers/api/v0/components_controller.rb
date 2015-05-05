@@ -13,7 +13,9 @@ module Api
       end
 
       def create
-        @component = Component.new(params[:component])
+        puts "Params: #{params}"
+        component_params = convert_hash_keys(params[:component])
+        @component = Component.new(component_params)
         if @component.save
           render json: @component, serializer: Api::ComponentSerializer
         end
@@ -23,6 +25,26 @@ module Api
         @component = Component.find(params[:id])
         if @component.update_attributes(params[:component])
           render json: @component, serializer: Api::ComponentSerializer
+        end
+      end
+
+      private
+      def underscore_key(k)
+        k.to_s.underscore.to_sym
+        # Or, if you're not in Rails:
+        # to_snake_case(k.to_s).to_sym
+      end
+
+      def convert_hash_keys(value)
+        puts "VALUE IS: #{value}"
+        case value
+          when Array
+            value.map { |v| convert_hash_keys(v) }
+            # or `value.map(&method(:convert_hash_keys))`
+          when Hash
+            Hash[value.map { |k, v| [underscore_key(k), convert_hash_keys(v)] }]
+          else
+            value
         end
       end
 
