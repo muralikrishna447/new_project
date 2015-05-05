@@ -1,7 +1,6 @@
 //=require showdown
 //=require angular-ui
 //=require angular-ui-router
-//=require angular-rails-resource
 //=require angular_select2
 //=require once
 //=require localStorageModule
