@@ -1,4 +1,4 @@
-@app.directive 'csCommentManager', ['$http', '$timeout', '$rootScope', ($http, $timeout, $rootScope) ->
+@app.directive 'csCommentManager', ['$http', '$timeout', '$rootScope', 'csConfig', ($http, $timeout, $rootScope, csConfig) ->
   restrict: 'EA'
   templateUrl: '/client_views/cs_comment_manager'
   scope: {
@@ -43,11 +43,10 @@
 
     $scope.updateCommentCount = ->
       identifier = $scope.commentsType + '_' + $scope.commentsId
-      $http.get("https://cs-bloom-api-production.herokuapp.com/discussions/#{identifier}/count?apiKey=xchefsteps").success((data, status) ->
+      $http.get("#{csConfig.bloom.api_endpoint}/discussions/#{identifier}/count?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["count"]
       )
 
     # First time
     $scope.updateCommentCount()
 ]
-

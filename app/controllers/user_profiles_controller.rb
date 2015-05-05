@@ -36,11 +36,10 @@ class UserProfilesController < ApplicationController
     @user = User.find(params[:id])
     render_unauthorized unless current_user == @user
     if @user.update_attributes(params[:user])
-      HTTParty.get("https://cs-bloom-api-production.herokuapp.com/users/#{params[:id]}/update?apiKey=xchefsteps")
+      HTTParty.get("#{Rails.application.config.shared_config[:bloom][:api_endpoint]}/users/#{params[:id]}/update?apiKey=xchefsteps")
       redirect_to user_profile_path(@user), notice: 'User profile updated!'
     else
       render 'edit'
     end
   end
 end
-
