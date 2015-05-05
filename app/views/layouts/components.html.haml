@@ -1,0 +1,9 @@
+%html
+  %head
+    = render 'layouts/cdn_js'
+    = stylesheet_link_tag 'application', media: 'all'
+    = stylesheet_link_tag 'print',  media: 'print'
+  %body(style="margin: 0;")
+    = yield
+
+  = javascript_include_tag 'application'
