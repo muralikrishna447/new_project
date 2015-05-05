@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'ActivityUploadsController' , ["$scope", "$resource", "$http", "$rootScope", "csAlertService", ($scope, $resource, $http, $rootScope, csAlertService) ->
+angular.module('ChefStepsApp').controller 'ActivityUploadsController' , ["$scope", "$resource", "$http", "$rootScope", "csAlertService", "csConfig", ($scope, $resource, $http, $rootScope, csAlertService, csConfig) ->
 
   $scope.upload = {}
   $scope.upload.likes_count = 0
@@ -8,7 +8,7 @@ angular.module('ChefStepsApp').controller 'ActivityUploadsController' , ["$scope
     $scope.upload.id = upload_id
     $scope.upload.likes_count = likes_count
 
-    $http.get("//cs-bloom-api-production.herokuapp.com/discussions/upload_#{$scope.upload.id}?apiKey=xchefsteps").success((data, status) ->
+    $http.get("#{csConfig.bloom.api_endpoint}/discussions/upload_#{$scope.upload.id}?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["commentCount"]
     )
 

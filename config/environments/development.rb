@@ -78,4 +78,3 @@ Delve::Application.configure do
 
   config.middleware.use PrettyJsonResponse
 end
-

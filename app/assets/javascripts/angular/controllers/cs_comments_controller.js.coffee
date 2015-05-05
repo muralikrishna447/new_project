@@ -1,8 +1,8 @@
-@app.run ['$http', '$q','$rootScope', ($http, $q, $rootScope) ->
+@app.run ['$http', '$q','$rootScope', 'csConfig', ($http, $q, $rootScope, csConfig) ->
   Bloom.configure {
     apiKey: 'xchefsteps'
     auth: window.encryptedUser
     user: window.chefstepsUserId or null
-    env: 'production'
+    env: csConfig.bloom.env
   }
 ]

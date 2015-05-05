@@ -95,4 +95,3 @@ Delve::Application.configure do
 
   DISQUS_SHORTNAME = "delvestaging"
 end
-

@@ -120,5 +120,15 @@ module Delve
     if Rails.env.test? || Rails.env.development?
       ENV["AUTH_SECRET_KEY"] = File.read("config/rsa_test.pem")
     end
+
+    # In development set to staging unless explicitely overridden
+    bloom_env = ENV["BLOOM_ENV"] || Rails.env
+    if Rails.env == "development"  && !ENV["BLOOM_ENV"]
+      bloom_env = "staging"
+    end
+
+    shared_config = HashWithIndifferentAccess.new(YAML.load_file(Rails.root.join('config/shared_config.yml')))
+    config.shared_config = shared_config[Rails.env]
+    config.shared_config[:bloom] = shared_config[bloom_env][:bloom]
   end
 end

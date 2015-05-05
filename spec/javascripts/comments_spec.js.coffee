@@ -7,7 +7,6 @@ describe "cscomments", ->
   # you need to indicate your module in a test
   beforeEach(angular.mock.module('ChefStepsApp'))
 
-
   beforeEach angular.mock.inject(($compile, $rootScope, $httpBackend) ->
     $_compile = $compile
     $_rootScope = $rootScope
