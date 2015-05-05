@@ -22,7 +22,7 @@
   ]
   link: (scope, element, attrs) ->
     scope.$watch 'commentsId', (newValue, oldValue) ->
-      if newValue
+      if newValue && typeof Bloom != 'undefined'
         if scope.seoBot == 'true'
           scope.renderSeoComments()
         else
@@ -59,11 +59,12 @@
         window.location = response.data.url
   ]
   link: (scope, element, attrs) ->
-    Bloom.installNotifs {
-      el: element[0]
-      on:
-        navigateComment: (comment) ->
-          console.log 'navigation to comment: ', comment.dbParams.commentsId
-          scope.navigateToContent(comment.dbParams.commentsId)
-    }
+    if typeof Bloom != 'undefined'
+      Bloom.installNotifs {
+        el: element[0]
+        on:
+          navigateComment: (comment) ->
+            console.log 'navigation to comment: ', comment.dbParams.commentsId
+            scope.navigateToContent(comment.dbParams.commentsId)
+      }
 ]

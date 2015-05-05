@@ -12,8 +12,9 @@ production:
 
 staging:
   bloom: &staging_bloom
-    <<: *production_bloom
-
+    api_endpoint: "https://cs-bloom-api-staging.herokuapp.com"
+    community_endpoint: "https://cs-bloom-community-staging.herokuapp.com"
+    env: "staging"
 staging2:
   <<: *staging_bloom
 
