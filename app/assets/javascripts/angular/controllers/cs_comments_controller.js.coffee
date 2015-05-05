@@ -3,6 +3,6 @@
     apiKey: 'xchefsteps'
     auth: window.encryptedUser
     user: window.chefstepsUserId or null
-    env: csConfig.bloom_env
+    env: csConfig.bloom.env
   }
 ]

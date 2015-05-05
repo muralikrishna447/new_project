@@ -58,12 +58,6 @@ Delve::Application.configure do
   # DISQUS_SHORTNAME = "delvestaging"
   DISQUS_SHORTNAME = "chefstepsproduction"
 
-  config.shared_config = {}
-  config.shared_config[:bloom_api_endpoint] = "http://localhost:5000"
-  config.shared_config[:bloom_community_endpoint] = "http://localhost:9001"
-  # Bloom env is necessary since bloom code uses "dev" and rails env is "development"
-  config.shared_config[:bloom_env] = "dev"
-
   # Bullet Gem
   config.after_initialize do
     Bullet.enable = true

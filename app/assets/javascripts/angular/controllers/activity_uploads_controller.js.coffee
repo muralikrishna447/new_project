@@ -8,7 +8,7 @@ angular.module('ChefStepsApp').controller 'ActivityUploadsController' , ["$scope
     $scope.upload.id = upload_id
     $scope.upload.likes_count = likes_count
 
-    $http.get("#{csConfig.bloom_api_endpoint}/discussions/upload_#{$scope.upload.id}?apiKey=xchefsteps").success((data, status) ->
+    $http.get("#{csConfig.bloom.api_endpoint}/discussions/upload_#{$scope.upload.id}?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["commentCount"]
     )
 

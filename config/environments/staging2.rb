@@ -94,9 +94,4 @@ Delve::Application.configure do
   # end
 
   DISQUS_SHORTNAME = "delvestaging"
-
-  config.shared_config = {}
-  config.shared_config[:bloom_api_endpoint] = "https://cs-bloom-api-production.herokuapp.com"
-  config.shared_config[:bloom_community_endpoint] = "https://cs-bloom-community-production.herokuapp.com"
-  config.shared_config[:bloom_env] = "production"
 end
