@@ -24,7 +24,7 @@
 #   templateUrl: '/client_views/component_list.html'
 # ]
 
-@app.directive 'list', ['$http', ($http) ->
+@componentsManager.directive 'list', ['$http', ($http) ->
   restrict: 'A'
   scope: {
     component: '='
@@ -48,7 +48,7 @@
   templateUrl: '/client_views/component_list.html'
 ]
 
-@app.directive 'listForm', ['$http', ($http) ->
+@componentsManager.directive 'listForm', ['$http', ($http) ->
   restrict: 'A'
   scope: {
     component: '='

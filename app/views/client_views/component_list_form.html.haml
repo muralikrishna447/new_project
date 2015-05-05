@@ -4,7 +4,7 @@
 
   %input(type='radio' ng-model='component.mode' value='api')
     API
-  
+
   %input(type='radio' ng-model='component.mode' value='custom')
     Custom
 
@@ -13,7 +13,7 @@
     %input(ng-model='component.metadata.source')
 
     %div( component-mapper
-          connections='component.metadata.mapper' 
+          connections='component.metadata.mapper'
           component-keys="['title', 'image', 'targetURL', 'description']"
           response='component.metadata.response'
           component='component'
@@ -25,6 +25,3 @@
   %div(ng-if="component.mode=='custom'")
     %label Max number of items
     %input(ng-model='component.metadata.maxItems')
-
-  %button(type='submit')
-    submit

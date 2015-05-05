@@ -317,7 +317,9 @@ Delve::Application.routes.draw do
     get :edit_from_email, on: :collection
   end
 
-  resources :components, only: [:index]
+  # resources :components, only: [:index]
+  match '/components', to: 'components#index'
+  match '/components/*path', to: 'components#index'
 
   namespace :api do
     namespace :v0 do
