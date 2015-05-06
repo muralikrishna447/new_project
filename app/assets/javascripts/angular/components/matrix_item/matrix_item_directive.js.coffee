@@ -1,4 +1,4 @@
-@app.directive 'matrixItem', ['$http', ($http) ->
+@components.directive 'matrixItem', ['$http', ($http) ->
   restrict: 'A'
   scope: {
     content: '='

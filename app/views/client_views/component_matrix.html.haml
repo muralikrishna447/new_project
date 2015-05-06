@@ -1,5 +1,4 @@
 .matrix
   .matrix-row(ng-repeat='row in items track by $index')
     .matrix-column(ng-repeat='item in row track by $index')
-      {{item}}
       .matrix-item(matrix-item content='item' form-state='content.formState' mode='content.mode')
