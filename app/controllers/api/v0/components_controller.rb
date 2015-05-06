@@ -31,9 +31,11 @@ module Api
 
       private
       def underscore_key(k)
-        k.to_s.underscore.to_sym
-        # Or, if you're not in Rails:
-        # to_snake_case(k.to_s).to_sym
+        if k == 'componentType'
+          k.to_s.underscore.to_sym
+        else
+          k
+        end
       end
 
       def convert_hash_keys(value)

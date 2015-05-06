@@ -1,34 +1,49 @@
 %strong Container Hero Form
 
-%form(ng-submit='container.submit()')
-  %input(type='hidden' ng-model='container.form.containerType' ng-init="container.form.containerType='hero'")
+%input(type='radio' ng-model='component.form.mode' value='api')
+  API
 
-  %input(type='radio' ng-model='container.form.mode' value='api')
-    API
-  
-  %input(type='radio' ng-model='container.form.mode' value='custom')
-    Custom
+%input(type='radio' ng-model='component.form.mode' value='custom')
+  Custom
 
-  // API Mode
-  %div(ng-if="container.form.mode=='api'")
-    %label Source
-    %input(ng-model='container.form.source')
+-# // API Mode
+-# %div(ng-if="component.form.mode=='api'")
+-#   %label Source
+-#   %input(ng-model='component.form.metadata.source')
+-#
+-# // Custom Mode
+-# %div(ng-if="component.form.mode=='custom'")
+-#   %label Image
+-#   %input(ng-model='component.form.image')
+-#
+-#   %label Title
+-#   %input(ng-model='component.form.title')
 
-  // Custom Mode
-  %div(ng-if="container.form.mode=='custom'")
-    %label Image
-    %input(ng-model='container.form.image')
 
-    %label Title
-    %input(ng-model='container.form.title')
+// API Mode
+%div(ng-if="component.form.mode == 'api'")
+  %label Source
+  %input(ng-model='component.form.metadata.source')
 
-  // All Modes
-  %label Button Message
-  %input(ng-model='container.form.buttonMessage')
+  %div( component-mapper
+        connections='component.form.metadata.mapper'
+        component-keys="['title', 'image', 'url']"
+        response='component.response'
+        component='component'
+        ng-show='component.form.metadata.source' )
+
+// Custom Mode
+%div(ng-if="component.form.mode=='custom'")
+  %label Image
+  %input(ng-model='component.form.metadata.content.image')
+
+  %label Title
+  %input(ng-model='component.form.metadata.content.title')
+
 
   %label Button Target URL
-  %input(ng-model='container.form.targetURL')
+  %input(ng-model='component.form.metadata.content.url')
 
-  %div
-    %button(type='submit')
-      submit
+// All Modes
+%label Button Message
+%input(ng-model='component.form.metadata.content.buttonMessage')

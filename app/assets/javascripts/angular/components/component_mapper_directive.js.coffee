@@ -8,12 +8,6 @@
   }
 
   link: (scope, element, attrs) ->
-    # scope.connections = {}
-    # $http.get('http://localhost:3000/api/v0/activities/2434').success((data, status, headers, config) ->
-    #   scope.responseKeys = Object.keys data
-
-    # )
-    # scope.connections = {}
     scope.responseKeys = {}
 
     scope.$watch 'response', (newValue, oldValue) ->
