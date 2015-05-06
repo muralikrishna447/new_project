@@ -1,4 +1,4 @@
-@componentsManager = angular.module 'ComponentsManager', ['ui.router']
+@componentsManager = angular.module 'ComponentsManager', ['ui.router', 'ngResource']
 
 @componentsManager.config ['$locationProvider', ($locationProvider) ->
 
@@ -27,4 +27,10 @@
       controller: 'ComponentsNewController'
       controllerAs: 'component'
       templateUrl: '/client_views/components_new.html'
+
+    .state 'components.edit'
+      url: '/edit/:id'
+      controller: 'ComponentsEditController'
+      controllerAs: 'component'
+      templateUrl: '/client_views/components_edit.html'
 ]

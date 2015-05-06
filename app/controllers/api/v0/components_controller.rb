@@ -23,7 +23,8 @@ module Api
 
       def update
         @component = Component.find(params[:id])
-        if @component.update_attributes(params[:component])
+        component_params = convert_hash_keys(params[:component])
+        if @component.update_attributes(component_params)
           render json: @component, serializer: Api::ComponentSerializer
         end
       end

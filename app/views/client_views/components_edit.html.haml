@@ -1,0 +1,20 @@
+%h1 Edit Component
+%form#component-form
+  %div
+    %label
+      Name
+    %input(ng-model='component.componentForm.name')
+
+  %div
+    %button(ng-click="component.componentForm.componentType = 'hero'")
+      Hero
+    %button(ng-click="component.componentForm.componentType = 'list'")
+      List
+    %button(ng-click="component.componentForm.componentType = 'matrix'")
+      Matrix
+
+  %div(list-form component='component.componentForm' ng-if="component.componentForm.componentType == 'list'")
+  %input(type='submit' value='Save' ng-click='component.save(component.componentForm)')
+
+%a.btn.btn-secondary(ui-sref='components.index')
+  Cancel
