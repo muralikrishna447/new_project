@@ -1,30 +1,26 @@
 %strong Container Matrix
-%form(ng-submit='container.submit()')
-  %input(type='hidden' ng-model='container.form.containerType' ng-init="container.form.containerType='matrix'")
 
-  %input(type='radio' ng-model='container.form.mode' value='api')
-    API
-  
-  %input(type='radio' ng-model='container.form.mode' value='custom')
-    Custom
+%input(type='radio' ng-model='component.form.mode' value='api')
+  API
 
-  %div(ng-if="container.form.mode=='api'")
-    %label Source
-    %input(ng-model='container.form.source')
-    %div( component-mapper
-          connections='container.form.connections' 
-          component-keys="['title', 'image', 'buttonMessage', 'targetURL']"
-          response='container.form.response'
-          component='container.form'
-          ng-show='container.form.source' )
+%input(type='radio' ng-model='component.form.mode' value='custom')
+  Custom
 
-  %div
-    %label Rows
-    %input(ng-model='container.form.rows')
+%div(ng-if="component.form.mode=='api'")
+  %label Source
+  %input(ng-model='component.form.metadata.source')
 
-  %div
-    %label Rows
-    %input(ng-model='container.form.columns')
+  %div( component-mapper
+        connections='component.form.metadata.mapper'
+        component-keys="['title', 'image', 'buttonMessage', 'url']"
+        response='component.response'
+        component='component'
+        ng-show='component.form.metadata.source' )
 
-  %button(type='submit')
-    submit
+%div
+  %label Rows
+  %input(ng-model='component.form.metadata.rows')
+
+%div
+  %label Columns
+  %input(ng-model='component.form.metadata.columns')
