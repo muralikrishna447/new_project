@@ -4,16 +4,16 @@
   %div
     %label
       Name
-    %input(ng-model='component.componentForm.name')
+    %input(ng-model='component.form.name')
 
   %div
-    %button(ng-click="component.componentForm.componentType = 'hero'")
+    %button(ng-click="component.form.componentType = 'hero'")
       Hero
-    %button(ng-click="component.componentForm.componentType = 'list'")
+    %button(ng-click="component.form.componentType = 'list'")
       List
-    %button(ng-click="component.componentForm.componentType = 'matrix'")
+    %button(ng-click="component.form.componentType = 'matrix'")
       Matrix
 
-  %div(list-form component='component.componentForm' ng-if="component.componentForm.componentType == 'list'")
+  %div(list-form component='component' ng-if="component.form.componentType == 'list'")
 
-  %input(type='submit' value='Save' ng-click='component.create(component.componentForm)')
+  %input(type='submit' value='Save' ng-click='component.create(component.form)')

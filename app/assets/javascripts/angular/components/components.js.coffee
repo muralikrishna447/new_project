@@ -36,7 +36,7 @@
 @componentsManager.controller 'ComponentsEditController', ['Component', '$stateParams', '$state', (Component, $stateParams, $state) ->
 
   Component.show {id: $stateParams.id}, (component) =>
-    @componentForm = component
+    @form = component
 
   @save = (component) ->
     componentParams = component

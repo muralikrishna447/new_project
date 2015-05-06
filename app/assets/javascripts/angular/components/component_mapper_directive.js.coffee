@@ -1,4 +1,4 @@
-@app.directive 'componentMapper', ['$http', ($http) ->
+@componentsManager.directive 'componentMapper', ['$http', ($http) ->
   restrict: 'A'
   scope: {
     response: '='
@@ -27,8 +27,13 @@
           scope.responseKeys = Object.keys(newValue)
 
     scope.$watch 'connections', (newValue, oldValue) ->
-      if newValue
-        scope.component.connections = newValue
+      console.log 'newValue: ', newValue
+      console.log 'oldValue: ', oldValue
+      console.log 'component: ', scope.component
+      if newValue && typeof newValue != 'undefined'
+        scope.component.form.metadata.mapper = newValue
+      else
+        scope.component.form.metadata.mapper = {}
 
   templateUrl: '/client_views/component_mapper.html'
 ]

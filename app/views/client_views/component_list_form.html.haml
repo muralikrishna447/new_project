@@ -1,27 +1,26 @@
 %strong Container List Form
-%form(ng-submit='component.submit()')
-  %input(type='hidden' ng-model='component.componentType' ng-init="component.componentType='list'")
+%input(type='hidden' ng-model='component.form.componentType' ng-init="component.form.componentType='list'")
 
-  %input(type='radio' ng-model='component.mode' value='api')
-    API
+%input(type='radio' ng-model='component.form.mode' value='api')
+  API
 
-  %input(type='radio' ng-model='component.mode' value='custom')
-    Custom
+%input(type='radio' ng-model='component.form.mode' value='custom')
+  Custom
 
-  %div(ng-if="component.mode == 'api'")
-    %label Source
-    %input(ng-model='component.metadata.source')
+%div(ng-if="component.form.mode == 'api'")
+  %label Source
+  %input(ng-model='component.form.metadata.source')
 
-    %div( component-mapper
-          connections='component.metadata.mapper'
-          component-keys="['title', 'image', 'targetURL', 'description']"
-          response='component.metadata.response'
-          component='component'
-          ng-show='component.metadata.source' )
+  %div( component-mapper
+        connections='component.form.metadata.mapper'
+        component-keys="['title', 'image', 'url', 'description']"
+        response='component.response'
+        component='component'
+        ng-show='component.form.metadata.source' )
 
-    %label Max number of items
-    %input(ng-model='component.metadata.maxItems')
+  %label Max number of items
+  %input(ng-model='component.form.metadata.maxitems')
 
-  %div(ng-if="component.mode=='custom'")
-    %label Max number of items
-    %input(ng-model='component.metadata.maxItems')
+%div(ng-if="component.form.mode=='custom'")
+  %label Max number of items
+  %input(ng-model='component.form.metadata.maxitems')

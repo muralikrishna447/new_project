@@ -30,20 +30,24 @@
     component: '='
   }
   link: (scope, $element, $attrs) ->
-    if scope.component.mode == 'api'
-      source = scope.component.metadata.source
-      mapper = scope.component.metadata.mapper
-      maxItems = scope.component.metadata.maxItems
-      $http.get(source).success((data, status, headers, config) ->
-        contentData = data
-        if maxItems
-          scope.component.metadata.response = contentData.slice(0, maxItems)
-        scope.component.metadata.content = scope.component.metadata.response.map (item) ->
-          transformedItem = {}
-          angular.forEach mapper, (responseKey, componentKey) ->
-            transformedItem[componentKey] = item[responseKey]
-          return transformedItem
-      )
+    scope.$watch 'component', ((newValue, oldValue) ->
+      if scope.component.mode == 'api'
+        source = scope.component.metadata.source
+        mapper = scope.component.metadata.mapper
+        maxItems = scope.component.metadata.maxItems
+        $http.get(source).success((data, status, headers, config) ->
+          contentData = data
+          if maxItems
+            scope.response = contentData.slice(0, maxItems)
+          else
+            scope.response = contentData
+          scope.content = scope.response.map (item) ->
+            transformedItem = {}
+            angular.forEach mapper, (responseKey, componentKey) ->
+              transformedItem[componentKey] = item[responseKey]
+            return transformedItem
+        )
+    ), true
 
   templateUrl: '/client_views/component_list.html'
 ]
@@ -55,15 +59,17 @@
   }
   link: (scope, $element, $attrs) ->
     scope.$watch 'component', ((newValue, oldValue) ->
-      if scope.component.mode == 'api'
-        source = scope.component.metadata.source
-        mapper = scope.component.metadata.mapper
-        maxItems = scope.component.metadata.maxItems
+      if scope.component.form.mode == 'api'
+        source = scope.component.form.metadata.source
+        mapper = scope.component.form.metadata.mapper
+        maxItems = scope.component.form.metadata.maxItems
         $http.get(source).success((data, status, headers, config) ->
           contentData = data
           if maxItems
-            scope.component.metadata.response = contentData.slice(0, maxItems)
-          scope.component.metadata.content = scope.component.metadata.response.map (item) ->
+            scope.component.response = contentData.slice(0, maxItems)
+          else
+            scope.component.response = contentData
+          scope.component.content = scope.component.response.map (item) ->
             transformedItem = {}
             angular.forEach mapper, (responseKey, componentKey) ->
               transformedItem[componentKey] = item[responseKey]
