@@ -30,6 +30,7 @@
   template:
     """
       <div>
+        <div hero component='component' ng-if="component.componentType=='hero'"></div>
         <div list component='component' ng-if="component.componentType=='list'"></div>
       </div>
     """
