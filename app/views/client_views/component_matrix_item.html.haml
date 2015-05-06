@@ -16,7 +16,7 @@
 
       %input(type='radio' ng-model='content.mode' value='api')
         API
-      
+
       %input(type='radio' ng-model='content.mode' value='custom')
         Custom
 
@@ -42,6 +42,7 @@
 
 .matrix-content(ng-if="formState!='edit'" ng-href='{{content.targetURL}}')
   .matrix-button
-    {{content.buttonMessage}}
+    %a(ng-href='{{content.url}}')
+      {{content.buttonMessage}}
   .matrix-image
     %img(ng-src='{{content.image | aspect1to1 }}')

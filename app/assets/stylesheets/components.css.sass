@@ -62,8 +62,16 @@
       @include flex(0 0 80px)
     .list-text
       margin-left: 10px
+      width: 100%
       .list-title
         font-weight: bold
+      .list-cta
+        font-weight: bold
+        text-align: right
+        a
+          color: black
+        .cs-icon-arrow-small-dims
+          @include transform(scale(-1))
 
 // Matrix //
 
@@ -98,6 +106,8 @@
       z-index: 1
       text-align: center
       @include transition(all 300ms)
+      a
+        color: white
       &:hover
         border: 2px solid $orange
         background-color: $orange

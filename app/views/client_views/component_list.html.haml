@@ -18,3 +18,7 @@
         {{item.title}}
       .list-description
         {{item.description | sentences: 2}}
+      .list-cta
+        %a(ng-href='{{item.url}}')
+          See the Recipe
+          %i(cs-icon='arrow-small')
