@@ -1,4 +1,6 @@
-@componentsManager = angular.module 'ComponentsManager', ['ui.router', 'ngResource']
+@components = angular.module 'cs.components', []
+
+@componentsManager = angular.module 'ComponentsManager', ['ui.router', 'ngResource', 'cs.components']
 
 @componentsManager.config ['$locationProvider', ($locationProvider) ->
 

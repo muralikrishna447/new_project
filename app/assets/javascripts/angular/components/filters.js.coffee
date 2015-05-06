@@ -1,8 +1,8 @@
-@componentsManager.filter 'aspect1to1', ->
+@components.filter 'aspect1to1', ->
   (image) ->
     image + '/convert?fit=crop&h=600&w=600&quality=90&cache=true'
 
-@componentsManager.filter 'words', ->
+@components.filter 'words', ->
   (input, words) ->
     if isNaN(words)
       return input
@@ -14,7 +14,7 @@
         input = inputWords.slice(0, words).join(' ') + '…'
     input
 
-@componentsManager.filter 'sentences', ->
+@components.filter 'sentences', ->
   (input, sentences) ->
     if isNaN(sentences)
       return input

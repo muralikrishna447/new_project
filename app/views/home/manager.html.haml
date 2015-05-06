@@ -1,35 +1,37 @@
-%div(ng-controller='HomeController as home')
-  %h4 Views
-  %div(ng-repeat='component in home.components')
-    %div(list component='component' ng-if="component.componentType == 'list'")
-
-  %h4 Views with forms
-  %div(ng-repeat='component in home.components')
-    %div(component-form component='component' form-state='component.formState')
-
 -# %div(ng-controller='HomeController as home')
--#   {{home.example}}
--#   %div(ng-repeat='container in home.example')
+-#   %h4 Views
+-#   %div(ng-repeat='component in home.components')
+-#     %div(list component='component' ng-if="component.componentType == 'list'")
+-#
+-#   %h4 Views with forms
+-#   %div(ng-repeat='component in home.components')
+-#     %div(component-form component='component' form-state='component.formState')
+-#
+-# -# %div(ng-controller='HomeController as home')
+-# -#   {{home.example}}
+-# -#   %div(ng-repeat='container in home.example')
+-# -#     %div(component-form form-data='container' form-state='container.formState')
+-#
+-# .home-manager(ng-controller='HomeManagerController as manager')
+-#   // Components
+-#   %div(ng-repeat='container in manager.content')
 -#     %div(component-form form-data='container' form-state='container.formState')
+-#
+-#   // Menu Toggle
+-#   .home-manager-add-toggle(ng-click='manager.addToggle()' ng-cloak)
+-#     %div(ng-if='!manager.showAddMenu')
+-#       Add
+-#     %div(ng-if='manager.showAddMenu')
+-#       Cancel
+-#
+-#   // Menu to add new components
+-#   .home-manager-add-menu-container(ng-cloak ng-class="{true: 'active', false: 'inactive'}[manager.showAddMenu]")
+-#     .home-manager-add-menu
+-#       .home-manager-add-item(ng-click="manager.add('hero')")
+-#         Hero
+-#       .home-manager-add-item(ng-click="manager.add('list')")
+-#         List
+-#       .home-manager-add-item(ng-click="manager.add('matrix', {rows:2, columns: 3})")
+-#         Matrix
 
-.home-manager(ng-controller='HomeManagerController as manager')
-  // Components
-  %div(ng-repeat='container in manager.content')
-    %div(component-form form-data='container' form-state='container.formState')
-
-  // Menu Toggle
-  .home-manager-add-toggle(ng-click='manager.addToggle()' ng-cloak)
-    %div(ng-if='!manager.showAddMenu')
-      Add
-    %div(ng-if='manager.showAddMenu')
-      Cancel
-
-  // Menu to add new components
-  .home-manager-add-menu-container(ng-cloak ng-class="{true: 'active', false: 'inactive'}[manager.showAddMenu]")
-    .home-manager-add-menu
-      .home-manager-add-item(ng-click="manager.add('hero')")
-        Hero
-      .home-manager-add-item(ng-click="manager.add('list')")
-        List
-      .home-manager-add-item(ng-click="manager.add('matrix', {rows:2, columns: 3})")
-        Matrix
+%div(component-load component-id='test-list')
