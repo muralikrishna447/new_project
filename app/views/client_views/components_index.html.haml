@@ -7,7 +7,7 @@
       %th slug
       %th type
       %th action
-    %tr(ng-repeat='component in components.index')
+    %tr(ng-repeat="component in components.index | orderBy: 'id'")
       %td
         {{component.id}}
       %td

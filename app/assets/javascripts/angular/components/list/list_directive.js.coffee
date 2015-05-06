@@ -31,22 +31,23 @@
   }
   link: (scope, $element, $attrs) ->
     scope.$watch 'component', ((newValue, oldValue) ->
-      if scope.component.mode == 'api'
-        source = scope.component.metadata.source
-        mapper = scope.component.metadata.mapper
-        maxItems = scope.component.metadata.maxItems
-        $http.get(source).success((data, status, headers, config) ->
-          contentData = data
-          if maxItems
-            scope.response = contentData.slice(0, maxItems)
-          else
-            scope.response = contentData
-          scope.content = scope.response.map (item) ->
-            transformedItem = {}
-            angular.forEach mapper, (responseKey, componentKey) ->
-              transformedItem[componentKey] = item[responseKey]
-            return transformedItem
-        )
+      if newValue
+        if scope.component.mode == 'api'
+          source = scope.component.metadata.source
+          mapper = scope.component.metadata.mapper
+          maxItems = scope.component.metadata.maxItems
+          $http.get(source).success((data, status, headers, config) ->
+            contentData = data
+            if maxItems
+              scope.response = contentData.slice(0, maxItems)
+            else
+              scope.response = contentData
+            scope.content = scope.response.map (item) ->
+              transformedItem = {}
+              angular.forEach mapper, (responseKey, componentKey) ->
+                transformedItem[componentKey] = item[responseKey]
+              return transformedItem
+          )
     ), true
 
   templateUrl: '/client_views/component_list.html'
