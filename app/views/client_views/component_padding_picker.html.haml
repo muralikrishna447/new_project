@@ -1,0 +1,8 @@
+.component-styles-color-picker
+  .color-current(ng-if="componentModel.padding.length > 0" ng-click='toggleOptions()')
+    .color-text
+      {{componentModel.padding}}
+  .color-options(ng-show='showOptions')
+    .color-option(ng-repeat='padding in paddingOptions' ng-click="setPadding(padding)")
+      .color-text
+        {{padding}}

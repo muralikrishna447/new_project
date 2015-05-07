@@ -25,3 +25,8 @@
 %fieldset(ng-if="component.form.mode=='custom'")
   %label Max number of items
   %input(type='number' ng-model='component.form.metadata.maxitems')
+
+.component-styles
+  .component-styles-title Styles
+  %div Padding:
+  %div(component-padding-picker component-model='component.form.metadata.styles.list')

@@ -1,15 +1,4 @@
--# .cs-container-standard
--#   .cs-item-container(ng-repeat='item in content')
--#     .cs-item-standard
--#       .cs-item-content
--#         .cs-item-image
--#           %img(ng-src='{{item.image}}')
--#         .cs-item-title
--#           {{item.title}}
--#         .cs-item-description
--#           {{item.description}}
-
-%ul.list
+%ul.list(ng-style="{'padding': component.metadata.styles.list.padding}")
   %li.list-item(ng-repeat='item in content')
     .list-image
       %img(ng-src="{{item.image | aspect1to1}}")
