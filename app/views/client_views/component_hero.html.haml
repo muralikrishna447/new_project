@@ -2,7 +2,7 @@
   .hero-content
     .hero-image
       %img(ng-src='{{content.image}}')
-    .hero-cta
+    .hero-cta(ng-style="{'color': component.metadata.styles.title.color}")
       %h2
         {{content.title}}
       %a.btn-outline(ng-href='{{content.url}}')
