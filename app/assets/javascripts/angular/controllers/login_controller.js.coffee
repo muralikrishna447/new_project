@@ -592,11 +592,13 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       event.preventDefault()
     $scope.openModal('login')
 
-  $rootScope.$on 'openSignupModal', (event, source) ->
+  $rootScope.$on 'openSignupModal', (event, source,  intent) ->
     if event.defaultPrevented
       return
     else
       event.preventDefault()
+
+    $scope.setIntent(intent) if intent
 
     $scope.registrationSource = source
     $scope.openModal('signUp')
