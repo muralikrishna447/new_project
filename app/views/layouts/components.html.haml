@@ -3,6 +3,7 @@
     = render 'layouts/cdn_js'
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
+    = csrf_meta_tags
   %body(style="margin: 0;")
     = yield
 

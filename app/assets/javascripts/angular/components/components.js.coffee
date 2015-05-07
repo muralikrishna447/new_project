@@ -56,7 +56,6 @@
 ]
 
 @componentsManager.controller 'ComponentsEditController', ['Component', '$stateParams', '$state', (Component, $stateParams, $state) ->
-
   @componentTypeOptions = ['hero', 'list', 'matrix']
 
   Component.show {id: $stateParams.id}, (component) =>
