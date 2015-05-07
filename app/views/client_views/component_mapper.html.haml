@@ -1,13 +1,13 @@
-%strong Component Mapper
-.connector
-  %p This tool map API response keys to the desired Component keys
+.component-mapper
+  .component-mapper-title
+    Component Mapper
 
   %table
     %tr
       %th Component Key
       %th API Key
     %tr.component-key(ng-repeat='key in componentKeys')
-      %td 
+      %td
         {{key}}
       %td
         %select(ng-model='connections[key]' ng-options='key for key in responseKeys')

@@ -1,16 +1,16 @@
-%strong Container List Form
+%fieldset
+  %label Mode
+  %label.radio
+    %input(type='radio' ng-model='component.form.mode' value='api')
+    API
+  %label.radio
+    %input(type='radio' ng-model='component.form.mode' value='custom')
+    Custom
 
-%input(type='hidden' ng-model='component.form.componentType' ng-init="component.form.componentType='list'")
-
-%input(type='radio' ng-model='component.form.mode' value='api')
-  API
-
-%input(type='radio' ng-model='component.form.mode' value='custom')
-  Custom
-
-%div(ng-if="component.form.mode == 'api'")
+// API Mode
+%fieldset(ng-if="component.form.mode == 'api'")
   %label Source
-  %input(ng-model='component.form.metadata.source')
+  %input(type='text' ng-model='component.form.metadata.source')
 
   %div( component-mapper
         connections='component.form.metadata.mapper'
@@ -20,8 +20,8 @@
         ng-show='component.form.metadata.source' )
 
   %label Max number of items
-  %input(ng-model='component.form.metadata.maxitems')
+  %input(type='text' ng-model='component.form.metadata.maxitems')
 
-%div(ng-if="component.form.mode=='custom'")
+%fieldset(ng-if="component.form.mode=='custom'")
   %label Max number of items
-  %input(ng-model='component.form.metadata.maxitems')
+  %input(type='number' ng-model='component.form.metadata.maxitems')

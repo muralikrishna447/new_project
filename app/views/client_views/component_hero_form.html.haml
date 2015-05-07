@@ -1,29 +1,16 @@
-%strong Container Hero Form
-
-%input(type='radio' ng-model='component.form.mode' value='api')
-  API
-
-%input(type='radio' ng-model='component.form.mode' value='custom')
-  Custom
-
--# // API Mode
--# %div(ng-if="component.form.mode=='api'")
--#   %label Source
--#   %input(ng-model='component.form.metadata.source')
--#
--# // Custom Mode
--# %div(ng-if="component.form.mode=='custom'")
--#   %label Image
--#   %input(ng-model='component.form.image')
--#
--#   %label Title
--#   %input(ng-model='component.form.title')
-
+%fieldset
+  %label Mode
+  %label.radio
+    %input(type='radio' ng-model='component.form.mode' value='api')
+    API
+  %label.radio
+    %input(type='radio' ng-model='component.form.mode' value='custom')
+    Custom
 
 // API Mode
-%div(ng-if="component.form.mode == 'api'")
+%fieldset(ng-if="component.form.mode == 'api'")
   %label Source
-  %input(ng-model='component.form.metadata.source')
+  %input(type='text' ng-model='component.form.metadata.source')
 
   %div( component-mapper
         connections='component.form.metadata.mapper'
@@ -33,17 +20,17 @@
         ng-show='component.form.metadata.source' )
 
 // Custom Mode
-%div(ng-if="component.form.mode=='custom'")
+%fieldset(ng-if="component.form.mode=='custom'")
   %label Image
-  %input(ng-model='component.form.metadata.content.image')
+  %input(type='text' ng-model='component.form.metadata.content.image')
 
   %label Title
-  %input(ng-model='component.form.metadata.content.title')
-
+  %input(type='text' ng-model='component.form.metadata.content.title')
 
   %label Button Target URL
-  %input(ng-model='component.form.metadata.content.url')
+  %input(type='text' ng-model='component.form.metadata.content.url')
 
 // All Modes
-%label Button Message
-%input(ng-model='component.form.metadata.content.buttonMessage')
+%fieldset
+  %label Button Message
+  %input(type='text' ng-model='component.form.metadata.content.buttonMessage')

@@ -33,15 +33,41 @@
 
 .component-form
   padding: 20px
-  border: 1px solid $light-gray
   @include boxsizing
-  @include flex(0 0 50%)
+  @include flex(0 0 600px)
+  input[type='text'], input[type='number']
+    width: 100%
+    border: 1px solid $light-gray
+    border-radius: 0px
+    margin-bottom: 20px
+    @include box-shadow(none)
+
+.component-mapper
+  background-color: $offwhite
+  border-radius: 10px
+  padding: 20px
+  margin-bottom: 20px
+  .component-mapper-title
+    font-weight: bold
+    margin-bottom: 20px
+    text-align: center
+  table
+    font-size: 1.4rem
+    width: 100%
+    text-align: left
+    tr
+      th
+        font-weight: normal
+      td
+        width: 50%
+        select
+          width: 100%
 
 .component-preview
   padding: 20px
-  border: 1px solid $light-gray
   @include boxsizing
-  @include flex(0 0 50%)
+  @include flex(1 0 600px)
+  max-width: 1200px
 
 
 // HERO //

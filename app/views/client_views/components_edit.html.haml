@@ -2,12 +2,12 @@
   .component-form
     %h2 Edit Component
     %form
-      %div
+      %fieldset
         %label
           Name
-        %input(ng-model='component.form.name')
+        %input(type='text' ng-model='component.form.name')
 
-      %div
+      %fieldset
         %label
           Component Type
         %select(ng-options="item for item in component.componentTypeOptions" ng-model='component.form.componentType')
@@ -16,11 +16,11 @@
       %div(list-form component='component' ng-if="component.form.componentType == 'list'")
       %div(matrix-form component='component' ng-if="component.form.componentType == 'matrix'")
 
-    %button.btn.btn-secondary(type='submit' ng-click='component.save(component.form)')
-      Save
+      %button.btn.btn-secondary(type='submit' ng-click='component.save(component.form)')
+        Save
 
-    %a.btn.btn-secondary(ui-sref='components.index')
-      Cancel
+      %a.btn.btn-secondary(ui-sref='components.index')
+        Cancel
 
   .component-preview
     %h2 Preview:
