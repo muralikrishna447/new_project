@@ -8,20 +8,18 @@
       # console.log 'newValue: ', newValue
       # console.log 'oldValue: ', oldValue
       if ! scope.component.form.metadata then scope.component.form.metadata = {}
-      if scope.component.form.mode == 'api'
-        source = scope.component.form.metadata.source
-        mapper = scope.component.form.metadata.mapper
-        if source
-          $http.get(source).success((data, status, headers, config) ->
-            scope.component.response = data
-            console.log "scope.component.response: ", scope.component.response
-            console.log 'mapper: ', mapper
-            scope.component.content = {}
-            angular.forEach mapper, (responseKey, componentKey) ->
-              scope.component.content[componentKey] = scope.component.response[responseKey]
-              console.log 'scope.component.content: ', scope.component.content
-          )
-      ), true
+      switch scope.component.form.mode
+        when 'api'
+          source = scope.component.form.metadata.source
+          mapper = scope.component.form.metadata.mapper
+          if source
+            $http.get(source).success((data, status, headers, config) ->
+              scope.component.response = data
+              scope.component.content = {}
+              angular.forEach mapper, (responseKey, componentKey) ->
+                scope.component.content[componentKey] = scope.component.response[responseKey]
+            )
+    ), true
 
   templateUrl: '/client_views/component_hero_form.html'
 ]
@@ -33,22 +31,23 @@
   }
   link: (scope, $element, $attrs) ->
     scope.$watch 'component', ((newValue, oldValue) ->
-      console.log 'newValue: ', newValue
-      console.log 'oldValue: ', oldValue
-      if scope.component.mode == 'api'
-        source = scope.component.metadata.source
-        mapper = scope.component.metadata.mapper
-        if source
-          $http.get(source).success((data, status, headers, config) ->
-            scope.response = data
-            console.log "scope.component.response: ", scope.component.response
-            console.log 'mapper: ', mapper
-            scope.content = {}
-            angular.forEach mapper, (responseKey, componentKey) ->
-              scope.content[componentKey] = scope.response[responseKey]
-              console.log 'scope.content: ', scope.content
-          )
-      ), true
+      # console.log 'newValue: ', newValue
+      # console.log 'oldValue: ', oldValue
+      switch scope.component.mode
+        when 'api'
+          scope.content = {}
+          scope.content.buttonMessage = scope.component.metadata.content.buttonMessage
+          source = scope.component.metadata.source
+          mapper = scope.component.metadata.mapper
+          if source
+            $http.get(source).success((data, status, headers, config) ->
+              scope.response = data
+              angular.forEach mapper, (responseKey, componentKey) ->
+                scope.content[componentKey] = scope.response[responseKey]
+            )
+        when 'custom'
+          scope.content = scope.component.metadata.content
+    ), true
 
   templateUrl: '/client_views/component_hero.html'
 ]
