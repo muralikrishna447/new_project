@@ -75,7 +75,7 @@
 .hero
   position: relative
   width: 100%
-  margin-bottom: 20px
+  margin: 0px
   @include display-flex
   @include aspect-16-9
 
@@ -156,3 +156,14 @@
     background-color: $orange
     color: white
     cursor: pointer
+
+// TEMP NEW HOMEPAGE
+.home-component-split
+  padding: 20px
+  @include display-flex
+  @include flex-wrap(wrap)
+  .home-component-split-item
+    margin-right: 20px
+    @include flex(1 0 400px)
+    &:last-of-type
+      margin-right: 0px
