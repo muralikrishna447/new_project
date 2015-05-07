@@ -36,10 +36,7 @@
   %input(type='text' ng-model='component.form.metadata.content.buttonMessage')
 
 // Styling
-%fieldset
-  %label Styles
-  %div(ng-repeat='color in component.colorOptions')
-    %div(ng-click="component.form.metadata.styles.title.color = color")
-      %div(ng-style="{'background-color': color, 'width': '20px', 'height': '20px', 'border': '1px solid black'}")
-      %div
-        {{color}}
+.component-styles
+  .component-styles-title Styles
+  %div Title Color:
+  %div(component-color-picker component-model='component.form.metadata.styles.title')
