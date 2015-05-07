@@ -70,11 +70,11 @@
           %li= link_to 'Manage Ingredients', manager_ingredients_path
           %li= link_to 'Manage Equipment', equipment_index_path
   %li
-    = link_to '//twitter.com/chefsteps', onclick: "mixpanel.track('Social Click', {'source' : 'Nav', 'network': 'Twitter'});" do
+    %a(href="//twitter.com/chefsteps" target="_blank" onclick="mixpanel.track('Social Click', {'source' : 'Nav', 'network': 'Twitter'});")
       %i.fa.fa-twitter
       .hide-desktop Twitter                     
 
   %li.section
-    = link_to '//facebook.com/chefsteps', onclick: "mixpanel.track('Social Click', {'source' : 'Nav', 'network': 'Facebook'});" do
+    %a(href="//facebook.com/chefsteps" target="_blank" onclick="mixpanel.track('Social Click', {'source' : 'Nav', 'network': 'Facebook'});")
       %i.fa.fa-facebook 
       .hide-desktop Facebook
