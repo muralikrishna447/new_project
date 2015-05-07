@@ -90,17 +90,22 @@
 
 .matrix
   .matrix-row
+    margin-bottom: 20px
     @include display-flex
     @include flex-direction(row)
+    &:last-of-type
+      margin-bottom: 0px
     .matrix-column
+      margin-right: 20px
       @include flex(1 1 auto)
       @include aspect-1-1
       @include boxsizing
-      .matrix-item
+      &:last-of-type
+        margin-right: 0px
 
 .matrix-item
   @include aspect-content
-  margin: 10px
+  // margin: 10px
   @include boxsizing
   .matrix-content
     @include aspect-content
@@ -109,20 +114,19 @@
     @include align-items(center)
     .matrix-image
       @include aspect-content
-    .matrix-button
-      border: 2px solid rgba(255,255,255,.8)
-      border-radius: 3px
-      color: white
-      padding: 5px 20px
-      background-color: none
-      width: 50%
-      z-index: 1
-      text-align: center
-      @include transition(all 300ms)
-      a
-        color: white
-      &:hover
-        border: 2px solid $orange
-        background-color: $orange
-        color: white
-        cursor: pointer
+
+.btn-outline
+  border: 2px solid rgba(255,255,255,.8)
+  border-radius: 3px
+  color: white
+  padding: 5px 20px
+  background-color: none
+  width: 50%
+  z-index: 1
+  text-align: center
+  @include transition(all 300ms)
+  &:hover
+    border: 2px solid $orange
+    background-color: $orange
+    color: white
+    cursor: pointer

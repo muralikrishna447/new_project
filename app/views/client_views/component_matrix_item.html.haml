@@ -41,8 +41,7 @@
       %input(ng-model='content.targetURL')
 
 .matrix-content(ng-if="formState!='edit'" ng-href='{{content.targetURL}}')
-  .matrix-button
-    %a(ng-href='{{content.url}}')
-      {{content.buttonMessage}}
+  %a.btn-outline(ng-href='{{content.url}}')
+    {{content.buttonMessage}}
   .matrix-image
     %img(ng-src='{{content.image | aspect1to1 }}')
