@@ -45,9 +45,10 @@
 ]
 
 @componentsManager.controller 'ComponentsNewController', ['$http', '$state', ($http, $state) ->
+  @componentTypeOptions = ['hero', 'list', 'matrix']
   @component = {}
 
-  @create = (component) ->
+  @save = (component) ->
     $http.post('/api/v0/components', {component: component}).success (data, status, headers, config) ->
       $state.go('components.index')
 

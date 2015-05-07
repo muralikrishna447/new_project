@@ -38,15 +38,16 @@
       if scope.component.mode == 'api'
         source = scope.component.metadata.source
         mapper = scope.component.metadata.mapper
-        $http.get(source).success((data, status, headers, config) ->
-          scope.response = data
-          console.log "scope.component.response: ", scope.component.response
-          console.log 'mapper: ', mapper
-          scope.content = {}
-          angular.forEach mapper, (responseKey, componentKey) ->
-            scope.content[componentKey] = scope.response[responseKey]
-            console.log 'scope.content: ', scope.content
-        )
+        if source
+          $http.get(source).success((data, status, headers, config) ->
+            scope.response = data
+            console.log "scope.component.response: ", scope.component.response
+            console.log 'mapper: ', mapper
+            scope.content = {}
+            angular.forEach mapper, (responseKey, componentKey) ->
+              scope.content[componentKey] = scope.response[responseKey]
+              console.log 'scope.content: ', scope.content
+          )
       ), true
 
   templateUrl: '/client_views/component_hero.html'
