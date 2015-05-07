@@ -44,14 +44,12 @@
   return this
 ]
 
-@componentsManager.controller 'ComponentsNewController', ['$http', ($http) ->
+@componentsManager.controller 'ComponentsNewController', ['$http', '$state', ($http, $state) ->
   @component = {}
 
   @create = (component) ->
-    console.log 'Creating Component'
-    console.log component
     $http.post('/api/v0/components', {component: component}).success (data, status, headers, config) ->
-      console.log 'components data: ', data
+      $state.go('components.index')
 
   return this
 ]
