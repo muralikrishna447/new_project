@@ -40,17 +40,15 @@
 
     scope.prev = ->
       console.log 'clicked prev'
-      scope.currentIndex -= 1
-      scope.preload(scope.currentIndex)
-      # $animate.removeClass(element, 'next-animation')
-      # $animate.addClass(element, 'prev-animation')
+      if scope.currentIndex > 0
+        scope.currentIndex -= 1
+        scope.preload(scope.currentIndex)
 
     scope.next = ->
       console.log 'clicked next'
-      scope.currentIndex += 1
-      scope.preload(scope.currentIndex)
-      # $animate.removeClass(element, 'prev-animation')
-      # $animate.addClass(element, 'next-animation')
+      if scope.currentIndex < (numImages - 1)
+        scope.currentIndex += 1
+        scope.preload(scope.currentIndex)
 
     scope.toggleFullscreen = ->
       scope.fullscreen = ! scope.fullscreen
@@ -58,6 +56,15 @@
     # Using this method to set the slide background image because background-size: contain handles different sized images well
     scope.backgroundImage = (image) ->
       { 'background-image' : "url('#{image}')" }
+
+    window.onkeydown = (event) ->
+      switch event.keyCode
+        when 37
+          scope.prev()
+          scope.$apply()
+        when 39
+          scope.next()
+          scope.$apply()
 
     # Preload the first set of images
     scope.preload(0)
