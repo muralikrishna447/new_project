@@ -22,6 +22,7 @@
     right: 0
     bottom: 0
     z-index: 99999
+    background-color: black
 
   .slideshow-slides
     position: absolute
@@ -92,3 +93,12 @@
         opacity: 1
     &::selection
       background-color: rgba(0,0,0,0)
+
+.slideshow-slide.ng-hide-add,
+.slideshow-slide.ng-hide-remove
+  @include transition(300ms all ease-in-out)
+  display: block!important
+  opacity: 1
+
+.slideshow-slide.ng-hide
+  opacity: 0

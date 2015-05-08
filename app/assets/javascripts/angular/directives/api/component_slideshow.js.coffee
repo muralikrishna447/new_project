@@ -1,4 +1,4 @@
-@app.directive 'slideshow', ['$http', ($http) ->
+@app.directive 'slideshow', ['$animate', ($animate) ->
   restrict: 'A'
   scope: {}
   link: (scope, element, attrs) ->
@@ -42,11 +42,15 @@
       console.log 'clicked prev'
       scope.currentIndex -= 1
       scope.preload(scope.currentIndex)
+      # $animate.removeClass(element, 'next-animation')
+      # $animate.addClass(element, 'prev-animation')
 
     scope.next = ->
       console.log 'clicked next'
       scope.currentIndex += 1
       scope.preload(scope.currentIndex)
+      # $animate.removeClass(element, 'prev-animation')
+      # $animate.addClass(element, 'next-animation')
 
     scope.toggleFullscreen = ->
       scope.fullscreen = ! scope.fullscreen

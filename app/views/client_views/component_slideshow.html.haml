@@ -8,7 +8,6 @@
     .slideshow-fullscreen-toggle(ng-click='toggleFullscreen()')
       %i.fa.fa-expand.fa-lg(ng-if='!fullscreen')
       %i.fa.fa-times.fa-2x(ng-if='fullscreen')
-  %img(src='https://d92f495ogyf88.cloudfront.net/static/csLoadingIcon.gif')
 
 // Preloader
 %img(ng-src='{{preload.prev.image}}' imageonload='imageLoaded(preload.prev)' ng-if='preload.prev && !loaded[preload.prev.index]' ng-hide='true')
