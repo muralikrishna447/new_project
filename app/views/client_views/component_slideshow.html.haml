@@ -1,12 +1,16 @@
 .slideshow(ng-class='{fullscreen: fullscreen}')
-  .slideshow-slide(ng-repeat='image in loaded track by $index' ng-if='$index == currentIndex' ng-style="backgroundImage(image)")
-  .slideshow-button-prev(ng-click='prev()' ng-if='preload.prev && loaded[preload.prev.index]')
-    .slideshow-button-text Prev
-  .slideshow-button-next(ng-click='next()' ng-if='preload.next && loaded[preload.next.index]')
-    .slideshow-button-text Next
-  .slideshow-fullscreen-toggle(ng-click='toggleFullscreen()')
-    %i.fa.fa-expand.fa-lg(ng-if='!fullscreen')
-    %i.fa.fa-times.fa-2x(ng-if='fullscreen')
+  .slideshow-slides
+    .slideshow-slide(ng-repeat='image in loaded track by $index' ng-show='$index == currentIndex' ng-style="backgroundImage(image)")
+    .slideshow-button-prev(ng-click='prev()' ng-if='preload.prev && loaded[preload.prev.index]')
+      .slideshow-button-text Prev
+    .slideshow-button-next(ng-click='next()' ng-if='preload.next && loaded[preload.next.index]')
+      .slideshow-button-text Next
+    .slideshow-fullscreen-toggle(ng-click='toggleFullscreen()')
+      %i.fa.fa-expand.fa-lg(ng-if='!fullscreen')
+      %i.fa.fa-times.fa-2x(ng-if='fullscreen')
+  %img(src='https://d92f495ogyf88.cloudfront.net/static/csLoadingIcon.gif')
+
+// Preloader
 %img(ng-src='{{preload.prev.image}}' imageonload='imageLoaded(preload.prev)' ng-if='preload.prev && !loaded[preload.prev.index]' ng-hide='true')
 %img(ng-src='{{preload.current.image}}' imageonload='imageLoaded(preload.current)' ng-if='preload.current && !loaded[preload.current.index]' ng-hide='true')
 %img(ng-src='{{preload.next.image}}' imageonload='imageLoaded(preload.next)' ng-if='preload.next && !loaded[preload.next.index]' ng-hide='true')
