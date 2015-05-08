@@ -1,0 +1,16 @@
+.slideshow
+  .slideshow-button-prev(ng-click='prev()' ng-if='viewer.prev')
+    Prev
+
+  .slideshow-viewer
+    .slideshow-viewer-prev
+      %img(ng-src="{{viewer.prev}}" ng-if='viewer.prev')
+    .slideshow-viewer-current
+      %img(ng-src="{{viewer.current}}")
+    .slideshow-viewer-next
+      %img(ng-src="{{viewer.next}}" ng-if='viewer.next')
+
+  .slideshow-button-next(ng-click='next()' ng-if='viewer.next')
+    Next
+  -# .slideshow-item(ng-repeat='image in images')
+  -#   %img(ng-src="{{image}}")
