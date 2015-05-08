@@ -9,6 +9,7 @@
     padding-top: calc(100%*2/3)
 
 .slideshow
+  margin-bottom: 20px
   @include aspect-4-6
   @include display-flex
   @include justify-content(center)
@@ -96,6 +97,18 @@
         opacity: 1
     &::selection
       background-color: rgba(0,0,0,0)
+
+.slideshow-progress
+  width: 100%
+  height: 3px
+  z-index: 3
+  @include align-self(flex-end)
+  @include display-flex
+  .slideshow-progress-item
+    @include flex(1 0 auto)
+    @include transition(300ms all ease-in-out)
+    &.active
+      background-color: $orange
 
 .slideshow-slide.ng-hide-add,
 .slideshow-slide.ng-hide-remove
