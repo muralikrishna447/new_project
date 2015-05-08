@@ -1,4 +1,63 @@
 @import 'mixins'
 
 .slideshow
-  border: 1px solid black
+  position: relative
+  @include display-flex
+
+  .slideshow-button-prev
+    height: 100%
+    width: 50%
+    position: absolute
+    top: 0
+    left: 0
+    z-index: 1
+    color: white
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    .slideshow-button-text
+      font-size: 20px
+      opacity: 0
+      @include transition(300ms all ease-in-out)
+    &:hover
+      cursor: pointer
+      .slideshow-button-text
+        opacity: 1
+    &::selection
+      background-color: rgba(0,0,0,0)
+
+  .slideshow-viewer
+    @include flex(1 1 100%)
+
+    .slideshow-image
+      img
+        width: 100%
+
+      &.slideshow-viewer-prev
+        display: none
+      &.slideshow-viewer-current
+        display: block
+      &.slideshow-viewer-next
+        display: none
+
+  .slideshow-button-next
+    height: 100%
+    width: 50%
+    position: absolute
+    top: 0
+    right: 0
+    z-index: 1
+    color: white
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    .slideshow-button-text
+      font-size: 20px
+      opacity: 0
+      @include transition(300ms all ease-in-out)
+    &:hover
+      cursor: pointer
+      .slideshow-button-text
+        opacity: 1
+    &::selection
+      background-color: rgba(0,0,0,0)
