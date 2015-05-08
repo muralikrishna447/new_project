@@ -2,8 +2,10 @@
 
     # Video/image stuff
     this.hasHeroVideo = ->
-      this.getObject()?.youtube_id? || this.getObject()?.vimeo_id?
-
+      if this.getObject()?.youtube_id || this.getObject()?.vimeo_id
+        return true
+      else
+        return false
     this.hasHeroImage = ->
       this.getObject()?.image_id? && this.getObject().image_id
 
