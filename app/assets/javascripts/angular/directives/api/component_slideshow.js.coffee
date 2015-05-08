@@ -12,6 +12,7 @@
       images.push imageSource
       i++
 
+    scope.fullscreen = false
     scope.viewer = {}
     scope.viewer.index = 0
     scope.viewer.prev = null
@@ -32,6 +33,9 @@
       scope.viewer.prev = images[index - 1]
       scope.viewer.current = images[index]
       scope.viewer.next = images[index + 1]
+
+    scope.toggleFullscreen = ->
+      scope.fullscreen = ! scope.fullscreen
 
 
   templateUrl: '/client_views/component_slideshow.html'

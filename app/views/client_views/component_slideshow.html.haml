@@ -1,4 +1,7 @@
-.slideshow
+.slideshow(ng-class='{fullscreen: fullscreen}')
+  .slideshow-fullscreen-toggle(ng-click='toggleFullscreen()')
+    %i.fa.fa-expand.fa-lg(ng-if='!fullscreen')
+    %i.fa.fa-times.fa-2x(ng-if='fullscreen')
   .slideshow-button-prev(ng-click='prev()' ng-if='viewer.prev')
     .slideshow-button-text Prev
 
