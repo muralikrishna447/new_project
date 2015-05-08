@@ -19,24 +19,31 @@
 
     scope.fullscreen = false
     scope.currentIndex = 0
+    scope.preload = {}
 
     scope.imageLoaded = (preloaded) ->
       scope.loaded[preloaded.index] = preloaded.image
 
     scope.preload = (index) ->
       prevIndex = index - 1
-      scope.preload.prev =
-        index: prevIndex
-        image: scope.images[prevIndex]
+      if prevIndex >= 0
+        scope.preload.prev =
+          index: prevIndex
+          image: scope.images[prevIndex]
+      else
+        scope.preload.prev = false
 
       scope.preload.current =
         index: index
         image: scope.images[index]
 
       nextIndex = index + 1
-      scope.preload.next =
-        index: nextIndex
-        image: scope.images[nextIndex]
+      if nextIndex < numImages
+        scope.preload.next =
+          index: nextIndex
+          image: scope.images[nextIndex]
+      else
+        scope.preload.next = false
 
     scope.prev = ->
       if scope.currentIndex > 0

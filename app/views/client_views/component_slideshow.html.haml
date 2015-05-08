@@ -2,10 +2,12 @@
   .slideshow-slides(ng-keypress='onKeypress($event)')
     .slideshow-slide(ng-repeat='image in loaded track by $index' ng-show='$index == currentIndex' ng-style="backgroundImage(image)")
     .slideshow-button-prev(ng-click='prev()' ng-if='preload.prev')
-      .slideshow-button-text
+      .slideshow-button-arrow
         %i(cs-icon='arrow-large')
-    .slideshow-button-next(ng-click='next()' ng-if='preload.next')
-      .slideshow-button-text
+    .slideshow-button-next(ng-click='next()' ng-if='preload.next || currentIndex == 0')
+      .slideshow-button-text(ng-if='currentIndex==0')
+        See the Photos
+      .slideshow-button-arrow
         %i(cs-icon='arrow-large')
     .slideshow-fullscreen-toggle(ng-click='toggleFullscreen()')
       %i.fa.fa-expand.fa-lg(ng-if='!fullscreen')

@@ -62,14 +62,15 @@
     @include display-flex
     @include justify-content(flex-start)
     @include align-items(center)
-    .slideshow-button-text
-      font-size: 40px
+    .slideshow-button-arrow
       padding: 20px
-      @include transition(300ms all ease-in-out)
       opacity: 0
+      @include flex(0 0 20px)
+      @include transition(300ms all ease-in-out)
+      @include display-flex
     &:hover
       cursor: pointer
-      .slideshow-button-text
+      .slideshow-button-arrow
         opacity: 1
     &::selection
       background-color: rgba(0,0,0,0)
@@ -86,14 +87,18 @@
     @include justify-content(flex-end)
     @include align-items(center)
     .slideshow-button-text
-      font-size: 40px
+      font-size: 20px
+      line-height: 20px
+    .slideshow-button-arrow
       padding: 20px
-      @include transform(scale(-1))
-      @include transition(200ms all ease-in-out)
       opacity: 0
+      @include flex(0 0 20px)
+      @include transform(scale(-1))
+      @include transition(300ms all ease-in-out)
+      @include display-flex
     &:hover
       cursor: pointer
-      .slideshow-button-text
+      .slideshow-button-arrow
         opacity: 1
     &::selection
       background-color: rgba(0,0,0,0)
