@@ -2,14 +2,27 @@
 
 .slideshow
   position: relative
+  height: 400px
+  width: 600px
   @include display-flex
   &.fullscreen
     position: fixed
+    height: 100%
+    width: 100%
     top: 0
     left: 0
     right: 0
     bottom: 0
     z-index: 99999
+
+  .slideshow-slide
+    position: absolute
+    height: 100%
+    width: 100%
+    background-size: contain
+    background-repeat: no-repeat
+    background-position: 50% 50%
+    background-color: black
 
   .slideshow-fullscreen-toggle
     position: absolute
@@ -41,20 +54,6 @@
         opacity: 1
     &::selection
       background-color: rgba(0,0,0,0)
-
-  .slideshow-viewer
-    @include flex(1 1 100%)
-
-    .slideshow-image
-      img
-        width: 100%
-
-      &.slideshow-viewer-prev
-        display: none
-      &.slideshow-viewer-current
-        display: block
-      &.slideshow-viewer-next
-        display: none
 
   .slideshow-button-next
     height: 100%

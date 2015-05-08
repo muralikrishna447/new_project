@@ -3,40 +3,62 @@
   scope: {}
   link: (scope, element, attrs) ->
     urlBase = 'https://dpybg80nberao.cloudfront.net/assets/dinner/'
-    images = []
-    i = 1
-    numImages = 55
+    scope.images = []
+    i = 0
+    numImages = 54
     while i < numImages
-      imageName = "14-Course-Dinner-#{i}.jpg"
+      imageName = "14-Course-Dinner-#{i+1}.jpg"
       imageSource = urlBase + imageName
-      images.push imageSource
+      scope.images.push imageSource
       i++
 
+    scope.loaded = new Array(numImages)
+
     scope.fullscreen = false
-    scope.viewer = {}
-    scope.viewer.index = 0
-    scope.viewer.prev = null
-    scope.viewer.current = images[scope.viewer.index] unless scope.viewer.current
-    scope.viewer.next = images[scope.viewer.index + 1]
+    scope.currentIndex = 0
+
+    scope.imageLoaded = (preloaded) ->
+      console.log 'image loaded: ', preloaded
+      scope.loaded[preloaded.index] = preloaded.image
+
+
+    scope.preload = (index) ->
+      prevIndex = index - 1
+      scope.preload.prev =
+        index: prevIndex
+        image: scope.images[prevIndex]
+
+      scope.preload.current =
+        index: index
+        image: scope.images[index]
+
+      nextIndex = index + 1
+      scope.preload.next =
+        index: nextIndex
+        image: scope.images[nextIndex]
 
     scope.prev = ->
       console.log 'clicked prev'
-      scope.viewer.index -= 1
-      scope.setViewer(scope.viewer.index)
+      scope.currentIndex -= 1
+      scope.preload(scope.currentIndex)
 
     scope.next = ->
       console.log 'clicked next'
-      scope.viewer.index += 1
-      scope.setViewer(scope.viewer.index)
-
-    scope.setViewer = (index) ->
-      scope.viewer.prev = images[index - 1]
-      scope.viewer.current = images[index]
-      scope.viewer.next = images[index + 1]
+      scope.currentIndex += 1
+      scope.preload(scope.currentIndex)
 
     scope.toggleFullscreen = ->
       scope.fullscreen = ! scope.fullscreen
 
+    scope.backgroundImage = (image) ->
+      {
+        'background-image' : "url('#{image}')",
+        'background-size' :'contain',
+        'background-repeat' : 'no-repeat',
+        'background-position' : '50% 50%'
+      }
+
+    scope.preload(0)
 
   templateUrl: '/client_views/component_slideshow.html'
 ]

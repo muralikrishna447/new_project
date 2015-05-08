@@ -1,7 +1,6 @@
 .container
   .row
-    .span6.offset3
-      %div(slideshow)
+    %div(slideshow)
 .container-fluid.well-gradient#madlib-container(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='homeMadlib'; setIntent('ftue')")
   = render "devise/sessions/new_angular"
   .row-fluid
