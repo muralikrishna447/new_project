@@ -39,13 +39,11 @@
         image: scope.images[nextIndex]
 
     scope.prev = ->
-      console.log 'clicked prev'
       if scope.currentIndex > 0
         scope.currentIndex -= 1
         scope.preload(scope.currentIndex)
 
     scope.next = ->
-      console.log 'clicked next'
       if scope.currentIndex < (numImages - 1)
         scope.currentIndex += 1
         scope.preload(scope.currentIndex)

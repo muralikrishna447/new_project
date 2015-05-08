@@ -1,4 +1,4 @@
--# Uses a flex layout.  The hope is we can apply some of these components like .flex-container, .flex-item, .flex-full, .flex-aside, and .flex-main in other parts of the activity layout. 
+-# Uses a flex layout.  The hope is we can apply some of these components like .flex-container, .flex-item, .flex-full, .flex-aside, and .flex-main in other parts of the activity layout.
 
 .flex-container
   .flex-item.flex-full
@@ -79,6 +79,7 @@
                 Print
   .flex-item.flex-main
     = render 'activities/latest/description'
+    %div(slideshow ng-if="activity.slug =='tasting-menu-spring'")
   .flex-item.flex-aside.flex-aside-right.flex-large-only(ng-if="! inClass")
     .flex-social-container(ng-hide='editMode')
       %h5.flex-social-title Share
