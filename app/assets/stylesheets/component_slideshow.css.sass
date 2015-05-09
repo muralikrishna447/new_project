@@ -37,17 +37,29 @@
       position: absolute
       height: 100%
       width: 100%
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
       background-size: contain
       background-repeat: no-repeat
       background-position: 50% 50%
       background-color: black
+      @include display-flex
+      @include justify-content(center)
+      @include align-items(flex-end)
+      .slideshow-slide-caption
+        color: white
+        font-size: 20px
+        padding: 20px
+        text-align: center
 
   .slideshow-fullscreen-toggle
     position: absolute
     top: 10px
     right: 10px
     color: white
-    z-index: 2
+    z-index: 4
     &:hover
       cursor: pointer
 
@@ -62,14 +74,15 @@
     @include display-flex
     @include justify-content(flex-start)
     @include align-items(center)
-    .slideshow-button-text
-      font-size: 40px
+    .slideshow-button-arrow
       padding: 20px
-      @include transition(300ms all ease-in-out)
       opacity: 0
+      @include flex(0 0 20px)
+      @include transition(300ms all ease-in-out)
+      @include display-flex
     &:hover
       cursor: pointer
-      .slideshow-button-text
+      .slideshow-button-arrow
         opacity: 1
     &::selection
       background-color: rgba(0,0,0,0)
@@ -85,18 +98,39 @@
     @include display-flex
     @include justify-content(flex-end)
     @include align-items(center)
-    .slideshow-button-text
-      font-size: 40px
+    .slideshow-button-arrow
       padding: 20px
-      @include transform(scale(-1))
-      @include transition(200ms all ease-in-out)
       opacity: 0
+      @include flex(0 0 20px)
+      @include transform(scale(-1))
+      @include transition(300ms all ease-in-out)
+      @include display-flex
     &:hover
       cursor: pointer
-      .slideshow-button-text
+      .slideshow-button-arrow
         opacity: 1
     &::selection
       background-color: rgba(0,0,0,0)
+
+.slideshow-overlay
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  z-index: 3
+  background: rgba(0,0,0,.3)
+  @include display-flex
+  @include justify-content(flex-end)
+  @include align-items(center)
+  .slideshow-title
+    background: $orange
+    color: white
+    padding: 15px
+    font-size: 20px
+    text-align: right
+  &:hover
+    cursor: pointer
 
 .slideshow-progress
   width: 100%
@@ -110,11 +144,32 @@
     &.active
       background-color: $orange
 
+// Slide animation
 .slideshow-slide.ng-hide-add,
 .slideshow-slide.ng-hide-remove
   @include transition(300ms all ease-in-out)
-  display: block!important
+  display: flex !important
   opacity: 1
 
 .slideshow-slide.ng-hide
+  opacity: 0
+
+// Overlay animation
+.slideshow-overlay.ng-hide-add,
+.slideshow-overlay.ng-hide-remove
+  @include transition(500ms all linear)
+  opacity: 1
+  display: flex !important
+
+.slideshow-overlay.ng-hide
+  opacity: 0
+
+// Caption animation
+.slideshow-slide-caption.ng-hide-add,
+.slideshow-slide-caption.ng-hide-remove
+  @include transition(500ms all linear)
+  opacity: 1
+  display: flex !important
+
+.slideshow-slide-caption.ng-hide
   opacity: 0
