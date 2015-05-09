@@ -80,3 +80,34 @@
 
   templateUrl: '/client_views/component_slideshow.html'
 ]
+
+# This directive loads a batch of images and sorts it by the image number
+# Should be refactored to be more generalized
+@app.directive 'slideshowLoader', [ ->
+  restrict: 'A'
+  scope: {}
+  link: (scope, element, attrs) ->
+    scope.pick = ->
+      filepicker.pickMultiple (blobs) ->
+        scope.filepicker = blobs.sort (a, b) ->
+          lastIntegerPattern = /\d*$/
+          aNumber = parseInt(lastIntegerPattern.exec(a.filename.split('.')[0]))
+          bNumber = parseInt(lastIntegerPattern.exec(b.filename.split('.')[0]))
+          if aNumber > bNumber
+            return 1
+          if aNumber < bNumber
+            return -1
+          0
+        scope.images = scope.filepicker.map (filepicker) ->
+          return filepicker.url
+
+  template:
+    """
+      <div>
+        <div class='btn btn-primary' ng-click='pick()'>Load Files</div>
+        <pre>{{filepicker|json}}</pre>
+        <pre>{{images|json}}</pre>
+        <div class='btn btn-primary' ng-click='testSort()'>Test Sort</div>
+      </div>
+    """
+]
