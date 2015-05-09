@@ -19,6 +19,6 @@
     .slideshow-progress-item(ng-repeat='image in loaded track by $index' ng-class='{active: $index <= currentIndex}')
 
 // Preloader
-%img(ng-src='{{preload.prev.image | slideshowSmall }}' imageonload='imageLoaded(preload.prev)' ng-if='preload.prev && !loaded[preload.prev.index]' ng-hide='true')
-%img(ng-src='{{preload.current.image | slideshowSmall }}' imageonload='imageLoaded(preload.current)' ng-if='preload.current && !loaded[preload.current.index]' ng-hide='true')
-%img(ng-src='{{preload.next.image | slideshowSmall }}' imageonload='imageLoaded(preload.next)' ng-if='preload.next && !loaded[preload.next.index]' ng-hide='true')
+%img(ng-src='{{preload.prev.image}}' imageonload='imageLoaded(preload.prev)' ng-if='preload.prev && !loaded[preload.prev.index]' ng-hide='true')
+%img(ng-src='{{preload.current.image}}' imageonload='imageLoaded(preload.current)' ng-if='preload.current && !loaded[preload.current.index]' ng-hide='true')
+%img(ng-src='{{preload.next.image}}' imageonload='imageLoaded(preload.next)' ng-if='preload.next && !loaded[preload.next.index]' ng-hide='true')

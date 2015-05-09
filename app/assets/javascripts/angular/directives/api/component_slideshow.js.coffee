@@ -2,7 +2,7 @@
   (image) ->
     image + '/convert?fit=crop&w=600&quality=90&cache=true'
 
-@app.directive 'slideshow', ['$animate', ($animate) ->
+@app.directive 'slideshow', ['$window', ($window) ->
   restrict: 'A'
   scope: {}
   link: (scope, element, attrs) ->
@@ -80,23 +80,26 @@
       scope.loaded[preloaded.index] = preloaded.image
 
     scope.preload = (index) ->
+      componentWidth = scope.componentWidth()
+      imageWidth = scope.determineImageWidth(componentWidth)
+      console.log 'imageWidth: ', imageWidth
       prevIndex = index - 1
       if prevIndex >= 0
         scope.preload.prev =
           index: prevIndex
-          image: scope.images[prevIndex]
+          image: scope.images[prevIndex] + "/convert?fit=crop&w=#{imageWidth}&quality=90&cache=true"
       else
         scope.preload.prev = false
 
       scope.preload.current =
         index: index
-        image: scope.images[index]
+        image: scope.images[index] + "/convert?fit=crop&w=#{imageWidth}&quality=90&cache=true"
 
       nextIndex = index + 1
       if nextIndex < numImages
         scope.preload.next =
           index: nextIndex
-          image: scope.images[nextIndex]
+          image: scope.images[nextIndex] + "/convert?fit=crop&w=#{imageWidth}&quality=90&cache=true"
       else
         scope.preload.next = false
 
@@ -118,8 +121,26 @@
 
     # Using this method to set the slide background image because background-size: contain handles different sized images well
     scope.backgroundImage = (image) ->
-      cropped = image + '/convert?fit=crop&w=600&quality=90&cache=true'
-      { 'background-image' : "url('#{cropped}')" }
+      { 'background-image' : "url('#{image}')" }
+
+    scope.componentWidth = ->
+      if scope.fullscreen
+        $window.innerWidth
+      else
+        element[0].clientWidth
+
+    scope.determineImageWidth = (componentWidth) ->
+      console.log 'componentWidth: ', componentWidth
+      if componentWidth > 1600
+        return 2000
+      else if 1000 < componentWidth <= 1600
+        return 1600
+      else if 600 < componentWidth <= 1000
+        return 1000
+      else if 400 < componentWidth <= 600
+        return 600
+      else
+        return 400
 
     window.onkeydown = (event) ->
       switch event.keyCode
