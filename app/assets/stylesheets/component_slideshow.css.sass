@@ -144,6 +144,7 @@
     &.active
       background-color: $orange
 
+// Slide animation
 .slideshow-slide.ng-hide-add,
 .slideshow-slide.ng-hide-remove
   @include transition(300ms all ease-in-out)
@@ -161,4 +162,14 @@
   display: flex !important
 
 .slideshow-overlay.ng-hide
+  opacity: 0
+
+// Caption animation
+.slideshow-slide-caption.ng-hide-add,
+.slideshow-slide-caption.ng-hide-remove
+  @include transition(500ms all linear)
+  opacity: 1
+  display: flex !important
+
+.slideshow-slide-caption.ng-hide
   opacity: 0
