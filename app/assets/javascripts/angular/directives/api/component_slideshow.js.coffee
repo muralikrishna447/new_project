@@ -7,9 +7,9 @@
     urlBase = 'https://dpybg80nberao.cloudfront.net/assets/dinner/'
     scope.images = []
     i = 0
-    numImages = 54
+    numImages = 47
     while i < numImages
-      imageName = "14-Course-Dinner-#{i+1}.jpg"
+      imageName = "Tasting-Menu-Spring-#{i+1}.jpg"
       imageSource = urlBase + imageName
       scope.images.push imageSource
       i++
@@ -18,6 +18,7 @@
     scope.loaded = new Array(numImages)
 
     scope.fullscreen = false
+    scope.showOverlay = true
     scope.currentIndex = 0
     scope.preload = {}
 
@@ -57,6 +58,9 @@
 
     scope.toggleFullscreen = ->
       scope.fullscreen = ! scope.fullscreen
+
+    scope.closeOverlay = ->
+      scope.showOverlay = false
 
     # Using this method to set the slide background image because background-size: contain handles different sized images well
     scope.backgroundImage = (image) ->
