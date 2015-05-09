@@ -37,10 +37,22 @@
       position: absolute
       height: 100%
       width: 100%
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
       background-size: contain
       background-repeat: no-repeat
       background-position: 50% 50%
       background-color: black
+      @include display-flex
+      @include justify-content(center)
+      @include align-items(flex-end)
+      .slideshow-slide-caption
+        color: white
+        font-size: 20px
+        padding: 20px
+        text-align: center
 
   .slideshow-fullscreen-toggle
     position: absolute
@@ -135,7 +147,7 @@
 .slideshow-slide.ng-hide-add,
 .slideshow-slide.ng-hide-remove
   @include transition(300ms all ease-in-out)
-  display: block!important
+  display: flex !important
   opacity: 1
 
 .slideshow-slide.ng-hide
