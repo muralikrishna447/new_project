@@ -192,11 +192,11 @@
         caption: ""
       }
       {
-        image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/JZ7wmnKpRFmdxG6BxxZX"
+        image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/o3wju3hjSg2N1B5YIgkr"
         caption: ""
       }
       {
-        image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/o3wju3hjSg2N1B5YIgkr"
+        image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/JZ7wmnKpRFmdxG6BxxZX"
         caption: ""
       }
     ]
