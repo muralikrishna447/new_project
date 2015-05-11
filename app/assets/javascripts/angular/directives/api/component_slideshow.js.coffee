@@ -9,6 +9,7 @@
 
     i = 0
     numImages = 47
+    numViewed = 0
 
     scope.slides = [
       {
@@ -256,12 +257,16 @@
       if scope.currentIndex < (numImages - 1)
         scope.currentIndex += 1
         scope.preload(scope.currentIndex)
+        if (scope.currentIndex + 1) > numViewed
+          numViewed = scope.currentIndex + 1
 
     scope.toggleFullscreen = ->
       scope.fullscreen = ! scope.fullscreen
+      mixpanel.track 'Slideshow Fullscreen Toggled', { value: scope.fullscreen }
 
     scope.closeOverlay = ->
       scope.showOverlay = false
+      mixpanel.track 'Slideshow Started'
 
     # Using this method to set the slide background image because background-size: contain handles different sized images well
     scope.backgroundImage = (slide) ->
@@ -296,8 +301,12 @@
           scope.next()
           scope.$apply()
 
+    $window.addEventListener 'beforeunload', (event) ->
+      mixpanel.track 'Slideshow Views', { count: numViewed }
+
     # Preload the first set of images
     scope.preload(0)
+    mixpanel.track 'Slideshow Loaded'
 
   templateUrl: '/client_views/component_slideshow.html'
 ]
