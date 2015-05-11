@@ -24,14 +24,9 @@ Usage:
     scope.calculateWidth = ->
       parent.width = $(parent[0]).width()
 
-      if parent.width <= 280
-        scope.finalWidth = 280
-      else if 280 < parent.width <= 400
-        scope.finalWidth = 400
-      else if 400 < parent.width <= 800
-        scope.finalWidth = 800
-      else
-        scope.finalWidth = 1200
+      # Round up to nearest 100px - don't want to just use parent.width
+      # because that will cause a ton of refetches in a fluid layout during resize.
+      scope.finalWidth = Math.ceil(parent.width / 100.0) * 100
 
       if scope.aspect && scope.aspect == "16:9"
         finalHeight = scope.finalWidth * 9 / 16
