@@ -50,9 +50,12 @@
       @include align-items(flex-end)
       .slideshow-slide-caption
         color: white
-        font-size: 20px
-        padding: 20px
+        font-size: 14px
+        padding: 5px
+        padding-bottom: 8px
         text-align: center
+        width: 100%
+        background-color: rgba(0,0,0,.6)
 
   .slideshow-fullscreen-toggle
     position: absolute
@@ -169,7 +172,7 @@
 .slideshow-slide-caption.ng-hide-remove
   @include transition(500ms all linear)
   opacity: 1
-  display: flex !important
+  display: block !important
 
 .slideshow-slide-caption.ng-hide
   opacity: 0
