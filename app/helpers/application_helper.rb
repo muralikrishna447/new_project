@@ -25,7 +25,7 @@ module ApplicationHelper
       end
     else
       url = ActiveSupport::JSON.decode(fpfile)["url"]
-      url = url + "/convert?fit=#{fit}&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&quality=70&cache=true"
+      url = url + "/convert?fit=#{fit}&w=#{width}&h=#{(width * 9.0 / 16.0).floor}&quality=90&cache=true"
       # Route through CDN
       url.gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
     end
