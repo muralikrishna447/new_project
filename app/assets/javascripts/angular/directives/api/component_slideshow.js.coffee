@@ -62,7 +62,7 @@
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/eye5fhX8QOaYst0sPpOp"
-        caption: "Prepping our mis en place for Course 9"
+        caption: "Prepping our mise en place for Course 9"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/J4VOgfBQnOZwUeq1PZiq"
@@ -82,11 +82,11 @@
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/lEloTfwNRmqDQBN3n0zC"
-        caption: "Keeping track of wine pairings and mis en place"
+        caption: "Keeping track of wine pairings and mise en place"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/ihnoAj8XTH2iZhxQv9e8"
-        caption: "Mis en place organized by course, ready for our server"
+        caption: "Mise en place organized by course, ready for our server"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/0zrE7jnXRjScVWHTyLRY"
