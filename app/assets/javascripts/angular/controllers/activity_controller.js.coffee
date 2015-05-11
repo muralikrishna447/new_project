@@ -636,6 +636,7 @@ window.deepCopy = (obj) ->
     'title' : $scope.activity.title,
     'slug' : $scope.activity.slug
     'isRecipe' : $scope.activity.ingredients?.length > 1
+    'tags': _.pluck($scope.activity.tags, 'name')
 
   $scope.getExtendedEventData = ->
     activeMinutes = $scope.activeMinutes()
