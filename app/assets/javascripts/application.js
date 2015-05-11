@@ -10,7 +10,7 @@
 //=require ui-bootstrap-tpls-0.8.0
 //=require angular/templates
 //=require angular/chefstepsAngularInit
-//=require angular/components/app
+//=require angular/components/componentsManagerApp
 //=require ingredient_parser
 //=require_tree  ./angular
 //= require jquery-ui
