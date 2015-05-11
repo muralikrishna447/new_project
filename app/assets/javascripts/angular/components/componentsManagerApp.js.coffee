@@ -29,7 +29,7 @@
       templateUrl: '/client_views/components_new.html'
 
     .state 'components.edit'
-      url: '/edit/:id'
+      url: '/:id/edit'
       controller: 'ComponentsEditController'
       controllerAs: 'component'
       templateUrl: '/client_views/components_edit.html'
