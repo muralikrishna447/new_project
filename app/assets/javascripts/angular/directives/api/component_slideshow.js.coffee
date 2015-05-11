@@ -13,23 +13,23 @@
     scope.slides = [
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/ZbAi8CVdQg6Y769XAVxB"
-        caption: "Hello how's it going dude awesome!!!"
+        caption: ""
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/uU46PdEHQNWjdMPBC9aA"
-        caption: "Awesome"
+        caption: "Ben churning ice cream with liquid nitrogen for Course 4"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/Bqkh1lTQnyWuozfr65Kt"
-        caption: ""
+        caption: "We scrawl our prep list on the fridge door"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/tl7pvWhQiCtEflmAU4lG"
-        caption: ""
+        caption: "Grant and Nick making sure we have everything we need"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/fDZSegNsRJmYtFzRcHrW"
-        caption: ""
+        caption: "The table is set!"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/9gOk2cuKQJ2lHg3nuulZ"
@@ -37,11 +37,11 @@
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/tpC2tqzzTeto1xXogBuc"
-        caption: ""
+        caption: "We're organized and ready for battle"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/fsvoWLpRByNuPQdZRg8n"
-        caption: ""
+        caption: "Nick prepping the chocolate cherries for Course 13"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/7GhZEVnoRP2fc0hWzJKZ"
@@ -49,23 +49,23 @@
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/0UbJ9gtSTn2iSA0phwPm"
-        caption: ""
+        caption: "These \"cherries\" are not as they seem—can you guess what they're made of?"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/VyflDraQlC02jurogATM"
-        caption: ""
+        caption: "Scooping sorbet for the first course"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/gHtg75EiS16sHl3azvyp"
-        caption: ""
+        caption: "We store equipment and ingredients for hot courses next to the oven"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/eye5fhX8QOaYst0sPpOp"
-        caption: ""
+        caption: "Prepping our mis en place for Course 9"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/J4VOgfBQnOZwUeq1PZiq"
-        caption: ""
+        caption: "Ben slicing fresh mangoes for Course 12"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/qLqzY5OTmGV0b155sJMw"
@@ -73,39 +73,39 @@
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/NMfCuV6OSD21tOJwVleB"
-        caption: ""
+        caption: "Pre-portioning dessert hours in advance makes service easier"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/mbrrr9bT5mDanpGxeZwg"
-        caption: ""
+        caption: "Our wines are opened, chilled if needed, and lined up ready to go"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/lEloTfwNRmqDQBN3n0zC"
-        caption: ""
+        caption: "Keeping track of wine pairings and mis en place"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/ihnoAj8XTH2iZhxQv9e8"
-        caption: ""
+        caption: "Mis en place organized by course, ready for our server"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/0zrE7jnXRjScVWHTyLRY"
-        caption: ""
+        caption: "Pre-service meeting"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/jGA6vVtpT8tvNdYUYw7A"
-        caption: ""
+        caption: "Here we go!"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/WVkwGLUJQSud8jUbx0Ah"
-        caption: ""
+        caption: "Guests are just arriving, but Course 14 is already prepped"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/4yUgsgpuTWSe5haMb2Vz"
-        caption: ""
+        caption: "Keeping egg foam warm for Course 11"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/CzkOWJ6QQ8GmUYdwDxBR"
-        caption: ""
+        caption: "Grant presenting the first course to our guests"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/M8Kqt5baR2qTDg2VHuKg"
@@ -117,11 +117,11 @@
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/fe3FnX0kRzyTL1uHil3w"
-        caption: ""
+        caption: "Our homemade \"chandelier.\" Did we mention Ben was an engineer?"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/8F1lHEZLSeGC8mysL3Aq"
-        caption: ""
+        caption: "Dinner in full-swing"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/yYteTjhDRsWpNmYvwTaK"
@@ -129,11 +129,11 @@
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/uuHyJEEySUC4UGkJsVfe"
-        caption: ""
+        caption: "Putting the finishing touches on Course 4"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/6WBsmJfqQMktLiVv8OSE"
-        caption: ""
+        caption: "Prepping for Course 5"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/4QtKb9l7Q5O1Zkjqaa4L"
@@ -149,15 +149,15 @@
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/9pr2g4rPSJubVlaC4T2G"
-        caption: ""
+        caption: "Finishing oil for Course 8"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/L39W4ErNRki50yaXXWg2"
-        caption: ""
+        caption: "We keep detailed plating notes always at hand"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/SmsPSte3Sc6r0DsQlyd2"
-        caption: ""
+        caption: "Pre-portioned jus ready for Course 10"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/EDBn3qP8RamCIo8YJBbZ"
@@ -165,31 +165,31 @@
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/0BWtHfTRcSlxHpuGLltb"
-        caption: ""
+        caption: "We're not shy about seasoning, people"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/EHCSDLwaTKebZIyOEvAH"
-        caption: ""
+        caption: "Finishing some micro-veggies for Course 10"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/rRPMPwwZSU6r0wxMz5lT"
-        caption: ""
+        caption: "Happy guests"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/kr3iWHTdvDPMSQHd2wv0"
-        caption: ""
+        caption: "Finishing touches for Course 13"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/t1tgBnnPSPaZEYMJoFc5"
-        caption: ""
+        caption: "It takes an army"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/wPap44jAQFWx8ChQTApg"
-        caption: ""
+        caption: "The grand finale"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/ZNjjMzZbTiOmp2qYVEfO"
-        caption: ""
+        caption: "Ending the evening with a simple, soothing tea course"
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/o3wju3hjSg2N1B5YIgkr"
@@ -197,7 +197,7 @@
       }
       {
         image: "https://d3awvtnmmsvyot.cloudfront.net/api/file/JZ7wmnKpRFmdxG6BxxZX"
-        caption: ""
+        caption: "Success!"
       }
     ]
 
