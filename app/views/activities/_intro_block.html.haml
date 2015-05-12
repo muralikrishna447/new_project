@@ -82,7 +82,7 @@
   // Main Content
   .flex-item.flex-main
     = render 'activities/latest/description'
-    %div(slideshow ng-if="activity.slug =='tasting-menu-spring'")
+    .slideshow-container(slideshow ng-if="activity.slug =='tasting-menu-spring'")
 
   // Right Side
   .flex-item.flex-aside.flex-aside-right(ng-if="! inClass")
