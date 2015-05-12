@@ -1,6 +1,5 @@
-angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope",  "$timeout", "$http", "$element", ($scope,  $timeout, $http, $element) ->
+angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope",  "$timeout", "$http", "$element", '$rootScope', ($scope,  $timeout, $http, $element, $rootScope) ->
   $scope.expandSocial = false;
-
   $scope.$on 'expandSocialButtons', ->
     $element.find('.pulse-anim-before').addClass('pulse-anim')
     $timeout ( ->
@@ -11,7 +10,10 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     $scope.expandSocial = false
     window.open(url, "_blank", spec || "width=500, height=300, top=100, left=100")
     share_cat = $scope.socialURL().split("/")[3]
-    mixpanel.track('Share', { 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat})
+    # abtest = localStorageService.get('Split Test: Social Buttons Solid vs Outline')
+    # mixpanel.track('Share', { 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat})
+    social_attributes = _.extend({ 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat}, $rootScope.splits)
+    mixpanel.track('Share', social_attributes)
 
   $scope.shareTwitter = ->
     $scope.twitterCount = if $scope.twitterCount? then $scope.twitterCount + 1 else 1
@@ -21,6 +23,7 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     $scope.openSocialWindow 'Twitter', "https://twitter.com/intent/tweet?text=" + $scope.cs140Message() + " %23cs140 @ChefSteps&url=" + window.escape($scope.socialURL())
 
   $scope.shareFacebook = ->
+    console.log "SHARE FB"
     $scope.facebookCount = if $scope.facebookCount? then $scope.facebookCount + 1 else 1
     $scope.openSocialWindow 'Facebook', "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent($scope.socialURL()), 'width=626,height=436,top=100,left=100'
 
