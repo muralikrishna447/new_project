@@ -1,8 +1,11 @@
 .slideshow(ng-class='{fullscreen: fullscreen}')
   .slideshow-overlay(ng-show='showOverlay' ng-click='closeOverlay()')
     .slideshow-title
-      %div Tasting Menu: Spring
-      %small See the photos
+      %div
+        %h4 Tasting Menu: Spring
+        %h5 See the photos
+      .slideshow-title-arrow
+        %i(cs-icon='arrow-large')
   .slideshow-slides(ng-keypress='onKeypress($event)')
     .slideshow-slide(ng-repeat='slide in slides track by $index' ng-show='$index == currentIndex' ng-style="backgroundImage(slide)")
       .slideshow-slide-caption(ng-show='!showOverlay && slide.caption')

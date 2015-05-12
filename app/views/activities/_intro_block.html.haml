@@ -79,7 +79,7 @@
                 Print
   .flex-item.flex-main
     = render 'activities/latest/description'
-    %div(slideshow ng-if="activity.slug =='tasting-menu-spring'")
+    .slideshow-container(slideshow ng-if="activity.slug =='tasting-menu-spring'")
   .flex-item.flex-aside.flex-aside-right.flex-large-only(ng-if="! inClass")
     .flex-social-container(ng-hide='editMode')
       %h5.flex-social-title Share
