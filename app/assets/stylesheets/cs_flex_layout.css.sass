@@ -278,17 +278,49 @@
 
 .flex-tools
   .flex-tool
-    .flex-button-circle
+    .flex-button-circle.button-solid
       svg
         color: rgba(255,255,255,1)
       &.button-facebook
         background-color: #3B5998
+        border-width: 2px
+        border-style: solid
+        border-color: #3B5998
+        &:hover
+          background-color: rgba(255,255,255,1)
+          border-color: #3B5998
+          svg
+            color: #3B5998
 
       &.button-twitter
         background-color: #1DACED
+        border-width: 2px
+        border-style: solid
+        border-color: #1DACED
+        &:hover
+          background-color: rgba(255,255,255,1)
+          border-color: #1DACED
+          svg
+            color: #1DACED
 
       &.button-chefsteps
         background-color: $orange
+        border-width: 2px
+        border-style: solid
+        border-color: $orange
+        &:hover
+          background-color: rgba(255,255,255,1)
+          border-color: $orange
+          svg
+            color: $orange
 
       &.button-default
-        background-color: rgba(51, 51, 51, .5)
+        background-color: #9C9C9C
+        border-width: 2px
+        border-style: solid
+        border-color: #9C9C9C
+        &:hover
+          background-color: rgba(255,255,255,1)
+          border-color: #9C9C9C
+          svg
+            color: #9C9C9C
