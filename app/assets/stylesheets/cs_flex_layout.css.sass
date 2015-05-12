@@ -156,51 +156,53 @@
     font-weight: 400
     margin-bottom: 20px
     @include transition(all 300ms)
-    .flex-button-circle
-      width: 44px
-      height: 44px
-      font-size: 30px
-      border-width: 2px
-      border-style: solid
-      border-color: rgba(51, 51, 51, .5)
-      border-radius: 22px
-      padding: 8px
-      margin-bottom: 5px
-      margin-left: auto
-      margin-right: auto
-      @include transition(all 300ms)
-      @include display-flex
-      @include align-items(center)
-      @include justify-content(center)
-      @include boxsizing
-      svg
-        color: rgba(51, 51, 51, .5)
-        @include transition(all 300ms)
-    .flex-button-text
-      width: 60px
-      text-transform: uppercase
-    .flex-dropdown-menu
-      top: 90px
-      color: rgba(51, 51, 51, 0.5)
-    &:hover
-      color: rgba(51, 51, 51, 1)
-      cursor: pointer
-      .flex-button-circle
-        border-color: rgba(51, 51, 51, 1)
-        svg
-          color: rgba(51, 51, 51, 1)
-    &.active
-      color: rgba(51, 51, 51, 1)
-      .flex-button-circle
-        border-color: rgba(51, 51, 51, 1)
-        svg
-          color: rgba(51, 51, 51, 1)
+    // .flex-button-circle
+    //   width: 44px
+    //   height: 44px
+    //   font-size: 30px
+    //   border-width: 2px
+    //   border-style: solid
+    //   border-color: rgba(51, 51, 51, .5)
+    //   border-radius: 22px
+    //   padding: 8px
+    //   margin-bottom: 5px
+    //   margin-left: auto
+    //   margin-right: auto
+    //   @include transition(all 300ms)
+    //   @include display-flex
+    //   @include align-items(center)
+    //   @include justify-content(center)
+    //   @include boxsizing
+    //   svg
+    //     color: rgba(51, 51, 51, .5)
+    //     @include transition(all 300ms)
+    // .flex-button-text
+    //   width: 60px
+    //   text-transform: uppercase
+    // .flex-dropdown-menu
+    //   top: 90px
+    //   color: rgba(51, 51, 51, 0.5)
+    // &:hover
+    //   color: rgba(51, 51, 51, 1)
+    //   cursor: pointer
+    //   .flex-button-circle
+    //     border-color: rgba(51, 51, 51, 1)
+    //     svg
+    //       color: rgba(51, 51, 51, 1)
+    // &.active
+    //   color: rgba(51, 51, 51, 1)
+    //   .flex-button-circle
+    //     border-color: rgba(51, 51, 51, 1)
+    //     svg
+    //       color: rgba(51, 51, 51, 1)
 
 .flex-aside-right
   .flex-tools
     @include display-flex
     @include flex-direction(row)
     width: 100%
+    .flex-tool
+      margin-right: 20px
 
 .flex-social-title
   margin-bottom: $baseline
@@ -252,3 +254,41 @@
     .flex-tool
       @include align-self(inherit)
       margin-bottom: 10px
+
+// Flex Button A/B Tests
+.flex-button-circle
+  width: 44px
+  height: 44px
+  font-size: 30px
+  // border-width: 2px
+  // border-style: solid
+  // border-color: rgba(51, 51, 51, .5)
+  border-radius: 22px
+  padding: 8px
+  margin-bottom: 5px
+  margin-left: auto
+  margin-right: auto
+  @include transition(all 300ms)
+  @include display-flex
+  @include align-items(center)
+  @include justify-content(center)
+  @include boxsizing
+  &:hover
+    cursor: pointer
+
+.flex-tools
+  .flex-tool
+    .flex-button-circle
+      svg
+        color: rgba(255,255,255,1)
+      &.button-facebook
+        background-color: #3B5998
+
+      &.button-twitter
+        background-color: #1DACED
+
+      &.button-chefsteps
+        background-color: $orange
+
+      &.button-default
+        background-color: rgba(51, 51, 51, .5)
