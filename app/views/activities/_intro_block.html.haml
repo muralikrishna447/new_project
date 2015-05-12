@@ -13,18 +13,18 @@
   .flex-item.flex-aside.flex-aside-left(ng-if="! inClass")
     .flex-tools-container(ng-hide='editMode')
       .flex-tools(ng-controller='SocialButtonsController')
-        .flex-tool(ng-click='shareEmail()')
-          .flex-button-circle
-            %i(cs-icon='mail')
         .flex-tool(ng-click='shareFacebook()')
-          .flex-button-circle
+          .flex-button-circle.button-facebook
             %i(cs-icon='facebook')
         .flex-tool(ng-click='shareTwitter()')
-          .flex-button-circle
+          .flex-button-circle.button-twitter
             %i(cs-icon='twitter')
+        .flex-tool(ng-click='shareEmail()')
+          .flex-button-circle.button-chefsteps
+            %i(cs-icon='mail')
         .flex-tool.flex-dropdown(cs-flex-dropdown)
           .flex-dropdown-toggle(cs-flex-dropdown-toggle)
-            .flex-button-circle
+            .flex-button-circle.button-default
               %i(cs-icon='share')
           .flex-dropdown-menu.closed
             %ul
@@ -38,7 +38,7 @@
                 %i.flex-dropdown-icon(cs-icon='code')
                 Embed code
         .flex-tool(cs-smooth-scroll-to='#discussion')
-          .flex-button-circle
+          .flex-button-circle.button-default
             %i(cs-icon='comment')
           .flex-button-text(ng-if='commentCount > 0')
             {{commentCount}}
@@ -55,22 +55,22 @@
         .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]")
           %div( ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
                 ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
-            .flex-button-circle(ng-if="!current_user_likes")
+            .flex-button-circle.button-default(ng-if="!current_user_likes")
               %i(cs-icon='save')
-            .flex-button-circle(ng-if="current_user_likes")
+            .flex-button-circle.button-default(ng-if="current_user_likes")
               %i(cs-icon='saved')
             .flex-button-text(ng-if="!current_user_likes")
               Save
             .flex-button-text(ng-if="current_user_likes")
               Saved
         .flex-tool.flex-large-only(ng-click='doPrint()')
-          .flex-button-circle
+          .flex-button-circle.button-default
             %i(cs-icon='print')
           .flex-button-text
             Print
         .flex-tool.flex-dropdown(cs-flex-dropdown)
           .flex-dropdown-toggle(cs-flex-dropdown-toggle)
-            .flex-button-circle
+            .flex-button-circle.button-default
               %i(cs-icon='more')
             .flex-button-text
               More
