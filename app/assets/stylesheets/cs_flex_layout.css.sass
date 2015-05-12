@@ -82,7 +82,7 @@
 @media (max-width:1240px)
   .flex-container
     @include justify-content(center)
-    
+
   .flex-full
     @include flex(0 1 auto)
 
@@ -116,7 +116,7 @@
 ///////////////////////////////////////////
 .course-wrapper
   .flex-container
-  
+
   .flex-item
     margin: 0 auto
     @include flex(0 700px)
@@ -188,13 +188,19 @@
       .flex-button-circle
         border-color: rgba(51, 51, 51, 1)
         svg
-          color: rgba(51, 51, 51, 1) 
+          color: rgba(51, 51, 51, 1)
     &.active
       color: rgba(51, 51, 51, 1)
       .flex-button-circle
         border-color: rgba(51, 51, 51, 1)
         svg
           color: rgba(51, 51, 51, 1)
+
+.flex-aside-right
+  .flex-tools
+    @include display-flex
+    @include flex-direction(row)
+    width: 100%
 
 .flex-social-title
   margin-bottom: $baseline
