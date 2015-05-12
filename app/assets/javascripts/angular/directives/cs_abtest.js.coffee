@@ -52,7 +52,7 @@
 
   template:
     """
-      <div ng-transclude-replace></div>
+      <div ng-transclude></div>
     """
 ]
 
