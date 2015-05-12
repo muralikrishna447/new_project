@@ -117,7 +117,7 @@
   / = render 'layouts/app_init'
 
   = render "layouts/login_hack"
-  %script(src="#{Rails.application.config.shared_config["bloom"]["community_endpoint"]}/export/loader.js")
+  %script(src="#{Rails.application.config.shared_config["bloom"]["community_endpoint"]}/export/loader.js" async="true")
   = javascript_include_tag 'application'
   %script(type="text/javascript")
     logPerf("POST APP");
@@ -129,7 +129,6 @@
     = render 'layouts/adwords_remarketing'
     = render 'layouts/facebook_remarketing'
 
-  = render 'layouts/stripe'
   = render 'layouts/intercom'
   = render 'layouts/embedly'
   = yield(:custom_js)
