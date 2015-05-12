@@ -4,9 +4,9 @@
       .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]" ng-cloak)
         %div( ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
               ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
-          .flex-button-circle(ng-if="!current_user_likes")
+          .flex-button-circle.button-solid.button-default(ng-if="!current_user_likes")
             %i(cs-icon='save')
-          .flex-button-circle(ng-if="current_user_likes")
+          .flex-button-circle.button-solid.button-default(ng-if="current_user_likes")
             %i(cs-icon='saved')
           .flex-button-text(ng-if="!current_user_likes")
             Save
