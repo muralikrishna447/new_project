@@ -55,25 +55,3 @@
       <div ng-transclude></div>
     """
 ]
-
-# Only using this directive because transclude replace true is deprecated and we need that functionality for ab tests
-@app.directive 'ngTranscludeReplace', [
-  '$log'
-  ($log) ->
-    {
-      terminal: true
-      restrict: 'EA'
-      link: ($scope, $element, $attr, ctrl, transclude) ->
-        if !transclude
-          $log.error 'orphan', 'Illegal use of ngTranscludeReplace directive in the template! ' + 'No parent directive that requires a transclusion found. '
-          return
-        transclude (clone) ->
-          if clone.length
-            $element.replaceWith clone
-          else
-            $element.remove()
-          return
-        return
-
-    }
-]
