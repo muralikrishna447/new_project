@@ -1,6 +1,5 @@
-angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope",  "$timeout", "$http", "$element", ($scope,  $timeout, $http, $element) ->
+angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope",  "$timeout", "$http", "$element", 'localStorageService', ($scope,  $timeout, $http, $element, localStorageService) ->
   $scope.expandSocial = false;
-
   $scope.$on 'expandSocialButtons', ->
     $element.find('.pulse-anim-before').addClass('pulse-anim')
     $timeout ( ->
@@ -11,7 +10,8 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     $scope.expandSocial = false
     window.open(url, "_blank", spec || "width=500, height=300, top=100, left=100")
     share_cat = $scope.socialURL().split("/")[3]
-    mixpanel.track('Share', { 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat})
+    abtest = localStorageService.get('Split Test: Social Buttons Solid vs Outline')
+    mixpanel.track('Share', { 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat, 'SocialButtonsABTest': abtest})
 
   $scope.shareTwitter = ->
     $scope.twitterCount = if $scope.twitterCount? then $scope.twitterCount + 1 else 1
