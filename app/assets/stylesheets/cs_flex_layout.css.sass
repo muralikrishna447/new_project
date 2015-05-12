@@ -19,10 +19,7 @@
   @include flex(1 280px)
 
   &.flex-aside-left
-    padding-right: 20px
-
-  &.flex-aside-right
-    padding-left: 20px
+    padding-right: 10px
 
 .flex-dropdown
   position: relative
@@ -95,6 +92,8 @@
     @include flex(0 1 auto)
     width: 600px
     @include align-self(center)
+    &.flex-aside-left
+      padding-right: 0px
 
   .flex-large-only
     display: none
@@ -104,6 +103,10 @@
 
   .flex-tool-abtest
     width: 100%
+
+  .flex-aside
+    .flex-tools
+      @include justify-content(center)
 
 // 20px + 600px + 20px (master column padding + main + master column padding)
 @media (max-width: 640px)
@@ -157,6 +160,8 @@
     text-align: center
     color: rgba(51, 51, 51, 0.5)
     font-weight: 400
+    margin-left: 10px
+    margin-right: 10px
     margin-bottom: 12px
     @include transition(all 300ms)
 
@@ -165,8 +170,6 @@
     @include display-flex
     @include flex-direction(row)
     width: 100%
-    .flex-tool
-      margin-right: 20px
 
 .flex-social-title
   margin-bottom: $baseline
