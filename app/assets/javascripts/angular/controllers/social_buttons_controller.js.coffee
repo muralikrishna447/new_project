@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope",  "$timeout", "$http", "$element", 'localStorageService', ($scope,  $timeout, $http, $element, localStorageService) ->
+angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope",  "$timeout", "$http", "$element", '$rootScope', ($scope,  $timeout, $http, $element, $rootScope) ->
   $scope.expandSocial = false;
   $scope.$on 'expandSocialButtons', ->
     $element.find('.pulse-anim-before').addClass('pulse-anim')
@@ -10,8 +10,10 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     $scope.expandSocial = false
     window.open(url, "_blank", spec || "width=500, height=300, top=100, left=100")
     share_cat = $scope.socialURL().split("/")[3]
-    abtest = localStorageService.get('Split Test: Social Buttons Solid vs Outline')
-    mixpanel.track('Share', { 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat, 'SocialButtonsABTest': abtest})
+    # abtest = localStorageService.get('Split Test: Social Buttons Solid vs Outline')
+    # mixpanel.track('Share', { 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat})
+    social_attributes = _.extend({ 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat}, $rootScope.splits)
+    mixpanel.track('Share', social_attributes)
 
   $scope.shareTwitter = ->
     $scope.twitterCount = if $scope.twitterCount? then $scope.twitterCount + 1 else 1
