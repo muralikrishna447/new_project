@@ -38,3 +38,20 @@
       </div>
     """
 ]
+
+# Service to map api response data to component attributes.
+# Uses a mapper hash.  Example:
+# mapper = {
+#   title: 'title'
+#   description: 'description'
+#   url: 'url'
+# }
+@components.service 'Mapper', [ ->
+  @mapOne = (mapper, content, source) ->
+    angular.forEach mapper, (sourceKey, contentKey) ->
+      console.log "Content Before: ", content
+      console.log "Mapping from: #{sourceKey} to: #{contentKey}"
+      content[contentKey] = source[sourceKey]
+      console.log "Content After: ", content
+  return this
+]

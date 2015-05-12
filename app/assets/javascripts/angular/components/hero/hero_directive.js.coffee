@@ -1,4 +1,4 @@
-@components.directive 'heroForm', ['$http', ($http) ->
+@components.directive 'heroForm', ['$http', 'Mapper', ($http, Mapper) ->
   restrict: 'A'
   scope: {
     component: '='
@@ -16,15 +16,14 @@
             $http.get(source).success((data, status, headers, config) ->
               scope.component.response = data
               scope.component.content = {}
-              angular.forEach mapper, (responseKey, componentKey) ->
-                scope.component.content[componentKey] = scope.component.response[responseKey]
+              Mapper.mapOne(mapper, scope.component.content, scope.component.response)
             )
     ), true
 
   templateUrl: '/client_views/component_hero_form.html'
 ]
 
-@components.directive 'hero', ['$http', ($http) ->
+@components.directive 'hero', ['$http', 'Mapper', ($http, Mapper) ->
   restrict: 'A'
   scope: {
     component: '='
@@ -42,8 +41,7 @@
           if source
             $http.get(source).success((data, status, headers, config) ->
               scope.response = data
-              angular.forEach mapper, (responseKey, componentKey) ->
-                scope.content[componentKey] = scope.response[responseKey]
+              Mapper.mapOne(mapper, scope.content, scope.response)
             )
         when 'custom'
           scope.content = scope.component.metadata.content
