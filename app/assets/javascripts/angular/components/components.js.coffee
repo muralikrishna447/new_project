@@ -47,11 +47,17 @@
 #   url: 'url'
 # }
 @components.service 'Mapper', [ ->
+
   @mapOne = (mapper, content, source) ->
     angular.forEach mapper, (sourceKey, contentKey) ->
-      console.log "Content Before: ", content
-      console.log "Mapping from: #{sourceKey} to: #{contentKey}"
       content[contentKey] = source[sourceKey]
-      console.log "Content After: ", content
+
+  @mapArray = (mapper, content, source) ->
+    source.map (item, index) ->
+      angular.forEach mapper, (sourceKey, contentKey) ->
+        if typeof content[index] == 'undefined'
+          content[index] = {}
+        content[index][contentKey] = item[sourceKey]
+
   return this
 ]

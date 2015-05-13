@@ -1,5 +1,5 @@
 %ul.list(ng-style="{'padding': component.metadata.styles.list.padding}")
-  %li.list-item(ng-repeat='item in content')
+  %li.list-item(ng-repeat='item in content track by $index')
     .list-image
       %img(ng-src="{{item.image | aspect1to1}}")
     .list-text
