@@ -164,11 +164,6 @@
     %a(name='discussion')
     %cscomments(comments-type="ingredient" comments-id="{{ingredient.id}}" seo-bot="#{is_brombone}")
 
-.container
-  .row.activity-loading-spinner(ng-hide="true")
-    .span12
-      %i.icon-page-load
-
 = content_for :footer do
   = render 'layouts/footer'
 

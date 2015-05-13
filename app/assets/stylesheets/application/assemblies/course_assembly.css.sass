@@ -59,7 +59,7 @@
   margin-bottom: 4px
   background: $orange
   @include boxsizing
-  
+
 .course-nav-slideout
   position: absolute
   top: 0px
@@ -202,8 +202,7 @@
     height: 100%
     padding-top: 100px
     background-color: white
-    .activity-loading-spinner
-      margin-top: 0px
+
 
 // Global Nav
 .course-global-nav
@@ -232,7 +231,7 @@
     height: 20px
     width: 14px
 
-  li 
+  li
     .dot
       padding: 5px 2px
       .step-dot-circle
@@ -243,15 +242,15 @@
         border-radius: 50%
         @include boxsizing
 
-  li 
+  li
     .dot.active
       padding: 3px 0px
       .step-dot-circle
         background-color: $orange
         width: 14px
         height: 14px
-   
-  li.intro 
+
+  li.intro
     .dot
       padding: 3px 0px
       .step-dot-circle
@@ -262,7 +261,7 @@
 
   li.intro .dot.active .step-dot-circle
     background-color: #555
- 
+
   .dot:hover
     background-color: inherit
 
@@ -289,7 +288,7 @@
         .step-ingredients
           .step-ingredients-source
             display: none
-      .step-image 
+      .step-image
         display: none
       .step-video
         display: none
@@ -351,7 +350,7 @@
 .classes-index
   .full-price
     color: blue !important
- 
+
 .gift-cta
   .full-price
     .strike
@@ -384,6 +383,9 @@
 
   .assembly-loading-wrapper
     padding-left: 335px
+    .assembly-loading-background
+      .loading-spinner
+        left: calc(50vw + 148px - 48px)
 
 @media (max-width: 979px)
   .course-content-wrapper
@@ -403,7 +405,7 @@
     .navbar
       margin-left: 0px
       margin-right: 0px
-  
+
   .course-content-wrapper
     padding-bottom: 110px
     .container-fluid
@@ -442,7 +444,7 @@
       height: 55px
       .btn
         @include boxsizing
-        width: 50%   
+        width: 50%
         position: absolute
         left: 0px
         bottom: 0px

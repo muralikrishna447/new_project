@@ -69,14 +69,6 @@
         #activity-body.recipe_schema(ng-class="addEditModeClass()"){data: {:'activity-id' => @activity.id}}
           = render 'activities/main_activity_content', activity: @activity
 
-
-          -# Big spinner until the activity loads. By not cloaking but using angular to hide, it
-          -# disappears roughly when the page is ready.
-          .row.activity-loading-spinner(ng-hide="! loading")
-            .span12
-              %i.icon-page-load
-
-
   %div(nell-popup)
 
   -################################ BOTTOM OF PAGE CONTENT ################################
