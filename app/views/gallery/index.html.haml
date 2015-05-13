@@ -4,8 +4,8 @@
 - content_for :ajax_seo do
   %meta{name: "fragment", content: "!"}
 
-.gallery-madlib(ng-if="! csAuthentication.loggedIn()" ng-cloak)          
-  %div.noprint( ng-controller="LoginController" 
+.gallery-madlib(ng-if="! csAuthentication.loggedIn()" ng-cloak)
+  %div.noprint( ng-controller="LoginController"
                 ng-init="registrationSource ='gallery'; setIntent('ftue');"
                 ng-hide="editMode || authentication.currentUser()" )
     = render "devise/sessions/new_angular"
@@ -20,8 +20,8 @@
         .input-group
           %a.search-icon(ng-click='focusSearch()')
             %i.icon-search
-          %input.cs-nav-search-input.focusme(  ng-model='input' 
-                                ng-change='search(input)' 
+          %input.cs-nav-search-input.focusme(  ng-model='input'
+                                ng-change='search(input)'
                                 placeholder='search')
           %a.clear-search.anim-basic-fade(ng-click="clearSearch()" ng-show="input.length")
             %i.icon-remove
@@ -34,8 +34,8 @@
     %ul.nav.filters-group(ng-class="{'filters-collapsed' : filtersCollapsed}")
       %li
         %h5 Popular
-        %a( ng-repeat="x in suggestedSearches" 
-            ng-click="search(x, true)" 
+        %a( ng-repeat="x in suggestedSearches"
+            ng-click="search(x, true)"
             ng-class="{'active' : filters['search_all'].toLowerCase() == x.toLowerCase()}")
           %span {{x}}
 
@@ -48,14 +48,14 @@
         %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
 
       %li(ng-if="csAuthentication.isAdmin()")
-        %h5 Admin
+        %h5 Admincs
         %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
 
       %li
         %h5 Sort
-        %a( ng-repeat="choice in getSortChoices()" 
-            ng-click="filters.sort = choice" 
-            ng-class="{active: filters.sort.toLowerCase() == choice.toLowerCase()}") 
+        %a( ng-repeat="choice in getSortChoices()"
+            ng-click="filters.sort = choice"
+            ng-class="{active: filters.sort.toLowerCase() == choice.toLowerCase()}")
           %span {{choice}}
 
       %li
@@ -65,18 +65,18 @@
     .no-results(ng-show='noResults()')
       %h3 No results found. Here are some of our most popular recipes:
 
-    .gallery-items( infinite-scroll='next()' 
-                    infinite-scroll-disabled='dataLoading' 
-                    infinite-scroll-immediate-check='true' 
+    .gallery-items( infinite-scroll='next()'
+                    infinite-scroll-disabled='dataLoading'
+                    infinite-scroll-immediate-check='true'
                     infinite-scroll-distance='1')
 
       .gallery-item(ng-repeat='activity in getResults() track by activity.id')
-        %cs-index-item.cs-index-item( cs-title='activity.title' 
-                                      url='activity.url' 
-                                      image='activity.image' 
+        %cs-index-item.cs-index-item( cs-title='activity.title'
+                                      url='activity.url'
+                                      image='activity.image'
                                       hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
 
-    .load-checker                                
+    .load-checker
     .loading-icon-group(ng-show="dataLoading > 0")
-      %i.icon-page-load
+      %cs-loading-spinner
 

@@ -59,10 +59,8 @@
         <div class='close-x' ng-click='abandonNellPopup()' ng-show='nellPopupShowing && ! nellLoading'>
           <i class='icon-remove'/>
         </div>
-        <div class="activity-loading-spinner" ng-if="nellLoading">
-          <i class='icon-page-load'/>
-        </div>
-        <div ng-include='info.include'/ ng-hide="nellLoading">
+        <cs-loading-spinner ng-hide="! nellLoading"/>
+        <div ng-include='info.include' ng-hide="nellLoading"/>
       </div>
     </div>
   '''
