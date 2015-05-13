@@ -7,7 +7,7 @@
         %form(class="no-margin-modal-form")
           .invite-horizontal(ng-show="authentication.currentUser()")
             .modal-center
-              %i.icon-page-load(ng-show="dataLoading")
+              %cs-loading-spinner(ng-show="dataLoading")
             .message(ng-show="message")
               %p {{message}}
             - if false
@@ -63,7 +63,7 @@
                 (Preview)
             .invite-horizontal(ng-show="authentication.currentUser()")
               .modal-center
-                %i.icon-page-load(ng-show="dataLoading")
+                %cs-loading-spinner(ng-show="dataLoading")
               .search
                 %input(type="text" placeholder="Search For..." ng-model="searchFriends")
               %div

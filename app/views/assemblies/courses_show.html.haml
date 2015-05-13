@@ -74,8 +74,7 @@
         /       = render 'layouts/disqus_angular'
     .assembly-loading-wrapper.anim-basic-fade(ng-show="loading > 0")
       .assembly-loading-background
-        .activity-loading-spinner
-          %i.icon-page-load
+        %cs-loading-spinner.fixed(ng-hide="! loading")
     .course-nav-slideout.noprint(ng-class="{'menu-slideout': showCourseMenu}")
       %a.black-link(ng-href='{{course.path}}')
         %h1

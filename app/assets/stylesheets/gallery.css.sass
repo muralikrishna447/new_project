@@ -37,7 +37,7 @@
     @include primary-font-bold
     text-transform: none
 
-  .search-group 
+  .search-group
     margin-bottom: $baseline
     margin-left: -1px
     display: block
@@ -70,17 +70,17 @@
         .clear-search
           position: inherit
           right:  12px
-          float: right 
+          float: right
           color:  #a9a9a9
 
         .search-icon
-          position: initial 
+          position: initial
           color:  #a9a9a9
-  
 
-          
 
-    .filter-toggle 
+
+
+    .filter-toggle
       display: none
 
 .gallery-items
@@ -106,8 +106,9 @@
   .loading-icon-group
     width: 100%
     @include display-flex
-    i
+    .loading-spinner
       display: block
+      margin-top: $baseline * 2
       margin-left: auto
       margin-right: auto
   .no-results
@@ -156,12 +157,12 @@
       width: 100vh
       height: 60px
 
-      .filter-toggle 
+      .filter-toggle
         display: inline-block
         cursor: pointer
         margin-left: $horz-baseline-large
 
-      .input-group 
+      .input-group
         display: inline-block
 
     .filters-group
@@ -199,7 +200,7 @@
 
   .gallery-items
     margin-top: 15px
- 
+
   .gallery-controls
     position: absolute
     top: 0px
@@ -225,8 +226,8 @@
           width: 100px
         input
           width: 100px
-         
-        
+
+
 
     .filters-group
       top: $baseline * 4

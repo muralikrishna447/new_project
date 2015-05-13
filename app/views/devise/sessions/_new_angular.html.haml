@@ -40,7 +40,7 @@
           %div
             %button.btn.btn-primary.btn-large.signin(type="submit" ng-disabled="dataLoading") Sign in
             .button-group(ng-show="dataLoading")
-              %i.icon-page-load
+              %cs-loading-spinner
           %hr
           %div
             %a.switch-to-signup(ng-click="switchForm('signUp')")
@@ -93,7 +93,7 @@
           %div
             %button.btn.btn-primary.btn-large.signup(type="submit" ng-disabled="dataLoading") Sign Up
             .button-group(ng-show="dataLoading")
-              %i.icon-page-load
+              %cs-loading-spinner
           %hr
           %div
             %a.switch-to-signin(ng-click="switchForm('signIn')")
@@ -112,7 +112,7 @@
             (Preview)
         .invite-horizontal(ng-show="authentication.currentUser()")
           .modal-center
-            %i.icon-page-load(ng-show="dataLoading")
+            %cs-loading-spinner(ng-show="dataLoading")
           .search
             %input(type="text" placeholder="Search For..." ng-model="searchFriends")
           %div

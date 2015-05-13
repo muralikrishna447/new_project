@@ -9,8 +9,8 @@
     .cs-nav(ng-controller="NavbarController" ng-cloak)
       .cs-nav-logo
         = link_to root_url do
-          %cs-loading
-
+          .logo-box
+            %img.regular-logo(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h-tagline.png" id="chefsteps-logo")
       .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
         - if current_user
           = link_to user_profile_url(current_user) do
@@ -34,7 +34,7 @@
       .cs-nav-items(ng-show="!editMode")
         %ul.cs-nav-links-container.hide-mobile
           = render 'layouts/nav_items'
-        .cs-nav-items-toggle(ng-click="toggleMenu()") 
+        .cs-nav-items-toggle(ng-click="toggleMenu()")
           Menu
         %ul.cs-nav-links-container.anim-basic-fade.hide-desktop(ng-show="showMenu")
           = render 'layouts/nav_items'
