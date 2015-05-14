@@ -29,8 +29,8 @@ Usage:
       scope.finalWidth = Math.ceil(parent.width / 100.0) * 100
 
       if scope.aspect && scope.aspect == "16:9"
-        finalHeight = scope.finalWidth * 9 / 16
-        scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth, h: finalHeight})
+        scope.finalHeight = scope.finalWidth * 9 / 16
+        scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth, h: scope.finalHeight})
       else
         scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth})
       scope.containerStyle["opacity"] = "1"
@@ -44,7 +44,7 @@ Usage:
   template:
     """
     <div ng-style="containerStyle" class="cs-image">
-      <img ng-src="{{finalUrl}}" alt="{{attrs.alt}}" title="{{attrs.title}}">
+      <img ng-src="{{finalUrl}}" alt="{{attrs.alt}}" title="{{attrs.title}} width="{{finalWidth}}" height="{{finalHeight || ''}">
     </div>
     """
 
