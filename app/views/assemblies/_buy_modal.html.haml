@@ -34,7 +34,7 @@
     .row-fluid(ng-switch-when="charge" )
       .close-x.pull-right#cancel-charge(ng-click="closeModal()")
         %i.icon-remove
-      
+
       %form.charge-form(stripe-form="handleStripe" name="chargeForm" ng-disabled="disableForm")
         %h3 Woo-hoo!
         %p.section You're about to purchase the <b>{{assembly.title}}</b> {{assembly.assembly_type == 'Course' ? 'Class':assembly.assembly_type}}. Please choose a payment method below:
@@ -111,6 +111,10 @@
           Thank you for your purchase of our {{assembly.title}} class. We're grateful to have you as a member of the ChefSteps community, and if we can be of any assistance, we are always happy to hear from you at&nbsp;
           %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
           \.
+        // PINTEREST PIXEL TRACKING
+        %div(style='opacity: 0;')
+          %img(height="1" width="1" alt="" src="https://ct.pinterest.com/?tid=EIJLKrYQczq")
+          
         .section.text-center
           .btn.btn-large.btn-primary
             %a(ng-href="{{assemblyPath}}")
