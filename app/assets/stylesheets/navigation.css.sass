@@ -25,7 +25,7 @@ input:focus
   background: rgba(255,255,255,0.9)
   position: fixed
   width: 100%
-  z-index: 99999
+  z-index: 1000
   height: $baseline * 7
   left: 0px
   top: 0px
@@ -77,7 +77,7 @@ input:focus
           color: $orange
           cursor: pointer
 
-.fa-times:before 
+.fa-times:before
   margin-left: 4px
 
 .cs-nav-items-toggle
@@ -108,7 +108,7 @@ input:focus
   top: 6.5rem
   background: rgb(255, 255, 255)
   border: none
-  border-top: 1px solid $orange  
+  border-top: 1px solid $orange
   white-space: nowrap
   @include anim-basic-fade (300ms)
   hr
@@ -120,16 +120,16 @@ input:focus
       height: 4rem
       a
         font-weight: 200
-    
+
 .cs-nav-search
   width: 40px
   right: 85px
   position: absolute
   height: 6rem
-  margin-right: 0px 
+  margin-right: 0px
   overflow: hidden
   @include anim-basic-fade(100ms)
-       
+
   .cs-nav-search-toggle, .cs-nav-search-close
     float: left
     height: 100%
@@ -177,7 +177,7 @@ input:focus
   padding: 8px 0px
   @include boxsizing
   .bloom-notifs
-    .icon 
+    .icon
       i.bloom-globe
         line-height: inherit
 
@@ -296,7 +296,7 @@ input:focus
       border-top: 1px solid $orange
       border-left: none
 
-      position: absolute 
+      position: absolute
       padding-top: 1rem
       text-align: center
       top: 75px !important
@@ -347,7 +347,7 @@ input:focus
       display: block !important
       width: 100%
       padding: 0px
-      margin: 0px    
+      margin: 0px
       input
         text-align: center
     .cs-nav-search-close
@@ -378,4 +378,3 @@ input:focus
   .cs-nav
     width: calc(100% + 50px)
     margin-left: -30px
-

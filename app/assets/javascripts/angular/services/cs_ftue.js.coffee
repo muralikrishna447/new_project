@@ -2,13 +2,14 @@ angular.module('ChefStepsApp').service 'csFtue', ['$rootScope', 'csIntent', 'csA
   # First Time User Experience Flow
   # This array sets the sequence of modals to be opened when the intent is set to 'ftue'
   csFtue = {}
-  
+
   csFtue.start = ->
     modalInstance = $modal.open(
       templateUrl: "/client_views/_ftue.html"
-      backdrop: false
+      backdrop: true
       keyboard: false
-      windowClass: "modal-fullscreen"
+      windowClass: 'modal-large'
+      backdropClass: 'modal-large'
       controller: 'FtueController'
     )
 
@@ -21,9 +22,10 @@ angular.module('ChefStepsApp').service 'csFtue', ['$rootScope', 'csIntent', 'csA
     # csIntent.setIntent('ftue')
     modalInstance = $modal.open(
       templateUrl: "/client_views/_ftue.html"
-      backdrop: false
+      backdrop: true
       keyboard: false
-      windowClass: "modal-fullscreen"
+      windowClass: 'modal-large'
+      backdropClass: 'modal-large'
       controller: 'FtueController'
     )
     # csFtue.open('Survey')
