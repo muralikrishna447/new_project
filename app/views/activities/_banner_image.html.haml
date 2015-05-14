@@ -4,8 +4,13 @@
                         ng-if="heroMedia.heroDisplayType() != 'none'"
                         ng-class="{'hero-video-showing' : showHeroVisual()}")
 
-  %img( ng-src="{{bannerImageURL()}}" ng-if="bannerImageURL() != ''"  itemprop="image" alt="{{getObject().title}}" title="{{getObject().title}}")
-  / %cs-image(url="activity.image_id" width="parent" aspect="16:9")
+  %img( ng-if="bannerImageURL() != ''"
+        ng-src="{{bannerImageURL()}}"
+        width="{{bannerImageDimensions.w}}"
+        height="{{bannerImageDimensions.h}}"
+        itemprop="image"
+        alt="{{getObject().title}}"
+        title="{{getObject().title}}")
 
   .play-button-container
     .play-button( ng-if="heroMedia.heroDisplayType() == 'video' && ! showHeroVisual()")
