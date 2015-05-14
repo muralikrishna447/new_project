@@ -26,20 +26,24 @@ window.deepCopy = (obj) ->
   $scope.$on 'resetVideo', ->
     $scope.toggleHeroVisual() if $scope.showVideo
 
-  $scope.bannerImageURL = ->
-    url = ActivityMethods.itemImageFpfile($scope.activity, 'hero').url
-    url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
+  $scope.bannerImageDimensions = ->
     w = $('.banner-image').width()
     h = 495
     if w < 650
       h = w * 9.0 / 16.0
+    {w: w, h: h}
+
+  $scope.bannerImageURL = ->
+    url = ActivityMethods.itemImageFpfile($scope.activity, 'hero').url
+    url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
+    dims = $scope.bannerImageDimensions()
     if ! $scope.is_brombone
-      url += "/convert?fit=crop&h=#{h}&w=#{w}&quality=90&cache=true"
+      url += "/convert?fit=crop&h=#{dims.h}&w=#{dims.w}&quality=90&cache=true"
     else
       # For brombone, don't set a height because the arbitrarily wide aspect ratio seems like it might be
       # preventing google from putting our images in SERPs. It might be afraid of taking a square crop
       # out of that wide of an image.
-      url += "/convert?fit=crop&w=#{w}&quality=90&cache=true"
+      url += "/convert?fit=crop&w=#{dims.w}&quality=90&cache=true"
     window.cdnURL(url)
 
 ]
