@@ -1,27 +1,28 @@
-%fieldset
-  %label Mode
-  %label.radio
-    %input(type='radio' ng-model='component.form.mode' value='api')
-    API
-  %label.radio
-    %input(type='radio' ng-model='component.form.mode' value='custom')
-    Custom
-
-%fieldset(ng-if="component.form.mode=='api'")
-  %label Source
-  %input(type='text' ng-model='component.form.metadata.source')
-
-  %div( component-mapper
-        connections='component.form.metadata.mapper'
-        component-keys="['title', 'image', 'buttonMessage', 'url']"
-        response='component.response'
-        component='component'
-        ng-show='component.form.metadata.source' )
-
-%fieldset
-  %label Rows
-  %input(type='number' ng-model='component.form.metadata.rows')
-
-%fieldset
-  %label Columns
-  %input(type='number' ng-model='component.form.metadata.columns')
+-#
+-# %fieldset
+-#   %label Mode
+-#   %label.radio
+-#     %input(type='radio' ng-model='component.form.mode' value='api')
+-#     API
+-#   %label.radio
+-#     %input(type='radio' ng-model='component.form.mode' value='custom')
+-#     Custom
+-#
+-# %fieldset(ng-if="component.form.mode=='api'")
+-#   %label Source
+-#   %input(type='text' ng-model='component.form.metadata.source')
+-#
+-#   %div( component-mapper
+-#         connections='component.form.metadata.mapper'
+-#         component-keys="['title', 'image', 'buttonMessage', 'url']"
+-#         response='component.response'
+-#         component='component'
+-#         ng-show='component.form.metadata.source' )
+-#
+-# %fieldset
+-#   %label Rows
+-#   %input(type='number' ng-model='component.form.metadata.rows')
+-#
+-# %fieldset
+-#   %label Columns
+-#   %input(type='number' ng-model='component.form.metadata.columns')

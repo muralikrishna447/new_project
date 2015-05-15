@@ -30,7 +30,7 @@
   }
   link: (scope, $element, $attrs) ->
     scope.$watch 'component', ((newValue, oldValue) ->
-      # console.log 'newValue: ', newValue
+      console.log 'newValue: ', newValue
       # console.log 'oldValue: ', oldValue
       switch scope.component.mode
         when 'api'
@@ -45,6 +45,8 @@
             )
         when 'custom'
           scope.content = scope.component.metadata.content
+        else
+          scope.content = scope.component
     ), true
 
   templateUrl: '/client_views/component_hero.html'
