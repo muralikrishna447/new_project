@@ -11,3 +11,22 @@
         {{key}}
       %td
         %select(ng-model='connections[key]' ng-options='key for key in responseKeys')
+
+  .btn(ng-click="showResponse = ! showResponse")
+    %span(ng-if='showResponse')
+      Hide Response
+    %span(ng-if='!showResponse')
+      Show Response
+
+  .btn(ng-click="showMapped = ! showMapped")
+    %span(ng-if='showMapped')
+      Hide Mapped
+    %span(ng-if='!showMapped')
+      Show Mapped
+
+  %div(ng-show='showResponse')
+    %pre
+      {{response | json}}
+  %div(ng-show='showMapped')
+    %pre
+      {{mapped | json}}

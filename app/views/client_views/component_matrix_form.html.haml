@@ -1,4 +1,29 @@
--#
+%fieldset
+  %label Mode
+  %label.radio
+    %input(type='radio' ng-model='component.form.mode' value='api')
+    API
+  %label.radio
+    %input(type='radio' ng-model='component.form.mode' value='custom')
+    Custom
+
+%fieldset(ng-if="component.form.mode=='api'")
+
+  // Example API endpoints
+  .btn(ng-click="component.form.metadata.source = 'http://www.chefsteps.com/api/v0/activities'")
+    &#47;api/v0/activities
+
+  %label Source
+  %input(type='text' ng-model='component.form.metadata.source')
+
+  %div( component-mapper
+        connections='component.form.metadata.mapper'
+        component-keys="['title', 'image', 'buttonMessage', 'url']"
+        response='component.response'
+        component='component'
+        source = 'component.form.metadata.source'
+        ng-show='component.form.metadata.source' )
+
 -# %fieldset
 -#   %label Mode
 -#   %label.radio
