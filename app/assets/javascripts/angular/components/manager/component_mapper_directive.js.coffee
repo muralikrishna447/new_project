@@ -17,7 +17,7 @@
       connections = {}
       componentKeys.map (componentKey) ->
         connections[componentKey] = componentKey
-    scope.component.form.metadata.connections = connections
+    # scope.component.form.metadata.connections = connections
     scope.connections = connections
 
     scope.$watch 'source', (newValue, oldValue) ->

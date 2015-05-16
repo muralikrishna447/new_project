@@ -24,6 +24,14 @@
         source = 'component.form.metadata.source'
         ng-show='component.form.metadata.source' )
 
+%fieldset
+  %label Rows
+  %input(type='number' ng-model='component.form.metadata.rows')
+
+%fieldset
+  %label Columns
+  %input(type='number' ng-model='component.form.metadata.columns')
+
 -# %fieldset
 -#   %label Mode
 -#   %label.radio
