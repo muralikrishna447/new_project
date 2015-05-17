@@ -6,7 +6,7 @@ window.deepCopy = (obj) ->
 
 # This is a little captive controller only designed for use inside ActivityController for now.
 # Would be better as a directive but needs work to abstract it.
-@app.controller 'BannerController', ["$scope", "ActivityMethods", ($scope, ActivityMethods) ->
+@app.controller 'BannerController', ["$scope", "ActivityMethods", "$timeout", ($scope, ActivityMethods, $timeout) ->
   $scope.showVideo = false
 
   $scope.showHeroVisual = ->
@@ -33,12 +33,17 @@ window.deepCopy = (obj) ->
       h = w * 9.0 / 16.0
     {w: w, h: h}
 
+  bannerImageQuality = 20
+  $timeout( ( ->
+    bannerImageQuality = 90
+  ), 1000)
+
   $scope.bannerImageURL = ->
     url = ActivityMethods.itemImageFpfile($scope.activity, 'hero').url
     url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
     dims = $scope.bannerImageDimensions()
     if ! $scope.is_brombone
-      url += "/convert?fit=crop&h=#{dims.h}&w=#{dims.w}&quality=90&cache=true"
+      url += "/convert?fit=crop&h=#{dims.h}&w=#{dims.w}&quality=#{bannerImageQuality}&cache=true"
     else
       # For brombone, don't set a height because the arbitrarily wide aspect ratio seems like it might be
       # preventing google from putting our images in SERPs. It might be afraid of taking a square crop
