@@ -16,19 +16,17 @@
   link: (scope, element, attrs) ->
     scope.content = []
     updateItems = (newItems) ->
-      if scope.component.metadata.rows && scope.component.metadata.columns
-        # numItems = scope.content.rows * scope.content.columns
+      numRows = scope.component.metadata.rows
+      numCols = scope.component.metadata.columns
+      if numRows && numCols
         matrix = []
         i = 0
-        while i < scope.component.metadata.rows
+        while i < numRows
           matrix[i] = []
           j = 0
-          while j < scope.component.metadata.columns
-            # console.log 'items: ', scope.content.items
+          while j < numCols
             if newItems
-              console.log 'adding new items: ', newItems
-              index = scope.component.metadata.columns*i + j
-              # console.log 'new items index: ', index
+              index = numCols*i + j
               matrix[i][j] = newItems[index]
             else if scope.items && scope.items[i] && scope.items[i][j]
               matrix[i][j] = scope.items[i][j]
@@ -36,28 +34,17 @@
               matrix[i][j] = {}
             j++
           i++
-        console.log 'matrix: ', matrix
         scope.items = matrix
-        console.log 'items: ', scope.items
 
     scope.$watch 'component', ((newValue, oldValue) ->
-      console.log 'newValue: ', newValue
-      console.log 'oldValue: ', oldValue
       switch scope.component.mode
         when'api'
           if scope.component.metadata
             source = scope.component.metadata.source
             mapper = scope.component.metadata.mapper
-            maxitems = scope.component.metadata.maxitems
-            if source
-              $http.get(source).success (data, status, headers, config) ->
-                contentData = data
-                if maxitems
-                  scope.response = contentData.slice(0, maxitems)
-                else
-                  scope.response = contentData
-                Mapper.mapArray(mapper, scope.content, scope.response)
-                updateItems(scope.content)
+            Mapper.do(source, mapper).then (content) ->
+              scope.content = content
+              updateItems(scope.content)
     ), true
 
   templateUrl: '/client_views/component_matrix.html'

@@ -46,7 +46,7 @@
 #   description: 'description'
 #   url: 'url'
 # }
-@components.service 'Mapper', [ ->
+@components.service 'Mapper', ['$http', '$q', ($http, $q) ->
 
   @mapOne = (mapper, content, source) ->
     angular.forEach mapper, (sourceKey, contentKey) ->
@@ -58,6 +58,29 @@
         if typeof content[index] == 'undefined'
           content[index] = {}
         content[index][contentKey] = item[sourceKey]
+
+  # source is a url to an API endpoint
+  # componentKeys is an array containing the keys to map to
+  @do = (sourceUrl, connections) ->
+    deferred = $q.defer()
+    if sourceUrl
+      mapped = []
+      $http.get(sourceUrl).success (data, status, headers, config) ->
+        if data.length > 1
+          responseKeys = Object.keys(data[0])
+        else
+          responseKeys = Object.keys(data)
+
+        mapped = data.map (item) ->
+          # console.log 'Here is an Item: ', item
+          mappedItem = {}
+          angular.forEach connections, (sourceKey, contentKey) ->
+            mappedItem[contentKey] = item[sourceKey]
+          return mappedItem
+          
+        deferred.resolve mapped
+
+    return deferred.promise
 
   return this
 ]
