@@ -178,23 +178,19 @@
       margin-bottom: 0px
     .matrix-column
       margin-right: 20px
-      @include flex(1 1 auto)
+      @include flex(0 1 100%)
       // @include aspect-1-1
       @include boxsizing
       &:last-of-type
         margin-right: 0px
 
-.matrix-item
-  @include aspect-content
-  // margin: 10px
-  @include boxsizing
-  .matrix-content
+.matrix-item-standard
+  @include aspect-1-1
+  .matrix-item-content
     @include aspect-content
     @include display-flex
     @include justify-content(center)
     @include align-items(center)
-    .matrix-image
-      @include aspect-content
 
 .btn-outline
   border: 2px solid rgba(255,255,255,.8)

@@ -2,4 +2,10 @@
   .matrix-row(ng-repeat='row in items track by $index')
     .matrix-column(ng-repeat='item in row track by $index')
       -# .matrix-item(matrix-item content='item' form-state='content.formState' mode='content.mode')
-      %div(hero component='item')
+      -# %div(hero component='item')
+      .matrix-item-standard(ng-if="component.metadata.itemType.name == 'Standard'")
+        .matrix-item-content
+          %a.btn-outline(ng-href='{{item.url}}')
+            {{item.title}}
+        .matrix-item-content
+          %img(ng-src='{{item.image | aspect1to1 }}')
