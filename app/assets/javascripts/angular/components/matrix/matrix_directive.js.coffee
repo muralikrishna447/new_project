@@ -14,6 +14,11 @@
         attrs: ['title', 'image', 'buttonMessage', 'url']
       }
     ]
+
+    scope.getKeys = (object) ->
+      console.log 'Object: ', object
+      Object.keys(object)
+
   templateUrl: '/client_views/component_matrix_form.html'
 ]
 

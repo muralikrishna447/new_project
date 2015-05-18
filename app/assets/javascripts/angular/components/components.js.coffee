@@ -72,12 +72,15 @@
           responseKeys = Object.keys(data)
 
         mapped = data.map (item) ->
-          # console.log 'Here is an Item: ', item
           mappedItem = {}
-          angular.forEach connections, (sourceKey, contentKey) ->
-            mappedItem[contentKey] = item[sourceKey]
+          for connection in connections
+            value = connection.value
+            if value && connection.value.length > 0
+              mappedItem[connection.componentKey] = value
+            else
+              mappedItem[connection.componentKey] = item[connection.sourceKey]
           return mappedItem
-          
+
         deferred.resolve mapped
 
     return deferred.promise

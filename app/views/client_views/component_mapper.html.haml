@@ -6,11 +6,14 @@
     %tr
       %th Component Key
       %th API Key
-    %tr.component-key(ng-repeat='key in componentKeys')
+      %th Value
+    %tr.component-key(ng-repeat='connection in connections')
       %td
-        {{key}}
+        {{connection.componentKey}}
       %td
-        %select(ng-model='connections[key]' ng-options='key for key in responseKeys')
+        %select(ng-model='connection.sourceKey' ng-options='key for key in responseKeys' ng-change='changeSourceKey(connection)')
+      %td
+        %input(type='text' ng-model='connection.value' ng-change='changeValue(connection)')
 
   .btn(ng-click="showResponse = ! showResponse")
     %span(ng-if='showResponse')

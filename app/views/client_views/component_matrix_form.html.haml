@@ -8,7 +8,7 @@
 
 %fieldset
   %label Item Type
-  %select(ng-options="item.name for item in itemTypeOptions" ng-model='component.form.metadata.itemType')
+  %select(ng-options="item.name for item in itemTypeOptions track by item.name" ng-model='component.form.metadata.itemType')
 
 %fieldset
   %label Mode
@@ -30,8 +30,7 @@
 
   %div( component-mapper
         connections='component.form.metadata.mapper'
-        component-keys="component.form.metadata.itemType.attrs"
-        response='component.response'
+        component-keys='component.form.metadata.itemType.attrs'
         component='component'
         source = 'component.form.metadata.source'
         ng-show='component.form.metadata.source' )

@@ -62,6 +62,12 @@
         width: 50%
         select
           width: 100%
+        input[type='text'], input[type='number']
+          min-width: 200px
+          border: 1px solid $light-gray
+          border-radius: 0px
+          margin-bottom: 10px
+          @include box-shadow(none)
 
 .component-preview
   padding: 20px
@@ -187,10 +193,13 @@
 .matrix-item-standard
   @include aspect-1-1
   .matrix-item-content
+    color: white
+    text-align: center
     @include aspect-content
     @include display-flex
     @include justify-content(center)
     @include align-items(center)
+    @include flex-direction(column)
 
 .btn-outline
   border: 2px solid rgba(255,255,255,.8)

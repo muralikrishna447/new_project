@@ -5,7 +5,8 @@
       -# %div(hero component='item')
       .matrix-item-standard(ng-if="component.metadata.itemType.name == 'Standard'")
         .matrix-item-content
-          %a.btn-outline(ng-href='{{item.url}}')
-            {{item.title}}
-        .matrix-item-content
           %img(ng-src='{{item.image | aspect1to1 }}')
+        .matrix-item-content
+          {{item.title}}
+          %a.btn-outline(ng-href='{{item.url}}')
+            {{item.buttonMessage}}
