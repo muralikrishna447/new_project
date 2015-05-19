@@ -1,4 +1,31 @@
-@components.directive 'matrixForm', ['$http', 'Mapper', ($http, Mapper) ->
+@components.service 'Matrix', [ ->
+
+  @do = (numRows, numCols, newItems) ->
+    if numRows && numCols
+      matrix = []
+      i = 0
+      while i < numRows
+        matrix[i] = []
+        j = 0
+        while j < numCols
+          # Add new item
+          if newItems
+            index = numCols*i + j
+            matrix[i][j] = newItems[index]
+          # Add existing item
+          else if scope.items && scope.items[i] && scope.items[i][j]
+            matrix[i][j] = scope.items[i][j]
+          # Add blank item
+          else
+            matrix[i][j] = null
+          j++
+        i++
+      return matrix
+
+  return this
+]
+
+@components.directive 'matrixForm', ['$http', 'Mapper', 'Matrix', ($http, Mapper, Matrix) ->
   restrict: 'A'
   scope: {
     component: '='
@@ -15,9 +42,16 @@
       }
     ]
 
-    scope.getKeys = (object) ->
-      console.log 'Object: ', object
-      Object.keys(object)
+    scope.$watch 'component.form.mode', (newValue, oldValue) ->
+      apiMode = newValue
+      if apiMode
+        switch apiMode
+          when 'api'
+            console.log 'API MODE'
+          when 'custom'
+            console.log 'scope.component', scope.component
+            Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
+              scope.component.form.metadata.items = Matrix.do(scope.component.form.metadata.rows, scope.component.form.metadata.columns, content)
 
   templateUrl: '/client_views/component_matrix_form.html'
 ]
@@ -65,14 +99,18 @@
       #         scope.content = content
       #         updateItems(scope.content)
       if scope.component.metadata
-        source = scope.component.metadata.source
-        mapper = scope.component.metadata.mapper
-        if source && mapper
-          Mapper.do(source, mapper).then (content) ->
-            scope.content = content
-            updateItems(scope.content)
-        else
-          updateItems()
+        switch scope.component.mode
+          when 'api'
+            source = scope.component.metadata.source
+            mapper = scope.component.metadata.mapper
+            if source && mapper
+              Mapper.do(source, mapper).then (content) ->
+                scope.content = content
+                updateItems(scope.content)
+            else
+              updateItems()
+          when 'custom'
+            scope.items = scope.component.metadata.items
     ), true
 
   templateUrl: '/client_views/component_matrix.html'

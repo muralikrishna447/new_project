@@ -34,3 +34,14 @@
         component='component'
         source = 'component.form.metadata.source'
         ng-show='component.form.metadata.source' )
+
+%fieldset(ng-if="component.form.mode=='custom'")
+  .matrix
+    .matrix-row(ng-repeat='row in component.form.metadata.items track by $index')
+      .matrix-column(ng-repeat='item in row track by $index')
+        .matrix-item-form
+          .matrix-item-content
+            %input(type='text' ng-model='item.title')
+            %input(type='text' ng-model='item.image')
+            %input(type='text' ng-model='item.buttonMessage')
+            %input(type='text' ng-model='item.url')

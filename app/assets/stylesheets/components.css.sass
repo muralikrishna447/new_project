@@ -222,6 +222,18 @@
   @include justify-content(center)
   @include align-items(center)
 
+.matrix-item-form
+  @include aspect-1-1
+  border: 1px solid $light-gray
+  .matrix-item-content
+    color: white
+    text-align: center
+    @include aspect-content
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    @include flex-direction(column)
+    
 .btn-outline
   border: 2px solid rgba(255,255,255,.8)
   border-radius: 3px
