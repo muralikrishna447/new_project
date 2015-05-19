@@ -51,7 +51,9 @@
           when 'custom'
             console.log 'scope.component', scope.component
             Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
-              scope.component.form.metadata.items = Matrix.do(scope.component.form.metadata.rows, scope.component.form.metadata.columns, content)
+              scope.component.form.metadata.items = content
+            # Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
+            #   scope.component.form.metadata.items = Matrix.do(scope.component.form.metadata.rows, scope.component.form.metadata.columns, content)
 
   templateUrl: '/client_views/component_matrix_form.html'
 ]
@@ -110,7 +112,7 @@
             else
               updateItems()
           when 'custom'
-            scope.items = scope.component.metadata.items
+            scope.items = updateItems(scope.component.metadata.items)
     ), true
 
   templateUrl: '/client_views/component_matrix.html'

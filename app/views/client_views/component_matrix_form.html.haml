@@ -35,13 +35,19 @@
         source = 'component.form.metadata.source'
         ng-show='component.form.metadata.source' )
 
-%fieldset(ng-if="component.form.mode=='custom'")
-  .matrix
-    .matrix-row(ng-repeat='row in component.form.metadata.items track by $index')
-      .matrix-column(ng-repeat='item in row track by $index')
-        .matrix-item-form
-          .matrix-item-content
-            %input(type='text' ng-model='item.title')
-            %input(type='text' ng-model='item.image')
-            %input(type='text' ng-model='item.buttonMessage')
-            %input(type='text' ng-model='item.url')
+%div(ng-if="component.form.mode=='custom'")
+  -# .matrix
+  -#   .matrix-row(ng-repeat='row in component.form.metadata.items track by $index')
+  -#     .matrix-column(ng-repeat='item in row track by $index')
+  -#       .matrix-item-form
+  -#         .matrix-item-content
+  -#           %input(type='text' ng-model='item.title')
+  -#           %input(type='text' ng-model='item.image')
+  -#           %input(type='text' ng-model='item.buttonMessage')
+  -#           %input(type='text' ng-model='item.url')
+  .matrix-item-form(ng-repeat='item in component.form.metadata.items track by $index')
+    %h5 Matrix Item {{$index}}
+    %input(type='text' ng-model='item.title')
+    %input(type='text' ng-model='item.image')
+    %input(type='text' ng-model='item.buttonMessage')
+    %input(type='text' ng-model='item.url')
