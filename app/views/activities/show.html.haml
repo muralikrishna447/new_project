@@ -33,8 +33,9 @@
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-class' => '{"activity_show" : true}' }
 
 -# This is how search engine crawlers know to request the _escaped_fragment_ page
-- content_for :ajax_seo do
-  %meta{name: "fragment", content: "!"}
+- unless @activity.slug == 'romesco'
+  - content_for :ajax_seo do
+    %meta{name: "fragment", content: "!"}
 
 -if params[:scaling]
   :javascript
