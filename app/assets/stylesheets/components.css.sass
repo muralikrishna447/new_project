@@ -200,6 +200,18 @@
     @include justify-content(center)
     @include align-items(center)
     @include flex-direction(column)
+    .item-divider.first
+      padding: 10px
+      @include boxsizing
+      @include flex(1 1 100%)
+      @include display-flex
+      @include align-items(flex-end)
+      @include justify-content(center)
+    .item-divider.middle
+      @include flex(0 0 auto)
+    .item-divider.last
+      @include flex(1 1 100%)
+      @include display-flex
 
 .matrix-item-standard-blank
   @include aspect-1-1
@@ -229,12 +241,12 @@
   margin-bottom: 20px
 
 .btn-outline
+  display: block
   border: 2px solid rgba(255,255,255,.8)
   border-radius: 3px
   color: white
   padding: 5px 20px
   background-color: none
-  width: 50%
   z-index: 1
   text-align: center
   @include transition(all 300ms)

@@ -7,10 +7,13 @@
         .matrix-item-content
           %img(ng-src='{{item.image | aspect1to1 }}')
         .matrix-item-content
-          {{item.title}}
-          %a.btn-outline(ng-href='{{item.url}}')
-            {{item.buttonMessage}}
-            
+          .item-divider.first
+            {{item.title}}
+          .item-divider.middle
+            %a.btn-outline(ng-href='{{item.url}}')
+              {{item.buttonMessage}}
+          .item-divider.last
+
       .matrix-item-standard-blank(ng-if="!item && component.metadata.itemType.name == 'Standard'")
         .matrix-item-content
           Title
