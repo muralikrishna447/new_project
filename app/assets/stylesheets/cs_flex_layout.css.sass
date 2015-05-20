@@ -110,6 +110,10 @@
 
 // 20px + 600px + 20px (master column padding + main + master column padding)
 @media (max-width: 640px)
+  .flex-item.flex-full
+    width: 100%
+    .flex-title
+      width: 100%
 
   .flex-main
     width: 100%
@@ -141,8 +145,8 @@
 .flex-title
   // @include display-flex
   // @include justify-content(center)
-  max-width: 600px
   margin: 0 auto
+  width: 600px
   .flex-title-item
     // @include flex(0 600px)
     margin-bottom: $baseline
