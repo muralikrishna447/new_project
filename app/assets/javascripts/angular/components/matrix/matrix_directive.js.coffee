@@ -33,8 +33,10 @@
   link: (scope, $element, $attrs) ->
     scope.itemTypeOptions = [
       {
-        name: 'Standard'
+        name: 'Square A'
+        className: 'square.square-a'
         attrs: ['title', 'image', 'buttonMessage', 'url']
+        templateUrl: 'component_matrix_item_square_a.html'
       }
       {
         name: 'Circle'
@@ -114,6 +116,10 @@
           when 'custom'
             scope.items = updateItems(scope.component.metadata.items)
     ), true
+
+    scope.getTemplate = (templateUrl) ->
+      console.log 'getting templateUrl: ', templateUrl
+      return '/client_views/' + templateUrl
 
   templateUrl: '/client_views/component_matrix.html'
 ]

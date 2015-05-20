@@ -1,0 +1,19 @@
+.matrix-item.square.square-a(ng-if="item")
+  .matrix-item-content
+    %img(ng-src='{{item.image | aspect1to1 }}')
+  .matrix-item-content
+    .item-divider.first
+      {{item.title}}
+    .item-divider.middle
+      %a.btn-outline(ng-href='{{item.url}}')
+        {{item.buttonMessage}}
+    .item-divider.last
+
+.matrix-item.square.square-a.blank(ng-if="!item")
+  .matrix-item-content
+    .item-divider.first
+      Title
+    .item-divider.middle
+      %a.btn-outline(ng-href='{{item.url}}')
+        Button
+    .item-divider.last
