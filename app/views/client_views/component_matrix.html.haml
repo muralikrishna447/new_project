@@ -16,9 +16,12 @@
 
       .matrix-item-standard-blank(ng-if="!item && component.metadata.itemType.name == 'Standard'")
         .matrix-item-content
-          Title
-          %a.btn-outline(ng-href='{{item.url}}')
-            Button
+          .item-divider.first
+            Title
+          .item-divider.middle
+            %a.btn-outline(ng-href='{{item.url}}')
+              Button
+          .item-divider.last
 
       .matrix-item-blank(ng-if="!item && !component.metadata.itemType")
         Matrix Item {{$index}}
