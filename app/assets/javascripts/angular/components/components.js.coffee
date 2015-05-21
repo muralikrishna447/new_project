@@ -80,16 +80,16 @@
 # }
 @components.service 'Mapper', ['$http', '$q', ($http, $q) ->
 
-  @mapOne = (mapper, content, source) ->
-    angular.forEach mapper, (sourceKey, contentKey) ->
-      content[contentKey] = source[sourceKey]
-
-  @mapArray = (mapper, content, source) ->
-    source.map (item, index) ->
-      angular.forEach mapper, (sourceKey, contentKey) ->
-        if typeof content[index] == 'undefined'
-          content[index] = {}
-        content[index][contentKey] = item[sourceKey]
+  # @mapOne = (mapper, content, source) ->
+  #   angular.forEach mapper, (sourceKey, contentKey) ->
+  #     content[contentKey] = source[sourceKey]
+  #
+  # @mapArray = (mapper, content, source) ->
+  #   source.map (item, index) ->
+  #     angular.forEach mapper, (sourceKey, contentKey) ->
+  #       if typeof content[index] == 'undefined'
+  #         content[index] = {}
+  #       content[index][contentKey] = item[sourceKey]
 
   # source is a url to an API endpoint
   # componentKeys is an array containing the keys to map to
@@ -98,7 +98,6 @@
     if sourceUrl
       mapped = []
       $http.get(sourceUrl).success (data, status, headers, config) ->
-        console.log 'data length: ', data.length
         if data.length
           responseKeys = Object.keys(data)
 
@@ -115,6 +114,7 @@
         else
           responseKeys = Object.keys(data)
           mappedItem = {}
+          item = data
           for connection in connections
             value = connection.value
             if value && value.length > 0
