@@ -5,9 +5,13 @@
   return this
 ]
 
-@componentsManager.controller 'ComponentsNewController', ['$http', '$state', ($http, $state) ->
+@componentsManager.controller 'ComponentsNewController', ['$http', '$state', '$location', ($http, $state, $location) ->
+
   @componentTypeOptions = ['hero', 'list', 'matrix']
-  @component = {}
+  @form = {
+    name: $location.search().name # Would prefer to use $state, but since entire site isn't a single page app yet, we can't quite do this until we fix activities
+  }
+
 
   @save = (component) ->
     $http.post('/api/v0/components', {component: component}).success (data, status, headers, config) ->

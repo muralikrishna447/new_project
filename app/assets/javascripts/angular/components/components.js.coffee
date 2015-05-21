@@ -20,30 +20,50 @@
 # Controller to control components.  Mostly if an edit button should be displayed for admins
 @components.controller 'homeController', ['csAuthentication', (csAuthentication) ->
   @editable = csAuthentication.isAdmin()
+  @showEditable = false
+]
 
+@components.directive 'componentEditButton', ['Component', (Component) ->
+  restrict: 'E'
+  scope: {}
+
+  link: (scope, element, attrs) ->
+    scope.componentName = attrs.componentName
+    slug = attrs.componentName.split(' ').map((a) ->
+        a.toLowerCase()
+      ).join('-')
+
+    Component.show {id: slug}, (data) ->
+      scope.component = data
+      scope.actionName = 'Edit Component:'
+      scope.actionUrl = "/components/#{slug}/edit"
+    , (error) ->
+      if error.status == 404
+        scope.actionName = 'Create Component:'
+        scope.actionUrl = "/components/new?name=#{scope.componentName}"
+
+  template:
+    """
+      <div class='component-edit-button'>
+        <a class='btn btn-secondary' ng-href='{{actionUrl}}' target='_blank'>{{actionName}} {{componentName}}</a>
+      </div>
+    """
 ]
 
 # Directive to load components.  Currently loads with an id or slug
 # Todo: Load component by name
 @components.directive 'componentLoad', ['Component', (Component) ->
   restrict: 'A'
-  scope: {
-    showEdit: '='
-  }
+  scope: {}
 
   link: (scope, element, attrs) ->
     scope.componentId = attrs.componentId
     Component.show {id: attrs.componentId}, (data) ->
       scope.component = data
-      scope.editLink = "/components/#{scope.componentId}/edit"
-    , (error) ->
-      if error.status == 404
-        console.log 'Try Adding a New COmponent'
 
   template:
     """
       <div>
-        <a class='btn btn-secondary' ng-if='showEdit' ng-href='{{editLink}}' target='_blank'>Edit {{componentId}}</a>
         <div hero component='component' ng-if="component.componentType=='hero'"></div>
         <div list component='component' ng-if="component.componentType=='list'"></div>
         <div matrix component='component' ng-if="component.componentType=='matrix'"></div>
