@@ -1,14 +1,15 @@
-%div(component-load component-id='home-hero-one')
-%div(component-load component-id='home-matrix-one')
+%div(ng-controller='homeController as home')
+  %div(component-load component-id='home-hero-one' show-edit='home.editable')
+  %div(component-load component-id='home-matrix-one' show-edit='home.editable')
 
-.home-component-split
-  .home-component-split-item(component-load component-id='home-list-one')
-  .home-component-split-item(component-load component-id='home-list-one')
+  .home-component-split
+    .home-component-split-item(component-load component-id='home-list-one' show-edit='home.editable')
+    .home-component-split-item(component-load component-id='home-list-one' show-edit='home.editable')
 
-%div(component-load component-id='home-matrix-two')
-%div(component-load component-id='home-hero-two')
-%div(component-load component-id='home-matrix-three')
-%div(component-load component-id='home-matrix-four')
-%div(component-load component-id='home-hero-three')
-%div(component-load component-id='home-matrix-five')
-%div(component-load component-id='home-matrix-six')
+  %div(component-load component-id='home-matrix-two' show-edit='home.editable')
+  %div(component-load component-id='home-hero-two' show-edit='home.editable')
+  %div(component-load component-id='home-matrix-three' show-edit='home.editable')
+  %div(component-load component-id='home-matrix-four' show-edit='home.editable')
+  %div(component-load component-id='home-hero-three' show-edit='home.editable')
+  %div(component-load component-id='home-matrix-five' show-edit='home.editable')
+  %div(component-load component-id='home-matrix-six' show-edit='home.editable')

@@ -17,21 +17,32 @@
       method: 'DELETE'
 ]
 
+# Controller to control components.  Mostly if an edit button should be displayed for admins
+@components.controller 'homeController', ['csAuthentication', (csAuthentication) ->
+  @editable = csAuthentication.isAdmin()
+
+]
+
 # Directive to load components.  Currently loads with an id or slug
 # Todo: Load component by name
 @components.directive 'componentLoad', ['Component', (Component) ->
   restrict: 'A'
   scope: {
     componentId: '='
+    showEdit: '='
   }
 
   link: (scope, element, attrs) ->
     Component.show {id: attrs.componentId}, (data) ->
       scope.component = data
 
+    scope.editLink = (id) ->
+      "/components/#{id}/edit"
+
   template:
     """
       <div>
+        <a class='btn btn-secondary' ng-if='showEdit' ng-href='{{editLink(component.id)}}' target='_blank'>Edit {{component.name}}</a>
         <div hero component='component' ng-if="component.componentType=='hero'"></div>
         <div list component='component' ng-if="component.componentType=='list'"></div>
         <div matrix component='component' ng-if="component.componentType=='matrix'"></div>
