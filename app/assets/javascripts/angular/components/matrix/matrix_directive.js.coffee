@@ -1,3 +1,5 @@
+# Service to put a list of items into a matrix given a set number of rows and columns
+# May or may not need it
 @components.service 'Matrix', [ ->
 
   @do = (numRows, numCols, newItems) ->
@@ -37,6 +39,7 @@
         className: 'square.square-a'
         attrs: ['title', 'image', 'buttonMessage', 'url']
         templateUrl: 'component_matrix_item_square_a.html'
+        formTemplateUrl: 'component_matrix_item_square_a_form.html'
       }
       {
         name: 'Circle'
@@ -56,6 +59,9 @@
               scope.component.form.metadata.items = content
             # Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
             #   scope.component.form.metadata.items = Matrix.do(scope.component.form.metadata.rows, scope.component.form.metadata.columns, content)
+
+    scope.getTemplate = (templateUrl) ->
+      return '/client_views/' + templateUrl
 
   templateUrl: '/client_views/component_matrix_form.html'
 ]
@@ -94,14 +100,6 @@
         scope.items = matrix
 
     scope.$watch 'component', ((newValue, oldValue) ->
-      # switch scope.component.mode
-      #   when'api'
-      #     if scope.component.metadata
-      #       source = scope.component.metadata.source
-      #       mapper = scope.component.metadata.mapper
-      #       Mapper.do(source, mapper).then (content) ->
-      #         scope.content = content
-      #         updateItems(scope.content)
       if scope.component.metadata
         switch scope.component.mode
           when 'api'
@@ -118,7 +116,6 @@
     ), true
 
     scope.getTemplate = (templateUrl) ->
-      console.log 'getting templateUrl: ', templateUrl
       return '/client_views/' + templateUrl
 
   templateUrl: '/client_views/component_matrix.html'
