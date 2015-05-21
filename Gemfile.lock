@@ -68,6 +68,12 @@ GEM
     airbrake (4.1.0)
       builder
       multi_json
+    algoliasearch (1.4.2)
+      httpclient (~> 2.4)
+      json (>= 1.5.1)
+    algoliasearch-rails (1.12.1)
+      algoliasearch (>= 1.2.14)
+      json (>= 1.5.1)
     ambry (0.3.1)
     angularjs-rails (1.2.21)
     arbre (1.0.1)
@@ -175,8 +181,8 @@ GEM
       multi_json (~> 1.0)
     extlib (0.9.16)
     fabrication (2.5.0)
-    faraday (0.8.4)
-      multipart-post (~> 1.1)
+    faraday (0.8.9)
+      multipart-post (~> 1.2.0)
     fastercsv (1.5.5)
     faye-websocket (0.4.7)
       eventmachine (>= 0.12.0)
@@ -263,6 +269,7 @@ GEM
       multi_json (~> 1.0)
       multi_xml
     httpauth (0.2.0)
+    httpclient (2.6.0.1)
     i18n (0.7.0)
     inherited_resources (1.4.0)
       has_scope (~> 0.5.0)
@@ -322,7 +329,7 @@ GEM
     mono_logger (1.1.0)
     multi_json (1.10.1)
     multi_xml (0.5.1)
-    multipart-post (1.1.5)
+    multipart-post (1.2.0)
     nested-hstore (0.0.1)
       activerecord
       activerecord-postgres-hstore
@@ -528,6 +535,7 @@ DEPENDENCIES
   acts-as-taggable-on
   acts_as_revisionable
   airbrake
+  algoliasearch-rails
   angularjs-rails
   asset_sync
   aws-sdk

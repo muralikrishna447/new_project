@@ -94,4 +94,6 @@ Delve::Application.configure do
   # end
 
   DISQUS_SHORTNAME = "delvestaging"
+
+  AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: '09aead6e71067484d11f3f4ff0b34364' }
 end
