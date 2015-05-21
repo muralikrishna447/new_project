@@ -39,5 +39,8 @@
       buttonText = "Edit #{component.name}"
       notificationService.add('success', message, buttonUrl, buttonText)
 
+  @clear = =>
+    @form = {}
+
   return this
 ]
