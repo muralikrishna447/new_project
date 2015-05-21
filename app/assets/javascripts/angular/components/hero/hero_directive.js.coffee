@@ -48,12 +48,15 @@
           mapper = scope.component.metadata.mapper
           if source && mapper
             Mapper.do(source, mapper).then (content) ->
-              scope.content = content
+              scope.item = content
         when 'custom'
-          scope.content = scope.component.metadata.content
+          scope.item = scope.component.metadata.content
         else
-          scope.content = scope.component
+          scope.item = scope.component
     ), true
+
+    scope.getTemplate = (templateUrl) ->
+      return '/client_views/' + templateUrl
 
   templateUrl: '/client_views/component_hero.html'
 ]
