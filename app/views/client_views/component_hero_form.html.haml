@@ -1,4 +1,8 @@
 %fieldset
+  %label Item Type
+  %select(ng-options="item.name for item in itemTypeOptions track by item.name" ng-model='component.form.metadata.itemType')
+
+%fieldset
   %label Mode
   %label.radio
     %input(type='radio' ng-model='component.form.mode' value='api')
@@ -8,16 +12,33 @@
     Custom
 
 // API Mode
-%fieldset(ng-if="component.form.mode == 'api'")
+-# %fieldset(ng-if="component.form.mode == 'api'")
+-#   %label Source
+-#   %input(type='text' ng-model='component.form.metadata.source')
+-#
+-#   %div( component-mapper
+-#         connections='component.form.metadata.mapper'
+-#         component-keys="['title', 'image', 'url']"
+-#         response='component.response'
+-#         component='component'
+-#         ng-show='component.form.metadata.source' )
+
+%fieldset(ng-if="component.form.mode=='api' && component.form.metadata.itemType")
+
+  // Example API endpoints
+  .btn(ng-click="component.form.metadata.source = 'http://www.chefsteps.com/api/v0/activities/3'")
+    &#47;api/v0/activities/3
+
   %label Source
   %input(type='text' ng-model='component.form.metadata.source')
 
   %div( component-mapper
         connections='component.form.metadata.mapper'
-        component-keys="['title', 'image', 'url']"
-        response='component.response'
+        component-keys='component.form.metadata.itemType.attrs'
         component='component'
+        source = 'component.form.metadata.source'
         ng-show='component.form.metadata.source' )
+
 
 // Custom Mode
 %fieldset(ng-if="component.form.mode=='custom'")

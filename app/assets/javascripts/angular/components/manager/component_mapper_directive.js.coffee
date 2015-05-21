@@ -29,16 +29,24 @@
       if newValue
         $http.get(newValue).success (data, status, headers, config) ->
           scope.response = data
-          if data.length > 1
+          if data.length
+            # Array of items
             scope.responseKeys = Object.keys(data[0])
-          else
-            scope.responseKeys = Object.keys(data)
 
-          scope.mapped = data.map (item) ->
-            # console.log 'Here is an Item: ', item
+            scope.mapped = data.map (item) ->
+              # console.log 'Here is an Item: ', item
+              mappedItem = {}
+              angular.forEach connections, (connection) ->
+                mappedItem[connection.componentKey] = item[connection.sourceKey]
+              return mappedItem
+          else
+            # Single items
+            scope.responseKeys = Object.keys(data)
             mappedItem = {}
+            item = data
             angular.forEach connections, (connection) ->
               mappedItem[connection.componentKey] = item[connection.sourceKey]
+            scope.mapped = mappedItem
             return mappedItem
 
     scope.changeValue = (connection) ->

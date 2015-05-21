@@ -98,20 +98,30 @@
     if sourceUrl
       mapped = []
       $http.get(sourceUrl).success (data, status, headers, config) ->
-        if data.length > 1
-          responseKeys = Object.keys(data[0])
-        else
+        console.log 'data length: ', data.length
+        if data.length
           responseKeys = Object.keys(data)
 
-        mapped = data.map (item) ->
+          mapped = data.map (item) ->
+            mappedItem = {}
+            for connection in connections
+              value = connection.value
+              if value && connection.value.length > 0
+                mappedItem[connection.componentKey] = value
+              else
+                mappedItem[connection.componentKey] = item[connection.sourceKey]
+            return mappedItem
+
+        else
+          responseKeys = Object.keys(data)
           mappedItem = {}
           for connection in connections
             value = connection.value
-            if value && connection.value.length > 0
+            if value && value.length > 0
               mappedItem[connection.componentKey] = value
             else
               mappedItem[connection.componentKey] = item[connection.sourceKey]
-          return mappedItem
+          mapped = mappedItem
 
         deferred.resolve mapped
 
