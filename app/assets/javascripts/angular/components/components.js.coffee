@@ -28,21 +28,22 @@
 @components.directive 'componentLoad', ['Component', (Component) ->
   restrict: 'A'
   scope: {
-    componentId: '='
     showEdit: '='
   }
 
   link: (scope, element, attrs) ->
+    scope.componentId = attrs.componentId
     Component.show {id: attrs.componentId}, (data) ->
       scope.component = data
-
-    scope.editLink = (id) ->
-      "/components/#{id}/edit"
+      scope.editLink = "/components/#{scope.componentId}/edit"
+    , (error) ->
+      if error.status == 404
+        console.log 'Try Adding a New COmponent'
 
   template:
     """
       <div>
-        <a class='btn btn-secondary' ng-if='showEdit' ng-href='{{editLink(component.id)}}' target='_blank'>Edit {{component.name}}</a>
+        <a class='btn btn-secondary' ng-if='showEdit' ng-href='{{editLink}}' target='_blank'>Edit {{componentId}}</a>
         <div hero component='component' ng-if="component.componentType=='hero'"></div>
         <div list component='component' ng-if="component.componentType=='list'"></div>
         <div matrix component='component' ng-if="component.componentType=='matrix'"></div>

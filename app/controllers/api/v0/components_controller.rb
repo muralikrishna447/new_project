@@ -1,7 +1,7 @@
 module Api
   module V0
     class ComponentsController < BaseController
-      
+
       before_filter :authenticate_active_admin_user!, only: [:index, :create, :update]
 
       def index
