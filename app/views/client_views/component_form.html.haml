@@ -10,7 +10,6 @@
     %select(ng-options="item for item in component.componentTypeOptions" ng-model='component.form.componentType')
 
   %div(hero-form component='component' ng-if="component.form.componentType == 'hero'")
-  %div(list-form component='component' ng-if="component.form.componentType == 'list'")
   %div(matrix-form component='component' ng-if="component.form.componentType == 'matrix'")
 
   %button.btn.btn-secondary(type='submit' ng-click='component.save(component.form)')

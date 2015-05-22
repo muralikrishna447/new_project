@@ -6,7 +6,6 @@
   .component-preview
     %h2 Preview:
     %div(hero component='component.form' ng-if="component.form.componentType == 'hero'")
-    %div(list component='component.form' ng-if="component.form.componentType == 'list'")
     %div(matrix component='component.form' ng-if="component.form.componentType == 'matrix'")
     %pre
       {{component.form | json}}

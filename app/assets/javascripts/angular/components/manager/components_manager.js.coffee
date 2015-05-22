@@ -7,7 +7,7 @@
 
 @componentsManager.controller 'ComponentsNewController', ['$http', '$state', '$location', ($http, $state, $location) ->
 
-  @componentTypeOptions = ['hero', 'list', 'matrix']
+  @componentTypeOptions = ['hero', 'matrix']
   @form = {
     name: $location.search().name # Would prefer to use $state, but since entire site isn't a single page app yet, we can't quite do this until we fix activities
   }
@@ -21,7 +21,7 @@
 ]
 
 @componentsManager.controller 'ComponentsEditController', ['Component', '$stateParams', '$state', 'notificationService', (Component, $stateParams, $state, notificationService) ->
-  @componentTypeOptions = ['hero', 'list', 'matrix']
+  @componentTypeOptions = ['hero', 'matrix']
   @colorOptions = ['white', 'black']
 
   Component.show {id: $stateParams.id}, (component) =>
