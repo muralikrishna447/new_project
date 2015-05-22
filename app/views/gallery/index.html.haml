@@ -33,11 +33,12 @@
 
     %ul.nav.filters-group(ng-class="{'filters-collapsed' : filtersCollapsed}")
       %li
-        %h5 Popular
-        %a( ng-repeat="x in suggestedSearches"
-            ng-click="search(x, true)"
-            ng-class="{'active' : filters['search_all'].toLowerCase() == x.toLowerCase()}")
-          %span {{x}}
+        %h5
+          Popular Tags
+          %small.fake-link(ng-if="filters['tag']" ng-click='clearTags()') Clear
+        %a( ng-repeat="x in suggestedTags"
+            ng-class="{'active' : filters['tag'].toLowerCase() == x.toLowerCase()}")
+          %span(ng-click="tags(x)") {{x}}
 
       %li
         %h5 Difficulty

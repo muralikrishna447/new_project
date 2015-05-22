@@ -34,15 +34,13 @@
     if newValue != oldValue
       $scope.applyFilter()
 
-  $scope.search = (input, fromPopular = false) ->
+  $scope.search = (input) ->
     $scope.input = input
     $scope.adjustSortForSearch()
 
     if input.length > 0
       console.log 'Searching for: ', input
       $scope.filters['search_all'] = input
-      if fromPopular
-        mixpanel.track('Gallery Popular Item', _.extend({'context' : $scope.context}, {search_all: input}));
     else
       $scope.clearSearch()
     $scope.applyFilter()
@@ -54,6 +52,16 @@
     delete $scope.filters['search_all']
     $scope.adjustSortForSearch()
     $scope.applyFilter()
+
+  $scope.tags = (tag) ->
+    $scope.filters['tag'] = tag
+    $scope.applyFilter()
+    mixpanel.track('Gallery Popular Item', _.extend({'context' : $scope.context}, {search_all: tag}));
+
+  $scope.clearTags = ->
+    delete $scope.filters['tag']
+    $scope.applyFilter
+
 
   # Scroll
   $scope.next = ->
@@ -72,8 +80,6 @@
     $scope.results = []
     $scope.requestedPages = {}
     $scope.filtersCollapsed = true
-    $scope.reloading = true
-    window.scroll(0, 0)
 
     # Update route params to match filters
     $location.search($scope.filters)
@@ -121,7 +127,9 @@
           console.log "FROM OLD FILTERS, IGNORING"
           return
 
-        $scope.reloading = false
+        if params['page'] == 0
+          window.scroll(0, 0)
+          $scope.results = []
 
         if results.length > 0
           angular.forEach results, (result) ->

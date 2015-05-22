@@ -5,7 +5,7 @@
   $scope.publishedStatusChoices = ["Published", "Unpublished"]
   $scope.generatorChoices       = ["Chefsteps", "Community"]
   $scope.sortChoices            = ["Relevance", "Newest", "Oldest", "Popular"]
-  $scope.suggestedSearches      = ['Sous Vide', 'Beef', 'Chicken', 'Pork',
+  $scope.suggestedTags          = ['Sous Vide', 'Beef', 'Chicken', 'Pork',
                                     'Fish', 'Egg', 'Pasta', 'Chocolate', 'Baking',
                                     'Salad', 'Dessert', 'Breakfast', 'Cocktail', 'Vegetarian']
 
@@ -38,6 +38,7 @@
         hitsPerPage: 12
         page: params['page'] - 1
         numericFilters: "chefsteps_generated=#{chefsteps_generated}"
+        tagFilters: params['tag'] || ''
       },
       (success, hits) ->
         deferred.resolve(hits.hits)
