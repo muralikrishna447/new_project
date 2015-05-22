@@ -1,4 +1,4 @@
-# Next step in refactoring would be to move much of this over to a service, but at least it is now shared by 
+# Next step in refactoring would be to move much of this over to a service, but at least it is now shared by
 # all gallery controllers.
 @app.controller 'GalleryBaseController', ["$scope", "$rootScope", "$timeout", '$route', '$routeParams', '$location', 'csAuthentication', ($scope, $rootScope, $timeout, $route, $routeParams, $location, csAuthentication) ->
 
@@ -34,27 +34,19 @@
     if newValue != oldValue
       $scope.applyFilter()
 
-  # Search change from the UI.
-  # Actual search only fires after the user stops typing
-  # Seems like 500ms timeout is ideal
-  inputChangedPromise = null
   $scope.search = (input, fromPopular = false) ->
     $scope.input = input
     $scope.adjustSortForSearch()
 
-    if inputChangedPromise
-      $timeout.cancel(inputChangedPromise)
+    if input.length > 0
+      console.log 'Searching for: ', input
+      $scope.filters['search_all'] = input
+      if fromPopular
+        mixpanel.track('Gallery Popular Item', _.extend({'context' : $scope.context}, {search_all: input}));
+    else
+      $scope.clearSearch()
+    $scope.applyFilter()
 
-    inputChangedPromise = $timeout( ->
-      if input.length > 0
-        console.log 'Searching for: ', input
-        $scope.filters['search_all'] = input
-        if fromPopular
-          mixpanel.track('Gallery Popular Item', _.extend({'context' : $scope.context}, {search_all: input}));        
-      else
-        $scope.clearSearch()
-      $scope.applyFilter()
-    , 500)
 
   # Clear search from the UI
   $scope.clearSearch = ->
@@ -88,14 +80,14 @@
     $scope.loadOnePage()
 
     # Update mixpanel with changed search. Throttled and trailing edge
-    # so if they type we wait until they stop typing. 
-    _.throttle( 
-      (-> 
+    # so if they type we wait until they stop typing.
+    _.throttle(
+      (->
         filterData = angular.extend({}, $scope.defaultFilters, $scope.filters)
         filterData['defaultFilter'] = _.isEqual(filterData, $scope.defaultFilters)
         filterData['context'] = $scope.context
         mixpanel.track('Gallery Filtered', filterData)
-      ), 
+      ),
       2000,
       {leading: false}
     )()
@@ -111,11 +103,11 @@
     if  (! $scope.doneLoading) && (! $scope.requestedPages[$scope.page])
       $scope.dataLoading += 1
 
-      # Set up actual query params; they are mostly the same as the filters we show with 
+      # Set up actual query params; they are mostly the same as the filters we show with
       # a few minor adjustments.
       queryFilters = _.extend({}, $scope.filters)
       params = _.extend({page: $scope.page}, $scope.filters)
-      fixParamEnums(params)      
+      fixParamEnums(params)
       $scope.adjustParams(params)
       $scope.requestedPages[$scope.page] = true
 
@@ -137,7 +129,7 @@
         else
           $scope.doneLoading = true
     Intercom?('update')
-    
+
   $scope.noResults = ->
     ($scope.results.length == 0) && (! $scope.dataLoading)
 

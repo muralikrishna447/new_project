@@ -35,3 +35,4 @@
 //= require angular-payments
 //= require hammer
 //= require knife_collection
+//= require algolia/v3/algoliasearch.min

@@ -48,7 +48,7 @@
         %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
 
       %li(ng-if="csAuthentication.isAdmin()")
-        %h5 Admincs
+        %h5 Admin
         %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
 
       %li
@@ -70,7 +70,7 @@
                     infinite-scroll-immediate-check='true'
                     infinite-scroll-distance='1')
 
-      .gallery-item(ng-repeat='activity in getResults() track by activity.id')
+      .gallery-item(ng-repeat='activity in getResults() track by activity.objectID')
         %cs-index-item.cs-index-item( cs-title='activity.title'
                                       url='activity.url'
                                       image='activity.image'

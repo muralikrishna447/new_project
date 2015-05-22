@@ -89,16 +89,52 @@ class Activity < ActiveRecord::Base
   include AlgoliaSearch
 
   algoliasearch index_name: "ChefSteps_#{Rails.env}" do
-    attribute :title, :description
 
-    add_attribute :image do
-      featured_image.present? ? JSON.parse(featured_image)["url"] : nil
-    end
+    # Searchable fields (may be used for display too)
+    attribute :title, :description
 
     add_attribute :thumbnail do
       featured_image.present? ? JSON.parse(featured_image)["url"] + "/convert?fit=crop&w=370&h=208&quality=90&cache=true" : nil
     end
 
+    add_attribute :ingredient_titles do
+      terminal_ingredients.map(&:title)
+    end
+
+    add_attribute :equipment_titles do
+      terminal_equipment.map(&:title)
+    end
+
+    add_attribute :equipment_titles do
+      terminal_equipment.map(&:title)
+    end
+
+    add_attribute :step_titles do
+      steps.map(&:title)
+    end
+
+    add_attribute :step_directions do
+      steps.map(&:directions)
+    end
+
+    # Display fields
+    attribute :slug
+    add_attribute :url do
+      activity_path(self)
+    end
+
+    add_attribute :image do
+      featured_image.present? ? JSON.parse(featured_image)["url"] : nil
+    end
+
+    # Filter/facet/tags
+    tags do
+      tags.map(&:name)
+    end
+
+    add_attribute :chefsteps_generated do
+      creator.blank?
+    end
   end
 
   include Rails.application.routes.url_helpers

@@ -54,6 +54,8 @@
     catch e
       convertURL = fpObjectOrImageUrl
 
+    return "" if (! convertURL) || (convertURL.length == 0)
+
     if aspect
       aspectArray = aspect.split(':')
       aspectWidth = aspectArray[0]
