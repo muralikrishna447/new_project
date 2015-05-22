@@ -80,19 +80,6 @@
 # }
 @components.service 'Mapper', ['$http', '$q', ($http, $q) ->
 
-  # @mapOne = (mapper, content, source) ->
-  #   angular.forEach mapper, (sourceKey, contentKey) ->
-  #     content[contentKey] = source[sourceKey]
-  #
-  # @mapArray = (mapper, content, source) ->
-  #   source.map (item, index) ->
-  #     angular.forEach mapper, (sourceKey, contentKey) ->
-  #       if typeof content[index] == 'undefined'
-  #         content[index] = {}
-  #       content[index][contentKey] = item[sourceKey]
-
-  # source is a url to an API endpoint
-  # componentKeys is an array containing the keys to map to
   @do = (sourceUrl, connections) ->
     deferred = $q.defer()
     if sourceUrl
@@ -128,20 +115,4 @@
     return deferred.promise
 
   return this
-]
-
-@components.directive 'componentItem', [ ->
-  restrict: 'A'
-  scope: {
-    item: '='
-    templateUrl: '='
-  }
-  link: (scope, element, attrs) ->
-    console.log 'templateUrl is: ', scope.templateUrl
-
-  template:
-    """
-      <div ng-include="templateUrl"></div>
-    """
-
 ]

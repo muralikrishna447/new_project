@@ -27,25 +27,13 @@
   return this
 ]
 
-@components.directive 'matrixForm', ['$http', 'Mapper', 'Matrix', ($http, Mapper, Matrix) ->
+@components.directive 'matrixForm', ['$http', 'Mapper', 'Matrix', 'componentItem', ($http, Mapper, Matrix, componentItem) ->
   restrict: 'A'
   scope: {
     component: '='
   }
   link: (scope, $element, $attrs) ->
-    scope.itemTypeOptions = [
-      {
-        name: 'Square A'
-        className: 'square.square-a'
-        attrs: ['title', 'image', 'buttonMessage', 'url']
-        templateUrl: '/client_views/component_matrix_item_square_a.html'
-        formTemplateUrl: '/client_views/component_matrix_item_square_a_form.html'
-      }
-      {
-        name: 'Circle'
-        attrs: ['title', 'image', 'buttonMessage', 'url']
-      }
-    ]
+    scope.itemTypes = componentItem.types
 
     scope.$watch 'component.form.mode', (newValue, oldValue) ->
       apiMode = newValue

@@ -1,22 +1,10 @@
-@components.directive 'heroForm', ['Mapper', (Mapper) ->
+@components.directive 'heroForm', ['Mapper', 'componentItem', (Mapper, componentItem) ->
   restrict: 'A'
   scope: {
     component: '='
   }
   link: (scope, $element, $attrs) ->
-    scope.itemTypeOptions = [
-      {
-        name: 'Square A'
-        className: 'square.square-a'
-        attrs: ['title', 'image', 'buttonMessage', 'url']
-        templateUrl: '/client_views/component_matrix_item_square_a.html'
-        formTemplateUrl: '/client_views/component_matrix_item_square_a_form.html'
-      }
-      {
-        name: 'Circle'
-        attrs: ['title', 'image', 'buttonMessage', 'url']
-      }
-    ]
+    scope.itemTypes = componentItem.types
 
     scope.$watch 'component.form.mode', (newValue, oldValue) ->
       apiMode = newValue
