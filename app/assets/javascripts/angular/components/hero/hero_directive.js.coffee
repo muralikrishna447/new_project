@@ -26,8 +26,8 @@
             console.log 'API MODE'
           when 'custom'
             console.log 'scope.component', scope.component
-            # Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
-            #   scope.component.form.metadata.items = content
+            Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
+              scope.component.form.metadata.item = content
 
     scope.getTemplate = (templateUrl) ->
       return '/client_views/' + templateUrl
@@ -47,12 +47,10 @@
           source = scope.component.metadata.source
           mapper = scope.component.metadata.mapper
           if source && mapper
-            Mapper.do(source, mapper).then (content) ->
-              scope.item = content
+            Mapper.do(source, mapper).then (item) ->
+              scope.item = item
         when 'custom'
-          scope.item = scope.component.metadata.content
-        else
-          scope.item = scope.component
+          scope.item = scope.component.metadata.item
     ), true
 
     scope.getTemplate = (templateUrl) ->
