@@ -90,6 +90,15 @@ class Activity < ActiveRecord::Base
 
   algoliasearch index_name: "ChefSteps_#{Rails.env}" do
     attribute :title, :description
+
+    add_attribute :image do
+      featured_image.present? ? JSON.parse(featured_image)["url"] : nil
+    end
+
+    add_attribute :thumbnail do
+      featured_image.present? ? JSON.parse(featured_image)["url"] + "/convert?fit=crop&w=370&h=208&quality=90&cache=true" : nil
+    end
+
   end
 
   include Rails.application.routes.url_helpers

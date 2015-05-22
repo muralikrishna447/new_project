@@ -36,7 +36,7 @@ window.deepCopy = (obj) ->
   bannerImageQuality = 20
   $timeout( ( ->
     bannerImageQuality = 90
-  ), 1000)
+  ), 1500)
 
   $scope.bannerImageURL = ->
     url = ActivityMethods.itemImageFpfile($scope.activity, 'hero').url
