@@ -3,7 +3,7 @@
     .matrix-column(ng-repeat='item in row track by $index')
       -# .matrix-item(matrix-item content='item' form-state='content.formState' mode='content.mode')
       -# %div(hero component='item')
-      %div(ng-include="getTemplate(component.metadata.itemType.templateUrl)")
+      %div(component-item item='item' template-url="component.metadata.itemType.templateUrl")
 
       .matrix-item-blank(ng-if="!item && !component.metadata.itemType")
         Matrix Item {{$index}}

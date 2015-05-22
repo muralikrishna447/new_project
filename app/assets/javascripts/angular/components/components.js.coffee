@@ -121,11 +121,27 @@
               mappedItem[connection.componentKey] = value
             else
               mappedItem[connection.componentKey] = item[connection.sourceKey]
-          mapped = [mappedItem]
+          mapped = mappedItem
 
         deferred.resolve mapped
 
     return deferred.promise
 
   return this
+]
+
+@components.directive 'componentItem', [ ->
+  restrict: 'A'
+  scope: {
+    item: '='
+    templateUrl: '='
+  }
+  link: (scope, element, attrs) ->
+    console.log 'templateUrl is: ', scope.templateUrl
+
+  template:
+    """
+      <div ng-include="templateUrl"></div>
+    """
+
 ]

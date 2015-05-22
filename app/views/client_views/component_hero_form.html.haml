@@ -42,7 +42,7 @@
 
 // Custom Mode
 %div(ng-if="component.form.mode=='custom'")
-  %div(ng-include="getTemplate(component.form.metadata.itemType.formTemplateUrl)")
+  %div(component-item item='component.form.metadata.item' template-url="component.form.metadata.itemType.formTemplateUrl")
 
 // Styling
 .component-styles

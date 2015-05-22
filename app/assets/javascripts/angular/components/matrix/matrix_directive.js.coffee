@@ -38,8 +38,8 @@
         name: 'Square A'
         className: 'square.square-a'
         attrs: ['title', 'image', 'buttonMessage', 'url']
-        templateUrl: 'component_matrix_item_square_a.html'
-        formTemplateUrl: 'component_matrix_item_square_a_form.html'
+        templateUrl: '/client_views/component_matrix_item_square_a.html'
+        formTemplateUrl: '/client_views/component_matrix_item_square_a_form.html'
       }
       {
         name: 'Circle'
@@ -59,9 +59,6 @@
               scope.component.form.metadata.items = content
             # Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
             #   scope.component.form.metadata.items = Matrix.do(scope.component.form.metadata.rows, scope.component.form.metadata.columns, content)
-
-    scope.getTemplate = (templateUrl) ->
-      return '/client_views/' + templateUrl
 
   templateUrl: '/client_views/component_matrix_form.html'
 ]
@@ -114,9 +111,6 @@
           when 'custom'
             scope.items = updateItems(scope.component.metadata.items)
     ), true
-
-    scope.getTemplate = (templateUrl) ->
-      return '/client_views/' + templateUrl
 
   templateUrl: '/client_views/component_matrix.html'
 ]
