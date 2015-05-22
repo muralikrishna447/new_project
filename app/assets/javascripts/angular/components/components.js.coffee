@@ -64,7 +64,7 @@
   template:
     """
       <div>
-        <div hero component='component' ng-if="component.componentType=='hero'"></div>
+        <div single component='component' ng-if="component.componentType=='single'"></div>
         <div matrix component='component' ng-if="component.componentType=='matrix'"></div>
       </div>
     """

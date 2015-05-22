@@ -1,4 +1,4 @@
-@components.directive 'heroForm', ['Mapper', 'componentItem', (Mapper, componentItem) ->
+@components.directive 'singleForm', ['Mapper', 'componentItem', (Mapper, componentItem) ->
   restrict: 'A'
   scope: {
     component: '='
@@ -17,10 +17,10 @@
             Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (item) ->
               scope.component.form.metadata.item = item
 
-  templateUrl: '/client_views/component_hero_form.html'
+  templateUrl: '/client_views/component_single_form.html'
 ]
 
-@components.directive 'hero', ['$http', 'Mapper', ($http, Mapper) ->
+@components.directive 'single', ['$http', 'Mapper', ($http, Mapper) ->
   restrict: 'A'
   scope: {
     component: '='
@@ -40,5 +40,5 @@
           scope.item = scope.component.metadata.item
     ), true
 
-  templateUrl: '/client_views/component_hero.html'
+  templateUrl: '/client_views/component_single.html'
 ]
