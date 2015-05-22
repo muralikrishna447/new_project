@@ -19,7 +19,7 @@
       className: 'hero.hero-a'
       attrs: ['title', 'image', 'buttonMessage', 'url']
       templateUrl: '/client_views/component_item_hero_a.html'
-      formTemplateUrl: '/client_views/component_item_hero_a.html'
+      formTemplateUrl: '/client_views/component_item_hero_a_form.html'
     }
     {
       name: 'Square A'

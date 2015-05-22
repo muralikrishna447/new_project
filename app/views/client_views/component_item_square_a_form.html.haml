@@ -1,4 +1,12 @@
-%input(type='text' ng-model='item.title')
-%input(type='text' ng-model='item.image')
-%input(type='text' ng-model='item.buttonMessage')
-%input(type='text' ng-model='item.url')
+%div(ng-if="mode=='custom'")
+  %label Title
+  %input(type='text' ng-model='item.title')
+
+  %label Image
+  %input(type='text' ng-model='item.image')
+
+  %label Button Message
+  %input(type='text' ng-model='item.buttonMessage')
+
+  %label Url
+  %input(type='text' ng-model='item.url')

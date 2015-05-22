@@ -1,11 +1,14 @@
-%label Title
-%input(type='text' ng-model='item.title')
+%h3 Componenet Item Hero A Form
+{{mode}}
+%div(ng-if="mode=='custom'")
+  %label Title
+  %input(type='text' ng-model='item.title')
 
-%label Image
-%input(type='text' ng-model='item.image')
+  %label Image
+  %input(type='text' ng-model='item.image')
 
-%label Button Message
-%input(type='text' ng-model='item.buttonMessage')
+  %label Button Message
+  %input(type='text' ng-model='item.buttonMessage')
 
-%label Url
-%input(type='text' ng-model='item.url')
+  %label Url
+  %input(type='text' ng-model='item.url')

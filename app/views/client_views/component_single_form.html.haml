@@ -11,18 +11,6 @@
     %input(type='radio' ng-model='component.form.mode' value='custom')
     Custom
 
-// API Mode
--# %fieldset(ng-if="component.form.mode == 'api'")
--#   %label Source
--#   %input(type='text' ng-model='component.form.metadata.source')
--#
--#   %div( component-mapper
--#         connections='component.form.metadata.mapper'
--#         component-keys="['title', 'image', 'url']"
--#         response='component.response'
--#         component='component'
--#         ng-show='component.form.metadata.source' )
-
 %fieldset(ng-if="component.form.mode=='api' && component.form.metadata.itemType")
 
   // Example API endpoints
@@ -41,8 +29,8 @@
 
 
 // Custom Mode
-%div(ng-if="component.form.mode=='custom'")
-  %div(component-item item='component.form.metadata.item' template-url="component.form.metadata.itemType.formTemplateUrl")
+-# %div(ng-if="component.form.mode=='custom'")
+%div(component-item item='component.form.metadata.item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode')
 
 // Styling
 .component-styles

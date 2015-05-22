@@ -35,7 +35,6 @@
         source = 'component.form.metadata.source'
         ng-show='component.form.metadata.source' )
 
-%div(ng-if="component.form.mode=='custom'")
-  .matrix-item-form(ng-repeat='item in component.form.metadata.items track by $index')
-    %h5 Matrix Item {{$index}}
-    %div(component-item item='item' template-url="component.form.metadata.itemType.formTemplateUrl")
+-# %div(ng-if="component.form.mode=='custom'")
+.matrix-item-form(ng-repeat='item in component.form.metadata.items track by $index')
+  %div(component-item item='item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode')
