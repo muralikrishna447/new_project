@@ -2,6 +2,10 @@
   (image) ->
     image + '/convert?fit=crop&h=600&w=600&quality=90&cache=true'
 
+@components.filter 'aspect16to9', ->
+  (image) ->
+    image + '/convert?fit=crop&h=900&w=1600&quality=90&cache=true'    
+
 @components.filter 'words', ->
   (input, words) ->
     if isNaN(words)

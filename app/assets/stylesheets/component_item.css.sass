@@ -1,5 +1,35 @@
 @import 'mixins'
 
+.component-item.hero.hero-a
+  @include aspect-16-9
+  .component-item-content
+    @include aspect-content
+    @include display-flex
+    @include justify-content(flex-start)
+    @include align-items(center)
+    img
+      height: 100%
+      width: 100%
+    .item-content-text
+      height: 100%
+      width: 50%
+      padding-left: 10%
+      @include boxsizing
+      @include display-flex
+      @include flex-direction(column)
+      @include justify-content(center)
+      @include align-items(flex-start)
+      .item-title
+        font-size: 60px
+        line-height: 60px
+        margin-bottom: 20px
+        font-weight: bold
+      .item-button
+        .btn-outline
+          font-size: 20px
+          font-weight: bold
+          padding: 10px 40px
+
 .component-item.square.square-a
   @include aspect-1-1
   .component-item-content
