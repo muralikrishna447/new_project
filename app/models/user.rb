@@ -72,8 +72,6 @@ class User < ActiveRecord::Base
 
   ROLES = %w[admin contractor moderator collaborator user banned]
 
-  include Searchable
-
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
   end
@@ -224,12 +222,6 @@ class User < ActiveRecord::Base
       logger.warn "Unable to encrypt info for Bloom: #{e}"
       return ''
     end
-  end
-
-  def as_indexed_json(options={})
-    as_json(
-      only: [:name, :bio]
-    )
   end
 
   def self.with_views_greater_than(view_count)
