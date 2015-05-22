@@ -1,7 +1,7 @@
-.matrix-item.square.square-a(ng-if="item")
-  .matrix-item-content
+.component-item.square.square-a(ng-if="item")
+  .component-item-content
     %img(ng-src='{{item.image | aspect1to1 }}')
-  .matrix-item-content
+  .component-item-content
     .item-divider.first
       {{item.title}}
     .item-divider.middle
@@ -9,8 +9,8 @@
         {{item.buttonMessage}}
     .item-divider.last
 
-.matrix-item.square.square-a.blank(ng-if="!item")
-  .matrix-item-content
+.component-item.square.square-a.blank(ng-if="!item")
+  .component-item-content
     .item-divider.first
       Title
     .item-divider.middle

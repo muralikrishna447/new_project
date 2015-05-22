@@ -397,6 +397,40 @@ $horz-baseline-large: 13px
   margin-left: auto
   margin-right: auto
 
+// Aspec Ratios
+
+=aspect-1-1
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 100%
+
+=aspect-2-1
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 50%
+
+=aspect-16-9
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 56.25%
+
+=aspect-content
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0  
+
+
 $bounce-bez: cubic-bezier(0.25,0.25,0.325,1.39)
 $standard-bezier: cubic-bezier(.81,0,0,.99)
 $standard-bez-out: cubic-bezier(.29,.04,.02,1)

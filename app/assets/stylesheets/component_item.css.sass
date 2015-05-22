@@ -1,0 +1,40 @@
+@import 'mixins'
+
+.component-item.square.square-a
+  @include aspect-1-1
+  .component-item-content
+    color: white
+    text-align: center
+    @include aspect-content
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    @include flex-direction(column)
+    .item-divider.first
+      padding: 10px
+      @include boxsizing
+      @include flex(1 1 100%)
+      @include display-flex
+      @include align-items(flex-end)
+      @include justify-content(center)
+    .item-divider.middle
+      @include flex(0 0 auto)
+    .item-divider.last
+      @include flex(1 1 100%)
+      @include display-flex
+    img
+      height: 100%
+      width: 100%
+
+.component-item.square.square-a.blank
+  @include aspect-1-1
+  border: 1px solid $light-gray
+  background-color: $offwhite
+  .component-item-content
+    color: white
+    text-align: center
+    @include aspect-content
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    @include flex-direction(column)
