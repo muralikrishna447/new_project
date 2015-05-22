@@ -27,13 +27,9 @@
         source = 'component.form.metadata.source'
         ng-show='component.form.metadata.source' )
 
+  .component-styles
+    .component-styles-title Styles
+    %div Title Color:
+    %div(component-color-picker component-model='component.form.metadata.styles.title')
 
-// Custom Mode
--# %div(ng-if="component.form.mode=='custom'")
 %div(component-item item='component.form.metadata.item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode')
-
-// Styling
-.component-styles
-  .component-styles-title Styles
-  %div Title Color:
-  %div(component-color-picker component-model='component.form.metadata.styles.title')

@@ -1,6 +1,9 @@
-%h3 Componenet Item Hero A Form
-{{mode}}
 %div(ng-if="mode=='custom'")
+  .component-styles
+    .component-styles-title Styles
+    %div Title Color:
+    %div(component-color-picker component-model='item.styles.title')
+
   %label Title
   %input(type='text' ng-model='item.content.title')
 
