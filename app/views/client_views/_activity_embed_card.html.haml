@@ -4,14 +4,10 @@
 
   .nell-card-media
     // Need to find a more universal way to get an image, possibly ActivityMethods
-    %img( ng-if='! obj.hasVideo && obj.featured_image_id'
+    %img( ng-if='obj.featured_image_id'
           cs-responsive-image='obj.featured_image_id')
-    %img( ng-if='! obj.hasVideo && !obj.featured_image_id && obj.image_id'
+    %img( ng-if='!obj.featured_image_id && obj.image_id'
           cs-responsive-image='obj.image_id')
-    %csEmbedVideo(  ng-if='obj.hasVideo'
-                    youtube-id="{{obj.youtube_id}}"
-                    vimeo-id="{{obj.vimeo_id}}"
-                    container-slug="{{activity.slug}}")
 
   .nell-card-text
     .relative

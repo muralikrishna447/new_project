@@ -6,15 +6,8 @@
     %h3 {{obj.title}}
 
   .nell-card-media
-    %img( ng-if='! obj.hasVideo && obj.featured_image_id'
+    %img( ng-if='obj.featured_image_id'
           cs-responsive-image='obj.featured_image_id')
-
-    // Hide on ! nellPopupShowing to stop video
-    %csEmbedVideo(  ng-if='nellPopupShowing && obj.hasVideo'
-                      youtube-id="{{obj.youtube_id}}"
-                      vimeo-id="{{obj.vimeo_id}}"
-                      container-slug="{{activity.slug}}"
-                      autoplay='1')
 
   .nell-card-text
     .relative
