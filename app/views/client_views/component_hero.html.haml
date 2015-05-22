@@ -7,5 +7,5 @@
 -#         {{content.title}}
 -#       %a.btn-outline(ng-href='{{content.url}}')
 -#         {{content.buttonMessage}}
-
-%div(ng-include="getTemplate(component.metadata.itemType.templateUrl)")
+%div(ng-repeat='item in items track by $index')
+  %div(ng-include="getTemplate(component.metadata.itemType.templateUrl)")

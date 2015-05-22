@@ -121,7 +121,7 @@
               mappedItem[connection.componentKey] = value
             else
               mappedItem[connection.componentKey] = item[connection.sourceKey]
-          mapped = mappedItem
+          mapped = [mappedItem]
 
         deferred.resolve mapped
 

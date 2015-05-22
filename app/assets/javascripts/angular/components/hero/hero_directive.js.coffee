@@ -27,7 +27,7 @@
           when 'custom'
             console.log 'scope.component', scope.component
             Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
-              scope.component.form.metadata.item = content
+              scope.component.form.metadata.items = content
 
     scope.getTemplate = (templateUrl) ->
       return '/client_views/' + templateUrl
@@ -47,10 +47,10 @@
           source = scope.component.metadata.source
           mapper = scope.component.metadata.mapper
           if source && mapper
-            Mapper.do(source, mapper).then (item) ->
-              scope.item = item
+            Mapper.do(source, mapper).then (items) ->
+              scope.items = items
         when 'custom'
-          scope.item = scope.component.metadata.item
+          scope.items = scope.component.metadata.items
     ), true
 
     scope.getTemplate = (templateUrl) ->

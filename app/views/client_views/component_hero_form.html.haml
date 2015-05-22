@@ -41,15 +41,8 @@
 
 
 // Custom Mode
-%fieldset(ng-if="component.form.mode=='custom'")
-  %label Image
-  %input(type='text' ng-model='component.form.metadata.content.image')
-
-  %label Title
-  %input(type='text' ng-model='component.form.metadata.content.title')
-
-  %label Button Target URL
-  %input(type='text' ng-model='component.form.metadata.content.url')
+%div(ng-if="component.form.mode=='custom'")
+  %div(ng-include="getTemplate(component.form.metadata.itemType.formTemplateUrl)")
 
 // Styling
 .component-styles
