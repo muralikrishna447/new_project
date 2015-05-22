@@ -1,13 +1,13 @@
 .component-item.hero.hero-a(ng-if="item")
   .component-item-content
-    %img(ng-src='{{item.image | aspect16to9 }}')
+    %img(ng-src='{{item.content.image | aspect16to9 }}')
   .component-item-content
     .item-content-text
       .item-title
-        {{item.title}}
+        {{item.content.title}}
       .item-button
-        %a.btn-outline(ng-href='{{item.url}}')
-          {{item.buttonMessage}}
+        %a.btn-outline(ng-href='{{item.content.url}}')
+          {{item.content.buttonMessage}}
 
 .component-item.hero.hero-a.blank(ng-if="!item")
   .component-item-content
@@ -15,5 +15,5 @@
       .item-title
         Title
       .item-button
-        %a.btn-outline(ng-href='{{item.url}}')
+        %a.btn-outline(ng-href='{{item.content.url}}')
           Button

@@ -38,7 +38,7 @@
               mappedItem = {}
               angular.forEach connections, (connection) ->
                 mappedItem[connection.componentKey] = item[connection.sourceKey]
-              return mappedItem
+              return { content: mappedItem }
           else
             # Single items
             scope.responseKeys = Object.keys(data)
@@ -47,7 +47,7 @@
             angular.forEach connections, (connection) ->
               mappedItem[connection.componentKey] = item[connection.sourceKey]
             scope.mapped = mappedItem
-            return mappedItem
+            return { content: mappedItem }
 
     scope.changeValue = (connection) ->
       if connection.value && connection.value.length > 0

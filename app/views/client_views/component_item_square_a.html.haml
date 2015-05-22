@@ -1,12 +1,12 @@
 .component-item.square.square-a(ng-if="item")
   .component-item-content
-    %img(ng-src='{{item.image | aspect1to1 }}')
+    %img(ng-src='{{item.content.image | aspect1to1 }}')
   .component-item-content
     .item-divider.first
-      {{item.title}}
+      {{item.content.title}}
     .item-divider.middle
-      %a.btn-outline(ng-href='{{item.url}}')
-        {{item.buttonMessage}}
+      %a.btn-outline(ng-href='{{item.content.url}}')
+        {{item.content.buttonMessage}}
     .item-divider.last
 
 .component-item.square.square-a.blank(ng-if="!item")
@@ -14,6 +14,6 @@
     .item-divider.first
       Title
     .item-divider.middle
-      %a.btn-outline(ng-href='{{item.url}}')
+      %a.btn-outline(ng-href='{{item.content.url}}')
         Button
     .item-divider.last

@@ -43,8 +43,8 @@
             console.log 'API MODE'
           when 'custom'
             console.log 'scope.component', scope.component
-            Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
-              scope.component.form.metadata.items = content
+            Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (items) ->
+              scope.component.form.metadata.items = items
             # Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
             #   scope.component.form.metadata.items = Matrix.do(scope.component.form.metadata.rows, scope.component.form.metadata.columns, content)
 

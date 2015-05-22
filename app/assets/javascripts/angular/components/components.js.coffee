@@ -95,7 +95,7 @@
                 mappedItem[connection.componentKey] = value
               else
                 mappedItem[connection.componentKey] = item[connection.sourceKey]
-            return mappedItem
+            return { content: mappedItem }
 
         else
           responseKeys = Object.keys(data)
@@ -107,7 +107,7 @@
               mappedItem[connection.componentKey] = value
             else
               mappedItem[connection.componentKey] = item[connection.sourceKey]
-          mapped = mappedItem
+          mapped = { content: mappedItem }
 
         deferred.resolve mapped
 
