@@ -5,7 +5,8 @@
 
   .component-preview
     %h2 Preview:
-    %div(single component='component.form' ng-if="component.form.componentType == 'single'")
-    %div(matrix component='component.form' ng-if="component.form.componentType == 'matrix'")
+    .component(ng-class="'component-padding-' + component.form.metadata.styles.component.padding")
+      %div(single component='component.form' ng-if="component.form.componentType == 'single'")
+      %div(matrix component='component.form' ng-if="component.form.componentType == 'matrix'")
     %pre
       {{component.form | json}}

@@ -9,6 +9,11 @@
       Component Type
     %select(ng-options="item for item in component.componentTypeOptions" ng-model='component.form.componentType')
 
+  .component-styles
+    .component-styles-title Component Styles
+    %div Component Padding:
+    %div(component-padding-picker component-model='component.form.metadata.styles.component')
+
   %div(single-form component='component' ng-if="component.form.componentType == 'single'")
   %div(matrix-form component='component' ng-if="component.form.componentType == 'matrix'")
 
