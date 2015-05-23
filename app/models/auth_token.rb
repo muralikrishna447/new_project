@@ -50,6 +50,17 @@ class AuthToken
     AuthToken.new claim
   end
 
+  def only_signed
+    # Technically it signs and encrypts
+    secret = ENV["AUTH_SECRET_KEY"]
+    key = OpenSSL::PKey::RSA.new secret, 'cooksmarter'
+
+    jws = JSON::JWT.new(claim.as_json).sign(key.to_s)
+    #jwe = jws.encrypt(key.public_key)
+    jwt = jws.to_s
+    jwt
+  end
+
   private
   def self.decrypt(token)
     key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
@@ -69,6 +80,7 @@ class AuthToken
     jwt = jwe.to_s
     jwt
   end
+
 
   def self.issued_at
     Time.now.to_i
