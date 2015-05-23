@@ -101,7 +101,8 @@
   fixParamEnums = (params) ->
     for k, v of params
       if k != "search_all"
-        params[k] = v.toString().toLowerCase().replace(' ', "_")
+        params[k] = v.toString().toLowerCase()
+        params[k] = params[k].replace(' ', "_") unless k == "tag"
     params
 
   # Get a page of data

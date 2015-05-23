@@ -118,7 +118,7 @@ class Activity < ActiveRecord::Base
     end
 
     # Display fields
-    attribute :slug
+    attribute :slug, :published
     add_attribute :url do
       activity_path(self)
     end
@@ -135,6 +135,7 @@ class Activity < ActiveRecord::Base
     add_attribute :chefsteps_generated do
       creator.blank?
     end
+
   end
 
   include Rails.application.routes.url_helpers

@@ -30,15 +30,24 @@
   index = algolia.initIndex('ChefSteps_development')
 
   $scope.doQuery = (params) ->
-    deferred = $q.defer()
+
     chefsteps_generated = if params['generator'] == 'chefsteps' then 1 else 0
+    published = if params['published_status'] == 'published' then 1 else 0
+
+    deferred = $q.defer()
     index.search(params['search_all'],
       {
-        getRankingInfo: 1
         hitsPerPage: 12
         page: params['page'] - 1
-        numericFilters: "chefsteps_generated=#{chefsteps_generated}"
+        numericFilters: [
+          "chefsteps_generated=#{chefsteps_generated}"
+          "published=#{published}"
+        ]
         tagFilters: params['tag'] || ''
+        advancedSyntax: true
+        attributesToRetrieve: "title,url,image,likesCount"
+        attributesToHighlight: ""
+        attributesToSnippet: ""
       },
       (success, hits) ->
         deferred.resolve(hits.hits)

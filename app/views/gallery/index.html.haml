@@ -72,7 +72,7 @@
                     infinite-scroll-distance='1')
 
       .gallery-item(ng-repeat='activity in getResults() track by activity.objectID')
-        %cs-index-item.cs-index-item( cs-title='activity.title'
+        %cs-index-item.cs-index-item( cs-title='activity.title || activity.objectID'
                                       url='activity.url'
                                       image='activity.image'
                                       hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
