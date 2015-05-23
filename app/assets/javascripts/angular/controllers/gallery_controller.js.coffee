@@ -34,8 +34,13 @@
     chefsteps_generated = if params['generator'] == 'chefsteps' then 1 else 0
     published = if params['published_status'] == 'published' then 1 else 0
 
+    # If there is a tag filter but no search string, use the tag as the search
+    # string as well. That won't affect the results (since tags are also searched),
+    # but it gives a much better ordering.
+    search = params['search_all'] || params['tag']
+
     deferred = $q.defer()
-    index.search(params['search_all'],
+    index.search(search,
       {
         hitsPerPage: 12
         page: params['page'] - 1

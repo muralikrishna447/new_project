@@ -45,7 +45,7 @@ Usage:
   template:
     """
     <div ng-style="containerStyle" class="cs-image">
-      <img ng-src="{{finalUrl}}" alt="{{attrs.alt}}" title="{{attrs.title}} width="{{finalWidth}}" height="{{finalHeight || ''}">
+      <img ng-src="{{finalUrl}}" alt="{{attrs.alt}}" title="{{attrs.title}}" width="{{finalWidth}}" height="{{finalHeight || ''}">
     </div>
     """
 

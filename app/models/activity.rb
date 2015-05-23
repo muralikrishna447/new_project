@@ -88,7 +88,7 @@ class Activity < ActiveRecord::Base
 
   include AlgoliaSearch
 
-  algoliasearch index_name: "ChefSteps_#{Rails.env}" do
+  algoliasearch index_name: "ChefSteps_#{Rails.env}", if: :has_title do
 
     # Searchable fields (may be used for display too)
     attribute :title, :description
@@ -136,6 +136,10 @@ class Activity < ActiveRecord::Base
       creator.blank?
     end
 
+  end
+
+  def has_title
+    title.present?
   end
 
   include Rails.application.routes.url_helpers
