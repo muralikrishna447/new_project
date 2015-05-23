@@ -14,6 +14,8 @@
   cs-image
     max-height: 240px
     overflow: hidden
+    .cs-image
+      @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) 100ms)
   img
     width: 100%
   a
@@ -35,7 +37,7 @@
       bottom: 0
       right: 5px
       color: white
-      text-shadow: 2px 1px 2px $dark-gray  
+      text-shadow: 2px 1px 2px $dark-gray
       font-size: 15px
     .cs-index-item-footer
       width: 100%
