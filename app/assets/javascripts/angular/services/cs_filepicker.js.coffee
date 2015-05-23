@@ -47,6 +47,7 @@
     width = options.w || options.width
     height = options.h || options.height
     aspect = options.a || options.aspect
+    quality = options.quality || 90
 
     # Try parsing the filepicker object first
     try
@@ -65,21 +66,21 @@
     if width &&  ! height
       if aspect
         newHeight = width * aspectHeight / aspectWidth
-        convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{newHeight}&quality=90&cache=true&rotate=exif"
+        convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{newHeight}&quality=#{quality}&cache=true&rotate=exif"
       else
-        convertURL = convertURL + "/convert?fit=max&w=#{width}&quality=90&cache=true&rotate=exif"
+        convertURL = convertURL + "/convert?fit=max&w=#{width}&quality=#{quality}&cache=true&rotate=exif"
 
     # Only height is provided
     if ! width && height
       if aspect
         newWidth = height * aspectWidth / aspectHeight
-        convertURL = convertURL + "/convert?fit=crop&w=#{newWidth}&h=#{height}&quality=90&cache=true&rotate=exif"
+        convertURL = convertURL + "/convert?fit=crop&w=#{newWidth}&h=#{height}&quality=#{quality}&cache=true&rotate=exif"
       else
-        convertURL = convertURL + "/convert?fit=max&h=#{height}&quality=90&cache=true&rotate=exif"
+        convertURL = convertURL + "/convert?fit=max&h=#{height}&quality=#{quality}&cache=true&rotate=exif"
 
     # Both width and height provided
     if width && height
-      convertURL = convertURL + "/convert?fit=crop&align=faces&w=#{width}&h=#{height}&quality=90&cache=true&rotate=exif"
+      convertURL = convertURL + "/convert?fit=crop&align=faces&w=#{width}&h=#{height}&quality=#{quality}&cache=true&rotate=exif"
 
     convertURL
 

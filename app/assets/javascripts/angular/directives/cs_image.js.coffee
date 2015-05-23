@@ -9,7 +9,7 @@ Usage:
 
 ###
 
-@app.directive 'csImage', ['csFilepickerMethods', '$window', (csFilepickerMethods, $window) ->
+@app.directive 'csImage', ['csFilepickerMethods', '$window', '$timeout', (csFilepickerMethods, $window, $timeout) ->
   restrict: 'E'
   scope: {
     url: '='
@@ -24,13 +24,14 @@ Usage:
     scope.calculateWidth = ->
       parent.width = $(parent[0]).width()
 
-      # Round up to nearest 100px - don't want to just use parent.width
+      # Round up to nearest 50px - don't want to just use parent.width
       # because that will cause a ton of refetches in a fluid layout during resize.
-      scope.finalWidth = Math.ceil(parent.width / 100.0) * 100
+      scope.finalWidth = Math.ceil(parent.width / 50.0) * 50
 
       if scope.aspect && scope.aspect == "16:9"
         scope.finalHeight = scope.finalWidth * 9 / 16
         scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth, h: scope.finalHeight})
+
       else
         scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth})
       scope.containerStyle["opacity"] = "1"
