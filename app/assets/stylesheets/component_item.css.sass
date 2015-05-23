@@ -90,6 +90,8 @@
 
 .component-item.list
   .component-item-content
+    padding: 10px
+    @include boxsizing
     @include display-flex
     @include transition(100ms all linear)
     .item-content-image
@@ -102,3 +104,18 @@
         font-weight: bold
     &:hover
       background-color: $offwhite
+
+.component-item.media
+  .component-item-content
+    padding: 10px
+    @include boxsizing
+    .item-content-image
+      width: 100%
+      margin-bottom: 10px
+      border-radius: 15px
+      overflow: hidden
+    .item-content-text
+      width: 100%
+      color: black
+      .item-title
+        font-weight: bold

@@ -22,17 +22,23 @@
       formTemplateUrl: '/client_views/component_item_hero_a_form.html'
     }
     {
+      name: 'List A'
+      attrs: ['title', 'image', 'description', 'url']
+      templateUrl: '/client_views/component_item_list_a.html'
+      formTemplateUrl: '/client_views/component_item_list_a_form.html'
+    }
+    {
+      name: 'Media A'
+      attrs: ['title', 'image', 'description', 'url']
+      templateUrl: '/client_views/component_item_media_a.html'
+      formTemplateUrl: '/client_views/component_item_media_a_form.html'
+    }
+    {
       name: 'Square A'
       className: 'square.square-a'
       attrs: ['title', 'image', 'buttonMessage', 'url']
       templateUrl: '/client_views/component_item_square_a.html'
       formTemplateUrl: '/client_views/component_item_square_a_form.html'
-    }
-    {
-      name: 'List A'
-      attrs: ['title', 'image', 'description', 'url']
-      templateUrl: '/client_views/component_item_list_a.html'
-      formTemplateUrl: '/client_views/component_item_list_a_form.html'
     }
   ]
   return this
