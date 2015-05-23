@@ -29,8 +29,10 @@
       formTemplateUrl: '/client_views/component_item_square_a_form.html'
     }
     {
-      name: 'Circle'
-      attrs: ['title', 'image', 'buttonMessage', 'url']
+      name: 'List A'
+      attrs: ['title', 'image', 'description', 'url']
+      templateUrl: '/client_views/component_item_list_a.html'
+      formTemplateUrl: '/client_views/component_item_list_a_form.html'
     }
   ]
   return this

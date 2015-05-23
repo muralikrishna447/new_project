@@ -86,3 +86,19 @@
     @include justify-content(center)
     @include align-items(center)
     @include flex-direction(column)
+
+
+.component-item.list
+  .component-item-content
+    @include display-flex
+    @include transition(100ms all linear)
+    .item-content-image
+      @include flex(0 0 80px)
+    .item-content-text
+      margin-left: 10px
+      width: 100%
+      color: black
+      .item-title
+        font-weight: bold
+    &:hover
+      background-color: $offwhite
