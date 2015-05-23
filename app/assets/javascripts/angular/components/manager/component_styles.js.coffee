@@ -28,8 +28,10 @@
   }
 
   link: (scope, element, attrs) ->
-    defaultPadding = '0px'
-    scope.paddingOptions = ['0px', '20px', '40px']
+    # defaultPadding = '0px'
+    # scope.paddingOptions = ['0px', '20px', '40px']
+    defaultPadding = 'none'
+    scope.paddingOptions = ['none', 'small', 'medium', 'large']
     scope.componentModel = {} unless scope.componentModel
     scope.componentModel.padding = defaultPadding unless scope.componentModel.padding
     scope.showOptions = false
