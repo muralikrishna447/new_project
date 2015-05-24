@@ -63,7 +63,7 @@
 
   template:
     """
-      <div class='component' ng-class="'component-padding-' + component.metadata.styles.component.padding">
+      <div class='component' ng-class="'component-padding-' + component.metadata.allModes.styles.component.padding">
         <div single component='component' ng-if="component.componentType=='single'"></div>
         <div matrix component='component' ng-if="component.componentType=='matrix'"></div>
       </div>

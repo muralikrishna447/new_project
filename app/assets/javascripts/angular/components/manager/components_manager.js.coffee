@@ -12,6 +12,7 @@
     componentType: null
     mode: null
     metadata: {
+      allModes: {}
       api: {}
       custom: {}
     }
@@ -51,6 +52,7 @@
       componentType: null
       mode: null
       metadata: {
+        allModes: {}
         api: {}
         custom: {}
       }

@@ -4,7 +4,7 @@
     item: '='
     templateUrl: '='
     mode: '='
-    apiData: '='
+    styles: '='
   }
   link: (scope, element, attrs) ->
 

@@ -19,6 +19,7 @@
     %input(type='radio' ng-model='component.form.mode' value='custom')
     Custom
 
+// Api Mode
 %fieldset(ng-if="component.form.mode=='api' && component.form.metadata.itemType")
 
   // Example API endpoints
@@ -35,6 +36,12 @@
         source = 'component.form.metadata.api.source'
         ng-show='component.form.metadata.api.source' )
 
--# %div(ng-if="component.form.mode=='custom'")
-.matrix-item-form(ng-repeat='item in component.form.metadata.custom.items track by $index')
-  %div(component-item item='item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode')
+  %div(ng-if="component.form.metadata.itemType.name == 'Media A'")
+    %label Max number of sentences in description
+    %input(type='number' ng-model='component.form.metadata.api.styles.description.sentenceLength')
+
+// Custom Mode
+%div(ng-if="component.form.mode=='custom'")
+  .matrix-item-form(ng-repeat='item in component.form.metadata.custom.items track by $index')
+    {{item.styles}}
+    %div(component-item item='item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode' styles='item.styles')
