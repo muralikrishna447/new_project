@@ -41,10 +41,13 @@
         switch apiMode
           when 'api'
             console.log 'API MODE'
+            scope.component.form.metadata.custom = {}
           when 'custom'
-            console.log 'scope.component', scope.component
-            Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (items) ->
-              scope.component.form.metadata.items = items
+            metadata = scope.component.form.metadata
+            source = metadata.api.source
+            mapper = metadata.api.mapper
+            Mapper.do(source, mapper).then (items) ->
+              scope.component.form.metadata.custom.items = items
             # Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
             #   scope.component.form.metadata.items = Matrix.do(scope.component.form.metadata.rows, scope.component.form.metadata.columns, content)
 
@@ -88,16 +91,17 @@
       if scope.component.metadata
         switch scope.component.mode
           when 'api'
-            source = scope.component.metadata.source
-            mapper = scope.component.metadata.mapper
+            metadata = scope.component.metadata
+            source = metadata.api.source
+            mapper = metadata.api.mapper
             if source && mapper
               Mapper.do(source, mapper).then (content) ->
-                scope.content = content
-                updateItems(scope.content)
+                # scope.content = content
+                updateItems(content)
             else
               updateItems()
           when 'custom'
-            scope.items = updateItems(scope.component.metadata.items)
+            scope.items = updateItems(scope.component.metadata.custom.items)
     ), true
 
   templateUrl: '/client_views/component_matrix.html'

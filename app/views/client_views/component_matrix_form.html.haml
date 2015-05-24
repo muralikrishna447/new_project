@@ -22,19 +22,19 @@
 %fieldset(ng-if="component.form.mode=='api' && component.form.metadata.itemType")
 
   // Example API endpoints
-  .btn(ng-click="component.form.metadata.source = 'http://www.chefsteps.com/api/v0/activities'")
+  .btn(ng-click="component.form.metadata.api.source = 'http://www.chefsteps.com/api/v0/activities'")
     &#47;api/v0/activities
 
   %label Source
-  %input(type='text' ng-model='component.form.metadata.source')
+  %input(type='text' ng-model='component.form.metadata.api.source')
 
   %div( component-mapper
-        connections='component.form.metadata.mapper'
+        connections='component.form.metadata.api.mapper'
         component-keys='component.form.metadata.itemType.attrs'
         component='component'
-        source = 'component.form.metadata.source'
-        ng-show='component.form.metadata.source' )
+        source = 'component.form.metadata.api.source'
+        ng-show='component.form.metadata.api.source' )
 
 -# %div(ng-if="component.form.mode=='custom'")
-.matrix-item-form(ng-repeat='item in component.form.metadata.items track by $index')
+.matrix-item-form(ng-repeat='item in component.form.metadata.custom.items track by $index')
   %div(component-item item='item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode')
