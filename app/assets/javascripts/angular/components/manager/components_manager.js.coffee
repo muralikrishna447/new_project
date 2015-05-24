@@ -9,8 +9,15 @@
 
   @componentTypeOptions = ['single', 'matrix']
   @form = {
-    name: $location.search().name # Would prefer to use $state, but since entire site isn't a single page app yet, we can't quite do this until we fix activities
+    componentType: null
+    mode: null
+    metadata: {
+      api: {}
+      custom: {}
+    }
+    name: null
   }
+  @form.name = $location.search().name # Would prefer to use $state, but since entire site isn't a single page app yet, we can't quite do this until we fix activities
 
 
   @save = (component) ->
@@ -40,7 +47,15 @@
       notificationService.add('success', message, buttonUrl, buttonText)
 
   @clear = =>
-    @form = {}
+    @form = {
+      componentType: null
+      mode: null
+      metadata: {
+        api: {}
+        custom: {}
+      }
+      name: null
+    }
 
   return this
 ]

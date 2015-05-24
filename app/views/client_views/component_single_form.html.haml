@@ -14,29 +14,31 @@
 %fieldset(ng-if="component.form.mode=='api' && component.form.metadata.itemType")
 
   // Example API endpoints
-  .btn(ng-click="component.form.metadata.source = 'http://www.chefsteps.com/api/v0/activities/3'")
+  .btn(ng-click="component.form.metadata.api.source = 'http://www.chefsteps.com/api/v0/activities/3'")
     &#47;api/v0/activities/3
 
   %label Source
-  %input(type='text' ng-model='component.form.metadata.source')
+  %input(type='text' ng-model='component.form.metadata.api.source')
 
   %div( component-mapper
-        connections='component.form.metadata.mapper'
+        connections='component.form.metadata.api.mapper'
         component-keys='component.form.metadata.itemType.attrs'
         component='component'
-        source = 'component.form.metadata.source'
-        ng-show='component.form.metadata.source' )
+        source = 'component.form.metadata.api.source'
+        ng-show='component.form.metadata.api.source' )
 
   .component-styles
     .component-styles-title Styles
 
     %div Title Color:
-    %div(component-color-picker component-model='component.form.metadata.styles.title')
+    %div(component-color-picker component-model='component.form.metadata.api.styles.title')
     %div Button Color:
-    %div(component-color-picker component-model='component.form.metadata.styles.button')
+    %div(component-color-picker component-model='component.form.metadata.api.styles.button')
 
   %div(ng-if="component.form.metadata.itemType.name == 'Media A'")
     %label Max number of sentences in description
-    %input(type='number' ng-model='component.form.metadata.item.styles.description.sentenceLength')
+    %input(type='number' ng-model='component.form.metadata.item.api.styles.description.sentenceLength')
 
-%div(component-item item='component.form.metadata.item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode')
+  %div(component-item item='component.form.metadata.api.item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode')
+
+%div(component-item item='component.form.metadata.custom.item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode')
