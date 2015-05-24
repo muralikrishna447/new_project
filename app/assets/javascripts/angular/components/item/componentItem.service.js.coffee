@@ -25,13 +25,13 @@
       name: 'List A'
       attrs: ['title', 'image', 'description', 'url']
       templateUrl: '/client_views/component_item_list_a.html'
-      formTemplateUrl: '/client_views/component_item_list_a_form.html'
+      formTemplateUrl: '/client_views/component_item_media_form.html'
     }
     {
       name: 'Media A'
       attrs: ['title', 'image', 'description', 'url']
       templateUrl: '/client_views/component_item_media_a.html'
-      formTemplateUrl: '/client_views/component_item_media_a_form.html'
+      formTemplateUrl: '/client_views/component_item_media_form.html'
     }
     {
       name: 'Square A'

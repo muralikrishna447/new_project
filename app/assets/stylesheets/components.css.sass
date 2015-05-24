@@ -20,12 +20,14 @@
   padding: 20px
   @include boxsizing
   @include flex(0 0 600px)
-  input[type='text'], input[type='number']
+  input[type='text'], input[type='number'], textarea
     width: 100%
     border: 1px solid $light-gray
     border-radius: 0px
     margin-bottom: 20px
     @include box-shadow(none)
+  textarea
+    min-height: 200px
 
 .component-mapper
   background-color: $offwhite
