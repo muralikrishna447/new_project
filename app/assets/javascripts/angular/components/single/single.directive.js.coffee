@@ -17,12 +17,13 @@
           when 'custom'
             console.log 'scope.component', scope.component
             metadata = scope.component.form.metadata
-            source = metadata.api.source
-            mapper = metadata.api.mapper
-            metadata.custom = {}
-            Mapper.do(source, mapper).then (item) ->
-              scope.component.form.metadata.custom.item = item
-              scope.component.form.metadata.custom.item.styles = scope.component.form.metadata.api.styles
+            unless Object.keys(metadata.custom).length > 0
+              source = metadata.api.source
+              mapper = metadata.api.mapper
+              metadata.custom = {}
+              Mapper.do(source, mapper).then (item) ->
+                scope.component.form.metadata.custom.item = item
+                scope.component.form.metadata.custom.item.styles = scope.component.form.metadata.api.styles
 
   templateUrl: '/client_views/component_single_form.html'
 ]

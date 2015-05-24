@@ -44,12 +44,11 @@
             scope.component.form.metadata.custom = {}
           when 'custom'
             metadata = scope.component.form.metadata
-            source = metadata.api.source
-            mapper = metadata.api.mapper
-            Mapper.do(source, mapper).then (items) ->
-              scope.component.form.metadata.custom.items = items
-            # Mapper.do(scope.component.form.metadata.source, scope.component.form.metadata.mapper).then (content) ->
-            #   scope.component.form.metadata.items = Matrix.do(scope.component.form.metadata.rows, scope.component.form.metadata.columns, content)
+            unless Object.keys(metadata.custom).length > 0
+              source = metadata.api.source
+              mapper = metadata.api.mapper
+              Mapper.do(source, mapper).then (items) ->
+                scope.component.form.metadata.custom.items = items
 
   templateUrl: '/client_views/component_matrix_form.html'
 ]
