@@ -6,7 +6,7 @@
       .item-title(ng-class="'color-'+ item.styles.title.color")
         {{item.content.title}}
       .item-description
-        {{item.content.description | sentences:2 }}
+        {{item.content.description | noShortcodes | sentences:2 }}
 
 .component-item.list.list-a.blank(ng-if="!item")
   .component-item-content

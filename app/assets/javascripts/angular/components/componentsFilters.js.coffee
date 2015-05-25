@@ -4,7 +4,7 @@
 
 @components.filter 'aspect16to9', ->
   (image) ->
-    image + '/convert?fit=crop&h=900&w=1600&quality=90&cache=true'    
+    image + '/convert?fit=crop&h=900&w=1600&quality=90&cache=true'
 
 @components.filter 'words', ->
   (input, words) ->
@@ -29,3 +29,7 @@
       if inputSentences.length > sentences
         input = inputSentences.slice(0, sentences).join(' ')
     input
+
+@components.filter 'noShortcodes', ->
+  (input) ->
+    input.replace(/\[(\w+)\s+([^\]]*)\]/, '')
