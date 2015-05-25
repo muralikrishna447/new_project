@@ -12,7 +12,11 @@
     componentType: null
     mode: null
     metadata: {
-      allModes: {}
+      allModes: {
+        styles:
+          component:
+            size: 'full'
+      }
       api: {}
       custom: {}
     }
