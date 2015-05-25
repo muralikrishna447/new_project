@@ -95,7 +95,10 @@
             mapper = metadata.api.mapper
             if source && mapper
               Mapper.do(source, mapper).then (content) ->
-                # scope.content = content
+                styles = metadata.api.styles
+                content = content.map (componentItem) ->
+                  componentItem.styles = styles
+                  return componentItem
                 updateItems(content)
             else
               updateItems()

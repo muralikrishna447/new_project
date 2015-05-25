@@ -43,7 +43,6 @@
             Mapper.do(source, mapper).then (item) ->
               scope.item = item
               scope.item.styles = scope.component.metadata.api.styles
-              console.log 'scope.item: ', scope.item
         when 'custom'
           scope.item = scope.component.metadata.custom.item
     ), true
