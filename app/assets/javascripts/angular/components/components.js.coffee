@@ -79,15 +79,20 @@
 # }
 @components.service 'Mapper', ['$http', '$q', ($http, $q) ->
 
-  @do = (sourceUrl, connections) ->
+  @do = (sourceUrl, connections, maxNumber) ->
     deferred = $q.defer()
     if sourceUrl
       mapped = []
       $http.get(sourceUrl).success (data, status, headers, config) ->
         if data.length
+          if maxNumber
+            console.log 'Max Number: ', maxNumber
+            console.log 'Data Before: ', data
+            data = data.splice(0, maxNumber)
+            console.log 'Data After: ', data
           responseKeys = Object.keys(data)
 
-          mapped = data.map (item) ->
+          mapped = data.map (item, index) ->
             mappedItem = {}
             for connection in connections
               value = connection.value

@@ -47,7 +47,10 @@
             unless Object.keys(metadata.custom).length > 0
               source = metadata.api.source
               mapper = metadata.api.mapper
-              Mapper.do(source, mapper).then (items) ->
+              numRows = metadata.rows
+              numCols = metadata.columns
+              maxNumber = numRows*numCols
+              Mapper.do(source, mapper, maxNumber).then (items) ->
                 scope.component.form.metadata.custom.items = items
 
   templateUrl: '/client_views/component_matrix_form.html'
@@ -93,8 +96,11 @@
             metadata = scope.component.metadata
             source = metadata.api.source
             mapper = metadata.api.mapper
+            numRows = metadata.rows
+            numCols = metadata.columns
+            maxNumber = numRows*numCols
             if source && mapper
-              Mapper.do(source, mapper).then (content) ->
+              Mapper.do(source, mapper, maxNumber).then (content) ->
                 styles = metadata.api.styles
                 content = content.map (componentItem) ->
                   componentItem.styles = styles
