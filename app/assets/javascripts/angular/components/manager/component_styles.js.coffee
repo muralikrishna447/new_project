@@ -21,27 +21,27 @@
   templateUrl: '/client_views/component_color_picker.html'
 ]
 
-@componentsManager.directive 'componentPaddingPicker', ['$http', ($http) ->
+@componentsManager.directive 'componentSizePicker', ['$http', ($http) ->
   restrict: 'A'
   scope: {
     componentModel: '='
   }
 
   link: (scope, element, attrs) ->
-    # defaultPadding = '0px'
+    # defaultSize = '0px'
     # scope.paddingOptions = ['0px', '20px', '40px']
-    defaultPadding = 'none'
-    scope.paddingOptions = ['none', 'small', 'medium', 'large']
+    defaultSize = 'full'
+    scope.sizeOptions = ['full', 'small', 'medium', 'large']
     scope.componentModel = {} unless scope.componentModel
-    scope.componentModel.padding = defaultPadding unless scope.componentModel.padding
+    scope.componentModel.size = defaultSize unless scope.componentModel.size
     scope.showOptions = false
 
-    scope.setPadding = (padding) ->
-      scope.componentModel.padding = padding
+    scope.setSize = (size) ->
+      scope.componentModel.size = size
       scope.showOptions = false
 
     scope.toggleOptions = ->
       scope.showOptions = ! scope.showOptions
 
-  templateUrl: '/client_views/component_padding_picker.html'
+  templateUrl: '/client_views/component_size_picker.html'
 ]

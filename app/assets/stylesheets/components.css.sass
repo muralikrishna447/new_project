@@ -1,16 +1,20 @@
 @import 'mixins'
 
-.component-padding-none
-  padding: 0px
+.component-container
+  margin-bottom: 20px
+  @include display-flex
+  @include justify-content(center)
+  .component-full
+    @include flex(0 1 100%)
 
-.component-padding-small
-  padding: 20px
+  .component-small
+    @include flex(0 1 400px)
 
-.component-padding-medium
-  padding: 20px 80px
+  .component-medium
+    @include flex(0 1 800px)
 
-.component-padding-large
-  padding: 20px 160px
+  .component-large
+    @include flex(0 1 1200px)
 
 .component-edit-button
   @include display-flex
@@ -116,27 +120,6 @@
       margin: 0
       margin-left: 10px
 
-
-
-// HERO //
-
-.hero
-  position: relative
-  width: 100%
-  margin: 0px
-  @include display-flex
-  @include aspect-16-9
-
-  .hero-content
-    @include aspect-content
-    .hero-cta
-      @include aspect-content
-      @include display-flex
-      @include flex-direction(column)
-      @include justify-content(center)
-      padding-left: 5%
-      padding-right: 50%
-
 .btn-outline
   display: block
   border: 2px solid rgba(255,255,255,.8)
@@ -169,12 +152,18 @@
     cursor: pointer
 
 // TEMP NEW HOMEPAGE
+.home-component-split-container
+  @include display-flex
+  @include justify-content(center)
+
 .home-component-split
-  padding: 20px 160px
   @include display-flex
   @include flex-wrap(wrap)
+  @include flex(0 1 1200px)
   .home-component-split-item
-    margin-right: 20px
-    @include flex(1 1 400px)
+    padding-right: 10px
+    @include flex(1 1 50%)
+    @include boxsizing
     &:last-of-type
-      margin-right: 0px
+      padding-right: 0px
+      padding-left: 10px

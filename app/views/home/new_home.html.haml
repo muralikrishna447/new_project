@@ -3,34 +3,35 @@
     Toggle Edit
 
   %component-edit-button(component-name='Home Hero One' ng-if='home.editable && home.showEditable')
-  %div(component-load component-id='home-hero-one')
+  .component-container(component-load component-id='home-hero-one')
 
   %component-edit-button(component-name='Home Matrix One' ng-if='home.editable && home.showEditable')
-  %div(component-load component-id='home-matrix-one')
+  .component-container(component-load component-id='home-matrix-one')
 
   %h2.text-center
     Here are the newest recipes.
 
-  .home-component-split
-    .home-component-split-item
-      %component-edit-button(component-name='Home Story One' ng-if='home.editable && home.showEditable')
-      %div(component-load component-id='home-story-one')
+  .home-component-split-container
+    .home-component-split
+      .home-component-split-item
+        %component-edit-button(component-name='Home Story One' ng-if='home.editable && home.showEditable')
+        .component-container(component-load component-id='home-story-one')
 
-    .home-component-split-item
-      %component-edit-button(component-name='Home List One' ng-if='home.editable && home.showEditable')
-      %div(component-load component-id='home-list-one')
+      .home-component-split-item
+        %component-edit-button(component-name='Home List One' ng-if='home.editable && home.showEditable')
+        .component-container(component-load component-id='home-list-one')
 
   %h2.text-center
     Make some recipes tonight.
 
   %component-edit-button(component-name='Home Matrix Two' ng-if='home.editable && home.showEditable')
-  %div(component-load component-id='home-matrix-two')
+  .component-container(component-load component-id='home-matrix-two')
 
   %component-edit-button(component-name='Home Hero Two' ng-if='home.editable && home.showEditable')
-  %div(component-load component-id='home-hero-two')
+  .component-container(component-load component-id='home-hero-two')
 
   %h2.text-center
     Make some recipes tonight.
 
   %component-edit-button(component-name='Home Matrix Three' ng-if='home.editable && home.showEditable')
-  %div(component-load component-id='home-matrix-three')
+  .component-container(component-load component-id='home-matrix-three')
