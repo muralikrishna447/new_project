@@ -7,7 +7,7 @@ describe ActivitiesController do
       before :each do
         @activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
         step = Fabricate :step, extra: "Hola"
-        @activity.steps << step      
+        @activity.steps << step
       end
 
       it 'goes to an activity' do
@@ -22,7 +22,7 @@ describe ActivitiesController do
         expect(response.body).to include("Hola")
       end
 
-      it 'shows smart app add' do
+      it 'shows smart app banner ad' do
         get :show, id: @activity.slug
         assigns(:show_app_add).should_not be_nil
       end

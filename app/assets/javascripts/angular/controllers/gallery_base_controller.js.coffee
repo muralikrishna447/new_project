@@ -116,7 +116,7 @@
       $scope.adjustParams(params)
       $scope.requestedPages[$scope.page] = true
 
-      $scope.doQuery(params).$promise.then (results) ->
+      $scope.doQuery(params).$promise.then( ((results) ->
         $scope.dataLoading -= 1
         # This hack makes sure infinite-scroll rechecks itself after we change
         # searches and therefore resize back down to 0. Otherwise it can get stuck.
@@ -135,6 +135,14 @@
             $scope.results.push(result)
         else
           $scope.doneLoading = true
+      ), ( ->
+        console.log("Search error")
+        # This will cause the "no results" results to display
+        $scope.dataLoading -= 1
+        window.scroll(0, 0)
+        $scope.results = []
+      ))
+
     Intercom?('update')
 
   $scope.noResults = ->

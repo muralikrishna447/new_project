@@ -63,6 +63,8 @@
       },
       (success, hits) ->
         deferred.resolve(hits.hits)
+      , (reason) ->
+        deferred.reject(reason)
     )
     { $promise: deferred.promise}
 
