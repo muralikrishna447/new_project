@@ -21,9 +21,13 @@
   @include justify-content(center)
 
 .component-form
+  display: fixed
+  top: 0px
   padding: 20px
+  width: 50%
+  height: 100%
+  overflow: auto
   @include boxsizing
-  @include flex(0 0 600px)
   input[type='text'], input[type='number'], textarea
     width: 100%
     border: 1px solid $light-gray
@@ -61,10 +65,24 @@
           @include box-shadow(none)
 
 .component-preview
-  padding: 20px
-  @include boxsizing
-  @include flex(1 0 600px)
-  max-width: 1200px
+  position: fixed
+  top: 0px
+  left: 50%
+  width: 50%
+  height: 100%
+  @include display-flex
+  @include flex-direction(column)
+  @include justify-content(flex-start)
+  @include align-items(flex-start)
+  .component
+    width: 100%
+    @include flex(1 0 auto)
+  .component-preview-json
+    width: 100%
+    margin-bottom: 0px
+    overflow: auto
+    @include boxsizing
+    @include flex(0 1 auto)
 
 .component-styles
   background-color: $offwhite
