@@ -1,5 +1,11 @@
 class HomeController < ApplicationController
 
+  def new_home
+  end
+
+  def manager
+  end
+
   def index
     @show_app_add = true
     @classes = Assembly.pubbed_courses.order('created_at desc').limit(3).to_a

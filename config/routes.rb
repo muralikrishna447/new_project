@@ -18,6 +18,8 @@ Delve::Application.routes.draw do
   end
 
   root to: "home#index"
+  match '/new_home', to: 'home#new_home'
+  match '/home_manager', to: 'home#manager'
 
   match '/forum', to: 'bloom#forum'
   match '/forum/*path', to: 'bloom#forum'
@@ -315,6 +317,10 @@ Delve::Application.routes.draw do
     get :edit_from_email, on: :collection
   end
 
+  # resources :components, only: [:index]
+  match '/components', to: 'components#index'
+  match '/components/*path', to: 'components#index'
+
   namespace :api do
     namespace :v0 do
       match '/authenticate', to: 'auth#authenticate', via: [:post, :options]
@@ -323,6 +329,7 @@ Delve::Application.routes.draw do
       resources :activities, only: [:index, :show] do
         get :likes, on: :member
       end
+      resources :components, only: [:index, :show, :create, :update]
       resources :ingredients, only: [:index, :show]
       resources :passwords, only: [:update] do
         post :send_reset_email, on: :collection

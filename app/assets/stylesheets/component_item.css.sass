@@ -1,0 +1,120 @@
+@import 'mixins'
+
+.component-item.hero.hero-a
+  @include aspect-16-9
+  .component-item-content
+    @include aspect-content
+    @include display-flex
+    @include justify-content(flex-start)
+    @include align-items(center)
+    img
+      height: 100%
+      width: 100%
+    .item-content-text
+      height: 100%
+      width: 50%
+      padding-left: 10%
+      @include boxsizing
+      @include display-flex
+      @include flex-direction(column)
+      @include justify-content(center)
+      @include align-items(flex-start)
+      .item-title
+        font-size: 60px
+        line-height: 60px
+        margin-bottom: 20px
+        font-weight: bold
+        &.color-black
+          color: black
+        &.color-white
+          color: white
+      .item-button
+        .btn-outline
+          font-size: 20px
+          font-weight: bold
+          padding: 10px 40px
+        &.color-black
+          .btn-outline
+            border-color: black
+            color: black
+            &:hover
+              border-color: $orange
+              color: white
+
+        &.color-white
+          .btn-outline
+            border-color: white
+            color: white
+            &:hover
+              border-color: $orange
+
+.component-item.square.square-a
+  @include aspect-1-1
+  .component-item-content
+    color: white
+    text-align: center
+    @include aspect-content
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    @include flex-direction(column)
+    .item-divider.first
+      padding: 10px
+      @include boxsizing
+      @include flex(1 1 100%)
+      @include display-flex
+      @include align-items(flex-end)
+      @include justify-content(center)
+    .item-divider.middle
+      @include flex(0 0 auto)
+    .item-divider.last
+      @include flex(1 1 100%)
+      @include display-flex
+    img
+      height: 100%
+      width: 100%
+
+.component-item.square.square-a.blank
+  @include aspect-1-1
+  border: 1px solid $light-gray
+  background-color: $offwhite
+  .component-item-content
+    color: white
+    text-align: center
+    @include aspect-content
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    @include flex-direction(column)
+
+
+.component-item.list
+  .component-item-content
+    padding: 10px
+    @include boxsizing
+    @include display-flex
+    @include transition(100ms all linear)
+    .item-content-image
+      @include flex(0 0 80px)
+    .item-content-text
+      margin-left: 10px
+      width: 100%
+      color: black
+      .item-title
+        font-weight: bold
+    &:hover
+      background-color: $offwhite
+
+.component-item.media
+  .component-item-content
+    @include boxsizing
+    .item-content-image
+      width: 100%
+      margin-bottom: 10px
+      border-radius: 15px
+      overflow: hidden
+    .item-content-text
+      width: 100%
+      color: black
+      .item-title
+        font-weight: bold
