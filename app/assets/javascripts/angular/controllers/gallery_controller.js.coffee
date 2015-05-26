@@ -19,6 +19,8 @@
     published_status: 'published'
     generator: 'chefsteps'
     sort: 'popular'
+    difficulty: 'any'
+    page: 1
 
   $scope.adjustParams = (params) ->
     params['difficulty'] = 'intermediate' if params['difficulty'] == 'medium'
