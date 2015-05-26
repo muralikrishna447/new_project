@@ -1,7 +1,9 @@
 describe Api::V0::ComponentsController do
 
   before :each do
+    @admin_user = Fabricate :user, name: 'Admin User', email: 'admin@chefsteps.com', role: 'admin'
     @component = Fabricate :component, component_type: 'list', mode: 'api', metadata: { source: 'http://www.somelink.com' }
+    sign_in @admin_user
   end
 
   # GET /api/v0/components
