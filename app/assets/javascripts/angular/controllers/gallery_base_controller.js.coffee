@@ -21,12 +21,10 @@
     # because we still want to let them switch to a different sort.
     $scope.filters['sort'] = if $scope.input?.length > 0 then "relevance" else "newest"
 
-  # Sort/filter change from URL. Copy from route params to filters. This will fire on first load. Doing it all the time causes a nasty loop that
-  # can cause your typing to get erased.
+  # Sort/filter change from URL. Copy from route params to filters.
   $scope.$on "$routeChangeSuccess", (event, $currentRoute, $prevRoute) ->
     $scope.filters = angular.extend({}, $scope.defaultFilters, $currentRoute.params)
-    if ! $prevRoute
-      $scope.input = $currentRoute.params.search_all
+    $scope.input = $currentRoute.params.search_all
     $scope.applyFilter()
 
   # Filter/sort change from the UI.

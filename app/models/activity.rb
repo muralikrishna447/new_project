@@ -128,6 +128,8 @@ class Activity < ActiveRecord::Base
     end
 
     # Filter/facet/tags
+    attribute :difficulty
+
     tags do
       tags.map(&:name)
     end
