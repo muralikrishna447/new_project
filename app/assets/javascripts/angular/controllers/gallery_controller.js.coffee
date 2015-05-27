@@ -29,7 +29,10 @@
 
   # Search-only API key, safe to distribute
   algolia = algoliasearch('JGV2ODT81S', '890e558aa5ce0acb553f4d251add31cb')
-  index = algolia.initIndex('ChefSteps_development')
+  indices =
+    'relevance' : algolia.initIndex('ChefSteps_development')
+    'oldest' :  algolia.initIndex('ChefStepsOldest_development')
+    'newest' : algolia.initIndex('ChefStepsNewest_development')
 
   $scope.doQuery = (params) ->
 
@@ -45,6 +48,7 @@
     search = params['search_all'] || params['tag']
 
     deferred = $q.defer()
+    index = indices[params['sort'] || "relevance"]
     index.search(search,
       {
         hitsPerPage: 12

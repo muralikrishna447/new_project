@@ -88,7 +88,7 @@ class Activity < ActiveRecord::Base
 
   include AlgoliaSearch
 
-  algoliasearch index_name: "ChefSteps_#{Rails.env}", if: :has_title do
+  algoliasearch index_name: "ChefSteps", per_environment: true, if: :has_title do
 
     # Searchable fields (may be used for display too)
     attribute :title, :description
@@ -118,7 +118,7 @@ class Activity < ActiveRecord::Base
     end
 
     # Display fields
-    attribute :slug, :published
+    attribute :slug
     add_attribute :url do
       activity_path(self)
     end
@@ -128,7 +128,7 @@ class Activity < ActiveRecord::Base
     end
 
     # Filter/facet/tags
-    attribute :difficulty
+    attribute :difficulty, :published
 
     tags do
       tags.map(&:name)
@@ -138,6 +138,19 @@ class Activity < ActiveRecord::Base
       creator.blank?
     end
 
+    # Sort fields
+    add_attribute :date do
+      published ? published_at : created_at
+    end
+
+    # Slave indices for sorting other than relevance - that is how Algolia works, each index
+    # only has one sort order, defined in dashboard.
+    add_slave "ChefStepsNewest", per_environment: true do
+    end
+    add_slave "ChefStepsOldest", per_environment: true do
+    end
+    add_slave "ChefStepsPopular", per_environment: true do
+    end
   end
 
   def has_title
