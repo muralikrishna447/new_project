@@ -33,6 +33,7 @@
     'relevance' : algolia.initIndex('ChefSteps_development')
     'oldest' :  algolia.initIndex('ChefStepsOldest_development')
     'newest' : algolia.initIndex('ChefStepsNewest_development')
+    'popular' : algolia.initIndex('ChefStepsPopular_development')
 
   $scope.doQuery = (params) ->
 
@@ -61,7 +62,7 @@
         facetFilters: facetFilters
         facets: '*'
         advancedSyntax: true
-        attributesToRetrieve: "title,url,image,likesCount"
+        attributesToRetrieve: "title,url,image,likes_count"
         attributesToHighlight: ""
         attributesToSnippet: ""
       },

@@ -50,8 +50,8 @@ Spork.prefork do
       # not fun to have to turn them off every place in specs where that happens.
       WebMock.stub_request(:any, /.*\.algolia\.(io|net).*/).to_return(:body => '{ "items": [] }')
 
-      # Adding Webmock, but we already have existing mock strategies for other services, so
-      # let them through.
+      # Adding Webmock, which delightfully alerts you to any live http calls happening during specs,
+      # but we already have existing mock strategies for other services, so let them through.
       WebMock.disable_net_connect!(:allow => [/mixpanel/])
     end
 

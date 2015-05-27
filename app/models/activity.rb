@@ -139,6 +139,7 @@ class Activity < ActiveRecord::Base
     end
 
     # Sort fields
+    attribute :likes_count
     add_attribute :date do
       published ? published_at : created_at
     end
