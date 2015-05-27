@@ -88,7 +88,7 @@ class Activity < ActiveRecord::Base
 
   include AlgoliaSearch
 
-  algoliasearch index_name: "ChefSteps_#{Rails.env}", if: :has_title, :disable_indexing => Rails.env.test?  do
+  algoliasearch index_name: "ChefSteps_#{Rails.env}", if: :has_title do
 
     # Searchable fields (may be used for display too)
     attribute :title, :description

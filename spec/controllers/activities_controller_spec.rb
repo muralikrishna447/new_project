@@ -1,8 +1,7 @@
-require 'spec_helper'
-
 describe ActivitiesController do
 
   describe 'show' do
+
     context 'outside an assembly' do
       before :each do
         @activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
@@ -69,6 +68,14 @@ describe ActivitiesController do
       end
     end
 
+    context 'algolia' do
+
+      it 'pushes an update to Algolia on save' do
+        @activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
+        WebMock.assert_requested :put, "https://jgv2odt81s.algolia.net/1/indexes/ChefSteps_test/#{@activity.id}"
+      end
+    end
+
     context 'within an assembly' do
       before :each do
         @user = Fabricate :user, id: 29
@@ -103,7 +110,6 @@ describe ActivitiesController do
       end
 
     end
-
   end
 
   describe 'update' do
@@ -114,6 +120,7 @@ describe ActivitiesController do
         @user2 = Fabricate :user, name: 'Another User', email: 'anotheruser@user.com', role: 'user'
         @chefsteps_activity = Fabricate :activity, title: 'A New Recipe', published: true
         @user1_activity = Fabricate :activity, title: 'A User Recipe', creator: @user1, published: true
+
       end
 
       it 'does not allow a non admin to update a chefsteps recipe' do
@@ -127,8 +134,8 @@ describe ActivitiesController do
         put :update_as_json, id: @user1_activity.slug, activity: {title: 'New Title'}
         expect(response).to_not be_success
       end
-
     end
   end
-
 end
+
+

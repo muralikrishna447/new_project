@@ -1,4 +1,11 @@
 describe Api::V0::ActivitiesController do
+  algolia_stub = nil
+  before :all do
+    algolia_stub = WebMock.stub_request(:any, /.*\.algolia\.(io|net).*/).to_return(:body => '{ "items": [] }')
+  end
+  after :all do
+    WebMock.remove_request_stub(algolia_stub)
+  end
 
   before :each do
     @activity1 = Fabricate :activity, title: 'Activity 1', published: true
