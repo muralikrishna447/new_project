@@ -74,15 +74,21 @@
   @include flex-direction(column)
   @include justify-content(flex-start)
   @include align-items(flex-start)
+  .component-preview-header
+    width: 100%
+    padding-top: 20px
+    @include boxsizing
+    @include flex(1 0 auto)
   .component
     width: 100%
-    @include flex(1 0 auto)
+    overflow: auto
+    @include flex(0 1 100%)
   .component-preview-json
     width: 100%
     margin-bottom: 0px
     overflow: auto
     @include boxsizing
-    @include flex(0 1 auto)
+    @include flex(0 1 100%)
 
 .component-styles
   background-color: $offwhite
