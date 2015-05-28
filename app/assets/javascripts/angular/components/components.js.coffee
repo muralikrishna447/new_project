@@ -120,3 +120,18 @@
 
   return this
 ]
+
+@components.directive 'filepicker', [->
+  restrict: 'A'
+  require: '?ngModel'
+  link: (scope, element, attrs, ngModel) ->
+    scope.pick = ->
+      filepicker.pick (blob) ->
+        url = blob.url.replace('https://www.filepicker.io', 'https://d3awvtnmmsvyot.cloudfront.net')
+        ngModel.$setViewValue(url)
+        scope.$apply()
+  template:
+    """
+      <button class='btn btn-secondary' ng-click='pick()'>Pick Image</btn>
+    """
+]
