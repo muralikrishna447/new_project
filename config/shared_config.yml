@@ -1,24 +1,29 @@
 development:
+  env: "development"
   bloom:
     api_endpoint: "http://localhost:5000"
     community_endpoint: "http://localhost:9001"
     env: "dev"
 
 production:
+  env: "production"
   bloom: &production_bloom
     api_endpoint: "https://cs-bloom-api-production.herokuapp.com"
     community_endpoint: "https://cs-bloom-community-production.herokuapp.com"
     env: "production"
 
 staging:
+  env: "staging"
   bloom: &staging_bloom
     api_endpoint: "https://cs-bloom-api-staging.herokuapp.com"
     community_endpoint: "https://cs-bloom-community-staging.herokuapp.com"
     env: "staging"
 staging2:
+  env: "staging"
   <<: *staging_bloom
 
 test:
+  env: "test"
   bloom:
     api_endpoint: "bloomAPI"
     community_endpoint: "communityAPI"

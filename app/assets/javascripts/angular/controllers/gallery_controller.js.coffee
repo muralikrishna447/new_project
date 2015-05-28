@@ -1,4 +1,4 @@
-@app.controller 'GalleryController', ['$scope', 'api.activity', '$controller', "$timeout", "$q", ($scope, Activity, $controller, $timeout, $q) ->
+@app.controller 'GalleryController', ['$scope', 'AlgoliaSearchService', '$controller', "$timeout", ($scope, AlgoliaSearchService, $controller, $timeout) ->
 
   $scope.context                = "Activity"
   $scope.difficultyChoices      = ["Any", "Easy", "Medium", "Advanced"]
@@ -27,51 +27,9 @@
     delete params['sort'] if params['sort'] == 'relevance'
     delete params['difficulty'] if params['difficulty'] && params['difficulty'] == 'undefined'
 
-  # Search-only API key, safe to distribute
-  algolia = algoliasearch('JGV2ODT81S', '890e558aa5ce0acb553f4d251add31cb')
-  indices =
-    'relevance' : algolia.initIndex('ChefSteps_development')
-    'oldest' :  algolia.initIndex('ChefStepsOldest_development')
-    'newest' : algolia.initIndex('ChefStepsNewest_development')
-    'popular' : algolia.initIndex('ChefStepsPopular_development')
 
   $scope.doQuery = (params) ->
-
-    chefsteps_generated = if params['generator'] == 'chefsteps' then 1 else 0
-    published = if params['published_status'] == 'published' then 1 else 0
-
-    facetFilters = []
-    facetFilters.push("difficulty:#{params['difficulty']}") if params['difficulty'] != 'any'
-
-    # If there is a tag filter but no search string, use the tag as the search
-    # string as well. That won't affect the results (since tags are also searched),
-    # but it gives a much better ordering.
-    search = params['search_all'] || params['tag']
-
-    deferred = $q.defer()
-    index = indices[params['sort'] || "relevance"]
-    index.search(search,
-      {
-        hitsPerPage: 12
-        page: params['page'] - 1
-        numericFilters: [
-          "chefsteps_generated=#{chefsteps_generated}"
-          "published=#{published}"
-        ]
-        tagFilters: params['tag'] || ''
-        facetFilters: facetFilters
-        facets: '*'
-        advancedSyntax: true
-        attributesToRetrieve: "title,url,image,likes_count"
-        attributesToHighlight: ""
-        attributesToSnippet: ""
-      },
-      (success, hits) ->
-        deferred.resolve(hits.hits)
-      , (reason) ->
-        deferred.reject(reason)
-    )
-    { $promise: deferred.promise}
+    { $promise: AlgoliaSearchService.search(params).promise }
 
   $scope.focusSearch = ->
     $('.focusme').focus()
