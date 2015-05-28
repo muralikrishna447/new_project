@@ -29,7 +29,7 @@
 
 
   $scope.doQuery = (params) ->
-    { $promise: AlgoliaSearchService.search(params).promise }
+    { $promise: AlgoliaSearchService.search(params) }
 
   $scope.focusSearch = ->
     $('.focusme').focus()

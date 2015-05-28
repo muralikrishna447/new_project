@@ -32,15 +32,15 @@
   # to pass them to Algolia.
   @search = (params) ->
     # Choose the index that has the sort we want, defaulting to the master (relevance) sort
-    index = indices[params['sort'] || "relevance"]
+    index = indices[params['sort']?.toLowerCase()] || indices["relevance"]
 
     # Translate these boolean filters to numeric
-    chefstepsGenerated = if params['generator'] == 'chefsteps' then 1 else 0
-    published = if params['published_status'] == 'published' then 1 else 0
+    chefstepsGenerated = if params['generator'].toLowerCase() == 'chefsteps' then 1 else 0
+    published = if params['published_status'].toLowerCase() == 'published' then 1 else 0
 
     # Difficulty is handled as a facet instead of a filter, because there aren't string filters
     facetFilters = []
-    facetFilters.push("difficulty:#{params['difficulty']}") if params['difficulty'] != 'any'
+    facetFilters.push("difficulty:#{params['difficulty'].toLowerCase()}") if params['difficulty'].toLowerCase() != 'any'
 
     # If there is a tag filter but no search string, use the tag as the search
     # string as well. That won't affect the results (since tags are also searched),
@@ -69,7 +69,7 @@
       , (reason) ->
         deferred.reject(reason)
     )
-    deferred
+    deferred.promise
 
   this
 ]
