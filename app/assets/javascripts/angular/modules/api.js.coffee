@@ -42,20 +42,19 @@
     facetFilters = []
     facetFilters.push("difficulty:#{params['difficulty'].toLowerCase()}") if params['difficulty'].toLowerCase() != 'any'
 
-    # If there is a tag filter but no search string, use the tag as the search
-    # string as well. That won't affect the results (since tags are also searched),
-    # but it gives a much better ordering.
-    searchTerm = params['search_all'] || params['tag']
+    numericFilters = [
+      "chefsteps_generated=#{chefstepsGenerated}"
+      "published=#{published}"
+    ]
+    numericFilters.push("include_in_gallery=1") if published
+
 
     deferred = $q.defer()
-    index.search(searchTerm,
+    index.search(params['search_all'],
       {
         hitsPerPage: 12
         page: params['page'] - 1
-        numericFilters: [
-          "chefsteps_generated=#{chefstepsGenerated}"
-          "published=#{published}"
-        ]
+        numericFilters: numericFilters
         tagFilters: params['tag'] || ''
         facetFilters: facetFilters
         facets: '*'

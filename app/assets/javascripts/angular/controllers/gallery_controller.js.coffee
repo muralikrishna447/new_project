@@ -27,7 +27,6 @@
     delete params['sort'] if params['sort'] == 'relevance'
     delete params['difficulty'] if params['difficulty'] && params['difficulty'] == 'undefined'
 
-
   $scope.doQuery = (params) ->
     { $promise: AlgoliaSearchService.search(params) }
 

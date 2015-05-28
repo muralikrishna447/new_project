@@ -11,15 +11,21 @@
   $scope.requestedPages = {}
   $scope.filtersCollapsed = true
 
+  $scope.getSearchTerm = ->
+    # If there is a tag filter but no search string, use the tag as the search
+    # string as well. That won't affect the results (since tags are also searched),
+    # but it gives a much better ordering.
+    $scope.filters['search_all'] || $scope.filters['tag']
+
   $scope.getSortChoices = ->
     sc = angular.extend($scope.sortChoices)
-    sc = sc[1...] unless $scope.filters['search_all']?.length > 0
+    sc = sc[1...] unless $scope.getSearchTerm()?.length > 0
     sc
 
   $scope.adjustSortForSearch = ->
     # If search changes, default sort to relevance - but only on search change
     # because we still want to let them switch to a different sort.
-    $scope.filters['sort'] = if $scope.input?.length > 0 then "relevance" else "newest"
+    $scope.filters['sort'] = if $scope.getSearchTerm()?.length > 0 then "relevance" else "newest"
 
   # Sort/filter change from URL. Copy from route params to filters.
   $scope.$on "$routeChangeSuccess", (event, $currentRoute, $prevRoute) ->
@@ -34,13 +40,13 @@
 
   $scope.search = (input) ->
     $scope.input = input
-    $scope.adjustSortForSearch()
 
     if input.length > 0
       console.log 'Searching for: ', input
       $scope.filters['search_all'] = input
     else
       $scope.clearSearch()
+    $scope.adjustSortForSearch()
     $scope.applyFilter()
 
 
@@ -54,11 +60,13 @@
   $scope.tags = (tag) ->
     $scope.filters['tag'] = tag
     $scope.applyFilter()
+    $scope.adjustSortForSearch()
     mixpanel.track('Gallery Popular Item', _.extend({'context' : $scope.context}, {search_all: tag}));
 
   $scope.clearTags = ->
     delete $scope.filters['tag']
-    $scope.applyFilter
+    $scope.adjustSortForSearch()
+    $scope.applyFilter()
 
 
   # Scroll
@@ -114,6 +122,7 @@
       params = _.extend({page: $scope.page}, $scope.filters)
       fixParamEnums(params)
       $scope.adjustParams(params)
+      params['search_all'] = $scope.getSearchTerm()
       $scope.requestedPages[$scope.page] = true
 
       $scope.doQuery(params).$promise.then( ((results) ->
