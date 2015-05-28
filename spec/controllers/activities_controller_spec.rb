@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe ActivitiesController do
 
   describe 'show' do
