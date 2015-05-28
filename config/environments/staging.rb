@@ -93,4 +93,6 @@ Delve::Application.configure do
       resource '/api/v0/*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete]
     end
   end
+
+  AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: '09aead6e71067484d11f3f4ff0b34364' }
 end

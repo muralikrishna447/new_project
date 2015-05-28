@@ -73,8 +73,6 @@ class Activity < ActiveRecord::Base
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
   attr_accessible :show_only_in_course, :summary_tweet
 
-  include Searchable
-
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
@@ -86,6 +84,79 @@ class Activity < ActiveRecord::Base
                   associated_against: {terminal_equipment: [[:title, 'D']], terminal_ingredients: [[:title, 'D']], tags: [[:name, 'B']], steps: [[:title, 'C'], [:directions, 'C']]}
 
   TYPES = %w[Recipe Technique Science]
+
+
+  include AlgoliaSearch
+
+  algoliasearch index_name: "ChefSteps", per_environment: true, if: :has_title do
+
+    # Searchable fields (may be used for display too)
+    attribute :title, :description
+
+    add_attribute :thumbnail do
+      featured_image.present? ? JSON.parse(featured_image)["url"] + "/convert?fit=crop&w=370&h=208&quality=90&cache=true" : nil
+    end
+
+    add_attribute :ingredient_titles do
+      terminal_ingredients.map(&:title)
+    end
+
+    add_attribute :equipment_titles do
+      terminal_equipment.map(&:title)
+    end
+
+    add_attribute :equipment_titles do
+      terminal_equipment.map(&:title)
+    end
+
+    add_attribute :step_titles do
+      steps.map(&:title)
+    end
+
+    add_attribute :step_directions do
+      steps.map(&:directions)
+    end
+
+    # Display fields
+    attribute :slug
+    add_attribute :url do
+      activity_path(self)
+    end
+
+    add_attribute :image do
+      featured_image.present? ? JSON.parse(featured_image)["url"] : nil
+    end
+
+    # Filter/facet/tags
+    attribute :difficulty, :published
+
+    tags do
+      tags.map(&:name)
+    end
+
+    add_attribute :chefsteps_generated do
+      creator.blank?
+    end
+
+    # Sort fields
+    attribute :likes_count
+    add_attribute :date do
+      published ? published_at : created_at
+    end
+
+    # Slave indices for sorting other than relevance - that is how Algolia works, each index
+    # only has one sort order, defined in dashboard.
+    add_slave "ChefStepsNewest", per_environment: true do
+    end
+    add_slave "ChefStepsOldest", per_environment: true do
+    end
+    add_slave "ChefStepsPopular", per_environment: true do
+    end
+  end
+
+  def has_title
+    title.present?
+  end
 
   include Rails.application.routes.url_helpers
 
@@ -460,18 +531,6 @@ class Activity < ActiveRecord::Base
       url = ActiveSupport::JSON.decode(self.featured_image_id)["url"]
       avatar_url = "#{url}/convert?fit=crop&w=70&h=70&cache=true".gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
     end
-  end
-
-  # For elasticsearch.  See https://github.com/elasticsearch/elasticsearch-rails/tree/master/elasticsearch-model
-  def as_indexed_json(options={})
-    as_json(
-      only: [:title, :description],
-      methods: [:tag_list],
-      include: {
-        terminal_ingredients: { only: [:title] },
-        steps: { only: [:title, :directions] }
-      }
-    ).merge({'search_data' => search_data})
   end
 
   def search_data

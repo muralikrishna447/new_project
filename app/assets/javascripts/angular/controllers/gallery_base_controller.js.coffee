@@ -1,4 +1,4 @@
-# Next step in refactoring would be to move much of this over to a service, but at least it is now shared by 
+# Next step in refactoring would be to move much of this over to a service, but at least it is now shared by
 # all gallery controllers.
 @app.controller 'GalleryBaseController', ["$scope", "$rootScope", "$timeout", '$route', '$routeParams', '$location', 'csAuthentication', ($scope, $rootScope, $timeout, $route, $routeParams, $location, csAuthentication) ->
 
@@ -21,12 +21,10 @@
     # because we still want to let them switch to a different sort.
     $scope.filters['sort'] = if $scope.input?.length > 0 then "relevance" else "newest"
 
-  # Sort/filter change from URL. Copy from route params to filters. This will fire on first load. Doing it all the time causes a nasty loop that
-  # can cause your typing to get erased.
+  # Sort/filter change from URL. Copy from route params to filters.
   $scope.$on "$routeChangeSuccess", (event, $currentRoute, $prevRoute) ->
     $scope.filters = angular.extend({}, $scope.defaultFilters, $currentRoute.params)
-    if ! $prevRoute
-      $scope.input = $currentRoute.params.search_all
+    $scope.input = $currentRoute.params.search_all
     $scope.applyFilter()
 
   # Filter/sort change from the UI.
@@ -34,27 +32,17 @@
     if newValue != oldValue
       $scope.applyFilter()
 
-  # Search change from the UI.
-  # Actual search only fires after the user stops typing
-  # Seems like 500ms timeout is ideal
-  inputChangedPromise = null
-  $scope.search = (input, fromPopular = false) ->
+  $scope.search = (input) ->
     $scope.input = input
     $scope.adjustSortForSearch()
 
-    if inputChangedPromise
-      $timeout.cancel(inputChangedPromise)
+    if input.length > 0
+      console.log 'Searching for: ', input
+      $scope.filters['search_all'] = input
+    else
+      $scope.clearSearch()
+    $scope.applyFilter()
 
-    inputChangedPromise = $timeout( ->
-      if input.length > 0
-        console.log 'Searching for: ', input
-        $scope.filters['search_all'] = input
-        if fromPopular
-          mixpanel.track('Gallery Popular Item', _.extend({'context' : $scope.context}, {search_all: input}));        
-      else
-        $scope.clearSearch()
-      $scope.applyFilter()
-    , 500)
 
   # Clear search from the UI
   $scope.clearSearch = ->
@@ -62,6 +50,16 @@
     delete $scope.filters['search_all']
     $scope.adjustSortForSearch()
     $scope.applyFilter()
+
+  $scope.tags = (tag) ->
+    $scope.filters['tag'] = tag
+    $scope.applyFilter()
+    mixpanel.track('Gallery Popular Item', _.extend({'context' : $scope.context}, {search_all: tag}));
+
+  $scope.clearTags = ->
+    delete $scope.filters['tag']
+    $scope.applyFilter
+
 
   # Scroll
   $scope.next = ->
@@ -80,22 +78,20 @@
     $scope.results = []
     $scope.requestedPages = {}
     $scope.filtersCollapsed = true
-    $scope.reloading = true
-    window.scroll(0, 0)
 
     # Update route params to match filters
     $location.search($scope.filters)
     $scope.loadOnePage()
 
     # Update mixpanel with changed search. Throttled and trailing edge
-    # so if they type we wait until they stop typing. 
-    _.throttle( 
-      (-> 
+    # so if they type we wait until they stop typing.
+    _.throttle(
+      (->
         filterData = angular.extend({}, $scope.defaultFilters, $scope.filters)
         filterData['defaultFilter'] = _.isEqual(filterData, $scope.defaultFilters)
         filterData['context'] = $scope.context
         mixpanel.track('Gallery Filtered', filterData)
-      ), 
+      ),
       2000,
       {leading: false}
     )()
@@ -103,7 +99,8 @@
   fixParamEnums = (params) ->
     for k, v of params
       if k != "search_all"
-        params[k] = v.toString().toLowerCase().replace(' ', "_")
+        params[k] = v.toString().toLowerCase()
+        params[k] = params[k].replace(' ', "_") unless k == "tag"
     params
 
   # Get a page of data
@@ -111,15 +108,15 @@
     if  (! $scope.doneLoading) && (! $scope.requestedPages[$scope.page])
       $scope.dataLoading += 1
 
-      # Set up actual query params; they are mostly the same as the filters we show with 
+      # Set up actual query params; they are mostly the same as the filters we show with
       # a few minor adjustments.
       queryFilters = _.extend({}, $scope.filters)
       params = _.extend({page: $scope.page}, $scope.filters)
-      fixParamEnums(params)      
+      fixParamEnums(params)
       $scope.adjustParams(params)
       $scope.requestedPages[$scope.page] = true
 
-      $scope.doQuery(params).$promise.then (results) ->
+      $scope.doQuery(params).$promise.then( ((results) ->
         $scope.dataLoading -= 1
         # This hack makes sure infinite-scroll rechecks itself after we change
         # searches and therefore resize back down to 0. Otherwise it can get stuck.
@@ -129,15 +126,25 @@
           console.log "FROM OLD FILTERS, IGNORING"
           return
 
-        $scope.reloading = false
+        if params['page'] == 0
+          window.scroll(0, 0)
+          $scope.results = []
 
         if results.length > 0
           angular.forEach results, (result) ->
             $scope.results.push(result)
         else
           $scope.doneLoading = true
+      ), ( ->
+        console.log("Search error")
+        # This will cause the "no results" results to display
+        $scope.dataLoading -= 1
+        window.scroll(0, 0)
+        $scope.results = []
+      ))
+
     Intercom?('update')
-    
+
   $scope.noResults = ->
     ($scope.results.length == 0) && (! $scope.dataLoading)
 
