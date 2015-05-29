@@ -54,6 +54,8 @@
     color: white
     text-align: center
     background-size: cover
+    border-radius: 8px
+    overflow: hidden
     @include aspect-content
     @include display-flex
     @include justify-content(center)
@@ -102,6 +104,9 @@
     @include transition(100ms all linear)
     .item-content-image
       @include flex(0 0 80px)
+      img
+        border-radius: 8px
+        overflow: hidden
     .item-content-text
       margin-left: 10px
       width: 100%
@@ -116,8 +121,8 @@
     @include boxsizing
     .item-content-image
       width: 100%
-      margin-bottom: 10px
-      border-radius: 15px
+      margin-bottom: 22px
+      border-radius: 8px
       overflow: hidden
     .item-content-text
       width: 100%
