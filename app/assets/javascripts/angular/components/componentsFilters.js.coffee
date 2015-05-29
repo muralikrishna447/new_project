@@ -6,6 +6,10 @@
   (image) ->
     image + '/convert?fit=crop&h=900&w=1600&quality=90&cache=true'
 
+@components.filter 'aspect3to1', ->
+  (image) ->
+    image + '/convert?fit=crop&h=600&w=1800&quality=90&cache=true'
+
 @components.filter 'words', ->
   (input, words) ->
     if isNaN(words)
