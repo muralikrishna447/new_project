@@ -119,6 +119,7 @@ Delve::Application.routes.draw do
   get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
+  get 'sous-vide' => 'pages#sous_vide_resources', as: 'sous_vide_resources'
 
   # TIMDISCOUNT for the 'tim' part only
 
