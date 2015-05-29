@@ -8,22 +8,31 @@ namespace :interests do
   task :import_mailchimp => [:environment] do
     puts "Importing interests to Mailchimp"
     users = User.where("survey_results ? :key", key: "interests")
+
+    # puts gibbon.lists.interest_groupings({id: 'a61ebdcaa6'})
     users.each do |user|
       interests = user.survey_results['interests']
-      if interests.include?('Sous Vide')
-        begin
-          puts "Importing user: #{user.email}"
-          gibbon.lists.subscribe(
-            id: '6024b56b7a',
-            email: {email: user.email},
-            merge_vars: {NAME: user.name, SOURCE: 'interests'},
-            double_optin: false,
-            send_welcome: false
-          )
-        rescue Exception => e
-          puts "Error importing user: #{user.email}"
-          puts "MailChimp error: #{e.message}"
-        end
+      interests = interests.reject{ |name| name.blank? } if interests.kind_of?(Array)
+
+      merge_vars = {
+        groupings: [
+          {
+            id: '8061',
+            groups: interests
+          }
+        ]
+      }
+
+      begin
+        puts "Adding user: #{user.email} to interest groups"
+        gibbon.lists.update_member(
+          id: 'a61ebdcaa6',
+          email: { email: user.email },
+          merge_vars: merge_vars
+        )
+      rescue Exception => e
+        puts "Error adding user: #{user.email}"
+        puts "Error message: #{e.message}"
       end
     end
   end
