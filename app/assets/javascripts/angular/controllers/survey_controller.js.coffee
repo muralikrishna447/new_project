@@ -105,7 +105,7 @@
     $http.post('/user_surveys', data)
 
     searchTerms = survey_results.interests
-    searchTerms.push survey_results.suggestion
+    searchTerms.push survey_results.suggestion if survey_results.suggestion?.length > 0
     searchParams = {
       tags: searchTerms.join(',')
       per: 8
