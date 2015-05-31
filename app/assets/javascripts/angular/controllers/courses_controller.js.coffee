@@ -53,7 +53,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       newPath = "/" + includable_type.toLowerCase() + "/" + $scope.currentIncludable.includable_slug
     $location.path(newPath) if $location.path() != newPath
     window.Intercom?('update')
-    
+
     # Title tag
     document.title = $scope.currentIncludable.includable_title + ' | ' + $scope.course.title + ' Class | ChefSteps'
 
@@ -106,13 +106,23 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.loadPrevInclusion = ->
    $scope.loadInclusion($scope.prevInclusion().includable_type, $scope.prevInclusion().includable_slug)
 
+  leafIncludableNew = (inclusion) ->
+    return false if ! inclusion?.includable?.published_at
+    d1 = new Date(inclusion.includable.published_at)
+    d2 = new Date()
+    return true if (d2 - d1) < (30 * 24 * 60 * 60 * 1000)
+
   $scope.sortInclusions = (assembly) ->
     flat = []
     for inclusion in assembly.assembly_inclusions
       if inclusion.includable_type == 'Assembly'
         $scope.collapsed[inclusion.includable_id] = true
         $scope.collapsibleInclusions.push(inclusion)
-        flat.push(sub) for sub in $scope.sortInclusions(inclusion.includable)
+        inclusion.isNew = false
+        for sub in $scope.sortInclusions(inclusion.includable)
+          sub.isNew = leafIncludableNew(sub)
+          inclusion.isNew = inclusion.isNew || sub.isNew
+          flat.push(sub)
       else
         flat.push(inclusion)
     $scope.flatInclusions = flat
