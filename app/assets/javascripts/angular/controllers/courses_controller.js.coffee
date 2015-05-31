@@ -106,11 +106,15 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.loadPrevInclusion = ->
    $scope.loadInclusion($scope.prevInclusion().includable_type, $scope.prevInclusion().includable_slug)
 
-  leafIncludableNew = (inclusion) ->
-    return false if ! inclusion?.includable?.published_at
-    d1 = new Date(inclusion.includable.published_at)
-    d2 = new Date()
-    return true if (d2 - d1) < (30 * 24 * 60 * 60 * 1000)
+  lessThanOneMonthAgo = (stringDate) ->
+    return false if ! stringDate
+    d = new Date(stringDate)
+    now = new Date()
+    return true if (now - d) < (30 * 24 * 60 * 60 * 1000)
+
+  # True if the course is old and the activity is new
+  leafIncludableNew = (course, inclusion) ->
+    ! lessThanOneMonthAgo(course.published_at) && lessThanOneMonthAgo(inclusion?.includable?.published_at)
 
   $scope.sortInclusions = (assembly) ->
     flat = []
@@ -120,7 +124,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
         $scope.collapsibleInclusions.push(inclusion)
         inclusion.isNew = false
         for sub in $scope.sortInclusions(inclusion.includable)
-          sub.isNew = leafIncludableNew(sub)
+          sub.isNew = leafIncludableNew($scope.course, sub)
           inclusion.isNew = inclusion.isNew || sub.isNew
           flat.push(sub)
       else

@@ -1,5 +1,5 @@
 class AssemblySerializer < ApplicationSerializer
-  attributes :id, :title, :description, :image_id, :youtube_id, :vimeo_id, :likes_count, :comments_count, :price, :featured_image, :assembly_type, :path, :upload_copy, :badge_image
+  attributes :id, :title, :description, :image_id, :youtube_id, :vimeo_id, :likes_count, :comments_count, :price, :featured_image, :assembly_type, :path, :upload_copy, :badge_image, :published_at
 
   has_many :assembly_inclusions
 
