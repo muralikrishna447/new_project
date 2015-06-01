@@ -21,6 +21,63 @@
 @components.controller 'homeController', ['csAuthentication', (csAuthentication) ->
   @editable = csAuthentication.isAdmin()
   @showEditable = false
+  @testComponent = {
+    componentType: "matrix"
+    mode: "api"
+    metadata: {
+      api: {
+        mapper: [
+          {
+            componentKey: "title",
+            sourceKey: "title",
+            value: ""
+          },
+          {
+            componentKey: "image",
+            sourceKey: "image",
+            value: ""
+          },
+          {
+            componentKey: "buttonMessage",
+            sourceKey: null,
+            value: "See the recipe"
+          },
+          {
+            componentKey: "url",
+            sourceKey: "url",
+            value: ""
+          }
+        ],
+        source: "http://www.chefsteps.com/api/v0/activities"
+      },
+      rows: 3,
+      custom: {},
+      columns: 3,
+      allModes: {
+        styles: {
+          component: {
+            size: "large"
+          }
+        }
+      },
+      itemType: {
+        name: "Square A",
+        className: "square.square-a",
+        attrs: [
+          "title",
+          "image",
+          "buttonMessage",
+          "url"
+        ],
+        templateUrl: "/client_views/component_item_square_a.html",
+        formTemplateUrl: "/client_views/component_item_square_a_form.html"
+      }
+    },
+    name: "Home Matrix Two",
+    slug: "home-matrix-two"
+  }
+
+  return this
 ]
 
 @components.directive 'componentEditButton', ['Component', (Component) ->
@@ -54,12 +111,16 @@
 # Todo: Load component by name
 @components.directive 'componentLoad', ['Component', (Component) ->
   restrict: 'A'
-  scope: {}
+  scope: {
+    component: '='
+  }
 
   link: (scope, element, attrs) ->
     scope.componentId = attrs.componentId
-    Component.show {id: attrs.componentId}, (data) ->
-      scope.component = data
+    unless scope.component
+      Component.show {id: attrs.componentId}, (data) ->
+        scope.component = data
+
 
   template:
     """
