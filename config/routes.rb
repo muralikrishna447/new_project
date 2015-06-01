@@ -337,6 +337,7 @@ Delve::Application.routes.draw do
       end
       resources :profiles, only: [:show] do
         get :likes, on: :member
+        get :classes, on: :member
       end
       resources :recommendations, only: [:index]
       resources :search, only: [:index]

@@ -12,6 +12,11 @@ module Api
         render json: @likes, each_serializer: Api::ActivityIndexSerializer
       end
 
+      def classes
+        @enrollments = Enrollment.where(user_id: params[:id]).map &:enrollable
+        render json: @enrollments, each_serializer: Api::AssemblyIndexSerializer
+      end
+
     end
   end
 end
