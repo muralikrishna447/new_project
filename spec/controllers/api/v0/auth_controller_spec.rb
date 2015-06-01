@@ -7,26 +7,37 @@ describe Api::V0::AuthController do
 
   context 'POST /authenticate' do
 
-    it 'should return a status 500 internal service error' do
+    it 'should return a status 400 internal service error' do
       post :authenticate
       response.should_not be_success
-      response.code.should eq("500")
+      response.code.should eq("400")
     end
 
     it 'should return a status 401 Unauthorized if the password is incorrect' do
-      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: 'abcdef'}
+      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: 'abcdef'}, client_metadata: 'cooking_app'
       response.should_not be_success
       response.code.should eq("401")
     end
 
-    describe 'token' do
+    it 'should re-use an existing address' do
+      aa = ActorAddress.create_for_user @user, "cooking_app"
+      aa.current_token
+      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
+         client_metadata: 'cooking_app', token: aa.current_token.only_signed
+      token = JSON.parse(response.body)['token']
 
+      decoded = JSON.parse(UrlSafeBase64.decode64(token.split('.')[1]))
+
+      decoded['address_id'].should == aa.address_id
+      decoded['seq'].should == (aa.sequence + 2)
+    end
+
+    describe 'token' do
       before :each do
-        post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}
+        post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}, client_metadata: 'cooking_app'
         response.should be_success
         response.code.should eq("200")
         @token = JSON.parse(response.body)['token']
-
       end
 
       it 'should be returned' do
@@ -35,18 +46,21 @@ describe Api::V0::AuthController do
 
       it 'should be authenticatable with a valid secret' do
         # First decode encryption
-        decoded = JSON::JWT.decode(@token, @key)
-        # puts "Decoded: #{decoded}"
+        #puts @token, @token.inspect
+        verified = JSON::JWT.decode(@token, @key.to_s)
+        #puts "Decoded: #{verified.inspect}"
 
         # Then decode signature
-        verified = JSON::JWT.decode(decoded.to_s, @key.to_s)
+        #verified = JSON::JWT.decode(decoded.to_s, @key.to_s)
         # puts "Verified: #{verified}"
-        id = verified['user']['id']
+        id = verified['User']['id']
         id.should eq(@user.id)
+
+        # TODO - get a new address
       end
 
-    end
 
+    end
   end
 
   context 'GET /validate' do

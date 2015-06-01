@@ -15,32 +15,39 @@ class AuthToken
   end
 
   def to_json
-    {:token => @token}.to_json
+    # CLEANUP TODO
+    {:token => @token, :status =>200}.to_json
   end
 
-  def self.for_user(user, exp=nil, restrict_to=nil)
-    claim = {
-      iat: issued_at,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email
-      }
-    }
-    claim[:exp] = exp if exp
-    claim[:restrictTo] = restrict_to if restrict_to
+  # TODO - use
+  # def self.for_user(user, exp=nil, restrict_to=nil)
+  #   claim = {
+  #     iat: issued_at,
+  #     User: {
+  #       id: user.id,
+  #       name: user.name,
+  #       email: user.email
+  #     }
+  #   }
+  #   claim[:exp] = exp if exp
+  #   claim[:restrictTo] = restrict_to if restrict_to
+  #
+  #   AuthToken.new claim
+  # end
+  #
+  # def self.for_circulator(circulator, exp = nil)
+  #   claim = {
+  #     iat: issued_at,
+  #     Circulator: {
+  #       id: circulator.id
+  #     }
+  #   }
+  #
+  #   AuthToken.new claim
+  # end
 
-    AuthToken.new claim
-  end
-
-  def self.for_circulator(circulator, exp = nil)
-    claim = {
-      iat: issued_at,
-      circulator: {
-        id: circulator.id
-      }
-    }
-
+  def self.from_string(token)
+    claim = decrypt(token)
     AuthToken.new claim
   end
 
@@ -65,9 +72,9 @@ class AuthToken
   def self.decrypt(token)
     key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
     # NOTE - we should be using different keys for signing and encrypting
-    decoded = JSON::JWT.decode(token, key)
-    verified = JSON::JWT.decode(decoded.to_s, key.to_s)
-    verified
+    decoded = JSON::JWT.decode(token, key.to_s)
+    #verified = JSON::JWT.decode(decoded.to_s, key.to_s)
+    decoded
   end
 
   def encrypt(claim)
@@ -76,9 +83,9 @@ class AuthToken
     key = OpenSSL::PKey::RSA.new secret, 'cooksmarter'
 
     jws = JSON::JWT.new(claim.as_json).sign(key.to_s)
-    jwe = jws.encrypt(key.public_key)
-    jwt = jwe.to_s
-    jwt
+    #jwe = jws.encrypt(key.public_key)
+    #jwt = jwe.to_s
+    jws.to_s
   end
 
 

@@ -16,4 +16,8 @@ describe Circulator  do
     c = Circulator.new(notes: long_note)
     expect { c.save! }.to raise_error
   end
+
+  it "does soemthing" do
+    
+  end
 end

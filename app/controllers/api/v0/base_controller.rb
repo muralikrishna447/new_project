@@ -53,11 +53,26 @@ module Api
             logger.info "Authorization token not set"
             token = nil
           end
-          unless valid_token?(token)
-            raise "INVALID TOKEN"
+
+          token = AuthToken.from_string(token)
+          aa = ActorAddress.find_for_token(token)
+          puts token.inspect
+          unless aa
+            logger.info "Not ActorAddress found for token #{token}"
+            render_unauthorized
+            return
           end
+
+          unless aa.valid_token?(token)
+            logger.info "Invalid token"
+            render_unauthorized
+            return
+          end
+
+          @user_id_from_token = token.claim['User']['id']
+
         rescue Exception => e
-          puts e
+          logger.error e
           render json: {status: 401, message: 'Unauthorized.'}, status: 401
         end
       end
@@ -98,6 +113,10 @@ module Api
           @user_id_from_token = verified[:user][:id]
           return verified
         end
+      end
+
+      def render_unauthorized
+        render json: {status: 401, message: 'Unauthorized.'}, status: 401
       end
 
     end

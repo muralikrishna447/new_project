@@ -1,29 +1,32 @@
 class ActorAddress < ActiveRecord::Base
   belongs_to :actor, polymorphic: true
 
-  # new for circulator
-  # new for circ
-
-  def self.createForActor(actor, address_type)
+  def self.create_for_actor(actor, client_metadata, address_id)
     # need to sort out transaction scope...
+    logger.info "Creating new ActorAddress for #{actor} for metadata #{client_metadata}"
     aa = ActorAddress.new()
     aa.actor = actor
-    aa.address_type = address_type
+    aa.client_metadata = client_metadata
     aa.issued_at = Time.now.to_i
     ActorAddress.transaction do
       aa.save!
-      aa.address_id = aa.id
+      if address_id
+        aa.address_id = address_id
+      else
+        aa.address_id = aa.id.to_s
+      end
       aa.save!
     end
+    logger.info ("Created new ActorAddress #{aa.inspect}")
     aa
   end
 
-  def self.createForCirculator(user, circulator)
-    self.createForActor(circulator, 'circulator')
+  def self.create_for_circulator(user, circulator)
+    self.create_for_actor(circulator, 'circulator', circulator.circulator_id)
   end
 
-  def self.createForUser(user, circulator)
-    self.createForActor(user, 'user_something')
+  def self.create_for_user(user, circulator)
+    self.create_for_actor(user, 'user_something', nil)
   end
 
   def current_token
@@ -33,10 +36,11 @@ class ActorAddress < ActiveRecord::Base
   def claim
     {:iat => self.issued_at,
      :address_id => self.address_id,
-     :seq => self.sequence}
+     :seq => self.sequence,
+     "#{self.actor_type}" => {"id" => self.actor_id}}
   end
 
-  def tentative_next
+  def tentative_next_token
     modified_claim = claim
 
     modified_claim[:seq] += 1
@@ -44,14 +48,62 @@ class ActorAddress < ActiveRecord::Base
     AuthToken.new modified_claim
   end
 
+  def increment_to(token)
+    unless token.claim[:seq] == (self.sequence + 1)
+      raise "Invalid increment should be real exception"
+    end
+    self.sequence = self.sequence + 1
+    self.save
+  end
+
   def valid_token?(auth_token)
     auth_claim = auth_token.claim
     if self.address_id != auth_claim[:address_id]
-      # log something!
+      # TODO - should not be error...
+      logger.error "Address does not match"
       return false
     end
     if self.sequence != auth_claim[:seq]
+      logger.error "Sequence number does not match"
       return false
     end
+
+    # TODO expiration
+
+    if self.revoked?
+      logger.error "Token is revoked"
+      return false
+    end
+
+    return true
   end
+
+  def double_increment()
+    self.sequence = self.sequence + 2
+    self.save
+  end
+
+  def revoked?
+    self.status == "revoked"
+  end
+
+  def self.find_for_token(token)
+    if token.claim.has_key?("User")
+      actor_type = "User"
+    elsif token.claim.has_key?("Circulator")
+      actor_type = "Circulator"
+    else
+      raise "Token does not contain valid actor type"
+    end
+
+    actor_id = token.claim[actor_type]['id']
+    address_id = token.claim['address_id']
+    aa = ActorAddress.where(actor_type: actor_type, actor_id: actor_id, address_id: address_id).first
+    unless aa
+      logger.info ("No ActorAddress found for token #{token.claim.inspect}")
+      return nil
+    end
+    return aa
+  end
+
 end

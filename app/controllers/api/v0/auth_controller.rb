@@ -5,22 +5,51 @@ module Api
 
       def authenticate
         begin
+          unless params.has_key?(:user)
+            logger.info("User not specified #{params.inspect}")
+            render json: {status: 400, message: 'Bad Request'}, status: 400
+            return
+          end
+
           email = params[:user][:email]
           user = User.find_by_email(email)
-          if user
-            if user.valid_password?(params[:user][:password])
-              render json: {status: 200, message: 'Success.', token: create_token(user)}, status: 200
-            else
-              logger.info("Invalid password provided for user #{email}.")
-              render json: {status: 401, message: 'Unauthorized'}, status: 401
-            end
-          else
+          unless user
             logger.info("No account found for email ")
             render json: {status: 401, message: 'Unauthorized'}, status: 401
+            return
           end
+
+          unless user.valid_password?(params[:user][:password])
+            logger.info("Invalid password provided for user #{email}.")
+            render json: {status: 401, message: 'Unauthorized'}, status: 401
+            return
+          end
+
+          if params[:token]
+            token = AuthToken.from_string(params[:token])
+            logger.info "Received token claim #{token.claim.inspect}"
+            aa = ActorAddress.find_for_token(token)
+
+            if aa
+              if aa.revoked?
+                logger.info "User presented revoked token during login"
+              else
+                aa.double_increment
+                render json: {status: 200, message: 'Success.', token: aa.current_token.only_signed}, status: 200
+                return
+              end
+            else
+              logger.info ("No ActorAddress found for token #{token}")
+            end
+          end
+
+          aa = ActorAddress.create_for_user(user, params[:client_metadata])
+          render json: {status: 200, message: 'Success.', token: aa.current_token.only_signed}, status: 200
+
         rescue Exception => e
           # TODO - specific issues with the request should be handle as 400
           logger.warn "Authenticate Exception: #{e.class} #{e}"
+          logger.error e.backtrace.join("\n")
           render json: {status: 500, message: 'Internal Server Error'}, status: 500
         end
       end

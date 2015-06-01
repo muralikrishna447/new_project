@@ -7,7 +7,8 @@ class Circulator < ActiveRecord::Base
   validates :notes, length: { maximum: 50 }
 
   include ActsAsSanitized
-  sanitize_input :notes, :serial_number
+  sanitize_input :notes, :serial_number, :id
 
-  attr_accessible :notes, :serial_number
+  attr_accessible :notes, :serial_number, :id
+
 end
