@@ -17,6 +17,11 @@ module Api
         render json: @enrollments, each_serializer: Api::AssemblyIndexSerializer
       end
 
+      def photos
+        @photos = Upload.where(user_id: params[:id])
+        render json: @photos, each_serializer: Api::PhotoSerializer
+      end
+
     end
   end
 end
