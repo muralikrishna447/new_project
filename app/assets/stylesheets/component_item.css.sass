@@ -143,3 +143,17 @@
       color: black
       .item-title
         font-weight: bold
+
+.component-item-header.header
+  .component-item-content
+    text-align: center
+    @include boxsizing
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    @include flex-direction(column)
+    h2.header
+      margin-bottom: 0px
+    .subheader
+      font-size: 20px
+      margin-top: 10px

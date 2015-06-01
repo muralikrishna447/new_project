@@ -40,6 +40,12 @@
       templateUrl: '/client_views/component_item_square_a.html'
       formTemplateUrl: '/client_views/component_item_square_a_form.html'
     }
+    {
+      name: 'Header A'
+      attrs: ['header', 'subheader']
+      templateUrl: '/client_views/component_item_header_a.html'
+      formTemplateUrl: '/client_views/component_item_header_a_form.html'
+    }
   ]
   return this
 ]
