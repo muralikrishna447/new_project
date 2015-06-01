@@ -1,6 +1,8 @@
 .new-home(ng-controller='homeController as home' ng-cloak)
   .btn.btn-primary(ng-if='home.editable' ng-click="home.showEditable = ! home.showEditable")
     Toggle Edit
+    
+  .component-container(component-load component-id='home-madlib')
 
   %component-edit-button(component-name='Home Hero One' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-hero-one')

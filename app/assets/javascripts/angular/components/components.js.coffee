@@ -66,6 +66,7 @@
       <div class='component' ng-class="'component-' + component.metadata.allModes.styles.component.size">
         <div single component='component' ng-if="component.componentType=='single'"></div>
         <div matrix component='component' ng-if="component.componentType=='matrix'"></div>
+        <div madlib component='component' ng-if="component.componentType=='madlib'"></div>
       </div>
     """
 ]
