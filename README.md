@@ -29,7 +29,8 @@ To set up a new machine:
 - launch Xcode once
 - xcode-select —install
 - rvm install ruby (the version our Gemfile calls for, --with-gcc=clang may be required)
-- bundle
+- gem install bundle
+- bundle install
 - createuser -l -s -r delve
 - rake db:create
 - install heroku toolbelt (toolbelt.heroku.com)
