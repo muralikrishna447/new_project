@@ -335,7 +335,9 @@ Delve::Application.routes.draw do
         post :send_reset_email, on: :collection
         post :update_from_email, on: :collection
       end
-      resources :profiles, only: [:show]
+      resources :profiles, only: [:show] do
+        get :likes, on: :member
+      end
       resources :recommendations, only: [:index]
       resources :search, only: [:index]
       resources :users, only: [:index, :create, :update] do
