@@ -15,6 +15,7 @@ class ActorAddress < ActiveRecord::Base
       if address_id
         aa.address_id = address_id
       else
+        # TODO - the address should be obfuscated
         aa.address_id = aa.id.to_s
       end
       aa.save!

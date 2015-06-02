@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(:version => 20150521223942) do
   add_index "activity_equipment", ["activity_id", "equipment_id"], :name => "activity_equipment_index", :unique => true
   add_index "activity_equipment", ["equipment_order"], :name => "index_activity_equipment_on_equipment_order"
 
-  create_table "activity_ingredients", :id => false, :force => true do |t|
+  create_table "activity_ingredients", :force => true do |t|
     t.integer  "id",               :null => false
     t.integer  "activity_id",      :null => false
     t.integer  "ingredient_id",    :null => false
