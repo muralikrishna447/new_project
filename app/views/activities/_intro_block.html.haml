@@ -1,194 +1,93 @@
--# Uses a flex layout.  The hope is we can apply some of these components like .flex-container, .flex-item, .flex-full, .flex-aside, and .flex-main in other parts of the activity layout.
-%div(cs-abtest test-name='Social Buttons')
-  %div(cs-abtest-item)
-    .flex-container
-      .flex-item.flex-full
-        .flex-title
-          - if @assembly
-            %h1 {{activity.title}}
-          - else
-            = render 'title'
-            %div(ng-controller="SocialButtonsController" ng-init="split='slide_anim'" ng-cloak style='margin-bottom: 10px')
-              .social-flat
-                .btn-holder
-                  .btn.btn-secondary.btn-social.btn-social-twitter.pulse-anim-before(ng-click="shareTwitter();")
-                    .social-button-contents
-                      .social-icon-group
-                        %span
-                          %i.fa.fa-twitter
-                      .social-counter(ng-show="showCount(twitterCount)")
-                        %span.text-center
-                          {{displayCount(twitterCount)}}
-                .btn-holder
-                  .btn.btn-secondary.btn-social.btn-social-facebook.pulse-anim-before(ng-click="shareFacebook()")
-                    .social-button-contents
-                      .social-icon-group
-                        %span
-                          %i.fa.fa-facebook
-                      .social-counter(ng-show="showCount(facebookCount)")
-                        %span.text-center
-                          {{displayCount(facebookCount)}}
-                .btn-holder
-                  .btn.btn-secondary.btn-social.btn-social-pinterest.pulse-anim-before(ng-show="socialMediaItem()" ng-click="sharePinterest()")
-                    .social-button-contents
-                      .social-icon-group
-                        %span
-                          %i.fa.fa-pinterest
-                      .social-counter(ng-show="showCount(pinterestCount)")
-                        %span.text-center
-                          {{displayCount(pinterestCount)}}
-                .btn-holder
-                  .btn.btn-secondary.btn-social.btn-social-gplus.pulse-anim-before(ng-click="shareGooglePlus()")
-                    .social-button-contents
-                      .social-icon-group
-                        %span
-                          %i.fa.fa-google-plus
+.flex-container
+  .flex-item.flex-full
+    .flex-title
+      - if @assembly
+        %h1 {{activity.title}}
+      - else
+        = render 'title'
 
+.flex-container
+  // Left Side
+  .flex-item.flex-aside.flex-aside-left(ng-if="! inClass")
+    .flex-tools-container(ng-hide='editMode')
 
-    .flex-container
-      // Left Side
-      .flex-item.flex-aside.flex-aside-left(ng-if="! inClass")
-        .flex-tools-container(ng-hide='editMode')
-
-      // Main Content
-      .flex-item.flex-main
-        = render 'activities/latest/description'
-        .slideshow-container(slideshow ng-if="activity.slug =='tasting-menu-spring'")
-
-      // Right Side
-      .flex-item.flex-aside.flex-aside-right(ng-if="! inClass")
-        .flex-tools(ng-hide='editMode')
-          - if @course.blank?
-            .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]")
-              %div( ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
-                    ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
-                .flex-button-circle.button-outline.button-default(ng-if="!current_user_likes")
-                  %i(cs-icon='save')
-                .flex-button-circle.button-outline.button-default(ng-if="current_user_likes")
-                  %i(cs-icon='saved')
-                .flex-button-text(ng-if="!current_user_likes")
-                  Save
-                .flex-button-text(ng-if="current_user_likes")
-                  Saved
-            .flex-tool.flex-large-only(ng-click='doPrint()')
+      // Outline Buttons
+      .flex-tool-abtest
+        .flex-tools(ng-controller='SocialButtonsController')
+          .flex-tool(ng-click='shareFacebook()')
+            .flex-button-circle.button-outline.button-facebook
+              %i(cs-icon='facebook')
+          .flex-tool(ng-click='shareTwitter()')
+            .flex-button-circle.button-outline.button-twitter
+              %i(cs-icon='twitter')
+          .flex-tool(ng-click='shareEmail()')
+            .flex-button-circle.button-outline.button-chefsteps
+              %i(cs-icon='mail')
+          .flex-tool.flex-dropdown(cs-flex-dropdown)
+            .flex-dropdown-toggle(cs-flex-dropdown-toggle)
               .flex-button-circle.button-outline.button-default
-                %i(cs-icon='print')
-              .flex-button-text
+                %i(cs-icon='share')
+            .flex-dropdown-menu.closed
+              %ul
+                %li(ng-click='sharePinterest()')
+                  %i.flex-dropdown-icon(cs-icon='pinterest')
+                  Pinterest
+                %li(ng-click='shareGooglePlus()')
+                  %i.flex-dropdown-icon(cs-icon='google-plus')
+                  Google+
+                %li(ng-click='shareEmbedly()')
+                  %i.flex-dropdown-icon(cs-icon='code')
+                  Embed code
+          .flex-tool(cs-smooth-scroll-to='#discussion')
+            .flex-button-circle.button-outline.button-default
+              %i(cs-icon='comment')
+            .flex-button-text(ng-if='commentCount > 0')
+              {{commentCount}}
+
+  // Main Content
+  .flex-item.flex-main
+    = render 'activities/latest/description'
+    .slideshow-container(slideshow ng-if="activity.slug =='tasting-menu-spring'")
+
+  // Right Side
+  .flex-item.flex-aside.flex-aside-right(ng-if="! inClass")
+    .flex-tools(ng-hide='editMode')
+      - if @course.blank?
+        .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]")
+          %div( ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
+                ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
+            .flex-button-circle.button-outline.button-default(ng-if="!current_user_likes")
+              %i(cs-icon='save')
+            .flex-button-circle.button-outline.button-default(ng-if="current_user_likes")
+              %i(cs-icon='saved')
+            .flex-button-text(ng-if="!current_user_likes")
+              Save
+            .flex-button-text(ng-if="current_user_likes")
+              Saved
+        .flex-tool.flex-large-only(ng-click='doPrint()')
+          .flex-button-circle.button-outline.button-default
+            %i(cs-icon='print')
+          .flex-button-text
+            Print
+        .flex-tool.flex-dropdown(cs-flex-dropdown)
+          .flex-dropdown-toggle(cs-flex-dropdown-toggle)
+            .flex-button-circle.button-outline.button-default
+              %i(cs-icon='more')
+            .flex-button-text
+              More
+          .flex-dropdown-menu.closed
+            %ul
+              -if can?(:update, @activity) && @include_edit_toolbar
+                %li(  ng-click="maybeStartEditMode()"
+                      tooltip="Edit this recipe"
+                      tooltip-placement="left")
+                  %i.flex-dropdown-icon(cs-icon='edit')
+                  Edit
+              -if can?(:update, Activity) && @include_edit_toolbar
+                %li(  ng-show="hasActivityType('Recipe')"
+                      ng-click="fork()")
+                  %i.flex-dropdown-icon(cs-icon='edit-a-copy')
+                  Edit a copy
+              %li.flex-medium-only(ng-click='doPrint()')
+                %i.flex-dropdown-icon(cs-icon='print')
                 Print
-            .flex-tool.flex-dropdown(cs-flex-dropdown)
-              .flex-dropdown-toggle(cs-flex-dropdown-toggle)
-                .flex-button-circle.button-outline.button-default
-                  %i(cs-icon='more')
-                .flex-button-text
-                  More
-              .flex-dropdown-menu.closed
-                %ul
-                  -if can?(:update, @activity) && @include_edit_toolbar
-                    %li(  ng-click="maybeStartEditMode()"
-                          tooltip="Edit this recipe"
-                          tooltip-placement="left")
-                      %i.flex-dropdown-icon(cs-icon='edit')
-                      Edit
-                  -if can?(:update, Activity) && @include_edit_toolbar
-                    %li(  ng-show="hasActivityType('Recipe')"
-                          ng-click="fork()")
-                      %i.flex-dropdown-icon(cs-icon='edit-a-copy')
-                      Edit a copy
-                  %li.flex-medium-only(ng-click='doPrint()')
-                    %i.flex-dropdown-icon(cs-icon='print')
-                    Print
-
-  %div(cs-abtest-item)
-    .flex-container
-      .flex-item.flex-full
-        .flex-title
-          - if @assembly
-            %h1 {{activity.title}}
-          - else
-            = render 'title'
-
-    .flex-container
-      // Left Side
-      .flex-item.flex-aside.flex-aside-left(ng-if="! inClass")
-        .flex-tools-container(ng-hide='editMode')
-
-          // Outline Buttons
-          .flex-tool-abtest
-            .flex-tools(ng-controller='SocialButtonsController')
-              .flex-tool(ng-click='shareFacebook()')
-                .flex-button-circle.button-outline.button-facebook
-                  %i(cs-icon='facebook')
-              .flex-tool(ng-click='shareTwitter()')
-                .flex-button-circle.button-outline.button-twitter
-                  %i(cs-icon='twitter')
-              .flex-tool(ng-click='shareEmail()')
-                .flex-button-circle.button-outline.button-chefsteps
-                  %i(cs-icon='mail')
-              .flex-tool.flex-dropdown(cs-flex-dropdown)
-                .flex-dropdown-toggle(cs-flex-dropdown-toggle)
-                  .flex-button-circle.button-outline.button-default
-                    %i(cs-icon='share')
-                .flex-dropdown-menu.closed
-                  %ul
-                    %li(ng-click='sharePinterest()')
-                      %i.flex-dropdown-icon(cs-icon='pinterest')
-                      Pinterest
-                    %li(ng-click='shareGooglePlus()')
-                      %i.flex-dropdown-icon(cs-icon='google-plus')
-                      Google+
-                    %li(ng-click='shareEmbedly()')
-                      %i.flex-dropdown-icon(cs-icon='code')
-                      Embed code
-              .flex-tool(cs-smooth-scroll-to='#discussion')
-                .flex-button-circle.button-outline.button-default
-                  %i(cs-icon='comment')
-                .flex-button-text(ng-if='commentCount > 0')
-                  {{commentCount}}
-
-      // Main Content
-      .flex-item.flex-main
-        = render 'activities/latest/description'
-        .slideshow-container(slideshow ng-if="activity.slug =='tasting-menu-spring'")
-
-      // Right Side
-      .flex-item.flex-aside.flex-aside-right(ng-if="! inClass")
-        .flex-tools(ng-hide='editMode')
-          - if @course.blank?
-            .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]")
-              %div( ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
-                    ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
-                .flex-button-circle.button-outline.button-default(ng-if="!current_user_likes")
-                  %i(cs-icon='save')
-                .flex-button-circle.button-outline.button-default(ng-if="current_user_likes")
-                  %i(cs-icon='saved')
-                .flex-button-text(ng-if="!current_user_likes")
-                  Save
-                .flex-button-text(ng-if="current_user_likes")
-                  Saved
-            .flex-tool.flex-large-only(ng-click='doPrint()')
-              .flex-button-circle.button-outline.button-default
-                %i(cs-icon='print')
-              .flex-button-text
-                Print
-            .flex-tool.flex-dropdown(cs-flex-dropdown)
-              .flex-dropdown-toggle(cs-flex-dropdown-toggle)
-                .flex-button-circle.button-outline.button-default
-                  %i(cs-icon='more')
-                .flex-button-text
-                  More
-              .flex-dropdown-menu.closed
-                %ul
-                  -if can?(:update, @activity) && @include_edit_toolbar
-                    %li(  ng-click="maybeStartEditMode()"
-                          tooltip="Edit this recipe"
-                          tooltip-placement="left")
-                      %i.flex-dropdown-icon(cs-icon='edit')
-                      Edit
-                  -if can?(:update, Activity) && @include_edit_toolbar
-                    %li(  ng-show="hasActivityType('Recipe')"
-                          ng-click="fork()")
-                      %i.flex-dropdown-icon(cs-icon='edit-a-copy')
-                      Edit a copy
-                  %li.flex-medium-only(ng-click='doPrint()')
-                    %i.flex-dropdown-icon(cs-icon='print')
-                    Print
