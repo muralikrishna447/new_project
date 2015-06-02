@@ -28,7 +28,13 @@ module Api
           end
 
           if params[:token]
-            token = AuthToken.from_string(params[:token])
+            begin
+              token = AuthToken.from_string(params[:token])
+            rescue JSON::JWS::VerificationFailed
+              logger.info ("Token verification failed")
+              render_unauthorized
+              return
+            end
             logger.info "Received token claim #{token.claim.inspect}"
             aa = ActorAddress.find_for_token(token)
 

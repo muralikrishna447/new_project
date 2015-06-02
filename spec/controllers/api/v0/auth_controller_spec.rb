@@ -57,6 +57,19 @@ describe Api::V0::AuthController do
       response.code.should eq("401")
     end
 
+    it 'should reject improperly signed token' do
+      token = @aa.current_token.to_jwt
+      chunks = token.split('.')
+      chunks[2] = "gibberishsignature"
+      forged_token = chunks.join(".")
+      puts "Using forged #{forged_token}"
+      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
+        token: forged_token
+
+      response.should_not be_success
+      response.code.should eq("401")
+    end
+
     describe 'token' do
       before :each do
         post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}, client_metadata: 'cooking_app'
