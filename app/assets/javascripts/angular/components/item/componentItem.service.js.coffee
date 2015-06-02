@@ -47,5 +47,9 @@
       formTemplateUrl: '/client_views/component_item_header_a_form.html'
     }
   ]
+
+  @get = (name) =>
+    _.where(@types, {name: name})[0]
+
   return this
 ]

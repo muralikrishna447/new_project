@@ -1,0 +1,3 @@
+.feed
+  .feed-item(ng-repeat='item in items track by $index')
+    %div(component-item item='item' template-url="itemType.templateUrl")
