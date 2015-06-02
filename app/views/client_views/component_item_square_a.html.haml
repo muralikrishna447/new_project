@@ -1,7 +1,5 @@
 .component-item.square.square-a(ng-if="item")
-  .component-item-content
-    %img(ng-src='{{item.content.image | aspect1to1 }}')
-  .component-item-content
+  .component-item-content(ng-style="{'background-image':'linear-gradient(rgba(0, 0, 0, .25), rgba(0, 0, 0, .25)), url({{ item.content.image | aspect1to1 }})'}")
     .item-divider.first
       {{item.content.title}}
     .item-divider.middle

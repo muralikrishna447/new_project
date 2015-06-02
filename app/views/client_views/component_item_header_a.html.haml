@@ -1,0 +1,13 @@
+.component-item-header.header.header-a(ng-if="item")
+  .component-item-content
+    %h2.header(ng-class="'color-'+ item.styles.title.color")
+      {{item.content.header}}
+    .subheader
+      {{item.content.subheader}}
+
+.component-item-header.list.list-a.blank(ng-if="!item")
+  .component-item-content
+    %h2.header
+      Header
+    .subheader
+      Subheader

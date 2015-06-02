@@ -7,7 +7,7 @@
 
 @componentsManager.controller 'ComponentsNewController', ['$http', '$state', '$location', ($http, $state, $location) ->
 
-  @componentTypeOptions = ['single', 'matrix']
+  @componentTypeOptions = ['single', 'matrix', 'madlib']
   @form = {
     componentType: null
     mode: null
@@ -33,7 +33,7 @@
 ]
 
 @componentsManager.controller 'ComponentsEditController', ['Component', '$stateParams', '$state', 'notificationService', (Component, $stateParams, $state, notificationService) ->
-  @componentTypeOptions = ['single', 'matrix']
+  @componentTypeOptions = ['single', 'matrix', 'madlib']
   @colorOptions = ['white', 'black']
 
   Component.show {id: $stateParams.id}, (component) =>

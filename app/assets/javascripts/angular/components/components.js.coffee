@@ -21,6 +21,30 @@
 @components.controller 'homeController', ['csAuthentication', (csAuthentication) ->
   @editable = csAuthentication.isAdmin()
   @showEditable = false
+  @testComponentMapper = [
+    {
+      componentKey: "title",
+      sourceKey: "title",
+      value: ""
+    },
+    {
+      componentKey: "image",
+      sourceKey: "image",
+      value: ""
+    },
+    {
+      componentKey: "buttonMessage",
+      sourceKey: null,
+      value: "See the recipe"
+    },
+    {
+      componentKey: "url",
+      sourceKey: "url",
+      value: ""
+    }
+  ]
+
+  return this
 ]
 
 @components.directive 'componentEditButton', ['Component', (Component) ->
@@ -61,11 +85,13 @@
     Component.show {id: attrs.componentId}, (data) ->
       scope.component = data
 
+
   template:
     """
       <div class='component' ng-class="'component-' + component.metadata.allModes.styles.component.size">
         <div single component='component' ng-if="component.componentType=='single'"></div>
         <div matrix component='component' ng-if="component.componentType=='matrix'"></div>
+        <div madlib component='component' ng-if="component.componentType=='madlib'"></div>
       </div>
     """
 ]
@@ -119,4 +145,19 @@
     return deferred.promise
 
   return this
+]
+
+@components.directive 'filepicker', [->
+  restrict: 'A'
+  require: '?ngModel'
+  link: (scope, element, attrs, ngModel) ->
+    scope.pick = ->
+      filepicker.pick (blob) ->
+        url = blob.url.replace('https://www.filepicker.io', 'https://d3awvtnmmsvyot.cloudfront.net')
+        ngModel.$setViewValue(url)
+        scope.$apply()
+  template:
+    """
+      <button class='btn btn-secondary' ng-click='pick()'>Pick Image</btn>
+    """
 ]

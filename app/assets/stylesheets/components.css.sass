@@ -1,7 +1,8 @@
 @import 'mixins'
 
 .component-container
-  margin-bottom: 40px
+  width: 100%
+  margin-bottom: 80px
   @include display-flex
   @include justify-content(center)
   .component-full
@@ -21,9 +22,13 @@
   @include justify-content(center)
 
 .component-form
+  display: fixed
+  top: 0px
   padding: 20px
+  width: 50%
+  height: 100%
+  overflow: auto
   @include boxsizing
-  @include flex(0 0 600px)
   input[type='text'], input[type='number'], textarea
     width: 100%
     border: 1px solid $light-gray
@@ -61,10 +66,30 @@
           @include box-shadow(none)
 
 .component-preview
-  padding: 20px
-  @include boxsizing
-  @include flex(1 0 600px)
-  max-width: 1200px
+  position: fixed
+  top: 0px
+  left: 50%
+  width: 50%
+  height: 100%
+  @include display-flex
+  @include flex-direction(column)
+  @include justify-content(flex-start)
+  @include align-items(flex-start)
+  .component-preview-header
+    width: 100%
+    padding-top: 20px
+    @include boxsizing
+    @include flex(1 0 auto)
+  .component
+    width: 100%
+    overflow: auto
+    @include flex(0 1 100%)
+  .component-preview-json
+    width: 100%
+    margin-bottom: 0px
+    overflow: auto
+    @include boxsizing
+    @include flex(0 1 100%)
 
 .component-styles
   background-color: $offwhite
@@ -152,9 +177,6 @@
     cursor: pointer
 
 // TEMP NEW HOMEPAGE
-.new-home
-  h2
-    margin-bottom: 40px
 
 .home-component-split-container
   @include display-flex
