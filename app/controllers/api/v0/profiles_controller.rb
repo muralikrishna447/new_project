@@ -8,17 +8,20 @@ module Api
       end
 
       def likes
-        @likes = Like.where(user_id: params[:id]).scoped_by_type('Activity').map &:likeable
+        @user = User.find(params[:id])
+        @likes = @user.likes.scoped_by_type('Activity').map &:likeable
         render json: @likes, each_serializer: Api::ActivityIndexSerializer
       end
 
       def classes
-        @enrollments = Enrollment.where(user_id: params[:id]).map &:enrollable
+        @user = User.find(params[:id])
+        @enrollments = @user.enrollments.map &:enrollable
         render json: @enrollments, each_serializer: Api::AssemblyIndexSerializer
       end
 
       def photos
-        @photos = Upload.where(user_id: params[:id])
+        @user = User.find(params[:id])
+        @photos = @user.uploads
         render json: @photos, each_serializer: Api::PhotoSerializer
       end
 
