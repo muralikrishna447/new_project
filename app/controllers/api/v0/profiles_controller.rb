@@ -4,11 +4,6 @@ module Api
 
       def show
         @user = User.find(params[:id])
-        # if current_admin?
-        #   render json: @user, meta: {email: @user.email}, serializer: Api::ProfileSerializer
-        # else
-        #   render json: @user, serializer: Api::ProfileSerializer
-        # end
         render json: @user, serializer: Api::ProfileSerializer, scope: current_admin?
       end
 
