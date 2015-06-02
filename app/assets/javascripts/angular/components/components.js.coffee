@@ -50,7 +50,7 @@
         ],
         source: "http://www.chefsteps.com/api/v0/activities"
       },
-      rows: 3,
+      rows: 1,
       custom: {},
       columns: 3,
       allModes: {
@@ -111,15 +111,12 @@
 # Todo: Load component by name
 @components.directive 'componentLoad', ['Component', (Component) ->
   restrict: 'A'
-  scope: {
-    component: '='
-  }
+  scope: {}
 
   link: (scope, element, attrs) ->
     scope.componentId = attrs.componentId
-    unless scope.component
-      Component.show {id: attrs.componentId}, (data) ->
-        scope.component = data
+    Component.show {id: attrs.componentId}, (data) ->
+      scope.component = data
 
 
   template:

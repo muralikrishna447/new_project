@@ -114,3 +114,23 @@
 
   templateUrl: '/client_views/component_matrix.html'
 ]
+
+@components.directive 'matrixTest', ['$http', 'Mapper', ($http, Mapper) ->
+  restrict: 'A'
+  scope: {
+    source: '='
+    mapper: '='
+    rows: '='
+    columns: '='
+    itemType: '='
+  }
+
+  link: (scope, element, attrs) ->
+    console.log 'source: ', scope.source
+    console.log 'mapper: ', scope.mapper
+    console.log 'rows: ', scope.rows
+    console.log 'columns: ', scope.columns
+    console.log 'itemType: ', scope.itemType
+
+  templateUrl: '/client_views/component_matrix.html'
+]

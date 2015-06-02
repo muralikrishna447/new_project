@@ -1,6 +1,7 @@
 .new-home(ng-controller='homeController as home' ng-cloak)
 
-  .component-container(component-load component='home.testComponent')
+  .component-container
+    .component.component-full(matrix-test source="'http://www.chefsteps.com/api/v0/activities'" mapper='home.testComponent.metadata.api.mapper' rows='1' columns='3' item-type="'Square A'")
 
   .btn.btn-primary(ng-if='home.editable' ng-click="home.showEditable = ! home.showEditable")
     Toggle Edit
