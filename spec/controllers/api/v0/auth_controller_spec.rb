@@ -31,7 +31,7 @@ describe Api::V0::AuthController do
       aa = ActorAddress.create_for_user @user, "cooking_app"
       aa.current_token
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
-        token: aa.current_token.only_signed
+        token: aa.current_token.to_jwt
       token = JSON.parse(response.body)['token']
 
       decoded = JSON.parse(UrlSafeBase64.decode64(token.split('.')[1]))
@@ -44,7 +44,7 @@ describe Api::V0::AuthController do
       aa = ActorAddress.create_for_user @other_user, "cooking_app"
       aa.current_token
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
-        token: aa.current_token.only_signed
+        token: aa.current_token.to_jwt
 
       response.should_not be_success
       response.code.should eq("401")

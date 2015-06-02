@@ -9,7 +9,7 @@ describe Api::V0::CirculatorsController do
     @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
 
     token = ActorAddress.create_for_user(@user, 'cooking_app').current_token
-    request.env['HTTP_AUTHORIZATION'] = token.to_s
+    request.env['HTTP_AUTHORIZATION'] = token.to_jwt
   end
 
   it 'should list circulators' do
@@ -18,7 +18,6 @@ describe Api::V0::CirculatorsController do
     response.should be_success
     circulators = JSON.parse(response.body)
     circulators.length.should == 1
-    puts response.body
     circulators[0]['circulatorId'].should == @circulator.circulator_id
     circulators[0]['notes'].should == 'some notes'
   end
@@ -59,7 +58,6 @@ describe Api::V0::CirculatorsController do
     result = JSON.parse(response.body)
     result['token'].should_not be_empty
     token = AuthToken.from_string result['token']
-    puts token.claim.inspect
     token['Circulator']['id'].should == @circulator.id
     # TODO - use timecop
     (token['iat'] - Time.now.to_i).abs.should < 2
@@ -70,7 +68,6 @@ describe Api::V0::CirculatorsController do
     post :token, :id => @other_circulator.circulator_id
 
     result = JSON.parse(response.body)
-    puts result.inspect
     result['status'].should == 401
     result['token'].should be_nil
   end

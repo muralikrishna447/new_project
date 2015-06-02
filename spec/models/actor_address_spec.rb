@@ -27,7 +27,7 @@ describe Activity, "#meta_description" do
     puts @for_user.inspect
     puts @for_user.current_token.claim
     puts @for_user.current_token.inspect
-    puts @for_user.current_token.only_signed
+    puts @for_user.current_token.to_jwt
   end
 
   it 'should generate a tentative next' do

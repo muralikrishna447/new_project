@@ -84,7 +84,8 @@ module Api
           raise "ActorAddress not found for circulator id #{circulator_id}"
         end
 
-        render json: aa.current_token.to_json
+        response = {token: aa.current_token.to_jwt, status:200}
+        render json: response
       end
     end
   end

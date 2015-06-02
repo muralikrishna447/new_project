@@ -7,8 +7,8 @@ class ActorAddress < ActiveRecord::Base
     aa.actor = actor
     aa.client_metadata = client_metadata
     aa.issued_at = Time.now.to_i
+    aa.status = 'active' # Nothing beats ad-hoc enums - what's the modern rails way?
 
-    aa.status = 'active' # TODO
     ActorAddress.transaction do
       # save first only so we can re-use id for address_id when not specified
       aa.save!

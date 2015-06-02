@@ -39,7 +39,7 @@ module Api
                 return
               else
                 aa.double_increment
-                render json: {status: 200, message: 'Success.', token: aa.current_token.only_signed}, status: 200
+                render json: {status: 200, message: 'Success.', token: aa.current_token.to_jwt}, status: 200
                 return
               end
             else
@@ -48,7 +48,7 @@ module Api
           end
 
           aa = ActorAddress.create_for_user(user, params[:client_metadata])
-          render json: {status: 200, message: 'Success.', token: aa.current_token.only_signed}, status: 200
+          render json: {status: 200, message: 'Success.', token: aa.current_token.to_jwt}, status: 200
 
         rescue Exception => e
           # TODO - specific issues with the request should be handle as 400
