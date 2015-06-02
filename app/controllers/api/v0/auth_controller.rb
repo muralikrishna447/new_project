@@ -12,7 +12,9 @@ module Api
           end
 
           email = params[:user][:email]
+          logger.info "Looking up user for [#{email}]"
           user = User.find_by_email(email)
+
           unless user
             logger.info("No account found for email ")
             render_unauthorized
@@ -33,6 +35,8 @@ module Api
             if aa
               if aa.revoked?
                 logger.info "User presented revoked token during login"
+                render_unauthorized
+                return
               elsif aa.actor != user
                 logger.info ("Received token for wrong user.")
                 render_unauthorized

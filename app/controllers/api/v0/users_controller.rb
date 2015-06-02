@@ -2,7 +2,7 @@ module Api
   module V0
     class UsersController < BaseController
       before_filter :ensure_authorized, except: [:create]
-      # TODO - use actor addresses
+
       def me
         @user = User.find @user_id_from_token
         if @user
@@ -38,8 +38,8 @@ module Api
       def update
         @user = User.find params[:id]
         if @user_id_from_token == @user.id
-          puts "Updating user #{@user.inspect}"
-          puts "Updating with: #{params[:user]}"
+          logger.info "Updating user #{@user.inspect}"
+          logger.info "Updating with: #{params[:user]}"
           if @user.update_attributes(params[:user])
             render json: @user.to_json(only: [:id, :name, :slug, :email], methods: :avatar_url), status: 200
           else

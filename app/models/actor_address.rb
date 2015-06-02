@@ -82,8 +82,6 @@ class ActorAddress < ActiveRecord::Base
       return false
     end
 
-    # TODO add expiration logic
-
     if self.revoked?
       logger.info "Token is revoked"
       return false
@@ -99,6 +97,11 @@ class ActorAddress < ActiveRecord::Base
 
   def double_increment()
     self.sequence = self.sequence + 2
+    self.save
+  end
+
+  def revoke
+    self.status = 'revoked'
     self.save
   end
 

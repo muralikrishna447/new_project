@@ -76,12 +76,11 @@ module Api
           return
         end
 
-        # minor hack
+        # Assume that address_id matches circulator_id
         aa = ActorAddress.where(address_id: circulator_id).first
         unless aa
           msg = "ActorAddress not found for circulator id #{circulator_id}"
-          logger.error msg
-          raise "ActorAddress not found for circulator id #{circulator_id}"
+          raise msg
         end
 
         response = {token: aa.current_token.to_jwt, status:200}

@@ -82,7 +82,7 @@ module Api
         rescue Exception => e
           logger.error e
           logger.error e.backtrace.join("\n")
-          render json: {status: 401, message: 'Unauthorized.'}, status: 401
+          render_unauthorized
         end
       end
 
@@ -105,7 +105,6 @@ module Api
       def render_unauthorized
         render json: {status: 401, message: 'Unauthorized.'}, status: 401
       end
-
     end
   end
 end

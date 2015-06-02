@@ -4,6 +4,7 @@ describe Api::V0::AuthController do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     @other_user = Fabricate :user, email: 'jane@chefsteps.com', password: 'matter', name: 'Jane'
     @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+    @aa = ActorAddress.create_for_user @user, "cooking_app"
   end
 
   context 'POST /authenticate' do
@@ -28,23 +29,29 @@ describe Api::V0::AuthController do
     end
 
     it 'should re-use an existing address' do
-      aa = ActorAddress.create_for_user @user, "cooking_app"
-      aa.current_token
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
-        token: aa.current_token.to_jwt
+        token: @aa.current_token.to_jwt
       token = JSON.parse(response.body)['token']
 
       decoded = JSON.parse(UrlSafeBase64.decode64(token.split('.')[1]))
 
-      decoded['address_id'].should == aa.address_id
-      decoded['seq'].should == (aa.sequence + 2)
+      decoded['address_id'].should == @aa.address_id
+      decoded['seq'].should == (@aa.sequence + 2)
     end
 
     it 'should reject mismatched token' do
-      aa = ActorAddress.create_for_user @other_user, "cooking_app"
-      aa.current_token
+      @aa.revoke
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
-        token: aa.current_token.to_jwt
+        token: @aa.current_token.to_jwt
+
+      response.should_not be_success
+      response.code.should eq("401")
+    end
+
+    it 'should reject mismatched token' do
+      @aa.revoke
+      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
+        token: @aa.current_token.to_jwt
 
       response.should_not be_success
       response.code.should eq("401")
@@ -63,17 +70,9 @@ describe Api::V0::AuthController do
       end
 
       it 'should be authenticatable with a valid secret' do
-        # First decode encryption
-        #puts @token, @token.inspect
         verified = JSON::JWT.decode(@token, @key.to_s)
-        #puts "Decoded: #{verified.inspect}"
-
-        # Then decode signature
-        #verified = JSON::JWT.decode(decoded.to_s, @key.to_s)
-        # puts "Verified: #{verified}"
         id = verified['User']['id']
         id.should eq(@user.id)
-        # TODO - get a new address
       end
     end
   end
