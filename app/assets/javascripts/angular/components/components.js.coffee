@@ -21,61 +21,28 @@
 @components.controller 'homeController', ['csAuthentication', (csAuthentication) ->
   @editable = csAuthentication.isAdmin()
   @showEditable = false
-  @testComponent = {
-    componentType: "matrix"
-    mode: "api"
-    metadata: {
-      api: {
-        mapper: [
-          {
-            componentKey: "title",
-            sourceKey: "title",
-            value: ""
-          },
-          {
-            componentKey: "image",
-            sourceKey: "image",
-            value: ""
-          },
-          {
-            componentKey: "buttonMessage",
-            sourceKey: null,
-            value: "See the recipe"
-          },
-          {
-            componentKey: "url",
-            sourceKey: "url",
-            value: ""
-          }
-        ],
-        source: "http://www.chefsteps.com/api/v0/activities"
-      },
-      rows: 1,
-      custom: {},
-      columns: 3,
-      allModes: {
-        styles: {
-          component: {
-            size: "large"
-          }
-        }
-      },
-      itemType: {
-        name: "Square A",
-        className: "square.square-a",
-        attrs: [
-          "title",
-          "image",
-          "buttonMessage",
-          "url"
-        ],
-        templateUrl: "/client_views/component_item_square_a.html",
-        formTemplateUrl: "/client_views/component_item_square_a_form.html"
-      }
+  @testComponentMapper = [
+    {
+      componentKey: "title",
+      sourceKey: "title",
+      value: ""
     },
-    name: "Home Matrix Two",
-    slug: "home-matrix-two"
-  }
+    {
+      componentKey: "image",
+      sourceKey: "image",
+      value: ""
+    },
+    {
+      componentKey: "buttonMessage",
+      sourceKey: null,
+      value: "See the recipe"
+    },
+    {
+      componentKey: "url",
+      sourceKey: "url",
+      value: ""
+    }
+  ]
 
   return this
 ]
