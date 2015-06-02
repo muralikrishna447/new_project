@@ -8,21 +8,31 @@ module Api
       end
 
       def likes
+        per = params[:per] ? params[:per] : 12
         @user = User.find(params[:id])
-        @likes = @user.likes.scoped_by_type('Activity').map &:likeable
+        @likes = @user.likes.scoped_by_type('Activity').page(params[:page]).per(per).map &:likeable
         render json: @likes, each_serializer: Api::ActivityIndexSerializer
       end
 
       def classes
+        per = params[:per] ? params[:per] : 12
         @user = User.find(params[:id])
-        @enrollments = @user.enrollments.map &:enrollable
+        @enrollments = @user.enrollments.page(params[:page]).per(per).map &:enrollable
         render json: @enrollments, each_serializer: Api::AssemblyIndexSerializer
       end
 
       def photos
+        per = params[:per] ? params[:per] : 12
         @user = User.find(params[:id])
-        @photos = @user.uploads
+        @photos = @user.uploads.page(params[:page]).per(per)
         render json: @photos, each_serializer: Api::PhotoSerializer
+      end
+
+      def recipes
+        per = params[:per] ? params[:per] : 12
+        @user = User.find(params[:id])
+        @recipes = @user.created_activities.page(params[:page]).per(per)
+        render json: @recipes, each_serializer: Api::ActivityIndexSerializer
       end
 
     end

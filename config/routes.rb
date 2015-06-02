@@ -339,6 +339,7 @@ Delve::Application.routes.draw do
         get :classes, on: :member
         get :likes, on: :member
         get :photos, on: :member
+        get :recipes, on: :member
       end
       resources :recommendations, only: [:index]
       resources :search, only: [:index]
