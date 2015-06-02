@@ -1,0 +1,188 @@
+@import 'mixins'
+
+=aspect-4-6
+  position: relative
+  &:before
+    content: ''
+    display: block
+    padding-top: calc(100%*2/3)
+
+.slideshow-container
+  border: 2px solid $orange
+  padding: 10px
+  margin-bottom: 20px
+
+.slideshow
+  @include aspect-4-6
+  @include display-flex
+  @include justify-content(center)
+  @include align-items(center)
+  &.fullscreen
+    position: fixed
+    height: 100%
+    width: 100%
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    z-index: 99999
+    background-color: black
+
+  .slideshow-slides
+    position: absolute
+    height: 100%
+    width: 100%
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    .slideshow-slide
+      position: absolute
+      height: 100%
+      width: 100%
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      background-size: contain
+      background-repeat: no-repeat
+      background-position: 50% 50%
+      background-color: black
+      @include display-flex
+      @include justify-content(center)
+      @include align-items(flex-end)
+      .slideshow-slide-caption
+        color: white
+        font-size: 14px
+        padding: 5px
+        padding-bottom: 8px
+        text-align: center
+        width: 100%
+        background-color: rgba(0,0,0,.6)
+
+  .slideshow-fullscreen-toggle
+    position: absolute
+    top: 10px
+    right: 10px
+    color: white
+    z-index: 4
+    &:hover
+      cursor: pointer
+
+  .slideshow-button-prev
+    height: 100%
+    width: 50%
+    position: absolute
+    top: 0
+    left: 0
+    z-index: 1
+    color: white
+    @include display-flex
+    @include justify-content(flex-start)
+    @include align-items(center)
+    .slideshow-button-arrow
+      padding: 20px
+      opacity: 0
+      @include flex(0 0 20px)
+      @include transition(300ms all ease-in-out)
+      @include display-flex
+    &:hover
+      cursor: pointer
+      .slideshow-button-arrow
+        opacity: 1
+    &::selection
+      background-color: rgba(0,0,0,0)
+
+  .slideshow-button-next
+    height: 100%
+    width: 50%
+    position: absolute
+    top: 0
+    right: 0
+    z-index: 1
+    color: white
+    @include display-flex
+    @include justify-content(flex-end)
+    @include align-items(center)
+    .slideshow-button-arrow
+      padding: 20px
+      opacity: 0
+      @include flex(0 0 20px)
+      @include transform(scale(-1))
+      @include transition(300ms all ease-in-out)
+      @include display-flex
+    &:hover
+      cursor: pointer
+      .slideshow-button-arrow
+        opacity: 1
+    &::selection
+      background-color: rgba(0,0,0,0)
+
+.slideshow-overlay
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  z-index: 3
+  background: rgba(0,0,0,.3)
+  @include display-flex
+  @include justify-content(flex-end)
+  @include align-items(center)
+  .slideshow-title
+    background: $orange
+    color: white
+    padding: 15px
+    font-size: 20px
+    text-align: right
+    @include display-flex
+    @include transform(translateX(10px))
+    .slideshow-title-arrow
+      padding-right: 10px
+      @include transform(scale(-1))
+      @include display-flex
+      @include align-items(center)
+  &:hover
+    cursor: pointer
+
+.slideshow-progress
+  width: 100%
+  height: 3px
+  z-index: 3
+  @include align-self(flex-end)
+  @include display-flex
+  .slideshow-progress-item
+    @include flex(1 0 auto)
+    @include transition(300ms all ease-in-out)
+    &.active
+      background-color: $orange
+
+// Slide animation
+.slideshow-slide.ng-hide-add,
+.slideshow-slide.ng-hide-remove
+  @include transition(300ms all ease-in-out)
+  display: flex !important
+  opacity: 1
+
+.slideshow-slide.ng-hide
+  opacity: 0
+
+// Overlay animation
+.slideshow-overlay.ng-hide-add,
+.slideshow-overlay.ng-hide-remove
+  @include transition(500ms all linear)
+  opacity: 1
+  display: flex !important
+
+.slideshow-overlay.ng-hide
+  opacity: 0
+
+// Caption animation
+.slideshow-slide-caption.ng-hide-add,
+.slideshow-slide-caption.ng-hide-remove
+  @include transition(500ms all linear)
+  opacity: 1
+  display: block !important
+
+.slideshow-slide-caption.ng-hide
+  opacity: 0

@@ -13,6 +13,12 @@
   -webkit-box-sizing: content-box
   -o-box-sizing: content-box
 
+=box-shadow($c)
+  box-shadow: $c
+  -moz-box-shadow: $c
+  -webkit-box-shadow: $c
+  -o-box-shadow: $c
+
 =any_shadow($c)
   box-shadow: $c
   -moz-box-shadow: $c
@@ -105,7 +111,7 @@
   -o-column-gap: $value
 
 =unselectable
-  -webkit-user-select: none /* Chrome/Safari */        
+  -webkit-user-select: none /* Chrome/Safari */
   -moz-user-select: none /* Firefox */
   -ms-user-select: none /* IE10+ */
   -o-user-select: none
@@ -121,7 +127,7 @@
   background: linear-gradient(rgba(226,95,37,.7), rgba(226,95,37,.7)), url($url) no-repeat top center fixed
   @include background-size(100%)
   width: 100%
-  margin-bottom: $baseline * 3 
+  margin-bottom: $baseline * 3
 
 =popover-arrow($top, $left)
   position: absolute
@@ -135,7 +141,7 @@
   background: white
   z-index: 10001
 
-=linear-gradient($fromColor, $toColor) 
+=linear-gradient($fromColor, $toColor)
   background-color: $toColor
   background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor))
   background-image: -webkit-linear-gradient(top, $fromColor, $toColor)
@@ -234,6 +240,13 @@
   -o-flex-direction: $x
   flex-direction: $x
 
+=flex-flow($x)
+  -webkit-flex-flow: $x
+  -moz-flex-flow: $x
+  -ms-flex-flow: $x
+  -o-flex-flow: $x
+  flex-flow: $x
+
 =align-self($x)
   -webkit-align-self: $x
   -moz-align-self: $x
@@ -296,12 +309,12 @@ $horz-baseline-large: 13px
 =primary-font-light
   font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
   font-weight: 300
-  font-style: normal 
+  font-style: normal
 
 =primary-font-bold
   font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
   font-weight: 700
-  font-style: normal 
+  font-style: normal
 
 /* Animations */
 
@@ -353,7 +366,7 @@ $horz-baseline-large: 13px
     opacity: 0
     margin-top: $distance
   &.ng-enter-active
-    opacity: 1  
+    opacity: 1
     margin-top: 0px
   &.ng-hide-add, &.ng-hide-remove
     @include transition(all 300ms $standard-bez-out)
@@ -370,7 +383,7 @@ $horz-baseline-large: 13px
     opacity: 0
     margin-left: $start
     &.ng-enter-active
-      opacity: 1  
+      opacity: 1
       margin-left: $end
   &.ng-leave
     @include transition(all 200ms $standard-bez-out)
@@ -378,16 +391,51 @@ $horz-baseline-large: 13px
     margin-left: $end
     &.ng-leave-active
       opacity: 0
-      margin-left: $start  
+      margin-left: $start
 
 =horizontal-center
   margin-left: auto
   margin-right: auto
 
+// Aspec Ratios
+
+=aspect-1-1
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 100%
+
+=aspect-2-1
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 50%
+
+=aspect-16-9
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 56.25%
+
+=aspect-content
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0  
+
+
 $bounce-bez: cubic-bezier(0.25,0.25,0.325,1.39)
 $standard-bezier: cubic-bezier(.81,0,0,.99)
 $standard-bez-out: cubic-bezier(.29,.04,.02,1)
 $standard-bez-in-out: cubic-bezier(0.42,0,0.58,1)
+
 
 /* Colors */
 $orange: #e25f25
@@ -406,7 +454,7 @@ $dark-gray: rgb(146, 146, 146)
 $offwhite: #f1f1f1
 $white-opaque: rgba(255,255,255,.3)
 
- 
+
 
 /* Layout */
 $desktop-standard-item-width: 600px

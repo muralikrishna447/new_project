@@ -122,7 +122,7 @@ describe ChargesController do
       end
 
       context "normal enrollment" do
-        subject { post :create, assembly_id: assembly.id}
+        subject { post :create, assembly_id: assembly.id, discounted_price: 39}
         it "should Enrollment.call enroll_user_in_assembly" do
           Enrollment.should_receive(:enroll_user_in_assembly).and_call_original
           subject
@@ -160,6 +160,17 @@ describe ChargesController do
             ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
             subject
           end
+        end
+      end
+
+      # TIMDISCOUNT
+      context "Tim Ferriss free enrollment" do
+        subject { post :create, assembly_id: assembly.id, discounted_price: 0}
+
+        it "should only allow one free enrollment to a paid class" do
+          subject
+          user.reload
+          expect(user.timf_incentive_available).to be(false)
         end
       end
     end

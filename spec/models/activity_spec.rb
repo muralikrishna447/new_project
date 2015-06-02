@@ -1,5 +1,20 @@
 require 'spec_helper'
 
+describe Activity, "#meta_description" do
+  it "prefer short_description" do
+    Fabricate(:activity, short_description: "A", description: "B", title: "C").meta_description.should == "A"
+  end
+
+  it "uses description before title" do
+    Fabricate(:activity, description: "B", title: "C").meta_description.should == "B"
+  end
+
+  it "uses title if no other options" do
+    Fabricate(:activity, title: "C").meta_description.should == "C"
+  end
+
+end
+
 describe Activity do
   let(:activity) { Fabricate(:activity, title: 'foo') }
 

@@ -46,8 +46,12 @@
   link: (scope, element, attrs, csAbtest) ->
     csAbtest.addItem(scope)
 
+    scope.$watch 'showItem', (newValue, oldValue) ->
+      if typeof newValue == 'undefined'
+        element.addClass 'ng-hide'
+
   template:
     """
-      <div ng-transclude ng-show="showItem"></div>
+      <div ng-transclude></div>
     """
 ]

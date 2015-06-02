@@ -1,14 +1,26 @@
 @import 'mixins'
 
+.ftue-survey-close
+  position: fixed
+  top: 60px
+  right: 60px
+  @include transition(300ms all linear)
+  &:hover
+    color: $orange
+    cursor: pointer
+
 .ftue-nav
   position: fixed
   width: 100%
-  height: 100px
-  background-color: white
+  height: 60px
   z-index: 9999
-  bottom: 0px
-  padding: 20px
+  bottom: 40px
+  left: 0px
+  padding: 0 40px
   @include boxsizing
+  @include display-flex
+  @include justify-content(center)
+  @include align-items(center)
 
   .btn.btn-circle-large
     position: absolute
@@ -43,6 +55,9 @@
     position: absolute
     top: 20px
     right: 20px
+
+.ftue-survey-header
+  padding: 20px
 
 .ftue-nav-middle
   width: 100%
@@ -164,16 +179,24 @@
 
 .ftue-survey-done
   border: 1px solid $orange
+  background-color: white
   padding: 10px
   border-radius: 40px
   width: 140px
-  margin: 20px auto
+  margin: 0 10px
   color: $orange
   text-align: center
+  @include transition(300ms all ease-in-out)
+  @include boxsizing
   &:hover
     background-color: $orange
     color: white
     cursor: pointer
+
+.ftue-survey-skip
+  width: 140px
+  margin: 0 10px
+  padding: 10px
 
 .ftue-survey-container.ng-hide-add, .ftue-survey-container.ng-hide-remove
   @include transition(400ms linear all)

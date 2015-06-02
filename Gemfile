@@ -60,12 +60,10 @@ gem 'nested-hstore'
 gem 'gibbon'
 gem 'faraday'
 gem 'nori'
-# gem 'elasticsearch'
-gem 'elasticsearch-model'
-gem 'elasticsearch-rails'
 gem 'aws-sdk'
 gem 'json-jwt'
 gem 'intercom'
+gem "algoliasearch-rails"
 
 # gem 'ar-octopus', :git => 'https://github.com/tchandy/octopus.git'
 gem 'resque'
@@ -144,6 +142,10 @@ group :development, :angular do
   gem 'better_errors' #moving this out of tests for segfault problems.
 end
 
+group :test do
+  gem 'webmock'
+end
+
 group :guard do
   gem 'guard'
   gem 'guard-livereload'
@@ -158,4 +160,3 @@ group :guard do
 end
 
 #force deploy
-

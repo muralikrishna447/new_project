@@ -37,6 +37,8 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     console.log "INCLUDABLE: " + $scope.currentIncludable
     if ! $scope.currentIncludable?
       console.log "Couldn't find " + includable_type + " with slug " + includable_slug
+      # Redirect to the landing page if activity isn't found
+      window.location.replace $scope.course.path
       return
     includable_id = $scope.currentIncludable.includable_id
     includable_type = $scope.currentIncludable.includable_type
@@ -51,7 +53,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
       newPath = "/" + includable_type.toLowerCase() + "/" + $scope.currentIncludable.includable_slug
     $location.path(newPath) if $location.path() != newPath
     window.Intercom?('update')
-    
+
     # Title tag
     document.title = $scope.currentIncludable.includable_title + ' | ' + $scope.course.title + ' Class | ChefSteps'
 
@@ -104,13 +106,27 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
   $scope.loadPrevInclusion = ->
    $scope.loadInclusion($scope.prevInclusion().includable_type, $scope.prevInclusion().includable_slug)
 
+  lessThanOneMonthAgo = (stringDate) ->
+    return false if ! stringDate
+    d = new Date(stringDate)
+    now = new Date()
+    return true if (now - d) < (30 * 24 * 60 * 60 * 1000)
+
+  # True if the course is old and the activity is new
+  leafIncludableNew = (course, inclusion) ->
+    ! lessThanOneMonthAgo(course.published_at) && lessThanOneMonthAgo(inclusion?.includable?.published_at)
+
   $scope.sortInclusions = (assembly) ->
     flat = []
     for inclusion in assembly.assembly_inclusions
       if inclusion.includable_type == 'Assembly'
         $scope.collapsed[inclusion.includable_id] = true
         $scope.collapsibleInclusions.push(inclusion)
-        flat.push(sub) for sub in $scope.sortInclusions(inclusion.includable)
+        inclusion.isNew = false
+        for sub in $scope.sortInclusions(inclusion.includable)
+          sub.isNew = leafIncludableNew($scope.course, sub)
+          inclusion.isNew = inclusion.isNew || sub.isNew
+          flat.push(sub)
       else
         flat.push(inclusion)
     $scope.flatInclusions = flat

@@ -2,7 +2,7 @@
 -# Sanitize everything in the head so that no javascript gets put in there.  However an admin will have javascript rendered for the rest of the page, while a user will not.
 -# This fixes potential problems for XSS attacks.
 - content_for :title, "#{sanitize(@activity.title)} | #{@activity.activity_type.first}".html_safe
-- content_for :description, @activity.description.to_s != "" ? sanitize(@activity.description).html_safe : sanitize(@activity.title).html_safe
+- content_for :description, sanitize(@activity.meta_description).html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
 - content_for :keywords, sanitize(@activity.tag_list.join(','))
 - if @activity.id
@@ -33,8 +33,13 @@
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-class' => '{"activity_show" : true}' }
 
 -# This is how search engine crawlers know to request the _escaped_fragment_ page
-- content_for :ajax_seo do
-  %meta{name: "fragment", content: "!"}
+-# Temporary: leave these two activities out of _escaped_fragment_ / brombone so we can experiment
+-# with how Google crawls the angular DOM. Picked these two b/c romesco currently does have an image in
+-# SERP for [site:chefsteps.com/activities] and mint-gelle does not.
+
+- unless @activity.slug == 'romesco' || @activity.slug == 'mint-gelee'
+  - content_for :ajax_seo do
+    %meta{name: "fragment", content: "!"}
 
 -if params[:scaling]
   :javascript
@@ -68,14 +73,6 @@
 
         #activity-body.recipe_schema(ng-class="addEditModeClass()"){data: {:'activity-id' => @activity.id}}
           = render 'activities/main_activity_content', activity: @activity
-
-
-          -# Big spinner until the activity loads. By not cloaking but using angular to hide, it
-          -# disappears roughly when the page is ready.
-          .row.activity-loading-spinner(ng-hide="! loading")
-            .span12
-              %i.icon-page-load
-
 
   %div(nell-popup)
 

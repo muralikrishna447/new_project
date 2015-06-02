@@ -3,7 +3,7 @@ class Activity < ActiveRecord::Base
   include PublishableModel
 
   include ActsAsSanitized
-  sanitize_input :title, :description, :timing, :yield, :summary_tweet, :youtube_id, :difficulty
+  sanitize_input :title, :description, :short_description, :timing, :yield, :summary_tweet, :youtube_id, :vimeo_id, :difficulty
 
   acts_as_taggable
   acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}], :dependent => :keep, :on_destroy => true
@@ -43,7 +43,7 @@ class Activity < ActiveRecord::Base
 
   validates :title, presence: true
 
-  scope :with_video, where("youtube_id <> ''")
+  scope :with_video, where("youtube_id <> '' OR vimeo_id <> ''")
   scope :recipes, where("activity_type iLIKE '%Recipe%'")
   scope :techniques, where("activity_type iLIKE '%Technique%'")
   scope :sciences, where("activity_type iLIKE '%Science%'")
@@ -69,11 +69,9 @@ class Activity < ActiveRecord::Base
 
   serialize :activity_type, Array
 
-  attr_accessible :activity_type, :title, :youtube_id, :yield, :timing, :difficulty, :description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
+  attr_accessible :activity_type, :title, :youtube_id, :vimeo_id, :yield, :timing, :difficulty, :description, :short_description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
   attr_accessible :show_only_in_course, :summary_tweet
-
-  include Searchable
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -86,6 +84,79 @@ class Activity < ActiveRecord::Base
                   associated_against: {terminal_equipment: [[:title, 'D']], terminal_ingredients: [[:title, 'D']], tags: [[:name, 'B']], steps: [[:title, 'C'], [:directions, 'C']]}
 
   TYPES = %w[Recipe Technique Science]
+
+
+  include AlgoliaSearch
+
+  algoliasearch index_name: "ChefSteps", per_environment: true, if: :has_title do
+
+    # Searchable fields (may be used for display too)
+    attribute :title, :description
+
+    add_attribute :thumbnail do
+      featured_image.present? ? JSON.parse(featured_image)["url"] + "/convert?fit=crop&w=370&h=208&quality=90&cache=true" : nil
+    end
+
+    add_attribute :ingredient_titles do
+      terminal_ingredients.map(&:title)
+    end
+
+    add_attribute :equipment_titles do
+      terminal_equipment.map(&:title)
+    end
+
+    add_attribute :equipment_titles do
+      terminal_equipment.map(&:title)
+    end
+
+    add_attribute :step_titles do
+      steps.map(&:title)
+    end
+
+    add_attribute :step_directions do
+      steps.map(&:directions)
+    end
+
+    # Display fields
+    attribute :slug
+    add_attribute :url do
+      activity_path(self)
+    end
+
+    add_attribute :image do
+      featured_image.present? ? JSON.parse(featured_image)["url"] : nil
+    end
+
+    # Filter/facet/tags
+    attribute :difficulty, :published, :include_in_gallery
+
+    tags do
+      tags.map(&:name)
+    end
+
+    add_attribute :chefsteps_generated do
+      creator.blank?
+    end
+
+    # Sort fields
+    attribute :likes_count
+    add_attribute :date do
+      published ? published_at : created_at
+    end
+
+    # Slave indices for sorting other than relevance - that is how Algolia works, each index
+    # only has one sort order, defined in dashboard.
+    add_slave "ChefStepsNewest", per_environment: true do
+    end
+    add_slave "ChefStepsOldest", per_environment: true do
+    end
+    add_slave "ChefStepsPopular", per_environment: true do
+    end
+  end
+
+  def has_title
+    title.present?
+  end
 
   include Rails.application.routes.url_helpers
 
@@ -147,6 +218,13 @@ class Activity < ActiveRecord::Base
 
   def has_description?
     description.present?
+  end
+
+  def meta_description
+    return short_description if short_description.present?
+    return description if description.present?
+    return title if title.present?
+    ""
   end
 
   def is_recipe?
@@ -222,7 +300,7 @@ class Activity < ActiveRecord::Base
 
   def reject_invalid_steps(step_attrs)
     step_attrs.select! do |step_attr|
-      [:directions, :image_id, :youtube_id, :title].any? do |test|
+      [:directions, :image_id, :youtube_id, :vimeo_id, :title].any? do |test|
         step_attr[test].present?
       end
     end
@@ -455,18 +533,6 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  # For elasticsearch.  See https://github.com/elasticsearch/elasticsearch-rails/tree/master/elasticsearch-model
-  def as_indexed_json(options={})
-    as_json(
-      only: [:title, :description],
-      methods: [:tag_list],
-      include: {
-        terminal_ingredients: { only: [:title] },
-        steps: { only: [:title, :directions] }
-      }
-    ).merge({'search_data' => search_data})
-  end
-
   def search_data
     {
       'title' => title,
@@ -521,6 +587,7 @@ class Activity < ActiveRecord::Base
         title: step_attr[:title],
         directions: step_attr[:directions],
         youtube_id: step_attr[:youtube_id],
+        vimeo_id: step_attr[:vimeo_id],
         image_id: step_attr[:image_id],
         image_description: step_attr[:image_description],
         audio_clip: step_attr[:audio_clip],

@@ -18,6 +18,8 @@ Delve::Application.routes.draw do
   end
 
   root to: "home#index"
+  match '/new_home', to: 'home#new_home'
+  match '/home_manager', to: 'home#manager'
 
   match '/forum', to: 'bloom#forum'
   match '/forum/*path', to: 'bloom#forum'
@@ -27,6 +29,8 @@ Delve::Application.routes.draw do
   match '/content/:id', to: 'bloom#content'
   match 'whats-for-dinner', to: 'bloom#whats_for_dinner'
   match 'hot', to: 'bloom#hot'
+
+  get '/blog', to: redirect('http://blog.chefsteps.com/')
 
   resources :featured, only: [:index] do
     collection do
@@ -115,6 +119,10 @@ Delve::Application.routes.draw do
   get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
+
+  # TIMDISCOUNT for the 'tim' part only
+
+  get 'tim' => 'courses#tim'
   match '/mp', to: redirect('/courses/spherification')
   match '/MP', to: redirect('/courses/spherification')
   match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
@@ -309,6 +317,10 @@ Delve::Application.routes.draw do
     get :edit_from_email, on: :collection
   end
 
+  # resources :components, only: [:index]
+  match '/components', to: 'components#index'
+  match '/components/*path', to: 'components#index'
+
   namespace :api do
     namespace :v0 do
       match '/authenticate', to: 'auth#authenticate', via: [:post, :options]
@@ -317,6 +329,7 @@ Delve::Application.routes.draw do
       resources :activities, only: [:index, :show] do
         get :likes, on: :member
       end
+      resources :components, only: [:index, :show, :create, :update]
       resources :ingredients, only: [:index, :show]
       resources :passwords, only: [:update] do
         post :send_reset_email, on: :collection

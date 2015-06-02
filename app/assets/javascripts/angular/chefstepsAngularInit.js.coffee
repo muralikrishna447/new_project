@@ -1,7 +1,6 @@
 # Angular.js stuff. This can't wait til after page load, it needs to happen in the <head>
 
-
-@app = angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "ui.select2", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable", "ngSanitize", "ngRoute", "ngAnimate", "once", "cs.api"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
+@app = angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "ui.select2", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable", "ngSanitize", "ngRoute", "ngAnimate", "once", "cs.api", "csConfig", "cs.components"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
 
   #window.logPerf("ANGULAR INIT")
   #angular.element(document).ready ->
@@ -27,8 +26,8 @@
 @app.config ["$httpProvider", ($httpProvider) ->
   $httpProvider.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest"
 
-  # http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on    
-  # This seems weird since we already have this in application_controller.rb, but this fixes the issue where people couldn't enroll into a class on Firefox    
+  # http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on
+  # This seems weird since we already have this in application_controller.rb, but this fixes the issue where people couldn't enroll into a class on Firefox
   $httpProvider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
 ]
 
@@ -74,4 +73,3 @@ angular.module('ChefStepsApp').run ["$rootScope", "csPermissions", ($rootScope, 
   throw new Error("Invalid url \"" + url + "\", missing hash prefix \"" + hashPrefix + "\".")  unless isString(withoutHashUrl)
   matchAppUrl withoutHashUrl, this
   @$$compose()
-

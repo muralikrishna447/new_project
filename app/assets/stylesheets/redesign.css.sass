@@ -166,16 +166,19 @@ div:not(.redactor_box)
     &:after
       background: $offwhite
 
-.activity-loading-spinner
-  position: absolute
-  top: 50px
-  left: 0px
-  right: 0px
-
-.icon-page-load
-  &:before
-    content: url('https://d92f495ogyf88.cloudfront.net/static/csLoadingIcon.gif')
-
+.loading-spinner
+  svg
+    color: $dark-orange
+    width: 96px
+    height: 96px
+    -moz-animation: spin 2s infinite linear
+    -o-animation: spin 2s infinite linear
+    -webkit-animation: spin 2s infinite linear
+    animation: spin 2s infinite linear
+  &.fixed
+    position: fixed
+    top: calc(50vh - 48px)
+    left: calc(50vw - 48px)
 
 .extra-info
   color: $orange
@@ -659,7 +662,7 @@ a:hover
       &:hover
         cursor: pointer
 
-csembedyoutube
+csembedyoutube, csembedvimeo
   width: 100%
   iframe
     width: 100%
@@ -764,6 +767,9 @@ csembedyoutube
   .content-activity-description
     textarea
       height: 21rem
+  .content-activity-short-description
+    textarea
+      height: 5rem
 
   .step-content, .aside-text
     textarea

@@ -1,17 +1,17 @@
 @app.directive 'cscomments', ["$compile", "$rootScope", ($compile, $rootScope) ->
   restrict: 'E'
   scope: {
-    commentsType: '@' 
+    commentsType: '@'
     commentsId: '@'
     seoBot: '@'
   }
-  controller: [ "$scope", "$http", ($scope, $http) ->
+  controller: [ "$scope", "$http", "csConfig", ($scope, $http, csConfig) ->
     $scope.renderSeoComments = ->
       $scope.seoComments = []
       identifier = $scope.commentsType + '_' + $scope.commentsId
       console.log "*** renderseo"
 
-      $http.get('//ancient-sea-7316.herokuapp.com/discussions/' + identifier + '?apiKey=xchefsteps').then (response) =>
+      $http.get("#{csConfig.bloom.api_endpoint}/discussions/#{identifier}?apiKey=xchefsteps").then (response) =>
         comments = response.data.comments
 
         angular.forEach comments, (comment) =>
@@ -22,7 +22,7 @@
   ]
   link: (scope, element, attrs) ->
     scope.$watch 'commentsId', (newValue, oldValue) ->
-      if newValue
+      if newValue && typeof Bloom != 'undefined'
         if scope.seoBot == 'true'
           scope.renderSeoComments()
         else
@@ -59,12 +59,12 @@
         window.location = response.data.url
   ]
   link: (scope, element, attrs) ->
-    Bloom.installNotifs {
-      el: element[0]
-      on:
-        navigateComment: (comment) ->
-          console.log 'navigation to comment: ', comment.dbParams.commentsId
-          scope.navigateToContent(comment.dbParams.commentsId)
-    }
+    if typeof Bloom != 'undefined'
+      Bloom.installNotifs {
+        el: element[0]
+        on:
+          navigateComment: (comment) ->
+            console.log 'navigation to comment: ', comment.dbParams.commentsId
+            scope.navigateToContent(comment.dbParams.commentsId)
+      }
 ]
-

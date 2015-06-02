@@ -13,18 +13,19 @@
     $(element).find('.video-iframe').attr('id', playerId)
 
     mixpanelProperties =
+      host: 'youtube'
       videoId: attrs.videoId
       containerSlug: attrs.containerSlug
 
-    mixpanel.track('Video Embed Loaded', mixpanelProperties) 
- 
+    mixpanel.track('Video Embed Loaded', mixpanelProperties)
+
     createPlayer = ->
       if window.youtubeAPIReady && attrs.videoId
         console.log('createPlayer')
-        player = new YT.Player( 
+        player = new YT.Player(
           playerId,
           videoId: attrs.videoId
-          playerVars: 
+          playerVars:
             'wmode': 'opaque'
             'modestbranding' : 1
             'rel': 0
@@ -36,21 +37,21 @@
 
           events:
             # Youtube player is clever enough to default a playback quality based on size
-            # but not to adjust it when going fullscreen.         
-            'onReady' : (event) -> 
+            # but not to adjust it when going fullscreen.
+            'onReady' : (event) ->
               console.log("onReady #{player.getVideoUrl()}")
-              player.setPlaybackQuality?('hd1080') 
+              player.setPlaybackQuality?('hd1080')
 
             'onStateChange': (event) ->
               console.log("onStateChange #{event.data} #{player.getVideoUrl()}")
               if event.data == 1
-                  mixpanel.track('Video Embed Played', mixpanelProperties) 
+                  mixpanel.track('Video Embed Played', mixpanelProperties)
         )
       else
         # If the YT api isn't ready yet, try again a little later
         $timeout (-> createPlayer()), 500
 
-    createPlayer() 
+    createPlayer()
 
     scope.$on 'playVideo', (event, play) ->
       console.log("playVideo: #{play}")
@@ -90,8 +91,8 @@
     angular.element($window).bind "resize", ->
       scope.$apply()
 
-  template: """ 
-    <div class="video-iframe-container">     
+  template: """
+    <div class="video-iframe-container">
       <div class='video-iframe'></div>
     </div>
   """

@@ -63,6 +63,10 @@
       }
 
     %script(src='//www.youtube.com/iframe_api' async='true')
+
+    -# Not async on purpose, csembedvimeo assumes loaded
+    %script(src='//f.vimeocdn.com/js/froogaloop2.min.js')
+
     // Send Bloom Encrypted User data
     - if current_user
       :javascript
@@ -71,9 +75,11 @@
     - else
       :javascript
         window.chefstepsUserId = null
-
+    :javascript
+      angular.module('csConfig', []).constant('csConfig', #{Rails.application.config.shared_config.to_json});
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :'ng-click' => "$broadcast('bodyClicked')", :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' =>  "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'; is_brombone=#{is_brombone};"}
+
     #rails-flash.hide
       = flash.to_json
     - unless @hide_nav == true
@@ -105,13 +111,12 @@
     = yield :popup_bottom
 
     = yield :footer
-    .gallery-spinner.text-center(ng-show='sup')
-      %i.icon-page-load
+
   / = render 'layouts/youtube'
   / = render 'layouts/app_init'
 
   = render "layouts/login_hack"
-  %script(src="//afternoon-meadow-1250.herokuapp.com/export/loader.js")
+  %script(src="#{Rails.application.config.shared_config["bloom"]["community_endpoint"]}/export/loader.js")
   = javascript_include_tag 'application'
   %script(type="text/javascript")
     logPerf("POST APP");
@@ -123,7 +128,6 @@
     = render 'layouts/adwords_remarketing'
     = render 'layouts/facebook_remarketing'
 
-  = render 'layouts/stripe'
   = render 'layouts/intercom'
   = render 'layouts/embedly'
   = yield(:custom_js)

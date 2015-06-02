@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  
+
   before_filter :authenticate_user!, only: [:create]
   before_filter :load_commentable, only: [:index, :create]
 
@@ -32,44 +32,6 @@ class CommentsController < ApplicationController
     else
       render :nothing => true, status: 404
     end
-  end
-
-  # Used by Bloom
-  def at
-    search_params = params['search']
-    search_term = '%' + search_params + '%'
-    # results = Hash.new
-    # @user_results = []
-    # @recipe_results = []
-    # @ingredient_results = []
-
-    # users = User.search(search_term).records
-    # users_elapsed_time = Benchmark.ms do
-    #   @user_results = users.map{|user| {'name' => user.name, 'id' => user.id, 'username' => user.slug, 'avatarUrl' => user.avatar_url}}
-    # end
-
-    # recipes = Activity.search(search_term).records
-    # recipes_elapsed_time = Benchmark.ms do
-    #   @recipe_results = recipes.map{|recipe| {'name' => recipe.title, 'id' => recipe.id, 'avatarUrl' => recipe.avatar_url}}
-    # end
-
-    # ingredients = Ingredient.search(search_term).records
-    # ingredients_elapsed_time = Benchmark.ms do
-    #   @ingredient_results = ingredients.map{|ingredient| {'name' => ingredient.title, 'id' => ingredient.id, 'avatarUrl' => ingredient.avatar_url}}
-    # end
-
-    # results['Users'] = @user_results
-    # results['Recipes'] = @recipe_results
-    # results['Ingredients'] = @ingredient_results
-
-    # puts "User: #{users_elapsed_time}"
-    # puts "Recipes: #{recipes_elapsed_time}"
-    # puts "Ingredients: #{ingredients_elapsed_time}"
-
-    # render :json => JSON.pretty_generate(results)
-
-    results = Searchable.search(search_params)
-    render :json => JSON.pretty_generate(results)
   end
 
 private

@@ -105,7 +105,7 @@
     $http.post('/user_surveys', data)
 
     searchTerms = survey_results.interests
-    searchTerms.push survey_results.suggestion
+    searchTerms.push survey_results.suggestion if survey_results.suggestion?.length > 0
     searchParams = {
       tags: searchTerms.join(',')
       per: 8
@@ -132,7 +132,7 @@
     if _.contains(imageLoadedArray, false)
       @showSurvey = false
     else
-      $timeout(-> 
+      $timeout(->
         that.showSurvey = true
       , 100)
 

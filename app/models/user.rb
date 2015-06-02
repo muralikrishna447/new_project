@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :token_authenticatable, :omniauth_providers => [:google_oauth2]
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :free_trial, :survey_results, :events_count, :signup_incentive_available
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :free_trial, :survey_results, :events_count, :signup_incentive_available, :timf_incentive_available
 
   # This is for active admin, so that it can edit the role (and so normal users can't edit their role)
   attr_accessible :name, :email, :password, :password_confirmation,
@@ -73,8 +73,6 @@ class User < ActiveRecord::Base
   serialize :survey_results, ActiveRecord::Coders::NestedHstore
 
   ROLES = %w[admin contractor moderator collaborator user banned]
-
-  include Searchable
 
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
@@ -212,18 +210,20 @@ class User < ActiveRecord::Base
   def encrypted_bloom_info
     user_json = {'userId' => self.id.to_s}.to_json
     begin
-      response = Faraday.get 'https://ancient-sea-7316.herokuapp.com/encrypt?string=' + user_json + '&secret=ilovesousvideYgpsagNPdJ&apiKey=xchefsteps'
+      response = Faraday.get do |req|
+        req.url "#{Rails.application.config.shared_config[:bloom][:api_endpoint]}/encrypt?string=" + user_json + '&secret=ilovesousvideYgpsagNPdJ&apiKey=xchefsteps'
+        req.options[:timeout] = 3
+        req.options[:open_timeout] = 2
+      end
       puts "This is the auth for bloom: #{response.body}"
       response.body
+    rescue Faraday::Error::TimeoutError => e
+      logger.warn "Unable to encrypt info for Bloom: #{e}"
+      return ''
     rescue Faraday::Error::ConnectionFailed => e
       logger.warn "Unable to encrypt info for Bloom: #{e}"
+      return ''
     end
-  end
-
-  def as_indexed_json(options={})
-    as_json(
-      only: [:name, :bio]
-    )
   end
 
   def self.with_views_greater_than(view_count)

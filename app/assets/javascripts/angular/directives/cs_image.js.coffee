@@ -9,7 +9,7 @@ Usage:
 
 ###
 
-@app.directive 'csImage', ['csFilepickerMethods', '$window', (csFilepickerMethods, $window) ->
+@app.directive 'csImage', ['csFilepickerMethods', '$window', '$timeout', (csFilepickerMethods, $window, $timeout) ->
   restrict: 'E'
   scope: {
     url: '='
@@ -24,18 +24,14 @@ Usage:
     scope.calculateWidth = ->
       parent.width = $(parent[0]).width()
 
-      if parent.width <= 280
-        scope.finalWidth = 280
-      else if 280 < parent.width <= 400
-        scope.finalWidth = 400
-      else if 400 < parent.width <= 800
-        scope.finalWidth = 800
-      else
-        scope.finalWidth = 1200
+      # Round up to nearest 50px - don't want to just use parent.width
+      # because that will cause a ton of refetches in a fluid layout during resize.
+      scope.finalWidth = Math.ceil(parent.width / 50.0) * 50
 
       if scope.aspect && scope.aspect == "16:9"
-        finalHeight = scope.finalWidth * 9 / 16
-        scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth, h: finalHeight})
+        scope.finalHeight = scope.finalWidth * 9 / 16
+        scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth, h: scope.finalHeight})
+
       else
         scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth})
       scope.containerStyle["opacity"] = "1"
@@ -49,7 +45,7 @@ Usage:
   template:
     """
     <div ng-style="containerStyle" class="cs-image">
-      <img ng-src="{{finalUrl}}" alt="{{attrs.alt}}" title="{{attrs.title}}">
+      <img ng-src="{{finalUrl}}" alt="{{attrs.alt}}" title="{{attrs.title}}" width="{{finalWidth}}" height="{{finalHeight || ''}">
     </div>
     """
 

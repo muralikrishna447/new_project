@@ -1,19 +1,25 @@
 .section
-  %h5(ng-if="editMode")
-    Description
+  %h5(ng-if="editMode") Description
   .activity-description-wrapper
     .activity-description.maximize-description#activity-description
       -# .aside.right.rightInset.noprint(ng-show="(! editMode) && (activityColumns < 3)")
       -#   = render 'shared/tools'
       %div.content-activity-description(  ng-show="!! activity.description || editMode"
-                                          ng-model="activity.description" 
+                                          ng-model="activity.description"
                                           cs-contenteditable = "editMode"
                                           placeholder="'Click to write main description'" )
+
+  %div(ng-if="editMode")
+    %h5 Short SEO Description (160 chars recommended max.)
+    %div.content-activity-short-description(  ng-model="activity.short_description"
+                                              cs-contenteditable = "editMode"
+                                              placeholder="'Click to write short description'" )
+
 -if can? :update, @activity
   .section(ng-show="csAuthentication.isAdmin()")
 
     %div(ng-show="!!activity.author_notes || editMode")
       %h4 Private Notes
-      %div( placeholder="'Click to write private notes'" 
-            ng-model="activity.author_notes" 
+      %div( placeholder="'Click to write private notes'"
+            ng-model="activity.author_notes"
             cs-contenteditable="editMode")

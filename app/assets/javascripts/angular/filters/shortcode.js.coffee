@@ -23,7 +23,7 @@ angular.module('ChefStepsApp').filter "shortcode", ->
           when 'mm' then "<a class='length-group'><span class='length' data-orig-value='#{contents / 10.0}'>#{contents}&nbsp;mm</span></a>"
           when 'g' then "<span class='text-quantity-group'><span class='quantity-group qtyfade'><span class='lbs-qty'></span> <span class='lbs-label'></span> <span class='main-qty' data-orig-value='#{contents}'}}>#{contents}</span></span> <span class='unit qtyfade'>g</span></span>"
           when 'ea' then "<span class='text-quantity-group'><span class='quantity-group qtyfade'><span class='lbs-qty'></span> <span class='lbs-label'></span> <span class='main-qty'>#{contents}</span></span> <span class='unit qtyfade alwayshidden'>ea</span></span>"
-          when 'courseActivity' 
+          when 'courseActivity'
             if arg2
               "<a ng-click='loadSubrecipe(#{arg1})'>#{arg2}</a>"
             else
@@ -41,7 +41,7 @@ angular.module('ChefStepsApp').filter "shortcode", ->
             else
               orig
           when 'view'
-           "<a ng-click=\"$parent.showNell('#{arg1}.html')\">#{arg2}</a>"           
+           "<a ng-click=\"$parent.showNell('#{arg1}.html')\">#{arg2}</a>"
           when 'fetchIngredient'
             """
              <div cs-fetch='#{arg1}' type='Ingredient' part='#{arg2}' card='_ingredient_embed_card.html'>
@@ -74,6 +74,10 @@ angular.module('ChefStepsApp').filter "shortcode", ->
           when 'videoLoop'
             """
               <div cs-looping-video-player video-name='#{arg1}' video-image='#{arg2}'></div>
+            """
+          when 'followTopic'
+            """
+              <div cs-follow-topic topic='#{arg1}' text='#{arg2}'></div>
             """
           else orig
     else

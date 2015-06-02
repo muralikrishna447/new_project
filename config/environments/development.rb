@@ -77,5 +77,6 @@ Delve::Application.configure do
   Net::HTTP.http_logger_options = {:verbose => true, :body => true, trace: true}
 
   config.middleware.use PrettyJsonResponse
-end
 
+  AlgoliaSearch.configuration = {application_id: 'JGV2ODT81S', api_key: 'c534846f01761db79637ebedc4bde21a'}
+end

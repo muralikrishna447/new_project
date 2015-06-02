@@ -1,0 +1,24 @@
+.container
+  %h1 Components Manager
+  %div(notifications)
+  %table.table
+    %tr
+      %th id
+      %th name
+      %th slug
+      %th type
+      %th action
+    %tr(ng-repeat="component in components.index | orderBy: 'id'")
+      %td
+        {{component.id}}
+      %td
+        {{component.name}}
+      %td
+        {{component.slug}}
+      %td
+        {{component.componentType}}
+      %td
+        %a.btn.btn-secondary(ui-sref='components.edit({id: component.id})')
+          Edit
+  %a.btn.btn-primary(ui-sref='components.new')
+    Add New Component

@@ -26,7 +26,8 @@ describe 'ActivityController', ->
 
   describe "#endEditMode", ->
     it "ends edit mode with change committed", inject ($rootScope, $controller, $httpBackend) ->
-      $httpBackend.whenGET(/.*ancient-sea-7316.herokuapp.com.*/).respond(200, '')
+      $httpBackend.whenGET(/.*bloomApi.*/).respond(200, '')
+      $httpBackend.whenJSONP(/.*gdata.youtube.com.*/).respond({})
       $httpBackend.expectPUT('/activities/1/notify_start_edit').respond(204, '')
       scope.startEditMode()
 
@@ -40,7 +41,8 @@ describe 'ActivityController', ->
 
   describe "#endEditMode with error", ->
     it "reports error and stays in edit mode", inject ($rootScope, $controller, $httpBackend, csAlertService) ->
-      $httpBackend.whenGET(/.*ancient-sea-7316.herokuapp.com.*/).respond(200, '')
+      $httpBackend.whenGET(/.*bloomApi.*/).respond(200, '')
+      $httpBackend.whenJSONP(/.*gdata.youtube.com.*/).respond({})
       $httpBackend.expectPUT('/activities/1/notify_start_edit').respond(204, '')
       scope.startEditMode()
 
@@ -60,5 +62,3 @@ describe 'ActivityController', ->
       scope.cancelEditMode()
       expect(scope.editMode).toBeFalsy()
       expect(scope.activity.title).toEqual("original")
-
-

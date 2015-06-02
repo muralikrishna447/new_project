@@ -1,7 +1,10 @@
 .modal-body
   .container
 
-    %div(ng-show='survey.showSurvey')
+    .ftue-survey-close(ng-click='end()')
+      %i(cs-icon='x')
+
+    .ftue-survey-header(ng-show='survey.showSurvey')
       %h2.text-center Thanks for joining ChefSteps!
       %h4.text-center What kinds of things are you most interested in?
       %p.text-center
@@ -26,10 +29,7 @@
               %label.ftue-survey-suggestion-label make a suggestion:
               %input(ng-model='survey.suggestion')
 
-      .ftue-survey-done(ng-if="survey.showDone() && survey.showSurvey" ng-click='survey.done()')
-        Next
-
-    %div(ng-show='survey.showRecommendations')
+    .ftue-survey-header(ng-show='survey.showRecommendations')
       %h3.text-center Here are some recommendations:
 
     .ftue-survey-container(ng-show='survey.showRecommendations')
@@ -49,3 +49,13 @@
       .ftue-suggested-container
         .ftue-suggested
           %h4 {{survey.suggestion}}
+
+    .ftue-nav
+      .ftue-survey-done(ng-if="survey.showDone() && survey.showSurvey" ng-click='survey.done()')
+        Next
+      %a.ftue-survey-skip(ng-click='end()')
+        Skip for now
+
+// PINTEREST PIXEL TRACKING
+%div(style='display: none')
+  %img(height="1" width="1" alt="" src="https://ct.pinterest.com/?tid=Sfx7WnJl0AT")

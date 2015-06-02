@@ -42,12 +42,12 @@ class BloomController < ApplicationController
   end
 
   def whats_for_dinner
-    @feed = HTTParty.get('https://ancient-sea-7316.herokuapp.com/posts?apiKey=xchefsteps&categoryId=7fc5373b-ed4e-43bd-acdc-10591eb205a0&seen=&size=4&sort=new&sso=true')
+    @feed = HTTParty.get("#{Rails.application.config.shared_config[:bloom][:api_endpoint]}/posts?apiKey=xchefsteps&categoryId=7fc5373b-ed4e-43bd-acdc-10591eb205a0&seen=&size=4&sort=new&sso=true")
     render json: @feed
   end
 
   def hot
-    @feed = HTTParty.get('https://ancient-sea-7316.herokuapp.com/forum/posts?apiKey=xchefsteps&hosted=false&seen=&size=3&sort=hot')
+    @feed = HTTParty.get("#{Rails.application.config.shared_config[:bloom][:api_endpoint]}/forum/posts?apiKey=xchefsteps&hosted=false&seen=&size=3&sort=hot")
     render json: @feed
   end
 end

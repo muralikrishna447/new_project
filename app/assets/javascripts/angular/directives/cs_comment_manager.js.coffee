@@ -1,8 +1,8 @@
-@app.directive 'csCommentManager', ['$http', '$timeout', '$rootScope', ($http, $timeout, $rootScope) ->
+@app.directive 'csCommentManager', ['$http', '$timeout', '$rootScope', 'csConfig', ($http, $timeout, $rootScope, csConfig) ->
   restrict: 'EA'
   templateUrl: '/client_views/cs_comment_manager'
-  scope: {     
-    commentsType: '@' 
+  scope: {
+    commentsType: '@'
     commentsId: '@'
     seoBot: '@'
     showWhenZero: '@'
@@ -18,7 +18,7 @@
       $rootScope.anyCommentsOpen = $scope.commentsOpen = ! $scope.commentsOpen
       $scope.updateCommentCount()
 
-      # Used with ng-if so we don't throw away the scope if they close it with an 
+      # Used with ng-if so we don't throw away the scope if they close it with an
       # uncommitted comment. Also let's them close and reopen the same one quickly.
       $scope.commentsEverOpened |= $scope.commentsOpen
 
@@ -43,11 +43,10 @@
 
     $scope.updateCommentCount = ->
       identifier = $scope.commentsType + '_' + $scope.commentsId
-      $http.get("https://ancient-sea-7316.herokuapp.com/discussions/#{identifier}/count?apiKey=xchefsteps").success((data, status) ->
+      $http.get("#{csConfig.bloom.api_endpoint}/discussions/#{identifier}/count?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["count"]
       )
 
     # First time
     $scope.updateCommentCount()
 ]
-

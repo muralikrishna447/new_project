@@ -18,7 +18,7 @@ class Ingredient < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :events, as: :trackable, dependent: :destroy
 
-  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields, :tag_list
+  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :vimeo_id, :text_fields, :tag_list
 
   serialize :text_fields, JSON
 
@@ -43,8 +43,6 @@ class Ingredient < ActiveRecord::Base
   scope :not_started, where('CHAR_LENGTH(text_fields) < 10')
   scope :started, where('CHAR_LENGTH(text_fields) > 10 AND CHAR_LENGTH(text_fields) < 150')
   scope :well_edited, where('CHAR_LENGTH(text_fields) > 150')
-
-  include Searchable
 
   include PgSearch
   multisearchable :against => [:title, :text_fields, :product_url]
@@ -120,7 +118,7 @@ class Ingredient < ActiveRecord::Base
     end
   end
 
-  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :text_fields, :tag_list
+  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :vimeo_id, :text_fields, :tag_list
 
   def merge_in_useful_details(other)
     self.product_url = other.product_url if self.product_url.to_s == ''
@@ -175,13 +173,6 @@ class Ingredient < ActiveRecord::Base
       url = ActiveSupport::JSON.decode(self.image_id)["url"]
       avatar_url = "#{url}/convert?fit=crop&w=70&h=70&cache=true".gsub("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
     end
-  end
-
-  # For elasticsearch.  See https://github.com/elasticsearch/elasticsearch-rails/tree/master/elasticsearch-model
-  def as_indexed_json(options={})
-    as_json(
-      only: [:title, :text_fields]
-    )
   end
 
   private

@@ -6,7 +6,7 @@ window.deepCopy = (obj) ->
 
 # This is a little captive controller only designed for use inside ActivityController for now.
 # Would be better as a directive but needs work to abstract it.
-@app.controller 'BannerController', ["$scope", "ActivityMethods", ($scope, ActivityMethods) ->
+@app.controller 'BannerController', ["$scope", "ActivityMethods", "$timeout", ($scope, ActivityMethods, $timeout) ->
   $scope.showVideo = false
 
   $scope.showHeroVisual = ->
@@ -26,29 +26,37 @@ window.deepCopy = (obj) ->
   $scope.$on 'resetVideo', ->
     $scope.toggleHeroVisual() if $scope.showVideo
 
-  $scope.bannerImageURL = ->
-    url = ActivityMethods.itemImageFpfile($scope.activity, 'hero').url
-    url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
+  $scope.bannerImageDimensions = ->
     w = $('.banner-image').width()
     h = 495
     if w < 650
       h = w * 9.0 / 16.0
+    {w: w, h: h}
+
+  bannerImageQuality = 20
+  $timeout( ( ->
+    bannerImageQuality = 90
+  ), 1500)
+
+  $scope.bannerImageURL = ->
+    url = ActivityMethods.itemImageFpfile($scope.activity, 'hero').url
+    url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
+    dims = $scope.bannerImageDimensions()
     if ! $scope.is_brombone
-      url += "/convert?fit=crop&h=#{h}&w=#{w}&quality=90&cache=true"
+      url += "/convert?fit=crop&h=#{dims.h}&w=#{dims.w}&quality=#{bannerImageQuality}&cache=true"
     else
       # For brombone, don't set a height because the arbitrarily wide aspect ratio seems like it might be
       # preventing google from putting our images in SERPs. It might be afraid of taking a square crop
       # out of that wide of an image.
-      url += "/convert?fit=crop&w=#{w}&quality=90&cache=true"
+      url += "/convert?fit=crop&w=#{dims.w}&quality=90&cache=true"
     window.cdnURL(url)
 
 ]
 
 # This controller is a freaking abomination and needs to be broken up into about 5 different services and directives.
 
-@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "$anchorScroll", "$window",
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, $anchorScroll, $window) ->
-
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "csConfig", "$anchorScroll", "$window",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, csConfig, $anchorScroll, $window) ->
   $scope.heroMedia = csEditableHeroMediaService
 
   $scope.url_params = {}
@@ -120,7 +128,7 @@ window.deepCopy = (obj) ->
       $scope.$emit 'openLoginModal'
 
   $scope.createdByAdmin = ->
-    return true if $scope.activity.creator == null
+    return true if $scope.activity && $scope.activity.creator == null
     false
 
 
@@ -454,7 +462,7 @@ window.deepCopy = (obj) ->
   $scope.commentCount = -1
   $scope.updateCommentCount = ->
     if $scope.activity?
-      $http.get("//ancient-sea-7316.herokuapp.com/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
+      $http.get("#{csConfig.bloom.api_endpoint}/discussions/activity_#{$scope.activity.id}?apiKey=xchefsteps").success((data, status) ->
         $scope.commentCount = data["commentCount"]
       )
 
@@ -478,6 +486,8 @@ window.deepCopy = (obj) ->
     $scope.heroVideoDuration = -1
     if $scope.activity && csEditableHeroMediaService.hasHeroVideo()
       $http.jsonp("//gdata.youtube.com/feeds/api/videos/" + $scope.activity.youtube_id + "?v=2&callback=JSON_CALLBACK").then (response) ->
+        return if _.isEmpty(response.data)
+
         # Good god, parsing XML that contains namespaces in the elements using jquery is a compatibility disaster!
         # See http://stackoverflow.com/questions/853740/jquery-xml-parsing-with-namespaces
         # So for now I'm doing a fugly regexp parse. At least it works.
@@ -635,6 +645,7 @@ window.deepCopy = (obj) ->
     'title' : $scope.activity.title,
     'slug' : $scope.activity.slug
     'isRecipe' : $scope.activity.ingredients?.length > 1
+    'tags': _.pluck($scope.activity.tags, 'name')
 
   $scope.getExtendedEventData = ->
     activeMinutes = $scope.activeMinutes()
@@ -684,4 +695,3 @@ window.deepCopy = (obj) ->
   ), 3000
 
 ]
-

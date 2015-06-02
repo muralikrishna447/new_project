@@ -1,15 +1,13 @@
 module Api
   module V0
     class ActivitiesController < BaseController
-      
+
       has_scope :sort, default: 'newest' do |controller, scope, value|
         case value
           when "oldest"
             scope.by_published_at("asc")
-            scope.by_created_at("asc")
           when "newest"
             scope.by_published_at("desc")
-            scope.by_created_at("desc")
           when "popular"
             scope.popular
           when "relevance"
@@ -21,7 +19,7 @@ module Api
       end
 
       # Must be listed after :sort to combine correctly
-      
+
       has_scope :difficulty
       has_scope :include_in_gallery
       has_scope :published
@@ -32,7 +30,7 @@ module Api
       end
 
       has_scope :published_status, default: "published" do |controller, scope, value|
-        value == "published" ? scope.published.include_in_gallery : scope.unpublished.where("title != ''")
+        value == "published" ? scope.published.include_in_gallery : scope.by_created_at('desc').unpublished.where("title != ''")
       end
 
       def index

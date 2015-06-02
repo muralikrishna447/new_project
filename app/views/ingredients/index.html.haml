@@ -10,8 +10,8 @@
     %ul.nav.search-group
       %form.navbar-search.relative
         .input-group
-          %input.search-query(  ng-model='input' 
-                                ng-change='search(input)' 
+          %input.search-query(  ng-model='input'
+                                ng-change='search(input)'
                                 placeholder='search')
           %a.clear-search(ng-click="clearSearch()")
             %i.icon-remove
@@ -24,8 +24,8 @@
     %ul.nav.filters-group(ng-class="{'filters-collapsed' : filtersCollapsed}")
       %li
         %h5 Popular
-        %a( ng-repeat="x in suggestedSearches" 
-            ng-click="search(x, true)" 
+        %a( ng-repeat="x in suggestedSearches"
+            ng-click="search(x, true)"
             ng-class="{'active' : filters['search_all'] == x}")
           %span {{x}}
 
@@ -39,9 +39,9 @@
 
       %li
         %h5 Sort
-        %a( ng-repeat="choice in getSortChoices()" 
-            ng-click="filters.sort = choice" 
-            ng-class="{active: filters.sort == choice}") 
+        %a( ng-repeat="choice in getSortChoices()"
+            ng-click="filters.sort = choice"
+            ng-class="{active: filters.sort == choice}")
           %span(ng-bind-html="choice | nbsp")
 
       %li
@@ -51,18 +51,18 @@
     .no-results(ng-show='noResults()')
       %h3 No results found. Here are some of our favorite ingredients:
 
-    .gallery-items( infinite-scroll='next()' 
-                    infinite-scroll-disabled='dataLoading' 
-                    infinite-scroll-immediate-check='true' 
+    .gallery-items( infinite-scroll='next()'
+                    infinite-scroll-disabled='dataLoading'
+                    infinite-scroll-immediate-check='true'
                     infinite-scroll-distance='1')
 
-      %cs-index-item.cs-index-item( ng-repeat='ingredient in getResults() track by ingredient.id' 
-                                    cs-title='ingredient.title' 
-                                    url='"/ingredients/" + ingredient.slug' 
+      %cs-index-item.cs-index-item( ng-repeat='ingredient in getResults() track by ingredient.id'
+                                    cs-title='ingredient.title'
+                                    url='"/ingredients/" + ingredient.slug'
                                     image='ingredient.image_id')
-    .load-checker                                
+    .load-checker
     .loading-icon-group(ng-show="dataLoading > 0")
-      %i.icon-page-load
+      %cs-loading-spinner
 
   %div(ng-cloak close="showNewIngredientModal = false" modal="showNewIngredientModal" options="modalOptions")
     .modal-header
@@ -75,7 +75,7 @@
           %h4 Could it be one of these? If so, click the name to edit the existing ingredient.
           %ul
             %li.anim-basic-fade(ng-repeat="ing in possibleIngredientMatches")
-              %a(ng-href="/ingredients/{{ing.slug}}?edit=true" target="_blank" ) 
+              %a(ng-href="/ingredients/{{ing.slug}}?edit=true" target="_blank" )
                 {{ing.title}}
         .div(ng-show="exactMatchNewIngredient()")
           %h4 That ingredient already exists, click below to edit it.
@@ -87,8 +87,8 @@
       %i.icon-spinner.icon-spin(ng-show="newIngSpinner")
       .btn-group
         %button.btn.btn-link(ng-click="showNewIngredientModal = false") Cancel
-        %button.btn(  ng-disabled="(newIngredientName.length < 3) || newIngSpinner || exactMatchNewIngredient()" 
-                      ng-click="addAndEditNewIngredient()") 
+        %button.btn(  ng-disabled="(newIngredientName.length < 3) || newIngSpinner || exactMatchNewIngredient()"
+                      ng-click="addAndEditNewIngredient()")
           Create New Ingredient
 = render 'home/madlib_popup', registration_source: 'gallery'
 

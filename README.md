@@ -16,22 +16,24 @@ To set up a new machine:
 ## Required
    
 - install homebrew (brew.sh)
-- brew doctor
-- brew install postgres
-- brew install phantomjs
+- `brew doctor`
+- `brew install postgres`
+- `brew install phantomjs`
 - set postgres to open at login (per output of previous cmd)
-- echo 'location' > ~/.curlc
+- `echo 'location' > ~/.curlc`
 - rails ready install (github.com/joshfng/railsready)
 - close your shell and reopen it
-- git clone https://github.com/ChefSteps/ChefSteps.git
-- cd ChefSteps
+- restart your machine if postgres is not running (eg: first install)
+- `git clone https://github.com/ChefSteps/ChefSteps.git`
+- `cd ChefSteps`
 - install latest Xcode
 - launch Xcode once
-- xcode-select —install
-- rvm install ruby (the version our Gemfile calls for, --with-gcc=clang may be required)
-- bundle
-- createuser -l -s -r delve
-- rake db:create
+- `xcode-select —install`
+- `rvm install ruby 1.9.3` (the version our Gemfile calls for, --with-gcc=clang may be required)
+- `gem install bundle`
+- `bundle`
+- `createuser -l -s -r delve`
+- `rake db:create`
 - install heroku toolbelt (toolbelt.heroku.com)
 - rake copy_production_db (you’ll need your heroku acct/passwd and say yes to creating a new public key)
 - rails s

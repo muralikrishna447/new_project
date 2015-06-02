@@ -1,5 +1,6 @@
 //=require showdown
 //=require angular-ui
+//=require angular-ui-router
 //=require angular_select2
 //=require once
 //=require localStorageModule
@@ -9,6 +10,7 @@
 //=require ui-bootstrap-tpls-0.8.0
 //=require angular/templates
 //=require angular/chefstepsAngularInit
+//=require angular/components/componentsManagerApp
 //=require ingredient_parser
 //=require_tree  ./angular
 //= require jquery-ui
@@ -35,3 +37,4 @@
 //= require angular-payments
 //= require hammer
 //= require knife_collection
+//= require algolia/v3/algoliasearch.min

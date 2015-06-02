@@ -15,7 +15,9 @@
               %div(ng-switch-when="Activity")
                 .class-activity-wrapper.comments-slide(ng-class="{'open' : anyCommentsOpen}")
                   / = render 'activities/banner_image'
-                  %cs-image-video(image='currentIncludable.includable_image_id || currentIncludable.includable.featured_image' video='currentIncludable.includable.youtube_id')
+                  %cs-image-video(  image='currentIncludable.includable_image_id || currentIncludable.includable.featured_image'
+                                    youtube-id='currentIncludable.includable.youtube_id'
+                                    vimeo-id='currentIncludable.includable.vimeo_id')
                   %div(csFixNakedLinks="")
                     = render 'activities/main_activity_content'
                 .prev-next-group(ng-class="{'hide-when-menu-showing': showCourseMenu}" ng-cloak)
@@ -57,7 +59,7 @@
                         %i.icon-edit
                         edit
 
-     
+
         / - if @course.id == 100
         /   .row-fluid.section
         /     .span12.course-comments
@@ -72,8 +74,7 @@
         /       = render 'layouts/disqus_angular'
     .assembly-loading-wrapper.anim-basic-fade(ng-show="loading > 0")
       .assembly-loading-background
-        .activity-loading-spinner
-          %i.icon-page-load
+        %cs-loading-spinner.fixed(ng-hide="! loading")
     .course-nav-slideout.noprint(ng-class="{'menu-slideout': showCourseMenu}")
       %a.black-link(ng-href='{{course.path}}')
         %h1

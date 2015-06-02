@@ -25,10 +25,12 @@
     .assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
       .container
         .row
-          -if (! @no_video) && (! @course.youtube_id.empty?)
-            .span8.section
-              .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
-                %iframe(frameborder='0' allowfullscreen){src: youtube_url(@course.youtube_id)}
+          -if (! @no_video) && ((! @course.youtube_id.empty?) || (! @course.vimeo_id.blank?))
+            .span8.section.noprint
+              %csEmbedVideo(  youtube-id="{{assembly.youtube_id}}"
+                              vimeo-id="{{assembly.vimeo_id}}"
+                              container-slug="{{assembly.slug}}")
+
           -else
             .span8.section
               = image_tag filepicker_hero_image(@course.image_id)
@@ -119,6 +121,7 @@
                         #{@course.preview_copy}
 
   = render 'layouts/footer'
+  = render 'layouts/stripe'
 
 
 

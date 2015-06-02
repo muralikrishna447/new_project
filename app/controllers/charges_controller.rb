@@ -6,7 +6,6 @@ class ChargesController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   def create
-
     assembly = Assembly.find(params[:assembly_id])
     @gift_info = JSON.parse(params[:gift_info]) if params[:gift_info]
     @free_trial = params[:free_trial]
@@ -35,6 +34,12 @@ class ChargesController < ApplicationController
         @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken], 0, params[:existingCard])
       else
         @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken])
+      end
+      if assembly.paid?
+        # TIMDISCOUNT but probably generally a good idea - our coupons are only good for one paid class purchase
+        # so clear 'em out. If the user goes back through a link for a normal coupon again, that would be allowed
+        # but not for the the tim discount, since that has its own db flag.
+        session[:coupon] = nil
       end
     end
 

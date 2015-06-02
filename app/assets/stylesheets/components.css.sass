@@ -1,0 +1,178 @@
+@import 'mixins'
+
+.component-container
+  margin-bottom: 40px
+  @include display-flex
+  @include justify-content(center)
+  .component-full
+    @include flex(0 1 100%)
+
+  .component-small
+    @include flex(0 1 400px)
+
+  .component-medium
+    @include flex(0 1 800px)
+
+  .component-large
+    @include flex(0 1 1200px)
+
+.component-edit-button
+  @include display-flex
+  @include justify-content(center)
+
+.component-form
+  padding: 20px
+  @include boxsizing
+  @include flex(0 0 600px)
+  input[type='text'], input[type='number'], textarea
+    width: 100%
+    border: 1px solid $light-gray
+    border-radius: 0px
+    margin-bottom: 20px
+    @include box-shadow(none)
+  textarea
+    min-height: 200px
+
+.component-mapper
+  background-color: $offwhite
+  border-radius: 10px
+  padding: 20px
+  margin-bottom: 20px
+  .component-mapper-title
+    font-weight: bold
+    margin-bottom: 20px
+    text-align: center
+  table
+    font-size: 1.4rem
+    width: 100%
+    text-align: left
+    tr
+      th
+        font-weight: normal
+      td
+        width: 50%
+        select
+          width: 100%
+        input[type='text'], input[type='number']
+          min-width: 200px
+          border: 1px solid $light-gray
+          border-radius: 0px
+          margin-bottom: 10px
+          @include box-shadow(none)
+
+.component-preview
+  padding: 20px
+  @include boxsizing
+  @include flex(1 0 600px)
+  max-width: 1200px
+
+.component-styles
+  background-color: $offwhite
+  border-radius: 10px
+  padding: 20px
+  margin-bottom: 20px
+  .component-styles-title
+    font-weight: bold
+    margin-bottom: 20px
+    text-align: center
+
+.component-styles-color-picker
+  .color-current
+    padding: 5px
+    @include boxsizing
+    @include display-flex
+    &:hover
+      cursor: pointer
+      background-color: $offwhite
+  .color-options
+    border: 1px solid black
+    @include boxsizing
+    @include display-flex
+    @include flex-direction(column)
+    .color-option
+      padding: 5px
+      @include boxsizing
+      @include display-flex
+      &:hover
+        cursor: pointer
+        background-color: $offwhite
+
+  .color-box
+    width: 20px
+    height: 20px
+    border: 1px solid black
+    margin-right: 5px
+    @include boxsizing
+
+// Notifications //
+.notifications
+  .notification
+    text-align: center
+    padding: 20px
+    background-color: $offwhite
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    @include boxsizing
+    .notification-message
+      margin: 0
+    .notification-button
+      margin: 0
+      margin-left: 10px
+
+.btn-outline
+  display: block
+  border: 2px solid rgba(255,255,255,.8)
+  color: white
+  padding: 5px 20px
+  background-color: none
+  z-index: 1
+  text-align: center
+  @include transition(all 300ms)
+  &:hover
+    border: 2px solid $orange
+    background-color: $orange
+    color: white
+    cursor: pointer
+
+.btn-outline-rounded
+  display: block
+  border: 2px solid rgba(255,255,255,.8)
+  border-radius: 3px
+  color: white
+  padding: 5px 20px
+  background-color: none
+  z-index: 1
+  text-align: center
+  @include transition(all 300ms)
+  &:hover
+    border: 2px solid $orange
+    background-color: $orange
+    color: white
+    cursor: pointer
+
+// TEMP NEW HOMEPAGE
+.new-home
+  h2
+    margin-bottom: 40px
+
+.home-component-split-container
+  @include display-flex
+  @include justify-content(center)
+
+.home-component-split
+  @include display-flex
+  @include flex-wrap(wrap)
+  @include flex(0 1 1200px)
+  .home-component-split-item
+    padding-right: 10px
+    @include flex(1 1 50%)
+    @include boxsizing
+    &:last-of-type
+      padding-right: 0px
+      padding-left: 10px
+
+@media (max-width: 600px)
+  .home-component-split
+    .home-component-split-item
+      @include flex(0 1 100%)

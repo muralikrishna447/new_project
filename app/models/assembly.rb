@@ -2,7 +2,7 @@ class Assembly < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   friendly_id :title, use: [:slugged, :history]
-  attr_accessible :description, :image_id, :prereg_image_id, :title, :youtube_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets, :preview_copy, :testimonial_copy, :prereg_email_list_id, :description_alt
+  attr_accessible :description, :image_id, :prereg_image_id, :title, :youtube_id, :vimeo_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets, :preview_copy, :testimonial_copy, :prereg_email_list_id, :description_alt
   has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :pages, through: :assembly_inclusions, source: :includable, source_type: 'Page'
@@ -16,7 +16,6 @@ class Assembly < ActiveRecord::Base
 
   has_many :gift_certificates, inverse_of: :assembly
 
-
   scope :published, where(published: true)
   scope :projects, where(assembly_type: 'Project')
   scope :recipe_developments, where(assembly_type: 'Recipe Development')
@@ -27,6 +26,13 @@ class Assembly < ActiveRecord::Base
 
   ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group', 'Recipe Development', 'Kit']
   INCLUDABLE_TYPE_SELECTION = ['Activity', 'Assembly', 'Page', 'Assignment']
+
+  before_save :check_published
+  def check_published
+    if self.published && self.published_at.blank?
+      self.published_at = DateTime.now
+    end
+  end
 
   def ingredients
     activities.map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}.reject{|i| i.unit == 'recipe'}
@@ -89,7 +95,7 @@ class Assembly < ActiveRecord::Base
 
   def video_count
     assembly_activities = leaf_activities
-    activity_videos_count = assembly_activities.select{|a| a.youtube_id? }.count
+    activity_videos_count = assembly_activities.select{|a| a.youtube_id? || a.vimeo_id? }.count
     activity_step_videos_count = assembly_activities.map(&:steps).flatten.select{|s| s.youtube_id? }.map(&:youtube_id).uniq.count
     activity_videos_count + activity_step_videos_count
   end
@@ -138,6 +144,9 @@ class Assembly < ActiveRecord::Base
       pct = 0.75
     when 'b1b01d389a50'
       pct = 0.5
+    # TIMDISCOUNT
+    when 'fb912ad989a0'
+      pct = 0
     end
 
     # New users who haven't used their enrollment incentive yet always get 50%

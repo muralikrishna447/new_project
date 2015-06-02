@@ -5,9 +5,10 @@
 -# negative-z instead of ng-hide b/c if we hide, the embedded youtube gets wrong size and procedes to
 -# pillarbox for no good reason til next resize. Argggh.
 .hero-visual(ng-switch="heroMedia.heroDisplayType()" ng-class="{'negative-z' : ! showHeroVisual()}")
-  %csEmbedYouTube(  ng-switch-when="video"
-                    video-id="{{activity.youtube_id}}"
-                    container-slug="{{activity.slug}}")
+  %csEmbedVideo(  ng-switch-when="video"
+                  youtube-id="{{getObject().youtube_id}}"
+                  vimeo-id="{{getObject().vimeo_id}}"
+                  container-slug="{{getObject().slug}}")
 
   %img(ng-switch-when="image" ng-src="{{heroMedia.heroImageURL(heroImageSize || 888)}}" alt="{{getObject().title}}" title="{{getObject().title}}")
   %h4.image-loading-indicator(ng-show="editMode") Loading ...

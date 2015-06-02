@@ -43,6 +43,14 @@ module Api
         end
       end
 
+      def authenticate_active_admin_user!
+        authenticate_user!
+        unless current_user.role?(:contractor)
+          flash[:alert] = "Unauthorized Access!"
+          redirect_to root_path
+        end
+      end
+
       protected
 
       def ensure_authorized

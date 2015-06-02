@@ -171,6 +171,27 @@ html
     left: 0%
     max-height: 100%
 
+.modal.fade.in.modal-large
+  position: fixed
+  top: 40px
+  left: 40px
+  right: 40px
+  bottom: 40px
+  margin-left: 0px
+  max-width: inherit
+  max-height: inherit
+  overflow: auto
+  width: inherit
+  padding-bottom: 60px
+  @include boxsizing
+  .anim-basic-fade
+    height: 100%
+    overflow: hidden
+    .modal-body
+      max-height: inherit
+      height: 100%
+      .ftue-survey-container
+        margin-bottom: 20px
 
 @media (max-width: 768px)
   .modal-fullscreen
