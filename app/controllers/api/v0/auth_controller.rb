@@ -60,11 +60,11 @@ module Api
 
       def authenticate_facebook
         user = User.find_by_email(params[:user][:email])
-        puts params[:user][:email]
+        aa = ActorAddress.create_for_user user, "facebook"
         if user && user.provider == 'facebook' && user.facebook_user_id == params[:user][:user_id]
-          render json: {status: '200 Success', token: create_token(user)}, status: 200
+          render json: {status: '200 Success', token: aa.current_token.to_jwt}, status: 200
         else
-          render json: {status: 401, message: 'Unauthorized'}, status: 401
+          render_unauthorized
         end
       end
 
@@ -76,7 +76,8 @@ module Api
           valid_data = valid_token?(token)
           render json: {message: 'Success.', tokenValid: true, data: valid_data}, status: 200
         rescue Exception => e
-          logger.warn "Authenticate Exception: #{e.class} #{e}"
+          logger.error "Authenticate Exception: #{e.class} #{e}"
+          logger.error e.backtrace.join("\n")
           render json: {status: 500, message: 'Internal Server Error'}, status: 500
         end
       end
@@ -97,7 +98,7 @@ module Api
           end
         else
           logger.info "No request authorization provided"
-          render json: {status: 401, message: 'Unauthorized'}, status: 401
+          render_unauthorized
         end
       end
     end

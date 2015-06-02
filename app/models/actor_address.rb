@@ -31,15 +31,18 @@ class ActorAddress < ActiveRecord::Base
     self.create_for_actor(user, client_metadata, nil)
   end
 
-  def current_token
-    AuthToken.new claim
+  def current_token (exp = nil, restrict_to = nil)
+    AuthToken.new claim(exp = exp, restrict_to = restrict_to)
   end
 
-  def claim
-    {:iat => self.issued_at,
+  def claim (exp = nil, restrict_to = nil)
+    c = {:iat => self.issued_at,
      :address_id => self.address_id,
      :seq => self.sequence,
      "#{self.actor_type}" => {"id" => self.actor_id}}
+    c[:exp] = exp if exp
+    c[:restrictTo] = restrict_to if restrict_to
+    c
   end
 
   def tentative_next_token
@@ -60,7 +63,8 @@ class ActorAddress < ActiveRecord::Base
     self.save
   end
 
-  def valid_token?(auth_token, sequence_offset = 0)
+  def valid_token?(auth_token, sequence_offset = 0, restrict_to = nil)
+    logger.info "Verifying validity for #{auth_token.inspect}"
     auth_claim = auth_token.claim
     if self.address_id != auth_claim[:address_id]
       logger.info "Address does not match"
@@ -72,6 +76,11 @@ class ActorAddress < ActiveRecord::Base
       return false
     end
 
+    if (auth_claim['restrictTo'] || restrict_to) && auth_claim['restrictTo'] != restrict_to
+      logger.info "Required restriction #{restrict_to} does not match"
+      return false
+    end
+
     # TODO add expiration logic
 
     if self.revoked?
@@ -79,6 +88,11 @@ class ActorAddress < ActiveRecord::Base
       return false
     end
 
+    time_now = (Time.now.to_f * 1000).to_i
+    if auth_claim[:exp] && auth_claim[:exp] <= time_now
+      logger.info "Token expired"
+      return false
+    end
     return true
   end
 
@@ -92,21 +106,27 @@ class ActorAddress < ActiveRecord::Base
   end
 
   def self.find_for_token(token)
-    if token.claim.has_key?("User")
-      actor_type = "User"
-    elsif token.claim.has_key?("Circulator")
-      actor_type = "Circulator"
-    else
-      raise "Token does not contain valid actor type"
-    end
-
+    actor_type = actor_type_from_token(token)
     actor_id = token.claim[actor_type]['id']
     address_id = token.claim['address_id']
+
     aa = ActorAddress.where(actor_type: actor_type, actor_id: actor_id, address_id: address_id).first
     unless aa
       logger.info ("No ActorAddress found for token #{token.claim.inspect}")
       return nil
     end
-    return aa
+    aa
+  end
+
+  private
+
+  def self.actor_type_from_token (token)
+    if token.claim.has_key?("User")
+      "User"
+    elsif token.claim.has_key?("Circulator")
+      "Circulator"
+    else
+      raise "Token does not contain valid actor type"
+    end
   end
 end

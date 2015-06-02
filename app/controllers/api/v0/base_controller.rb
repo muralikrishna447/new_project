@@ -76,37 +76,17 @@ module Api
             return
           end
 
+          # TODO - handle non-user tokens gracefully
           @user_id_from_token = token.claim['User']['id']
 
         rescue Exception => e
           logger.error e
+          logger.error e.backtrace.join("\n")
           render json: {status: 401, message: 'Unauthorized.'}, status: 401
         end
       end
 
-      def create_token(user, exp=nil, restrict_to=nil)
-        secret = ENV["AUTH_SECRET_KEY"]
-        key = OpenSSL::PKey::RSA.new secret, 'cooksmarter'
-        issued_at = (Time.now.to_f * 1000).to_i
-        claim = {
-          iat: issued_at,
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email
-          }
-        }
-        claim[:exp] = exp if exp
-        claim[:restrictTo] = restrict_to if restrict_to
-
-        jws = JSON::JWT.new(claim.as_json).sign(key.to_s)
-        jwe = jws.encrypt(key.public_key)
-        jwt = jwe.to_s
-        # puts "JWS: #{jws}"
-        # puts "JWE: #{jwe}"
-        # puts "JWT: #{jwt}"
-      end
-
+      # Still used by messaging service stuff
       def valid_token?(token, restrict_to = nil)
         key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
         decoded = JSON::JWT.decode(token, key)
