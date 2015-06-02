@@ -3,13 +3,14 @@ require 'spec_helper'
 describe Activity, "#meta_description" do
   before :each do
     @user = Fabricate :user
-    @circulator = Fabricate :circulator
+    @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '123'
     @for_user = ActorAddress.create_for_user(@user, @circulator)
   end
 
   it 'should create for circulator' do
     #@user.actor_addresses.length.should == 1
-    a = ActorAddress.create_for_circulator(@user, @circulator)
+
+    a = ActorAddress.create_for_circulator(@circulator)
     a.actor.should == @circulator
     a.client_metadata.should == 'circulator'
   end
@@ -41,10 +42,18 @@ describe Activity, "#meta_description" do
     a.sequence.should == (initial_sequence + 1)
   end
 
-  it 'should reject ' do
+
+  it 'should reject incrementing to incorrect sequence' do
     a = ActorAddress.create_for_user(@user, @circulator)
     next_token = a.tentative_next_token
     next_token.claim[:seq] = 123
+    expect {a.increment_to next_token }.to raise_error
+  end
+
+  it 'should reject incrementing to mismatched token' do
+    a = ActorAddress.create_for_user(@user, @circulator)
+    next_token = a.tentative_next_token
+    next_token.claim[:address_id] = 123
     expect {a.increment_to next_token }.to raise_error
   end
 end

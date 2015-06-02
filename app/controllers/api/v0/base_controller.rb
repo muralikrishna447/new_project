@@ -56,7 +56,6 @@ module Api
 
           token = AuthToken.from_string(token)
           aa = ActorAddress.find_for_token(token)
-          puts token.inspect
           unless aa
             logger.info "Not ActorAddress found for token #{token}"
             render_unauthorized

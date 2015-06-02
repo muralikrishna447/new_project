@@ -3,12 +3,12 @@ describe Api::V0::CirculatorsController do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '123'
 
-    @aa = ActorAddress.create_for_circulator @user, @circulator
+
+    @aa = ActorAddress.create_for_circulator @circulator
     @other_circulator = Fabricate :circulator, notes: 'some other notes', circulator_id: '456'
     @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
 
     token = ActorAddress.create_for_user(@user, 'cooking_app').current_token
-    #token = AuthToken.for_user @user
     request.env['HTTP_AUTHORIZATION'] = token.to_s
   end
 
@@ -61,6 +61,7 @@ describe Api::V0::CirculatorsController do
     token = AuthToken.from_string result['token']
     puts token.claim.inspect
     token['Circulator']['id'].should == @circulator.id
+    # TODO - use timecop
     (token['iat'] - Time.now.to_i).abs.should < 2
   end
 
@@ -92,7 +93,7 @@ describe Api::V0::CirculatorsController do
     result['status'].should == 401
   end
 
-  it 'should not delete the circulator if not the owner', focus: true do
+  it 'should not delete the circulator if not the owner' do
     @circulator_user.owner = false
     @circulator_user.save!
 

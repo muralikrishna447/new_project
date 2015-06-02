@@ -2,13 +2,15 @@ class ActorAddress < ActiveRecord::Base
   belongs_to :actor, polymorphic: true
 
   def self.create_for_actor(actor, client_metadata, address_id)
-    # need to sort out transaction scope...
-    logger.info "Creating new ActorAddress for #{actor} for metadata #{client_metadata}"
+    logger.info "Creating new ActorAddress for #{actor} with metadata #{client_metadata}"
     aa = ActorAddress.new()
     aa.actor = actor
     aa.client_metadata = client_metadata
     aa.issued_at = Time.now.to_i
+
+    aa.status = 'active' # TODO
     ActorAddress.transaction do
+      # save first only so we can re-use id for address_id when not specified
       aa.save!
       if address_id
         aa.address_id = address_id
@@ -21,12 +23,12 @@ class ActorAddress < ActiveRecord::Base
     aa
   end
 
-  def self.create_for_circulator(user, circulator)
+  def self.create_for_circulator(circulator)
     self.create_for_actor(circulator, 'circulator', circulator.circulator_id)
   end
 
-  def self.create_for_user(user, circulator)
-    self.create_for_actor(user, 'user_something', nil)
+  def self.create_for_user(user, client_metadata)
+    self.create_for_actor(user, client_metadata, nil)
   end
 
   def current_token
@@ -49,29 +51,31 @@ class ActorAddress < ActiveRecord::Base
   end
 
   def increment_to(token)
-    unless token.claim[:seq] == (self.sequence + 1)
-      raise "Invalid increment should be real exception"
+    unless valid_token?(token, 1)
+      raise "Invalid token"
     end
+
+    self.issued_at = token['iat']
     self.sequence = self.sequence + 1
     self.save
   end
 
-  def valid_token?(auth_token)
+  def valid_token?(auth_token, sequence_offset = 0)
     auth_claim = auth_token.claim
     if self.address_id != auth_claim[:address_id]
-      # TODO - should not be error...
-      logger.error "Address does not match"
-      return false
-    end
-    if self.sequence != auth_claim[:seq]
-      logger.error "Sequence number does not match"
+      logger.info "Address does not match"
       return false
     end
 
-    # TODO expiration
+    if (self.sequence + sequence_offset) != auth_claim[:seq]
+      logger.info "Sequence number does not match"
+      return false
+    end
+
+    # TODO add expiration logic
 
     if self.revoked?
-      logger.error "Token is revoked"
+      logger.info "Token is revoked"
       return false
     end
 
@@ -105,5 +109,4 @@ class ActorAddress < ActiveRecord::Base
     end
     return aa
   end
-
 end

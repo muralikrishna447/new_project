@@ -33,7 +33,7 @@ module Api
           logger.info "Creating circulator #{circulator.inspect}}"
           circulator.save!
 
-          aa = ActorAddress.create_for_circulator(user, circulator)
+          aa = ActorAddress.create_for_circulator(circulator)
           circulatorUser = CirculatorUser.new user: user, circulator: circulator
           unless params[:owner] == false
             circulatorUser.owner = true

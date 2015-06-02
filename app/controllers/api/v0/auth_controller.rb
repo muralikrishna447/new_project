@@ -15,13 +15,13 @@ module Api
           user = User.find_by_email(email)
           unless user
             logger.info("No account found for email ")
-            render json: {status: 401, message: 'Unauthorized'}, status: 401
+            render_unauthorized
             return
           end
 
           unless user.valid_password?(params[:user][:password])
             logger.info("Invalid password provided for user #{email}.")
-            render json: {status: 401, message: 'Unauthorized'}, status: 401
+            render_unauthorized
             return
           end
 
@@ -33,6 +33,10 @@ module Api
             if aa
               if aa.revoked?
                 logger.info "User presented revoked token during login"
+              elsif aa.actor != user
+                logger.info ("Received token for wrong user.")
+                render_unauthorized
+                return
               else
                 aa.double_increment
                 render json: {status: 200, message: 'Success.', token: aa.current_token.only_signed}, status: 200

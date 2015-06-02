@@ -19,33 +19,6 @@ class AuthToken
     {:token => @token, :status =>200}.to_json
   end
 
-  # TODO - use
-  # def self.for_user(user, exp=nil, restrict_to=nil)
-  #   claim = {
-  #     iat: issued_at,
-  #     User: {
-  #       id: user.id,
-  #       name: user.name,
-  #       email: user.email
-  #     }
-  #   }
-  #   claim[:exp] = exp if exp
-  #   claim[:restrictTo] = restrict_to if restrict_to
-  #
-  #   AuthToken.new claim
-  # end
-  #
-  # def self.for_circulator(circulator, exp = nil)
-  #   claim = {
-  #     iat: issued_at,
-  #     Circulator: {
-  #       id: circulator.id
-  #     }
-  #   }
-  #
-  #   AuthToken.new claim
-  # end
-
   def self.from_string(token)
     claim = decrypt(token)
     AuthToken.new claim

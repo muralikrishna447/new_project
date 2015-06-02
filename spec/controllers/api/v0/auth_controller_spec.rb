@@ -2,12 +2,13 @@ describe Api::V0::AuthController do
 
   before :each do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
+    @other_user = Fabricate :user, email: 'jane@chefsteps.com', password: 'matter', name: 'Jane'
     @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
   end
 
   context 'POST /authenticate' do
 
-    it 'should return a status 400 internal service error' do
+    it 'should return a 400 when called with bad parameters' do
       post :authenticate
       response.should_not be_success
       response.code.should eq("400")
@@ -19,17 +20,34 @@ describe Api::V0::AuthController do
       response.code.should eq("401")
     end
 
+    it 'should persist client metadata' do
+      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}, client_metadata: "cooking_app"
+      token = AuthToken.from_string JSON.parse(response.body)['token']
+      address_id = token['address_id']
+      ActorAddress.where(address_id: address_id).first.client_metadata.should == 'cooking_app'
+    end
+
     it 'should re-use an existing address' do
       aa = ActorAddress.create_for_user @user, "cooking_app"
       aa.current_token
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
-         client_metadata: 'cooking_app', token: aa.current_token.only_signed
+        token: aa.current_token.only_signed
       token = JSON.parse(response.body)['token']
 
       decoded = JSON.parse(UrlSafeBase64.decode64(token.split('.')[1]))
 
       decoded['address_id'].should == aa.address_id
       decoded['seq'].should == (aa.sequence + 2)
+    end
+
+    it 'should reject mismatched token' do
+      aa = ActorAddress.create_for_user @other_user, "cooking_app"
+      aa.current_token
+      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
+        token: aa.current_token.only_signed
+
+      response.should_not be_success
+      response.code.should eq("401")
     end
 
     describe 'token' do
@@ -55,11 +73,8 @@ describe Api::V0::AuthController do
         # puts "Verified: #{verified}"
         id = verified['User']['id']
         id.should eq(@user.id)
-
         # TODO - get a new address
       end
-
-
     end
   end
 
@@ -73,7 +88,6 @@ describe Api::V0::AuthController do
         service: 'Messaging'
       }
       @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).encrypt(@key.public_key).to_s
-
 
       @user = Fabricate :user, id: 200, email: 'user@chefsteps.com', password: '123456', name: 'A User', role: 'user'
       claim = {
@@ -104,7 +118,5 @@ describe Api::V0::AuthController do
       response.should_not be_success
       expect(JSON.parse(response.body)['tokenValid']).to be_false
     end
-
   end
-
 end
