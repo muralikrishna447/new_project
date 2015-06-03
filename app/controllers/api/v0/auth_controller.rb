@@ -82,9 +82,20 @@ module Api
       # To generate the token, run rake api:generate_service_token[SERVICE_NAME]
       def validate
         begin
-          token = params[:token]
-          valid_data = valid_token?(token)
-          render json: {message: 'Success.', tokenValid: true, data: valid_data}, status: 200
+          token = AuthToken.from_string(params[:token])
+
+          aa = ActorAddress.find_for_token(token)
+          unless aa
+            render json: {status: 401, meessage: 'No ActorAddress for token'}
+            return
+          end
+
+          unless aa.valid_token? token
+            render json: {status: 401, meessage: 'Invalid token'}
+            return
+          end
+
+          render json: {message: 'Success.', tokenValid: true, data: token.claim}, status: 200
         rescue Exception => e
           logger.error "Authenticate Exception: #{e.class} #{e}"
           logger.error e.backtrace.join("\n")
