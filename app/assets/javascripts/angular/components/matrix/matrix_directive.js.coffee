@@ -27,13 +27,13 @@
   return this
 ]
 
-@components.directive 'matrixForm', ['$http', 'Mapper', 'Matrix', 'componentItem', ($http, Mapper, Matrix, componentItem) ->
+@components.directive 'matrixForm', ['$http', 'Mapper', 'Matrix', 'componentItemService', ($http, Mapper, Matrix, componentItemService) ->
   restrict: 'A'
   scope: {
     component: '='
   }
   link: (scope, $element, $attrs) ->
-    scope.itemTypes = componentItem.types
+    scope.itemTypes = componentItemService.types
 
     scope.$watch 'component.form.mode', (newValue, oldValue) ->
       apiMode = newValue
@@ -52,6 +52,9 @@
               maxNumber = numRows*numCols
               Mapper.do(source, mapper, maxNumber).then (items) ->
                 scope.component.form.metadata.custom.items = items
+
+    scope.$watch 'component.form.metadata.itemTypeName', (newValue, oldValue) ->
+      scope.itemType = componentItemService.get(newValue)
 
   templateUrl: '/client_views/component_matrix_form.html'
 ]

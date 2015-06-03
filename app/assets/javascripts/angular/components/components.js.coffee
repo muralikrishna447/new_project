@@ -21,6 +21,13 @@
 @components.controller 'homeController', ['csAuthentication', (csAuthentication) ->
   @editable = csAuthentication.isAdmin()
   @showEditable = false
+  @itemSquare =
+    content:
+      title: 'Item 1'
+      buttonMessage: 'See the recipe'
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/dbImpR5vSGea00mJFqJM'
+      url: 'http://www.chefsteps.com/test'
+
   @testComponentMapper = [
     {
       componentKey: "title",
@@ -104,6 +111,38 @@
 #   url: 'url'
 # }
 @components.service 'Mapper', ['$http', '$q', ($http, $q) ->
+
+  @mapObject = (data, connections, maxNumber) ->
+    if data.length
+      if maxNumber
+        console.log 'Max Number: ', maxNumber
+        console.log 'Data Before: ', data
+        data = data.splice(0, maxNumber)
+        console.log 'Data After: ', data
+      responseKeys = Object.keys(data)
+
+      mapped = data.map (item, index) ->
+        mappedItem = {}
+        for connection in connections
+          value = connection.value
+          if value && connection.value.length > 0
+            mappedItem[connection.componentKey] = value
+          else
+            mappedItem[connection.componentKey] = item[connection.sourceKey]
+        return { content: mappedItem }
+
+    else
+      responseKeys = Object.keys(data)
+      mappedItem = {}
+      item = data
+      for connection in connections
+        value = connection.value
+        if value && value.length > 0
+          mappedItem[connection.componentKey] = value
+        else
+          mappedItem[connection.componentKey] = item[connection.sourceKey]
+      mapped = { content: mappedItem }
+
 
   @do = (sourceUrl, connections, maxNumber) ->
     deferred = $q.defer()

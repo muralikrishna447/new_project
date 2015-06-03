@@ -12,9 +12,10 @@
 # * Create the template and the form template
 # * Add file for css
 
-@components.service 'componentItem', [ ->
+@components.service 'componentItemService', [ ->
   @types = [
     {
+      id: 1
       name: 'Hero A'
       className: 'hero.hero-a'
       attrs: ['title', 'image', 'buttonMessage', 'url']
@@ -22,18 +23,21 @@
       formTemplateUrl: '/client_views/component_item_hero_a_form.html'
     }
     {
+      id: 2
       name: 'List A'
       attrs: ['title', 'image', 'description', 'url']
       templateUrl: '/client_views/component_item_list_a.html'
       formTemplateUrl: '/client_views/component_item_media_form.html'
     }
     {
+      id: 3
       name: 'Media A'
       attrs: ['title', 'image', 'description', 'url']
       templateUrl: '/client_views/component_item_media_a.html'
       formTemplateUrl: '/client_views/component_item_media_form.html'
     }
     {
+      id: 4
       name: 'Square A'
       className: 'square.square-a'
       attrs: ['title', 'image', 'buttonMessage', 'url']
@@ -41,6 +45,7 @@
       formTemplateUrl: '/client_views/component_item_square_a_form.html'
     }
     {
+      id: 5
       name: 'Header A'
       attrs: ['header', 'subheader']
       templateUrl: '/client_views/component_item_header_a.html'
