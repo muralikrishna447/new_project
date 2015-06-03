@@ -196,9 +196,10 @@
         %h4 Create circulator
         %pc
           %i POST /api/v0/circulators
-        %form(ng-submit='createCirculator(user.token, circulator.serialNumber, circulator.notes)')
+        %form(ng-submit='createCirculator(user.token, circulator.circulatorId,   circulator.serialNumber, circulator.notes)')
           .control-group
             %input(type='text' ng-model='user.token' placeholder='token')
+            %input(type='text' ng-model='circulator.circulatorId' placeholder='id')
             %input(type='text' ng-model='circulator.serialNumber' placeholder='serialNumber')
             %input(type='text' ng-model='circulator.notes' placeholder='notes')
           .control-group
@@ -208,6 +209,23 @@
             clear
           %div
             {{createCirculatorStatus}}
+    %hr
+    .row
+      .span8.well-border
+        %h4 Get circulator token
+        %pc
+          %i GET /api/v0/circulators/{id}/token
+        %form(ng-submit='getCirculatorToken(user.token, circulator.circulatorId)')
+          .control-group
+            %input(type='text' ng-model='user.token' placeholder='token')
+            %input(type='text' ng-model='circulator.circulatorId' placeholder='id')
+          .control-group
+            %input.btn(type='submit' value='Get token')
+        .alert(ng-if='getCirculatorTokenStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{getCirculatorTokenStatus}}
 
     %hr
     .row
