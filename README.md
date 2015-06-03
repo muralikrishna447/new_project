@@ -22,6 +22,7 @@ To set up a new machine:
 - set postgres to open at login (per output of previous cmd)
 - `echo 'location' > ~/.curlc`
 - rails ready install (github.com/joshfng/railsready)
+   -  `curl -O https://raw.githubusercontent.com/joshfng/railsready/master/railsready.sh && bash railsready.sh`
 - close your shell and reopen it
 - restart your machine if postgres is not running (eg: first install)
 - `git clone https://github.com/ChefSteps/ChefSteps.git`
