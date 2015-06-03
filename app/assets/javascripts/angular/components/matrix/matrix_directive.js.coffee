@@ -27,13 +27,13 @@
   return this
 ]
 
-@components.directive 'matrixForm', ['$http', 'Mapper', 'Matrix', 'componentItem', ($http, Mapper, Matrix, componentItem) ->
+@components.directive 'matrixForm', ['$http', 'Mapper', 'Matrix', 'componentItemService', ($http, Mapper, Matrix, componentItemService) ->
   restrict: 'A'
   scope: {
     component: '='
   }
   link: (scope, $element, $attrs) ->
-    scope.itemTypes = componentItem.types
+    scope.itemTypes = componentItemService.types
 
     scope.$watch 'component.form.mode', (newValue, oldValue) ->
       apiMode = newValue

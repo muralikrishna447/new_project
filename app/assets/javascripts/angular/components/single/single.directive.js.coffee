@@ -1,10 +1,10 @@
-@components.directive 'singleForm', ['Mapper', 'componentItem', (Mapper, componentItem) ->
+@components.directive 'singleForm', ['Mapper', 'componentItemService', (Mapper, componentItemService) ->
   restrict: 'A'
   scope: {
     component: '='
   }
   link: (scope, $element, $attrs) ->
-    scope.itemTypes = componentItem.types
+    scope.itemTypes = componentItemService.types
     scope.component.form.metadata.api = {} unless scope.component.form.metadata.api
     scope.component.form.metadata.custom = {} unless scope.component.form.metadata.custom
     scope.$watch 'component.form.mode', (newValue, oldValue) ->
@@ -25,6 +25,9 @@
                 scope.component.form.metadata.custom.item = item
                 scope.component.form.metadata.custom.item.styles = scope.component.form.metadata.api.styles
 
+    scope.$watch 'component.form.metadata.itemTypeName', (newValue, oldValue) ->
+      scope.itemType = componentItemService.get(newValue)
+
   templateUrl: '/client_views/component_single_form.html'
 ]
 
@@ -35,6 +38,8 @@
   }
   link: (scope, $element, $attrs) ->
     scope.$watch 'component', ((newValue, oldValue) ->
+      console.log 'newValue: ', newValue
+      console.log 'oldValue: ', oldValue
       switch scope.component.mode
         when 'api'
           source = scope.component.metadata.api.source

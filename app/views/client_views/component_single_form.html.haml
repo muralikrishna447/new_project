@@ -1,6 +1,6 @@
 %fieldset
   %label Item Type
-  %select(ng-options="item.name for item in itemTypes track by item.name" ng-model='component.form.metadata.itemType')
+  %select(ng-options="item.name as item.name for item in itemTypes" ng-model='component.form.metadata.itemTypeName')
 
 %fieldset
   %label Mode
@@ -11,7 +11,7 @@
     %input(type='radio' ng-model='component.form.mode' value='custom')
     Custom
 
-%fieldset(ng-if="component.form.mode=='api' && component.form.metadata.itemType")
+%fieldset(ng-if="component.form.mode=='api' && component.form.metadata.itemTypeName")
 
   // Example API endpoints
   .btn(ng-click="component.form.metadata.api.source = 'http://www.chefsteps.com/api/v0/activities/3'")
@@ -22,7 +22,7 @@
 
   %div( component-mapper
         connections='component.form.metadata.api.mapper'
-        component-keys='component.form.metadata.itemType.attrs'
+        component-keys='itemType.attrs'
         component='component'
         source = 'component.form.metadata.api.source'
         ng-show='component.form.metadata.api.source' )
@@ -39,6 +39,5 @@
     %label Max number of sentences in description
     %input(type='number' ng-model='component.form.metadata.api.styles.description.sentenceLength')
 
-  %div(component-item item='component.form.metadata.api.item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode')
-
-%div(component-item item='component.form.metadata.custom.item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode')
+Custom
+%div(component-item item='component.form.metadata.custom.item' item-type-name="component.form.metadata.itemTypeName" mode='component.form.mode')

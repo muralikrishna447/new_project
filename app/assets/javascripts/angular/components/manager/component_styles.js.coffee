@@ -33,6 +33,7 @@
     defaultSize = 'full'
     scope.sizeOptions = ['full', 'small', 'medium', 'large']
     scope.componentModel = {} unless scope.componentModel
+    console.log 'componentModel: ', scope.componentModel
     scope.componentModel.size = defaultSize unless scope.componentModel.size
     scope.showOptions = false
 
