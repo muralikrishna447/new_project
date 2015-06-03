@@ -27,7 +27,7 @@
 #   }
 # ]
 
-@components.directive 'feed', ['$http', 'Mapper', 'componentItem', ($http, Mapper, componentItem) ->
+@components.directive 'feed', ['$http', 'Mapper', ($http, Mapper) ->
   restrict: 'A'
   scope: {
     source: '='
@@ -41,12 +41,10 @@
     Mapper.do(scope.source, scope.mapper).then (items) ->
       scope.items = items
 
-    scope.itemType = componentItem.get(scope.itemTypeName)
-
   templateUrl: '/client_views/component_feed.html'
 ]
 
-@components.directive 'searchFeed', ['AlgoliaSearchService', 'Mapper', 'componentItem', (AlgoliaSearchService, Mapper, componentItem) ->
+@components.directive 'searchFeed', ['AlgoliaSearchService', 'Mapper', (AlgoliaSearchService, Mapper) ->
   restrict: 'A'
   scope: {
     search: '@'
@@ -86,8 +84,7 @@
     ]
     AlgoliaSearchService.search(params).then (data) ->
       scope.items = Mapper.mapObject(data, mapper)
-      console.log 'items: ', scope.items
+      # console.log 'items: ', scope.items
 
-    scope.itemType = componentItem.get(scope.itemTypeName)
   templateUrl: '/client_views/component_feed.html'
 ]

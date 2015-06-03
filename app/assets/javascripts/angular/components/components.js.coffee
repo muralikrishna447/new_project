@@ -21,6 +21,13 @@
 @components.controller 'homeController', ['csAuthentication', (csAuthentication) ->
   @editable = csAuthentication.isAdmin()
   @showEditable = false
+  @itemSquare =
+    content:
+      title: 'Item 1'
+      buttonMessage: 'See the recipe'
+      image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/dbImpR5vSGea00mJFqJM'
+      url: 'http://www.chefsteps.com/test'
+
   @testComponentMapper = [
     {
       componentKey: "title",

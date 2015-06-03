@@ -12,7 +12,7 @@
 # * Create the template and the form template
 # * Add file for css
 
-@components.service 'componentItem', [ ->
+@components.service 'componentItemService', [ ->
   @types = [
     {
       name: 'Hero A'

@@ -1,16 +1,16 @@
-@components.directive 'componentItem', [ ->
+@components.directive 'componentItem', ['componentItemService', (componentItemService) ->
   restrict: 'A'
   scope: {
     item: '='
-    templateUrl: '='
-    mode: '='
+    itemTypeName: '='
     styles: '='
   }
   link: (scope, element, attrs) ->
-
+    scope.itemType = componentItemService.get(scope.itemTypeName)
+    console.log 'itemType: ', scope.itemType
   template:
     """
-      <div ng-include="templateUrl" ng-if='item'></div>
+      <div ng-include="itemType.templateUrl"></div>
     """
 
 ]
