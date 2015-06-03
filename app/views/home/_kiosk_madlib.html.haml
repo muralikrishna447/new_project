@@ -1,5 +1,5 @@
 %div.relative
-  %form.form-inline(ng-controller="MadlibController" ng-init="totalUsers=#{User.count}")
+  %form.form-inline(ng-controller="MadlibController" ng-init="totalUsers=#{User.cached_count}")
     %h2.madlib.kiosk-madlib(ng-class='madlibPage')
       .kiosk-madlib-left.anim-basic-fade(ng-show='showPage1')
         .madlib-item.text-orange

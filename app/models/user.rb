@@ -80,6 +80,12 @@ class User < ActiveRecord::Base
     read_attribute(:role) || "user"
   end
 
+  def self.cached_count
+    Rails.cache.fetch('num_users', expires_in: 1.hours) do
+      self.count
+    end
+  end
+
 
   def admin?
     self.role == "admin"
