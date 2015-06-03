@@ -8,7 +8,7 @@
 
 %fieldset
   %label Item Type
-  %select(ng-options="item.name for item in itemTypes track by item.name" ng-model='component.form.metadata.itemType')
+  %select(ng-options="item.name as item.name for item in itemTypes" ng-model='component.form.metadata.itemTypeName')
 
 %fieldset
   %label Mode
@@ -20,7 +20,7 @@
     Custom
 
 // Api Mode
-%fieldset(ng-if="component.form.mode=='api' && component.form.metadata.itemType")
+%fieldset(ng-if="component.form.mode=='api' && component.form.metadata.itemTypeName")
 
   // Example API endpoints
   .btn(ng-click="component.form.metadata.api.source = 'http://www.chefsteps.com/api/v0/activities'")
@@ -31,7 +31,7 @@
 
   %div( component-mapper
         connections='component.form.metadata.api.mapper'
-        component-keys='component.form.metadata.itemType.attrs'
+        component-keys='itemType.attrs'
         component='component'
         source = 'component.form.metadata.api.source'
         ng-show='component.form.metadata.api.source' )
@@ -44,4 +44,4 @@
 %div(ng-if="component.form.mode=='custom'")
   .matrix-item-form(ng-repeat='item in component.form.metadata.custom.items track by $index')
     {{item.styles}}
-    %div(component-item item='item' item-type-name="component.form.metadata.itemType.name" mode='component.form.mode' styles='item.styles')
+    %div(component-item item='item' item-type-name="component.form.metadata.itemTypeName" mode='component.form.mode' styles='item.styles')

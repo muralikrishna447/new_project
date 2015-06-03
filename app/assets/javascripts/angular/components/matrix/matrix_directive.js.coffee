@@ -53,6 +53,9 @@
               Mapper.do(source, mapper, maxNumber).then (items) ->
                 scope.component.form.metadata.custom.items = items
 
+    scope.$watch 'component.form.metadata.itemTypeName', (newValue, oldValue) ->
+      scope.itemType = componentItemService.get(newValue)
+
   templateUrl: '/client_views/component_matrix_form.html'
 ]
 
