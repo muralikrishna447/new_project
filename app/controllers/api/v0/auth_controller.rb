@@ -108,14 +108,11 @@ module Api
         allowed_services = ['Messaging']
         request_auth = request.authorization()
         if request_auth
-          service_token = request_auth.split(' ').last
-          key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
-          decoded = JSON::JWT.decode(service_token, key)
-          verified = JSON::JWT.decode(decoded.to_s, key.to_s)
-          if allowed_services.include? verified[:service]
+          token = AuthToken.from_string(request_auth.split(' ').last)
+          if allowed_services.include? token.claim['service']
             return true
           else
-            render json: {message: 'Invalid Token.'}, status: 401
+            render_unauthorized
           end
         else
           logger.info "No request authorization provided"

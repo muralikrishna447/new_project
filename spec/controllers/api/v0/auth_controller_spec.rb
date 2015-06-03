@@ -99,7 +99,7 @@ describe Api::V0::AuthController do
         iat: issued_at,
         service: 'Messaging'
       }
-      @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).encrypt(@key.public_key).to_s
+      @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
 
       @user = Fabricate :user, id: 200, email: 'user@chefsteps.com', password: '123456', name: 'A User', role: 'user'
       aa = ActorAddress.create_for_user @user, "test"
