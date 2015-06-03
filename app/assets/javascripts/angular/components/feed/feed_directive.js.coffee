@@ -27,10 +27,9 @@
 #   }
 # ]
 
-@components.directive 'feed', ['$http', 'Mapper', 'componentItem', 'AlgoliaSearchService', ($http, Mapper, componentItem, AlgoliaSearchService) ->
+@components.directive 'feed', ['$http', 'Mapper', 'componentItem', ($http, Mapper, componentItem) ->
   restrict: 'A'
   scope: {
-    search: '='
     source: '='
     mapper: '='
     columns: '='
@@ -39,42 +38,20 @@
 
   link: (scope, element, attrs) ->
 
-    if scope.search
-      params = {
-        difficulty: 'any'
-        generator: 'chefsteps'
-        published_status: 'published'
-        page: '1'
-        search_all: scope.search
-      }
-      mapper = [
-        {
-          componentKey: "title",
-          sourceKey: "title",
-          value: ""
-        },
-        {
-          componentKey: "url",
-          sourceKey: "url",
-          value: ""
-        }
-      ]
-      AlgoliaSearchService.search(params).then (data) ->
-        scope.items = Mapper.mapObject(data, mapper)
-
-    else
-      Mapper.do(scope.source, scope.mapper).then (items) ->
-        scope.items = items
+    Mapper.do(scope.source, scope.mapper).then (items) ->
+      scope.items = items
 
     scope.itemType = componentItem.get(scope.itemTypeName)
 
   templateUrl: '/client_views/component_feed.html'
 ]
 
-@components.directive 'searchFeed', ['AlgoliaSearchService', (AlgoliaSearchService) ->
+@components.directive 'searchFeed', ['AlgoliaSearchService', 'Mapper', 'componentItem', (AlgoliaSearchService, Mapper, componentItem) ->
   restrict: 'A'
   scope: {
     search: '@'
+    columns: '='
+    itemTypeName: '='
   }
 
   link: (scope, element, attrs) ->
@@ -85,11 +62,32 @@
       page: '1'
       search_all: scope.search
     }
-    console.log 'Params: ', params
+    mapper = [
+      {
+        componentKey: "title",
+        sourceKey: "title",
+        value: ""
+      },
+      {
+        componentKey: "image",
+        sourceKey: "image",
+        value: ""
+      },
+      {
+        componentKey: "buttonMessage",
+        sourceKey: null,
+        value: "See the recipe"
+      },
+      {
+        componentKey: "url",
+        sourceKey: "url",
+        value: ""
+      }
+    ]
     AlgoliaSearchService.search(params).then (data) ->
-      scope.results = data
-  template:
-    """
-      <div>{{results}}</div>
-    """
+      scope.items = Mapper.mapObject(data, mapper)
+      console.log 'items: ', scope.items
+
+    scope.itemType = componentItem.get(scope.itemTypeName)
+  templateUrl: '/client_views/component_feed.html'
 ]
