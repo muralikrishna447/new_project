@@ -36,5 +36,9 @@
 @media (max-width: 600px)
   .matrix
     .matrix-row
+      margin-bottom: 0px
+      @include flex-direction(column)
       .matrix-column
+        margin-right: 0px
+        margin-bottom: 20px
         @include flex(0 0 100%)
