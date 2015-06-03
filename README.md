@@ -17,9 +17,10 @@ To set up a new machine:
    
 - install homebrew (brew.sh)
 - `brew doctor`
-- `brew install postgres`
 - `brew install phantomjs`
-- set postgres to open at login (per output of previous cmd)
+- `brew install postgres`
+   - set postgres to open at login per output of previous cmd
+   - it'll be something like, `launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist`
 - `echo 'location' > ~/.curlc`
 - rails ready install (github.com/joshfng/railsready)
    -  `curl -O https://raw.githubusercontent.com/joshfng/railsready/master/railsready.sh && bash railsready.sh`
