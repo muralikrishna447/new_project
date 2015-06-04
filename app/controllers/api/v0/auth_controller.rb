@@ -112,6 +112,7 @@ module Api
           if allowed_services.include? token.claim['service']
             return true
           else
+            logger.info "Unauthorized claim: #{token.claim.inspect}"
             render_unauthorized
           end
         else
