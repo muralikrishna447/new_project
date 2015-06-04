@@ -33,10 +33,12 @@
     source: '='
     mapper: '='
     columns: '='
+    limitTo: '='
     itemTypeName: '='
   }
 
   link: (scope, element, attrs) ->
+    scope.numLimit = scope.limitTo || scope.columns
 
     Mapper.do(scope.source, scope.mapper).then (items) ->
       scope.items = items
@@ -49,10 +51,13 @@
   scope: {
     search: '@'
     columns: '='
+    limitTo: '='
     itemTypeName: '='
   }
 
   link: (scope, element, attrs) ->
+    scope.numLimit = scope.limitTo || scope.columns
+
     params = {
       difficulty: 'any'
       generator: 'chefsteps'
@@ -84,7 +89,6 @@
     ]
     AlgoliaSearchService.search(params).then (data) ->
       scope.items = Mapper.mapObject(data, mapper)
-      # console.log 'items: ', scope.items
 
   templateUrl: '/client_views/component_feed.html'
 ]
