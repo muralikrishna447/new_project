@@ -12,6 +12,11 @@
       z-index: 1
       background: rgba(255,255,255,0.8)
       @include boxsizing
+      .cs-showcase-dim
+        margin-bottom: $baseline
+      h3
+        font-size: 20px
+        line-height: 20px
       p
         margin-bottom: $baseline
       .cs-showcase-item-buy
@@ -74,7 +79,7 @@
     @include transform(translateY(0px))
 
 // For mobile
-@media (max-width: 767px)
+@media (max-width: 1000px)
   .cs-showcase
     position: absolute
     top: 60px
