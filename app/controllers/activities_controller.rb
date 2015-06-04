@@ -206,6 +206,12 @@ class ActivitiesController < ApplicationController
 
       @activity = Activity.find(params[:id])
 
+      # KHK: Debugging double-escaped ampersand issue
+      logger.debug(
+        "Updating activity #{@activity.id} with title " \
+        "[#{@activity.title}] by user #{current_user.id}"
+      )
+
       # unless current_user && (current_user.role == 'admin' || @activity.creator == current_user)
       unless can?(:update, @activity)
         render nothing: true, status: 401 and return
@@ -242,6 +248,12 @@ class ActivitiesController < ApplicationController
               else
                 head :no_content
               end
+
+              # KHK: Debugging double-escaped ampersand issue
+              logger.debug(
+                "After updating, activity #{@activity.id} has title [#{@activity.title}]" \
+                " and bypass_sanitization was #{@activity.bypass_sanitization}"
+              )
 
             rescue Exception => e
               puts "--------- EXCEPTION -----------"
