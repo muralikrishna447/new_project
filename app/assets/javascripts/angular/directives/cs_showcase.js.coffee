@@ -19,8 +19,8 @@
     annotationLineHeight = 5 # Percent
     annotationLineWidth = 10 # Percent
     $scope.annotationLineStyle = (annotation) ->
-      
-      
+
+
       {
         top: annotation.position.y - annotationLineHeight + '%'
         left: annotation.position.x + '%'
@@ -125,38 +125,38 @@
     csShowcaseItem: '='
   }
 
-  link: (scope, element, attrs, csShowcaseController) ->
-    windowElement = angular.element($window)
-    windowHeight = windowElement.height()
-
-    handleScroll = (e) ->
-      el = angular.element(element)
-      offset = 0.5*windowHeight
-      height = el[0].offsetHeight
-
-      start = el[0].offsetTop - offset
-      end = start + height
-
-      position = windowElement.scrollTop()
-      
-      # console.log 'position: ', position
-      
-      if start <= position < end
-        # console.log 'start', start
-        # console.log 'end', end
-        # completed = position - start
-        # progress = completed/height*100
-        csShowcaseController.updateCurrent(scope.csShowcaseItem)
-        element.addClass('active')
-      else
-        element.removeClass('active')
-
-    windowElement.on 'scroll', (e) ->
-      # handleScroll(e)
-      _.throttle(handleScroll(e), 100)
-
-    windowElement.on 'resize', (e) ->
-      $scope.$apply()
+  # link: (scope, element, attrs, csShowcaseController) ->
+  #   windowElement = angular.element($window)
+  #   windowHeight = windowElement.height()
+  #
+  #   handleScroll = (e) ->
+  #     el = angular.element(element)
+  #     offset = 0.5*windowHeight
+  #     height = el[0].offsetHeight
+  #
+  #     start = el[0].offsetTop - offset
+  #     end = start + height
+  #
+  #     position = windowElement.scrollTop()
+  #
+  #     # console.log 'position: ', position
+  #
+  #     if start <= position < end
+  #       # console.log 'start', start
+  #       # console.log 'end', end
+  #       # completed = position - start
+  #       # progress = completed/height*100
+  #       csShowcaseController.updateCurrent(scope.csShowcaseItem)
+  #       element.addClass('active')
+  #     else
+  #       element.removeClass('active')
+  #
+  #   windowElement.on 'scroll', (e) ->
+  #     # handleScroll(e)
+  #     _.throttle(handleScroll(e), 100)
+  #
+  #   windowElement.on 'resize', (e) ->
+  #     $scope.$apply()
 
 ]
 
