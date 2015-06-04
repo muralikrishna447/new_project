@@ -209,7 +209,7 @@ class ActivitiesController < ApplicationController
       # KHK: Debugging double-escaped ampersand issue
       logger.debug(
         "Updating activity #{@activity.id} with title " \
-        "[#{@activity.title}] by user #{current_user.id}"
+        "[#{@activity.title}] by user #{current_user.email}"
       )
 
       # unless current_user && (current_user.role == 'admin' || @activity.creator == current_user)
