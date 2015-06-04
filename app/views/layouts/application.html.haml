@@ -23,9 +23,6 @@
       = yield :extra_head_tags
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1'}
     %meta{"http-equiv" => "Content-Language", content: "en"}
-    %meta{name: "google-signin-clientid", content: google_app_id}
-    %meta{name: "google-signin-scope", content: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile https://www.google.com/m8/feeds"}
-    %meta{name: "google-signin-requestvisibleactions", content: "http://schemas.google.com/AddActivity"}
     = csrf_meta_tags
     %meta{name: "google-signin-cookiepolicy", content: "single_host_origin"}
     = auto_discovery_link_tag :atom, feed_path
