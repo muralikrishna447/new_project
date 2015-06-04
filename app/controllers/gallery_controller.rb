@@ -43,8 +43,7 @@ class GalleryController < ApplicationController
       slave: slave
     }
 
-    response = Activity.raw_search(params[:search_all] || '', options);
-
+    response = Activity.raw_search(params[:search_all] || '', options) rescue { hits: [] }
 
     # Translate Algolia JSON to match the old response from this API
     result = response['hits']

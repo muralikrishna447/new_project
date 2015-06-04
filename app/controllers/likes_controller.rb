@@ -44,7 +44,7 @@ class LikesController < ApplicationController
     # If the likeable object is indexed by Algolia, trigger reindex so the count is updated
     klazz = likeable_type.constantize
     if klazz.method_defined?(:index!)
-      klazz.find(likeable_id).index!
+      klazz.find(likeable_id).index! rescue nil
     end
   end
 

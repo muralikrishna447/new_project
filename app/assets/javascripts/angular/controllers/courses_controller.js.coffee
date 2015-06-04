@@ -128,6 +128,7 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
           inclusion.isNew = inclusion.isNew || sub.isNew
           flat.push(sub)
       else
+        inclusion.isNew = leafIncludableNew($scope.course, inclusion)
         flat.push(inclusion)
     $scope.flatInclusions = flat
 
