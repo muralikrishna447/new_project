@@ -7,7 +7,7 @@
 - content_for :keywords, sanitize(@activity.tag_list.join(','))
 -# Don't have google index UGC. This is an experiment to see if it hurts our SEO
 -# before we consider a more radical move of cutting out UGC completely.
--if @activity.creator.present? && @activity.creator != 0
+-if @activity.read_attribute(:creator) != 0
   - content_for :extra_head_tags, '<META NAME="ROBOTS" CONTENT="NOINDEX">'.html_safe
 - if @activity.id
   - content_for :facebook_og do
