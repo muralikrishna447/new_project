@@ -71,3 +71,20 @@
 
   return this
 ]
+
+@componentsManager.controller 'ComponentsExamplesController', [ ->
+  exampleImage = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/uoeCHDciQ7enMutU8ZKZ'
+  @itemMediaA =
+    content:
+      title: 'Example Media A'
+      description: 'This is an example Media A component item'
+      image: exampleImage
+
+  @itemSquareA =
+    content:
+      title: 'Example Square A'
+      buttonMessage: 'Click me!'
+      image: exampleImage
+
+  return this
+]
