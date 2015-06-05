@@ -44,4 +44,4 @@
 %div(ng-if="component.form.mode=='custom'")
   .matrix-item-form(ng-repeat='item in component.form.metadata.custom.items track by $index')
     {{item.styles}}
-    %div(component-item item='item' item-type-name="component.form.metadata.itemTypeName" mode='component.form.mode' styles='item.styles')
+    %div(component-item item='item' item-type-name="component.form.metadata.itemTypeName" view-mode="component.form.mode == 'custom' ? 'edit':''" styles='item.styles')

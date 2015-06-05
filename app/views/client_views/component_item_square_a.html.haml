@@ -1,4 +1,4 @@
-.component-item.square.square-a(ng-if="item")
+.component-item.square.square-a(ng-if="item && !viewMode")
   .component-item-content(ng-style="{'background-image':'linear-gradient(rgba(0, 0, 0, .25), rgba(0, 0, 0, .25)), url({{ item.content.image | aspect1to1 }})'}")
     .item-divider.first
       {{item.content.title}}
@@ -16,7 +16,7 @@
         Button
     .item-divider.last
 
-%div(ng-if="item && mode=='custom'")
+%div(ng-if="item && viewMode=='edit'")
   %label Title
   %input(type='text' ng-model='item.content.title')
 

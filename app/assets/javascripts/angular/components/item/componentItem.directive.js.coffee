@@ -4,7 +4,7 @@
     item: '='
     itemTypeName: '='
     styles: '='
-    mode: '='
+    viewMode: '='
   }
   link: (scope, element, attrs) ->
     scope.itemType = componentItemService.get(scope.itemTypeName)
