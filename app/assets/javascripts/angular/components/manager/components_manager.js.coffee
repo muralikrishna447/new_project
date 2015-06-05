@@ -74,6 +74,19 @@
 
 @componentsManager.controller 'ComponentsExamplesController', [ ->
   exampleImage = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/uoeCHDciQ7enMutU8ZKZ'
+
+  @itemHeroA =
+    content:
+      title: 'Example Hero A'
+      buttonMessage: 'Click Me!'
+      image: exampleImage
+
+  @itemListA =
+    content:
+      title: 'Example List A'
+      description: 'This is an example List A component item'
+      image: exampleImage
+
   @itemMediaA =
     content:
       title: 'Example Media A'
@@ -85,6 +98,29 @@
       title: 'Example Square A'
       buttonMessage: 'Click me!'
       image: exampleImage
+
+  @feedMapper = [
+    {
+      componentKey: "title",
+      sourceKey: "title",
+      value: ""
+    },
+    {
+      componentKey: "image",
+      sourceKey: "image",
+      value: ""
+    },
+    {
+      componentKey: "buttonMessage",
+      sourceKey: null,
+      value: "See the recipe"
+    },
+    {
+      componentKey: "url",
+      sourceKey: "url",
+      value: ""
+    }
+  ]
 
   return this
 ]
