@@ -9,7 +9,7 @@
   link: (scope, element, attrs) ->
 
     scope.$watch 'itemTypeName', (newValue, oldValue) ->
-      if newValue && newValue != oldValue
+      if newValue
         scope.itemType = componentItemService.get(scope.itemTypeName)
 
   template:
