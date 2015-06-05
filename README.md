@@ -14,7 +14,7 @@ To set up a new machine:
 
 
 ## Required
-   
+
 - install homebrew (brew.sh)
 - `brew doctor`
 - `brew install phantomjs`
@@ -42,7 +42,7 @@ To set up a new machine:
 - in another window: guard
 
 ## Personal / Optional
- 
+
 - install Chrome or other preferred browser
 - install iterm2 or other shell
 - install sublime text 3 or other text editor
@@ -97,5 +97,3 @@ script/e2e
 ```
 
 This will start the server.  It will automatically watch all files in the spec/javascripts/e2e folder and run the tests when you save a file.
-
-
