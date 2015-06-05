@@ -33,4 +33,10 @@
       controller: 'ComponentsEditController'
       controllerAs: 'component'
       templateUrl: '/client_views/components_edit.html'
+
+    .state 'components.examples'
+      url: '/examples'
+      controller: 'ComponentsExamplesController'
+      controllerAs: 'examples'
+      templateUrl: '/client_views/components_examples.html'
 ]

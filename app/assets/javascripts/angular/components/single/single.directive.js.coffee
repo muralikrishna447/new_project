@@ -25,8 +25,8 @@
                 scope.component.form.metadata.custom.item = item
                 scope.component.form.metadata.custom.item.styles = scope.component.form.metadata.api.styles
 
-    scope.$watch 'component.form.metadata.itemTypeName', (newValue, oldValue) ->
-      scope.itemType = componentItemService.get(newValue)
+    # scope.$watch 'component.form.metadata.itemTypeName', (newValue, oldValue) ->
+    #   scope.itemType = componentItemService.get(newValue)
 
   templateUrl: '/client_views/component_single_form.html'
 ]

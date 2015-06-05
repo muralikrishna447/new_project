@@ -1,4 +1,4 @@
-.component-item.square.square-a(ng-if="item")
+.component-item.square.square-a(ng-if="item && !viewMode")
   .component-item-content(ng-style="{'background-image':'linear-gradient(rgba(0, 0, 0, .25), rgba(0, 0, 0, .25)), url({{ item.content.image | aspect1to1 }})'}")
     .item-divider.first
       {{item.content.title}}
@@ -15,3 +15,17 @@
       %a.btn-outline(ng-href='{{item.content.url}}')
         Button
     .item-divider.last
+
+%div(ng-if="item && viewMode=='edit'")
+  %label Title
+  %input(type='text' ng-model='item.content.title')
+
+  %label Image
+  %input(type='text' ng-model='item.content.image')
+  %div(filepicker ng-model='item.content.image')
+
+  %label Button Message
+  %input(type='text' ng-model='item.content.buttonMessage')
+
+  %label Url
+  %input(type='text' ng-model='item.content.url')

@@ -1,10 +1,3 @@
-%h1 Examples
-%div(ng-controller='homeController as home')
-  %div(component-item item='home.itemSquare' item-type-name="'Square A'")
-
-.component-container
-  .component.component-full(search-feed search="'Sous Vide'" columns='5' item-type-name="'Square A'")
-
 .new-home(ng-controller='homeController as home' ng-cloak)
 
   .btn.btn-primary(ng-if='home.editable' ng-click="home.showEditable = ! home.showEditable")
@@ -46,6 +39,5 @@
   %component-edit-button(component-name='Home Matrix Three' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-matrix-three')
 
-  %h5 Note: Below is a dev example for a feed component
-  .component-container
-    .component.component-full(feed source="'http://www.chefsteps.com/api/v0/activities'" mapper='home.testComponentMapper' columns='5' item-type-name="'Square A'")
+  %h3 Below is just an search-feed example.  Can't be edited at the moment.
+  %div(search-feed search="'Sous Vide'" columns='4' limit-to='8' item-type-name="'Square A'")

@@ -4,25 +4,17 @@
     item: '='
     itemTypeName: '='
     styles: '='
-    mode: '='
+    viewMode: '='
   }
   link: (scope, element, attrs) ->
-    scope.itemType = componentItemService.get(scope.itemTypeName)
 
-    scope.$watch 'mode', (newValue, oldValue) ->
-      console.log 'mode: ', scope.mode
-      if newValue == 'custom'
-        scope.templateUrl = scope.itemType.formTemplateUrl
-      else
-        scope.templateUrl = scope.itemType.templateUrl
-
-    scope.$watch 'item', (newValue, oldValue) ->
-      console.log 'new item: ', newValue
-      console.log 'old item: ', oldValue
+    scope.$watch 'itemTypeName', (newValue, oldValue) ->
+      if newValue
+        scope.itemType = componentItemService.get(scope.itemTypeName)
 
   template:
     """
-      <div ng-include="templateUrl"></div>
+      <div ng-include="itemType.templateUrl"></div>
     """
 
 ]
