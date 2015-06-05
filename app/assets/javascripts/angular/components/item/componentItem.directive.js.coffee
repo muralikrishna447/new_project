@@ -7,7 +7,10 @@
     viewMode: '='
   }
   link: (scope, element, attrs) ->
-    scope.itemType = componentItemService.get(scope.itemTypeName)
+
+    scope.$watch 'itemTypeName', (newValue, oldValue) ->
+      if newValue && newValue != oldValue
+        scope.itemType = componentItemService.get(scope.itemTypeName)
 
   template:
     """
