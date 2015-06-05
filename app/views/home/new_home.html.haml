@@ -1,10 +1,3 @@
-%h1 Examples
-%div(ng-controller='homeController as home')
-  %div(component-item item='home.itemSquare' item-type-name="'Square A'")
-
-.component-container
-  .component.component-full(search-feed search="'Sous Vide'" columns='5' limit-to='8' item-type-name="'Square A'")
-
 .new-home(ng-controller='homeController as home' ng-cloak)
 
   .btn.btn-primary(ng-if='home.editable' ng-click="home.showEditable = ! home.showEditable")
@@ -45,3 +38,5 @@
 
   %component-edit-button(component-name='Home Matrix Three' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-matrix-three')
+
+  %div(search-feed search="'Sous Vide'" columns='4' limit-to='8' item-type-name="'Square A'")
