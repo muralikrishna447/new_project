@@ -46,7 +46,7 @@
   templateUrl: '/client_views/component_feed.html'
 ]
 
-@components.directive 'searchFeed', ['AlgoliaSearchService', 'Mapper', (AlgoliaSearchService, Mapper) ->
+@components.directive 'searchFeed', ['api.search', 'Mapper', (Search, Mapper) ->
   restrict: 'A'
   scope: {
     search: '@'
@@ -56,7 +56,7 @@
   }
 
   link: (scope, element, attrs) ->
-    scope.numLimit = scope.limitTo || scope.columns
+    scope.numLimit = scope.limitTo || 12
 
     params = {
       difficulty: 'any'
@@ -82,13 +82,25 @@
         value: "See the recipe"
       },
       {
+        componentKey: "description",
+        sourceKey: "description",
+        value: ""
+      },
+      {
         componentKey: "url",
         sourceKey: "url",
         value: ""
       }
     ]
-    AlgoliaSearchService.search(params).then (data) ->
-      scope.items = Mapper.mapObject(data, mapper)
+    # Search.query(params).then (data) ->
+    #   scope.items = Mapper.mapObject(data, mapper)
+
+    scope.$watch 'search', (newValue, oldValue) ->
+      if newValue
+        Search.query({query:newValue}, (data) ->
+          scope.items = Mapper.mapObject(data, mapper)
+        )
+
 
   templateUrl: '/client_views/component_feed.html'
 ]

@@ -39,4 +39,10 @@
       controller: 'ComponentsExamplesController'
       controllerAs: 'examples'
       templateUrl: '/client_views/components_examples.html'
+
+    .state 'components.editExperimental'
+      url: '/:id/edit-experimental'
+      controller: 'ComponentsEditController'
+      controllerAs: 'component'
+      templateUrl: '/client_views/components_edit_experimental.html'
 ]
