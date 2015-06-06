@@ -46,7 +46,7 @@
   templateUrl: '/client_views/component_feed.html'
 ]
 
-@components.directive 'searchFeed', ['api.search', 'Mapper', (Search, Mapper) ->
+@components.directive 'searchFeed', ['AlgoliaSearchService', 'Mapper', (AlgoliaSearchService, Mapper) ->
   restrict: 'A'
   scope: {
     search: '@'
@@ -97,10 +97,8 @@
 
     scope.$watch 'search', (newValue, oldValue) ->
       if newValue
-        Search.query({query:newValue}, (data) ->
+        AlgoliaSearchService.search(params).then (data) ->
           scope.items = Mapper.mapObject(data, mapper)
-        )
-
 
   templateUrl: '/client_views/component_feed.html'
 ]

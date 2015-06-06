@@ -125,8 +125,3 @@
 
   return this
 ]
-
-# Sucks I need this in here because of load order.
-@componentsManager.factory 'api.search', [ '$resource', ($resource) ->
-  $resource '/api/v0/search', { query: { method: 'GET', isArray: true } }
-]
