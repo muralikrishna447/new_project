@@ -125,3 +125,58 @@
 
   return this
 ]
+
+@componentsManager.controller 'ComponentsEditExperimentalController', ['Component', '$stateParams', '$state', 'notificationService', 'AlgoliaSearchService', (Component, $stateParams, $state, notificationService, AlgoliaSearchService) ->
+  @componentTypeOptions = ['single', 'matrix', 'madlib']
+  @componentSizeOptions = ['full', 'small', 'medium', 'large']
+  @colorOptions = ['white', 'black']
+  @searchResults = []
+
+  Component.show {id: $stateParams.id}, (component) =>
+    @form = component
+
+  @save = (component) ->
+    componentParams = component
+    delete componentParams['id']
+    delete componentParams['slug']
+    Component.update {id: $stateParams.id, component: componentParams}, (component) ->
+      $state.go('components.index')
+      console.log 'component: ', component
+      message = "The #{component.name } component was successfully saved. "
+      buttonUrl = "/components/#{component.id}/edit"
+      buttonText = "Edit #{component.name}"
+      notificationService.add('success', message, buttonUrl, buttonText)
+
+  @clear = =>
+    @form = {
+      componentType: null
+      mode: null
+      metadata: {
+        allModes: {
+          styles:
+            component:
+              size: 'full'
+        }
+        api: {}
+        custom: {}
+        itemTypeName: null
+      }
+      name: null
+    }
+
+  @search = (query) =>
+    params = {
+      difficulty: 'any'
+      generator: 'chefsteps'
+      published_status: 'published'
+      page: '1'
+      search_all: query
+    }
+
+    console.log 'params: ', params
+
+    AlgoliaSearchService.search(params).then (data) =>
+      @searchResults = data
+
+  return this
+]

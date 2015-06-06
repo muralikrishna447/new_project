@@ -42,7 +42,7 @@
 
     .state 'components.editExperimental'
       url: '/:id/edit-experimental'
-      controller: 'ComponentsEditController'
+      controller: 'ComponentsEditExperimentalController'
       controllerAs: 'component'
       templateUrl: '/client_views/components_edit_experimental.html'
 ]
