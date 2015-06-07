@@ -164,19 +164,5 @@
       name: null
     }
 
-  @search = (query) =>
-    params = {
-      difficulty: 'any'
-      generator: 'chefsteps'
-      published_status: 'published'
-      page: '1'
-      search_all: query
-    }
-
-    console.log 'params: ', params
-
-    AlgoliaSearchService.search(params).then (data) =>
-      @searchResults = data
-
   return this
 ]

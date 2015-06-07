@@ -10,10 +10,7 @@
       %label Size
       %select(ng-options="item for item in component.componentSizeOptions" ng-model='component.form.metadata.allModes.styles.component.size')
   .experimental-search
-    %div
-      %input(type='text' placeholder='search' ng-model='searchQuery' ng-change='component.search(searchQuery)')
-    %div(ng-repeat='item in component.searchResults')
-      {{item.title}}
+    %div(search-typeahead)
   %pre
     {{component.form | json}}
 
