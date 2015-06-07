@@ -216,3 +216,19 @@
         margin: 0
       select
         margin: 0
+
+.search-typeahead
+  width: 100%
+  position: relative
+  .search-typeahead-input
+    width: 100%
+  .search-typeahead-results
+    position: absolute
+    background: white
+    width: 100%
+    .search-typeahead-result
+      padding: 5px
+      @include boxsizing
+      &:hover
+        color: $orange
+        cursor: pointer

@@ -1,4 +1,5 @@
-%div
-  %input(type='text' placeholder='search' ng-model='searchQuery' ng-change='search(searchQuery)')
-%div(ng-repeat="item in searchResults | orderBy:'item.title'")
-  {{item.title}}
+.search-typeahead
+  %input.search-typeahead-input(type='text' placeholder='search' ng-model='searchQuery' ng-change='search(searchQuery)')
+  .search-typeahead-results
+    .search-typeahead-result(ng-repeat="item in searchResults | orderBy:'title'")
+      {{item.title}}
