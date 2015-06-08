@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'ActivityUploadsController' , ["$scope", "$resource", "$http", "$rootScope", "csAlertService", "csConfig", "bloomManager", ($scope, $resource, $http, $rootScope, csAlertService, csConfig, bloomManager) ->
+angular.module('ChefStepsApp').controller 'ActivityUploadsController' , ["$scope", "$resource", "$http", "$rootScope", "csAlertService", "csConfig", ($scope, $resource, $http, $rootScope, csAlertService, csConfig) ->
 
   $scope.upload = {}
   $scope.upload.likes_count = 0
