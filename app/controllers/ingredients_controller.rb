@@ -201,7 +201,7 @@ class IngredientsController < ApplicationController
 
     # TODO: duplicate code in activities_controller.rb
   def get_all_tags
-    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + params[:q] + '%').all
+    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + (params[:q] || '') + '%').all
     respond_to do |format|
       format.json {
         render :json => result.to_json()
