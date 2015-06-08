@@ -164,5 +164,8 @@
       name: null
     }
 
+  @setItem = (item) ->
+    console.log 'Item is being set: ', item
+
   return this
 ]

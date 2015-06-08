@@ -1,7 +1,11 @@
 @components.directive 'searchTypeahead', ['AlgoliaSearchService', (AlgoliaSearchService) ->
   restrict: 'A'
-  scope: {}
+  scope: {
+    customMethod: '@'
+    select: '&onSelect'
+  }
   link: (scope, element, attrs) ->
+
     scope.search = (query) =>
       params = {
         difficulty: 'any'
@@ -13,5 +17,11 @@
 
       AlgoliaSearchService.search(params).then (data) =>
         scope.searchResults = data
+
+    scope.clear = ->
+      console.log 'clearing'
+      scope.searchQuery = null
+      scope.searchResults = []
+      
   templateUrl: '/client_views/component_search_typeahead.html'
 ]
