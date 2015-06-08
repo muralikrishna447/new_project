@@ -1,4 +1,4 @@
-@app.directive 'cscomments', ["$compile", "$rootScope", ($compile, $rootScope) ->
+@app.directive 'cscomments', ["$compile", "$rootScope", "bloomManager", ($compile, $rootScope, bloomManager) ->
   restrict: 'E'
   scope: {
     commentsType: '@'
@@ -11,8 +11,9 @@
       identifier = $scope.commentsType + '_' + $scope.commentsId
       console.log "*** renderseo"
 
-      $http.get("#{csConfig.bloom.api_endpoint}/discussions/#{identifier}?apiKey=xchefsteps").then (response) =>
-        comments = response.data.comments
+      bloomManager.loadBloom().then ->
+        $http.get("#{csConfig.bloom.api_endpoint}/discussions/#{identifier}?apiKey=xchefsteps").then (response) =>
+          comments = response.data.comments
 
         angular.forEach comments, (comment) =>
           $scope.seoComments.push(comment.content)
@@ -22,7 +23,7 @@
   ]
   link: (scope, element, attrs) ->
     scope.$watch 'commentsId', (newValue, oldValue) ->
-      if newValue && typeof Bloom != 'undefined'
+      if newValue
         if scope.seoBot == 'true'
           scope.renderSeoComments()
         else
@@ -34,20 +35,21 @@
             console.log element[0]
             angular.forEach iframe, (frame) ->
               frame.remove()
-          Bloom.installComments {
-            el: element[0]
-            discussionId: identifier
-            on:
-              login: ->
-                scope.openLogin()
-          }
+          bloomManager.loadBloom().then ->
+            Bloom.installComments {
+              el: element[0]
+              discussionId: identifier
+              on:
+                login: ->
+                  scope.openLogin()
+            }
     $rootScope.$on 'reloadComments', (event) ->
       window.location.reload()
 
   template: "<div>{{seoComments}}</div>"
 ]
 
-@app.directive 'csnotifs', [ ->
+@app.directive 'csnotifs', [ "bloomManager", (bloomManager) ->
   restrict: 'E'
   scope: {
     'navigateToContent': '&navigateToContent'
@@ -59,7 +61,7 @@
         window.location = response.data.url
   ]
   link: (scope, element, attrs) ->
-    if typeof Bloom != 'undefined'
+    bloomManager.loadBloom().then ->
       Bloom.installNotifs {
         el: element[0]
         on:

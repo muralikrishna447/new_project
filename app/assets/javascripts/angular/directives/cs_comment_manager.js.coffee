@@ -1,4 +1,4 @@
-@app.directive 'csCommentManager', ['$http', '$timeout', '$rootScope', 'csConfig', ($http, $timeout, $rootScope, csConfig) ->
+@app.directive 'csCommentManager', ['$http', '$timeout', '$rootScope', 'csConfig', "bloomManager", ($http, $timeout, $rootScope, csConfig, bloomManager) ->
   restrict: 'EA'
   templateUrl: '/client_views/cs_comment_manager'
   scope: {

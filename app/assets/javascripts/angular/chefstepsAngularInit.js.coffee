@@ -42,6 +42,7 @@ angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
     environment: null # This is the rails environment that is currently running
 ]
 
+
 # For google plus
 angular.module('ChefStepsApp').run ["$window", "$rootScope", "csFacebook", ($window, $rootScope, csFacebook) ->
   $window.signInCallback =  (authResult) ->
