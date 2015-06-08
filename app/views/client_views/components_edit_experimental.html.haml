@@ -9,9 +9,13 @@
     .experimental-nav-item
       %label Size
       %select(ng-options="item for item in component.componentSizeOptions" ng-model='component.form.metadata.allModes.styles.component.size')
-  .experimental-search
-    %div(search-typeahead custom-method='true' on-select="component.setItem(item)")
-    -# %div(search-typeahead)
+
+  %div(ng-repeat='componentItem in component.form.metadata.custom.items')
+    %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)")
+    %pre
+      {{componentItem | json}}
+    %div(component-item item='componentItem' item-type-name="'Square A'")
+
   %pre
     {{component.form | json}}
 

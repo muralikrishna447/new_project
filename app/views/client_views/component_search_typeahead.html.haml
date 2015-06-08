@@ -4,7 +4,7 @@
     .search-typeahead-result(ng-repeat="item in searchResults | orderBy:'title'")
       %div(ng-click='select({item:item}); clear()' ng-if='customMethod')
         {{item.title}}
-      %a(ng-href='{{item.url}}' ng-click='select({item:item}); clear()' ng-if='!customMethod')
+      %a(ng-href='{{item.url}}' ng-click='select(item); clear()' ng-if='!customMethod')
         {{item.title}}
 
     .search-typeahead-result(ng-if="searchQuery.length > 0 && searchResults.length == 0")

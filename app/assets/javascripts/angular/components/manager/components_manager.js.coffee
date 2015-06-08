@@ -164,8 +164,10 @@
       name: null
     }
 
-  @setItem = (item) ->
-    console.log 'Item is being set: ', item
+  @setItem = (selectedItem, componentItem) ->
+    angular.forEach componentItem.content, (value, key) ->
+      if selectedItem.hasOwnProperty(key)
+        componentItem.content[key] = selectedItem[key]
 
   return this
 ]
