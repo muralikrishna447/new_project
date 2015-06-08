@@ -114,15 +114,6 @@
   = render 'restore_autosave.html.haml'
   = render 'already_editing_modal.html.haml'
 
-  %div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
-    .modal-header
-      %h2 Choose Tags
-      Pick all that apply. It is ok to have more than one in a category.
-    .modal-body.tag-bg
-      %csTagChooser(  ng-model="activity.tags"
-                      options="csTagService.activitySuggestedTags")
-    .modal-footer
-      %button.btn(ng-click="showTagsModal = false") Done
 
   -################################ PRELOADED JSON FOR SPEED ################################
 

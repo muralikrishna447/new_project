@@ -47,11 +47,13 @@ class GalleryController < ApplicationController
 
     # Translate Algolia JSON to match the old response from this API
     result = response['hits']
-    result.each do |a|
-      # Yes, that is encoded nested JSON - filepicker response. Avert your eyes.
-      a['featured_image_id'] = "{\"url\": \"#{a['image']}\"}"
-      a['show_only_in_course'] = 'false'
-      a['id'] = a['objectID']
+    if result
+      result.each do |a|
+        # Yes, that is encoded nested JSON - filepicker response. Avert your eyes.
+        a['featured_image_id'] = "{\"url\": \"#{a['image']}\"}"
+        a['show_only_in_course'] = 'false'
+        a['id'] = a['objectID']
+      end
     end
 
     respond_to do |format|
