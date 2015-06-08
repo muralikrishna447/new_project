@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150501224129) do
+ActiveRecord::Schema.define(:version => 20150521223942) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(:version => 20150501224129) do
   add_index "activity_equipment", ["equipment_order"], :name => "index_activity_equipment_on_equipment_order"
 
   create_table "activity_ingredients", :force => true do |t|
+    t.integer  "id",               :null => false
     t.integer  "activity_id",      :null => false
     t.integer  "ingredient_id",    :null => false
     t.datetime "created_at",       :null => false
@@ -91,6 +92,23 @@ ActiveRecord::Schema.define(:version => 20150501224129) do
   add_index "activity_ingredients", ["activity_id"], :name => "index_activity_ingredients_on_activity_id"
   add_index "activity_ingredients", ["ingredient_id"], :name => "index_activity_ingredients_on_ingredient_id"
   add_index "activity_ingredients", ["ingredient_order"], :name => "index_activity_ingredients_on_ingredient_order"
+
+  create_table "actor_addresses", :force => true do |t|
+    t.string   "actor_type",                               :null => false
+    t.integer  "actor_id",                                 :null => false
+    t.string   "address_id"
+    t.string   "client_metadata"
+    t.integer  "sequence",        :default => 0,           :null => false
+    t.string   "ip_address"
+    t.string   "status",          :default => "something"
+    t.integer  "issued_at"
+    t.integer  "expires_at"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+  end
+
+  add_index "actor_addresses", ["actor_id"], :name => "index_actor_addresses_on_actor_id"
+  add_index "actor_addresses", ["address_id"], :name => "index_actor_addresses_on_address_id"
 
   create_table "admin_users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -210,6 +228,7 @@ ActiveRecord::Schema.define(:version => 20150501224129) do
     t.string   "notes"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.string   "circulator_id", :null => false
   end
 
   create_table "comments", :force => true do |t|
@@ -435,17 +454,6 @@ ActiveRecord::Schema.define(:version => 20150501224129) do
     t.string   "primary_path"
   end
 
-  create_table "pending_edits", :force => true do |t|
-    t.integer  "user_id"
-    t.text     "serialized_content"
-    t.integer  "editable_id"
-    t.string   "editable_type"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
-  end
-
-  add_index "pending_edits", ["editable_id", "editable_type"], :name => "index_pending_edits_on_editable_id_and_editable_type"
-
   create_table "pg_search_documents", :force => true do |t|
     t.text     "content"
     t.integer  "searchable_id"
@@ -519,6 +527,31 @@ ActiveRecord::Schema.define(:version => 20150501224129) do
 
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
+
+  create_table "recipe_ingredients", :force => true do |t|
+    t.integer  "recipe_id",        :null => false
+    t.integer  "ingredient_id",    :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "unit"
+    t.decimal  "quantity"
+    t.integer  "ingredient_order"
+  end
+
+  add_index "recipe_ingredients", ["ingredient_order"], :name => "index_recipe_ingredients_on_ingredient_order"
+  add_index "recipe_ingredients", ["recipe_id", "ingredient_id"], :name => "index_recipe_ingredients_on_recipe_id_and_ingredient_id", :unique => true
+
+  create_table "recipes", :force => true do |t|
+    t.string   "title"
+    t.integer  "activity_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "yield"
+    t.integer  "recipe_order"
+  end
+
+  add_index "recipes", ["activity_id"], :name => "index_recipes_on_activity_id"
+  add_index "recipes", ["recipe_order"], :name => "index_recipes_on_recipe_order"
 
   create_table "revision_records", :force => true do |t|
     t.string   "revisionable_type", :limit => 100,                    :null => false

@@ -37,6 +37,8 @@ class User < ActiveRecord::Base
   has_many :circulator_users
   has_many :circulators, through: :circulator_users
 
+  has_many :actor_addresses, as: :actor
+
   serialize :viewed_activities, Array
 
   # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }

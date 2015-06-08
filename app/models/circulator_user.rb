@@ -5,6 +5,6 @@ class CirculatorUser < ActiveRecord::Base
   attr_accessible :owner, :user, :circulator
 
   def self.find_by_circulator_and_user(circulator, user)
-    CirculatorUser.where(circulator_id: circulator, user_id: user).first
+    CirculatorUser.where(circulator_id: circulator.id, user_id: user).first
   end
 end

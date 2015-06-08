@@ -35,5 +35,4 @@ class UsersController < ApplicationController
     @admins = User.where(role: 'admin')
     render json: @admins.to_json(only: [:id, :email])
   end
-
 end

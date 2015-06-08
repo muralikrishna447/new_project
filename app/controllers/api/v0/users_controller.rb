@@ -26,7 +26,8 @@ module Api
           if is_new_user
             create_new_user(@user)
           else
-            render json: {status: 200, message: 'Success', token: create_token(@user)}, status: 200
+            aa = ActorAddress.create_for_user @user, "create"
+            render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
           end
         else
           @user = User.new(params[:user])
@@ -37,8 +38,8 @@ module Api
       def update
         @user = User.find params[:id]
         if @user_id_from_token == @user.id
-          puts "Updating user #{@user.inspect}"
-          puts "Updating with: #{params[:user]}"
+          logger.info "Updating user #{@user.inspect}"
+          logger.info "Updating with: #{params[:user]}"
           if @user.update_attributes(params[:user])
             render json: @user.to_json(only: [:id, :name, :slug, :email], methods: :avatar_url), status: 200
           else
@@ -51,10 +52,12 @@ module Api
 
       private
 
+      # Why is this code duplicated here?
       def create_new_user(user)
         if user.save
           email_list_signup(user.name, user.email, params[:source])
-          render json: {status: 200, message: 'Success', token: create_token(user)}, status: 200
+          aa = ActorAddress.create_for_user @user, "create"
+          render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
           render json: {status: 400, message: 'Bad Request: An error occured when trying to create this user.'}, status: 400
         end

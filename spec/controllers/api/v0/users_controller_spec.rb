@@ -1,20 +1,9 @@
 describe Api::V0::UsersController do
 
   before :each do
-    @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
     @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
-    issued_at = (Time.now.to_f * 1000).to_i
-    claim = { 
-      iat: issued_at,
-      user: {
-        id: @user.id,
-        name: @user.name,
-        email: @user.email
-      }
-    }
-    jws = JSON::JWT.new(claim.as_json).sign(@key.to_s)
-    jwe = jws.encrypt(@key.public_key)
-    @token = 'Bearer ' + jwe.to_s
+    aa = ActorAddress.create_for_user @user, "test"
+    @token = 'Bearer ' + aa.current_token.to_jwt
   end
 
   context 'GET /me' do
@@ -104,19 +93,9 @@ describe Api::V0::UsersController do
 
     it 'should not update a user if token belongs to another user' do
       @another_user = Fabricate :user, id: 105, email: 'jojosmith@chefsteps.com', password: '123456', name: 'Jo Jo smith', role: 'user'
-      issued_at = (Time.now.to_f * 1000).to_i
-      claim = { 
-        iat: issued_at,
-        user: {
-          id: @another_user.id,
-          name: @another_user.name,
-          email: @another_user.email
-        }
-      }
-      jws = JSON::JWT.new(claim.as_json).sign(@key.to_s)
-      jwe = jws.encrypt(@key.public_key)
-      @another_token = 'Bearer ' + jwe.to_s
-      request.env['HTTP_AUTHORIZATION'] = @another_token
+      aa = ActorAddress.create_for_user @another_user, "test"
+      another_token = 'Bearer ' + aa.current_token.to_jwt
+      request.env['HTTP_AUTHORIZATION'] = another_token
       put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }
       response.should_not be_success
     end
