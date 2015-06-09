@@ -51,5 +51,14 @@
   @get = (name) =>
     _.where(@types, {name: name})[0]
 
+  @getStruct = (name) =>
+    itemType = @get(name)
+    console.log 'itemType.attrs: ', itemType.attrs
+    struct = {}
+    for attr in itemType.attrs
+      struct[attr] = ''
+    return struct
+
+
   return this
 ]

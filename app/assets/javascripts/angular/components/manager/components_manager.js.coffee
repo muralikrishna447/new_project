@@ -172,14 +172,18 @@
         componentItem.content[key] = selectedItem[key]
 
   @numItems = 0
+
   @setNumItems = =>
     @numItems = @form.metadata.columns*@form.metadata.rows
     delta = @numItems - @form.metadata.custom.items.length
-    console.log 'diff: ', delta
+    struct = componentItemService.getStruct(@form.metadata.itemTypeName)
+
     if delta > 0
-      newItemsToAdd = new Array(delta)
-      for newItem in newItemsToAdd
-        @form.metadata.custom.items.push {content:{}}
+      i = 0
+      while i < delta
+        newStruct = angular.copy struct
+        @form.metadata.custom.items.push { content: newStruct }
+        i++
 
   return this
 ]
