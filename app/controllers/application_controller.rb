@@ -102,8 +102,8 @@ class ApplicationController < ActionController::Base
     when "staging", "staging2"
       ENV["GOOGLE_APP_ID"]
     else
-      "108479453177.apps.googleusercontent.com"
-      # "73963737070-9595b3hcj6kqpii3trkg398m4q5duck5.apps.googleusercontent.com"
+      # "108479453177.apps.googleusercontent.com"
+      "73963737070-9595b3hcj6kqpii3trkg398m4q5duck5.apps.googleusercontent.com"
     end
   end
 
