@@ -126,9 +126,10 @@
   return this
 ]
 
-@componentsManager.controller 'ComponentsEditExperimentalController', ['Component', '$stateParams', '$state', 'notificationService', 'AlgoliaSearchService', (Component, $stateParams, $state, notificationService, AlgoliaSearchService) ->
-  @componentTypeOptions = ['single', 'matrix', 'madlib']
-  @componentSizeOptions = ['full', 'small', 'medium', 'large']
+@componentsManager.controller 'ComponentsEditExperimentalController', ['Component', '$stateParams', '$state', 'notificationService', 'AlgoliaSearchService', 'componentItemService', (Component, $stateParams, $state, notificationService, AlgoliaSearchService, componentItemService) ->
+  @typeOptions = ['single', 'matrix', 'madlib']
+  @sizeOptions = ['full', 'small', 'medium', 'large']
+  @itemTypes = componentItemService.types
   @colorOptions = ['white', 'black']
   @searchResults = []
 

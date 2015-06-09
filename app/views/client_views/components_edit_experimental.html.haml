@@ -5,16 +5,25 @@
       %input(type='text' ng-model='component.form.name' placeholder='name')
     .experimental-nav-item
       %label Type
-      %select(ng-options="item for item in component.componentTypeOptions" ng-model='component.form.componentType')
+      %select(ng-options="item for item in component.typeOptions" ng-model='component.form.componentType')
     .experimental-nav-item
       %label Size
-      %select(ng-options="item for item in component.componentSizeOptions" ng-model='component.form.metadata.allModes.styles.component.size')
+      %select(ng-options="item for item in component.sizeOptions" ng-model='component.form.metadata.allModes.styles.component.size')
+    .experimental-nav-item
+      %label Columns
+      %input(type='number' ng-model='component.form.metadata.columns')
+    .experimental-nav-item
+      %label Rows
+      %input(type='number' ng-model='component.form.metadata.rows')
+    .experimental-nav-item
+      %label Item Type
+      %select(ng-options="item.name as item.name for item in component.itemTypes" ng-model='component.form.metadata.itemTypeName')
 
-  %div(ng-repeat='componentItem in component.form.metadata.custom.items')
-    %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)")
-    %pre
-      {{componentItem | json}}
-    %div(component-item item='componentItem' item-type-name="'Square A'")
+  .feed
+    .feed-item(ng-repeat='componentItem in component.form.metadata.custom.items | limitTo: component.form.metadata.columns*component.form.metadata.rows track by $index' ng-class="'feed-item-{{component.form.metadata.columns}}-per-row'")
+      %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)")
+      %div(component-item item='componentItem' item-type-name="component.form.metadata.itemTypeName" view-mode="'edit'" styles='item.styles')
+      %div(component-item item='componentItem' item-type-name="component.form.metadata.itemTypeName" styles='componentItem.styles')
 
   %pre
     {{component.form | json}}
