@@ -135,6 +135,7 @@
 
   Component.show {id: $stateParams.id}, (component) =>
     @form = component
+    @setNumItems()
 
   @save = (component) ->
     componentParams = component
@@ -169,6 +170,16 @@
     angular.forEach componentItem.content, (value, key) ->
       if selectedItem.hasOwnProperty(key)
         componentItem.content[key] = selectedItem[key]
+
+  @numItems = 0
+  @setNumItems = =>
+    @numItems = @form.metadata.columns*@form.metadata.rows
+    delta = @numItems - @form.metadata.custom.items.length
+    console.log 'diff: ', delta
+    if delta > 0
+      newItemsToAdd = new Array(delta)
+      for newItem in newItemsToAdd
+        @form.metadata.custom.items.push {content:{}}
 
   return this
 ]
