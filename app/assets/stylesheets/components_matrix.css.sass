@@ -1,44 +1,108 @@
 @import 'mixins'
 
-// Matrix //
+$one-item-width: 100%
+$two-item-width: calc((100% - 40px)/2)
+$three-item-width: calc((100% - 60px)/3)
+$four-item-width: calc((100% - 80px)/4)
+$five-item-width: calc((100% - 100px)/5)
 
 .matrix
-  .matrix-row
-    margin-bottom: 20px
-    @include display-flex
-    @include flex-direction(row)
-    &:last-of-type
-      margin-bottom: 0px
-    .matrix-column
-      margin-right: 20px
-      @include flex(0 1 100%)
-      // @include aspect-1-1
-      @include boxsizing
-      &:last-of-type
-        margin-right: 0px
-
-.matrix-item-blank
-  @include aspect-1-1
-  border: 1px solid $light-gray
-  background-color: $offwhite
+  width: 100%
   @include display-flex
-  @include justify-content(center)
-  @include align-items(center)
+  @include flex-wrap(wrap)
+  .matrix-item
+    margin: 10px
 
-.matrix-item-form
-  background-color: $offwhite
-  border-radius: 10px
-  padding: 20px
-  margin-bottom: 20px
+  .matrix-item.matrix-item-1-per-row
+    @include flex(0 1 $one-item-width)
 
-// Responsive Styles
+  .matrix-item.matrix-item-2-per-row
+    @include flex(0 1 $two-item-width)
+
+  .matrix-item.matrix-item-3-per-row
+    @include flex(0 1 $three-item-width)
+
+  .matrix-item.matrix-item-4-per-row
+    @include flex(0 1 $four-item-width)
+
+  .matrix-item.matrix-item-5-per-row
+    @include flex(0 1 $five-item-width)
 
 @media (max-width: 600px)
-  .matrix
-    .matrix-row
-      margin-bottom: 0px
-      @include flex-direction(column)
-      .matrix-column
-        margin-right: 0px
-        margin-bottom: 20px
-        @include flex(0 0 100%)
+  .feed
+    .matrix-item.matrix-item-1-per-row
+      @include flex(0 1 100%)
+
+    .matrix-item.matrix-item-2-per-row
+      @include flex(0 1 100%)
+
+    .matrix-item.matrix-item-3-per-row
+      @include flex(0 1 100%)
+
+    .matrix-item.matrix-item-4-per-row
+      @include flex(0 1 100%)
+
+    .matrix-item.matrix-item-5-per-row
+      @include flex(0 1 100%)
+
+@media (min-width: 601px) and (max-width: 800px)
+  .feed
+    .matrix-item.matrix-item-1-per-row
+      @include flex(0 1 $two-item-width)
+
+    .matrix-item.matrix-item-2-per-row
+      @include flex(0 1 $two-item-width)
+
+    .matrix-item.matrix-item-3-per-row
+      @include flex(0 1 $two-item-width)
+
+    .matrix-item.matrix-item-4-per-row
+      @include flex(0 1 $two-item-width)
+
+    .matrix-item.matrix-item-5-per-row
+      @include flex(0 1 $two-item-width)
+
+// @import 'mixins'
+//
+// // Matrix //
+//
+// .matrix
+//   .matrix-row
+//     margin-bottom: 20px
+//     @include display-flex
+//     @include flex-direction(row)
+//     &:last-of-type
+//       margin-bottom: 0px
+//     .matrix-column
+//       margin-right: 20px
+//       @include flex(0 1 100%)
+//       // @include aspect-1-1
+//       @include boxsizing
+//       &:last-of-type
+//         margin-right: 0px
+//
+// .matrix-item-blank
+//   @include aspect-1-1
+//   border: 1px solid $light-gray
+//   background-color: $offwhite
+//   @include display-flex
+//   @include justify-content(center)
+//   @include align-items(center)
+//
+// .matrix-item-form
+//   background-color: $offwhite
+//   border-radius: 10px
+//   padding: 20px
+//   margin-bottom: 20px
+//
+// // Responsive Styles
+//
+// @media (max-width: 600px)
+//   .matrix
+//     .matrix-row
+//       margin-bottom: 0px
+//       @include flex-direction(column)
+//       .matrix-column
+//         margin-right: 0px
+//         margin-bottom: 20px
+//         @include flex(0 0 100%)

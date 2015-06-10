@@ -21,8 +21,8 @@
 
   .component-container(ng-if="component.form.componentType=='matrix'")
     .component(ng-class="'component-' + component.form.metadata.allModes.styles.component.size")
-      .feed
-        .feed-item(ng-repeat='componentItem in component.form.metadata.custom.items | limitTo: component.numItems track by $index' ng-class="'feed-item-{{component.form.metadata.columns}}-per-row'")
+      .matrix
+        .matrix-item(ng-repeat='componentItem in component.form.metadata.custom.items | limitTo: component.numItems track by $index' ng-class="'matrix-item-{{component.form.metadata.columns}}-per-row'")
           %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)")
           .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
             Edit
