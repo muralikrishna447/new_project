@@ -126,25 +126,35 @@
   return this
 ]
 
-@componentsManager.controller 'ComponentsNewController', ['Component', '$stateParams', '$state', 'notificationService', 'AlgoliaSearchService', 'componentItemService', (Component, $stateParams, $state, notificationService, AlgoliaSearchService, componentItemService) ->
+@componentsManager.controller 'ComponentsNewController', ['Component', '$stateParams', '$state', 'notificationService', 'AlgoliaSearchService', 'componentItemService', '$location', '$http', (Component, $stateParams, $state, notificationService, AlgoliaSearchService, componentItemService, $location, $http) ->
   @typeOptions = ['single', 'matrix', 'madlib']
   @sizeOptions = ['full', 'small', 'medium', 'large']
   @itemTypes = componentItemService.types
   @colorOptions = ['white', 'black']
   @searchResults = []
   @toggleObject = {}
+  @form = {
+    componentType: null
+    mode: null
+    metadata: {
+      allModes: {
+        styles:
+          component:
+            size: 'full'
+      }
+      api: {}
+      custom: {
+        items: []
+      }
+      itemTypeName: null
+    }
+    name: null
+  }
+  @form.name = $location.search().name
 
   @save = (component) ->
-    componentParams = component
-    delete componentParams['id']
-    delete componentParams['slug']
-    Component.update {id: $stateParams.id, component: componentParams}, (component) ->
+    $http.post('/api/v0/components', {component: component}).success (data, status, headers, config) ->
       $state.go('components.index')
-      console.log 'component: ', component
-      message = "The #{component.name } component was successfully saved. "
-      buttonUrl = "/components/#{component.id}/edit"
-      buttonText = "Edit #{component.name}"
-      notificationService.add('success', message, buttonUrl, buttonText)
 
   @clear = =>
     @form = {
@@ -173,6 +183,7 @@
   @numItems = 0
 
   @setNumItems = =>
+    console.log 'set items'
     @numItems = @form.metadata.columns*@form.metadata.rows
     delta = @numItems - @form.metadata.custom.items.length
     struct = componentItemService.getStruct(@form.metadata.itemTypeName)
@@ -183,6 +194,16 @@
         newStruct = angular.copy struct
         @form.metadata.custom.items.push { content: newStruct }
         i++
+
+  @setItemType = ->
+    struct = componentItemService.getStruct(@form.metadata.itemTypeName)
+    items = @form.metadata.custom.items
+    angular.forEach items, (item) ->
+      oldItem = angular.copy item
+      item.content = angular.copy struct
+      angular.forEach item.content, (value,key) ->
+        item.content[key] = oldItem.content[key]
+
 
   return this
 ]
