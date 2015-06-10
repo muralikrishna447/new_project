@@ -24,13 +24,13 @@
 
     .state 'components.new'
       url: '/new'
-      controller: 'ComponentsNewController'
+      controller: 'ComponentsFormController'
       controllerAs: 'component'
       templateUrl: '/client_views/components_new.html'
 
     .state 'components.edit'
       url: '/:id/edit'
-      controller: 'ComponentsEditController'
+      controller: 'ComponentsFormController'
       controllerAs: 'component'
       templateUrl: '/client_views/components_edit.html'
 
