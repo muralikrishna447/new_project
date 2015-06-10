@@ -132,6 +132,7 @@
   @itemTypes = componentItemService.types
   @colorOptions = ['white', 'black']
   @searchResults = []
+  @toggleObject = {}
 
   Component.show {id: $stateParams.id}, (component) =>
     @form = component

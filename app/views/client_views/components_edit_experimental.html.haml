@@ -19,11 +19,15 @@
       %label Item Type
       %select(ng-options="item.name as item.name for item in component.itemTypes" ng-model='component.form.metadata.itemTypeName')
 
-  .feed
-    .feed-item(ng-repeat='componentItem in component.form.metadata.custom.items | limitTo: component.numItems track by $index' ng-class="'feed-item-{{component.form.metadata.columns}}-per-row'")
-      %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)")
-      %div(component-item item='componentItem' item-type-name="component.form.metadata.itemTypeName" view-mode="'edit'" styles='item.styles')
-      %div(component-item item='componentItem' item-type-name="component.form.metadata.itemTypeName" styles='componentItem.styles')
+  .component-container(ng-if="component.form.componentType=='matrix'")
+    .component(ng-class="'component-' + component.form.metadata.allModes.styles.component.size")
+      .feed
+        .feed-item(ng-repeat='componentItem in component.form.metadata.custom.items | limitTo: component.numItems track by $index' ng-class="'feed-item-{{component.form.metadata.columns}}-per-row'")
+          %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)")
+          .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
+            Edit
+          %div(component-item item='componentItem' item-type-name="component.form.metadata.itemTypeName" view-mode="'edit'" styles='item.styles' ng-show='component.toggleObject[$index] == true')
+          %div(component-item item='componentItem' item-type-name="component.form.metadata.itemTypeName" styles='componentItem.styles')
 
   %pre
     {{component.form | json}}
