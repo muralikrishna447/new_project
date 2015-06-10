@@ -207,7 +207,7 @@ class ActivitiesController < ApplicationController
       @activity = Activity.find(params[:id])
 
       # KHK: Debugging double-escaped ampersand issue
-      logger.debug(
+      logger.info(
         "Updating activity #{@activity.id} with title " \
         "[#{@activity.title}] by user #{current_user.email}"
       )
@@ -250,7 +250,7 @@ class ActivitiesController < ApplicationController
               end
 
               # KHK: Debugging double-escaped ampersand issue
-              logger.debug(
+              logger.info(
                 "After updating, activity #{@activity.id} has title [#{@activity.title}]" \
                 " and bypass_sanitization was #{@activity.bypass_sanitization}"
               )
