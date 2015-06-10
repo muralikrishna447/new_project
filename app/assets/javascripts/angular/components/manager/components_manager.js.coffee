@@ -157,7 +157,9 @@
               size: 'full'
         }
         api: {}
-        custom: {}
+        custom: {
+          items: []
+        }
         itemTypeName: null
       }
       name: null
@@ -220,7 +222,9 @@
               size: 'full'
         }
         api: {}
-        custom: {}
+        custom: {
+          items: []
+        }
         itemTypeName: null
       }
       name: null
@@ -234,6 +238,7 @@
   @numItems = 0
 
   @setNumItems = =>
+    console.log 'set items'
     @numItems = @form.metadata.columns*@form.metadata.rows
     delta = @numItems - @form.metadata.custom.items.length
     struct = componentItemService.getStruct(@form.metadata.itemTypeName)
@@ -244,6 +249,16 @@
         newStruct = angular.copy struct
         @form.metadata.custom.items.push { content: newStruct }
         i++
+
+  @setItemType = ->
+    struct = componentItemService.getStruct(@form.metadata.itemTypeName)
+    items = @form.metadata.custom.items
+    angular.forEach items, (item) ->
+      oldItem = angular.copy item
+      item.content = angular.copy struct
+      angular.forEach item.content, (value,key) ->
+        item.content[key] = oldItem.content[key]
+
 
   return this
 ]

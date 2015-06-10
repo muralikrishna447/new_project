@@ -1,5 +1,9 @@
-.matrix
-  .matrix-row(ng-repeat='row in items track by $index')
-    .matrix-column(ng-repeat='item in row track by $index')
+-# .matrix
+-#   .matrix-row(ng-repeat='row in items track by $index')
+-#     .matrix-column(ng-repeat='item in row track by $index')
+-#
+-#       %div(component-item item='item' item-type-name="component.metadata.itemTypeName")
 
-      %div(component-item item='item' item-type-name="component.metadata.itemTypeName")
+.feed
+  .feed-item(ng-repeat='item in component.metadata.custom.items' ng-class="'feed-item-{{component.metadata.columns}}-per-row'")
+    %div(component-item item='item' item-type-name="component.metadata.itemTypeName" styles='item.styles')

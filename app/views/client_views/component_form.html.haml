@@ -17,7 +17,7 @@
       %input(type='number' ng-model='component.form.metadata.rows' ng-change='component.setNumItems()')
     .experimental-nav-item
       %label Item Type
-      %select(ng-options="item.name as item.name for item in component.itemTypes" ng-model='component.form.metadata.itemTypeName')
+      %select(ng-options="item.name as item.name for item in component.itemTypes" ng-model='component.form.metadata.itemTypeName' ng-change='component.setItemType()')
 
   .component-container(ng-if="component.form.componentType=='matrix'")
     .component(ng-class="'component-' + component.form.metadata.allModes.styles.component.size")

@@ -19,8 +19,8 @@
       %label Item Type
       %select(ng-options="item.name as item.name for item in component.itemTypes" ng-model='component.form.metadata.itemTypeName')
 
-  .component-container(ng-if="component.form.componentType=='matrix'")
-    .component(ng-class="'component-' + component.form.metadata.allModes.styles.component.size")
+  .component(ng-if="component.form.componentType=='matrix'")
+    .component(ng-class="'component-size-' + component.form.metadata.allModes.styles.component.size")
       .feed
         .feed-item(ng-repeat='componentItem in component.form.metadata.custom.items | limitTo: component.numItems track by $index' ng-class="'feed-item-{{component.form.metadata.columns}}-per-row'")
           %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)")

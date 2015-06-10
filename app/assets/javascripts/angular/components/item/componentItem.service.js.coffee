@@ -53,10 +53,10 @@
 
   @getStruct = (name) =>
     itemType = @get(name)
-    console.log 'itemType.attrs: ', itemType.attrs
     struct = {}
-    for attr in itemType.attrs
-      struct[attr] = ''
+    if itemType
+      for attr in itemType.attrs
+        struct[attr] = ''
     return struct
 
 
