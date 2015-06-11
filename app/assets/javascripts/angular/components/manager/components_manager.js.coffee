@@ -111,6 +111,7 @@
       componentParams = component
       delete componentParams['id']
       delete componentParams['slug']
+      console.log 'componentParams: ', componentParams
       Component.update {id: $stateParams.id, component: componentParams}, (component) ->
         $state.go('components.index')
         console.log 'component: ', component

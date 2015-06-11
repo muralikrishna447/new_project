@@ -1,3 +1,3 @@
 .matrix
-  .matrix-item(ng-repeat='item in component.metadata.custom.items' ng-class="'matrix-item-{{component.metadata.columns}}-per-row'")
-    %div(component-item item='item' item-type-name="component.metadata.itemTypeName" styles='item.styles')
+  .matrix-item(ng-repeat='item in component.meta.items' ng-class="'matrix-item-{{component.meta.columns}}-per-row'")
+    %div(component-item item='item' item-type-name="component.meta.itemTypeName" styles='item.styles')
