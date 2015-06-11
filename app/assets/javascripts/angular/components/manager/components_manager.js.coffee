@@ -66,6 +66,35 @@
   @searchResults = []
   @toggleObject = {}
 
+  # componentStruct = {
+  #   componentType: null
+  #   meta: {
+  #     itemType: null
+  #     items: []
+  #     size: null
+  #     theme: null
+  #   }
+  #   name: null
+  # }
+
+  componentStruct = {
+    componentType: null
+    mode: null
+    metadata: {
+      allModes: {
+        styles:
+          component:
+            size: 'full'
+      }
+      api: {}
+      custom: {
+        items: []
+      }
+      itemTypeName: null
+    }
+    name: null
+  }
+
   console.log "$state.current.name: ", $state.current.name
   if $state.current.name == 'components.edit'
     console.log 'current name is component edit!'
@@ -74,23 +103,7 @@
       @setNumItems()
 
   if $state.current.name == 'components.new'
-    @form = {
-      componentType: null
-      mode: null
-      metadata: {
-        allModes: {
-          styles:
-            component:
-              size: 'full'
-        }
-        api: {}
-        custom: {
-          items: []
-        }
-        itemTypeName: null
-      }
-      name: null
-    }
+    @form = componentStruct
     @form.name = $location.search().name
 
   @save = (component) ->
@@ -111,23 +124,7 @@
         $state.go('components.index')
 
   @clear = =>
-    @form = {
-      componentType: null
-      mode: null
-      metadata: {
-        allModes: {
-          styles:
-            component:
-              size: 'full'
-        }
-        api: {}
-        custom: {
-          items: []
-        }
-        itemTypeName: null
-      }
-      name: null
-    }
+    @form = componentStruct
 
   @setItem = (selectedItem, componentItem) ->
     angular.forEach componentItem.content, (value, key) ->
