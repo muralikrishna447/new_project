@@ -66,34 +66,34 @@
   @searchResults = []
   @toggleObject = {}
 
-  # componentStruct = {
-  #   componentType: null
-  #   meta: {
-  #     itemType: null
-  #     items: []
-  #     size: null
-  #     theme: null
-  #   }
-  #   name: null
-  # }
-
   componentStruct = {
     componentType: null
-    mode: null
-    metadata: {
-      allModes: {
-        styles:
-          component:
-            size: 'full'
-      }
-      api: {}
-      custom: {
-        items: []
-      }
+    meta: {
       itemTypeName: null
+      items: []
+      size: null
+      theme: null
     }
     name: null
   }
+
+  # componentStruct = {
+  #   componentType: null
+  #   mode: null
+  #   metadata: {
+  #     allModes: {
+  #       styles:
+  #         component:
+  #           size: 'full'
+  #     }
+  #     api: {}
+  #     custom: {
+  #       items: []
+  #     }
+  #     itemTypeName: null
+  #   }
+  #   name: null
+  # }
 
   console.log "$state.current.name: ", $state.current.name
   if $state.current.name == 'components.edit'
@@ -135,20 +135,20 @@
 
   @setNumItems = =>
     console.log 'set items'
-    @numItems = @form.metadata.columns*@form.metadata.rows
-    delta = @numItems - @form.metadata.custom.items.length
-    struct = componentItemService.getStruct(@form.metadata.itemTypeName)
+    @numItems = @form.meta.columns*@form.meta.rows
+    delta = @numItems - @form.meta.items.length
+    struct = componentItemService.getStruct(@form.meta.itemTypeName)
 
     if delta > 0
       i = 0
       while i < delta
         newStruct = angular.copy struct
-        @form.metadata.custom.items.push { content: newStruct }
+        @form.meta.items.push { content: newStruct }
         i++
 
   @setItemType = ->
-    struct = componentItemService.getStruct(@form.metadata.itemTypeName)
-    items = @form.metadata.custom.items
+    struct = componentItemService.getStruct(@form.meta.itemTypeName)
+    items = @form.meta.items
     angular.forEach items, (item) ->
       oldItem = angular.copy item
       item.content = angular.copy struct
