@@ -5,17 +5,12 @@
   margin-bottom: 80px
   @include display-flex
   @include justify-content(center)
-  .component-full
+  .component.small
+    @include flex(0 1 600px)
+  .component.large
+    @include flex(0 1 1000px)
+  .component.full
     @include flex(0 1 100%)
-
-  .component-small
-    @include flex(0 1 400px)
-
-  .component-medium
-    @include flex(0 1 800px)
-
-  .component-large
-    @include flex(0 1 1200px)
 
 .component-edit-button
   @include display-flex
