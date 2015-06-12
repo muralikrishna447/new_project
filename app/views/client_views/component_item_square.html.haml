@@ -1,18 +1,18 @@
-.item.square(ng-if="item && !viewMode")
+.item.square(ng-if="item && !viewMode" ng-class="theme")
   .item-content(ng-style="{'background-image':'linear-gradient(rgba(0, 0, 0, .25), rgba(0, 0, 0, .25)), url(' + (item.content.image | aspect1to1) + ')'}")
-    .item-divider.first
+    .item-divider.first.item-title
       {{item.content.title}}
     .item-divider.middle
-      %a.btn-outline(ng-href='{{item.content.url}}')
+      %a.item-button.btn-outline(ng-href='{{item.content.url}}')
         {{item.content.buttonMessage}}
     .item-divider.last
 
 .item.square.blank(ng-if="!item")
   .item-content
-    .item-divider.first
+    .item-divider.first.item-title
       Title
     .item-divider.middle
-      %a.btn-outline(ng-href='{{item.content.url}}')
+      %a.item-button.btn-outline(ng-href='{{item.content.url}}')
         Button
     .item-divider.last
 

@@ -147,25 +147,23 @@
 // Themes
 .item.light
   .item-content
-    .item-content-text
-      .item-title
+    .item-title
+      color: white
+    .item-button
+      border-color: white
+      &:hover
+        border: 2px solid $orange
         color: white
-      .item-button
-        border-color: white
-        &:hover
-          border: 2px solid $orange
-          color: white
-          background-color: $orange
+        background-color: $orange
 
 .item.dark
   .item-content
-    .item-content-text
-      .item-title
-        color: black
-      .item-button
-        border-color: black
-        color: black
-        &:hover
-          border: 2px solid $orange
-          color: white
-          background-color: $orange
+    .item-title
+      color: black
+    .item-button
+      border-color: black
+      color: black
+      &:hover
+        border: 2px solid $orange
+        color: white
+        background-color: $orange
