@@ -52,6 +52,7 @@
     component: '='
     search: '=?'
     columns: '=?'
+    rows: '=?'
     limitTo: '='
     itemTypeName: '=?'
   }
@@ -99,7 +100,11 @@
       }
 
       AlgoliaSearchService.search(params).then (data) ->
-        scope.items = Mapper.mapObject(data, mapper)
+        numItems = scope.rows * scope.columns
+        console.log 'numItems: ', numItems
+        dataToMap = data.slice(0, numItems)
+        console.log 'dataToMap: ', dataToMap
+        scope.items = Mapper.mapObject(dataToMap, mapper)
         console.log 'scope.items: ', scope.items
 
     scope.$watch 'component', (newValue, oldValue) ->
@@ -110,6 +115,7 @@
         console.log 'newValue.meta.columns: ', newValue.meta.columns
         scope.search = newValue.meta.searchQuery
         scope.columns = newValue.meta.columns
+        scope.rows = newValue.meta.rows
         scope.itemTypeName = newValue.meta.itemTypeName
 
     scope.$watch 'columns', (newValue, oldValue) ->
