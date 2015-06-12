@@ -1,17 +1,22 @@
 @import 'mixins'
 
 $one-item-width: 100%
-$two-item-width: calc((100% - 40px)/2)
-$three-item-width: calc((100% - 60px)/3)
-$four-item-width: calc((100% - 80px)/4)
-$five-item-width: calc((100% - 100px)/5)
+$two-item-width: calc((100% - 20px)/2)
+$three-item-width: calc((100% - 40px)/3)
+$four-item-width: calc((100% - 60px)/4)
+$five-item-width: calc((100% - 80px)/5)
 
 .matrix
   width: 100%
   @include display-flex
   @include flex-wrap(wrap)
+  .matrix-item
+    margin-bottom: 20px
+    margin-right: 20px
 
   .matrix-item.matrix-item-1-per-row
+    margin-bottom: 0px
+    margin-right: 0px
     @include flex(0 1 $one-item-width)
 
   .matrix-item.matrix-item-2-per-row
@@ -19,12 +24,24 @@ $five-item-width: calc((100% - 100px)/5)
 
   .matrix-item.matrix-item-3-per-row
     @include flex(0 1 $three-item-width)
+    &:nth-of-type(3n + 3)
+      margin-right: 0px
+    &:last-of-type, &:nth-last-of-type(2), &:nth-last-of-type(3)
+      margin-bottom: 0px
 
   .matrix-item.matrix-item-4-per-row
     @include flex(0 1 $four-item-width)
+    &:nth-of-type(4n + 4)
+      margin-right: 0px
+    &:last-of-type, &:nth-last-of-type(2), &:nth-last-of-type(3), &:nth-last-of-type(4)
+      margin-bottom: 0px
 
   .matrix-item.matrix-item-5-per-row
     @include flex(0 1 $five-item-width)
+    &:nth-of-type(5n + 5)
+      margin-right: 0px
+    &:last-of-type, &:nth-last-of-type(2), &:nth-last-of-type(3), &:nth-last-of-type(4), &:nth-last-of-type(5)
+      margin-bottom: 0px
 
 @media (max-width: 600px)
   .matrix
