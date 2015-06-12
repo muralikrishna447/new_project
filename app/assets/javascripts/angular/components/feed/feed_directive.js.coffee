@@ -108,8 +108,8 @@
         console.log 'scope.items: ', scope.items
 
     scope.$watch 'component', (newValue, oldValue) ->
-      console.log 'newValue: ', newValue
-      console.log 'oldValue: ', oldValue
+      # console.log 'newValue: ', newValue
+      # console.log 'oldValue: ', oldValue
       if newValue
         # scope.doSearch(newValue.meta.searchQuery)
         console.log 'newValue.meta.columns: ', newValue.meta.columns
@@ -121,10 +121,18 @@
     scope.$watch 'columns', (newValue, oldValue) ->
       console.log 'newValue: ', newValue
       console.log 'oldValue: ', oldValue
+      if newValue
+        scope.doSearch(scope.search)
 
-    scope.$watch 'search', (newValue, oldValue) ->
+    scope.$watch 'rows', (newValue, oldValue) ->
       console.log 'newValue: ', newValue
       console.log 'oldValue: ', oldValue
+      if newValue
+        scope.doSearch(scope.search)
+
+    scope.$watch 'search', (newValue, oldValue) ->
+      # console.log 'newValue: ', newValue
+      # console.log 'oldValue: ', oldValue
       if newValue
         scope.doSearch(newValue)
 
