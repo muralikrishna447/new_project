@@ -8,71 +8,98 @@ $five-item-width: calc((100% - 80px)/5)
 
 .matrix
   width: 100%
+  padding-top: 20px
+  padding-left: 20px
+  padding-right: 20px
+  @include boxsizing
   @include display-flex
   @include flex-wrap(wrap)
   .matrix-item
     margin-bottom: 20px
     margin-right: 20px
+    @include boxsizing
 
-  .matrix-item.matrix-item-1-per-row
+.matrix.matrix-1-per-row
+  padding-top: 0px
+  padding-left: 0px
+  padding-right: 0px
+  .matrix-item
     margin-bottom: 0px
     margin-right: 0px
-    @include flex(0 1 $one-item-width)
 
-  .matrix-item.matrix-item-2-per-row
-    @include flex(0 1 $two-item-width)
+@media (min-width: 801px)
+  .matrix.matrix-1-per-row
+    .matrix-item
+      @include flex(0 1 $one-item-width)
 
-  .matrix-item.matrix-item-3-per-row
-    @include flex(0 1 $three-item-width)
-    &:nth-of-type(3n + 3)
-      margin-right: 0px
-    &:last-of-type, &:nth-last-of-type(2), &:nth-last-of-type(3)
-      margin-bottom: 0px
+  .matrix.matrix-2-per-row
+    .matrix-item
+      @include flex(0 1 $two-item-width)
+      &:nth-of-type(2n + 2)
+        margin-right: 0px
 
-  .matrix-item.matrix-item-4-per-row
-    @include flex(0 1 $four-item-width)
-    &:nth-of-type(4n + 4)
-      margin-right: 0px
-    &:last-of-type, &:nth-last-of-type(2), &:nth-last-of-type(3), &:nth-last-of-type(4)
-      margin-bottom: 0px
+  .matrix.matrix-3-per-row
+    .matrix-item
+      @include flex(0 1 $three-item-width)
+      &:nth-of-type(3n + 3)
+        margin-right: 0px
 
-  .matrix-item.matrix-item-5-per-row
-    @include flex(0 1 $five-item-width)
-    &:nth-of-type(5n + 5)
-      margin-right: 0px
-    &:last-of-type, &:nth-last-of-type(2), &:nth-last-of-type(3), &:nth-last-of-type(4), &:nth-last-of-type(5)
-      margin-bottom: 0px
+  .matrix.matrix-4-per-row
+    .matrix-item
+      @include flex(0 1 $four-item-width)
+      &:nth-of-type(4n + 4)
+        margin-right: 0px
 
-@media (max-width: 600px)
-  .matrix
-    .matrix-item.matrix-item-1-per-row
-      @include flex(0 1 100%)
-
-    .matrix-item.matrix-item-2-per-row
-      @include flex(0 1 100%)
-
-    .matrix-item.matrix-item-3-per-row
-      @include flex(0 1 100%)
-
-    .matrix-item.matrix-item-4-per-row
-      @include flex(0 1 100%)
-
-    .matrix-item.matrix-item-5-per-row
-      @include flex(0 1 100%)
+  .matrix.matrix-5-per-row
+    .matrix-item
+      @include flex(0 1 $five-item-width)
+      &:nth-of-type(5n + 5)
+        margin-right: 0px
 
 @media (min-width: 601px) and (max-width: 800px)
-  .matrix
-    .matrix-item.matrix-item-1-per-row
+  .matrix.matrix-1-per-row
+    .matrix-item
+      @include flex(0 1 $one-item-width)
+
+  .matrix.matrix-2-per-row
+    .matrix-item
       @include flex(0 1 $two-item-width)
 
-    .matrix-item.matrix-item-2-per-row
+  .matrix.matrix-3-per-row
+    .matrix-item
       @include flex(0 1 $two-item-width)
+      &:nth-of-type(2n + 2)
+        margin-right: 0px
 
-    .matrix-item.matrix-item-3-per-row
+  .matrix.matrix-4-per-row
+    .matrix-item
       @include flex(0 1 $two-item-width)
+      &:nth-of-type(2n + 2)
+        margin-right: 0px
 
-    .matrix-item.matrix-item-4-per-row
+  .matrix.matrix-5-per-row
+    .matrix-item
       @include flex(0 1 $two-item-width)
+      &:nth-of-type(2n + 2)
+        margin-right: 0px
 
-    .matrix-item.matrix-item-5-per-row
-      @include flex(0 1 $two-item-width)
+@media (max-width: 600px)
+  .matrix.matrix-1-per-row
+    .matrix-item
+      @include flex(0 1 100%)
+
+  .matrix.matrix-2-per-row
+    .matrix-item
+      @include flex(0 1 100%)
+
+  .matrix.matrix-3-per-row
+    .matrix-item
+      @include flex(0 1 100%)
+
+  .matrix.matrix-4-per-row
+    .matrix-item
+      @include flex(0 1 100%)
+
+  .matrix.matrix-5-per-row
+    .matrix-item
+      @include flex(0 1 100%)
