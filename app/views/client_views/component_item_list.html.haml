@@ -1,4 +1,4 @@
-.item.list.list-a(ng-if="item && !viewMode")
+.item.list(ng-if="item && !viewMode")
   %a.item-content(ng-href='{{item.content.url}}')
     .item-content-image
       %img(ng-src='{{item.content.image | aspect1to1 }}')
@@ -8,7 +8,7 @@
       .item-description(ng-if='item.content.description')
         {{item.content.description | noShortcodes | sentences:item.styles.description.sentenceLength }}
 
-.item.list.list-a.blank(ng-if="!item")
+.item.list.blank(ng-if="!item")
   .item-content
     .item-content-text
       .item-title

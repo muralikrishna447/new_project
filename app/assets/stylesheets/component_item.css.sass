@@ -1,6 +1,6 @@
 @import 'mixins'
 
-.item.hero.hero-a
+.item.hero
   float: none
   @include aspect-3-1
   .item-content
@@ -50,7 +50,7 @@
               border-color: $orange
 
 @media (max-width: 800px)
-  .item.hero.hero-a
+  .item.hero
     @include aspect-16-9
     .item-content
       .item-content-text
@@ -63,7 +63,7 @@
       .item-button
         margin: 0 auto
 
-.item.square.square-a
+.item.square
   float: none
   @include aspect-1-1
   .item-content
@@ -98,7 +98,7 @@
       height: 100%
       width: 100%
 
-.item.square.square-a.blank
+.item.square.blank
   @include aspect-1-1
   border: 1px solid $light-gray
   background-color: $offwhite
