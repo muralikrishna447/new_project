@@ -1,8 +1,9 @@
 @import 'mixins'
 
-.component-item.hero.hero-a
+.item.hero.hero-a
+  float: none
   @include aspect-3-1
-  .component-item-content
+  .item-content
     background-size: cover
     background-position: center
     @include aspect-content
@@ -49,9 +50,9 @@
               border-color: $orange
 
 @media (max-width: 800px)
-  .component-item.hero.hero-a
+  .item.hero.hero-a
     @include aspect-16-9
-    .component-item-content
+    .item-content
       .item-content-text
         width: 100%
         padding-left: 0px
