@@ -18,6 +18,9 @@
     .experimental-nav-item
       %label Item Type
       %select(ng-options="item.name as item.name for item in component.itemTypes" ng-model='component.form.meta.itemTypeName' ng-change='component.setItemType()')
+    .experimental-nav-item
+      %label Theme
+      %select(ng-options="theme for theme in component.themeOptions" ng-model='component.form.meta.theme' ng-change='component.setTheme()')
 
   .component-container(ng-if="component.form.componentType=='feed'")
     .component(ng-class="component.form.meta.size")

@@ -25,29 +25,10 @@
         line-height: 60px
         margin-bottom: 20px
         font-weight: bold
-        &.color-black
-          color: black
-        &.color-white
-          color: white
-      .item-button
-        .btn-outline
-          font-size: 20px
-          font-weight: bold
-          padding: 10px 40px
-        &.color-black
-          .btn-outline
-            border-color: black
-            color: black
-            &:hover
-              border-color: $orange
-              color: white
-
-        &.color-white
-          .btn-outline
-            border-color: white
-            color: white
-            &:hover
-              border-color: $orange
+      .item-button.btn-outline
+        font-size: 20px
+        font-weight: bold
+        padding: 10px 40px
 
 @media (max-width: 800px)
   .item.hero
@@ -162,3 +143,29 @@
     .subheader
       font-size: 20px
       margin-top: 10px
+
+// Themes
+.item.light
+  .item-content
+    .item-content-text
+      .item-title
+        color: white
+      .item-button
+        border-color: white
+        &:hover
+          border: 2px solid $orange
+          color: white
+          background-color: $orange
+
+.item.dark
+  .item-content
+    .item-content-text
+      .item-title
+        color: black
+      .item-button
+        border-color: black
+        color: black
+        &:hover
+          border: 2px solid $orange
+          color: white
+          background-color: $orange
