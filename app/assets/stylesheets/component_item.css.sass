@@ -63,9 +63,10 @@
       .item-button
         margin: 0 auto
 
-.component-item.square.square-a
+.item.square.square-a
+  float: none
   @include aspect-1-1
-  .component-item-content
+  .item-content
     color: white
     text-align: center
     background-size: cover
@@ -97,11 +98,11 @@
       height: 100%
       width: 100%
 
-.component-item.square.square-a.blank
+.item.square.square-a.blank
   @include aspect-1-1
   border: 1px solid $light-gray
   background-color: $offwhite
-  .component-item-content
+  .item-content
     color: white
     text-align: center
     @include aspect-content
@@ -111,8 +112,9 @@
     @include flex-direction(column)
 
 
-.component-item.list
-  .component-item-content
+.item.list
+  float: none
+  .item-content
     padding: 10px
     @include boxsizing
     @include display-flex
@@ -131,8 +133,9 @@
     &:hover
       background-color: $offwhite
 
-.component-item.media
-  .component-item-content
+.item.media
+  float: none
+  .item-content
     @include boxsizing
     .item-content-image
       width: 100%
@@ -145,8 +148,9 @@
       .item-title
         font-weight: bold
 
-.component-item-header.header
-  .component-item-content
+.item.header
+  float: none
+  .item-content
     text-align: center
     @include boxsizing
     @include display-flex

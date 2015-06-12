@@ -1,5 +1,5 @@
-.component-item.square.square-a(ng-if="item && !viewMode")
-  .component-item-content(ng-style="{'background-image':'linear-gradient(rgba(0, 0, 0, .25), rgba(0, 0, 0, .25)), url(' + (item.content.image | aspect1to1) + ')'}")
+.item.square.square-a(ng-if="item && !viewMode")
+  .item-content(ng-style="{'background-image':'linear-gradient(rgba(0, 0, 0, .25), rgba(0, 0, 0, .25)), url(' + (item.content.image | aspect1to1) + ')'}")
     .item-divider.first
       {{item.content.title}}
     .item-divider.middle
@@ -7,8 +7,8 @@
         {{item.content.buttonMessage}}
     .item-divider.last
 
-.component-item.square.square-a.blank(ng-if="!item")
-  .component-item-content
+.item.square.square-a.blank(ng-if="!item")
+  .item-content
     .item-divider.first
       Title
     .item-divider.middle

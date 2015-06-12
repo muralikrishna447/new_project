@@ -1,12 +1,12 @@
-.component-item-header.header.header-a(ng-if="item && !viewMode")
-  .component-item-content
+.item.header.header-a(ng-if="item && !viewMode")
+  .item-content
     %h2.header(ng-class="'color-'+ item.styles.title.color")
       {{item.content.header}}
     .subheader
       {{item.content.subheader}}
 
-.component-item-header.list.list-a.blank(ng-if="!item")
-  .component-item-content
+.item.header.header-a.blank(ng-if="!item")
+  .item-content
     %h2.header
       Header
     .subheader
