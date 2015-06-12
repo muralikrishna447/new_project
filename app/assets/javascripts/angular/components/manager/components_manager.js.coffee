@@ -60,7 +60,7 @@
 
 @componentsManager.controller 'ComponentsFormController', ['Component', '$stateParams', '$state', 'notificationService', 'AlgoliaSearchService', 'componentItemService', '$location', (Component, $stateParams, $state, notificationService, AlgoliaSearchService, componentItemService, $location) ->
   @typeOptions = ['feed', 'madlib','matrix']
-  @sizeOptions = ['full', 'small', 'medium', 'large']
+  @sizeOptions = ['full', 'standard', 'small']
   @itemTypes = componentItemService.types
   @colorOptions = ['white', 'black']
   @searchResults = []
@@ -71,7 +71,7 @@
     meta: {
       itemTypeName: null
       items: []
-      size: null
+      size: 'standard'
       theme: null
     }
     name: null
