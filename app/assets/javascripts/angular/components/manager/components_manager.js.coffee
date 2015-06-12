@@ -59,7 +59,7 @@
 ]
 
 @componentsManager.controller 'ComponentsFormController', ['Component', '$stateParams', '$state', 'notificationService', 'AlgoliaSearchService', 'componentItemService', '$location', (Component, $stateParams, $state, notificationService, AlgoliaSearchService, componentItemService, $location) ->
-  @typeOptions = ['matrix', 'madlib']
+  @typeOptions = ['feed', 'madlib','matrix']
   @sizeOptions = ['full', 'small', 'medium', 'large']
   @itemTypes = componentItemService.types
   @colorOptions = ['white', 'black']

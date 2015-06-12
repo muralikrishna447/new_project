@@ -49,22 +49,16 @@
 @components.directive 'searchFeed', ['AlgoliaSearchService', 'Mapper', (AlgoliaSearchService, Mapper) ->
   restrict: 'A'
   scope: {
-    search: '@'
-    columns: '='
+    component: '='
+    search: '=?'
+    columns: '=?'
     limitTo: '='
-    itemTypeName: '='
+    itemTypeName: '=?'
   }
 
   link: (scope, element, attrs) ->
     scope.numLimit = scope.limitTo || 12
 
-    params = {
-      difficulty: 'any'
-      generator: 'chefsteps'
-      published_status: 'published'
-      page: '1'
-      search_all: scope.search
-    }
     mapper = [
       {
         componentKey: "title",
@@ -95,10 +89,38 @@
     # Search.query(params).then (data) ->
     #   scope.items = Mapper.mapObject(data, mapper)
 
-    scope.$watch 'search', (newValue, oldValue) ->
+    scope.doSearch = (searchQuery) ->
+      params = {
+        difficulty: 'any'
+        generator: 'chefsteps'
+        published_status: 'published'
+        page: '1'
+        search_all: searchQuery
+      }
+
+      AlgoliaSearchService.search(params).then (data) ->
+        scope.items = Mapper.mapObject(data, mapper)
+        console.log 'scope.items: ', scope.items
+
+    scope.$watch 'component', (newValue, oldValue) ->
+      console.log 'newValue: ', newValue
+      console.log 'oldValue: ', oldValue
       if newValue
-        AlgoliaSearchService.search(params).then (data) ->
-          scope.items = Mapper.mapObject(data, mapper)
+        # scope.doSearch(newValue.meta.searchQuery)
+        console.log 'newValue.meta.columns: ', newValue.meta.columns
+        scope.search = newValue.meta.searchQuery
+        scope.columns = newValue.meta.columns
+        scope.itemTypeName = newValue.meta.itemTypeName
+
+    scope.$watch 'columns', (newValue, oldValue) ->
+      console.log 'newValue: ', newValue
+      console.log 'oldValue: ', oldValue
+
+    scope.$watch 'search', (newValue, oldValue) ->
+      console.log 'newValue: ', newValue
+      console.log 'oldValue: ', oldValue
+      if newValue
+        scope.doSearch(newValue)
 
   templateUrl: '/client_views/component_feed.html'
 ]

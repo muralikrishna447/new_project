@@ -19,6 +19,17 @@
       %label Item Type
       %select(ng-options="item.name as item.name for item in component.itemTypes" ng-model='component.form.meta.itemTypeName' ng-change='component.setItemType()')
 
+  .component-container(ng-if="component.form.componentType=='feed'")
+    .component(ng-class="component.form.meta.size")
+      .btn.btn-secondary(ng-click="component.form.meta.feedType='search'")
+        Search
+      %div(ng-if="component.form.meta.feedType=='search'")
+        %input(type='text' ng-model='component.form.meta.searchQuery')
+        %div( search-feed
+              search="component.form.meta.searchQuery"
+              columns='component.form.meta.columns'
+              item-type-name="component.form.meta.itemTypeName" )
+
   .component-container(ng-if="component.form.componentType=='matrix'")
     .component(ng-class="component.form.meta.size")
       .matrix

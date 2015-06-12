@@ -66,7 +66,7 @@
   template:
     """
       <div class='component' ng-class="component.meta.size">
-        <div single component='component' ng-if="component.componentType=='single'"></div>
+        <div search-feed component='component' ng-if="component.componentType=='feed'"></div>
         <div matrix component='component' ng-if="component.componentType=='matrix'"></div>
         <div madlib component='component' ng-if="component.componentType=='madlib'"></div>
       </div>
