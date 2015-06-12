@@ -33,8 +33,8 @@
 
   .component-container(ng-if="component.form.componentType=='matrix'")
     .component(ng-class="component.form.meta.size")
-      .matrix
-        .matrix-item(ng-repeat='componentItem in component.form.meta.items | limitTo: component.numItems track by $index' ng-class="'matrix-item-{{component.form.meta.columns}}-per-row'")
+      .matrix(ng-class="'matrix-{{component.form.meta.columns}}-per-row'")
+        .matrix-item(ng-repeat='componentItem in component.form.meta.items | limitTo: component.numItems track by $index')
           %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)")
           .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
             Edit
