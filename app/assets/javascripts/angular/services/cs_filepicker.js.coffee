@@ -17,7 +17,10 @@
     baseURL
 
   this.cdnURL = (fpObject) ->
-    cdnURL = this.getBaseURL(fpObject).replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    if typeof fpObject == 'string'
+      cdnURL = fpObject.replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    else
+      cdnURL = this.getBaseURL(fpObject).replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
     cdnURL
 
   # Below is a universal Filepicker image conversion

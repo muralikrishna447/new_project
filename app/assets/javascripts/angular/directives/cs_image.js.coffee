@@ -28,8 +28,14 @@ Usage:
       # because that will cause a ton of refetches in a fluid layout during resize.
       scope.finalWidth = Math.ceil(parent.width / 50.0) * 50
 
-      if scope.aspect && scope.aspect == "16:9"
-        scope.finalHeight = scope.finalWidth * 9 / 16
+      if scope.aspect
+        switch scope.aspect
+          when "1:1"
+            scope.finalHeight = scope.finalWidth
+          when "16:9"
+            scope.finalHeight = scope.finalWidth * 9 / 16
+          when "3:1"
+            scope.finalHeight = scope.finalWidth * 1 / 3
         scope.finalUrl = csFilepickerMethods.convert(scope.url, {w: scope.finalWidth, h: scope.finalHeight})
 
       else
