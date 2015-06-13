@@ -122,7 +122,7 @@
         notificationService.add('success', message, buttonUrl, buttonText)
 
     if $state.current.name == 'components.new'
-      $http.post('/api/v0/components', {component: component}).success (data, status, headers, config) ->
+      Component.create {id: $stateParams.id, component: component}, (component) ->
         $state.go('components.index')
 
   @clear = =>
