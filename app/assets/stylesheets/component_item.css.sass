@@ -10,7 +10,10 @@
     @include display-flex
     @include justify-content(flex-start)
     @include align-items(center)
+    .item-content-image
+      position: absolute
     .item-content-text
+      z-index: 1
       height: 100%
       width: 50%
       padding-left: 10%
@@ -58,7 +61,11 @@
     @include justify-content(center)
     @include align-items(center)
     @include flex-direction(column)
+    .item-content-image
+      position: absolute
+      @include filter(brightness(75%))
     .item-divider.first
+      z-index: 1
       padding: 10px
       height: 100%
       width: 100%
@@ -69,15 +76,14 @@
       @include align-items(flex-end)
       @include justify-content(center)
     .item-divider.middle
+      z-index: 1
       @include flex(0 0 auto)
     .item-divider.last
+      z-index: 1
       height: 100%
       width: 100%
       @include flex(0 1 100%)
       @include display-flex
-    img
-      height: 100%
-      width: 100%
 
 .item.square.blank
   @include aspect-1-1
