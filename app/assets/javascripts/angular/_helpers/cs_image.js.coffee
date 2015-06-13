@@ -45,7 +45,9 @@ Usage:
       scope.calculateWidth()
       scope.$apply()
 
-    scope.calculateWidth()
+    scope.$watch 'url', (newValue, oldValue) ->
+      if newValue
+        scope.calculateWidth()
 
   template:
     """
