@@ -1,6 +1,6 @@
 # This service helps DRY up a lot of filepicker converting and cropping
 
-@app.service 'csFilepickerMethods', ['$q', ($q) ->
+@helpers.service 'csFilepickerMethods', ['$q', ($q) ->
 
   baseURL = null
   cdnURL = null
@@ -12,15 +12,16 @@
     console.log "***************************************"
 
   this.getBaseURL = (fpObject) ->
-    baseURL = JSON.parse(fpObject).url
+    parsed = JSON.parse(fpObject)
+    if typeof parsed == 'object'
+      baseURL = parsed.url
+    if typeof parse == 'string'
+      baseURL = fpObject
     # console.log 'This is the baseURL: ', baseURL
     baseURL
 
   this.cdnURL = (fpObject) ->
-    if typeof fpObject == 'string'
-      cdnURL = fpObject.replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
-    else
-      cdnURL = this.getBaseURL(fpObject).replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    cdnURL = this.getBaseURL(fpObject).replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
     cdnURL
 
   # Below is a universal Filepicker image conversion

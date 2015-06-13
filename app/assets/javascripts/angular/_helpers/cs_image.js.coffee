@@ -9,7 +9,7 @@ Usage:
 
 ###
 
-@app.directive 'csImage', ['csFilepickerMethods', '$window', '$timeout', (csFilepickerMethods, $window, $timeout) ->
+@helpers.directive 'csImage', ['csFilepickerMethods', '$window', '$timeout', (csFilepickerMethods, $window, $timeout) ->
   restrict: 'E'
   scope: {
     url: '='
@@ -20,7 +20,6 @@ Usage:
     scope.containerStyle = {}
     scope.attrs = attrs
     parent = element.parent()
-
     scope.calculateWidth = ->
       parent.width = $(parent[0]).width()
 
