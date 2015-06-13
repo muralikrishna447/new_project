@@ -192,7 +192,10 @@
 @media (max-width: 600px)
   .home-component-split
     .home-component-split-item
+      padding: 0px
       @include flex(0 1 100%)
+      &:last-of-type
+        padding: 0px
 
 // Temp Experimental
 .experimental
