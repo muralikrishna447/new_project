@@ -5,6 +5,8 @@
     .item-content-text
       .item-title
         {{item.content.title}}
+      .item-description
+        {{item.content.description}}
       %a.item-button.btn-outline(ng-href='{{item.content.url}}')
         {{item.content.buttonMessage}}
 
@@ -20,6 +22,9 @@
 
   %label Title
   %input(type='text' ng-model='item.content.title')
+
+  %label Description
+  %textarea(ng-model='item.content.description')
 
   %label Image
   %input(type='text' ng-model='item.content.image')
