@@ -36,11 +36,12 @@
 
   .component-container(ng-if="component.form.componentType=='matrix'")
     .component(ng-class="component.form.meta.size")
-      .matrix(ng-class="'matrix-{{component.form.meta.columns}}-per-row'")
+      .matrix(ng-class="'matrix-' + component.form.meta.columns + '-per-row'")
         .matrix-item(ng-repeat='componentItem in component.form.meta.items | limitTo: component.numItems track by $index')
-          %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)")
-          .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
-            Edit
+          .item-form
+            %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)")
+            .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
+              Edit
           %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" view-mode="'edit'" theme='component.form.meta.theme' ng-show='component.toggleObject[$index] == true')
           %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" theme='component.form.meta.theme')
 
