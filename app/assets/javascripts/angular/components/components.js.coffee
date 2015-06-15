@@ -80,7 +80,7 @@
 #   description: 'description'
 #   url: 'url'
 # }
-@components.service 'Mapper', ['$http', '$q', ($http, $q) ->
+@components.service 'Mapper', [ ->
 
   @mapObject = (data, connections, maxNumber) ->
     if data.length
