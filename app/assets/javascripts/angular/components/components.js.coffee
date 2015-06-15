@@ -98,6 +98,26 @@
           mappedItem[connection.componentKey] = item[connection.sourceKey]
       return { content: mappedItem }
 
+  # Generates a mapper object from an array of attrs
+  @generate = (attrs) ->
+    mapper = []
+    for attr in attrs
+      mapperItem =
+        componentKey: attr
+        sourceKey: attr
+        value: ""
+      mapper.push mapperItem
+    return mapper
+
+  # Updated an item in a mapper object
+  # Example 1: Mapper.update(mapper, 'buttonMessage', {value: 'See the recipe'})
+  # Example 2: Mapper.update(mapper, 'buttonMessage', {sourceKey: 'title'})
+  @update = (mapper, componentKey, updateObject) ->
+    for mapperItem in mapper
+      if mapperItem['componentKey'] == componentKey
+        angular.forEach updateObject, (value, key) ->
+          mapperItem[key] = value
+
   return this
 ]
 

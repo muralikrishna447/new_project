@@ -1,4 +1,4 @@
-@components.directive 'searchFeed', ['AlgoliaSearchService', 'Mapper', (AlgoliaSearchService, Mapper) ->
+@components.directive 'searchFeed', ['AlgoliaSearchService', 'Mapper', 'componentItemService', (AlgoliaSearchService, Mapper, componentItemService) ->
   restrict: 'A'
   scope: {
     component: '='
@@ -10,33 +10,9 @@
 
   link: (scope, element, attrs) ->
 
-    mapper = [
-      {
-        componentKey: "title",
-        sourceKey: "title",
-        value: ""
-      },
-      {
-        componentKey: "image",
-        sourceKey: "image",
-        value: ""
-      },
-      {
-        componentKey: "buttonMessage",
-        sourceKey: null,
-        value: "See the recipe"
-      },
-      {
-        componentKey: "description",
-        sourceKey: "description",
-        value: ""
-      },
-      {
-        componentKey: "url",
-        sourceKey: "url",
-        value: ""
-      }
-    ]
+    itemType = componentItemService.get(scope.itemTypeName)
+    mapper = Mapper.generate(itemType.attrs)
+    Mapper.update(mapper, 'buttonMessage', {value: 'See the recipe'})
 
     scope.doSearch = (searchQuery) ->
       params = {
