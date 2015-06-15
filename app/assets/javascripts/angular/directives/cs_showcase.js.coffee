@@ -123,6 +123,6 @@
 
   template:
     """
-      <img src="{{getImageUrl(csShowcaseImage.fp)}}"/>
+      <img ng-src="{{getImageUrl(csShowcaseImage.fp)}}"/>
     """
 ]
