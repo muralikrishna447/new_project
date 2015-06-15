@@ -12,16 +12,16 @@
     console.log "***************************************"
 
   this.getBaseURL = (fpObject) ->
-    parsed = JSON.parse(fpObject)
-    if typeof parsed == 'object'
+    try
+      parsed = JSON.parse(fpObject)
       baseURL = parsed.url
-    if typeof parse == 'string'
+    catch e
       baseURL = fpObject
-    # console.log 'This is the baseURL: ', baseURL
     baseURL
 
   this.cdnURL = (fpObject) ->
     cdnURL = this.getBaseURL(fpObject).replace("www.filepicker.io", "d3awvtnmmsvyot.cloudfront.net")
+    console.log 'cdnURL: ', cdnURL
     cdnURL
 
   # Below is a universal Filepicker image conversion
@@ -53,11 +53,8 @@
     aspect = options.a || options.aspect
     quality = options.quality || 90
 
-    # Try parsing the filepicker object first
-    try
-      convertURL = this.cdnURL(fpObjectOrImageUrl)
-    catch e
-      convertURL = fpObjectOrImageUrl
+    # Moved try catch to getBaseURL where we're trying to parse the FilepickerObject
+    convertURL = this.cdnURL(fpObjectOrImageUrl)
 
     return "" if (! convertURL) || (convertURL.length == 0)
 
