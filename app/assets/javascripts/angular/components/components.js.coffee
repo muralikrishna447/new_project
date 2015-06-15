@@ -65,10 +65,10 @@
 
   template:
     """
-      <div class='component' ng-class="component.meta.size">
-        <div search-feed component='component' ng-if="component.componentType=='feed'"></div>
-        <div matrix component='component' ng-if="component.componentType=='matrix'"></div>
-        <div madlib component='component' ng-if="component.componentType=='madlib'"></div>
+      <div class='component' ng-class="component.meta.size" ng-switch="component.componentType">
+        <div search-feed component='component' ng-switch-when="feed"></div>
+        <div matrix component='component' ng-switch-when="matrix"></div>
+        <div madlib component='component' ng-switch-when="madlib"></div>
       </div>
     """
 ]
