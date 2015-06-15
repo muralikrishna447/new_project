@@ -1,5 +1,3 @@
-.component-container(component-load component-id='home-matrix-one')
-
 .container.component-examples
   %h1 Components
 
@@ -55,24 +53,6 @@
   %hr
   .row
     .span6
-      %h3 Feed
-      %pre
-        :escaped
-          %div( feed
-          source="'http://www.chefsteps.com/api/v0/activities'"
-          mapper='examples.feedMapper'
-          columns='3'
-          item-type-name="'Square A'" )
-    .span6
-      %div( feed
-            source="'http://www.chefsteps.com/api/v0/activities'"
-            mapper='examples.feedMapper'
-            columns='3'
-            item-type-name="'Square A'" )
-
-  %hr
-  .row
-    .span6
       %h3 Search Feed
       %pre
         :escaped
@@ -83,5 +63,6 @@
     .span6
       %div( search-feed
             search="'Sous Vide'"
-            columns='1'
-            item-type-name="'List A'" )
+            columns='3'
+            rows='2'
+            item-type-name="'Square A'" )

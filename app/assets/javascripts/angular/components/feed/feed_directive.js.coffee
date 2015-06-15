@@ -27,6 +27,7 @@
 #   }
 # ]
 
+# This is a general feed item that may be too flexible to be useful in practice.  It's suggested to use searchFeed instead
 @components.directive 'feed', ['$http', 'Mapper', ($http, Mapper) ->
   restrict: 'A'
   scope: {
@@ -53,12 +54,10 @@
     search: '=?'
     columns: '=?'
     rows: '=?'
-    limitTo: '='
     itemTypeName: '=?'
   }
 
   link: (scope, element, attrs) ->
-    scope.numLimit = scope.limitTo || 12
 
     mapper = [
       {
@@ -101,38 +100,25 @@
 
       AlgoliaSearchService.search(params).then (data) ->
         numItems = scope.rows * scope.columns
-        console.log 'numItems: ', numItems
         dataToMap = data.slice(0, numItems)
-        console.log 'dataToMap: ', dataToMap
         scope.items = Mapper.mapObject(dataToMap, mapper)
-        console.log 'scope.items: ', scope.items
 
     scope.$watch 'component', (newValue, oldValue) ->
-      # console.log 'newValue: ', newValue
-      # console.log 'oldValue: ', oldValue
       if newValue
-        # scope.doSearch(newValue.meta.searchQuery)
-        console.log 'newValue.meta.columns: ', newValue.meta.columns
         scope.search = newValue.meta.searchQuery
         scope.columns = newValue.meta.columns
         scope.rows = newValue.meta.rows
         scope.itemTypeName = newValue.meta.itemTypeName
 
     scope.$watch 'columns', (newValue, oldValue) ->
-      console.log 'newValue: ', newValue
-      console.log 'oldValue: ', oldValue
       if newValue
         scope.doSearch(scope.search)
 
     scope.$watch 'rows', (newValue, oldValue) ->
-      console.log 'newValue: ', newValue
-      console.log 'oldValue: ', oldValue
       if newValue
         scope.doSearch(scope.search)
 
     scope.$watch 'search', (newValue, oldValue) ->
-      # console.log 'newValue: ', newValue
-      # console.log 'oldValue: ', oldValue
       if newValue
         scope.doSearch(newValue)
 
