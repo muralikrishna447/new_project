@@ -141,12 +141,17 @@
     delta = @numItems - @form.meta.items.length
     struct = componentItemService.getStruct(@form.meta.itemTypeName)
 
+    # If there are not enough items, then add new items
     if delta > 0
       i = 0
       while i < delta
         newStruct = angular.copy struct
         @form.meta.items.push { content: newStruct }
         i++
+
+    # Only keep the items needed
+    if delta < 0
+      @form.meta.items = @form.meta.items.slice(0,@numItems)
 
   @setItemType = ->
     struct = componentItemService.getStruct(@form.meta.itemTypeName)
