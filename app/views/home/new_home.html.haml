@@ -1,3 +1,8 @@
+-# TODO Make the metatags below angularized.  We won't be able to do this until we update application.html
+- content_for :title, "Cook Smarter"
+- content_for :description, "A team of award-winning chefs, filmmakers, scientists, designers, and engineers focused on revolutionizing the way people cook."
+- content_for :keywords, "ChefSteps, Chef, Cooking, Sous Vide, Modernist, Baking, Barbecue, Cooking School"
+
 -# TODO Make the madlib into a real component
 .container-fluid.well-gradient#madlib-container-new(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='homeMadlib'; setIntent('ftue')")
   = render "devise/sessions/new_angular"
