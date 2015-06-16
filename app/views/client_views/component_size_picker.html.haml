@@ -1,8 +1,0 @@
-.component-styles-color-picker
-  .color-current(ng-if="componentModel.size.length > 0" ng-click='toggleOptions()')
-    .color-text
-      {{componentModel.size}}
-  .color-options(ng-show='showOptions')
-    .color-option(ng-repeat='size in sizeOptions' ng-click="setSize(size)")
-      .color-text
-        {{size}}

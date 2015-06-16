@@ -1,6 +1,6 @@
 # Angular.js stuff. This can't wait til after page load, it needs to happen in the <head>
 
-@app = angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "ui.select2", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable", "ngSanitize", "ngRoute", "ngAnimate", "once", "cs.api", "csConfig", "cs.components"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
+@app = angular.module 'ChefStepsApp', ["ngResource", "ui", "ui.bootstrap", "ui.select2", "LocalStorageModule", "templates", "ngGrid", "infinite-scroll", "angularPayments", "googlechart", "contenteditable", "ngSanitize", "ngRoute", "ngAnimate", "once", "cs.api", "csConfig", "cs.components", "cs.helpers"], ["$locationProvider", "$routeProvider", ($locationProvider, $routeProvider) ->
 
   #window.logPerf("ANGULAR INIT")
   #angular.element(document).ready ->

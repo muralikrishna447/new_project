@@ -3,7 +3,7 @@
   scope: {
     item: '='
     itemTypeName: '='
-    styles: '='
+    theme: '='
     viewMode: '='
   }
   link: (scope, element, attrs) ->

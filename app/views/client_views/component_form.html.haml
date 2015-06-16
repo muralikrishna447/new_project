@@ -1,21 +1,55 @@
-%form
-  %fieldset
-    %label
-      Name
-    %input(type='text' ng-model='component.form.name')
+.experimental
+  .experimental-nav
+    .experimental-nav-item
+      %label Name
+      %input(type='text' ng-model='component.form.name' placeholder='name')
+    .experimental-nav-item
+      %label Type
+      %select(ng-options="item for item in component.typeOptions" ng-model='component.form.componentType')
+    .experimental-nav-item
+      %label Size
+      %select(ng-options="item for item in component.sizeOptions" ng-model='component.form.meta.size')
+    .experimental-nav-item
+      %label Columns
+      %input(type='number' ng-model='component.form.meta.columns' ng-change='component.setNumItems()')
+    .experimental-nav-item
+      %label Rows
+      %input(type='number' ng-model='component.form.meta.rows' ng-change='component.setNumItems()')
+    .experimental-nav-item
+      %label Item Type
+      %select(ng-options="item.name as item.name for item in component.itemTypes" ng-model='component.form.meta.itemTypeName' ng-change='component.setItemType()')
+    .experimental-nav-item
+      %label Theme
+      %select(ng-options="theme for theme in component.themeOptions" ng-model='component.form.meta.theme' ng-change='component.setTheme()')
 
-  %fieldset
-    %label
-      Component Type
-    %select(ng-options="item for item in component.componentTypeOptions" ng-model='component.form.componentType')
+  .component-container(ng-if="component.form.componentType=='feed'")
+    .component(ng-class="component.form.meta.size")
+      .btn.btn-secondary(ng-click="component.form.meta.feedType='search'")
+        Search
+      %div(ng-if="component.form.meta.feedType=='search'")
+        %input(type='text' ng-model='component.form.meta.searchQuery')
+        %div( search-feed
+              search="component.form.meta.searchQuery"
+              columns='component.form.meta.columns'
+              rows='component.form.meta.rows'
+              item-type-name="component.form.meta.itemTypeName" )
 
-  .component-styles
-    .component-styles-title Component Styles
-    %div Component Padding:
-    %div(component-size-picker component-model='component.form.metadata.allModes.styles.component')
+  .component-container(ng-if="component.form.componentType=='matrix'")
+    .component(ng-class="component.form.meta.size")
+      .matrix(ng-class="'matrix-' + component.form.meta.columns + '-per-row'")
+        .matrix-item(ng-repeat='componentItem in component.form.meta.items | limitTo: component.numItems track by $index')
+          .item-form
+            .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
+              %span(ng-if='!component.toggleObject[$index]')
+                Edit
+              %span(ng-if='component.toggleObject[$index]')
+                Close
+            %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)" ng-show='component.toggleObject[$index]')
+            %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" view-mode="'edit'" theme='component.form.meta.theme' ng-show='component.toggleObject[$index]')
+            %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" theme='component.form.meta.theme')
 
-  %div(single-form component='component' ng-if="component.form.componentType == 'single'")
-  %div(matrix-form component='component' ng-if="component.form.componentType == 'matrix'")
+  %pre
+    {{component.form | json}}
 
   %button.btn.btn-secondary(type='submit' ng-click='component.save(component.form)')
     Save

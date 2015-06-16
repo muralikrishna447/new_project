@@ -1,20 +1,19 @@
-@api = angular.module 'cs.api', [ ->
-]
+@api = angular.module 'cs.api', ['csConfig']
 
-@app.factory 'api.activity', [ '$resource', ($resource) ->
+@api.factory 'api.activity', [ '$resource', ($resource) ->
   $resource '/api/v0/activities/:id',
     { id: '@id' },
 ]
 
 # Unpreferred, calls CS server, use Algolia methods below instead
-@app.factory 'api.search', [ '$resource', ($resource) ->
+@api.factory 'api.search', [ '$resource', ($resource) ->
   $resource '/api/v0/search', { query: { method: 'GET', isArray: true } }
 ]
 
 # I'm undecided whether I love this here or in its own module. It is a CS API
 # but lives on another service. Giving this an ugly name to avoid conflicts
 # with the algolia global JS.
-@app.service 'AlgoliaSearchService', ["csConfig", "$q", (csConfig, $q) ->
+@api.service 'AlgoliaSearchService', ["csConfig", "$q", (csConfig, $q) ->
 
   # Search-only API key, safe to distribute
   algolia = algoliasearch('JGV2ODT81S', '890e558aa5ce0acb553f4d251add31cb')

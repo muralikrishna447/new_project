@@ -5,65 +5,16 @@
   margin-bottom: 80px
   @include display-flex
   @include justify-content(center)
-  .component-full
+  .component.small
+    @include flex(0 1 600px)
+  .component.standard
+    @include flex(0 1 1000px)
+  .component.full
     @include flex(0 1 100%)
-
-  .component-small
-    @include flex(0 1 400px)
-
-  .component-medium
-    @include flex(0 1 800px)
-
-  .component-large
-    @include flex(0 1 1200px)
 
 .component-edit-button
   @include display-flex
   @include justify-content(center)
-
-.component-form
-  display: fixed
-  top: 0px
-  padding: 20px
-  width: 50%
-  height: 100%
-  overflow: auto
-  @include boxsizing
-  input[type='text'], input[type='number'], textarea
-    width: 100%
-    border: 1px solid $light-gray
-    border-radius: 0px
-    margin-bottom: 20px
-    @include box-shadow(none)
-  textarea
-    min-height: 200px
-
-.component-mapper
-  background-color: $offwhite
-  border-radius: 10px
-  padding: 20px
-  margin-bottom: 20px
-  .component-mapper-title
-    font-weight: bold
-    margin-bottom: 20px
-    text-align: center
-  table
-    font-size: 1.4rem
-    width: 100%
-    text-align: left
-    tr
-      th
-        font-weight: normal
-      td
-        width: 50%
-        select
-          width: 100%
-        input[type='text'], input[type='number']
-          min-width: 200px
-          border: 1px solid $light-gray
-          border-radius: 0px
-          margin-bottom: 10px
-          @include box-shadow(none)
 
 .component-preview
   position: fixed
@@ -90,44 +41,6 @@
     overflow: auto
     @include boxsizing
     @include flex(0 1 100%)
-
-.component-styles
-  background-color: $offwhite
-  border-radius: 10px
-  padding: 20px
-  margin-bottom: 20px
-  .component-styles-title
-    font-weight: bold
-    margin-bottom: 20px
-    text-align: center
-
-.component-styles-color-picker
-  .color-current
-    padding: 5px
-    @include boxsizing
-    @include display-flex
-    &:hover
-      cursor: pointer
-      background-color: $offwhite
-  .color-options
-    border: 1px solid black
-    @include boxsizing
-    @include display-flex
-    @include flex-direction(column)
-    .color-option
-      padding: 5px
-      @include boxsizing
-      @include display-flex
-      &:hover
-        cursor: pointer
-        background-color: $offwhite
-
-  .color-box
-    width: 20px
-    height: 20px
-    border: 1px solid black
-    margin-right: 5px
-    @include boxsizing
 
 // Notifications //
 .notifications
@@ -185,7 +98,7 @@
 .home-component-split
   @include display-flex
   @include flex-wrap(wrap)
-  @include flex(0 1 1200px)
+  @include flex(0 1 1000px)
   .home-component-split-item
     padding-right: 10px
     @include flex(1 1 50%)
@@ -197,4 +110,42 @@
 @media (max-width: 600px)
   .home-component-split
     .home-component-split-item
+      padding: 0px
       @include flex(0 1 100%)
+      &:last-of-type
+        padding: 0px
+
+// Temp Experimental
+.experimental
+  .experimental-nav
+    width: 100%
+    padding: 10px
+    @include display-flex
+    .experimental-nav-item
+      margin-right: 20px
+      @include display-flex
+      @include align-items(center)
+      label
+        margin: 0
+        margin-right: 10px
+      input
+        margin: 0
+      select
+        margin: 0
+
+.search-typeahead
+  width: 100%
+  position: relative
+  .search-typeahead-input
+    width: 100%
+  .search-typeahead-results
+    position: absolute
+    background: white
+    width: 100%
+    z-index: 9999
+    .search-typeahead-result
+      padding: 5px
+      @include boxsizing
+      &:hover
+        color: $orange
+        cursor: pointer

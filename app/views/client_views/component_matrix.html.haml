@@ -1,5 +1,3 @@
-.matrix
-  .matrix-row(ng-repeat='row in items track by $index')
-    .matrix-column(ng-repeat='item in row track by $index')
-
-      %div(component-item item='item' item-type-name="component.metadata.itemTypeName")
+.matrix(ng-class="'matrix-{{component.meta.columns}}-per-row'")
+  .matrix-item(ng-repeat='item in component.meta.items')
+    %div(component-item item='item' item-type-name="component.meta.itemTypeName" theme='component.meta.theme')

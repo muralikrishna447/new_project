@@ -2,7 +2,7 @@ describe Api::V0::ComponentsController do
 
   before :each do
     @admin_user = Fabricate :user, name: 'Admin User', email: 'admin@chefsteps.com', role: 'admin'
-    @component = Fabricate :component, component_type: 'list', mode: 'api', metadata: { source: 'http://www.somelink.com' }
+    @component = Fabricate :component, component_type: 'matrix', meta: { size: 'standard' }
     sign_in @admin_user
   end
 
@@ -17,23 +17,23 @@ describe Api::V0::ComponentsController do
     get :show, id: @component.id
     response.should be_success
     component = JSON.parse(response.body)
-    component['componentType'].should eq('list')
+    component['componentType'].should eq('matrix')
   end
 
   # POST /api/v0/components
   it 'should create a component' do
-    post :create, component: { component_type: 'list', mode: 'api'}
+    post :create, component: { component_type: 'matrix'}
     response.should be_success
     component = JSON.parse(response.body)
-    component['componentType'].should eq('list')
+    puts component
+    component['componentType'].should eq('matrix')
   end
 
   # PUT /api/v0/components/:id
   it 'should update a component' do
-    post :update, id: @component.id, component: { mode: 'custom' }
+    post :update, id: @component.id, component: { component_type: 'madlib' }
     response.should be_success
     component = JSON.parse(response.body)
-    component['mode'].should eq('custom')
+    component['componentType'].should eq('madlib')
   end
-
 end

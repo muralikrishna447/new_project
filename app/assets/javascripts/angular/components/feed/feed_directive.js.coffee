@@ -1,94 +1,51 @@
-# Directive to load a feed
-# Example:
-#
-# .component.component-full(feed source="'http://www.chefsteps.com/api/v0/activities'" mapper='mapper' columns='3' item-type-name="'Square A'")
-#
-# Where mapper is:
-# mapper = [
-#   {
-#     componentKey: "title",
-#     sourceKey: "title",
-#     value: ""
-#   },
-#   {
-#     componentKey: "image",
-#     sourceKey: "image",
-#     value: ""
-#   },
-#   {
-#     componentKey: "buttonMessage",
-#     sourceKey: null,
-#     value: "See the recipe"
-#   },
-#   {
-#     componentKey: "url",
-#     sourceKey: "url",
-#     value: ""
-#   }
-# ]
-
-@components.directive 'feed', ['$http', 'Mapper', ($http, Mapper) ->
+@components.directive 'searchFeed', ['AlgoliaSearchService', 'Mapper', 'componentItemService', (AlgoliaSearchService, Mapper, componentItemService) ->
   restrict: 'A'
   scope: {
-    source: '='
-    mapper: '='
-    columns: '='
-    limitTo: '='
-    itemTypeName: '='
+    component: '='
+    search: '=?'
+    columns: '=?'
+    rows: '=?'
+    itemTypeName: '=?'
   }
 
   link: (scope, element, attrs) ->
-    scope.numLimit = scope.limitTo || scope.columns
+    itemTypeName = scope.itemTypeName ?= scope.component.meta.itemTypeName
+    itemType = componentItemService.get(itemTypeName)
+    mapper = Mapper.generate(itemType.attrs)
+    Mapper.update(mapper, 'buttonMessage', {value: 'See the recipe'})
 
-    Mapper.do(scope.source, scope.mapper).then (items) ->
-      scope.items = items
-
-  templateUrl: '/client_views/component_feed.html'
-]
-
-@components.directive 'searchFeed', ['AlgoliaSearchService', 'Mapper', (AlgoliaSearchService, Mapper) ->
-  restrict: 'A'
-  scope: {
-    search: '@'
-    columns: '='
-    limitTo: '='
-    itemTypeName: '='
-  }
-
-  link: (scope, element, attrs) ->
-    scope.numLimit = scope.limitTo || scope.columns
-
-    params = {
-      difficulty: 'any'
-      generator: 'chefsteps'
-      published_status: 'published'
-      page: '1'
-      search_all: scope.search
-    }
-    mapper = [
-      {
-        componentKey: "title",
-        sourceKey: "title",
-        value: ""
-      },
-      {
-        componentKey: "image",
-        sourceKey: "image",
-        value: ""
-      },
-      {
-        componentKey: "buttonMessage",
-        sourceKey: null,
-        value: "See the recipe"
-      },
-      {
-        componentKey: "url",
-        sourceKey: "url",
-        value: ""
+    scope.doSearch = (searchQuery) ->
+      params = {
+        difficulty: 'any'
+        generator: 'chefsteps'
+        published_status: 'published'
+        page: '1'
+        search_all: searchQuery
       }
-    ]
-    AlgoliaSearchService.search(params).then (data) ->
-      scope.items = Mapper.mapObject(data, mapper)
+
+      AlgoliaSearchService.search(params).then (data) ->
+        numItems = scope.rows * scope.columns
+        dataToMap = data.slice(0, numItems)
+        scope.items = Mapper.mapObject(dataToMap, mapper)
+
+    scope.$watch 'component', (newValue, oldValue) ->
+      if newValue
+        scope.search = newValue.meta.searchQuery
+        scope.columns = newValue.meta.columns
+        scope.rows = newValue.meta.rows
+        scope.itemTypeName = newValue.meta.itemTypeName
+
+    scope.$watch 'columns', (newValue, oldValue) ->
+      if newValue
+        scope.doSearch(scope.search)
+
+    scope.$watch 'rows', (newValue, oldValue) ->
+      if newValue
+        scope.doSearch(scope.search)
+
+    scope.$watch 'search', (newValue, oldValue) ->
+      if newValue
+        scope.doSearch(newValue)
 
   templateUrl: '/client_views/component_feed.html'
 ]

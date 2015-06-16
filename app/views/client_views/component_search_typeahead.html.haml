@@ -1,0 +1,11 @@
+.search-typeahead
+  %input.search-typeahead-input(type='text' placeholder='search' ng-model='searchQuery' ng-change='search(searchQuery)')
+  .search-typeahead-results
+    .search-typeahead-result(ng-repeat="item in searchResults")
+      %div(ng-click='select({item:item}); clear()' ng-if='customMethod')
+        {{item.title}}
+      %a(ng-href='{{item.url}}' ng-click='select(item); clear()' ng-if='!customMethod')
+        {{item.title}}
+
+    .search-typeahead-result(ng-if="searchQuery.length > 0 && searchResults.length == 0")
+      Sorry, no results for: '{{searchQuery}}'

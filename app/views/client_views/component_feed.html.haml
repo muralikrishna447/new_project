@@ -1,3 +1,3 @@
-.feed
-  .feed-item(ng-repeat='item in items | limitTo: numLimit track by $index' ng-class="'feed-item-{{columns}}-per-row'")
+.matrix(ng-class="'matrix-' + columns + '-per-row'")
+  .matrix-item(ng-repeat='item in items')
     %div(component-item item='item' item-type-name="itemTypeName")

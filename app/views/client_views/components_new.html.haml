@@ -1,14 +1,2 @@
-.component-form
-  %h2 New Component
-  %div(ng-include="'../../client_views/component_form.html'")
-
-.component-preview
-  .component-preview-header
-    %h2 Preview
-    .btn.btn-secondary(ng-click="showPreviewData = !showPreviewData")
-      Toggle Data
-  .component(ng-class="'component-size-' + component.form.metadata.allModes.styles.component.size" ng-hide='showPreviewData')
-    %div(single component='component.form' ng-if="component.form.componentType == 'single'")
-    %div(matrix component='component.form' ng-if="component.form.componentType == 'matrix'")
-  %pre.component-preview-json(ng-show='showPreviewData')
-    {{component.form | json}}
+%h2 New Component
+%div(ng-include="'../../client_views/component_form.html'")

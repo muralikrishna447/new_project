@@ -1,6 +1,6 @@
 # This service helps DRY up a lot of filepicker converting and cropping
 
-@app.service 'csFilepickerMethods', ['$q', ($q) ->
+@helpers.service 'csFilepickerMethods', ['$q', ($q) ->
 
   baseURL = null
   cdnURL = null
@@ -12,8 +12,11 @@
     console.log "***************************************"
 
   this.getBaseURL = (fpObject) ->
-    baseURL = JSON.parse(fpObject).url
-    # console.log 'This is the baseURL: ', baseURL
+    try
+      parsed = JSON.parse(fpObject)
+      baseURL = parsed.url
+    catch e
+      baseURL = fpObject
     baseURL
 
   this.cdnURL = (fpObject) ->
@@ -49,11 +52,8 @@
     aspect = options.a || options.aspect
     quality = options.quality || 90
 
-    # Try parsing the filepicker object first
-    try
-      convertURL = this.cdnURL(fpObjectOrImageUrl)
-    catch e
-      convertURL = fpObjectOrImageUrl
+    # Moved try catch to getBaseURL where we're trying to parse the FilepickerObject
+    convertURL = this.cdnURL(fpObjectOrImageUrl)
 
     return "" if (! convertURL) || (convertURL.length == 0)
 

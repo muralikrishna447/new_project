@@ -65,10 +65,10 @@
 
   template:
     """
-      <div class='component' ng-class="'component-' + component.metadata.allModes.styles.component.size">
-        <div single component='component' ng-if="component.componentType=='single'"></div>
-        <div matrix component='component' ng-if="component.componentType=='matrix'"></div>
-        <div madlib component='component' ng-if="component.componentType=='madlib'"></div>
+      <div class='component' ng-class="component.meta.size" ng-switch="component.componentType">
+        <div search-feed component='component' ng-switch-when="feed"></div>
+        <div matrix component='component' ng-switch-when="matrix"></div>
+        <div madlib component='component' ng-switch-when="madlib"></div>
       </div>
     """
 ]
@@ -80,78 +80,43 @@
 #   description: 'description'
 #   url: 'url'
 # }
-@components.service 'Mapper', ['$http', '$q', ($http, $q) ->
+@components.service 'Mapper', [ ->
 
   @mapObject = (data, connections, maxNumber) ->
-    if data.length
-      if maxNumber
-        console.log 'Max Number: ', maxNumber
-        console.log 'Data Before: ', data
-        data = data.splice(0, maxNumber)
-        console.log 'Data After: ', data
-      responseKeys = Object.keys(data)
+    if maxNumber
+      data = data.splice(0, maxNumber)
 
-      mapped = data.map (item, index) ->
-        mappedItem = {}
-        for connection in connections
-          value = connection.value
-          if value && connection.value.length > 0
-            mappedItem[connection.componentKey] = value
-          else
-            mappedItem[connection.componentKey] = item[connection.sourceKey]
-        return { content: mappedItem }
+    responseKeys = Object.keys(data)
 
-    else
-      responseKeys = Object.keys(data)
+    mapped = data.map (item, index) ->
       mappedItem = {}
-      item = data
       for connection in connections
         value = connection.value
-        if value && value.length > 0
+        if value && connection.value.length > 0
           mappedItem[connection.componentKey] = value
         else
           mappedItem[connection.componentKey] = item[connection.sourceKey]
-      mapped = { content: mappedItem }
+      return { content: mappedItem }
 
+  # Generates a mapper object from an array of attrs
+  @generate = (attrs) ->
+    mapper = []
+    for attr in attrs
+      mapperItem =
+        componentKey: attr
+        sourceKey: attr
+        value: ""
+      mapper.push mapperItem
+    return mapper
 
-  @do = (sourceUrl, connections, maxNumber) ->
-    deferred = $q.defer()
-    if sourceUrl
-      mapped = []
-      $http.get(sourceUrl).success (data, status, headers, config) ->
-        if data.length
-          if maxNumber
-            console.log 'Max Number: ', maxNumber
-            console.log 'Data Before: ', data
-            data = data.splice(0, maxNumber)
-            console.log 'Data After: ', data
-          responseKeys = Object.keys(data)
-
-          mapped = data.map (item, index) ->
-            mappedItem = {}
-            for connection in connections
-              value = connection.value
-              if value && connection.value.length > 0
-                mappedItem[connection.componentKey] = value
-              else
-                mappedItem[connection.componentKey] = item[connection.sourceKey]
-            return { content: mappedItem }
-
-        else
-          responseKeys = Object.keys(data)
-          mappedItem = {}
-          item = data
-          for connection in connections
-            value = connection.value
-            if value && value.length > 0
-              mappedItem[connection.componentKey] = value
-            else
-              mappedItem[connection.componentKey] = item[connection.sourceKey]
-          mapped = { content: mappedItem }
-
-        deferred.resolve mapped
-
-    return deferred.promise
+  # Updated an item in a mapper object
+  # Example 1: Mapper.update(mapper, 'buttonMessage', {value: 'See the recipe'})
+  # Example 2: Mapper.update(mapper, 'buttonMessage', {sourceKey: 'title'})
+  @update = (mapper, componentKey, updateObject) ->
+    for mapperItem in mapper
+      if mapperItem['componentKey'] == componentKey
+        angular.forEach updateObject, (value, key) ->
+          mapperItem[key] = value
 
   return this
 ]

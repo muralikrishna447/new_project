@@ -1,15 +1,19 @@
 @import 'mixins'
 
-.component-item.hero.hero-a
+.item.hero
+  float: none
   @include aspect-3-1
-  .component-item-content
+  .item-content
     background-size: cover
     background-position: center
     @include aspect-content
     @include display-flex
     @include justify-content(flex-start)
     @include align-items(center)
+    .item-content-image
+      position: absolute
     .item-content-text
+      z-index: 1
       height: 100%
       width: 50%
       padding-left: 10%
@@ -22,36 +26,22 @@
         width: 100%
         font-size: 60px
         line-height: 60px
-        margin-bottom: 20px
+        margin-bottom: 10px
         font-weight: bold
-        &.color-black
-          color: black
-        &.color-white
-          color: white
-      .item-button
-        .btn-outline
-          font-size: 20px
-          font-weight: bold
-          padding: 10px 40px
-        &.color-black
-          .btn-outline
-            border-color: black
-            color: black
-            &:hover
-              border-color: $orange
-              color: white
-
-        &.color-white
-          .btn-outline
-            border-color: white
-            color: white
-            &:hover
-              border-color: $orange
+      .item-description
+        width: 100%
+        font-size: 20px
+        line-height: 25px
+        margin-bottom: 20px
+      .item-button.btn-outline
+        font-size: 20px
+        font-weight: bold
+        padding: 10px 40px
 
 @media (max-width: 800px)
-  .component-item.hero.hero-a
+  .item.hero
     @include aspect-16-9
-    .component-item-content
+    .item-content
       .item-content-text
         width: 100%
         padding-left: 0px
@@ -62,9 +52,10 @@
       .item-button
         margin: 0 auto
 
-.component-item.square.square-a
+.item.square
+  float: none
   @include aspect-1-1
-  .component-item-content
+  .item-content
     color: white
     text-align: center
     background-size: cover
@@ -75,7 +66,11 @@
     @include justify-content(center)
     @include align-items(center)
     @include flex-direction(column)
+    .item-content-image
+      position: absolute
+      @include filter(brightness(75%))
     .item-divider.first
+      z-index: 1
       padding: 10px
       height: 100%
       width: 100%
@@ -86,21 +81,20 @@
       @include align-items(flex-end)
       @include justify-content(center)
     .item-divider.middle
+      z-index: 1
       @include flex(0 0 auto)
     .item-divider.last
+      z-index: 1
       height: 100%
       width: 100%
       @include flex(0 1 100%)
       @include display-flex
-    img
-      height: 100%
-      width: 100%
 
-.component-item.square.square-a.blank
+.item.square.blank
   @include aspect-1-1
   border: 1px solid $light-gray
   background-color: $offwhite
-  .component-item-content
+  .item-content
     color: white
     text-align: center
     @include aspect-content
@@ -110,9 +104,10 @@
     @include flex-direction(column)
 
 
-.component-item.list
-  .component-item-content
-    padding: 10px
+.item.list
+  float: none
+  .item-content
+    margin-bottom: 10px
     @include boxsizing
     @include display-flex
     @include transition(100ms all linear)
@@ -130,8 +125,9 @@
     &:hover
       background-color: $offwhite
 
-.component-item.media
-  .component-item-content
+.item.media
+  float: none
+  .item-content
     @include boxsizing
     .item-content-image
       width: 100%
@@ -144,8 +140,9 @@
       .item-title
         font-weight: bold
 
-.component-item-header.header
-  .component-item-content
+.item.header
+  float: none
+  .item-content
     text-align: center
     @include boxsizing
     @include display-flex
@@ -157,3 +154,45 @@
     .subheader
       font-size: 20px
       margin-top: 10px
+
+// Forms
+.item-form
+  padding: 20px
+  border: 1px solid #ccc
+  @include boxsizing
+  input[type='text'], input[type='number'], textarea
+    width: 100%
+    border: 1px solid $light-gray
+    border-radius: 0px
+    margin-bottom: 20px
+    @include box-shadow(none)
+  textarea
+    min-height: 200px
+
+// Themes
+.item.light
+  .item-content
+    .item-title
+      color: white
+    .item-description
+      color: white
+    .item-button
+      border-color: white
+      &:hover
+        border: 2px solid $orange
+        color: white
+        background-color: $orange
+
+.item.dark
+  .item-content
+    .item-title
+      color: black
+    .item-description
+      color: black
+    .item-button
+      border-color: black
+      color: black
+      &:hover
+        border: 2px solid $orange
+        color: white
+        background-color: $orange

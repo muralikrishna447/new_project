@@ -1,15 +1,15 @@
-.component-item.list.list-a(ng-if="item && !viewMode")
-  %a.component-item-content(ng-href='{{item.content.url}}')
+.item.list(ng-if="item && !viewMode")
+  %a.item-content(ng-href='{{item.content.url}}')
     .item-content-image
-      %img(ng-src='{{item.content.image | aspect1to1 }}')
+      %cs-image(url="item.content.image" aspect="1:1")
     .item-content-text(ng-if='item.content.title')
-      .item-title(ng-class="'color-'+ item.styles.title.color")
+      .item-title
         {{item.content.title}}
       .item-description(ng-if='item.content.description')
-        {{item.content.description | noShortcodes | sentences:item.styles.description.sentenceLength }}
+        {{item.content.description | noShortcodes }}
 
-.component-item.list.list-a.blank(ng-if="!item")
-  .component-item-content
+.item.list.blank(ng-if="!item")
+  .item-content
     .item-content-text
       .item-title
         Title
@@ -25,9 +25,6 @@
 
   %label Description
   %textarea(ng-model='item.content.description')
-
-  %label Max number of sentences in description
-  %input(type='number' ng-model='item.styles.description.sentenceLength')
 
   %label Url
   %input(type='text' ng-model='item.content.url')
