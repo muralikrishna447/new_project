@@ -10,9 +10,7 @@
 
   link: (scope, element, attrs) ->
 
-    itemType = componentItemService.get(scope.itemTypeName)
-    mapper = Mapper.generate(itemType.attrs)
-    Mapper.update(mapper, 'buttonMessage', {value: 'See the recipe'})
+    mapper = {}
 
     scope.doSearch = (searchQuery) ->
       params = {
@@ -34,6 +32,9 @@
         scope.columns = newValue.meta.columns
         scope.rows = newValue.meta.rows
         scope.itemTypeName = newValue.meta.itemTypeName
+        itemType = componentItemService.get(scope.itemTypeName)
+        mapper = Mapper.generate(itemType.attrs)
+        Mapper.update(mapper, 'buttonMessage', {value: 'See the recipe'})
 
     scope.$watch 'columns', (newValue, oldValue) ->
       if newValue
