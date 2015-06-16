@@ -590,6 +590,7 @@ DEPENDENCIES
   kaminari
   launchy
   letter_opener
+  librato-rack
   librato-rails
   listen
   memcachier
