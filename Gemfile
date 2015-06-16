@@ -28,6 +28,8 @@ gem 'filepicker-rails'
 
 gem 'comma'
 
+gem 'librato-rails'
+
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-access-control-headers'
 gem "rack-timeout"

@@ -65,6 +65,7 @@ GEM
     acts_as_revisionable (1.2.2)
       activerecord (>= 2.3.9)
     addressable (2.3.5)
+    aggregate (0.2.2)
     airbrake (4.1.0)
       builder
       multi_json
@@ -293,6 +294,16 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.0.0)
       launchy (>= 2.0.4)
+    librato-metrics (1.5.0)
+      aggregate (~> 0.2.2)
+      faraday (~> 0.7)
+      multi_json
+    librato-rack (0.4.5)
+      librato-metrics (~> 1.1)
+    librato-rails (0.11.1)
+      activesupport (>= 3.0)
+      librato-rack (~> 0.4.2)
+      railties (>= 3.0)
     listen (0.7.3)
     lumberjack (1.0.4)
     mail (2.5.4)
@@ -579,6 +590,7 @@ DEPENDENCIES
   kaminari
   launchy
   letter_opener
+  librato-rails
   listen
   memcachier
   merit
@@ -628,3 +640,6 @@ DEPENDENCIES
   unicorn
   webmock
   xray-rails
+
+BUNDLED WITH
+   1.10.3
