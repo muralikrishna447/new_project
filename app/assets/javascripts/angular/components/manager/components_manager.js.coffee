@@ -78,25 +78,6 @@
     name: null
   }
 
-  # componentStruct = {
-  #   componentType: null
-  #   mode: null
-  #   metadata: {
-  #     allModes: {
-  #       styles:
-  #         component:
-  #           size: 'full'
-  #     }
-  #     api: {}
-  #     custom: {
-  #       items: []
-  #     }
-  #     itemTypeName: null
-  #   }
-  #   name: null
-  # }
-
-  console.log "$state.current.name: ", $state.current.name
   if $state.current.name == 'components.edit'
     console.log 'current name is component edit!'
     Component.show {id: $stateParams.id}, (component) =>
@@ -113,17 +94,21 @@
       delete componentParams['id']
       delete componentParams['slug']
       console.log 'componentParams: ', componentParams
-      Component.update {id: $stateParams.id, component: componentParams}, (component) ->
+      Component.update {id: $stateParams.id, component: componentParams}, ((component) ->
         $state.go('components.index')
         console.log 'component: ', component
         message = "The #{component.name } component was successfully saved. "
         buttonUrl = "/components/#{component.id}/edit"
         buttonText = "Edit #{component.name}"
         notificationService.add('success', message, buttonUrl, buttonText)
+      ), (error) ->
+        console.log 'Error while saving: ', error
 
     if $state.current.name == 'components.new'
-      Component.create {id: $stateParams.id, component: component}, (component) ->
+      Component.create {id: $stateParams.id, component: component}, ((component) ->
         $state.go('components.index')
+      ), (error) ->
+        console.log 'Error while saving: ', error
 
   @clear = =>
     @form = componentStruct
