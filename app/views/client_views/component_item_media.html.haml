@@ -7,6 +7,8 @@
         {{item.content.title}}
       .item-description(ng-if='item.content.description')
         {{item.content.description | noShortcodes | sentences:item.styles.description.sentenceLength }}
+      %a.item-button(ng-href='{{item.content.url}}')
+        {{item.content.buttonMessage}}
 
 .item.media.media-a.blank(ng-if="!item")
   .item-content
@@ -27,8 +29,8 @@
   %label Description
   %textarea(ng-model='item.content.description')
 
-  %label Max number of sentences in description
-  %input(type='number' ng-model='item.styles.description.sentenceLength')
+  %label Button Message
+  %input(type='text' ng-model='item.content.buttonMessage')
 
   %label Url
   %input(type='text' ng-model='item.content.url')
