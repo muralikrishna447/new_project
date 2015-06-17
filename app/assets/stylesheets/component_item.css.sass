@@ -38,6 +38,14 @@
         font-weight: bold
         padding: 10px 40px
 
+@media (max-width: 1100px)
+  .item.hero
+    .item-content
+      .item-content-text
+        .item-title
+          font-size: 45px
+          line-height: 45px
+
 @media (max-width: 900px)
   .item.hero
     @include aspect-16-9
@@ -90,6 +98,10 @@
       width: 100%
       @include flex(0 1 100%)
       @include display-flex
+
+@media (max-width: 600px)
+  .item.square
+    @include aspect-3-2
 
 .item.square.blank
   @include aspect-1-1
