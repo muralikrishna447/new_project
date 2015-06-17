@@ -89,6 +89,12 @@
     @form = componentStruct
     @form.name = $location.search().name
 
+  # Adds item to the top
+  @addItem = ->
+    struct = componentItemService.getStruct(@form.meta.itemTypeName)
+    newStruct = angular.copy struct
+    @form.meta.items.unshift({content: newStruct})
+
   @save = (component) =>
     if $state.current.name == 'components.edit'
       componentParams = component
