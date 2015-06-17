@@ -60,6 +60,20 @@
       .item-button
         margin: 0 auto
 
+@media (max-width: 600px)
+  .item.hero
+    @include aspect-3-2
+    .item-content
+      .item-content-text
+        width: 100%
+        padding-left: 0px
+        text-align: center
+        .item-title
+          font-size: 30px
+          line-height: 30px
+      .item-button
+        margin: 0 auto
+
 .item.square
   float: none
   @include aspect-1-1
@@ -163,9 +177,11 @@
       margin-bottom: 25px
       border-radius: 6px
       overflow: hidden
+      @include aspect-16-9
       // Bug fix for transform / border radius issue
       z-index: 10
       cs-image
+        @include aspect-content
         img
           // Bug fix for transform / border radius issue
           z-index: 0

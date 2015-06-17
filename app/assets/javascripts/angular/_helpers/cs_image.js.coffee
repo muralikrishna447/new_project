@@ -29,6 +29,10 @@ Usage:
 
       if scope.aspect
         switch scope.aspect
+          # Use aspect container when the container has both height and width defined
+          when "container"
+            parent.height = $(parent[0]).height()
+            scope.finalHeight = scope.finalWidth * parent.height/parent.width
           when "1:1"
             scope.finalHeight = scope.finalWidth
           when "16:9"
