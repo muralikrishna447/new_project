@@ -14,41 +14,28 @@
 
 .new-home(ng-controller='homeController as home' ng-cloak)
 
-  .btn.btn-primary(ng-if='home.editable' ng-click="home.showEditable = ! home.showEditable")
-    Toggle Edit
-
-  %component-edit-button(component-name='Home Hero One' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-hero-one')
 
-  %component-edit-button(component-name='Home Matrix One' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-matrix-one')
 
-  %component-edit-button(component-name='Home Header One' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-header-one')
 
   .home-component-split-container
     .home-component-split
       .home-component-split-item
-        %component-edit-button(component-name='Home Story One' ng-if='home.editable && home.showEditable')
         .component-container(component-load component-id='home-story-one')
 
       .home-component-split-item
-        %component-edit-button(component-name='Home List One' ng-if='home.editable && home.showEditable')
         .component-container(component-load component-id='home-list-one')
 
-  %component-edit-button(component-name='Home Header Two' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-header-two')
 
-  %component-edit-button(component-name='Home Matrix Two' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-matrix-two')
 
-  %component-edit-button(component-name='Home Hero Two' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-hero-two')
 
-  %component-edit-button(component-name='Home Header Three' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-header-three')
 
-  %component-edit-button(component-name='Home Matrix Three' ng-if='home.editable && home.showEditable')
   .component-container(component-load component-id='home-matrix-three')
 
 -# TODO Make the footer into a real component

@@ -24,36 +24,9 @@
   this
 ]
 
-@components.directive 'componentEditButton', ['Component', (Component) ->
-  restrict: 'E'
-  scope: {}
-
-  link: (scope, element, attrs) ->
-    scope.componentName = attrs.componentName
-    slug = attrs.componentName.split(' ').map((a) ->
-        a.toLowerCase()
-      ).join('-')
-
-    Component.show {id: slug}, (data) ->
-      scope.component = data
-      scope.actionName = 'Edit Component:'
-      scope.actionUrl = "/components/#{slug}/edit"
-    , (error) ->
-      if error.status == 404
-        scope.actionName = 'Create Component:'
-        scope.actionUrl = "/components/new?name=#{scope.componentName}"
-
-  template:
-    """
-      <div class='component-edit-button'>
-        <a class='btn btn-secondary' ng-href='{{actionUrl}}' target='_blank'>{{actionName}} {{componentName}}</a>
-      </div>
-    """
-]
-
 # Directive to load components.  Currently loads with an id or slug
 # Todo: Load component by name
-@components.directive 'componentLoad', ['Component', (Component) ->
+@components.directive 'componentLoad', ['Component', 'csAuthentication', (Component, csAuthentication) ->
   restrict: 'A'
   scope: {}
 
@@ -62,10 +35,20 @@
     Component.show {id: attrs.componentId}, (data) ->
       scope.component = data
 
+    scope.showEditButton = false
+    scope.showEdit = ->
+      scope.showEditButton = true if csAuthentication.isAdmin()
+
+    scope.hideEdit = ->
+      scope.showEditButton = false
+
 
   template:
     """
-      <div class='component' ng-class="component.meta.size" ng-switch="component.componentType">
+      <div class='component' ng-class="component.meta.size" ng-switch="component.componentType" ng-mouseenter='showEdit()' ng-mouseleave='hideEdit()'>
+        <a class='component-edit-button' ng-if='showEditButton' ng-href="/components/{{component.slug}}/edit" target='_blank'>
+          <i class='fa fa-edit'> Edit</i>
+        </a>
         <div search-feed component='component' ng-switch-when="feed"></div>
         <div matrix component='component' ng-switch-when="matrix"></div>
         <div madlib component='component' ng-switch-when="madlib"></div>
