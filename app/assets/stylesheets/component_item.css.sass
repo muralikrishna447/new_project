@@ -38,7 +38,7 @@
         font-weight: bold
         padding: 10px 40px
 
-@media (max-width: 800px)
+@media (max-width: 900px)
   .item.hero
     @include aspect-16-9
     .item-content
@@ -59,7 +59,6 @@
     color: white
     text-align: center
     background-size: cover
-    border-radius: 8px
     overflow: hidden
     @include aspect-content
     @include display-flex
@@ -68,13 +67,15 @@
     @include flex-direction(column)
     .item-content-image
       position: absolute
-      @include filter(brightness(75%))
+      @include filter(brightness(85%))
     .item-divider.first
       z-index: 1
       padding: 10px
       height: 100%
       width: 100%
       font-weight: bold
+      font-size: 2rem
+      line-height: 2.6rem
       @include boxsizing
       @include flex(0 1 100%)
       @include display-flex
@@ -107,23 +108,39 @@
 .item.list
   float: none
   .item-content
-    margin-bottom: 10px
+    margin-bottom: 25px
     @include boxsizing
     @include display-flex
     @include transition(100ms all linear)
     .item-content-image
-      @include flex(0 0 80px)
-      img
-        border-radius: 8px
-        overflow: hidden
+      @include flex(0 0 100px)
+      border-radius: 6px
+      overflow: hidden
+      // Bug fix for transform / border radius issue
+      z-index: 10
+      cs-image
+        img
+          // Bug fix for transform / border radius issue
+          z-index: 0
+          @include transition(-webkit-transform ease .5s)
+          @include transition(-moz-transform ease .5s)
+          @include transition(-ms-transform ease .5s)
+          @include transition(-o-transform ease .5s)
+          @include transition(transform ease .5s)
     .item-content-text
       margin-left: 10px
       width: 100%
       color: black
       .item-title
         font-weight: bold
-    &:hover
-      background-color: $offwhite
+        font-size: 1.6rem
+        line-height: 2.4rem
+        margin-bottom: 10px
+  &:hover
+    .item-content-image
+      cs-image
+        img
+          @include transform(scale(1.2,1.2))
 
 .item.media
   float: none
@@ -131,14 +148,32 @@
     @include boxsizing
     .item-content-image
       width: 100%
-      margin-bottom: 22px
-      border-radius: 8px
+      margin-bottom: 25px
+      border-radius: 6px
       overflow: hidden
+      // Bug fix for transform / border radius issue
+      z-index: 10
+      cs-image
+        img
+          // Bug fix for transform / border radius issue
+          z-index: 0
+          @include transition(-webkit-transform ease .5s)
+          @include transition(-moz-transform ease .5s)
+          @include transition(-ms-transform ease .5s)
+          @include transition(-o-transform ease .5s)
+          @include transition(transform ease .5s)
+      &:hover
+        img
+          @include transform(scale(1.1,1.1))
     .item-content-text
-      width: 100%
+      width: calc(100% - 20px)
+      margin-left: 10px
       color: black
       .item-title
         font-weight: bold
+        font-size: 1.6rem
+        line-height: 2.4rem
+        margin-bottom: 10px
 
 .item.header
   float: none
