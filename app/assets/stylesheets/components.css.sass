@@ -8,6 +8,8 @@
   margin-bottom: 80px
   @include display-flex
   @include justify-content(center)
+  .component
+    position: relative
   .component.small
     @include flex(0 1 700px)
     padding: 0 30px
@@ -18,8 +20,20 @@
     @include flex(0 1 100%)
 
 .component-edit-button
-  @include display-flex
-  @include justify-content(center)
+  position: absolute
+  top: 0px
+  right: 0px
+  background: white
+  z-index: 2
+  padding: 5px 10px
+  border: 1px solid #ccc
+  color: black
+  @include transition(200ms all)
+  &:hover
+    cursor: pointer
+    background: $orange
+    color: white
+    border: 1px solid $orange
 
 .component-preview
   position: fixed

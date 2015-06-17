@@ -34,19 +34,22 @@
               rows='component.form.meta.rows'
               item-type-name="component.form.meta.itemTypeName" )
 
-  .component-container(ng-if="component.form.componentType=='matrix'")
-    .component(ng-class="component.form.meta.size")
-      .matrix(ng-class="'matrix-' + component.form.meta.columns + '-per-row'")
-        .matrix-item(ng-repeat='componentItem in component.form.meta.items | limitTo: component.numItems track by $index')
-          .item-form
-            .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
-              %span(ng-if='!component.toggleObject[$index]')
-                Edit
-              %span(ng-if='component.toggleObject[$index]')
-                Close
-            %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)" ng-show='component.toggleObject[$index]')
-            %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" view-mode="'edit'" theme='component.form.meta.theme' ng-show='component.toggleObject[$index]')
-            %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" theme='component.form.meta.theme')
+  %div(ng-if="component.form.componentType=='matrix'")
+    .btn.btn-secondary(ng-click='component.addItem()')
+      Add Item
+    .component-container
+      .component(ng-class="component.form.meta.size")
+        .matrix(ng-class="'matrix-' + component.form.meta.columns + '-per-row'")
+          .matrix-item(ng-repeat='componentItem in component.form.meta.items | limitTo: component.numItems track by $index')
+            .item-form
+              .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
+                %span(ng-if='!component.toggleObject[$index]')
+                  Edit
+                %span(ng-if='component.toggleObject[$index]')
+                  Close
+              %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)" ng-show='component.toggleObject[$index]')
+              %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" view-mode="'edit'" theme='component.form.meta.theme' ng-show='component.toggleObject[$index]')
+              %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" theme='component.form.meta.theme')
 
   %pre
     {{component.form | json}}
