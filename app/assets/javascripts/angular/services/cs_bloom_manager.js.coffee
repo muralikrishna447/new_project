@@ -8,7 +8,6 @@
 
   @insertTag = ->
     @tagInserted = true
-    console.log '$window loaded!!!!!'
     script = document.createElement "script"
     script.type = "text/javascript"
     script.src = "#{csConfig.bloom.community_endpoint}/export/loader.js"
@@ -27,13 +26,10 @@
     console.log 'loadBloom started'
     console.log '@tagInserted: ', @tagInserted
     if ! @tagInserted
-      console.log 'no tag inserted'
-      console.log '$window: ', $window
-      console.log 'document.readyState: ', document.readyState
       # Don't do this right away - bloom is kinda slow to load, and we aren't at the comments
       # part of the page right away, wait until everything including images are loaded.
+      # Adding this check to see if the document is already ready.  Without this, $($window).load would never get fired because it has already happened.
       if document.readyState == 'complete'
-        console.log 'document ready state is COMPLETE!!!'
         @insertTag()
       else
         $($window).load =>
