@@ -234,7 +234,7 @@
   $scope.createCirculator = (token, circulatorId, serialNumber, notes) ->
     $http.post(
       host + '/api/v0/circulators',
-      {id: circulatorId, serialNumber: serialNumber, notes: notes},
+      {circulator: {id: circulatorId, serial_number: serialNumber, notes: notes}},
       headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
     ).success((data, status, headers, cfg) ->
       console.log "success: "

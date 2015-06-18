@@ -23,7 +23,7 @@ describe Api::V0::CirculatorsController do
   end
 
   it 'should create circulator' do
-    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '533'}
+    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => 'circ_533'}
 
     returnedCirculator = JSON.parse(response.body)
     circulator = Circulator.where(circulator_id: returnedCirculator['circulatorId']).first
@@ -33,6 +33,9 @@ describe Api::V0::CirculatorsController do
 
     circulator_user = CirculatorUser.find_by_circulator_and_user(circulator, @user)
     circulator_user.owner.should be_true
+
+    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => 'circ_544'}
+    response.should be_success
   end
 
   it 'should prevent duplicate circulators'  do

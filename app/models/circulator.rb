@@ -9,6 +9,6 @@ class Circulator < ActiveRecord::Base
   include ActsAsSanitized
   sanitize_input :notes, :serial_number, :id
 
-  attr_accessible :notes, :serial_number, :id
+  attr_accessible :notes, :serial_number
 
 end
