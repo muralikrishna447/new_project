@@ -183,15 +183,10 @@
       margin-bottom: 25px
       border-radius: 6px
       overflow: hidden
+      z-index: 1
       @include aspect-16-9
       cs-image
         @include aspect-content
-        img
-          @include transition(all 300ms)
-      &:hover
-        cs-image
-          img
-            @include transform(scale(1.1,1.1))
     .item-content-text
       width: calc(100% - 20px)
       margin-left: 10px
