@@ -12,7 +12,7 @@ Delve::Application.configure do
     # Inside the request block, return the full URI to redirect the request to,
     # or nil/false if the request should continue on down the middleware stack.
     if request.path.start_with?('/gallery')
-      "http://localhost:4000/#/gallery"
+      "http://localhost:4000/gallery"
     end
   end
 end
