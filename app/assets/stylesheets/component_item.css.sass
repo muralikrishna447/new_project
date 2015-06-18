@@ -1,5 +1,6 @@
 @import 'mixins'
 
+// HERO STYLES
 .item.hero
   float: none
   @include aspect-3-1
@@ -73,7 +74,9 @@
           line-height: 30px
       .item-button
         margin: 0 auto
+// END HERO STYLES
 
+// SQUARE STYLES
 .item.square
   float: none
   @include aspect-1-1
@@ -129,8 +132,9 @@
     @include justify-content(center)
     @include align-items(center)
     @include flex-direction(column)
+// END SQUARE STYLES
 
-
+// LIST STYLES
 .item.list
   float: none
   .item-content
@@ -167,7 +171,9 @@
       cs-image
         img
           @include transform(scale(1.2,1.2))
+// END LIST STYLES
 
+// MEDIA STYLES
 .item.media
   float: none
   .item-content
@@ -178,21 +184,14 @@
       border-radius: 6px
       overflow: hidden
       @include aspect-16-9
-      // Bug fix for transform / border radius issue
-      z-index: 10
       cs-image
         @include aspect-content
         img
-          // Bug fix for transform / border radius issue
-          z-index: 0
-          @include transition(-webkit-transform ease .5s)
-          @include transition(-moz-transform ease .5s)
-          @include transition(-ms-transform ease .5s)
-          @include transition(-o-transform ease .5s)
-          @include transition(transform ease .5s)
+          @include transition(all 300ms)
       &:hover
-        img
-          @include transform(scale(1.1,1.1))
+        cs-image
+          img
+            @include transform(scale(1.1,1.1))
     .item-content-text
       width: calc(100% - 20px)
       margin-left: 10px
@@ -202,7 +201,9 @@
         font-size: 1.6rem
         line-height: 2.4rem
         margin-bottom: 10px
+// END MEDIA STYLES
 
+// HEADER STYLES
 .item.header
   float: none
   .item-content
@@ -217,6 +218,7 @@
     .subheader
       font-size: 20px
       margin-top: 10px
+// END HEADER STYLES
 
 // Forms
 .item-form
