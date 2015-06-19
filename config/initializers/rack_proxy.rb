@@ -12,14 +12,16 @@ class FreshStepsProxy < Rack::Proxy
     original_host = env["HTTP_HOST"]
     rewrite_env(env)
     if env["HTTP_HOST"] != original_host
-      rewrite_response(perform_request(env))
+      rewrite_response(perform_request(env), env)
     else
       @app.call(env)
     end
   end
 
-  def rewrite_response(response)
-    response[2][0].sub! "<head>", "<head><base href=\'http://localhost:4000\'>"
+  def rewrite_response(response, env)
+    # Add a <base> tag into the head so that relative URLs
+    # are found at the proxy source.
+    response[2][0].sub! "<head>", "<head><base href=\'http://#{env["HTTP_HOST"]}\'>"
     response
   end
 
@@ -31,7 +33,8 @@ class FreshStepsProxy < Rack::Proxy
         EXACT.include?(request.path + "/") ||
         PREFIX.include?(request.path) ||
         PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")})
-      env["HTTP_HOST"] = "localhost:4000"
+      puts
+      env["HTTP_HOST"] = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
     end
 
     env

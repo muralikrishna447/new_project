@@ -1,5 +1,6 @@
 development:
   env: "development"
+  freshsteps_endpoint: "localhost:4000"
   bloom:
     api_endpoint: "http://localhost:5000"
     community_endpoint: "http://localhost:9001"
@@ -18,6 +19,7 @@ staging:
     api_endpoint: "https://cs-bloom-api-staging.herokuapp.com"
     community_endpoint: "https://cs-bloom-community-staging.herokuapp.com"
     env: "staging"
+
 staging2:
   env: "staging"
   bloom:
