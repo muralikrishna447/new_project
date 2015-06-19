@@ -6,7 +6,7 @@
       .item-title
         {{item.content.title}}
       .item-description(ng-if='item.content.description')
-        {{item.content.description | noShortcodes }}
+        {{item.content.description | noShortcodes | charLimit:item.descriptionCharLimit  }}
 
 .item.list.blank(ng-if="!item")
   .item-content

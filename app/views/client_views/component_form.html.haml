@@ -35,6 +35,8 @@
               item-type-name="component.form.meta.itemTypeName" )
 
   %div(ng-if="component.form.componentType=='matrix'")
+    %label Description Character Limit
+    %input(type='number' ng-model='component.form.meta.descriptionCharLimit' ng-change='component.setDescriptionCharLimit()')
     .btn.btn-secondary(ng-click='component.addItem()')
       Add Item
     .component-container

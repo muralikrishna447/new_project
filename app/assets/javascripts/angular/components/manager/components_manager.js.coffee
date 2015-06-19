@@ -155,6 +155,10 @@
       angular.forEach item.content, (value,key) ->
         item.content[key] = oldItem.content[key]
 
+  @setDescriptionCharLimit = =>
+    angular.forEach @form.meta.items, (item) =>
+      item.descriptionCharLimit = @form.meta.descriptionCharLimit
+
 
   # If there are changes to the form, set unsavedUpdates to true
   $scope.$watch angular.bind(this, => @form), ((newValue, oldValue) =>
