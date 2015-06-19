@@ -1,4 +1,4 @@
-.experimental
+.component-form
   .experimental-nav
     .experimental-nav-item
       %label Name
@@ -54,11 +54,13 @@
   %pre
     {{component.form | json}}
 
-  %button.btn.btn-secondary(type='submit' ng-click='component.save(component.form)')
-    Save
 
-  %button.btn.btn-secondary(type='submit' ng-click='component.clear()')
-    Clear
+  .nav-bottom
+    %a.btn-outline(type='submit' ng-click='component.save(component.form)')
+      Save
 
-  %a.btn.btn-secondary(ui-sref='components.index')
-    Cancel
+    %a(type='submit' ng-click='component.clear()')
+      Clear
+
+    %a(ui-sref='components.index')
+      Cancel
