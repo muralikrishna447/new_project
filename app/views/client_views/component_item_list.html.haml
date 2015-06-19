@@ -1,6 +1,6 @@
 .item.list(ng-if="item && !viewMode")
   %a.item-content(ng-href='{{item.content.url}}')
-    .item-content-image
+    .item-content-image.zoom-hover
       %cs-image(url="item.content.image" aspect="1:1")
     .item-content-text(ng-if='item.content.title')
       .item-title
