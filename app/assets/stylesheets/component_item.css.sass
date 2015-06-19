@@ -1,5 +1,11 @@
 @import 'mixins'
 
+.item-container
+  @include display-flex
+  width: 100%
+  .item
+    width: 100%
+
 // HERO STYLES
 .item.hero
   float: none
@@ -176,6 +182,9 @@
 // MEDIA STYLES
 .item.media
   float: none
+  @include display-flex
+  @include flex-direction(column)
+  @include justify-content(space-between)
   .item-content
     @include boxsizing
     .item-content-image
@@ -193,14 +202,17 @@
           &:hover
             @include transform(scale(1.1,1.1))
     .item-content-text
-      width: calc(100% - 20px)
-      margin-left: 10px
+      width: 100%
+      padding-left: 10px
+      padding-right: 10px
       color: black
       .item-title
         font-weight: bold
         font-size: 1.6rem
         line-height: 2.4rem
         margin-bottom: 10px
+  .item-button
+    margin-top: 20px
 // END MEDIA STYLES
 
 // HEADER STYLES
@@ -243,8 +255,9 @@
       color: white
     .item-button
       border-color: white
+      color: white
       &:hover
-        border: 2px solid $orange
+        border: 1px solid $orange
         color: white
         background-color: $orange
 

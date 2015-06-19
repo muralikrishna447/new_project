@@ -14,7 +14,7 @@
 
   template:
     """
-      <div ng-include="itemType.templateUrl"></div>
+      <div class="item-container" ng-include="itemType.templateUrl"></div>
     """
 
 ]
