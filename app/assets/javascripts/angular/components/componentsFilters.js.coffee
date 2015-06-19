@@ -37,3 +37,33 @@
 @components.filter 'noShortcodes', ->
   (input) ->
     input.replace(/\[(\w+)\s+([^\]]*)\]/, '')
+
+@components.filter 'charLimit', ->
+  (input, maxCharNum) ->
+    if !input
+      ''
+    maxCharNum = parseInt(maxCharNum, 10)
+
+    if !maxCharNum
+      input
+
+    if input.length <= maxCharNum
+      input
+
+    if input.length > maxCharNum
+      input = input.substr(0, maxCharNum)
+
+      # Remove the last word fragment if there is one
+      lastspace = input.lastIndexOf(' ')
+      if lastspace != -1
+        input = input.substr(0, lastspace)
+
+      # Remove last punctuations
+      lastchar = input.slice(-1)
+      if lastchar in ['.', '?', '!', ',', ':']
+        input = input.substr(0, input.length - 1)
+
+      # Add Ellipsis
+      input = input + '…'
+
+    input
