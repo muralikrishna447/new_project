@@ -148,10 +148,14 @@
     @include boxsizing
     @include display-flex
     @include transition(100ms all linear)
+    @include align-items(flex-start)
     .item-content-image
       @include flex(0 0 100px)
       border-radius: 6px
       overflow: hidden
+      @include aspect-1-1
+      cs-image
+        @include aspect-content
     .item-content-text
       margin-left: 10px
       width: 100%
