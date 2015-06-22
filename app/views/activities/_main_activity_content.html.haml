@@ -24,8 +24,7 @@
             .quarter-medium-item(ng-show="editMode || !! activity.yield")
               %h5 Yield
               .inline.no-p-margin(  cs-contenteditable="editMode"
-                        ng-model="activity.yield"
-                        itemprop="recipeYield")
+                        ng-model="activity.yield")
               .inline.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
 
             .quarter-medium-item(ng-show="editMode || !! activity.timing")

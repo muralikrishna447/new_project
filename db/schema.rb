@@ -77,7 +77,6 @@ ActiveRecord::Schema.define(:version => 20150611165828) do
   add_index "activity_equipment", ["equipment_order"], :name => "index_activity_equipment_on_equipment_order"
 
   create_table "activity_ingredients", :force => true do |t|
-    t.integer  "id",               :null => false
     t.integer  "activity_id",      :null => false
     t.integer  "ingredient_id",    :null => false
     t.datetime "created_at",       :null => false
@@ -526,31 +525,6 @@ ActiveRecord::Schema.define(:version => 20150611165828) do
 
   add_index "quizzes", ["activity_id"], :name => "index_quizzes_on_activity_id"
   add_index "quizzes", ["slug"], :name => "index_quizzes_on_slug", :unique => true
-
-  create_table "recipe_ingredients", :force => true do |t|
-    t.integer  "recipe_id",        :null => false
-    t.integer  "ingredient_id",    :null => false
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.string   "unit"
-    t.decimal  "quantity"
-    t.integer  "ingredient_order"
-  end
-
-  add_index "recipe_ingredients", ["ingredient_order"], :name => "index_recipe_ingredients_on_ingredient_order"
-  add_index "recipe_ingredients", ["recipe_id", "ingredient_id"], :name => "index_recipe_ingredients_on_recipe_id_and_ingredient_id", :unique => true
-
-  create_table "recipes", :force => true do |t|
-    t.string   "title"
-    t.integer  "activity_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-    t.string   "yield"
-    t.integer  "recipe_order"
-  end
-
-  add_index "recipes", ["activity_id"], :name => "index_recipes_on_activity_id"
-  add_index "recipes", ["recipe_order"], :name => "index_recipes_on_recipe_order"
 
   create_table "revision_records", :force => true do |t|
     t.string   "revisionable_type", :limit => 100,                    :null => false

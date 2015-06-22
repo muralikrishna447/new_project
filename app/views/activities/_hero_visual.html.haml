@@ -1,7 +1,3 @@
--if defined? main_object
-  %meta{itemprop: 'thumbnailUrl', content: "#{filepicker_gallery_image(main_object.featured_image)}"}
-  %meta{itemprop: 'embedUrl', content: "www.youtube.com/embed/#{main_object.youtube_id}"}
-
 -# negative-z instead of ng-hide b/c if we hide, the embedded youtube gets wrong size and procedes to
 -# pillarbox for no good reason til next resize. Argggh.
 .hero-visual(ng-switch="heroMedia.heroDisplayType()" ng-class="{'negative-z' : ! showHeroVisual()}")

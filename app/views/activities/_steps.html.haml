@@ -1,11 +1,11 @@
 
-.ordered-steps-new(ng-show="editMode || (activity.steps.length > 0)" itemprop="recipeInstructions")
+.ordered-steps-new(ng-show="editMode || (activity.steps.length > 0)")
   .ordered-step-item.relative.anim-scaling-fade(ng-show="editMode")
     .standard-item
       .btn.btn-link(ng-show="activity.steps.length == 0" ng-click="addStep(0, 0)")
         %i.icon-circle-arrow-down
         Add first step
-  .ordered-step-item.relative.anim-scaling-fade(  ng-repeat="step in activity.steps track by step.id" 
+  .ordered-step-item.relative.anim-scaling-fade(  ng-repeat="step in activity.steps track by step.id"
                                                 id="{{'numbered-step-' + step.id}}"
                                                 ng-class="{'is-aside': step.is_aside}"
                                                 )

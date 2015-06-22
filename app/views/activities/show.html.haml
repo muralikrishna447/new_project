@@ -61,7 +61,9 @@
           .span10.offset1.relative
             = render 'home/madlib'
 
-.schema-container{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : "http://schema.org/Article")}
+.schema-container
+  %script(type="application/ld+json" ng-if="shouldIncludeJSONLD()" ng-bind-html="getJSONLD()")
+
   .recipe-container
 
     = render 'activities/banner_image'
@@ -75,7 +77,7 @@
         -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
         %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
-        #activity-body.recipe_schema(ng-class="addEditModeClass()"){data: {:'activity-id' => @activity.id}}
+        #activity-body(ng-class="addEditModeClass()"){data: {:'activity-id' => @activity.id}}
           = render 'activities/main_activity_content', activity: @activity
 
   %div(nell-popup)
