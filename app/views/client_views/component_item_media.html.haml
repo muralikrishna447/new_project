@@ -5,8 +5,7 @@
     .item-content-text(ng-if='item.content.title')
       .item-title(ng-class="'color-'+ item.styles.title.color")
         {{item.content.title}}
-      .item-description(ng-if='item.content.description')
-        {{item.content.description | noShortcodes | charLimit:item.descriptionCharLimit }}
+      .item-description(ng-if='item.content.description' ng-bind-html="item.content.description | noShortcodes | charLimit:item.descriptionCharLimit")
   .item-action
     %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-if='item.content.buttonMessage')
       {{item.content.buttonMessage}}
