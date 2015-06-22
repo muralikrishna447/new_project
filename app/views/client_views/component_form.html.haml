@@ -24,7 +24,7 @@
 
   %div(ng-if="component.form.componentType=='feed'")
     %label Description Character Limit
-    %input(type='number' ng-model='component.form.meta.descriptionCharLimit' ng-change='component.setDescriptionCharLimit()')
+    %input(type='number' ng-model='component.form.meta.descriptionCharLimit')
     %hr
     %h2 Feed Type:
     .btn.btn-secondary(ng-click="component.form.meta.feedType='search'")
