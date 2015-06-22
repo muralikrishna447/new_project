@@ -67,7 +67,7 @@
 
   .row.relative
     .span6
-      %h2.inline(ng-bind-html="ingredient.title" itemprop="name")
+      %h2.inline(ng-bind-html="ingredient.title")
       %h5.no-bold(ng-show="lastEditingUser()")
         Last edited by
         %span(ng-switch="lastEditingUser().role == 'admin'")

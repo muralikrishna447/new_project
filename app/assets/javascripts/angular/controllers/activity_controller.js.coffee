@@ -55,8 +55,8 @@ window.deepCopy = (obj) ->
 
 # This controller is a freaking abomination and needs to be broken up into about 5 different services and directives.
 
-@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "csConfig", "$anchorScroll", "$window",
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, csConfig, $anchorScroll, $window) ->
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "csConfig", "$anchorScroll", "$window", "$sce", "ActivityMethods", "csFilepickerMethods", "$filter",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, csConfig, $anchorScroll, $window, $sce, ActivityMethods, csFilepickerMethods, $filter) ->
   $scope.heroMedia = csEditableHeroMediaService
 
   $scope.url_params = {}
@@ -687,6 +687,54 @@ window.deepCopy = (obj) ->
     if $location.search() && $location.search().anchor
       anchor = $location.search().anchor
       $location.hash(anchor)
+
+  # Only ChefSteps content that looks like a recipe
+  $scope.shouldIncludeJSONLD = ->
+    ($scope.activity.ingredients.length > 0) && ! $scope.creator
+
+  renderedText = (x) ->
+    return '' if ! x
+    $filter('markdown')($filter('shortcode')(x))
+
+  # Don't even think of changing this unless you've read and understood:
+  #   https://developers.google.com/structured-data/rich-snippets/recipes
+  #
+  # and tested the output against:
+  #   https://developers.google.com/structured-data/testing-tool/
+  #
+  # For the testing, the best way is to render the page locally and paste in the HTML;
+  # if you want to test against chefsteps.com, be sure to add ?_escaped_fragment_=
+  # to the end of the URL so you get the static render that the google spider sees via brombone.
+  $scope.getJSONLD = ->
+    a = $scope.activity
+
+    ingredients = _.map(a.ingredients, (ai) -> ai.ingredient.title)
+
+    steps = _.chain(a.steps)
+      .filter((step) -> (! step.hide_number) && (step.directions?.length > 0))
+      .map((step) -> renderedText step.title + " " + renderedText step.directions)
+      .value()
+
+    image = csFilepickerMethods.convert(ActivityMethods.itemImageFpfile(a, 'hero').url,
+        width: 1200
+    )
+
+    # Not including totalTime because our time is unformatted, can't reliably convert
+    jsonld =
+      '@context'          : 'http://schema.org/'
+      '@type'             : 'Recipe'
+      name                : a.title
+      image               : image
+      datePublished       : a.published_at
+      recipeYield         : a.yield
+      description         : renderedText a.description
+      ingredients         : ingredients
+      recipeInstructions  : steps
+      author:
+        '@type'     : 'Organization'
+        name        : 'ChefSteps'
+
+    $sce.trustAsHtml JSON.stringify _.pick jsonld, (v, k) -> !! v
 
   # Not particularly proud of this.  Had to bump up the timeout time. window.onload doesn't seem to work.  If we start using ng-view more, we should use this: http://stackoverflow.com/questions/21715256/angularjs-event-to-call-after-content-is-loaded
   $timeout ( ->

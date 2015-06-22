@@ -1,12 +1,12 @@
 .row(ng-controller='SharedActivityController' ng-init="init('#{activity.id}')")
   .span6.force-aspect-wrapper
-    .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+    .embed-container.noprint
       - if activity.youtube_id?
         %iframe(frameborder='0' allowfullscreen){src: youtube_url(activity.youtube_id)}
       - elsif activity.image_id?
-        = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title, itemprop: 'image'
+        = image_tag filepicker_activity_hero_image(activity.image_id), alt: activity.title, title: activity.title
       - elsif activity.featured_image_id?
-        = image_tag filepicker_activity_hero_image(activity.featured_image_id), alt: activity.title, title: activity.title, itemprop: 'image'
+        = image_tag filepicker_activity_hero_image(activity.featured_image_id), alt: activity.title, title: activity.title
     - if activity.description?
       .section.noprint
         :markdown
@@ -21,7 +21,7 @@
     - if activity.yield.present?
       .section
         %h4 Yield
-        %span{:itemprop => "recipeYield"}= activity.yield
+        %span= activity.yield
     - if activity.timing.present?
       .section
         %h4 Timing
@@ -41,7 +41,7 @@
           - activity.used_in_activities.published.each do |activity|
             %li= link_to activity.title.html_safe, activity
   .span6
-    .ordered-steps{:itemprop => "recipeInstructions"}
+    .ordered-steps
       - step_number = 0
       - activity.steps.each_with_index do |step,index|
         .ordered-step-item{id: "order-step-item-#{index}"}
@@ -60,6 +60,6 @@
               #{apply_shortcodes(step.directions)}
             - if step.image_id?
               -descrip = filepicker_image_description(step.image_id, step.image_description)
-              = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip, :itemprop => 'image'
+              = image_tag filepicker_step_image(step.image_id), alt: descrip, title: descrip
             - if step.youtube_id?
               %iframe{src: youtube_url(step.youtube_id)}

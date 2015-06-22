@@ -40,11 +40,11 @@
         .tab-pane.active#introduction
           .row
             .span8.force-aspect-wrapper
-              .embed-container.noprint{:itemscope => true, :itemprop => "video", :itemtype => "http://schema.org/VideoObject"}
+              .embed-container.noprint
                 - if @project.youtube_id?
                   %iframe(frameborder='0' allowfullscreen){src: youtube_url(@project.youtube_id)}
                 - elsif @project.image_id?
-                  = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title, itemprop: 'image'
+                  = image_tag filepicker_activity_hero_image(@project.image_id), alt: @project.title, title: @project.title
               .project-social.noprint(ng-controller="NonAngularSocialController" ng-init="title='#{@project.title}'; url='#{project_url(@project)}'; media='#{filepicker_hero_image(@project.featured_image)}'")
                 = render 'layouts/social_buttons', media_object: @project, url: project_url(@project)
               .row.section
@@ -73,7 +73,7 @@
               %h4 All Ingredients
               / = link_to 'Text me this list', '#', class: 'btn btn-secondary'
               .activity-ingredients-list.well#full-ingredients-list{data: {target: ''}}
-                .ingredients{:itemprop => "ingredients"}
+                .ingredients
                   .ingredient-table-body
                     - @project.combined_ingredients.sort_by{|i|i[1]}.sort_by{|i|i[2]}.reverse.each do |combined_ingredient|
                       .ingredient-table-row{data: {:'ingredient-id' => combined_ingredient[0][0].id}}
@@ -108,7 +108,7 @@
               %h3 Introduction
             .span4.text-right
               = link_to 'Next', 'javascript:void(0);', class: 'btn btn-primary btn-large', onclick: "jumpToProjectTab(1)"
-                       
+
         - project_inclusions.each_with_index do |assembly_inclusion, index|
           .tab-pane{id: "project-#{index}"}
             %h2.printonly
@@ -160,7 +160,7 @@
             .span4.text-center
               %h3 Finish the Project
             .span4.text-right
-%div(nell-popup) 
+%div(nell-popup)
 
 = content_for :footer do
   = render 'layouts/footer'
