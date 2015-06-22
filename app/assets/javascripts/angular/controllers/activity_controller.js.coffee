@@ -55,8 +55,8 @@ window.deepCopy = (obj) ->
 
 # This controller is a freaking abomination and needs to be broken up into about 5 different services and directives.
 
-@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "csConfig", "$anchorScroll", "$window", "$sce", "ActivityMethods", "csFilepickerMethods",
-($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, csConfig, $anchorScroll, $window, $sce, ActivityMethods, csFilepickerMethods) ->
+@app.controller 'ActivityController', ["$scope", "$rootScope", "$resource", "$location", "$http", "$timeout", "limitToFilter", "localStorageService", "cs_event", "csEditableHeroMediaService", "Activity", "csTagService", "csAuthentication", "csAlertService", "csConfig", "$anchorScroll", "$window", "$sce", "ActivityMethods", "csFilepickerMethods", "$filter",
+($scope, $rootScope, $resource, $location, $http, $timeout, limitToFilter, localStorageService, cs_event, csEditableHeroMediaService, Activity, csTagService, csAuthentication, csAlertService, csConfig, $anchorScroll, $window, $sce, ActivityMethods, csFilepickerMethods, $filter) ->
   $scope.heroMedia = csEditableHeroMediaService
 
   $scope.url_params = {}
@@ -692,6 +692,10 @@ window.deepCopy = (obj) ->
   $scope.shouldIncludeJSONLD = ->
     ($scope.activity.ingredients.length > 0) && ! $scope.creator
 
+  renderedText = (x) ->
+    return '' if ! x
+    $filter('markdown')($filter('shortcode')(x))
+
   # Don't even think of changing this unless you've read and understood:
   #   https://developers.google.com/structured-data/rich-snippets/recipes
   #
@@ -708,7 +712,7 @@ window.deepCopy = (obj) ->
 
     steps = _.chain(a.steps)
       .filter((step) -> (! step.hide_number) && (step.directions?.length > 0))
-      .map((step) -> step.directions)
+      .map((step) -> renderedText step.title + " " + renderedText step.directions)
       .value()
 
     image = csFilepickerMethods.convert(ActivityMethods.itemImageFpfile(a, 'hero').url,
@@ -723,7 +727,7 @@ window.deepCopy = (obj) ->
       image               : image
       datePublished       : a.published_at
       recipeYield         : a.yield
-      description         : a.description
+      description         : renderedText a.description
       ingredients         : ingredients
       recipeInstructions  : steps
       author:
