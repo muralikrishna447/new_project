@@ -58,7 +58,7 @@
         facetFilters: facetFilters
         facets: '*'
         advancedSyntax: true
-        attributesToRetrieve: "title,url,image,likes_count"
+        attributesToRetrieve: params['attributesToRetrieve'] || "title,url,image,likes_count"
         attributesToHighlight: ""
         attributesToSnippet: ""
       },

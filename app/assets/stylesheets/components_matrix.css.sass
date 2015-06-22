@@ -1,10 +1,10 @@
 @import 'mixins'
 
 $one-item-width: 100%
-$two-item-width: calc((100% - 20px)/2)
-$three-item-width: calc((100% - 40px)/3)
-$four-item-width: calc((100% - 60px)/4)
-$five-item-width: calc((100% - 80px)/5)
+$two-item-width: calc((100% - 50px)/2)
+$three-item-width: calc((100% - 80px)/3)
+$four-item-width: calc((100% - 120px)/4)
+$five-item-width: calc((100% - 160px)/5)
 
 .matrix
   width: 100%
@@ -12,9 +12,10 @@ $five-item-width: calc((100% - 80px)/5)
   @include display-flex
   @include flex-wrap(wrap)
   .matrix-item
-    margin-bottom: 20px
-    margin-right: 20px
+    margin-bottom: 40px
+    margin-right: 40px
     @include boxsizing
+    @include display-flex
 
 .matrix.matrix-1-per-row
   .matrix-item

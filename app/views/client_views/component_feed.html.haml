@@ -1,3 +1,2 @@
 .matrix(ng-class="'matrix-' + columns + '-per-row'")
-  .matrix-item(ng-repeat='item in items')
-    %div(component-item item='item' item-type-name="itemTypeName")
+  .matrix-item(ng-repeat='item in items' component-item item='item' item-type-name="itemTypeName" char-limit='charLimit')

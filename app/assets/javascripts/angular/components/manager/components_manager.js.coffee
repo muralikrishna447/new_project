@@ -58,7 +58,7 @@
   return this
 ]
 
-@componentsManager.controller 'ComponentsFormController', ['Component', '$stateParams', '$state', 'notificationService', 'AlgoliaSearchService', 'componentItemService', '$location', (Component, $stateParams, $state, notificationService, AlgoliaSearchService, componentItemService, $location) ->
+@componentsManager.controller 'ComponentsFormController', ['Component', '$stateParams', '$state', 'notificationService', 'AlgoliaSearchService', 'componentItemService', '$location', '$rootScope', '$scope', (Component, $stateParams, $state, notificationService, AlgoliaSearchService, componentItemService, $location, $rootScope, $scope) ->
   @typeOptions = ['feed', 'madlib','matrix']
   @sizeOptions = ['full', 'standard', 'small']
   @themeOptions = ['light', 'dark']
@@ -66,6 +66,7 @@
   @colorOptions = ['white', 'black']
   @searchResults = []
   @toggleObject = {}
+  @unsavedUpdates = false
 
   componentStruct = {
     componentType: null
@@ -88,15 +89,22 @@
     @form = componentStruct
     @form.name = $location.search().name
 
-  @save = (component) ->
+  # Adds item to the top
+  @addItem = ->
+    struct = componentItemService.getStruct(@form.meta.itemTypeName)
+    newStruct = angular.copy struct
+    @form.meta.items.unshift({content: newStruct})
+
+  @save = (component) =>
     if $state.current.name == 'components.edit'
       componentParams = component
       delete componentParams['id']
       delete componentParams['slug']
-      console.log 'componentParams: ', componentParams
-      Component.update {id: $stateParams.id, component: componentParams}, ((component) ->
+      # console.log 'componentParams: ', componentParams
+      Component.update {id: $stateParams.id, component: componentParams}, ((component) =>
+        @unsavedUpdates = false
         $state.go('components.index')
-        console.log 'component: ', component
+        # console.log 'component: ', component
         message = "The #{component.name } component was successfully saved. "
         buttonUrl = "/components/#{component.id}/edit"
         buttonText = "Edit #{component.name}"
@@ -105,7 +113,7 @@
         console.log 'Error while saving: ', error
 
     if $state.current.name == 'components.new'
-      Component.create {id: $stateParams.id, component: component}, ((component) ->
+      Component.create {id: $stateParams.id, component: component}, ((component) =>
         $state.go('components.index')
       ), (error) ->
         console.log 'Error while saving: ', error
@@ -147,6 +155,20 @@
       angular.forEach item.content, (value,key) ->
         item.content[key] = oldItem.content[key]
 
+  # If there are changes to the form, set unsavedUpdates to true
+  $scope.$watch angular.bind(this, => @form), ((newValue, oldValue) =>
+    if newValue && typeof oldValue != 'undefined'
+      @unsavedUpdates = true
+  ), true
 
+  # Warn the user if there are leaving the page and there are unsaved changes
+  $rootScope.$on '$stateChangeStart', (e, toState, toParams, fromState, fromParams) =>
+    if toState.name != $state.current.name
+      if @unsavedUpdates
+        @confirm = confirm "You have unsaved changes.  Click 'OK' to leave this page without saving."
+        if @confirm
+          @unsavedUpdates = false
+          $state.go(toState.name)
+        e.preventDefault()
   return this
 ]

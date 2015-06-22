@@ -6,6 +6,7 @@
     columns: '=?'
     rows: '=?'
     itemTypeName: '=?'
+    charLimit: '=?'
   }
 
   link: (scope, element, attrs) ->
@@ -21,6 +22,7 @@
         published_status: 'published'
         page: '1'
         search_all: searchQuery
+        attributesToRetrieve: 'title,url,image,likes_count,description'
       }
 
       AlgoliaSearchService.search(params).then (data) ->

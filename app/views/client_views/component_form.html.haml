@@ -1,4 +1,4 @@
-.experimental
+.component-form
   .experimental-nav
     .experimental-nav-item
       %label Name
@@ -22,40 +22,56 @@
       %label Theme
       %select(ng-options="theme for theme in component.themeOptions" ng-model='component.form.meta.theme' ng-change='component.setTheme()')
 
-  .component-container(ng-if="component.form.componentType=='feed'")
-    .component(ng-class="component.form.meta.size")
-      .btn.btn-secondary(ng-click="component.form.meta.feedType='search'")
-        Search
-      %div(ng-if="component.form.meta.feedType=='search'")
+  %div(ng-if="component.form.componentType=='feed'")
+    %label Description Character Limit
+    %input(type='number' ng-model='component.form.meta.descriptionCharLimit')
+    %hr
+    %h2 Feed Type:
+    .btn.btn-secondary(ng-click="component.form.meta.feedType='search'")
+      Search
+
+    .component-container(ng-if="component.form.meta.feedType=='search'")
+      .component(ng-class="component.form.meta.size")
         %input(type='text' ng-model='component.form.meta.searchQuery')
         %div( search-feed
               search="component.form.meta.searchQuery"
               columns='component.form.meta.columns'
               rows='component.form.meta.rows'
-              item-type-name="component.form.meta.itemTypeName" )
+              item-type-name="component.form.meta.itemTypeName"
+              char-limit="component.form.meta.descriptionCharLimit")
 
-  .component-container(ng-if="component.form.componentType=='matrix'")
-    .component(ng-class="component.form.meta.size")
-      .matrix(ng-class="'matrix-' + component.form.meta.columns + '-per-row'")
-        .matrix-item(ng-repeat='componentItem in component.form.meta.items | limitTo: component.numItems track by $index')
-          .item-form
-            .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
-              %span(ng-if='!component.toggleObject[$index]')
-                Edit
-              %span(ng-if='component.toggleObject[$index]')
-                Close
-            %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)" ng-show='component.toggleObject[$index]')
-            %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" view-mode="'edit'" theme='component.form.meta.theme' ng-show='component.toggleObject[$index]')
-            %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" theme='component.form.meta.theme')
+  %div(ng-if="component.form.componentType=='matrix'")
+
+    %label Description Character Limit
+    %input(type='number' ng-model='component.form.meta.descriptionCharLimit' ng-change='component.setDescriptionCharLimit()')
+
+    .btn.btn-secondary(ng-click='component.addItem()')
+      Add Item
+
+    .component-container
+      .component(ng-class="component.form.meta.size")
+        .matrix(ng-class="'matrix-' + component.form.meta.columns + '-per-row'")
+          .matrix-item(ng-repeat='componentItem in component.form.meta.items | limitTo: component.numItems track by $index')
+            .item-form
+              .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
+                %span(ng-if='!component.toggleObject[$index]')
+                  Edit
+                %span(ng-if='component.toggleObject[$index]')
+                  Close
+              %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)" ng-show='component.toggleObject[$index]')
+              %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" view-mode="'edit'" theme='component.form.meta.theme' ng-show='component.toggleObject[$index]')
+              %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" theme='component.form.meta.theme' char-limit='component.form.meta.descriptionCharLimit')
 
   %pre
     {{component.form | json}}
 
-  %button.btn.btn-secondary(type='submit' ng-click='component.save(component.form)')
-    Save
 
-  %button.btn.btn-secondary(type='submit' ng-click='component.clear()')
-    Clear
+  .nav-bottom
+    %a.btn-outline(type='submit' ng-click='component.save(component.form)')
+      Save
 
-  %a.btn.btn-secondary(ui-sref='components.index')
-    Cancel
+    %a(type='submit' ng-click='component.clear()')
+      Clear
+
+    %a(ui-sref='components.index')
+      Cancel

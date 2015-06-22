@@ -1,5 +1,12 @@
 @import 'mixins'
 
+.item-container
+  @include display-flex
+  width: 100%
+  .item
+    width: 100%
+
+// HERO STYLES
 .item.hero
   float: none
   @include aspect-3-1
@@ -38,7 +45,15 @@
         font-weight: bold
         padding: 10px 40px
 
-@media (max-width: 800px)
+@media (max-width: 1100px)
+  .item.hero
+    .item-content
+      .item-content-text
+        .item-title
+          font-size: 45px
+          line-height: 45px
+
+@media (max-width: 900px)
   .item.hero
     @include aspect-16-9
     .item-content
@@ -52,6 +67,22 @@
       .item-button
         margin: 0 auto
 
+@media (max-width: 600px)
+  .item.hero
+    @include aspect-3-2
+    .item-content
+      .item-content-text
+        width: 100%
+        padding-left: 0px
+        text-align: center
+        .item-title
+          font-size: 30px
+          line-height: 30px
+      .item-button
+        margin: 0 auto
+// END HERO STYLES
+
+// SQUARE STYLES
 .item.square
   float: none
   @include aspect-1-1
@@ -59,7 +90,6 @@
     color: white
     text-align: center
     background-size: cover
-    border-radius: 8px
     overflow: hidden
     @include aspect-content
     @include display-flex
@@ -68,13 +98,15 @@
     @include flex-direction(column)
     .item-content-image
       position: absolute
-      @include filter(brightness(75%))
+      @include filter(brightness(85%))
     .item-divider.first
       z-index: 1
       padding: 10px
       height: 100%
       width: 100%
       font-weight: bold
+      font-size: 2rem
+      line-height: 2.6rem
       @include boxsizing
       @include flex(0 1 100%)
       @include display-flex
@@ -90,6 +122,10 @@
       @include flex(0 1 100%)
       @include display-flex
 
+@media (max-width: 600px)
+  .item.square
+    @include aspect-3-2
+
 .item.square.blank
   @include aspect-1-1
   border: 1px solid $light-gray
@@ -102,44 +138,75 @@
     @include justify-content(center)
     @include align-items(center)
     @include flex-direction(column)
+// END SQUARE STYLES
 
-
+// LIST STYLES
 .item.list
   float: none
   .item-content
-    margin-bottom: 10px
+    margin-bottom: 25px
     @include boxsizing
     @include display-flex
     @include transition(100ms all linear)
+    @include align-items(flex-start)
     .item-content-image
-      @include flex(0 0 80px)
-      img
-        border-radius: 8px
-        overflow: hidden
+      @include flex(0 0 100px)
+      border-radius: 6px
+      overflow: hidden
+      @include aspect-1-1
+      cs-image
+        @include aspect-content
     .item-content-text
       margin-left: 10px
       width: 100%
       color: black
       .item-title
         font-weight: bold
-    &:hover
-      background-color: $offwhite
+        font-size: 1.6rem
+        line-height: 2.4rem
+        margin-bottom: 10px
+  &:hover
+    .item-content-image
+      cs-image
+        img
+          @include transform(scale(1.2,1.2))
+// END LIST STYLES
 
+// MEDIA STYLES
 .item.media
   float: none
+  @include display-flex
+  @include flex-direction(column)
+  @include justify-content(space-between)
   .item-content
     @include boxsizing
     .item-content-image
       width: 100%
-      margin-bottom: 22px
-      border-radius: 8px
+      margin-bottom: 25px
+      border-radius: 6px
       overflow: hidden
+      @include aspect-16-9
+      cs-image
+        @include aspect-content
     .item-content-text
       width: 100%
+      padding-left: 10px
+      padding-right: 10px
       color: black
+      @include boxsizing
       .item-title
         font-weight: bold
+        font-size: 1.6rem
+        line-height: 2.4rem
+        margin-bottom: 10px
+  .item-action
+    margin-top: 20px
+    @include display-flex
+    @include justify-content(center)
 
+// END MEDIA STYLES
+
+// HEADER STYLES
 .item.header
   float: none
   .item-content
@@ -154,11 +221,13 @@
     .subheader
       font-size: 20px
       margin-top: 10px
+// END HEADER STYLES
 
 // Forms
 .item-form
   padding: 20px
   border: 1px solid #ccc
+  width: 100%
   @include boxsizing
   input[type='text'], input[type='number'], textarea
     width: 100%
@@ -169,6 +238,22 @@
   textarea
     min-height: 200px
 
+// Zoom hover
+.item-content-image.zoom-hover
+  // Fix for bug in Safari where overflow hidden doesn't work with css3 animations
+  -webkit-mask-image: -webkit-radial-gradient(circle, white, black)
+  cs-image
+    img
+      @include transform(scale3d(1,1,1))
+      -webkit-transition: -webkit-transform 500ms
+      -moz-transition: -moz-transform 500ms
+      -ms-transition: -ms-transform 500ms
+      -o-transition: -o-transform 500ms
+      transition: transform 500ms
+      @include backface-visibility(hidden)
+      &:hover
+        @include transform(scale3d(1.1,1.1,1.1))
+
 // Themes
 .item.light
   .item-content
@@ -178,8 +263,9 @@
       color: white
     .item-button
       border-color: white
+      color: white
       &:hover
-        border: 2px solid $orange
+        border: 1px solid $orange
         color: white
         background-color: $orange
 
