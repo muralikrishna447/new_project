@@ -15,8 +15,9 @@
         $http.get("#{csConfig.bloom.api_endpoint}/discussions/#{identifier}?apiKey=xchefsteps").then (response) =>
           comments = response.data.comments
 
-        angular.forEach comments, (comment) =>
-          $scope.seoComments.push(comment.content)
+          angular.forEach comments, (comment) =>
+            $scope.seoComments.push(comment.content)
+
     $scope.openLogin = ->
       $scope.$emit 'openLoginModal'
       $scope.$apply()
