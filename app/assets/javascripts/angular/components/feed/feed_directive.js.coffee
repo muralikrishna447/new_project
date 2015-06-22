@@ -6,6 +6,7 @@
     columns: '=?'
     rows: '=?'
     itemTypeName: '=?'
+    charLimit: '=?'
   }
 
   link: (scope, element, attrs) ->

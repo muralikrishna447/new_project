@@ -5,6 +5,7 @@
     itemTypeName: '='
     theme: '='
     viewMode: '='
+    charLimit: '='
   }
   link: (scope, element, attrs) ->
 
