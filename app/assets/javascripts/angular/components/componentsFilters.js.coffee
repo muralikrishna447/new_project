@@ -67,3 +67,8 @@
       input = input + '…'
 
     input
+
+@components.filter 'toTrusted', ['$sce', ($sce) ->
+  (input) ->
+    $sce.trustAsHtml(input)
+]
