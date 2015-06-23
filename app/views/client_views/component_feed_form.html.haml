@@ -1,0 +1,20 @@
+%label Button Message
+%input(type='text' ng-model='component.form.meta.buttonMessage')
+
+%label Description Character Limit
+%input(type='number' ng-model='component.form.meta.descriptionCharLimit')
+
+%h2 Feed Type:
+.btn.btn-secondary(ng-click="component.form.meta.feedType='search'")
+  Search
+
+.component-container(ng-if="component.form.meta.feedType=='search'")
+  .component(ng-class="component.form.meta.size")
+    %input(type='text' ng-model='component.form.meta.searchQuery')
+    %div( search-feed
+          search="component.form.meta.searchQuery"
+          columns='component.form.meta.columns'
+          rows='component.form.meta.rows'
+          item-type-name='component.form.meta.itemTypeName'
+          char-limit='component.form.meta.descriptionCharLimit'
+          button-message='component.form.meta.buttonMessage')

@@ -7,6 +7,7 @@
     rows: '=?'
     itemTypeName: '=?'
     charLimit: '=?'
+    buttonMessage: '=?'
   }
 
   link: (scope, element, attrs) ->

@@ -6,7 +6,7 @@
       {{item.content.title}}
     .item-divider.middle
       %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-click="track()")
-        {{item.content.buttonMessage}}
+        {{getButtonMessage()}}
     .item-divider.last
 
 .item.square.blank(ng-if="!item")
