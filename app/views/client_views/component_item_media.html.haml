@@ -7,7 +7,7 @@
         {{item.content.title}}
       .item-description(ng-if='item.content.description' ng-bind-html="item.content.description | noShortcodes | charLimit:charLimit | toTrusted")
   .item-action(ng-if='getButtonMessage()')
-    %a.item-button.btn-outline(ng-href='{{item.content.url}}')
+    %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-click='track()')
       {{getButtonMessage()}}
 
 .item.media.media-a.blank(ng-if="!item")
