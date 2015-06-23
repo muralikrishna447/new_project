@@ -8,6 +8,7 @@
     itemTypeName: '=?'
     charLimit: '=?'
     buttonMessage: '=?'
+    theme: '=?'
   }
 
   link: (scope, element, attrs) ->
@@ -37,6 +38,7 @@
         scope.columns = newValue.meta.columns
         scope.rows = newValue.meta.rows
         scope.itemTypeName = newValue.meta.itemTypeName
+        scope.theme = newValue.meta.theme
 
     scope.$watch 'columns', (newValue, oldValue) ->
       if newValue
