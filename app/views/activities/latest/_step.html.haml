@@ -75,7 +75,6 @@
         -# Image only if there is no video
         .step-image-outer(ng-if="(! step.youtube_id) && (!! step.image_id)")
           .new-step-image(id="{{'step-image-' + $index}}")
-            / %img(cs-responsive-image='step.image_id' alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}")
             %cs-image(url="step.image_id" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}")
 
     .btn.btn-link(ng-if="getStepOpenForEdit()" ng-click="addStep($index, 1)")

@@ -6,8 +6,12 @@
     %h3 {{obj.title}}
 
   .nell-card-media
-    %img( ng-if='obj.featured_image_id'
-          cs-responsive-image='obj.featured_image_id')
+    %cs-image( ng-if='obj.featured_image_id'
+               url='obj.featured_image_id'
+               aspect='16:9')
+    %cs-image( ng-if='!obj.featured_image_id && obj.image_id'
+               url='obj.image_id'
+               aspect='16:9')
 
   .nell-card-text
     .relative
@@ -18,4 +22,3 @@
       %div(ng-switch='obj.activity_type[0] || "Recipe"')
         .btn.btn-large.btn-secondary(ng-switch-when="Recipe") SEE THE RECIPE
         .btn.btn-large.btn-secondary(ng-switch-default) TELL ME MORE
-
