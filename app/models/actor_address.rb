@@ -1,19 +1,24 @@
 class ActorAddress < ActiveRecord::Base
   belongs_to :actor, polymorphic: true
 
-  def self.create_for_actor(actor, client_metadata, address_id)
-    logger.info "Creating new ActorAddress for #{actor} with metadata #{client_metadata}"
+  def self.create_for_actor(actor, opts = {})
+    logger.info "Creating new ActorAddress for #{actor} with opts #{opts.inspect}"
     aa = ActorAddress.new()
     aa.actor = actor
-    aa.client_metadata = client_metadata
+    if opts.has_key? :client_metadata
+      aa.client_metadata = opts[:client_metadata]
+    end
     aa.issued_at = Time.now.to_i
     aa.status = 'active' # Nothing beats ad-hoc enums - what's the modern rails way?
+    if opts.has_key? :unique_key
+      aa.unique_key = opts[:unique_key]
+    end
 
     ActorAddress.transaction do
       # save first only so we can re-use id for address_id when not specified
       aa.save!
-      if address_id
-        aa.address_id = address_id
+      if opts.has_key? :address_id
+        aa.address_id = opts[:address_id]
       else
         # TODO - the address should be obfuscated
         aa.address_id = aa.id.to_s
@@ -24,12 +29,14 @@ class ActorAddress < ActiveRecord::Base
     aa
   end
 
-  def self.create_for_circulator(circulator)
-    self.create_for_actor(circulator, 'circulator', circulator.circulator_id)
+  def self.create_for_circulator(circulator, opts = {})
+    opts[:client_metadata] = 'circulator'
+    opts[:address_id] = circulator.circulator_id
+    self.create_for_actor(circulator, opts)
   end
 
-  def self.create_for_user(user, client_metadata)
-    self.create_for_actor(user, client_metadata, nil)
+  def self.create_for_user(user, opts = {})
+    self.create_for_actor(user, opts)
   end
 
   def current_token (exp = nil, restrict_to = nil)
