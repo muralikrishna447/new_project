@@ -13,6 +13,9 @@
       if newValue
         scope.itemType = componentItemService.get(scope.itemTypeName)
 
+    scope.track = ->
+      mixpanel.track('Component Item Clicked', {itemTypeName: scope.itemTypeName, buttonMessage: scope.item.content.buttonMessage, title: scope.item.content.title, url: scope.item.content.url})
+
   template:
     """
       <div class="item-container" ng-include="itemType.templateUrl"></div>

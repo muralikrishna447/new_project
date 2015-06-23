@@ -5,7 +5,7 @@
     .item-divider.first.item-title
       {{item.content.title}}
     .item-divider.middle
-      %a.item-button.btn-outline(ng-href='{{item.content.url}}')
+      %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-click="track()")
         {{item.content.buttonMessage}}
     .item-divider.last
 
