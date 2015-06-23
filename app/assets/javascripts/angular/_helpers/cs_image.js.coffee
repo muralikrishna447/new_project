@@ -25,7 +25,12 @@ Usage:
 
       # Round up to nearest 50px - don't want to just use parent.width
       # because that will cause a ton of refetches in a fluid layout during resize.
-      scope.finalWidth = Math.ceil(parent.width / 50.0) * 50
+      finalWidth = Math.ceil(parent.width / 50.0) * 50
+
+      if window.devicePixelRatio >= 2
+        scope.finalWidth = finalWidth * 2
+      else
+        scope.finalWidth = finalWidth
 
       if scope.aspect
         switch scope.aspect
