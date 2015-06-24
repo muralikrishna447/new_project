@@ -124,28 +124,25 @@
   scope: {
     lineClamp: '='
   }
+
   link: (scope, element, attrs) ->
 
-    getNumLines = ->
-      elementHeight = element[0].clientHeight
-      lineHeight = parseInt(getComputedStyle(element[0]).getPropertyValue('line-height'))
-      numLines = elementHeight/lineHeight
-      return numLines
+    getElementHeight = ->
+      element[0].clientHeight
+
+    getClampable = ->
+      angular.element(element[0].querySelector('[clampable]'))
 
     $timeout ->
-
-      console.log 'num lines: ', getNumLines()
-      console.log 'line clamp: ', parseInt(scope.lineClamp)
-      while getNumLines() > parseInt(scope.lineClamp)
-        text = element.text()
+      clampable = getClampable()
+      desiredHeight = parseInt(scope.lineClamp)
+      console.log 'desiredHeight: ', desiredHeight
+      while getElementHeight() > desiredHeight
+        text = clampable.text()
         lastIndex = text.lastIndexOf(" ")
         text = text.substring(0, lastIndex)
-        element.text(text)
-
-      text = element.text()
-      lastIndex = text.lastIndexOf(" ")
-      text = text.substring(0, lastIndex)
-
-      element.text(text + '...')
+        console.log 'new text: ', text
+        console.log 'element Height vs desiredHeight: ', getElementHeight(), desiredHeight
+        clampable.text(text + '...')
 
 ]
