@@ -6,9 +6,9 @@
       .item-title(ng-class="'color-'+ item.styles.title.color")
         {{item.content.title}}
       .item-description(ng-if='item.content.description' ng-bind-html="item.content.description | noShortcodes | charLimit:charLimit | toTrusted")
-  .item-action
-    %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-if='item.content.buttonMessage')
-      {{item.content.buttonMessage}}
+  .item-action(ng-if='getButtonMessage()')
+    %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-click='track()')
+      {{getButtonMessage()}}
 
 .item.media.media-a.blank(ng-if="!item")
   .item-content

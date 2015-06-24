@@ -16,33 +16,31 @@
   @types = [
     {
       id: 1
-      name: 'Hero A'
-      className: 'hero.hero-a'
+      name: 'Hero'
       attrs: ['title', 'image', 'buttonMessage', 'url']
       templateUrl: '/client_views/component_item_hero.html'
     }
     {
       id: 2
-      name: 'List A'
+      name: 'List'
       attrs: ['title', 'image', 'description', 'url']
       templateUrl: '/client_views/component_item_list.html'
     }
     {
       id: 3
-      name: 'Media A'
+      name: 'Media'
       attrs: ['title', 'image', 'description', 'url']
       templateUrl: '/client_views/component_item_media.html'
     }
     {
       id: 4
-      name: 'Square A'
-      className: 'square.square-a'
+      name: 'Square'
       attrs: ['title', 'image', 'buttonMessage', 'url']
       templateUrl: '/client_views/component_item_square.html'
     }
     {
       id: 5
-      name: 'Header A'
+      name: 'Header'
       attrs: ['header', 'subheader']
       templateUrl: '/client_views/component_item_header.html'
     }

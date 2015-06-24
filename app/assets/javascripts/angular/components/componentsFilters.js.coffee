@@ -36,7 +36,7 @@
 
 @components.filter 'noShortcodes', ->
   (input) ->
-    input.replace(/\[(\w+)\s+([^\]]*)\]/, '')
+    input.replace(/\[(\w+)\s+([^\]]*)\]/g, '')
 
 @components.filter 'charLimit', ->
   (input, maxCharNum) ->

@@ -6,7 +6,7 @@
         {{item.content.title}}
       .item-description
         {{item.content.description}}
-      %a.item-button.btn-outline(ng-href='{{item.content.url}}')
+      %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-click='track()')
         {{item.content.buttonMessage}}
 
 .item.hero.blank(ng-if="!item")

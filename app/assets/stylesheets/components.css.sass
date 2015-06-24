@@ -12,12 +12,16 @@
     position: relative
   .component.small
     @include flex(0 1 700px)
-    padding: 0 30px
+    padding: 0 20px
   .component.standard
     @include flex(0 1 1080px)
-    padding: 0 30px
+    padding: 0 20px
   .component.full
     @include flex(0 1 100%)
+
+@media (max-width: 600px)  
+  .component-container
+    margin-bottom: 60px
 
 .component-edit-button
   position: absolute
@@ -27,7 +31,7 @@
   z-index: 9999
   padding: 5px 10px
   border: 1px solid #ccc
-  color: black
+  color: #333
   @include transition(200ms all)
   &:hover
     cursor: pointer
@@ -79,8 +83,8 @@
 
 .btn-outline
   display: block
-  border: 1px solid black
-  color: black
+  border: 1px solid #333
+  color: #333
   padding: 5px 20px
   background-color: none
   z-index: 1
@@ -94,9 +98,9 @@
 
 .btn-outline-rounded
   display: inline-block
-  border: 1px solid black
+  border: 1px solid #333
   border-radius: 20px
-  color: black
+  color: #333
   padding: 5px 20px
   background-color: none
   z-index: 1
@@ -118,7 +122,7 @@
   @include display-flex
   @include flex-wrap(wrap)
   @include flex(0 1 1080px)
-  padding: 0px 30px
+  padding: 0px 20px
   .home-component-split-item
     padding-right: 20px
     @include flex(1 1 50%)
@@ -127,7 +131,7 @@
       padding-right: 0px
       padding-left: 20px
 
-@media (max-width: 600px)
+@media (max-width: 800px)
   .home-component-split
     .home-component-split-item
       padding: 0px
