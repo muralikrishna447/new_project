@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
 
+  instrument_action [:index]
+
   def new_home
   end
 
