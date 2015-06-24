@@ -2,7 +2,11 @@ require "rack-proxy"
 
 class FreshStepsProxy < Rack::Proxy
   EXACT = %w()
-  PREFIX = %w(/gallery /browser-sync)
+  # For awhile I had /browser-sync in this list, which was nice
+  # because it got rid of rails errors and also made livereloading
+  # work when proxying, but it also made regular page loads incredibly slow.
+  # Not totally sure why.
+  PREFIX = %w(/gallery)
 
   def initialize(app)
     @app = app
@@ -33,7 +37,6 @@ class FreshStepsProxy < Rack::Proxy
         EXACT.include?(request.path + "/") ||
         PREFIX.include?(request.path) ||
         PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")})
-      puts
       env["HTTP_HOST"] = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
     end
 
