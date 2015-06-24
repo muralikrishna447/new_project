@@ -119,6 +119,14 @@
     """
 ]
 
+
+# Experimental line clamp feature.  The desire is to limit lengthy content like descriptions to a X number of lines
+# Usage:
+# <div line-clamp="'300'">
+#   <h1>Some Title</h1>
+#   <div clampable>Some long description text</div>
+# </div>
+# The example above would remove any words that make the entire line-clamp div larger than 300px high
 @components.directive 'lineClamp', ['$timeout', ($timeout) ->
   restrict: 'A'
   scope: {
