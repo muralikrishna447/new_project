@@ -2,7 +2,7 @@ describe Api::V0::UsersController do
 
   before :each do
     @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
-    aa = ActorAddress.create_for_user @user, "test"
+    aa = ActorAddress.create_for_user @user, client_metadata: "test"
     @token = 'Bearer ' + aa.current_token.to_jwt
   end
 
@@ -93,7 +93,7 @@ describe Api::V0::UsersController do
 
     it 'should not update a user if token belongs to another user' do
       @another_user = Fabricate :user, id: 105, email: 'jojosmith@chefsteps.com', password: '123456', name: 'Jo Jo smith', role: 'user'
-      aa = ActorAddress.create_for_user @another_user, "test"
+      aa = ActorAddress.create_for_user @another_user, client_metadata: "test"
       another_token = 'Bearer ' + aa.current_token.to_jwt
       request.env['HTTP_AUTHORIZATION'] = another_token
       put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }

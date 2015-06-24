@@ -25,7 +25,7 @@ module Api::V0
     def send_reset_email
       @user = User.find_by_email params[:email]
       if @user
-        aa = ActorAddress.create_for_user @user, 'password_reset'
+        aa = ActorAddress.create_for_user @user, client_metadata: "password_reset"
 
         exp = ((Time.now + 1.day).to_f * 1000).to_i
         token = aa.current_token(exp = exp, restrict_to = 'password reset').to_jwt

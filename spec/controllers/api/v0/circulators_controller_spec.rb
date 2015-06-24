@@ -8,7 +8,7 @@ describe Api::V0::CirculatorsController do
     @other_circulator = Fabricate :circulator, notes: 'some other notes', circulator_id: '456'
     @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
 
-    token = ActorAddress.create_for_user(@user, 'cooking_app').current_token
+    token = ActorAddress.create_for_user(@user, client_metadata: "create").current_token
     request.env['HTTP_AUTHORIZATION'] = token.to_jwt
   end
 
