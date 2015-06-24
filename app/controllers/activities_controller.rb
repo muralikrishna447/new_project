@@ -166,7 +166,6 @@ class ActivitiesController < ApplicationController
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
-    track_event(@activity, 'show')
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
