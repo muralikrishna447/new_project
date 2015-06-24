@@ -118,3 +118,34 @@
       <button class='btn btn-secondary' ng-click='pick()'>Pick Image</btn>
     """
 ]
+
+@components.directive 'lineClamp', ['$timeout', ($timeout) ->
+  restrict: 'A'
+  scope: {
+    lineClamp: '='
+  }
+  link: (scope, element, attrs) ->
+
+    getNumLines = ->
+      elementHeight = element[0].clientHeight
+      lineHeight = parseInt(getComputedStyle(element[0]).getPropertyValue('line-height'))
+      numLines = elementHeight/lineHeight
+      return numLines
+
+    $timeout ->
+
+      console.log 'num lines: ', getNumLines()
+      console.log 'line clamp: ', parseInt(scope.lineClamp)
+      while getNumLines() > parseInt(scope.lineClamp)
+        text = element.text()
+        lastIndex = text.lastIndexOf(" ")
+        text = text.substring(0, lastIndex)
+        element.text(text)
+
+      text = element.text()
+      lastIndex = text.lastIndexOf(" ")
+      text = text.substring(0, lastIndex)
+
+      element.text(text + '...')
+
+]
