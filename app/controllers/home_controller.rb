@@ -6,7 +6,7 @@ class HomeController < ApplicationController
   def manager
   end
 
-  instrument_action :index
+  instrument_action :index, :about
 
   def index
     Librato.increment 'home.index'
