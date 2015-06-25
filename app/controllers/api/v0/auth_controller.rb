@@ -3,6 +3,8 @@ module Api
     class AuthController < BaseController
       before_filter :ensure_authorized_service, only: [:validate]
 
+      instrument_action :authenticate
+
       def authenticate
         begin
           unless params.has_key?(:user)

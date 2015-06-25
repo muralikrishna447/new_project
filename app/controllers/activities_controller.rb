@@ -1,4 +1,7 @@
 class ActivitiesController < ApplicationController
+
+  instrument_action :show
+
   # expose(:activity) { Activity.find_published(params[:id], params[:token]) }
   expose(:cache_show) { params[:token].blank? }
   expose(:version) { Version.current }
