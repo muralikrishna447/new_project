@@ -49,7 +49,8 @@
         <a class='component-edit-button' ng-if='showEditButton' ng-href="/components/{{component.slug}}/edit" target='_blank'>
           <i class='fa fa-edit'> Edit</i>
         </a>
-        <div search-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit"></div>
+        <div search-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit" ng-if="component.meta.feedType=='search'"></div>
+        <div activity-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit" ng-if="component.meta.feedType=='activity'"></div>
         <div matrix component='component' ng-switch-when="matrix"></div>
         <div madlib component='component' ng-switch-when="madlib"></div>
       </div>
