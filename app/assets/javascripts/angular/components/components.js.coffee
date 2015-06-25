@@ -49,7 +49,8 @@
         <a class='component-edit-button' ng-if='showEditButton' ng-href="/components/{{component.slug}}/edit" target='_blank'>
           <i class='fa fa-edit'> Edit</i>
         </a>
-        <div search-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit"></div>
+        <div search-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit" ng-if="component.meta.feedType=='search'"></div>
+        <div activity-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit" ng-if="component.meta.feedType=='activity'"></div>
         <div matrix component='component' ng-switch-when="matrix"></div>
         <div madlib component='component' ng-switch-when="madlib"></div>
       </div>
@@ -117,4 +118,40 @@
     """
       <button class='btn btn-secondary' ng-click='pick()'>Pick Image</btn>
     """
+]
+
+
+# Experimental line clamp feature.  The desire is to limit lengthy content like descriptions to a X number of lines
+# Usage:
+# <div line-clamp="'300'">
+#   <h1>Some Title</h1>
+#   <div clampable>Some long description text</div>
+# </div>
+# The example above would remove any words that make the entire line-clamp div larger than 300px high
+@components.directive 'lineClamp', ['$timeout', ($timeout) ->
+  restrict: 'A'
+  scope: {
+    lineClamp: '='
+  }
+
+  link: (scope, element, attrs) ->
+
+    getElementHeight = ->
+      element[0].clientHeight
+
+    getClampable = ->
+      angular.element(element[0].querySelector('[clampable]'))
+
+    $timeout ->
+      clampable = getClampable()
+      desiredHeight = parseInt(scope.lineClamp)
+      console.log 'desiredHeight: ', desiredHeight
+      while getElementHeight() > desiredHeight
+        text = clampable.text()
+        lastIndex = text.lastIndexOf(" ")
+        text = text.substring(0, lastIndex)
+        console.log 'new text: ', text
+        console.log 'element Height vs desiredHeight: ', getElementHeight(), desiredHeight
+        clampable.text(text + '...')
+
 ]
