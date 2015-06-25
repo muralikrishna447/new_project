@@ -10,6 +10,10 @@ class PagesController < ApplicationController
     end
   end
 
+  def password_reset_sent
+    render 'devise/passwords/reset_sent'
+  end
+
   def knife_collection
     # @knife_page = Page.find 'knife-collection'
   end
