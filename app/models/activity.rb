@@ -154,6 +154,10 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  # https://github.com/algolia/algoliasearch-rails/issues/59
+  # https://github.com/algolia/algoliasearch-rails/issues/40
+  after_touch :index!
+
   def has_title
     title.present?
   end
