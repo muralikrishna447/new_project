@@ -9,12 +9,13 @@
   ]
 
   this.activitySuggestedTags = [
-    {name: "Main Ingredient", tags: ["Meat", "Fish", "Chicken", "Game", "Vegetable", "Pasta", "Poultry", "Cheese", "Fruit", "Grains"]}
-    {name: "Diets", tags: ["Vegetarian", "Vegan", "Gluten Free", "Kosher", "Paleo", "Raw"]}
-    {name: "Course", tags: ["Appetizer", "Soup", "Salad", "Main course", "Amuse bouche", "Dessert", "Cocktail", "Beverage", "Baking", "Sauce", "Condiment", "Snack", "Side dish"]}
+    {name: "Primary", tags: ["Sous Vide", "Beef", "Chicken", "Pork", "Fish", "Pasta", "Chocolate", "Baking", "Salad", "Dessert", "Breakfast", "Cocktail", "Vegetarian"]}
+    {name: "Main Ingredient", tags: ["Meat", "Game", "Vegetable", "Poultry", "Cheese", "Fruit", "Grains"]}
+    {name: "Diets", tags: ["Vegan", "Gluten Free", "Kosher", "Paleo", "Raw"]}
+    {name: "Course", tags: ["Appetizer", "Soup", "Salad", "Main course", "Amuse bouche", "Beverage", "Sauce", "Condiment", "Snack", "Side dish"]}
     {name: "Barriers", tags: ["No Special Equipment", "No Modernist Ingredients"]}
-    {name: "Meal", tags: ["Breakfast", "Brunch", "Lunch", "Dinner"]}
-    {name: "Method", tags: ["Sous vide", "Grilling", "Baking", "Pressure Cooker", "Barbeque", "Deep Frying"]}
+    {name: "Meal", tags: ["Brunch", "Lunch", "Dinner"]}
+    {name: "Method", tags: ["Grilling", "Baking", "Pressure Cooker", "Barbeque", "Deep Frying"]}
     {name: "Seasons", tags: ["Winter", "Spring", "Summer", "Fall"]}
     {name: "Misc", tags: ["Holiday", "Quick", "Kid Friendly", "One Pot"]}
   ]
@@ -46,7 +47,7 @@
 
     createSearchChoice: (term, data) ->
       id: term
-      name: term 
+      name: term
 
     initSelection: (element, callback) ->
       callback(model)
