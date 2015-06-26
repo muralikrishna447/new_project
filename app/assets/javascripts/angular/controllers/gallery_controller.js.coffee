@@ -6,7 +6,7 @@
   $scope.generatorChoices       = ["Chefsteps", "Community"]
   $scope.sortChoices            = ["Relevance", "Newest", "Oldest", "Popular"]
   $scope.suggestedTags          = ['Sous Vide', 'Beef', 'Chicken', 'Pork',
-                                    'Fish', 'Egg', 'Pasta', 'Chocolate', 'Baking',
+                                    'Fish', 'Pasta', 'Chocolate', 'Baking',
                                     'Salad', 'Dessert', 'Breakfast', 'Cocktail', 'Vegetarian']
 
   $scope.defaultFilters =
