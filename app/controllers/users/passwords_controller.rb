@@ -1,10 +1,5 @@
 class Users::PasswordsController < Devise::PasswordsController
 
-  protected
-  def after_sending_reset_password_instructions_path_for(resource_name)
-    password_reset_sent_path(email: self.resource.email)
-  end
-
   def update
     self.resource = resource_class.reset_password_by_token(resource_params)
 
@@ -20,6 +15,11 @@ class Users::PasswordsController < Devise::PasswordsController
     else
       respond_with resource
     end
+  end
+
+  protected
+  def after_sending_reset_password_instructions_path_for(resource_name)
+    password_reset_sent_path(email: self.resource.email)
   end
 
 end
