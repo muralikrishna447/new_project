@@ -5,9 +5,9 @@ defaults: &defaults
   fog_directory: "<%= ENV['FOG_DIRECTORY'] %>"
   # You may need to specify what region your storage bucket is in
   # fog_region: "eu-west-1"
-  existing_remote_files: delete
+  existing_remote_files: keep
   # To delete existing remote files.
-  # existing_remote_files: delete 
+  # existing_remote_files: delete
   always_upload: ['navigation_bootstrap.js', 'global_navigation.css', 'jquery.mjs.nestedSortable.js']
   gzip_compression: true
   # Fail silently.  Useful for environments such as Heroku
