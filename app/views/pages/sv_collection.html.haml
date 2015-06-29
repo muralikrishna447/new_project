@@ -61,9 +61,9 @@
             .annotation-click-image
               %small click image to enlarge
             /= render 'product_collection_social', title: 'SVS Demi', image: 'http://placehold.it/1170x737'
-            %p.section An attractive and convenient sous vide cooking appliance that fits on your countertop.  Precise temperature control up to 5 °C, with a range of 86 °F to 210 °F. Perfect for small or crowded kitchens. 
+            %p.section An attractive and convenient sous vide cooking appliance that fits on your countertop.  Precise temperature control up to 5 °C, with a range of 86 °F to 210 °F. Perfect for small or crowded kitchens.
             .btn.btn-primary.btn-large.btn-block
-              = link_to("Buy Now for $329", "http://store.chefsteps.com/collections/water-ovens/products/sousvide-supreme-demi-black", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'SousVide Supreme Full'});")            
+              = link_to("Buy Now for $329", "http://store.chefsteps.com/collections/water-ovens/products/sousvide-supreme-demi-black", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'SousVide Supreme Full'});")
 
 // End SVS //
 
@@ -71,8 +71,8 @@
 
 .knife.section#ohishi
   .knife-content
-    %h3.media-heading PolyScience Immersion Circulators 
-    With the PolyScience Immersion Circulator you can create a circulating bath using your own vessel or a PolyScience open bath tank. Cooking in a circulating, precisely-controlled water bath yields uniform doneness, enhanced flavor, and perfect texture every time, without the stress of strict timing. Dishes can be held at serving temperature without the risk of drying out, over-cooking, or burning. The easy-to-store immersion circulator simply clamps to a pot or a tank, transforming it into a precisely-controlled bath capable of preparing a meal for one, or several dishes for a large dinner party. 
+    %h3.media-heading PolyScience Immersion Circulators
+    With the PolyScience Immersion Circulator you can create a circulating bath using your own vessel or a PolyScience open bath tank. Cooking in a circulating, precisely-controlled water bath yields uniform doneness, enhanced flavor, and perfect texture every time, without the stress of strict timing. Dishes can be held at serving temperature without the risk of drying out, over-cooking, or burning. The easy-to-store immersion circulator simply clamps to a pot or a tank, transforming it into a precisely-controlled bath capable of preparing a meal for one, or several dishes for a large dinner party.
 
 .container
   .row.section
@@ -101,14 +101,14 @@
                 .annotation-click-image
                   %small click images to enlarge
             /= render 'product_collection_social', title: 'PolyScience Creative', image: 'http://placehold.it/1170x737'
-            %p.section The PolyScience Creative Series offers consistent, high-quality results at an affordable price. Precise temperature control, a quiet motor, and convenient operation make this the best option for enthusiastic home cooks, or professionals trying sous vide for the first time. 
+            %p.section The PolyScience Creative Series offers consistent, high-quality results at an affordable price. Precise temperature control, a quiet motor, and convenient operation make this the best option for enthusiastic home cooks, or professionals trying sous vide for the first time.
             .btn.btn-primary.btn-large.btn-block
               = link_to("Buy Now for $399", "http://www.amazon.com/gp/product/B00CC2OLHC/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00CC2OLHC&linkCode=as2&tag=delvkitc-20", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Creative'});")
 
           .annotation-slider-note.note-center
             %a.annotation-close-btn
               %i.icon-remove
-            %h3 Chef Series 
+            %h3 Chef Series
             .annotation-slider-note-gallery
               .annotation-slider-note-gallery-thumbnails
                 .annotation-slider-note-gallery-thumbnail
@@ -118,7 +118,7 @@
                 .annotation-click-image
                   %small click images to enlarge
             /= render 'product_collection_social', title: 'PolyScience Chef', image: 'http://placehold.it/1170x737'
-            %p.section The PolyScience Chef Series was developed to meet the standards of the world’s best chefs. Its aesthetics, easy handling, and flexibility are unmatched. With an accuracy of 1/10th of a degree and higher power output than the Creative Series, this is an excellent tool for home and professional kitchens alike. 
+            %p.section The PolyScience Chef Series was developed to meet the standards of the world’s best chefs. Its aesthetics, easy handling, and flexibility are unmatched. With an accuracy of 1/10th of a degree and higher power output than the Creative Series, this is an excellent tool for home and professional kitchens alike.
             .btn.btn-primary.btn-large.btn-block
               = link_to("Buy Now for $799", "http://www.amazon.com/gp/product/B0082DNGN0/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B0082DNGN0&linkCode=as2&tag=delvkitc-20", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Chef'});")
 
@@ -133,7 +133,7 @@
                 .annotation-click-image
                   %small click images to enlarge
             /= render 'product_collection_social', title: 'PolyScience Classic', image: 'http://placehold.it/1170x737'
-            %p.section The highest standard for sous vide cooking on the market, the PolyScience Classic Series is a popular choice among professional chefs due to its unmatched precision, durability, consistency, and power. The Classic Series heats water quickly and accurately, every time. Controls liquid heating within .09 °F; heats to 300 °F.  
+            %p.section The highest standard for sous vide cooking on the market, the PolyScience Classic Series is a popular choice among professional chefs due to its unmatched precision, durability, consistency, and power. The Classic Series heats water quickly and accurately, every time. Controls liquid heating within .09 °F; heats to 300 °F.
             .btn.btn-primary.btn-large.btn-block
               = link_to("Buy Now for $1128", "http://www.amazon.com/gp/product/B00DY7TKN4/ref=as_li_qf_sp_asin_il_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=B00DY7TKN4&linkCode=as2&tag=delvkitc-20", onclick: "mixpanel.track_links('Clicked product Buy Now', {'product' : 'PolyScience Classic'});")
 
@@ -163,5 +163,3 @@
 
 :javascript
   mixpanel.track('Viewed product Collection', {'url' : window.location.pathname});
-
-
