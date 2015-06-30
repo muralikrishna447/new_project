@@ -26,7 +26,7 @@ module Api
           if is_new_user
             create_new_user(@user)
           else
-            aa = ActorAddress.create_for_user @user, "create"
+            aa = ActorAddress.create_for_user @user, client_metadata: "create"
             render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
           end
         else
@@ -56,7 +56,7 @@ module Api
       def create_new_user(user)
         if user.save
           email_list_signup(user.name, user.email, params[:source])
-          aa = ActorAddress.create_for_user @user, "create"
+          aa = ActorAddress.create_for_user @user, client_metadata: "create"
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
           render json: {status: 400, message: 'Bad Request: An error occured when trying to create this user.'}, status: 400
