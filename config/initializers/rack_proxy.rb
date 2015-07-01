@@ -4,8 +4,9 @@ class FreshStepsProxy < Rack::Proxy
   EXACT = %w()
   # For awhile I had /browser-sync in this list, which was nice
   # because it got rid of rails errors and also made livereloading
-  # work when proxying, but it also made regular page loads incredibly slow.
-  # Not totally sure why.
+  # work when proxying, but it also made regular page loads incredibly slow, I think because
+  # browser-sync was pinging multiple times per second. Although without the proxy, rails returns 406 so
+  # it is still doing work. Curious.
   PREFIX = %w(/gallery)
 
   def initialize(app)
@@ -24,9 +25,16 @@ class FreshStepsProxy < Rack::Proxy
 
   def rewrite_response(response, env)
     # Add a <base> tag into the head so that relative URLs
-    # are found at the proxy source.
-    response[2][0].sub! "<head>", "<head><base href=\'http://#{env["HTTP_HOST"]}\'>"
+    # are found at the proxy source, and set config on window.
+    response[2][0].sub! "<head>", <<INJECT
+      <head>
+      <base href='http://#{env["HTTP_HOST"]}'>
+INJECT
+
+    # Have to recompute content-length or browser will truncate
+    response[1]['content-length'] = response[2][0].length.to_s
     response
+
   end
 
   def rewrite_env(env)
