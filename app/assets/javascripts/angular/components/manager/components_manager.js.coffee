@@ -163,7 +163,8 @@
 
   # Warn the user if there are leaving the page and there are unsaved changes
   $rootScope.$on '$stateChangeStart', (e, toState, toParams, fromState, fromParams) =>
-    if toState.name != $state.current.name
+    console.log 'fromState: ', fromState
+    if fromState.name == 'components.edit' && toState.name != $state.current.name
       if @unsavedUpdates
         @confirm = confirm "You have unsaved changes.  Click 'OK' to leave this page without saving."
         if @confirm
