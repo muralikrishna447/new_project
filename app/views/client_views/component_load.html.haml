@@ -1,0 +1,10 @@
+.component(ng-class='component.meta.size' ng-switch='component.componentType' ng-mouseenter='showEdit()' ng-mouseleave='hideEdit()')
+  %a.component-edit-button(ng-if='showEditButton' ng-href="/components/{{component.slug}}/edit" target='_blank')
+    %i.fa.fa-edit Edit
+  %a.component-edit-button(ng-if='showNewButton' ng-href="/components/new?name={{newName}}" target='_blank')
+    %div Create
+    %div {{newName}}
+  %div(search-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit" ng-if="component.meta.feedType=='search'")
+  %div(activity-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit" ng-if="component.meta.feedType=='activity'")
+  %div(matrix component='component' ng-switch-when="matrix")
+  %div(madlib component='component' ng-switch-when="madlib")

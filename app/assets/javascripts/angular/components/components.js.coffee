@@ -33,8 +33,13 @@
 
   link: (scope, element, attrs) ->
     scope.componentId = attrs.componentId
-    Component.show {id: attrs.componentId}, (data) ->
+    Component.show {id: attrs.componentId}, ((data) ->
       scope.component = data
+    ), (err) ->
+      if err && err.statusText == 'Not Found'
+        scope.showNewButton = true
+        scope.newName = scope.componentId.replace('-', ' ')
+
 
     scope.showEditButton = false
     scope.showEdit = ->
@@ -43,19 +48,19 @@
     scope.hideEdit = ->
       scope.showEditButton = false
 
-
-  template:
-    """
-      <div class='component' ng-class="component.meta.size" ng-switch="component.componentType" ng-mouseenter='showEdit()' ng-mouseleave='hideEdit()'>
-        <a class='component-edit-button' ng-if='showEditButton' ng-href="/components/{{component.slug}}/edit" target='_blank'>
-          <i class='fa fa-edit'> Edit</i>
-        </a>
-        <div search-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit" ng-if="component.meta.feedType=='search'"></div>
-        <div activity-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit" ng-if="component.meta.feedType=='activity'"></div>
-        <div matrix component='component' ng-switch-when="matrix"></div>
-        <div madlib component='component' ng-switch-when="madlib"></div>
-      </div>
-    """
+  templateUrl: '/client_views/component_load.html'
+  # template:
+  #   """
+  #     <div class='component' ng-class="component.meta.size" ng-switch="component.componentType" ng-mouseenter='showEdit()' ng-mouseleave='hideEdit()'>
+  #       <a class='component-edit-button' ng-if='showEditButton' ng-href="/components/{{component.slug}}/edit" target='_blank'>
+  #         <i class='fa fa-edit'> Edit</i>
+  #       </a>
+  #       <div search-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit" ng-if="component.meta.feedType=='search'"></div>
+  #       <div activity-feed component='component' ng-switch-when="feed" char-limit="component.meta.descriptionCharLimit" ng-if="component.meta.feedType=='activity'"></div>
+  #       <div matrix component='component' ng-switch-when="matrix"></div>
+  #       <div madlib component='component' ng-switch-when="madlib"></div>
+  #     </div>
+  #   """
 ]
 
 # Service to map api response data to component attributes.
