@@ -27,9 +27,11 @@ class FreshStepsProxy < Rack::Proxy
   end
 
   def rewrite_response(response, env)
+    status, headers, body = response
+
     # Add a <base> tag into the head so that relative URLs
     # are found at the proxy source, and set config on window.
-    response[2][0].sub! "<head>", <<INJECT
+    body[0].sub! "<head>", <<INJECT
       <head>
       <base href='http://#{env["HTTP_HOST"]}'>
       <script type="text/javascript">
@@ -38,20 +40,24 @@ class FreshStepsProxy < Rack::Proxy
 INJECT
 
     # Have to recompute content-length or browser will truncate
-    response[1]['content-length'] = response[2][0].length.to_s
-    response
+    headers['content-length'] = body[0].bytesize.to_s
 
+    response
   end
 
   def rewrite_env(env)
     request = Rack::Request.new(env)
 
-    if(
-        EXACT.include?(request.path) ||
-        EXACT.include?(request.path + "/") ||
-        PREFIX.include?(request.path) ||
-        PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")})
-      env["HTTP_HOST"] = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
+    # Don't proxy if this is google asking for HTML snapshot, that gets handled
+    # in get_escaped_fragment_from_brombone
+    if ! request.query_string.include?('_escaped_fragment_')
+      if(
+          EXACT.include?(request.path) ||
+          EXACT.include?(request.path + "/") ||
+          PREFIX.include?(request.path) ||
+          PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")})
+        env["HTTP_HOST"] = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
+      end
     end
 
     env
