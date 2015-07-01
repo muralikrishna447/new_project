@@ -31,7 +31,7 @@ class FreshStepsProxy < Rack::Proxy
 
     # Add a <base> tag into the head so that relative URLs
     # are found at the proxy source, and set config on window.
-    body[0].sub! "<head>", <<INJECT
+    body[0].sub "<head>", <<INJECT
       <head>
       <base href='http://#{env["HTTP_HOST"]}'>
       <script type="text/javascript">
