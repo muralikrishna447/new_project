@@ -32,6 +32,9 @@ class FreshStepsProxy < Rack::Proxy
     response[2][0].sub! "<head>", <<INJECT
       <head>
       <base href='http://#{env["HTTP_HOST"]}'>
+      <script type="text/javascript">
+        window.csConfig = #{Rails.application.config.shared_config.to_json};
+      </script>
 INJECT
 
     # Have to recompute content-length or browser will truncate
