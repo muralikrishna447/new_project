@@ -13,6 +13,7 @@ describe 'auth_token_injector' do |variable|
   before :each do
     user = Fabricate :user, id: 345
     @aa = ActorAddress.create_for_user(user, unique_key: 'website')
+    user = Fabricate :user, id: 789
   end
 
   it 'Does not set auth token cookie when user is not logged in' do
@@ -32,14 +33,14 @@ describe 'auth_token_injector' do |variable|
   end
 
   it 'Sets auth token when none provided' do
-    code, env = middleware.call request_env user_id: 345
+    code, env = middleware.call request_env user_id: 789
     first_token = auth_token_from_env(env)
 
-    aa = ActorAddress.where(actor_type: 'User', actor_id: 345, unique_key: 'website').first
+    aa = ActorAddress.where(actor_type: 'User', actor_id: 789, unique_key: 'website').first
     aa.should_not be_nil
 
     # Call second time to ensure that existing actor is re-used
-    code, env = middleware.call request_env user_id: 345
+    code, env = middleware.call request_env user_id: 789
     second_token = auth_token_from_env env
     first_token[:address_id].should == second_token[:address_id]
   end

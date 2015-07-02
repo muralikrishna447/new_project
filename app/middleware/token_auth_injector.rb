@@ -18,7 +18,7 @@ class TokenAuthInjector
     user_id = warden_data[1][0]
 
     Rails.logger.info "[auth] current user #{user_id}"
-    current_user = User.find(user_id)
+    current_user = User.find_by_id(user_id)
 
     unless current_user
       Rails.logger.error "[auth] no user found for id #{user_id}"
@@ -26,7 +26,7 @@ class TokenAuthInjector
     end
 
     aa = ActorAddress.find_for_user_and_unique_key(current_user, 'website')
-    Rails.logger.info "[auth] found existing website actor address #{aa.id} for user #{user_id}."
+    Rails.logger.info "[auth] found existing website actor address #{aa.id} for user #{user_id}." if aa
     unless aa
       # TODO = There is a possible race condition here which would result in the create call failing
       Rails.logger.info "[auth] creating new website actor address for user #{user_id}"
