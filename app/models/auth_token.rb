@@ -9,6 +9,10 @@ class AuthToken
     @claim[key]
   end
 
+  def age
+    Time.now.to_i - self[:iat]
+  end
+
   def to_jwt(key = nil)
     unless key
       key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
@@ -20,7 +24,6 @@ class AuthToken
   def self.from_string(token)
     key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
     claim = JSON::JWT.decode(token, key.to_s)
-
     AuthToken.new claim
   end
 end
