@@ -11,9 +11,9 @@ describe 'auth_token_injector' do |variable|
   end
 
   before :each do
-    user = Fabricate :user, id: 345
-    @aa = ActorAddress.create_for_user(user, unique_key: 'website')
-    user = Fabricate :user, id: 789
+    @user_with_address = Fabricate :user, id: 345
+    @aa = ActorAddress.create_for_user(@user_with_address, unique_key: 'website')
+    @user_without_address = Fabricate :user, id: 789
   end
 
   it 'Does not set auth token cookie when user is not logged in' do
@@ -22,25 +22,25 @@ describe 'auth_token_injector' do |variable|
   end
 
   it 'Does not set auth token when valid token already exists' do
-    code, env = middleware.call request_env auth_token: @aa.current_token.to_jwt, user_id: 345
+    code, env = middleware.call request_env auth_token: @aa.current_token.to_jwt, user_id: @user_with_address.id
     env["action_dispatch.cookies"].instance_variable_get("@set_cookies").should be_empty
   end
 
   it 'Handles invalid auth token' do
-    code, env = middleware.call request_env auth_token: "not-an-auth-token", user_id: 345
+    code, env = middleware.call request_env auth_token: "not-an-auth-token", user_id: @user_with_address.id
     # should still set a proper auth token
     auth_token_from_env(env).should_not be_nil
   end
 
   it 'Sets auth token when none provided' do
-    code, env = middleware.call request_env user_id: 789
+    code, env = middleware.call request_env user_id: @user_without_address.id
     first_token = auth_token_from_env(env)
 
-    aa = ActorAddress.where(actor_type: 'User', actor_id: 789, unique_key: 'website').first
+    aa = ActorAddress.where(actor_type: 'User', actor_id: @user_without_address.id, unique_key: 'website').first
     aa.should_not be_nil
 
     # Call second time to ensure that existing actor is re-used
-    code, env = middleware.call request_env user_id: 789
+    code, env = middleware.call request_env user_id: @user_without_address.id
     second_token = auth_token_from_env env
     first_token[:address_id].should == second_token[:address_id]
   end
@@ -48,7 +48,7 @@ describe 'auth_token_injector' do |variable|
   it 'Refreshes token older than 2 days' do
     token = @aa.current_token
     token.claim[:iat] = 3.days.ago.to_i
-    code, env = middleware.call request_env auth_token: token.to_jwt, user_id: 345
+    code, env = middleware.call request_env auth_token: token.to_jwt, user_id: @user_with_address.id
 
     received_token = auth_token_from_env(env)
     received_token.age.should < 10.seconds
