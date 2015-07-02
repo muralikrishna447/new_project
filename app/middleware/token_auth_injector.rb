@@ -41,7 +41,7 @@ class TokenAuthInjector
       begin
         token = AuthToken.from_string(token)
       rescue JSON::JWT::InvalidFormat
-        Rails.logger.info "[auth] invalid auth toekn #{token}"
+        Rails.logger.info "[auth] invalid auth token #{token}"
         token_present = false
       end
     end
