@@ -338,7 +338,7 @@ GEM
       net-ssh (>= 1.99.1)
     net-ssh (2.6.0)
       jruby-pageant (>= 1.1.1)
-    newrelic_rpm (3.9.6.257)
+    newrelic_rpm (3.12.0.288)
     nokogiri (1.5.9)
     nokogumbo (1.2.0)
       nokogiri
@@ -383,6 +383,8 @@ GEM
     rack-cors (0.2.7)
       rack
     rack-protection (1.5.3)
+      rack
+    rack-proxy (0.5.17)
       rack
     rack-ssl (1.3.4)
       rack
@@ -613,6 +615,7 @@ DEPENDENCIES
   rack-access-control-headers
   rack-contrib
   rack-cors
+  rack-proxy
   rack-ssl-enforcer
   rack-timeout
   rails (= 3.2.16)
