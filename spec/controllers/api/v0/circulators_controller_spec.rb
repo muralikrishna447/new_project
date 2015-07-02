@@ -66,8 +66,12 @@ describe Api::V0::CirculatorsController do
     (token['iat'] - Time.now.to_i).abs.should < 2
   end
 
-  it 'should not provide a token if not a user' do
+  it 'should not provide a token if circulator does not exist' do
+    post :token, :id => 'not-a-circulator'
+    response.code.should == '404'
+  end
 
+  it 'should not provide a token if not a user' do
     post :token, :id => @other_circulator.circulator_id
 
     result = JSON.parse(response.body)
