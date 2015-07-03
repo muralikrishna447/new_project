@@ -11,7 +11,7 @@ development:
 production:
   env: "production"
   chefsteps_endpoint: "chefsteps.com"
-  freshsteps_endpoint: "yeah dunno yet"
+  freshsteps_endpoint: "freshsteps-staging.s3-website-us-east-1.amazonaws.com"
   segment_write_key: "CohfhzCATDidS52kLILe3ZZ3mVYYgzsP"
   bloom: &production_bloom
     api_endpoint: "https://cs-bloom-api-production.herokuapp.com"
@@ -21,7 +21,7 @@ production:
 staging:
   env: "staging"
   chefsteps_endpoint: "chocolateyshatner.com"
-  freshsteps_endpoint: "yeah dunno yet"
+  freshsteps_endpoint: "freshsteps-staging.s3-website-us-east-1.amazonaws.com"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom: &staging_bloom
     api_endpoint: "https://cs-bloom-api-staging.herokuapp.com"
