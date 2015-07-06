@@ -1,7 +1,6 @@
 require "rack-proxy"
 
 class FreshStepsProxy < Rack::Proxy
-  EXACT = %w()
   # For awhile I had /browser-sync in this list, which was nice
   # because it got rid of rails errors and also made livereloading
   # work when proxying, but it also made regular page loads incredibly slow, I think because
@@ -31,8 +30,8 @@ class FreshStepsProxy < Rack::Proxy
 
     # Add a <base> tag into the head so that relative URLs
     # are found at the proxy source, and set config on window.
-    body[0].sub "<head>", <<INJECT
-      <head>
+    body[0] = body[0].sub /(<head.*>)/, <<INJECT
+      \\1
       <base href='http://#{env["HTTP_HOST"]}'>
       <script type="text/javascript">
         window.csConfig = #{Rails.application.config.shared_config.to_json};
@@ -52,11 +51,12 @@ INJECT
     # in get_escaped_fragment_from_brombone
     if ! request.query_string.include?('_escaped_fragment_')
       if(
-          EXACT.include?(request.path) ||
-          EXACT.include?(request.path + "/") ||
           PREFIX.include?(request.path) ||
           PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")})
         env["HTTP_HOST"] = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
+
+        # I don't actually know if I need all 3 of these
+        env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/index.html"
       end
     end
 
