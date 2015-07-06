@@ -32,7 +32,12 @@ To set up a new machine:
 - install heroku toolbelt (toolbelt.heroku.com)
 - rake copy_production_db (you’ll need your heroku acct/passwd and say yes to creating a new public key)
 - rails s
-- in another window: guard
+
+## Testing
+
+- `:> rake db:test:prepare` will create the database that the tests will run
+   against
+- `:> guard` will watch for changes in files and automatically run the tests.
 
 ## Personal / Optional
 
