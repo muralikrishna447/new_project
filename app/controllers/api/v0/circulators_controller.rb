@@ -69,6 +69,12 @@ module Api
       def token
         circulator_id = params[:id]
         circulator = Circulator.where(circulator_id: params[:id]).first
+
+        if circulator.nil?
+          render json: {status: 404, message: "Circulator not found"}, status:404
+          return
+        end
+
         circulator_user = CirculatorUser.find_by_circulator_and_user circulator, @user_id_from_token
         if circulator_user.nil?
           logger.error "Unauthorized access to circulator [#{circulator_id}] by user [#{@user_id_from_token}]"
