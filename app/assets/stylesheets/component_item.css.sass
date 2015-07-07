@@ -149,7 +149,6 @@
 .item.list
   float: none
   .item-content
-    margin-bottom: 25px
     @include boxsizing
     @include display-flex
     @include transition(100ms all linear)
@@ -170,6 +169,9 @@
         font-size: 1.6rem
         line-height: 2.4rem
         margin-bottom: 10px
+      .item-description
+        p
+          margin-bottom: 0
   &:hover
     .item-content-image
       cs-image
@@ -205,6 +207,9 @@
         font-size: 1.6rem
         line-height: 2.4rem
         margin-bottom: 10px
+      .item-description
+        p
+          margin-bottom: 0
   .item-action
     margin-top: 20px
     margin-left: 10px

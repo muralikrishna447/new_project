@@ -4,7 +4,7 @@ convertCtoF = (c) ->
 convertFtoC = (f) ->
   (Math.round(parseFloat(f - 32) / 1.8))
 
-angular.module('ChefStepsApp').filter "shortcode", ->
+@helpers.filter "shortcode", ->
   (input) ->
 
     if input

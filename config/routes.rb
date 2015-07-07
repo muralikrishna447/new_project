@@ -17,6 +17,9 @@ Delve::Application.routes.draw do
     match "*any", to: redirect(:subdomain => 'www', :path => "/forum")
   end
 
+  # root to: 'home#new_home'
+  # match '/old_home', to: 'home#index'
+  # Keep the old homepage routes around until we feel we can delete them
   root to: "home#index"
   match '/new_home', to: 'home#new_home'
   match '/home_manager', to: 'home#manager'
