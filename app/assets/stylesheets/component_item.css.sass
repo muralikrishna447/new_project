@@ -19,6 +19,12 @@
     @include align-items(center)
     .item-content-image
       position: absolute
+    .item-overlay
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
     .item-content-text
       z-index: 1
       height: 100%
@@ -271,6 +277,8 @@
 // Themes
 .item.light
   .item-content
+    .item-overlay
+      background-color: rgba(0,0,0,.2)
     .item-title
       color: white
     .item-description
@@ -283,14 +291,10 @@
         color: white
         background-color: $orange
 
-@media (max-width: 900px)
-  .item.light.hero
-    .item-content
-      .item-content-text
-        background-color: rgba(0,0,0,.2)
-
 .item.dark
   .item-content
+    .item-overlay
+      background-color: rgba(255,255,255,.2)
     .item-title
       color: #333
     .item-description
