@@ -4,16 +4,14 @@ require "open-uri"
 task :ingest_tags, [:url] => :environment do |t, args|
   added_any = false
   CSV.new(open("#{args[:url]}/export?format=csv"), :headers => :first_row).each do |line|
-
     row = line.to_hash
-    id = row["id"]
-    activity = Activity.find(id)
+    prefix = 'http://chefsteps.com/activities/' # in the spreadsheet so reviewers can click through
+    slug = row['url'][prefix.length..-1]
+    activity = Activity.find(slug)
 
     # Get rid of columns we don't need so we have a clean set of tags
-    row.delete("id")
-    row.delete("title")
-    row.delete("published")
-    row.delete("link")
+    row.delete("url")
+    row.delete("reviewed?")
 
     # Get rid of any tags that don't apply or that are already applied to this activity
     # not because it would hurt to apply them again, but this makes the report cleaner.
