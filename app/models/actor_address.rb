@@ -14,7 +14,7 @@ class ActorAddress < ActiveRecord::Base
       aa.unique_key = opts[:unique_key]
     end
 
-    ActorAddress.transaction do
+  ActorAddress.transaction do
       # save first only so we can re-use id for address_id when not specified
       aa.save!
       if opts.has_key? :address_id
@@ -72,7 +72,8 @@ class ActorAddress < ActiveRecord::Base
   end
 
   def valid_token?(auth_token, sequence_offset = 0, restrict_to = nil)
-    logger.info "Verifying validity for #{auth_token.inspect}"
+    return false if auth_token.nil?
+
     auth_claim = auth_token.claim
     if self.address_id != auth_claim[:address_id]
       logger.info "Address does not match"
@@ -124,6 +125,17 @@ class ActorAddress < ActiveRecord::Base
     aa = ActorAddress.where(actor_type: actor_type, actor_id: actor_id, address_id: address_id).first
     unless aa
       logger.info ("No ActorAddress found for token #{token.claim.inspect}")
+      return nil
+    end
+    aa
+  end
+
+  def self.find_for_user_and_unique_key(user, unique_key)
+    actor_type = 'User'
+    actor_id = user.id
+    aa = ActorAddress.where(actor_type: actor_type, actor_id: actor_id, unique_key: unique_key).first
+    unless aa
+      logger.info ("No ActorAddress found for user [#{user.inspect}] and unique key [#{unique_key}]")
       return nil
     end
     aa
