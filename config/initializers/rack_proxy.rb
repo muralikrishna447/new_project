@@ -26,21 +26,6 @@ class FreshStepsProxy < Rack::Proxy
   end
 
   def rewrite_response(response, env)
-    status, headers, body = response
-
-    # Add a <base> tag into the head so that relative URLs
-    # are found at the proxy source, and set config on window.
-    body[0] = body[0].sub /(<head.*>)/, <<INJECT
-      \\1
-      <base href='http://#{env["HTTP_HOST"]}'>
-      <script type="text/javascript">
-        window.csConfig = #{Rails.application.config.shared_config.to_json};
-      </script>
-INJECT
-
-    # Have to recompute content-length or browser will truncate
-    headers['content-length'] = body[0].bytesize.to_s
-
     response
   end
 
