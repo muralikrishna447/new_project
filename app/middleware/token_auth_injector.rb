@@ -63,7 +63,7 @@ class TokenAuthInjector
     Rails.logger.info "[auth] token present: #{token_present} valid: #{valid_token} new: #{new_token}"
 
     unless new_token
-      unless valid_token
+      if token_present && !valid_token
         aa.double_increment()
       end
 

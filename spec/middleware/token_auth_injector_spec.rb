@@ -29,7 +29,9 @@ describe 'auth_token_injector' do |variable|
   it 'Handles invalid auth token' do
     code, env = middleware.call request_env auth_token: "not-an-auth-token", user_id: @user_with_address.id
     # should still set a proper auth token
-    auth_token_from_env(env).should_not be_nil
+    token = auth_token_from_env(env)
+    token.should_not be_nil
+    ActorAddress.find_for_token(token).sequence.should == @aa.sequence
   end
 
   it 'Sets auth token when none provided' do
