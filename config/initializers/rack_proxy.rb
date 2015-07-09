@@ -40,10 +40,8 @@ class FreshStepsProxy < Rack::Proxy
           PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")})
         env["HTTP_HOST"] = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
 
-        index = Rails.env.staging? ? "/index-staging.html" : "/index.html"
-
         # I don't actually know if I need all 3 of these
-        env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = index
+        env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/index.html"
       end
     end
 
