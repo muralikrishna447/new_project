@@ -49,6 +49,16 @@
     )
     input
 
+@components.filter 'removeTextDecoration', ->
+  (input) ->
+    removeTags = ['strong','em','i']
+    regexString = removeTags.map((tag) -> "<#{tag}+(>|.*?[^?]>).*<\\/#{tag}+(>|.*?[^?]>)").join('|')
+    removeTagRegex = new RegExp regexString, 'g'
+    input = input.replace(removeTagRegex, (match) ->
+      match.replace(/<[^>]+>/gm, '')
+    )
+    input
+
 # This charLimit filter will:
 # 1. Remove the last unclosed html fragment
 # 2. Remove any last word fragments
