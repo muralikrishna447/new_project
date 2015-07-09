@@ -5,7 +5,7 @@
     .item-content-text(ng-if='item.content.title')
       .item-title
         {{item.content.title}}
-      .item-description(ng-if='item.content.description' ng-bind-html="item.content.description | shortcode | markdown | linkToText | charLimit:charLimit | toTrusted")
+      .item-description(ng-if='item.content.description' ng-bind-html="item.content.description | shortcode | markdown | removeTextDecoration | linkToText | charLimit:charLimit | toTrusted")
 
 .item.list.blank(ng-if="!item")
   .item-content
