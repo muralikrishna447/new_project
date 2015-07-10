@@ -1,14 +1,35 @@
 @import 'mixins'
 @import 'circle_highlight_anim'
 
+@font-face
+  font-family: Circular
+  src: font-url('CircularStd-Book.woff') format('woff')
+
+@font-face
+  font-family: Circular
+  src: font-url('CircularStd-BookItalic.woff') format('woff')
+  font-style: italic
+
+@font-face
+  font-family: Circular
+  src: font-url('CircularStd-Medium.woff') format('woff')
+  font-weight: 700
+
+@font-face
+  font-family: Circular
+  src: font-url('CircularStd-MediumItalic.woff') format('woff')
+  font-weight: 700
+  font-style: italic
+
 html
   overflow-x: hidden
   overflow-y: auto
   font-size: 62.5% !important
 
-
 body
+  @include primary-font
   position: relative
+  -webkit-font-smoothing: antialiased
 
 // F-ing bootstrap wants to put 20px padding on the body, which makes it impossible to have
 // non-fixed position stuff that goes all the way across exactly.
