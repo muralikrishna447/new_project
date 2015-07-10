@@ -1,5 +1,33 @@
   class StripeReport
   class << self
+    def class_sales(class_name, start_date, end_date)
+      @transaction_fee = 0.3
+      @per_transaction_percent = 0.029
+      @sales_tax = 1.095
+      raise "Date format Invalid" unless start_date.match(/\d{4}-\d{2}-\d{2}/) && end_date.match(/\d{4}-\d{2}-\d{2}/)
+      start_time = Time.parse(start_date).beginning_of_day
+      end_time = Time.parse(end_date).end_of_day
+
+      csv_string = CSV.generate do |stripe_csv|
+        stripe_csv << [
+          "id", "object", "transaction_created", "paid", "amount", "refunded", "card_id", "card_object", "last4", "card_type", "exp_month", "exp_year", "fingerprint", "customer", "country", "name", "address_line1", "address_line2", "address_city", "address_state", "address_zip", "address_country", "cvc_check", "address_line1_check", "address_zip_check", "captured", "balance_transaction", "failure_message", "failure_code", "amount_refunded", "refund_at", "refund_transaction", "customer", "invoice", "description", "dispute", "metadata", "sales_tax_paid?",
+          # Calculated
+          "stripe_fee", "sales_tax", "revenue", "total_deposit", "refund_fee", "refund_tax", "refund_revenue", "total_refund"
+        ]
+        gather_charges({paid: true, refunded: false, disputed: false, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
+          next if charge["description"].blank? || !charge["description"].downcase.include?(class_name.downcase)
+          puts 'found record!'
+          charge_amount = (charge["amount"].to_i/100.00)
+          stripe_csv << [
+            charge["id"], charge["object"], Time.at(charge["created"]), charge["paid"], charge_amount, charge["refunded"], charge["card"]["id"], charge["card"]["object"], charge["card"]["last4"], charge["card"]["type"], charge["card"]["exp_month"], charge["card"]["exp_year"], charge["card"]["fingerprint"], charge["card"]["customer"], charge["card"]["country"], charge["card"]["name"], charge["card"]["address_line1"], charge["card"]["address_line2"], charge["card"]["address_city"], charge["card"]["address_state"], charge["card"]["address_zip"], charge["card"]["address_country"], charge["card"]["cvc_check"], charge["card"]["address_line1_check"], charge["card"]["address_cip_check"], charge["captured"], charge["balance_transaction"], charge["failure_message"], charge["failure_code"], (charge["amount_refunded"].to_i/100.00), (charge["refunds"].first.present? ? Time.at(charge["refunds"].first["created"]) : nil), (charge["refunds"].first.present? ? charge["refunds"].first["balance_transaction"] : nil), charge["customer"], charge["invoice"], charge["description"], charge["dispute"], charge["metadata"], charge["description"].include?("WA state").to_s,
+            stripe_fee(charge), sales_tax(charge), revenue(charge), total_deposit(charge), refund_fee(charge), refund_tax(charge), refund_revenue(charge), total_refund(charge) # calculated
+          ]
+        end
+      end
+      return csv_string
+
+    end
+
     def quickbooks_report(start_date, end_date)
       raise "Date format Invalid" unless start_date.match(/\d{4}-\d{2}-\d{2}/) && end_date.match(/\d{4}-\d{2}-\d{2}/)
       start_time = Time.parse(start_date).beginning_of_day
@@ -213,6 +241,7 @@
     def gather_charges(options)
       pages = Stripe::Charge.all(options.merge(count: 1))
       0.upto((pages.count/100)+1) do |x|
+        puts "on page #{x} of #{(pages.count/100)+1}"
         Stripe::Charge.all(options.merge(offset: x*100, count: 100)).each do |charge|
           yield(charge)
         end
