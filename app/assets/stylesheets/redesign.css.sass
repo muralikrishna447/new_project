@@ -1,26 +1,6 @@
 @import 'mixins'
 @import 'circle_highlight_anim'
 
-@font-face
-  font-family: Circular
-  src: font-url('CircularStd-Book.woff') format('woff')
-
-@font-face
-  font-family: Circular
-  src: font-url('CircularStd-BookItalic.woff') format('woff')
-  font-style: italic
-
-@font-face
-  font-family: Circular
-  src: font-url('CircularStd-Medium.woff') format('woff')
-  font-weight: 700
-
-@font-face
-  font-family: Circular
-  src: font-url('CircularStd-MediumItalic.woff') format('woff')
-  font-weight: 700
-  font-style: italic
-
 html
   overflow-x: hidden
   overflow-y: auto
@@ -1420,7 +1400,6 @@ csequipmenteditpair
       margin-bottom: 0px
       max-width: 280px
       width: 100%
-      @include primary-font-light
       @include editable_text
 
     input.quantity-group
