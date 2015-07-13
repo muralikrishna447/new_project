@@ -26,12 +26,20 @@ describe 'auth_token_injector' do |variable|
     env["action_dispatch.cookies"].instance_variable_get("@set_cookies").should be_empty
   end
 
-  it 'Handles invalid auth token' do
+  it 'Handles invalid auth token with existing address' do
     code, env = middleware.call request_env auth_token: "not-an-auth-token", user_id: @user_with_address.id
     # should still set a proper auth token
     token = auth_token_from_env(env)
     token.should_not be_nil
     ActorAddress.find_for_token(token).sequence.should == @aa.sequence
+  end
+
+  it 'Handles invalid auth token without existing address' do
+    code, env = middleware.call request_env auth_token: "not-an-auth-token", user_id: @user_without_address.id
+    # should still set a proper auth token
+    token = auth_token_from_env(env)
+    token.should_not be_nil
+    ActorAddress.find_for_token(token).valid_token?(token).should == true
   end
 
   it 'Sets auth token when none provided' do
@@ -55,7 +63,6 @@ describe 'auth_token_injector' do |variable|
     received_token = auth_token_from_env(env)
     received_token.age.should < 10.seconds
   end
-
 
   def request_env opts = {}
     session = {}
