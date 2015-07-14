@@ -33,7 +33,6 @@ describe Api::V0::UsersController do
       result['admin'].should == true
     end
 
-
     it 'should not return a users info when a token is missing' do
       get :me
       response.should_not be_success
@@ -46,7 +45,6 @@ describe Api::V0::UsersController do
       request.env['HTTP_AUTHORIZATION'] = @token
       get :index
       response.should be_success
-
     end
 
     it 'should respond with error when provided incorrect token' do
@@ -60,7 +58,6 @@ describe Api::V0::UsersController do
       get :index, auth_token: @token
       response.should_not be_success
     end
-
   end
 
   context 'POST /create' do
@@ -117,7 +114,5 @@ describe Api::V0::UsersController do
       put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }
       response.should_not be_success
     end
-
   end
-
 end
