@@ -82,9 +82,12 @@ class User < ActiveRecord::Base
     read_attribute(:role) || "user"
   end
 
-
   def admin?
     self.role == "admin"
+  end
+
+  def admin
+    self.admin?
   end
 
   def profile_complete?
