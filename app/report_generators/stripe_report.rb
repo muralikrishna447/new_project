@@ -141,15 +141,17 @@
               disputes << ["ENDTRNS"]
             end
           elsif transaction_type(stripe_record) == "DEPOSIT"
-            charges << ["TRNS", "1", transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Stripe Account", nil, "Admin", stripe_record["total_deposit"], "Net for charge ID: #{stripe_record["id"]}"]
-            charges << ["SPL", "2", transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:#{deposit_type(stripe_record)}", "Online Sales", "Admin", stripe_record["revenue"], "Charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
-            line_number = 3
-            if stripe_record["sales_tax_paid?"] == "true"
-              charges << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["sales_tax"], "Sales Tax for charge ID: #{stripe_record["id"]}"]
-              line_number += 1
+            if Time.parse(stripe_record["transaction_created"]).between?(start_time, end_time)
+              charges << ["TRNS", "1", transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Stripe Account", nil, "Admin", stripe_record["total_deposit"], "Net for charge ID: #{stripe_record["id"]}"]
+              charges << ["SPL", "2", transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:#{deposit_type(stripe_record)}", "Online Sales", "Admin", stripe_record["revenue"], "Charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
+              line_number = 3
+              if stripe_record["sales_tax_paid?"] == "true"
+                charges << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["sales_tax"], "Sales Tax for charge ID: #{stripe_record["id"]}"]
+                line_number += 1
+              end
+              charges << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Credit Card Transaction Fees", "Stripe (Vendor)", "Admin", stripe_record["stripe_fee"], "Fees for charge ID: #{stripe_record["id"]}"]
+              charges << ["ENDTRNS"]
             end
-            charges << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Credit Card Transaction Fees", "Stripe (Vendor)", "Admin", stripe_record["stripe_fee"], "Fees for charge ID: #{stripe_record["id"]}"]
-            charges << ["ENDTRNS"]
           end
         elsif stripe_record["object"] == "transfer"
           transfers << ["TRNS", "1", "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Commerce BK checking 9541", nil, "Admin", stripe_record["amount"], "Transfer from Stripe: #{stripe_record["id"]}"]
@@ -313,27 +315,27 @@
           end
         end
 
-        gather_charges({paid:true, refunded: false, disputed: true, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
+        gather_charges({paid:true, refunded: false, disputed: true, created: {gte: (start_time-2.months).to_i, lte: end_time.to_i}}) do |charge|
           if charge["dispute"]
             dispute_at = Time.at(charge["dispute"]["created"])
             charged_at = Time.at(charge["created"])
             won = charge["dispute"]["balance_transactions"].detect{|c| c["description"].include?('reversal')}
             won_at = Time.at(won["created"])
             # If it was refunded or charged at the date add it to the list
-            if dispute_at.between?(start_time, end_time)
-              charge_amount = (charge["amount"].to_i/100.00)
-              dispute = charge["dispute"]["balance_transactions"].detect{|c| c["description"].include?('withdrawal')}
-              won = charge["dispute"]["balance_transactions"].detect{|c| c["description"].include?('reversal')}
-              dispute_net = (((won ? won["net"] : 0) + dispute["net"]).to_f/100.00)
-              stripe_csv << [
-                # Base
-                charge["id"], charge["object"], Time.at(charge["created"]), charge["paid"], (charge["amount"].to_i/100.00), charge["refunded"], charge["card"]["id"], charge["card"]["object"], charge["card"]["last4"], charge["card"]["type"], charge["card"]["exp_month"], charge["card"]["exp_year"], charge["card"]["fingerprint"], charge["card"]["customer"], charge["card"]["country"], charge["card"]["name"], charge["card"]["address_line1"], charge["card"]["address_line2"], charge["card"]["address_city"], charge["card"]["address_state"], charge["card"]["address_zip"], charge["card"]["address_country"], charge["card"]["cvc_check"], charge["card"]["address_line1_check"], charge["card"]["address_cip_check"], charge["captured"], charge["balance_transaction"], charge["failure_message"], charge["failure_code"], (charge["amount_refunded"].to_i/100.00), (charge["refunds"].first.present? ? Time.at(charge["refunds"].first["created"]) : nil), (charge["refunds"].first.present? ? charge["refunds"].first["balance_transaction"] : nil), charge["customer"], charge["invoice"], charge["description"], charge["dispute"], charge["metadata"], charge["description"].include?("WA state").to_s,
-                # Dispute
-                charge["dispute"]["status"], dispute_net, Time.at(dispute["created"]), (dispute["net"].to_i/100.00), (dispute["amount"].to_i/100.00), (dispute["fee"].to_i/100.00), dispute["description"], (won ? Time.at(won["created"]) : nil), (won ? won["net"].to_f/100.00 : nil), (won ? won["amount"].to_f/100.00 : nil), (won ? won["fee"].to_f/100.00 : nil), (won ? won["description"] : nil),
-                # Calculated
-                stripe_fee(charge), sales_tax(charge), revenue(charge), total_deposit(charge), refund_fee(charge), refund_tax(charge), refund_revenue(charge), total_refund(charge)# Calculated
-              ]
-            end
+            # if dispute_at.between?(start_time, end_time)
+            charge_amount = (charge["amount"].to_i/100.00)
+            dispute = charge["dispute"]["balance_transactions"].detect{|c| c["description"].include?('withdrawal')}
+            won = charge["dispute"]["balance_transactions"].detect{|c| c["description"].include?('reversal')}
+            dispute_net = (((won ? won["net"] : 0) + dispute["net"]).to_f/100.00)
+            stripe_csv << [
+              # Base
+              charge["id"], charge["object"], Time.at(charge["created"]), charge["paid"], (charge["amount"].to_i/100.00), charge["refunded"], charge["card"]["id"], charge["card"]["object"], charge["card"]["last4"], charge["card"]["type"], charge["card"]["exp_month"], charge["card"]["exp_year"], charge["card"]["fingerprint"], charge["card"]["customer"], charge["card"]["country"], charge["card"]["name"], charge["card"]["address_line1"], charge["card"]["address_line2"], charge["card"]["address_city"], charge["card"]["address_state"], charge["card"]["address_zip"], charge["card"]["address_country"], charge["card"]["cvc_check"], charge["card"]["address_line1_check"], charge["card"]["address_cip_check"], charge["captured"], charge["balance_transaction"], charge["failure_message"], charge["failure_code"], (charge["amount_refunded"].to_i/100.00), (charge["refunds"].first.present? ? Time.at(charge["refunds"].first["created"]) : nil), (charge["refunds"].first.present? ? charge["refunds"].first["balance_transaction"] : nil), charge["customer"], charge["invoice"], charge["description"], charge["dispute"], charge["metadata"], charge["description"].include?("WA state").to_s,
+              # Dispute
+              charge["dispute"]["status"], dispute_net, Time.at(dispute["created"]), (dispute["net"].to_i/100.00), (dispute["amount"].to_i/100.00), (dispute["fee"].to_i/100.00), dispute["description"], (won ? Time.at(won["created"]) : nil), (won ? won["net"].to_f/100.00 : nil), (won ? won["amount"].to_f/100.00 : nil), (won ? won["fee"].to_f/100.00 : nil), (won ? won["description"] : nil),
+              # Calculated
+              stripe_fee(charge), sales_tax(charge), revenue(charge), total_deposit(charge), refund_fee(charge), refund_tax(charge), refund_revenue(charge), total_refund(charge)# Calculated
+            ]
+            # end
           end
         end
 
