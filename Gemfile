@@ -34,6 +34,7 @@ gem 'librato-rack'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-access-control-headers'
 gem "rack-timeout"
+gem 'rack-proxy'
 
 gem 'pg_search'                             # Postgres text search
 gem 'acts-as-taggable-on'                   # Taggable models

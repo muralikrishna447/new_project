@@ -8,7 +8,7 @@ describe Api::V0::CirculatorsController do
     @other_circulator = Fabricate :circulator, notes: 'some other notes', circulator_id: '456'
     @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
 
-    token = ActorAddress.create_for_user(@user, 'cooking_app').current_token
+    token = ActorAddress.create_for_user(@user, client_metadata: "create").current_token
     request.env['HTTP_AUTHORIZATION'] = token.to_jwt
   end
 
@@ -66,8 +66,12 @@ describe Api::V0::CirculatorsController do
     (token['iat'] - Time.now.to_i).abs.should < 2
   end
 
-  it 'should not provide a token if not a user' do
+  it 'should not provide a token if circulator does not exist' do
+    post :token, :id => 'not-a-circulator'
+    response.code.should == '404'
+  end
 
+  it 'should not provide a token if not a user' do
     post :token, :id => @other_circulator.circulator_id
 
     result = JSON.parse(response.body)

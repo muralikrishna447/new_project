@@ -19,6 +19,12 @@
     @include align-items(center)
     .item-content-image
       position: absolute
+    .item-overlay
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
     .item-content-text
       z-index: 1
       height: 100%
@@ -75,11 +81,16 @@
         width: 100%
         padding-left: 0px
         text-align: center
+        padding: 40px
         .item-title
-          font-size: 30px
+          font-size: 24px
           line-height: 30px
-      .item-button
-        margin: 0 auto
+        .item-description
+          font-size: 16px
+          line-height: 20px
+        .item-button.btn-outline
+          font-size: 16px
+          line-height: 20px
 // END HERO STYLES
 
 // SQUARE STYLES
@@ -144,7 +155,6 @@
 .item.list
   float: none
   .item-content
-    margin-bottom: 25px
     @include boxsizing
     @include display-flex
     @include transition(100ms all linear)
@@ -165,6 +175,9 @@
         font-size: 1.6rem
         line-height: 2.4rem
         margin-bottom: 10px
+      .item-description
+        p
+          margin-bottom: 0
   &:hover
     .item-content-image
       cs-image
@@ -200,6 +213,9 @@
         font-size: 1.6rem
         line-height: 2.4rem
         margin-bottom: 10px
+      .item-description
+        p
+          margin-bottom: 0
   .item-action
     margin-top: 20px
     margin-left: 10px
@@ -261,6 +277,8 @@
 // Themes
 .item.light
   .item-content
+    .item-overlay
+      background-color: rgba(0,0,0,.2)
     .item-title
       color: white
     .item-description
@@ -275,6 +293,8 @@
 
 .item.dark
   .item-content
+    .item-overlay
+      background-color: rgba(255,255,255,.2)
     .item-title
       color: #333
     .item-description

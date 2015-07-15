@@ -132,5 +132,7 @@ module Delve
     shared_config = HashWithIndifferentAccess.new(YAML.load_file(Rails.root.join('config/shared_config.yml')))
     config.shared_config = shared_config[Rails.env]
     config.shared_config[:bloom] = shared_config[bloom_env][:bloom]
+
+    config.middleware.insert_after Warden::Manager, 'TokenAuthInjector'
   end
 end

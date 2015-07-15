@@ -1,12 +1,13 @@
 .item.hero(ng-if="item && !viewMode" ng-class="theme")
   .item-content
     %cs-image.item-content-image(url="item.content.image" aspect="container")
+    .item-overlay
     .item-content-text
       .item-title
         {{item.content.title}}
       .item-description
         {{item.content.description}}
-      %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-click='track()')
+      %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-click='track()' ng-if='item.content.buttonMessage')
         {{item.content.buttonMessage}}
 
 .item.hero.blank(ng-if="!item")

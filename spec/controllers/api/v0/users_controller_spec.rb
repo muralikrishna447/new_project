@@ -2,7 +2,7 @@ describe Api::V0::UsersController do
 
   before :each do
     @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
-    aa = ActorAddress.create_for_user @user, "test"
+    aa = ActorAddress.create_for_user @user, client_metadata: "test"
     @token = 'Bearer ' + aa.current_token.to_jwt
   end
 
@@ -10,8 +10,27 @@ describe Api::V0::UsersController do
     it 'should return a users info when a valid token is provided' do
       request.env['HTTP_AUTHORIZATION'] = @token
       get :me
-      puts response.body
+      result = JSON.parse(response.body)
+      # TODO - write a nice utility for this sort of comparison
+      result.delete('id').should == @user.id
+      result.delete('name').should == @user.name
+      result.delete('email').should == @user.email
+      result.delete('slug').should == @user.slug
+      result.delete('avatar_url').should == @user.avatar_url
+      result.empty?.should == true
+
       response.should be_success
+    end
+
+    it 'should include admin flag when user is admin' do
+      @user.role = 'admin'
+      @user.save!
+
+      request.env['HTTP_AUTHORIZATION'] = @token
+      get :me
+
+      result = JSON.parse(response.body)
+      result['admin'].should == true
     end
 
     it 'should not return a users info when a token is missing' do
@@ -26,7 +45,6 @@ describe Api::V0::UsersController do
       request.env['HTTP_AUTHORIZATION'] = @token
       get :index
       response.should be_success
-
     end
 
     it 'should respond with error when provided incorrect token' do
@@ -40,7 +58,6 @@ describe Api::V0::UsersController do
       get :index, auth_token: @token
       response.should_not be_success
     end
-
   end
 
   context 'POST /create' do
@@ -79,9 +96,7 @@ describe Api::V0::UsersController do
       request.env['HTTP_AUTHORIZATION'] = @token
       put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }
       response.should be_success
-      # puts response.body
       parsed = JSON.parse(response.body)
-      puts parsed
       expect(parsed['name']).to eq('Joseph Doe')
       expect(parsed['email']).to eq('mynewemail@user.com')
     end
@@ -93,13 +108,11 @@ describe Api::V0::UsersController do
 
     it 'should not update a user if token belongs to another user' do
       @another_user = Fabricate :user, id: 105, email: 'jojosmith@chefsteps.com', password: '123456', name: 'Jo Jo smith', role: 'user'
-      aa = ActorAddress.create_for_user @another_user, "test"
+      aa = ActorAddress.create_for_user @another_user, client_metadata: "test"
       another_token = 'Bearer ' + aa.current_token.to_jwt
       request.env['HTTP_AUTHORIZATION'] = another_token
       put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }
       response.should_not be_success
     end
-
   end
-
 end

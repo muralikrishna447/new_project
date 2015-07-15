@@ -59,6 +59,8 @@ $five-item-width: calc((100% - 160px)/5)
   .matrix.matrix-2-per-row
     .matrix-item
       @include flex(0 1 $two-item-width)
+      &:nth-of-type(2n + 2)
+        margin-right: 0px
 
   .matrix.matrix-3-per-row
     .matrix-item

@@ -1,19 +1,24 @@
 class ActorAddress < ActiveRecord::Base
   belongs_to :actor, polymorphic: true
 
-  def self.create_for_actor(actor, client_metadata, address_id)
-    logger.info "Creating new ActorAddress for #{actor} with metadata #{client_metadata}"
+  def self.create_for_actor(actor, opts = {})
+    logger.info "Creating new ActorAddress for #{actor} with opts #{opts.inspect}"
     aa = ActorAddress.new()
     aa.actor = actor
-    aa.client_metadata = client_metadata
+    if opts.has_key? :client_metadata
+      aa.client_metadata = opts[:client_metadata]
+    end
     aa.issued_at = Time.now.to_i
     aa.status = 'active' # Nothing beats ad-hoc enums - what's the modern rails way?
+    if opts.has_key? :unique_key
+      aa.unique_key = opts[:unique_key]
+    end
 
-    ActorAddress.transaction do
+  ActorAddress.transaction do
       # save first only so we can re-use id for address_id when not specified
       aa.save!
-      if address_id
-        aa.address_id = address_id
+      if opts.has_key? :address_id
+        aa.address_id = opts[:address_id]
       else
         # TODO - the address should be obfuscated
         aa.address_id = aa.id.to_s
@@ -24,12 +29,14 @@ class ActorAddress < ActiveRecord::Base
     aa
   end
 
-  def self.create_for_circulator(circulator)
-    self.create_for_actor(circulator, 'circulator', circulator.circulator_id)
+  def self.create_for_circulator(circulator, opts = {})
+    opts[:client_metadata] = 'circulator'
+    opts[:address_id] = circulator.circulator_id
+    self.create_for_actor(circulator, opts)
   end
 
-  def self.create_for_user(user, client_metadata)
-    self.create_for_actor(user, client_metadata, nil)
+  def self.create_for_user(user, opts = {})
+    self.create_for_actor(user, opts)
   end
 
   def current_token (exp = nil, restrict_to = nil)
@@ -65,34 +72,42 @@ class ActorAddress < ActiveRecord::Base
   end
 
   def valid_token?(auth_token, sequence_offset = 0, restrict_to = nil)
-    logger.info "Verifying validity for #{auth_token.inspect}"
+    return false if auth_token.nil?
+
+    valid = true
+
     auth_claim = auth_token.claim
     if self.address_id != auth_claim[:address_id]
       logger.info "Address does not match"
-      return false
+      valid = false
     end
 
     if (self.sequence + sequence_offset) != auth_claim[:seq]
       logger.info "Sequence number does not match"
-      return false
+      valid = false
     end
 
     if (auth_claim['restrictTo'] || restrict_to) && auth_claim['restrictTo'] != restrict_to
       logger.info "Required restriction #{restrict_to} does not match"
-      return false
+      valid = false
     end
 
     if self.revoked?
       logger.info "Token is revoked"
-      return false
+      valid = false
     end
 
     time_now = (Time.now.to_f * 1000).to_i
     if auth_claim[:exp] && auth_claim[:exp] <= time_now
       logger.info "Token expired"
-      return false
+      valid = false
     end
-    return true
+
+    unless valid
+      logger.info "Invalid token.  Token claim: [#{auth_claim.inspect}] Actor address: [#{self.inspect}]"
+    end
+
+    return valid
   end
 
   def double_increment()
@@ -117,6 +132,17 @@ class ActorAddress < ActiveRecord::Base
     aa = ActorAddress.where(actor_type: actor_type, actor_id: actor_id, address_id: address_id).first
     unless aa
       logger.info ("No ActorAddress found for token #{token.claim.inspect}")
+      return nil
+    end
+    aa
+  end
+
+  def self.find_for_user_and_unique_key(user, unique_key)
+    actor_type = 'User'
+    actor_id = user.id
+    aa = ActorAddress.where(actor_type: actor_type, actor_id: actor_id, unique_key: unique_key).first
+    unless aa
+      logger.info ("No ActorAddress found for user [#{user.inspect}] and unique key [#{unique_key}]")
       return nil
     end
     aa

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150611165828) do
+ActiveRecord::Schema.define(:version => 20150623222712) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -104,9 +104,11 @@ ActiveRecord::Schema.define(:version => 20150611165828) do
     t.integer  "expires_at"
     t.datetime "created_at",                               :null => false
     t.datetime "updated_at",                               :null => false
+    t.string   "unique_key"
   end
 
   add_index "actor_addresses", ["actor_id"], :name => "index_actor_addresses_on_actor_id"
+  add_index "actor_addresses", ["actor_type", "actor_id", "unique_key"], :name => "index_actor_addresses_on_actor_type_and_actor_id_and_unique_key", :unique => true
   add_index "actor_addresses", ["address_id"], :name => "index_actor_addresses_on_address_id"
 
   create_table "admin_users", :force => true do |t|

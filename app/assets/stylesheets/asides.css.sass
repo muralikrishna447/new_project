@@ -1,28 +1,6 @@
 @import 'mixins'
 
 .aside
-  float: right
-  width: $aside-width
-  max-width: 100%
-  .aside-image
-    margin-bottom: $baseline
-
-  &.left, &.leftInset
-    float: left
-
-  &.leftInset, &.rightInset
-    width: $aside-width * 2
-
-  &.leftInset
-    margin-right: $horz-baseline-large
-    margin-left: -$aside-width
-
-  &.rightInset
-    margin-left: $horz-baseline-large
-    margin-right: -$aside-width
-
-  &.center
-    float: none
-    width: $desktop-standard-item-width
-    margin-left: auto
-    margin-right: auto
+  width: $desktop-standard-item-width
+  margin-left: auto
+  margin-right: auto

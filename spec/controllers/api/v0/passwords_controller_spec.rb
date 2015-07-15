@@ -4,7 +4,7 @@ describe Api::V0::PasswordsController do
     Api::V0::BaseController.send(:public, *Api::V0::BaseController.protected_instance_methods)
     @base_controller = Api::V0::BaseController.new
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
-    @aa = ActorAddress.create_for_user @user, "web"
+    @aa = ActorAddress.create_for_user @user, client_metadata: "web"
   end
 
   context 'PUT /update' do
@@ -32,7 +32,7 @@ describe Api::V0::PasswordsController do
     before :each do
       valid_exp = ((Time.now + 1.day).to_f * 1000).to_i
       invalid_exp = ((Time.now - 1.day).to_f * 1000).to_i
-      aa = ActorAddress.create_for_user @user, "test"
+      aa = ActorAddress.create_for_user @user, client_metadata: "test"
       restrict_to = 'password reset'
       @password_token = aa.current_token(valid_exp, restrict_to).to_jwt
       #@base_controller.create_token @user valid_exp, restrict_to

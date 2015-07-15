@@ -2,6 +2,7 @@
 
 - content_for :title, "#{@course.title.html_safe} - #{assembly_type_name}"
 - content_for :description, @course.short_description.to_s != "" ? strip_tags(markdown(@course.short_description)) : @course.title.html_safe
+- content_for :canonical_link, landing_class_url(@course) if @course.id
 - content_for :keywords, @course.leaf_activities.map(&:title).join(',')
 - content_for :facebook_og do
   %meta{property: 'og:url', content: landing_class_url(@course)}

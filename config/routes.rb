@@ -17,8 +17,11 @@ Delve::Application.routes.draw do
     match "*any", to: redirect(:subdomain => 'www', :path => "/forum")
   end
 
-  root to: "home#index"
-  match '/new_home', to: 'home#new_home'
+  root to: 'home#new_home'
+  match '/old_home', to: 'home#index'
+  # Keep the old homepage routes around until we feel we can delete them
+  # root to: "home#index"
+  # match '/new_home', to: 'home#new_home'
   match '/home_manager', to: 'home#manager'
 
   match '/forum', to: 'bloom#forum'
@@ -120,8 +123,9 @@ Delve::Application.routes.draw do
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   get 'password-reset-sent' => 'pages#password_reset_sent', as: 'password_reset_sent'
+  get 'sous-vide' => 'pages#sous_vide_resources', as: 'sous_vide_resources'
   get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
-
+  
   # TIMDISCOUNT for the 'tim' part only
 
   get 'tim' => 'courses#tim'

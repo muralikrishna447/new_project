@@ -4,7 +4,7 @@ describe Api::V0::AuthController do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     @other_user = Fabricate :user, email: 'jane@chefsteps.com', password: 'matter', name: 'Jane'
     @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
-    @aa = ActorAddress.create_for_user @user, "cooking_app"
+    @aa = ActorAddress.create_for_user @user, client_metadata: "cooking_app"
   end
 
   context 'POST /authenticate' do
@@ -62,7 +62,6 @@ describe Api::V0::AuthController do
       chunks = token.split('.')
       chunks[2] = "gibberishsignature"
       forged_token = chunks.join(".")
-      puts "Using forged #{forged_token}"
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
         token: forged_token
 
@@ -102,7 +101,7 @@ describe Api::V0::AuthController do
       @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
 
       @user = Fabricate :user, id: 200, email: 'user@chefsteps.com', password: '123456', name: 'A User', role: 'user'
-      aa = ActorAddress.create_for_user @user, "test"
+      aa = ActorAddress.create_for_user @user, client_metadata: "test"
       @valid_token = aa.current_token.to_jwt
       @invalid_token = 'Bearer Some Bad Token'
     end

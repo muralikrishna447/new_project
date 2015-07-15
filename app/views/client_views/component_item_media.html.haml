@@ -1,11 +1,11 @@
 .item.media.media-a(ng-if="item && !viewMode")
-  %a.item-content(ng-href='{{item.content.url}}')
+  %a.item-content(ng-href='{{item.content.url}}' ng-click='track()')
     .item-content-image.zoom-hover
       %cs-image(url="item.content.image" aspect="container")
     .item-content-text(ng-if='item.content.title')
       .item-title(ng-class="'color-'+ item.styles.title.color")
         {{item.content.title}}
-      .item-description(ng-if='item.content.description' ng-bind-html="item.content.description | noShortcodes | charLimit:charLimit | toTrusted")
+      .item-description(ng-if='item.content.description' ng-bind-html="item.content.description | shortcode | markdown | removeTextDecoration | linkToText | charLimit:charLimit | toTrusted")
   .item-action(ng-if='getButtonMessage()')
     %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-click='track()')
       {{getButtonMessage()}}
