@@ -320,7 +320,6 @@
             dispute_at = Time.at(charge["dispute"]["created"])
             charged_at = Time.at(charge["created"])
             won = charge["dispute"]["balance_transactions"].detect{|c| c["description"].include?('reversal')}
-            won_at = Time.at(won["created"])
             # If it was refunded or charged at the date add it to the list
             # if dispute_at.between?(start_time, end_time)
             charge_amount = (charge["amount"].to_i/100.00)
