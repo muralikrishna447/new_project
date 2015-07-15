@@ -127,7 +127,7 @@
             # Create the won record if it happened during our start and end time
             if stripe_record["won_description"].present? && Time.parse(stripe_record["won_at"]).between?(start_time, end_time)
               disputes << ["TRNS", "1", "DEPOSIT", Time.parse(stripe_record["won_at"]).to_s(:slashes), "Stripe Account", nil, "Admin", (stripe_record["won_net"].to_f), "Net for charge ID: #{stripe_record["id"]}"]
-              disputes << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["won_at"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:#{deposit_type(stripe_record)}", "Online Sales", "Admin", stripe_record["revenue"], "Charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
+              disputes << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["won_at"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Disputes", "Online Sales", "Admin", stripe_record["revenue"], "Charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
               line_number = 3
               if stripe_record["sales_tax_paid?"] == "true"
                 disputes << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["won_at"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["sales_tax"], "Sales Tax for charge ID: #{stripe_record["id"]}"]
@@ -135,7 +135,7 @@
               end
               # disputes << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["won_at"]).to_s(:slashes), "Refund due to won conflict resolution", nil, "Admin", (stripe_record["won_amount"].to_f+stripe_record["stripe_fee"].to_f), stripe_record["won_description"]]
               # line_number += 1
-              disputes << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["won_at"]).to_s(:slashes), "Refund due to won conflict resolution", nil, "Admin", stripe_record["won_fee"], stripe_record["won_description"]]
+              disputes << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["won_at"]).to_s(:slashes), "Losses due to credit card fraud", nil, "Admin", stripe_record["won_fee"], stripe_record["won_description"]]
               # line_number += 1
               # disputes << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["won_at"]).to_s(:slashes), "Credit Card Transaction Fees", "Stripe (Vendor)", "Admin", stripe_record["stripe_fee"], "Fees for charge ID: #{stripe_record["id"]}"]
               disputes << ["ENDTRNS"]
@@ -284,6 +284,7 @@
           "charge_gross", "charge_fees", "refund_gross", "refund_fees", "charge_count", "refund_count", "net"
         ]
         gather_charges({paid:true, refunded: false, disputed: false, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
+          next if charge["description"].blank?
           next unless charge["paid"]
           charge_amount = (charge["amount"].to_i/100.00)
           stripe_csv << [
@@ -297,6 +298,7 @@
         end
 
         gather_charges({paid:true, refunded: true, disputed: false, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
+          next if charge["description"].blank?
           if charge["refunded"]
             refund_at = Time.at(charge["refunds"].first["created"])
             charged_at = Time.at(charge["created"])
@@ -315,7 +317,8 @@
           end
         end
 
-        gather_charges({paid:true, refunded: false, disputed: true, created: {gte: (start_time-2.months).to_i, lte: end_time.to_i}}) do |charge|
+        gather_charges({paid:true, refunded: false, disputed: true, created: {gte: (start_time-3.months).to_i, lte: end_time.to_i}}) do |charge|
+          next if charge["description"].blank?
           if charge["dispute"]
             dispute_at = Time.at(charge["dispute"]["created"])
             charged_at = Time.at(charge["created"])
