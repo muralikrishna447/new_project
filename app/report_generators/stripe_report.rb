@@ -70,15 +70,17 @@
       CSV.parse(stripe_csv, headers: true).each do |stripe_record|
         if stripe_record["object"] == "charge"
           if transaction_type(stripe_record) == "CHECK"
-            refunds << ["TRNS", "1", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Stripe Account", nil, "Admin", stripe_record["total_refund"], "Refund of charge #{stripe_record["id"]}"]
-            refunds << ["SPL", "2", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Returns", "Online Sales", "Admin", stripe_record["refund_revenue"], "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
-            line_number = 3
-            if stripe_record["sales_tax_paid?"] == "true"
-              refunds << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["refund_tax"], "Sales Tax for charge ID: #{stripe_record["id"]}"]
-              line_number += 1
+            if Time.parse(stripe_record["refund_at"]).between?(start_time, end_time)
+              refunds << ["TRNS", "1", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Stripe Account", nil, "Admin", stripe_record["total_refund"], "Refund of charge #{stripe_record["id"]}"]
+              refunds << ["SPL", "2", transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Returns", "Online Sales", "Admin", stripe_record["refund_revenue"], "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
+              line_number = 3
+              if stripe_record["sales_tax_paid?"] == "true"
+                refunds << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["refund_tax"], "Sales Tax for charge ID: #{stripe_record["id"]}"]
+                line_number += 1
+              end
+              refunds << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Credit Card Transaction Fees", "Stripe (Vendor)", "Admin", stripe_record["refund_fee"], "Refund of fees for #{stripe_record["id"]}"]
+              refunds << ["ENDTRNS"]
             end
-            refunds << ["SPL", line_number, transaction_type(stripe_record), Time.parse(stripe_record["refund_at"]).to_s(:slashes), "Credit Card Transaction Fees", "Stripe (Vendor)", "Admin", stripe_record["refund_fee"], "Refund of fees for #{stripe_record["id"]}"]
-            refunds << ["ENDTRNS"]
 
             if Time.parse(stripe_record["transaction_created"]).between?(start_time, end_time)
               charges << ["TRNS", "1", "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Stripe Account", nil, "Admin", stripe_record["total_deposit"], "Net for charge ID: #{stripe_record["id"]}"]
@@ -279,7 +281,7 @@
           # Transfer
           "charge_gross", "charge_fees", "refund_gross", "refund_fees", "charge_count", "refund_count", "net"
         ]
-        gather_charges({refunded: false, disputed: false, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
+        gather_charges({paid:true, refunded: false, disputed: false, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
           next unless charge["paid"]
           charge_amount = (charge["amount"].to_i/100.00)
           stripe_csv << [
@@ -292,10 +294,12 @@
           ]
         end
 
-        gather_charges({refunded: true, disputed: false, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
+        gather_charges({paid:true, refunded: true, disputed: false, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
           if charge["refunded"]
             refund_at = Time.at(charge["refunds"].first["created"])
-            if refund_at.between?(start_time, end_time)
+            charged_at = Time.at(charge["created"])
+            # If it was refunded or charged at the date add it to the list
+            if refund_at.between?(start_time, end_time) || charged_at.between?(start_time, end_time)
               charge_amount = (charge["amount"].to_i/100.00)
               stripe_csv << [
                 # Base
@@ -309,9 +313,13 @@
           end
         end
 
-        gather_charges({refunded: false, disputed: true, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
+        gather_charges({paid:true, refunded: false, disputed: true, created: {gte: start_time.to_i, lte: end_time.to_i}}) do |charge|
           if charge["dispute"]
             dispute_at = Time.at(charge["dispute"]["created"])
+            charged_at = Time.at(charge["created"])
+            won = charge["dispute"]["balance_transactions"].detect{|c| c["description"].include?('reversal')}
+            won_at = Time.at(won["created"])
+            # If it was refunded or charged at the date add it to the list
             if dispute_at.between?(start_time, end_time)
               charge_amount = (charge["amount"].to_i/100.00)
               dispute = charge["dispute"]["balance_transactions"].detect{|c| c["description"].include?('withdrawal')}
