@@ -122,7 +122,7 @@ Delve::Application.routes.draw do
   get 'password-reset-sent' => 'pages#password_reset_sent', as: 'password_reset_sent'
 
   # Sous Vide Jobs pages
-  get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: "sous_vide_jobs"
+  get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
 
   # TIMDISCOUNT for the 'tim' part only
 
