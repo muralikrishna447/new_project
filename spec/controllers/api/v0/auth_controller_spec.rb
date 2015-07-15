@@ -62,7 +62,6 @@ describe Api::V0::AuthController do
       chunks = token.split('.')
       chunks[2] = "gibberishsignature"
       forged_token = chunks.join(".")
-      puts "Using forged #{forged_token}"
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
         token: forged_token
 

@@ -25,11 +25,18 @@ class TokenAuthInjector
       return @app.call(env)
     end
 
+    cookie_jar = ActionDispatch::Request.new(env).cookie_jar
+    token = cookie_jar[:_chefsteps_token]
+    token_present = !token.nil?
+
     aa = ActorAddress.find_for_user_and_unique_key(current_user, 'website')
     if aa
       Rails.logger.info "[auth] found existing website actor address #{aa.id} for user #{user_id}." if aa
     else
       Rails.logger.info "[auth] creating new website actor address for user #{user_id}"
+      if token_present
+        Rails.logger.info "[auth] Token was present without existing actor address.  Token is [#{token.inspect}]"
+      end
       begin
         aa = ActorAddress.create_for_user(current_user, {unique_key: 'website'})
       rescue ActiveRecord::RecordNotUnique
@@ -40,10 +47,6 @@ class TokenAuthInjector
         return @app.call(env)
       end
     end
-
-    cookie_jar = ActionDispatch::Request.new(env).cookie_jar
-    token = cookie_jar[:_chefsteps_token]
-    token_present = !token.nil?
 
     if token_present
       begin

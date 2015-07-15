@@ -74,33 +74,40 @@ class ActorAddress < ActiveRecord::Base
   def valid_token?(auth_token, sequence_offset = 0, restrict_to = nil)
     return false if auth_token.nil?
 
+    valid = true
+
     auth_claim = auth_token.claim
     if self.address_id != auth_claim[:address_id]
       logger.info "Address does not match"
-      return false
+      valid = false
     end
 
     if (self.sequence + sequence_offset) != auth_claim[:seq]
       logger.info "Sequence number does not match"
-      return false
+      valid = false
     end
 
     if (auth_claim['restrictTo'] || restrict_to) && auth_claim['restrictTo'] != restrict_to
       logger.info "Required restriction #{restrict_to} does not match"
-      return false
+      valid = false
     end
 
     if self.revoked?
       logger.info "Token is revoked"
-      return false
+      valid = false
     end
 
     time_now = (Time.now.to_f * 1000).to_i
     if auth_claim[:exp] && auth_claim[:exp] <= time_now
       logger.info "Token expired"
-      return false
+      valid = false
     end
-    return true
+
+    unless valid
+      logger.info "Invalid token.  Token claim: [#{auth_claim.inspect}] Actor address: [#{self.inspect}]"
+    end
+
+    return valid
   end
 
   def double_increment()

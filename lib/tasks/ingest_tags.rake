@@ -29,3 +29,17 @@ task :ingest_tags, [:url] => :environment do |t, args|
   puts "All tags already applied." if ! added_any
 end
 
+task :rename_tag, [:old_name, :new_name] => :environment do |t, args|
+  Ingredient.tagged_with(args[:old_name]).each do |ingredient|
+    ingredient.tag_list.add(args[:new_name])
+    ingredient.tag_list.remove(args[:old_name])
+  end
+
+  Activity.tagged_with(args[:old_name]).each do |activity|
+    activity.tag_list.add(args[:new_name])
+    activity.tag_list.remove(args[:old_name])    
+  end
+
+  puts "Renamed #{args[:old_name]} to #{args[:new_name]}"
+end
+
