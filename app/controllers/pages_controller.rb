@@ -22,6 +22,10 @@ class PagesController < ApplicationController
     @sv_page = Page.find 'sous-vide-collection'
   end
 
+  def sous_vide_jobs
+    @page = Page.find 'sous-vide-jobs'
+  end
+
   def egg_timer
     if Rails.env.production?
       authenticate_or_request_with_http_basic('Tools') do |username, password|

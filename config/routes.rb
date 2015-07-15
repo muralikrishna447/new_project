@@ -120,8 +120,6 @@ Delve::Application.routes.draw do
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   get 'password-reset-sent' => 'pages#password_reset_sent', as: 'password_reset_sent'
-
-  # Sous Vide Jobs pages
   get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
 
   # TIMDISCOUNT for the 'tim' part only
