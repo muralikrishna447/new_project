@@ -15,7 +15,7 @@
 
 
 @font-face
-  font-family: "Circular-Book"
+  font-family: "Circular"
   src: font_url("lineto-circular-book.eot")
   src: font_url("lineto-circular-book.eot?#iefix") format("embedded-opentype"), font_url("lineto-circular-book.woff") format("woff"), font_url("lineto-circular-book.ttf") format("ttf"), font_url("lineto-circular-book.svg#lineto-circular-book") format("svg")
   font-weight: normal
@@ -23,7 +23,7 @@
 
 
 @font-face
-  font-family: "Circular-Bookitalic"
+  font-family: "Circular"
   src: font_url("lineto-circular-bookitalic.eot")
   src: font_url("lineto-circular-bookitalic.eot?#iefix") format("embedded-opentype"), font_url("lineto-circular-bookitalic.woff") format("woff"), font_url("lineto-circular-bookitalic.ttf") format("ttf"), font_url("lineto-circular-bookitalic.svg#lineto-circular-bookitalic") format("svg")
   font-weight: normal
@@ -32,7 +32,7 @@
 
 /* Although this font is medium, we use it as our bold */
 @font-face
-  font-family: "Circular-Medium"
+  font-family: "Circular"
   src: font_url("lineto-circular-medium.eot")
   src: font_url("lineto-circular-medium.eot?#iefix") format("embedded-opentype"), font_url("lineto-circular-medium.woff") format("woff"), font_url("lineto-circular-medium.ttf") format("ttf"), font_url("lineto-circular-medium.svg#lineto-circular-medium") format("svg")
   font-weight: bold
@@ -45,12 +45,13 @@ html
 
 body
   @include primary-font
-  font-size: 1.4rem
+  font-size: 1.6rem
   line-height: $baseline * 2
   -webkit-font-smoothing: antialiased
 
 h1, h2, h3, h1 textarea, h2 textarea, h3 textarea
-  @include primary-font-bold
+  @include primary-font
+  font-weight: bold
   color: inherit
   margin: 0
   p
@@ -103,8 +104,8 @@ h5, h5 textarea
 
 .class-tag
   color: $orange
-  font-weight: 600
-  @include primary-font-bold
+  font-weight: bold
+  @include primary-font
 
 
 .pop
@@ -115,7 +116,7 @@ body
   color: $light-black
 
 p
-  font-size: 1.4rem
+  font-size: 1.6rem
   line-height: $baseline * 2
   margin-bottom: $baseline * 2
 
