@@ -155,7 +155,7 @@
           end
         elsif stripe_record["object"] == "transfer"
           transfers << ["TRNS", "1", "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Commerce BK checking 9541", nil, "Admin", stripe_record["amount"], "Transfer from Stripe: #{stripe_record["id"]}"]
-          transfers << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Stripe Account", nil, "Admin", "-#{stripe_record["amount"]}", "Transfer from Stripe: #{stripe_record["id"]}"]
+          transfers << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["transaction_created"]).to_s(:slashes), "Stripe Account", nil, "Admin", (-1*stripe_record["amount"].to_f), "Transfer from Stripe: #{stripe_record["id"]}"]
           transfers << ["ENDTRNS"]
         end
       end
