@@ -234,7 +234,7 @@ class User < ActiveRecord::Base
     if aa
       Rails.logger.info "[auth] found existing website actor address #{aa.id} for user #{self.id}." if aa
     else
-      Rails.logger.info "[auth] creating new website actor address for user #{user_id}"
+      Rails.logger.info "[auth] creating new website actor address for user #{self.id}"
       begin
         aa = ActorAddress.create_for_user(self, {unique_key: 'website'})
       rescue ActiveRecord::RecordNotUnique
