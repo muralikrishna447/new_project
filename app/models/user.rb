@@ -229,6 +229,28 @@ class User < ActiveRecord::Base
     end
   end
 
+  def valid_website_auth_token
+    aa = ActorAddress.find_for_user_and_unique_key(self, 'website')
+    if aa
+      Rails.logger.info "[auth] found existing website actor address #{aa.id} for user #{self.id}." if aa
+    else
+      Rails.logger.info "[auth] creating new website actor address for user #{self.id}"
+      begin
+        aa = ActorAddress.create_for_user(self, {unique_key: 'website'})
+      rescue ActiveRecord::RecordNotUnique
+        Rails.logger.info("[auth] Failed to create uplicate actor address")
+        aa = ActorAddress.find_for_user_and_unique_key(self, 'website')
+      end
+    end
+    unless aa
+      msg = "Failed to find actor address event after unique key conflict"
+      Rails.logger.warn("[auth] - #{msg}")
+      raise msg
+    end
+
+    aa.current_token(exp: 1.year.from_now.to_i)
+  end
+
   def self.with_views_greater_than(view_count)
     user_count = User.joins(:events).select('events.user_id').group('events.user_id').having("count(events.id) >=#{view_count}").count
     user_ids = user_count.keys

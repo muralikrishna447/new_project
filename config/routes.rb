@@ -92,6 +92,7 @@ Delve::Application.routes.draw do
     post '/users/contacts/email_invite', to: "users/contacts#email_invite"
   end
 
+  get 'users/session_me' => 'users#session_me'
   get 'users/verify' => 'tokens#verify', as: 'verify'
   get 'getUser' => 'users#get_user'
   resources :users, only: [:index, :show] do

@@ -36,6 +36,7 @@ staging2:
 
 test:
   env: "test"
+  freshsteps_endpoint: "test.url"
   bloom:
     api_endpoint: "bloomAPI"
     community_endpoint: "communityAPI"

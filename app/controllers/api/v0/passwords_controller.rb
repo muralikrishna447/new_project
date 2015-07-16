@@ -28,7 +28,7 @@ module Api::V0
         aa = ActorAddress.create_for_user @user, client_metadata: "password_reset"
 
         exp = ((Time.now + 1.day).to_f * 1000).to_i
-        token = aa.current_token(exp = exp, restrict_to = 'password reset').to_jwt
+        token = aa.current_token(exp: exp, restrict_to: 'password reset').to_jwt
         UserMailer.reset_password(@user.email, token).deliver
         render json: { status: 200, message: 'Success'}, status: 200
       else

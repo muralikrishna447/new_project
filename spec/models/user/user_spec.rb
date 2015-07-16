@@ -27,4 +27,21 @@ describe User do
       end
     end
   end
+
+  context "tokens" do
+    it 'should return a valid auth token when no actor address exists' do
+      token = user.valid_website_auth_token
+      aa = ActorAddress.find_for_user_and_unique_key(user, 'website')
+      aa.valid_token?(token).should be true
+      # TODO - use timecop to avoid time hacks like this - 5
+      token[:exp].should >= (Time.now.to_i + 1.year.to_i - 5)
+    end
+
+    it 'should return a valid auth token when no actor address exists' do
+      aa = ActorAddress.create_for_user(user, unique_key: 'website')
+      token = user.valid_website_auth_token
+      token.claim[:address_id].should == aa.address_id
+      aa.valid_token?(token).should be true
+    end
+  end
 end

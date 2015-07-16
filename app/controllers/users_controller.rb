@@ -35,4 +35,22 @@ class UsersController < ApplicationController
     @admins = User.where(role: 'admin')
     render json: @admins.to_json(only: [:id, :email])
   end
+
+  def session_me
+    if current_user
+      token = current_user.valid_website_auth_token
+      method_includes = [:avatar_url]
+      # Don't leak admin flag if user is not admin
+
+      user_data = {id: current_user.id, name: current_user.name, slug:current_user.slug, email: current_user.email, avatar_url: current_user.avatar_url}
+      user_data[:token] = token.to_jwt
+      if current_user.admin?
+        user_data[:admin] = true
+      end
+      render json: user_data.to_json, status:200
+    else
+      render json: {status: 401, message: 'Unauthorized'}, status: 401
+    end
+
+  end
 end

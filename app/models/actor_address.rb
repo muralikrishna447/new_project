@@ -39,7 +39,9 @@ class ActorAddress < ActiveRecord::Base
     self.create_for_actor(user, opts)
   end
 
-  def current_token (exp = nil, restrict_to = nil)
+  def current_token (opts = {}) #exp = nil, restrict_to = nil)
+    exp = opts[:exp]
+    restrict_to = opts[:restrict_to]
     AuthToken.new claim(exp = exp, restrict_to = restrict_to)
   end
 
@@ -97,7 +99,7 @@ class ActorAddress < ActiveRecord::Base
       valid = false
     end
 
-    time_now = (Time.now.to_f * 1000).to_i
+    time_now = Time.now.to_i
     if auth_claim[:exp] && auth_claim[:exp] <= time_now
       logger.info "Token expired"
       valid = false

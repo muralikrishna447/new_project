@@ -13,41 +13,33 @@ class FreshStepsProxy < Rack::Proxy
 
   def initialize(app)
     @app = app
+
+    @backend_host = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
+    @backend_protocol = "http"
+    backend_uri = "#{@backend_protocol}://#{@backend_host}"
+    Rails.logger.info("Initializing FreshStepsProxy with backend: #{backend_uri}")
+    super({backend: backend_uri})
   end
 
   def call(env)
-    original_host = env["HTTP_HOST"]
-    rewrite_env(env)
-    if env["HTTP_HOST"] != original_host
-      rewrite_response(perform_request(env), env)
+    if should_proxy?(env)
+      Rails.logger.info("FreshStepsProxy request for path [#{env['REQUEST_URI']}]")
+      env["HTTP_HOST"] = @backend_host
+      env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/index.html"
+      perform_request(env)
     else
       @app.call(env)
     end
   end
 
-  def rewrite_response(response, env)
-    response
-  end
-
-  def rewrite_env(env)
+  def should_proxy?(env)
     request = Rack::Request.new(env)
 
     # Don't proxy if this is google asking for HTML snapshot, that gets handled
     # in get_escaped_fragment_from_brombone
-    if ! request.query_string.include?('_escaped_fragment_')
-      if(
-          PREFIX.include?(request.path) ||
-          PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")})
-        env["HTTP_HOST"] = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
+    leave_for_brombone = request.query_string.include?('_escaped_fragment_')
+    prefix_match = PREFIX.include?(request.path) || PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")}
 
-        # I don't actually know if I need all 3 of these
-        env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/index.html"
-      end
-    end
-
-    env
+    !leave_for_brombone && prefix_match
   end
-
 end
-
-Rails.application.middleware.insert_before ActionDispatch::Static, FreshStepsProxy
