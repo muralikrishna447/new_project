@@ -248,7 +248,7 @@ class User < ActiveRecord::Base
       raise msg
     end
 
-    aa.current_token(1.year.from_now)
+    aa.current_token(exp: 1.year.from_now.to_i)
   end
 
   def self.with_views_greater_than(view_count)
