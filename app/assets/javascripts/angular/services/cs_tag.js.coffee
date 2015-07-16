@@ -9,7 +9,7 @@
   ]
 
   this.activitySuggestedTags = [
-    {name: "Primary", tags: ["Sous Vide", "Beef", "Chicken", "Pork", "Fish", "Pasta", "Chocolate", "Baking", "Salad", "Dessert", "Breakfast", "Cocktail", "Vegetarian"]}
+    {name: "Primary", tags: ["Sous Vide", "Beef", "Chicken", "Pork", "Seafood", "Pasta", "Chocolate", "Baking", "Salad", "Dessert", "Breakfast", "Cocktail", "Vegetarian"]}
     {name: "Main Ingredient", tags: ["Meat", "Game", "Vegetable", "Poultry", "Cheese", "Fruit", "Grains"]}
     {name: "Diets", tags: ["Vegan", "Gluten Free", "Kosher", "Paleo", "Raw"]}
     {name: "Course", tags: ["Appetizer", "Soup", "Salad", "Main course", "Amuse bouche", "Beverage", "Sauce", "Condiment", "Snack", "Side dish"]}

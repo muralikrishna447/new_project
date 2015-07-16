@@ -37,7 +37,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
       r = response.data
       for i in r
         i.label = i.title
-        i.title += " [RECIPE]" if i.sub_activity_id?
+        i.label += " [RECIPE]" if i.sub_activity_id?
 
       # always include current search text as an option, first!
       r = _.sortBy(r, (i) -> i.title != s["ingredient"])
@@ -73,7 +73,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
       $scope.shouldShowMasterIngredientsRemovedModal = true
 
   $scope.loadSubrecipe = (id) ->
-    window.location.href = '/activities/' + id unless $scope.overrideLoadActivity?(id) 
+    window.location.href = '/activities/' + id unless $scope.overrideLoadActivity?(id)
 
 
   lastCustomScale = 1
@@ -98,7 +98,7 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.setScaling = (newScale) ->
     $scope.csGlobals.scaling = newScale
-    window.updateUnits(true)    
+    window.updateUnits(true)
     mixpanel.track('Scaling Changed', {'slug' : $scope.activity.slug, 'scale' : newScale});
 
   $scope.isActiveScale = (scale) ->
