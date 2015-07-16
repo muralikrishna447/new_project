@@ -25,6 +25,7 @@ class FreshStepsProxy < Rack::Proxy
     if should_proxy?(env)
       Rails.logger.info("FreshStepsProxy request for path [#{env['REQUEST_URI']}]")
       env["HTTP_HOST"] = @backend_host
+      env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/index.html"
       perform_request(env)
     else
       @app.call(env)
