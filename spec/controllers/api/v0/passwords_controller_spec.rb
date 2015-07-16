@@ -30,13 +30,13 @@ describe Api::V0::PasswordsController do
 
   context 'PUT /update_from_email' do
     before :each do
-      valid_exp = ((Time.now + 1.day).to_f * 1000).to_i
-      invalid_exp = ((Time.now - 1.day).to_f * 1000).to_i
+      valid_exp = (Time.now + 1.day).to_i
+      invalid_exp = (Time.now - 1.day).to_i
       aa = ActorAddress.create_for_user @user, client_metadata: "test"
       restrict_to = 'password reset'
-      @password_token = aa.current_token(valid_exp, restrict_to).to_jwt
+      @password_token = aa.current_token(exp: valid_exp, restrict_to: restrict_to).to_jwt
       #@base_controller.create_token @user valid_exp, restrict_to
-      @expired_password_token = aa.current_token(invalid_exp, restrict_to).to_jwt
+      @expired_password_token = aa.current_token(exp: invalid_exp, restrict_to: restrict_to).to_jwt
     end
 
     it 'should not update a user password if token is not present' do
