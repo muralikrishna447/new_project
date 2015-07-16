@@ -16,6 +16,7 @@ class FreshStepsProxy < Rack::Proxy
   end
 
   def call(env)
+    Rails.logger.info("FreshStepsProxy request for path [#{env['REQUEST_URI']}]")
     original_host = env["HTTP_HOST"]
     rewrite_env(env)
     if env["HTTP_HOST"] != original_host
@@ -42,6 +43,12 @@ class FreshStepsProxy < Rack::Proxy
 
         # I don't actually know if I need all 3 of these
         env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/index.html"
+
+        # S3 assets are not https
+        env["rack.url_scheme"] = "http"
+
+        Rails.logger.info("FreshStepsProxy proxied [#{env['HTTP_HOST']}#{env['REQUEST_URI']}]")
+
       end
     end
 
