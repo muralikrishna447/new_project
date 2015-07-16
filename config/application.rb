@@ -129,7 +129,7 @@ module Delve
     bloom_env = ENV["BLOOM_ENV"] || Rails.env
     if Rails.env == "development"  && !ENV["BLOOM_ENV"]
       bloom_env = "staging"
-      end
+    end
 
     shared_config = HashWithIndifferentAccess.new(YAML.load_file(Rails.root.join('config/shared_config.yml')))
     config.shared_config = shared_config[Rails.env]
