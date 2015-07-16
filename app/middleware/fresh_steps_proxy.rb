@@ -14,9 +14,9 @@ class FreshStepsProxy < Rack::Proxy
   def initialize(app)
     @app = app
 
-    backend_host = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
-    backend_protocol = "http"
-    backend_uri = "#{backend_protocol}://#{backend_host}"
+    @backend_host = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
+    @backend_protocol = "http"
+    backend_uri = "#{@backend_protocol}://#{@backend_host}"
     Rails.logger.info("Initializing FreshStepsProxy with backend: #{backend_uri}")
     super({backend: backend_uri})
   end
@@ -24,6 +24,7 @@ class FreshStepsProxy < Rack::Proxy
   def call(env)
     if should_proxy?(env)
       Rails.logger.info("FreshStepsProxy request for path [#{env['REQUEST_URI']}]")
+      env["HTTP_HOST"] = @backend_host
       perform_request(env)
     else
       @app.call(env)
