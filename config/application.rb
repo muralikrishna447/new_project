@@ -116,6 +116,8 @@ module Delve
 
     config.middleware.use Rack::Deflater
 
+    config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
+
     # Prefix each log line with a per-request UUID
     config.log_tags = [:uuid ]
 
