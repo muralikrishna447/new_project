@@ -51,6 +51,16 @@ module Api
           render_unauthorized
           return
         end
+
+        user = User.find @user_id_from_token
+
+        if user.admin?
+          logger.info("Allowing admin user #{user.email} to delete circulator")
+          circulator.destroy
+          render json: {status: 200} , status: 200
+          return
+        end
+
         circulator_user = CirculatorUser.find_by_circulator_and_user circulator, @user_id_from_token
         if circulator_user
           if circulator_user.owner
