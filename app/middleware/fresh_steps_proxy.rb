@@ -26,7 +26,12 @@ class FreshStepsProxy < Rack::Proxy
       Rails.logger.info("FreshStepsProxy request for path [#{env['REQUEST_URI']}]")
       env["HTTP_HOST"] = @backend_host
       env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/index.html"
-      perform_request(env)
+      response = perform_request(env)
+      headers = response[1]
+      if headers.has_key?('cache-control') && headers['cache-control'].kind_of?(Array)
+        headers['cache-control'] = headers['cache-control'][0]
+      end
+      response
     else
       @app.call(env)
     end
