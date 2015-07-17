@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Activity, "#meta_description" do
+describe ActorAddress  do
   before :each do
     @user = Fabricate :user
     @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '123'
