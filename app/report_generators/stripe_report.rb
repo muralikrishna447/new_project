@@ -43,7 +43,71 @@
         end
       end
       return csv_string
+    end
 
+    def quickbooks_report(start_date, end_date)
+      raise "Date format Invalid" unless start_date.match(/\d{4}-\d{2}-\d{2}/) && end_date.match(/\d{4}-\d{2}-\d{2}/)
+      # start_time = Time.parse("2015-02-01").beginning_of_day
+      # end_time = Time.parse("2015-02-28").end_of_day
+      start_time = Time.parse(start_date).beginning_of_day
+      end_time = Time.parse(end_date).end_of_day
+      # Check is for money going out
+      # Deposit for money going in
+      header = []
+      transfers = []
+      charges = []
+      refunds = []
+      disputes = []
+      header << ["!TRNS", "TRNSID", "TRNSTYPE", "DATE", "ACCNT", "NAME", "CLASS","AMOUNT", "MEMO"]
+      header << ["!SPL","SPLID","TRNSTYPE","DATE","ACCNT","NAME","CLASS","AMOUNT","MEMO"]
+      header << ["!ENDTRNS"]
+      CSV.foreach(Rails.root.join('tmp','stripe_export.csv'), headers: true) do |stripe_record|
+        # Stripe Charges
+        if stripe_record["object"] == "charge"
+          if transaction_type(stripe_record) == "CHECK"
+            # Parse out the refund
+            refund = JSON.parse(stripe_record["latest_refund_created"])
+
+            if stripe_record["latest_refund_created"].present? && Time.at(refund["created"]).between?(start_time, end_time)
+              refund_transaction(stripe_record, refund, refunds)
+            end
+
+            if Time.parse(stripe_record["created_at"]).between?(start_time, end_time)
+              charge_transaction(stripe_record,charges)
+            end
+
+          elsif transaction_type(stripe_record) == "DISPUTE"
+            # Create the charge if it happened during our start/end time
+            if Time.parse(stripe_record["created_at"]).between?(start_time, end_time)
+              charge_transaction(stripe_record,disputes)
+            end
+
+            # Create the dispute if it happened during our start/end time
+            if stripe_record["dispute_description"].present? && Time.parse(stripe_record["dispute_created"]).between?(start_time, end_time)
+              dispute_transaction(stripe_record, disputes)
+            end
+
+            # Create the won record if it happened during our start and end time
+            if stripe_record["won_description"].present? && Time.parse(stripe_record["won_created"]).between?(start_time, end_time)
+              won_transaction(stripe_record, disputes)
+            end
+          elsif transaction_type(stripe_record) == "DEPOSIT"
+            if Time.parse(stripe_record["created_at"]).between?(start_time, end_time)
+              charge_transaction(stripe_record, charges)
+            end
+          end
+        end
+      end
+      gather_transfers(date: {gte: start_time.to_i, lte: end_time.to_i}) do |transfer|
+        transfer_transaction(transfer, transfers)
+      end
+
+      document = header + refunds + charges + disputes + transfers
+      # csv_file = CSV.open(Rails.root.join('tmp', 'quickbooks.tsv'), 'wb', col_sep: "\t") do |tsv|
+      csv_file = CSV.generate(col_sep: "\t") do |tsv|
+        document.each{|d| tsv << d }
+      end
+      csv_file
     end
 
     private
@@ -317,71 +381,6 @@
           csv << value
         end
       end
-    end
-
-    def quickbooks_report(start_date, end_date)
-      raise "Date format Invalid" unless start_date.match(/\d{4}-\d{2}-\d{2}/) && end_date.match(/\d{4}-\d{2}-\d{2}/)
-      # start_time = Time.parse("2015-02-01").beginning_of_day
-      # end_time = Time.parse("2015-02-28").end_of_day
-      start_time = Time.parse(start_date).beginning_of_day
-      end_time = Time.parse(end_date).end_of_day
-      # Check is for money going out
-      # Deposit for money going in
-      header = []
-      transfers = []
-      charges = []
-      refunds = []
-      disputes = []
-      header << ["!TRNS", "TRNSID", "TRNSTYPE", "DATE", "ACCNT", "NAME", "CLASS","AMOUNT", "MEMO"]
-      header << ["!SPL","SPLID","TRNSTYPE","DATE","ACCNT","NAME","CLASS","AMOUNT","MEMO"]
-      header << ["!ENDTRNS"]
-      CSV.foreach(Rails.root.join('tmp','stripe_export.csv'), headers: true) do |stripe_record|
-        # Stripe Charges
-        if stripe_record["object"] == "charge"
-          if transaction_type(stripe_record) == "CHECK"
-            # Parse out the refund
-            refund = JSON.parse(stripe_record["latest_refund_created"])
-
-            if stripe_record["latest_refund_created"].present? && Time.at(refund["created"]).between?(start_time, end_time)
-              refund_transaction(stripe_record, refund, refunds)
-            end
-
-            if Time.parse(stripe_record["created_at"]).between?(start_time, end_time)
-              charge_transaction(stripe_record,charges)
-            end
-
-          elsif transaction_type(stripe_record) == "DISPUTE"
-            # Create the charge if it happened during our start/end time
-            if Time.parse(stripe_record["created_at"]).between?(start_time, end_time)
-              charge_transaction(stripe_record,disputes)
-            end
-
-            # Create the dispute if it happened during our start/end time
-            if stripe_record["dispute_description"].present? && Time.parse(stripe_record["dispute_created"]).between?(start_time, end_time)
-              dispute_transaction(stripe_record, disputes)
-            end
-
-            # Create the won record if it happened during our start and end time
-            if stripe_record["won_description"].present? && Time.parse(stripe_record["won_created"]).between?(start_time, end_time)
-              won_transaction(stripe_record, disputes)
-            end
-          elsif transaction_type(stripe_record) == "DEPOSIT"
-            if Time.parse(stripe_record["created_at"]).between?(start_time, end_time)
-              charge_transaction(stripe_record, charges)
-            end
-          end
-        end
-      end
-      gather_transfers(date: {gte: start_time.to_i, lte: end_time.to_i}) do |transfer|
-        transfer_transaction(transfer, transfers)
-      end
-
-      document = header + refunds + charges + disputes + transfers
-      # csv_file = CSV.open(Rails.root.join('tmp', 'quickbooks.tsv'), 'wb', col_sep: "\t") do |tsv|
-      csv_file = CSV.generate(col_sep: "\t") do |tsv|
-        document.each{|d| tsv << d }
-      end
-      csv_file
     end
 
     def refund_transaction(stripe_record, refund, refunds)
