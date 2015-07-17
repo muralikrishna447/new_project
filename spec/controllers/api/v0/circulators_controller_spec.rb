@@ -2,7 +2,7 @@ describe Api::V0::CirculatorsController do
   before :each do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '123'
-
+    @admin_user = Fabricate :user, email: 'admin@chefsteps.com', password: '123456', name: 'John Doe', role: 'admin'
 
     @aa = ActorAddress.create_for_circulator @circulator
     @other_circulator = Fabricate :circulator, notes: 'some other notes', circulator_id: '456'
@@ -113,5 +113,13 @@ describe Api::V0::CirculatorsController do
     result = JSON.parse(response.body)
     result['status'].should == 401
     Circulator.find_by_id(@other_circulator.id).should_not be_nil
+  end
+
+  it 'should delete a circulator if admin' do
+    token = ActorAddress.create_for_user(@admin_user, client_metadata: "create").current_token
+    request.env['HTTP_AUTHORIZATION'] = token.to_jwt
+    post :destroy, :id => @circulator.circulator_id
+    response.should be_success
+    Circulator.find_by_id(@circulator.id).should be_nil
   end
 end
