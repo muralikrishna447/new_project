@@ -62,8 +62,17 @@ class IngredientsController < ApplicationController
   def index
     respond_to do |format|
       format.json do
+
         sort_string = (params[:sort] || "title") + " " + (params[:dir] || "ASC").upcase
-        result = apply_scopes(Ingredient).where("title <>''").order(sort_string).offset(params[:offset]).limit(params[:limit])
+        if params[:include_sub_activities] == "true"
+          limit = params[:limit] || 20
+          offset = params[:offset] || 0
+          result = Ingredient.find_by_sql("SELECT * FROM ingredients i JOIN activities a ON i.sub_activity_id = a.id WHERE i.title iLIKE '%#{params[:search_title]}%' AND source_activity_id IS NULL AND a.title <> '' LIMIT #{limit} OFFSET #{offset}")
+          puts result.inspect
+        else
+          result = apply_scopes(Ingredient).where("title <>''").order(sort_string).offset(params[:offset]).limit(params[:limit])
+        end
+
         if params[:detailed] == "true"
           result = result.includes(:activities, steps: [:activity])
           render :json => result.as_json(include: {activities: {only: [:id, :title]}, steps: {only: :id, include: {activity: {only: [:id, :title]}}}})
