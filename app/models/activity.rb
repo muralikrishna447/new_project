@@ -127,6 +127,10 @@ class Activity < ActiveRecord::Base
       featured_image.present? ? JSON.parse(featured_image)["url"] : nil
     end
 
+    add_attribute :has_video do
+      youtube_id.present? || vimeo_id.present?
+    end
+
     # Filter/facet/tags
     attribute :difficulty, :published, :include_in_gallery
 
