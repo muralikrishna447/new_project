@@ -65,10 +65,9 @@ class IngredientsController < ApplicationController
 
         sort_string = (params[:sort] || "title") + " " + (params[:dir] || "ASC").upcase
         if params[:include_sub_activities] == "true"
-          limit = params[:limit] || 20
-          offset = params[:offset] || 0
-          result = Ingredient.find_by_sql("SELECT * FROM ingredients i JOIN activities a ON i.sub_activity_id = a.id WHERE i.title iLIKE '%#{params[:search_title]}%' AND source_activity_id IS NULL AND a.title <> '' LIMIT #{limit} OFFSET #{offset}")
-          puts result.inspect
+          # I couldn't get this to combine with the other scopes, but in the situation where we use this we don't actually need anything else so
+          # going with naked SQL.
+          result = Ingredient.find_by_sql(["SELECT * FROM ingredients i JOIN activities a ON i.sub_activity_id = a.id WHERE i.title iLIKE ? AND source_activity_id IS NULL AND a.title <> '' ORDER BY a.title ASC LIMIT ? OFFSET ?", "%#{params[:search_title]}%", params[:limit] || 20, params[:offset] || 0])
         else
           result = apply_scopes(Ingredient).where("title <>''").order(sort_string).offset(params[:offset]).limit(params[:limit])
         end

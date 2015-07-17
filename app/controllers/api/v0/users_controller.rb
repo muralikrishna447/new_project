@@ -13,7 +13,9 @@ module Api
             method_includes << :admin
           end
 
-          render json: @user.to_json(only: [:id, :name, :slug, :email], methods: method_includes), status:200
+          @user[:intercom_user_hash] = ApplicationController.new.intercom_user_hash(@user)
+
+          render json: @user.to_json(only: [:id, :name, :slug, :email, :intercom_user_hash], methods: method_includes), status:200
         else
           render json: {status: 501, message: 'User not found.'}, status: 501
         end
