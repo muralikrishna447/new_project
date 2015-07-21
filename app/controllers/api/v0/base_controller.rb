@@ -1,6 +1,6 @@
 module Api
   module V0
-    class BaseController < ActionController::Base
+    class BaseController < BaseApplicationController
       skip_before_filter :verify_authenticity_token
       # before_filter :cors_set_access_control_headers
 
