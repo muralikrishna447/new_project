@@ -326,7 +326,11 @@ private
       headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type, Authorization'
       headers['Access-Control-Max-Age'] = "1728000"
 
-      similar_origin =  request.headers['origin'].end_with?(request.headers['host'])
+      origin_hostname = URI(request.headers['origin']).host
+      # host header is not a URI as it doesn't include protocol
+      host_hostname = request.headers['host'].split(':')[0]
+
+      similar_origin = (origin_hostname == host_hostname)
       if similar_origin
         headers['Access-Control-Allow-Credentials'] = 'true'
       else
