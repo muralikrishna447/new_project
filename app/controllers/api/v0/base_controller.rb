@@ -108,8 +108,14 @@ module Api
         end
       end
 
+      def render_api_response status, contents = {}
+        contents[:request_id] = request.uuid()
+        logger.info("API Response: #{contents.inspect}")
+        render json: contents, status: status
+      end
+
       def render_unauthorized
-        render json: {status: 401, message: 'Unauthorized.'}, status: 401
+        render_api_response(401, {message: 'Unauthorized.'})
       end
     end
   end

@@ -18,6 +18,7 @@ describe Api::V0::UsersController do
       result.delete('slug').should == @user.slug
       result.delete('avatar_url').should == @user.avatar_url
       result.delete('intercom_user_hash').should == ApplicationController.new.intercom_user_hash(@user)
+      result.delete('request_id')
       result.empty?.should == true
 
       response.should be_success

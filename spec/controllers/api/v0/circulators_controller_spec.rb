@@ -38,11 +38,11 @@ describe Api::V0::CirculatorsController do
     response.should be_success
   end
 
-  it 'should prevent duplicate circulators'  do
+  it 'should prevent duplicate circulators' do
     post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '891'}
     response.should be_success
     post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '891'}
-    JSON.parse(response.body)['status'].should == 400
+    response.code.should == '400'
   end
 
   it 'should assign ownership correctly' do
@@ -73,9 +73,8 @@ describe Api::V0::CirculatorsController do
 
   it 'should not provide a token if not a user' do
     post :token, :id => @other_circulator.circulator_id
-
+    response.code.should == '401'
     result = JSON.parse(response.body)
-    result['status'].should == 401
     result['token'].should be_nil
   end
 
@@ -93,8 +92,8 @@ describe Api::V0::CirculatorsController do
   it 'should not delete a circulator that does not exist' do
     post :destroy, :id => "gibberish"
     response.should_not be_success
+    response.code.should == '401'
     result = JSON.parse(response.body)
-    result['status'].should == 401
   end
 
   it 'should not delete the circulator if not the owner' do
@@ -102,16 +101,15 @@ describe Api::V0::CirculatorsController do
     @circulator_user.save!
 
     post :destroy, :id => @circulator.circulator_id
+    response.code.should == '401'
 
-    result = JSON.parse(response.body)
-    result['status'].should == 401
     Circulator.find_by_id(@circulator.id).should_not be_nil
   end
 
   it 'should not delete the circulator if not a user' do
     post :destroy, :id => @other_circulator.id
-    result = JSON.parse(response.body)
-    result['status'].should == 401
+    response.code.should == '401'
+
     Circulator.find_by_id(@other_circulator.id).should_not be_nil
   end
 
