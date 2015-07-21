@@ -120,4 +120,12 @@ describe Api::V0::CirculatorsController do
     response.should be_success
     Circulator.find_by_id(@circulator.id).should be_nil
   end
+
+  it 'should return 404 if admin deletes circulator that does not exist' do
+    token = ActorAddress.create_for_user(@admin_user, client_metadata: "create").current_token
+    request.env['HTTP_AUTHORIZATION'] = token.to_jwt
+    post :destroy, :id => 'fake id'
+    response.code.should == '404'
+  end
+
 end
