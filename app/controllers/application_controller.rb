@@ -327,7 +327,7 @@ private
       headers['Access-Control-Max-Age'] = "1728000"
 
       origin_hostname = URI(request.headers['origin']).host
-      # host header is not a URI as it doesn't include protocol
+      # host header is not a URI as it doesn't include protocol but it does include a port
       host_hostname = request.headers['host'].split(':')[0]
 
       similar_origin = (origin_hostname == host_hostname)
