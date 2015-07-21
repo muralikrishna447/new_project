@@ -45,14 +45,19 @@ module Api
       end
 
       def destroy
+        user = User.find @user_id_from_token
         circulator = Circulator.where(circulator_id: params[:id]).first
+
         unless circulator
           logger.info "Tried to delete non-existent circulator #{params[:id]}"
-          render_unauthorized
+          if user.admin?
+            render_api_response 404, {message: "Circulator does not exist"}
+          else
+            render_unauthorized
+          end
           return
         end
 
-        user = User.find @user_id_from_token
 
         if user.admin?
           logger.info("Allowing admin user #{user.email} to delete circulator")
