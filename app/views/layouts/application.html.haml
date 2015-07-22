@@ -13,7 +13,11 @@
       window.logPerf = function(where) {d2 = new Date(); console.log(where + ": " + (d2 - window.lastPerfTime)); window.lastPerfTime = d2;};
       logPerf("HEAD");
 
-    %title= "#{yield :title} | ChefSteps"
+    -if "#{yield :title}".include? 'ChefSteps'
+      %title= "#{yield :title}"
+    -else
+      %title= "#{yield :title} | ChefSteps"
+
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
     %meta{charset: 'utf-8'}
