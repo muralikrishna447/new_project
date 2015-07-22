@@ -61,9 +61,11 @@ Delve::Application.routes.draw do
   match '/activities/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
     to: redirect('/activities/sous-vide-pork-cheek-celery-root-pickled-apples')
 
-  # Route to redirect old sous vide cooking classes to the landing because we have 2 new classes
+  # Redirect the old sous vide class to 101
   match '/classes/sous-vide-cooking',
-    to: redirect('/classes/sous-vide-cooking/landing')
+    to: redirect('/classes/cooking-sous-vide-getting-started/landing')
+  match '/classes/sous-vide-cooking/landing',
+    to: redirect('/classes/cooking-sous-vide-getting-started/landing')
 
 
   get "styleguide" => "styleguide#index"
