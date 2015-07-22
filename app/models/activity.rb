@@ -131,6 +131,8 @@ class Activity < ActiveRecord::Base
       youtube_id.present? || vimeo_id.present?
     end
 
+    attribute :activity_type
+
     # Filter/facet/tags
     attribute :difficulty, :published, :include_in_gallery
 
@@ -645,4 +647,3 @@ class Activity < ActiveRecord::Base
   end
 
 end
-
