@@ -35,7 +35,7 @@ window.deepCopy = (obj) ->
 
   bannerImageQuality = 20
   $timeout( ( ->
-    bannerImageQuality = 90
+    bannerImageQuality = 91
   ), 1500)
 
   $scope.bannerImageURL = ->
