@@ -90,6 +90,9 @@ class ActivitiesController < ApplicationController
       @activity = @activity.restore_revision(params[:version])
     end
 
+    @activity_type_title = @activity.activity_type.first
+    @activity_type_title = "Sous Vide Recipe" if @activity.activity_type.include?('Recipe') && @activity.tag_list.include?('sous vide')
+
     respond_to do |format|
       format.html do
 

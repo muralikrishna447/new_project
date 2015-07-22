@@ -6,6 +6,9 @@ xml.tag! 'urlset', 'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9' do
     xml.url {
       xml.loc("#{base_url}#{other}")
       xml.changefreq("daily")
+      xml.priority(1)
+      # Assume our primary pages and landing pages are updated today
+      xml.lastmod(Time.now.to_date)
     }
   end
   @main_stuff.each do |p|
@@ -22,6 +25,9 @@ xml.tag! 'urlset', 'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9' do
         xml.priority(1)
       end
       xml.changefreq("daily")
+      # Can't just use updated_at because comments aren't include, so
+      # do more recent of updated_at or 1 month
+      xml.lastmod([p.updated_at, 1.month.ago].max)
     }
   end
 end

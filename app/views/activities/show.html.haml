@@ -1,7 +1,7 @@
 -################################ HEADER / LAYOUT STUFF ################################
 -# Sanitize everything in the head so that no javascript gets put in there.  However an admin will have javascript rendered for the rest of the page, while a user will not.
 -# This fixes potential problems for XSS attacks.
-- content_for :title, "#{sanitize(@activity.title)} | #{@activity.activity_type.first}".html_safe
+- content_for :title, "#{sanitize(@activity.title)} | #{@activity_type_title}".html_safe
 - content_for :description, sanitize(@activity.meta_description).html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
 - content_for :keywords, sanitize(@activity.tag_list.join(','))
