@@ -74,6 +74,11 @@ gem 'resque'
 
 gem 'sanitize'
 
+group :test do
+  gem 'webmock'
+end
+
+
 group :development do
   gem 'spring'
   gem "letter_opener"
@@ -144,10 +149,6 @@ end
 
 group :development, :angular do
   gem 'better_errors' #moving this out of tests for segfault problems.
-end
-
-group :test do
-  gem 'webmock'
 end
 
 group :guard do
