@@ -42,7 +42,7 @@ describe Api::V0::CirculatorsController do
     post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '891'}
     response.should be_success
     post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '891'}
-    response.code.should == '400'
+    response.code.should == '409'
   end
 
   it 'should assign ownership correctly' do
@@ -66,14 +66,19 @@ describe Api::V0::CirculatorsController do
     (token['iat'] - Time.now.to_i).abs.should < 2
   end
 
+  it 'should return 400 when token is called without id' do
+    post :token
+    response.should == '400'
+  end
+
   it 'should not provide a token if circulator does not exist' do
     post :token, :id => 'not-a-circulator'
-    response.code.should == '404'
+    response.code.should == '403'
   end
 
   it 'should not provide a token if not a user' do
     post :token, :id => @other_circulator.circulator_id
-    response.code.should == '401'
+    response.code.should == '403'
     result = JSON.parse(response.body)
     result['token'].should be_nil
   end
@@ -92,7 +97,7 @@ describe Api::V0::CirculatorsController do
   it 'should not delete a circulator that does not exist' do
     post :destroy, :id => "gibberish"
     response.should_not be_success
-    response.code.should == '401'
+    response.code.should == '403'
     result = JSON.parse(response.body)
   end
 
@@ -101,14 +106,14 @@ describe Api::V0::CirculatorsController do
     @circulator_user.save!
 
     post :destroy, :id => @circulator.circulator_id
-    response.code.should == '401'
+    response.code.should == '403'
 
     Circulator.find_by_id(@circulator.id).should_not be_nil
   end
 
   it 'should not delete the circulator if not a user' do
     post :destroy, :id => @other_circulator.id
-    response.code.should == '401'
+    response.code.should == '403'
 
     Circulator.find_by_id(@other_circulator.id).should_not be_nil
   end
@@ -128,4 +133,8 @@ describe Api::V0::CirculatorsController do
     response.code.should == '404'
   end
 
+  it 'should return 400 if destroy called without id' do
+    post :destroy
+    response.code.should == '400'
+  end
 end
