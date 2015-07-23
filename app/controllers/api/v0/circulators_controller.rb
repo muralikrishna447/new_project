@@ -11,7 +11,7 @@ module Api
       def create
         unless params[:circulator] && params[:circulator][:id]
           # TODO - once we settle on circulator_id format validation should be added
-          render json: {status: 400, message: "Must specify circulator_id"}, status:400
+          render_api_response 400, {message: "Must specify circulator.id"}
           return
         end
 
@@ -21,7 +21,7 @@ module Api
             # 400 is not the most helpful error here, we need a way to return
             # richer responses than an HTTP status
             logger.info ("Duplicate circulator id #{circulator_id}")
-            render json: {status: 400, message: "Duplicate circulator id."}, status:400
+            render_api_response 409, {message: "Duplicate circulator id."}
             return
           end
 
@@ -46,6 +46,11 @@ module Api
 
       def destroy
         user = User.find @user_id_from_token
+        unless params[:id]
+          render_api_response 400, {message: "Must specify id"}
+          return
+        end
+
         circulator = Circulator.where(circulator_id: params[:id]).first
 
         unless circulator
@@ -57,7 +62,6 @@ module Api
           end
           return
         end
-
 
         if user.admin?
           logger.info("Allowing admin user #{user.email} to delete circulator")
@@ -74,7 +78,7 @@ module Api
           else
             logger.info "Non-owner #{circulator_user.inspect} attempted to delete circulator"
             # Including overly helpful debug message for now
-            render json: {status: 401, message: "Unauthorized: only owner can delete a circulator."}, status: 401
+            render_api_response 403, {message: "Unauthorized: only owner can delete a circulator."}
           end
         else
           render_unauthorized
@@ -83,10 +87,14 @@ module Api
 
       def token
         circulator_id = params[:id]
+        unless params[:id]
+          render_api_response 400, {message: "Must specify id"}
+          return
+        end
         circulator = Circulator.where(circulator_id: params[:id]).first
 
         if circulator.nil?
-          render json: {status: 404, message: "Circulator not found"}, status:404
+          render_api_response 403, {message: 'Circulator not found'}
           return
         end
 
@@ -104,8 +112,7 @@ module Api
           raise msg
         end
 
-        response = {token: aa.current_token.to_jwt, status:200}
-        render json: response
+        render_api_response 200, {token: aa.current_token.to_jwt}
       end
     end
   end

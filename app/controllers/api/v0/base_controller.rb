@@ -58,14 +58,14 @@ module Api
       end
 
       protected
-
       def ensure_authorized
         begin
           if request.authorization()
             token = request.authorization().split(' ').last
           else
             logger.info "Authorization token not set"
-            token = nil
+            render_api_response(401, {message: 'Unauthenticated'})
+            return
           end
 
           token = AuthToken.from_string(token)
@@ -110,12 +110,13 @@ module Api
 
       def render_api_response status, contents = {}
         contents[:request_id] = request.uuid()
+        contents[:status] = status
         logger.info("API Response: #{contents.inspect}")
         render json: contents, status: status
       end
 
       def render_unauthorized
-        render_api_response(401, {message: 'Unauthorized.'})
+        render_api_response(403, {message: 'Unauthorized.'})
       end
     end
   end
