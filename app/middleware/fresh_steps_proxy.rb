@@ -28,6 +28,8 @@ class FreshStepsProxy < Rack::Proxy
       env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/index.html"
       response = perform_request(env)
       headers = response[1]
+      # The rack proxy mutates the http headers in a way which causes the rack
+      # cache layer to crash.  This un-does the mutation.
       if headers.has_key?('cache-control') && headers['cache-control'].kind_of?(Array)
         headers['cache-control'] = headers['cache-control'][0]
       end
