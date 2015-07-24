@@ -1,86 +1,136 @@
-- content_for :title, "Exclusive Ribeye"
+- content_for :title, "Ribeye Offer"
 - content_for :description, "This ribeye will blow your mind"
 
-:css
-  .market-container {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .market-body {
-    padding-right: 30px;
-    flex: 1;
-    box-sizing: border-box;
-  }
-  .buybox {
-    flex: 0 1 300px;
-    order: 1;
-  }
-  .steps-gallery {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: flex-start;
-    margin-bottom: 30px;
-  }
-  .step {
-    flex: 1 1 210px;
-    margin-right: 30px;
-  }
-  .step cs-image {
-    margin-bottom: 10px;
-  }
-  .step img {
-    border-radius: 8px;
-  }
-  .product-photo img {
-    border-radius: 8px;
-  }
-  .product-name {
-    font-size: 20px;
-    line-height: 22px;
-    margin-top: 15px;
-    font-weight: 500;
-    display: block;
-  }
-  .product-description {
-    font-size: 16px;
-    color: #767676;
-    display: block;
-  }
-  .product-pricing {
-    color: #767676;
-    font-size: 22px;
-    margin-top: 10px;
-    vertical-align: middle;
-    display: inline-block;
-  }
-  .product-shipping { font-size: 14px; }
-  .buy-button {
-    background-color: rgb(125, 180, 97);
-    color: rgb(255,255,255);
-    padding: 4px 8px;
-    margin: 10px 10px 0 0;
-    border: 1px solid #71a257;
-    border-radius: 3px;
-  }
+%style{:type => "text/css"}
+  :sass
+    .market-container
+      display: flex
+      display: -webkit-flex
+      display: -moz-flex
+      display: -o-flex
 
-  @media (max-width: 600px) {
-    .market-body {
-      flex: 1 0 100%;
-      padding-right: 0px;
-    }
-    .market-container {
-      flex-direction: column-reverse;
-    }
-    .buybox {
-      flex: 0;
-    }
-  }
+      -webkit-flex-wrap: wrap
+      -moz-flex-wrap: wrap
+      -ms-flex-wrap: wrap
+      -o-flex-wrap: wrap
+      flex-wrap: wrap
+    .market-body
+      padding-right: 30px
+      -webkit-flex: 1
+      -moz-flex: 1
+      -ms-flex: 1
+      -o-flex: 1
+      flex: 1
+
+      box-sizing: border-box
+    .buybox
+      -webkit-flex: 0 1 300px
+      -moz-flex: 0 1 300px
+      -ms-flex: 0 1 300px
+      -o-flex: 0 1 300px
+      flex: 0 1 300px
+
+      -webkit-box-ordinal-group: 2
+      -webkit-order: 1
+      -moz-order: 1
+      -ms-flex-order: 1
+      order: 1
+    .steps-gallery
+      display: flex
+      display: -webkit-flex
+      display: -moz-flex
+      display: -o-flex
+
+      -webkit-flex-direction: row
+      -moz-flex-direction: row
+      -ms-flex-direction: row
+      -o-flex-direction: row
+      flex-direction: row
+
+      -webkit-flex-wrap: wrap
+      -moz-flex-wrap: wrap
+      -ms-flex-wrap: wrap
+      -o-flex-wrap: wrap
+      flex-wrap: wrap
+
+      -webkit-justify-content: center
+      -moz-justify-content: center
+      -ms-justify-content: center
+      -o-justify-content: center
+      justify-content: center
+
+      -webkit-align-content: flex-start
+      -moz-align-content: flex-start
+      -ms-align-content: flex-start
+      -o-align-content: flex-start
+      align-content: flex-start
+
+      margin-bottom: 30px
+    .step
+      -webkit-flex: 1 1 210px
+      -moz-flex: 1 1 210px
+      -ms-flex: 1 1 210px
+      -o-flex: 1 1 210px
+      flex: 1 1 210px
+
+      margin-right: 30px
+    .step cs-image
+      margin-bottom: 10px
+    .step img, .product-photo img
+      border-radius: 8px
+    .product-name
+      font-size: 20px
+      line-height: 22px
+      margin-top: 15px
+      font-weight: 500
+      display: block
+    .product-description
+      font-size: 16px
+      color: #767676
+      display: block
+    .product-pricing
+      color: #767676
+      font-size: 22px
+      margin-top: 10px
+      vertical-align: middle
+      display: inline-block
+    .product-shipping
+      font-size: 14px
+    .buy-button
+      background-color: rgb(125, 180, 97)
+      color: rgb(255,255,255)
+      padding: 4px 8px
+      margin: 10px 10px 0 0
+      border: 1px solid #71a257
+      border-radius: 3px
+
+    @media (max-width: 600px)
+      .market-container
+        display: block
+      .market-body
+        -webkit-flex: 1 0 100%
+        -moz-flex: 1 0 100%
+        -ms-flex: 1 0 100%
+        -o-flex: 1 0 100%
+        flex: 1 0 100%
+
+        padding-right: 0px
+      .market-container
+        -webkit-flex-direction: column-reverse
+        -moz-flex-direction: column-reverse
+        -ms-flex-direction: column-reverse
+        -o-flex-direction: column-reverse
+        flex-direction: column-reverse
+      .buybox
+        -webkit-flex: 0
+        -moz-flex: 0
+        -ms-flex: 0
+        -o-flex: 0
 
 .component-container(component-load component-id='ribeye-hero')
 .component-container(ng-cloak ng-controller='ShoppingController' ng-init="loggedIn=#{current_user != nil}; getProduct(1538566017); #{params[:add_to_cart] ? 'addToCart({product_id: 4652374913, quantity: 1})' : ''}")
   .component.standard.market-container
+    /  For when they are logged in
     .buybox(ng-show="loggedIn")
       %form(ng-submit="addToCart({product_id: 4652374913, quantity: 1})")
         / action: 'https://delve.myshopify.com/cart/add', method: 'post', target: '_blank' }
@@ -99,6 +149,7 @@
         %div
           %small
             {{product.quantity || 0}} remaining
+    / For when they aren't logged in
     .buybox(ng-show="!loggedIn")
       %form(ng-submit="loginThenAddToCart({product_id: '4652374913', quantity: '1'})")
         .product-photo
@@ -114,54 +165,46 @@
           %small
             {{product.quantity || 0}} remaining
 
-
       / <div data-embed_type="product" data-shop="delve.myshopify.com" data-product_name="Ribeye Special" data-product_handle="ribeye-special" data-has_image="true" data-display_size="compact" data-redirect_to="checkout" data-buy_button_text="Buy now" data-button_background_color="7db461" data-button_text_color="ffffff"></div>
       / <script type="text/javascript">document.getElementById('ShopifyEmbedScript') || document.write('<script type="text/javascript" src="https://widgets.shopifyapps.com/assets/widgets/embed/client.js" id="ShopifyEmbedScript"><\/script>');
       / </script>
       / <noscript><a href="https://delve.myshopify.com/cart/4652374913:1" target="_blank">Buy Ribeye Special</a></noscript>
 
     .market-body
-      %p At ChefSteps, we want give our community access to the very best experiences with food and cooking. That's why we're offering a super-special, limited supply of the best angus beef on the market, direct from New Zealand. This beef is all the things you'd want it to be: 100% grass-fed, free-range, pasture-raised, and absolutely delicious. We've carved six-pounds cuts from the ribeye of the cow and individually packed them so they're ready to drop into a sous vide bath as soon as they arrive at your doorstep. We've only got twenty cuts to give away, so order quickly!
+      %p Tell your family, your friends, your neighbors, and that guy on the sidewalk—you're about to throw a beef party of epic, earth-shattering proportions. You, good sir or madam, are about to be the proud owner of a six-pound cut of rib-eye roast—a tender, sliceable piece of meat that'll easily feed a party of eight hungry lumberjacks—or your husband and kids, if you prefer. This beef is 100% grass-fed, free-range, pasture-raised, and certified flavorful-as-all-get-out. What do all those things mean, exactly? Read on for more details, including a three-step process for cooking that thing to perfection.
+
+      %p When you purchase, we'll send you a vacuum-packed six-pound roast (no shipping charge), ready to drop into a sous vide water bath as soon as it arrives at your doorstep. The only catch? We've only got twenty cuts in stock, so order quickly!
 
       %h2 How do I cook it?
-      %p You'll receive your ribeye roast carefully vacuum-packed and ready to sous vide. Follow the instructions below to cook it to perfection.
+      %p You'll receive your ribeye roast carefully vacuum-packed and ready to cook sous vide. Follow the steps below to cook it to perfection.
 
       .steps-gallery
         .step
           %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/7WJZltrWQraASpT5uInY'" aspect="1:1")
-          .step-description Preheat your water bath to 58C/136F (for medium rare). Cook for 90min.
+          .step-description Preheat your water bath to 136 °F / 58 °C for medium-rare. Cook for 6 hrs.
         .step
           %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/BIbM0ZOrSmiEc9yqH9rv'" aspect="1:1")
-          .step-description Take the roast out of the bag, dry it off and season with your favorite rub. We like a combination of equal parts salt, pepper and finely cut rosemary.
+          .step-description After about 6 hrs (or up to 14), remove the roast from the bath and cut open the bag. Pat dry and season with your favorite rub. We use equal parts salt, pepper, and chopped rosemary.
         .step
           %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/F7ZYItJoS92Ckwq4dKYU'" aspect="1:1")
-          .step-description Preheat your oven to 200C/400F. Remove the beef from the vacuum bag and roast for 10-15min to develop a nice brown crust.
+          .step-description Just before serving, preheat your oven to 392 °F / 200 °C. Roast the beef for 10–15 mins to develop a nice brown crust. Slice, and serve.
 
       %h2 What's the difference between regular beef and grass-fed beef?
-      %p Grass-fed beef once had a reputation for being tough or stringy – a belief that is not necessarily accurate today (and certainly does not apply to New Zealand grass-fed black angus beef). This belief probably originated in the early days of the resurgence of grass-fed beef.  Many American farmers hadn’t yet re-learned the proper breeds, pasturing methods, and other information necessary to produce consistently tender beef.
-      %p However, a 2010 comparison study by the University of Arizona actually discovered that grass-fed beef they tested had comparable tenderness to grain-fed: “…comparing shear force values as a measure of tenderness, it was surprising to find that steaks from the grass-fed were as tender as the steaks from the grain-fed cattle” (John Marchello, 2010). This beef is extremely tender with clean, beefy flavor.
+      %p Grass-fed beef has a more robust, clean, beefy flavor. That’s because the cows spend their whole lives roaming around eating greens, which keep them lean and healthy. Most beef is grain-fed, because grain will fatten up the cow and make the meat more tender. Grain-fed beef, while certainly tender and fatty, tends to have less flavor, while grass-fed beef (and this beef in particular) is packed with natural, earthy flavor.
 
       %h2 I like local products. Why should I buy beef from New Zealand?
-      %p The two primary reasons for the New Zealand beef’s quality are:
+      %p There are two primary reasons New Zealand's beef is so high-quality:
       %ol
-        %li The genetics of the cattle – Silver Fern Grass-Fed Beef is certified Black Angus – read more about Black Angus beef
-        %li How the cattle are raised – pasture-raised – 100% grass-fed, free range cattle produce meat that is flavorful and lean.
-
-      %p Beyond these obvious reasons there’s another important one – economic incentives.  In the US, beef raised for domestic consumption doesn’t have far to travel. Americans have become used to cheap, plentiful grain-fed beef, and so the industry is designed to provide the most beef at the lowest cost.
-
-      %p New Zealand cattle farmers are in a very different situation. New Zealand is not close to any of the major beef consuming countries, which means the costs of refrigerated transportation to market make it impossible for them to compete with local or semi local (Canada & South America in the case of the US) beef producers on the basis of lowest cost.
-
-      %p Because they know they can’t compete on price, instead New Zealand farmers have set their sights on the premium beef market, and have focused on refining & vastly improving the quality of their grass-fed beef exports to appeal to high-end markets (P.L.Charteris, 1999).
+        %li
+          :markdown
+            The genetics of the cattle. [Read more](http://nzgrassfedbeef.com/why-black-angus-beef-special) about why 100% New Zealand certified black angus beef tastes great, and is sustainable and healthy.
+        %li How the cattle are raised. These cows are pasture-raised, 100% grass-fed, free-range cattle. This means the meat will be flavorful, consistent, and lean. New Zealand farmers have been raising free-range, grass-fed cows for well over a century—generations of knowledge and expertise shows in the quality of the meat.
 
       %h2 Why should I cook this meat sous vide?
-      %p You can cook this beef however you darn well please, but we find that sous vide is the easiest, most convenient way to get consistent results. With sous vide, you can take the meat right out of the box, put it into the water bath, and just wait until you're ready to eat it, without worrying about over- or under-cooking. When it's time for dinner, just throw it in the oven for a quick roast, slice, and serve.
+      %p Sous vide is the easiest, most convenient way to get consistent results. Just take the meat right out of the box, put it into the water bath, and wait until you're ready to eat it. When it's time for dinner, just throw it in the oven for a quick roast, slice, and serve.
 
-      %h2 Why Ribeye?
-      %p We've cut these gorgeous ribeye roasts from between the 7th and 8th and 12th and 13th ribs of the cow. What does that mean? It means they're tender as all get out. Here's why.
-
-      %p Cows spend much of their time chewing, so their cheeks develop a lot of tough collagen. Likewise, beef shanks, chucks, and rumps do a lot of work, and need a lot of time or heat to get tender. But the muscles in the middle of the cow's back don't do much at all, so that's where you find tender, juicy cuts like filet mignons and NY strip steaks.
-
-      %p A great way to memorize which muscles are tough and which are tender is to remember that, beginning with the center of the cow's back, and moving down and outwards along its body from there, the muscles go from most tender to most tough, as we illustrate below.
+      %h2 What is a ribeye roast? Why should I try one?
+      %p Ribeye roast is a tender cut from between the 7th and 8th and 12th and 13th ribs of the cow. What do we like about ribeye roasts in particular? They're great for serving a crowd. You can cook one big hunk of meat all at once, sprinkle it with rub, and finish it off in the oven for a six- to eight-person feast you can carve up right at the table. Sounds like you're about to be a hero, doesn't it?
 
       %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/vK8MgA4PSICi3BLLeB5R'")
 
