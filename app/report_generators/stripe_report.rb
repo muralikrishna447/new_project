@@ -53,7 +53,7 @@
       end_time = Time.parse(end_date).end_of_day
       # Check is for money going out
       # Deposit for money going in
-      records = (filename.present? ? File.read(filename) || stripe_lifetime_export())
+      records = (filename.present? ? File.read(filename) : stripe_lifetime_export())
       header = []
       transfers = []
       charges = []
