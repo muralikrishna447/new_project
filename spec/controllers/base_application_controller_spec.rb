@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe BaseApplicationController, type: :controller, focus:true do
+describe BaseApplicationController, type: :controller do
   controller do
     def show
       render text: "Fall through to standard render"
