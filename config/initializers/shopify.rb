@@ -9,6 +9,12 @@ if Rails.env.production? || Rails.env.staging? || Rails.env.staging2?
     password: ENV["SHOPIFY_SECRET"],
     multipass_secret: ENV["SHOPIFY_MULTIPASS_SECRET"]
   }
+elsif Rails.env.test?
+  Rails.configuration.shopify = {
+    api_key: '123',
+    password:  '321',
+    multipass_secret: "abc"
+  }
 else
   Rails.configuration.shopify = {
     api_key: 'c47683a274bb9c27373355f2094a0e69',
