@@ -41,6 +41,10 @@ class BromboneProxy < Rack::Proxy
   def should_proxy?(env)
     request = Rack::Request.new(env)
 
+    # We don't want to proxy assets, only pages, and fortunately none
+    # of our pages end with extensions, but our assets do.
+    return false if request.path =~ /\..{1,4}$/
+
     # Proxy if requester is explicitly asking for an HTML snapshot
     # (https://developers.google.com/webmasters/ajax-crawling/docs/specification)
     return true if request.query_string.include?('_escaped_fragment_')

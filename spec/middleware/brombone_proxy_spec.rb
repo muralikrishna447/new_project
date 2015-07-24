@@ -18,6 +18,11 @@ describe 'brombone_proxy' do |variable|
     middleware.call request_env(SRC_URL)
   end
 
+  it 'Does not proxy assets even if request has _escaped_fragment_ query param' do
+    expect_no_proxy
+    middleware.call request_env("http://chefsteps.com/fonts/fargug.woff")
+  end
+
   it 'Proxies when request has _escaped_fragment_ query param' do
     expect_proxy
     response = middleware.call request_env("#{SRC_URL}?_escaped_fragment_=")

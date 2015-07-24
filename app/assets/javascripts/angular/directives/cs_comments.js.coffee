@@ -5,7 +5,7 @@
     commentsId: '@'
     seoBot: '@'
   }
-  controller: [ "$scope", "$http", "csConfig", ($scope, $http, csConfig) ->
+  controller: [ "$scope", "$http", "csConfig", "$sce", ($scope, $http, csConfig, $sce) ->
     $scope.renderSeoComments = ->
       $scope.seoComments = []
       identifier = $scope.commentsType + '_' + $scope.commentsId
@@ -16,7 +16,7 @@
           comments = response.data.comments
 
           angular.forEach comments, (comment) =>
-            $scope.seoComments.push(comment.content)
+            $scope.seoComments.push($sce.trustAsHtml(comment.content))
 
     $scope.openLogin = ->
       $scope.$emit 'openLoginModal'
@@ -47,7 +47,7 @@
     $rootScope.$on 'reloadComments', (event) ->
       window.location.reload()
 
-  template: "<div>{{seoComments}}</div>"
+  template: "<div ng-repeat='c in seoComments' ng-bind-html='c'></div>"
 ]
 
 @app.directive 'csnotifs', [ "bloomManager", (bloomManager) ->
