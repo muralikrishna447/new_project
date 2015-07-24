@@ -3,5 +3,5 @@
 .container#main-container
   .row
     .span6.offset3.registration
-      %div(ng-controller="LoginController" ng-init="registrationSource='oldSignInPage'; authentication.setCurrentUser(#{current_user.to_json}); openModal('login'); returnTo='#{request.referrer || params[:returnTo]}'")
+      %div(ng-controller="LoginController" ng-init="registrationSource='oldSignInPage'; authentication.setCurrentUser(#{current_user.to_json}); openModal('login'); returnTo='#{params[:returnTo] || request.referrer}'")
         = render "devise/sessions/new_angular"
