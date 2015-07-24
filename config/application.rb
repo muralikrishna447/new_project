@@ -116,6 +116,8 @@ module Delve
 
     config.middleware.use Rack::Deflater
 
+    # Order matters here, Brombone must come before FreshSteps
+    config.middleware.insert_before ActionDispatch::Static, 'BromboneProxy'
     config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
 
     # Prefix each log line with a per-request UUID

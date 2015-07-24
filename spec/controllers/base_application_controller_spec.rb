@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe BaseApplicationController, type: :controller, focus:true do
   controller do
-    before_filter :get_escaped_fragment_from_brombone
     def show
       render text: "Fall through to standard render"
     end

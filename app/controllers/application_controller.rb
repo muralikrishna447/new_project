@@ -227,23 +227,6 @@ private
     end
   end
 
-  before_filter :get_escaped_fragment_from_brombone
-  def get_escaped_fragment_from_brombone
-    if params.has_key?(:'_escaped_fragment_')
-      logger.info("Rendering #{request.path} from brombone snapshot")
-      base_url = "http://chefsteps.brombonesnapshots.com/www.chefsteps.com#{request.path}"
-      uri = URI.parse(base_url)
-      http = Net::HTTP.new(uri.host, uri.port)
-      response = http.request(Net::HTTP::Get.new(uri.request_uri))
-      logger.info(response.inspect)
-      if response.code.to_i == 200
-        render text: response.body
-      else
-        logger.info("Brombone returned #{response.code} for #{request.path} - falling back to standard page")
-      end
-    end
-  end
-
   def email_list_signup(name, email, source='unknown', listname='a61ebdcaa6')
     begin
       Gibbon::API.lists.subscribe(
