@@ -358,8 +358,8 @@ Delve::Application.routes.draw do
       end
 
       namespace :shopping do
-        match '/product/:product_id', to: 'shopping#product', on: :collection
-        match '/multipass', to: 'shopping#multipass', on: :collection
+        match '/product/:product_id', to: 'shopping#product'
+        match '/multipass', to: 'shopping#multipass'
       end
 
       match '/*path' => 'base#options', :via => :options
