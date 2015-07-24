@@ -2,11 +2,11 @@
 - content_for :description, "This ribeye will blow your mind"
 
 :css
-  .market-container { 
-    display: flex; 
+  .market-container {
+    display: flex;
     flex-wrap: wrap;
   }
-  .market-body { 
+  .market-body {
     padding-right: 30px;
     flex: 1;
     box-sizing: border-box;
@@ -79,14 +79,13 @@
   }
 
 .component-container(component-load component-id='ribeye-hero')
-.component-container
+.component-container(ng-cloak ng-controller='ShoppingController' ng-init="loggedIn=#{current_user != nil}; getProduct(1538566017); #{params[:add_to_cart] ? 'addToCart({product_id: 4652374913, quantity: 1})' : ''}")
   .component.standard.market-container
-    .buybox
-      %form{ action: 'https://delve.myshopify.com/cart/add', method: 'post', target: '_blank' }
-        %input{ name: 'return_to', type: 'hidden', value: 'checkout' }
+    .buybox(ng-show="loggedIn")
+      %form(ng-submit="addToCart({product_id: 4652374913, quantity: 1})")
+        / action: 'https://delve.myshopify.com/cart/add', method: 'post', target: '_blank' }
+        / %input{ name: 'return_to', type: 'hidden', value: 'checkout' }
         %input{ name: 'handle', type: 'hidden', value: 'ribeye-special' }
-        %input{ name: 'id', type: 'hidden', value: '4652374913' }
-
         .product-photo
           %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/SM6op45XTOSdrBrOog2n'" aspect="1:1")
         / %img.product-photo{ src: 'https://cdn.shopify.com/s/files/1/0171/7850/products/ribeye_large.jpg?v=1436993533', alt: 'Ribeye Roast' }
@@ -94,32 +93,49 @@
         %span.product-description feeds eight hungry adults
         %button.buy-button{ type: 'submit'}
           %span Buy now
-        %span.product-pricing 
+        %span.product-pricing
           $120
           %span.product-shipping (free shipping)
+        %div
+          %small
+            {{product.quantity || 0}} remaining
+    .buybox(ng-show="!loggedIn")
+      %form(ng-submit="loginThenAddToCart({product_id: '4652374913', quantity: '1'})")
+        .product-photo
+          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/SM6op45XTOSdrBrOog2n'" aspect="1:1")
+        %span.product-name Six-Pound Ribeye Roast
+        %span.product-description feeds eight hungry adults
+        %button.buy-button{ type: 'submit'}
+          %span Buy now
+        %span.product-pricing
+          $120
+          %span.product-shipping (free shipping)
+        %div
+          %small
+            {{product.quantity || 0}} remaining
 
-  
+
       / <div data-embed_type="product" data-shop="delve.myshopify.com" data-product_name="Ribeye Special" data-product_handle="ribeye-special" data-has_image="true" data-display_size="compact" data-redirect_to="checkout" data-buy_button_text="Buy now" data-button_background_color="7db461" data-button_text_color="ffffff"></div>
       / <script type="text/javascript">document.getElementById('ShopifyEmbedScript') || document.write('<script type="text/javascript" src="https://widgets.shopifyapps.com/assets/widgets/embed/client.js" id="ShopifyEmbedScript"><\/script>');
       / </script>
       / <noscript><a href="https://delve.myshopify.com/cart/4652374913:1" target="_blank">Buy Ribeye Special</a></noscript>
 
     .market-body
-      %p At ChefSteps, we want give our community access to the very best experiences with food and cooking. That's why we're offering a super-special, limited supply of the best angus beef on the market, direct from New Zealand. This beef is all the things you'd want it to be: 100% grass-fed, free-range, pasture-raised, and absolutely delicious. We've carved six-pounds cuts from the ribeye of the cow and individually packed them so they're ready to drop into a sous vide bath as soon as they arrive at your doorstep. We've only got twenty cuts to give away, so order quickly! 
-      
+      %p At ChefSteps, we want give our community access to the very best experiences with food and cooking. That's why we're offering a super-special, limited supply of the best angus beef on the market, direct from New Zealand. This beef is all the things you'd want it to be: 100% grass-fed, free-range, pasture-raised, and absolutely delicious. We've carved six-pounds cuts from the ribeye of the cow and individually packed them so they're ready to drop into a sous vide bath as soon as they arrive at your doorstep. We've only got twenty cuts to give away, so order quickly!
+
       %h2 How do I cook it?
-      %p You'll receive your ribeye roast carefully vacuum-packed and ready to sous vide. Follow the instructions below to cook it to perfection. 
+      %p You'll receive your ribeye roast carefully vacuum-packed and ready to sous vide. Follow the instructions below to cook it to perfection.
 
       .steps-gallery
         .step
           %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/7WJZltrWQraASpT5uInY'" aspect="1:1")
-          .step-description Preheat your water bath to 58C/136F (for medium rare). Cook for 90min. 
+          .step-description Preheat your water bath to 58C/136F (for medium rare). Cook for 90min.
         .step
           %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/BIbM0ZOrSmiEc9yqH9rv'" aspect="1:1")
           .step-description Take the roast out of the bag, dry it off and season with your favorite rub. We like a combination of equal parts salt, pepper and finely cut rosemary.
         .step
           %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/F7ZYItJoS92Ckwq4dKYU'" aspect="1:1")
-          .step-description Preheat your oven to 200C/400F. Remove the beef from the vacuum bag and roast for 10-15min to develop a nice brown crust. 
+          .step-description Preheat your oven to 200C/400F. Remove the beef from the vacuum bag and roast for 10-15min to develop a nice brown crust.
 
       %h2 What's the difference between regular beef and grass-fed beef?
       %p Grass-fed beef once had a reputation for being tough or stringy – a belief that is not necessarily accurate today (and certainly does not apply to New Zealand grass-fed black angus beef). This belief probably originated in the early days of the resurgence of grass-fed beef.  Many American farmers hadn’t yet re-learned the proper breeds, pasturing methods, and other information necessary to produce consistently tender beef.
@@ -132,9 +148,9 @@
         %li How the cattle are raised – pasture-raised – 100% grass-fed, free range cattle produce meat that is flavorful and lean.
 
       %p Beyond these obvious reasons there’s another important one – economic incentives.  In the US, beef raised for domestic consumption doesn’t have far to travel. Americans have become used to cheap, plentiful grain-fed beef, and so the industry is designed to provide the most beef at the lowest cost.
- 
+
       %p New Zealand cattle farmers are in a very different situation. New Zealand is not close to any of the major beef consuming countries, which means the costs of refrigerated transportation to market make it impossible for them to compete with local or semi local (Canada & South America in the case of the US) beef producers on the basis of lowest cost.
- 
+
       %p Because they know they can’t compete on price, instead New Zealand farmers have set their sights on the premium beef market, and have focused on refining & vastly improving the quality of their grass-fed beef exports to appeal to high-end markets (P.L.Charteris, 1999).
 
       %h2 Why should I cook this meat sous vide?

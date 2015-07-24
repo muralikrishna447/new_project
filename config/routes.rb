@@ -357,6 +357,11 @@ Delve::Application.routes.draw do
         get :token, on: :member
       end
 
+      namespace :shopping do
+        match '/product/:product_id', to: 'shopping#product', on: :collection
+        match '/multipass', to: 'shopping#multipass', on: :collection
+      end
+
       match '/*path' => 'base#options', :via => :options
 
       # match 'activities/', to: 'activities#index', via: [:get, :options]

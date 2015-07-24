@@ -69,6 +69,8 @@ gem 'json-jwt'
 gem 'intercom'
 gem "algoliasearch-rails"
 
+gem 'shopify_api'
+
 # gem 'ar-octopus', :git => 'https://github.com/tchandy/octopus.git'
 gem 'resque'
 
