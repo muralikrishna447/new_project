@@ -1,8 +1,11 @@
 require 'spec_helper'
 
+SRC_PATH = "/activities/booze"
+SRC_URL = "http://chefsteps.com" + SRC_PATH
+DST_PATH = '/www.chefsteps.com/activities/booze'
+
 describe 'brombone_proxy' do |variable|
   let(:app) do
-    # directly return the env so it can be inspected - surely there is a better way!
     lambda { |env| [200, env] }
   end
 
@@ -10,19 +13,41 @@ describe 'brombone_proxy' do |variable|
     BromboneProxy.new(app)
   end
 
-  before :each do
+  it 'Does not proxy normal request' do
+    expect_no_proxy
+    middleware.call request_env(SRC_URL)
   end
 
-  it 'Is alive' do
-    re = request_env
-    code, env = middleware.call request_env
-    code.should be(200)
-    env.should be(8)
+  it 'Proxies when request has _escaped_fragment_ query param' do
+    expect_proxy
+    response = middleware.call request_env("#{SRC_URL}?_escaped_fragment_=")
   end
 
-  def request_env opts = {}
-    x = Rack::MockRequest.env_for('http://chefsteps.com/activities/booze?_escaped_fragment_=x', opts)
-    puts x.inspect
-    x
+  it 'Proxies when user agent looks like Google' do
+    expect_proxy
+    response = middleware.call request_env(SRC_URL, {'HTTP_USER_AGENT' => 'Googlebot/2.1 (+http://www.googlebot.com/bot.html)'})
+  end
+
+  it 'Proxies when user agent looks like Facebook' do
+    expect_proxy
+    response = middleware.call request_env(SRC_URL, {'HTTP_USER_AGENT' => 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'})
+  end
+
+  def expect_proxy
+    middleware.should_receive(:perform_request) do |env|
+      env["HTTP_HOST"].should eq("chefsteps.brombonesnapshots.com")
+      env["REQUEST_PATH"].should eq(DST_PATH)
+      env["REQUEST_URI"].should eq(DST_PATH)
+      env["PATH_INFO"].should eq(DST_PATH)
+      [200, {}, ""]
+    end
+  end
+
+  def expect_no_proxy
+    middleware.should_not_receive(:perform_request)
+  end
+
+  def request_env(uri, opts ={})
+    Rack::MockRequest.env_for(uri, opts)
   end
 end

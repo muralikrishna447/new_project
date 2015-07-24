@@ -22,7 +22,7 @@ class BromboneProxy < Rack::Proxy
       # NOTE odd URI:
       # Should be like http://chefsteps.brombonesnapshots.com/www.chefsteps.com/activities/blini
       env["HTTP_HOST"] = @backend_host
-      env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/www.chefsteps.com#{env["REQUEST_PATH"]}"
+      env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/www.chefsteps.com#{env["PATH_INFO"]}"
       env["QUERY_STRING"] = ""
 
       response = perform_request(env)
@@ -40,8 +40,6 @@ class BromboneProxy < Rack::Proxy
 
   def should_proxy?(env)
     request = Rack::Request.new(env)
-
-    puts request.inspect
 
     # Proxy if requester is explicitly asking for an HTML snapshot
     # (https://developers.google.com/webmasters/ajax-crawling/docs/specification)
