@@ -272,7 +272,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
                     csIntent.setIntent('ftue')
                     csFtue.start()
                   else
-                    $scope.loadFriends()
+                    if $scope.returnTo?
+                      window.location = $scope.returnTo
+                    else
+                      $scope.loadFriends()
             , 500)
       ).error( (data, status) ->
         $scope.dataLoadingService.stop()
