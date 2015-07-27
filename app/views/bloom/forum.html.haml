@@ -9,7 +9,6 @@
     %link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css")
     %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
 
-
     - if current_user
       :javascript
         window.encryptedUser = "#{escape_javascript(current_user.encrypted_bloom_info)}";
