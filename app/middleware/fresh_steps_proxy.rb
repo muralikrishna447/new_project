@@ -6,10 +6,7 @@ class FreshStepsProxy < Rack::Proxy
   # work when proxying, but it also made regular page loads incredibly slow, I think because
   # browser-sync was pinging multiple times per second. Although without the proxy, rails returns 406 so
   # it is still doing work. Curious.
-  #
-  # TODO: I'm temporarily using /fs_gallery (and accepting that on the FS side) so we can have coexistence on prod
-  # for a little while. Just change fs_gallery to gallery once everything is good.
-  PREFIX = %w(/fs_gallery)
+  PREFIX = %w(/gallery)
 
   def initialize(app)
     @app = app
