@@ -1,0 +1,68 @@
+.container.component-examples
+  %h1 Components
+
+  %hr
+  .row
+    .span6
+      %h3 Hero A
+      %pre
+        :escaped
+          %div( component-item
+          item='item'
+          item-type-name="'Hero A'" )
+  .row
+    .span12
+      %div(component-item item='examples.itemHeroA' item-type-name="'Hero A'")
+
+  %hr
+  .row
+    .span6
+      %h3 List A
+      %pre
+        :escaped
+          %div( component-item item='item'
+          item-type-name="'List A'" )
+    .span3.offset3
+      %div(component-item item='examples.itemListA' item-type-name="'List A'")
+
+  %hr
+  .row
+    .span6
+      %h3 Media A
+      %pre
+        :escaped
+          %div( component-item
+          item='item'
+          item-type-name="'Media A'" )
+    .span3.offset3
+      %div(component-item item='examples.itemMediaA' item-type-name="'Media A'")
+
+
+  %hr
+  .row
+    .span6
+      %h3 Square A
+      %pre
+        :escaped
+          %div( component-item
+          item='item'
+          item-type-name="'Square A'" )
+    .span3.offset3
+      %div(component-item item='examples.itemSquareA' item-type-name="'Square A'")
+
+  %hr
+  .row
+    .span6
+      %h3 Search Feed
+      %pre
+        :escaped
+          %div( search-feed
+          search="'Sous Vide'"
+          columns='1'
+          item-type-name="'List A'" )
+    .span6
+      %div( search-feed
+            search="'Sous Vide'"
+            columns='3'
+            rows='2'
+            item-type-name="'Square A'" )

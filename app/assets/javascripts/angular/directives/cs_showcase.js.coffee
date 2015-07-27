@@ -19,8 +19,8 @@
     annotationLineHeight = 5 # Percent
     annotationLineWidth = 10 # Percent
     $scope.annotationLineStyle = (annotation) ->
-      
-      
+
+
       {
         top: annotation.position.y - annotationLineHeight + '%'
         left: annotation.position.x + '%'
@@ -78,42 +78,8 @@
     updateCurrent: (item, progress) ->
       if $scope.currentItem != item
         $scope.currentItem = item
-        # $scope.showcaseCurrentClass = 'direction-' + $scope.direction
-        # $scope.$apply()
-        # $timeout ( ->
-        #   $scope.currentItem = item
-        #   # console.log 'currentItem is: ', $scope.currentItem
-        #   # console.log 'updating Current with: ', $scope.direction
-        #   $scope.showcaseCurrentClass = ''
-
-        #   # Set the location has so anchorscrolling works
-        #   # if item.id
-        #   #   $location.path('/item')
-        #   #   $location.hash(item.id)
-        #   # else
-        #   #   $location.path('')
-        #   #   $location.hash('')
-        #   $scope.$apply()
-        # ), 100
 
   ]
-
-  # link: (scope, element, attrs) ->
-  #   oldPosition = 0
-  #   windowElement = angular.element($window)
-  #   windowElement.on 'scroll', (e) ->
-  #     position = windowElement.scrollTop()
-  #     # console.log 'WINDOW POSITION: ', position
-  #     if oldPosition
-  #       diff = oldPosition - position
-  #       if diff > 0
-  #         # console.log 'SCROLLING UP'
-  #         scope.direction = 'up'
-  #       else
-  #         # console.log 'SCROLLING DOWN'
-  #         scope.direction = 'down'
-  #     # console.log 'oldPosition: ', oldPosition
-  #     oldPosition = position
 
   templateUrl: '/client_views/cs_showcase.html'
 ]
@@ -124,39 +90,6 @@
   scope: {
     csShowcaseItem: '='
   }
-
-  link: (scope, element, attrs, csShowcaseController) ->
-    windowElement = angular.element($window)
-    windowHeight = windowElement.height()
-
-    handleScroll = (e) ->
-      el = angular.element(element)
-      offset = 0.5*windowHeight
-      height = el[0].offsetHeight
-
-      start = el[0].offsetTop - offset
-      end = start + height
-
-      position = windowElement.scrollTop()
-      
-      # console.log 'position: ', position
-      
-      if start <= position < end
-        # console.log 'start', start
-        # console.log 'end', end
-        # completed = position - start
-        # progress = completed/height*100
-        csShowcaseController.updateCurrent(scope.csShowcaseItem)
-        element.addClass('active')
-      else
-        element.removeClass('active')
-
-    windowElement.on 'scroll', (e) ->
-      # handleScroll(e)
-      _.throttle(handleScroll(e), 100)
-
-    windowElement.on 'resize', (e) ->
-      $scope.$apply()
 
 ]
 
@@ -190,6 +123,6 @@
 
   template:
     """
-      <img src="{{getImageUrl(csShowcaseImage.fp)}}"/>
+      <img ng-src="{{getImageUrl(csShowcaseImage.fp)}}"/>
     """
 ]

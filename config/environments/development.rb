@@ -74,7 +74,9 @@ Delve::Application.configure do
   end
   ENV["REDISTOGO_URL"] = 'redis://localhost:6379'
 
-  Net::HTTP.http_logger_options = {:verbose => true, :body => true, trace: true}
+  Net::HTTP.http_logger_options = {:verbose => true, :body => true, trace: false}
 
   config.middleware.use PrettyJsonResponse
+
+  AlgoliaSearch.configuration = {application_id: 'JGV2ODT81S', api_key: 'c534846f01761db79637ebedc4bde21a'}
 end

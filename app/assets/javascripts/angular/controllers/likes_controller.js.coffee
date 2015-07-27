@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resource", "$location", "$http", "csAlertService", "csAuthentication", ($scope, $resource, $location, $http, csAlertService, csAuthentication) ->
+angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resource", "$location", "$http", "csAlertService", "csAuthentication", "$window", ($scope, $resource, $location, $http, csAlertService, csAuthentication, $window) ->
 
 
   $scope.current_user_likes = false
@@ -42,14 +42,17 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
       $scope.likeObject(likeable_type, likeable_id)
 
   $scope.getCurrentUserLikes = (likeable_type, likeable_id) ->
-    url = '/likes/by_user?likeable_type=' + likeable_type + '&likeable_id=' + likeable_id
-    console.log url
-    $http(
-      method: 'GET'
-      url: url
-    ).success((data, status, headers, config) ->
-      if data && data[0] == true
-        $scope.current_user_likes = true
-    )
+    # No hurry, do this after the whole document and images are ready
+    $($window).load ->
+      url = '/likes/by_user?likeable_type=' + likeable_type + '&likeable_id=' + likeable_id
+      console.log url
+      $http(
+        method: 'GET'
+        url: url
+      ).success((data, status, headers, config) ->
+        if data && data[0] == true
+          $scope.current_user_likes = true
+      )
+    true
 
 ]

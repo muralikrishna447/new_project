@@ -1,6 +1,13 @@
 // Mixins
 @import compass/css3/box
 
+=css3-prefix($property, $value)
+  -webkit-#{$property}: #{$value}
+  -moz-#{$property}: #{$value}
+  -ms-#{$property}: #{$value}
+  -o-#{$property}: #{$value}
+  #{$property}: #{$value}
+
 =boxsizing
   box-sizing: border-box
   -moz-box-sizing: border-box
@@ -59,16 +66,10 @@
   -o-box-border-radius: $value
 
 =transition($value)
-  transition: $value
-  -moz-transition: $value
-  -webkit-transition: $value
-  -o-transition: $value
+  @include css3-prefix('transition', $value)
 
 =transform($value)
-  transform: $value
-  -moz-transform: $value
-  -webkit-transform: $value
-  -o-transform: $value
+  @include css3-prefix('transform', $value)
 
 =transform-origin($value)
   transform-origin: $value
@@ -87,6 +88,12 @@
   -moz-animation: $value
   -webkit-animation: $value
   -o-animation: $value
+
+=backface-visibility($value)
+  -moz-backface-visibility: $value
+  -webkit-backface-visibility: $value
+  -o-backface-visibility: $value
+  backface-visibility: $value
 
 =keyframes($name)
   @-webkit-keyframes #{$name}
@@ -407,6 +414,14 @@ $horz-baseline-large: 13px
     display: block
     padding-top: 100%
 
+=aspect-3-2
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 66.66%
+
 =aspect-2-1
   position: relative
   overflow: hidden
@@ -423,12 +438,20 @@ $horz-baseline-large: 13px
     display: block
     padding-top: 56.25%
 
+=aspect-3-1
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 33.33%
+
 =aspect-content
   position: absolute
   top: 0
   left: 0
   right: 0
-  bottom: 0  
+  bottom: 0
 
 
 $bounce-bez: cubic-bezier(0.25,0.25,0.325,1.39)

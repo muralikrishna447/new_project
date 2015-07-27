@@ -272,7 +272,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
                     csIntent.setIntent('ftue')
                     csFtue.start()
                   else
-                    $scope.loadFriends()
+                    if $scope.returnTo?
+                      window.location = $scope.returnTo
+                    else
+                      $scope.loadFriends()
             , 500)
       ).error( (data, status) ->
         $scope.dataLoadingService.stop()
@@ -384,7 +387,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       callback: 'signInCallback'
       clientid: $scope.environmentConfiguration.google_app_id
       cookiepolicy: $scope.urlService.currentSiteAsHttps()
-      scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile'
+      scope: 'email profile'
       redirecturi: "postmessage"
       accesstype: "offline"
       # approvalprompt: "force"

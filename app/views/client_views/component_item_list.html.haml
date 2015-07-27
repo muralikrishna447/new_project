@@ -1,0 +1,29 @@
+.item.list(ng-if="item && !viewMode")
+  %a.item-content(ng-href='{{item.content.url}}' ng-click='track()')
+    .item-content-image.zoom-hover
+      %cs-image(url="item.content.image" aspect="1:1")
+    .item-content-text(ng-if='item.content.title')
+      .item-title
+        {{item.content.title}}
+      .item-description(ng-if='item.content.description' ng-bind-html="item.content.description | shortcode | markdown | removeTextDecoration | linkToText | charLimit:charLimit | toTrusted")
+
+.item.list.blank(ng-if="!item")
+  .item-content
+    .item-content-text
+      .item-title
+        Title
+      .item-description
+        Description
+
+%div(ng-if="item && viewMode=='edit'")
+  %label Title
+  %input(type='text' ng-model='item.content.title')
+
+  %label Image
+  %input(type='text' ng-model='item.content.image')
+
+  %label Description
+  %textarea(ng-model='item.content.description')
+
+  %label Url
+  %input(type='text' ng-model='item.content.url')

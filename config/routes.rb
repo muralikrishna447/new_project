@@ -17,8 +17,11 @@ Delve::Application.routes.draw do
     match "*any", to: redirect(:subdomain => 'www', :path => "/forum")
   end
 
-  root to: "home#index"
-  match '/new_home', to: 'home#new_home'
+  root to: 'home#new_home'
+  match '/old_home', to: 'home#index'
+  # Keep the old homepage routes around until we feel we can delete them
+  # root to: "home#index"
+  # match '/new_home', to: 'home#new_home'
   match '/home_manager', to: 'home#manager'
 
   match '/forum', to: 'bloom#forum'
@@ -58,9 +61,11 @@ Delve::Application.routes.draw do
   match '/activities/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
     to: redirect('/activities/sous-vide-pork-cheek-celery-root-pickled-apples')
 
-  # Route to redirect old sous vide cooking classes to the landing because we have 2 new classes
+  # Redirect the old sous vide class to 101
   match '/classes/sous-vide-cooking',
-    to: redirect('/classes/sous-vide-cooking/landing')
+    to: redirect('/classes/cooking-sous-vide-getting-started/landing')
+  match '/classes/sous-vide-cooking/landing',
+    to: redirect('/classes/cooking-sous-vide-getting-started/landing')
 
 
   get "styleguide" => "styleguide#index"
@@ -89,6 +94,7 @@ Delve::Application.routes.draw do
     post '/users/contacts/email_invite', to: "users/contacts#email_invite"
   end
 
+  get 'users/session_me' => 'users#session_me'
   get 'users/verify' => 'tokens#verify', as: 'verify'
   get 'getUser' => 'users#get_user'
   resources :users, only: [:index, :show] do
@@ -119,6 +125,7 @@ Delve::Application.routes.draw do
   get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
+  get 'password-reset-sent' => 'pages#password_reset_sent', as: 'password_reset_sent'
   get 'sous-vide' => 'pages#sous_vide_resources', as: 'sous_vide_resources'
 
   # TIMDISCOUNT for the 'tim' part only
@@ -335,6 +342,12 @@ Delve::Application.routes.draw do
       resources :passwords, only: [:update] do
         post :send_reset_email, on: :collection
         post :update_from_email, on: :collection
+      end
+      resources :profiles, only: [:show] do
+        get :classes, on: :member
+        get :likes, on: :member
+        get :photos, on: :member
+        get :recipes, on: :member
       end
       resources :recommendations, only: [:index]
       resources :search, only: [:index]

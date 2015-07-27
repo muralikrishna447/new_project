@@ -12,34 +12,51 @@
 # * Create the template and the form template
 # * Add file for css
 
-@components.service 'componentItem', [ ->
+@components.service 'componentItemService', [ ->
   @types = [
     {
-      name: 'Hero A'
-      className: 'hero.hero-a'
+      id: 1
+      name: 'Hero'
       attrs: ['title', 'image', 'buttonMessage', 'url']
-      templateUrl: '/client_views/component_item_hero_a.html'
-      formTemplateUrl: '/client_views/component_item_hero_a_form.html'
+      templateUrl: '/client_views/component_item_hero.html'
     }
     {
-      name: 'List A'
+      id: 2
+      name: 'List'
       attrs: ['title', 'image', 'description', 'url']
-      templateUrl: '/client_views/component_item_list_a.html'
-      formTemplateUrl: '/client_views/component_item_media_form.html'
+      templateUrl: '/client_views/component_item_list.html'
     }
     {
-      name: 'Media A'
+      id: 3
+      name: 'Media'
       attrs: ['title', 'image', 'description', 'url']
-      templateUrl: '/client_views/component_item_media_a.html'
-      formTemplateUrl: '/client_views/component_item_media_form.html'
+      templateUrl: '/client_views/component_item_media.html'
     }
     {
-      name: 'Square A'
-      className: 'square.square-a'
+      id: 4
+      name: 'Square'
       attrs: ['title', 'image', 'buttonMessage', 'url']
-      templateUrl: '/client_views/component_item_square_a.html'
-      formTemplateUrl: '/client_views/component_item_square_a_form.html'
+      templateUrl: '/client_views/component_item_square.html'
+    }
+    {
+      id: 5
+      name: 'Header'
+      attrs: ['header', 'subheader']
+      templateUrl: '/client_views/component_item_header.html'
     }
   ]
+
+  @get = (name) =>
+    _.where(@types, {name: name})[0]
+
+  @getStruct = (name) =>
+    itemType = @get(name)
+    struct = {}
+    if itemType
+      for attr in itemType.attrs
+        struct[attr] = ''
+    return struct
+
+
   return this
 ]

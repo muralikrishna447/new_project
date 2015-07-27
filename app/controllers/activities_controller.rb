@@ -1,4 +1,7 @@
 class ActivitiesController < ApplicationController
+
+  instrument_action :show
+
   # expose(:activity) { Activity.find_published(params[:id], params[:token]) }
   expose(:cache_show) { params[:token].blank? }
   expose(:version) { Version.current }
@@ -87,6 +90,9 @@ class ActivitiesController < ApplicationController
       @activity = @activity.restore_revision(params[:version])
     end
 
+    @activity_type_title = @activity.activity_type.first
+    @activity_type_title = "Sous Vide Recipe" if @activity.activity_type.include?('Recipe') && @activity.tag_list.include?('sous vide')
+
     respond_to do |format|
       format.html do
 
@@ -166,7 +172,6 @@ class ActivitiesController < ApplicationController
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
     end
-    track_event(@activity, 'show')
 
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
@@ -206,6 +211,12 @@ class ActivitiesController < ApplicationController
 
       @activity = Activity.find(params[:id])
 
+      # KHK: Debugging double-escaped ampersand issue
+      logger.info(
+        "Updating activity #{@activity.id} with title " \
+        "[#{@activity.title}] by user #{current_user.email}"
+      )
+
       # unless current_user && (current_user.role == 'admin' || @activity.creator == current_user)
       unless can?(:update, @activity)
         render nothing: true, status: 401 and return
@@ -243,6 +254,12 @@ class ActivitiesController < ApplicationController
                 head :no_content
               end
 
+              # KHK: Debugging double-escaped ampersand issue
+              logger.info(
+                "After updating, activity #{@activity.id} has title [#{@activity.title}]" \
+                " and bypass_sanitization was #{@activity.bypass_sanitization}"
+              )
+
             rescue Exception => e
               puts "--------- EXCEPTION -----------"
               puts $@
@@ -258,7 +275,7 @@ class ActivitiesController < ApplicationController
   end
 
   def get_all_tags
-    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + params[:q] + '%').all
+    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + (params[:q] || '') + '%').all
     respond_to do |format|
       format.json {
         render :json => result.to_json()

@@ -1,18 +1,34 @@
 @import 'mixins'
 
-.component-item.hero.hero-a
-  @include aspect-16-9
-  .component-item-content
+.item-container
+  @include display-flex
+  width: 100%
+  .item
+    width: 100%
+
+// HERO STYLES
+.item.hero
+  float: none
+  @include aspect-3-1
+  .item-content
+    background-size: cover
+    background-position: center
     @include aspect-content
     @include display-flex
     @include justify-content(flex-start)
     @include align-items(center)
-    img
-      height: 100%
-      width: 100%
+    .item-content-image
+      position: absolute
+    .item-overlay
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
     .item-content-text
+      z-index: 1
       height: 100%
-      width: 50%
+      width: 70%
       padding-left: 10%
       @include boxsizing
       @include display-flex
@@ -20,65 +36,114 @@
       @include justify-content(center)
       @include align-items(flex-start)
       .item-title
+        width: 100%
         font-size: 60px
         line-height: 60px
-        margin-bottom: 20px
+        margin-bottom: 10px
         font-weight: bold
-        &.color-black
-          color: black
-        &.color-white
-          color: white
+      .item-description
+        width: 100%
+        font-size: 20px
+        line-height: 25px
+        margin-bottom: 20px
+      .item-button.btn-outline
+        font-size: 20px
+        font-weight: bold
+        padding: 10px 40px
+
+@media (max-width: 1100px)
+  .item.hero
+    .item-content
+      .item-content-text
+        width: 100%
+        padding: 0 10px
+        .item-title
+          font-size: 45px
+          line-height: 45px
+
+@media (max-width: 900px)
+  .item.hero
+    @include aspect-16-9
+    .item-content
+      .item-content-text
+        width: 100%
+        padding-left: 0px
+        text-align: center
+        .item-title
+          font-size: 30px
+          line-height: 30px
       .item-button
-        .btn-outline
-          font-size: 20px
-          font-weight: bold
-          padding: 10px 40px
-        &.color-black
-          .btn-outline
-            border-color: black
-            color: black
-            &:hover
-              border-color: $orange
-              color: white
+        margin: 0 auto
 
-        &.color-white
-          .btn-outline
-            border-color: white
-            color: white
-            &:hover
-              border-color: $orange
+@media (max-width: 600px)
+  .item.hero
+    @include aspect-1-1
+    .item-content
+      .item-content-text
+        width: 100%
+        padding-left: 0px
+        text-align: center
+        padding: 40px
+        .item-title
+          font-size: 24px
+          line-height: 30px
+        .item-description
+          font-size: 16px
+          line-height: 20px
+        .item-button.btn-outline
+          font-size: 16px
+          line-height: 20px
+// END HERO STYLES
 
-.component-item.square.square-a
+// SQUARE STYLES
+.item.square
+  float: none
   @include aspect-1-1
-  .component-item-content
+  .item-content
     color: white
     text-align: center
+    background-size: cover
+    overflow: hidden
     @include aspect-content
     @include display-flex
     @include justify-content(center)
     @include align-items(center)
     @include flex-direction(column)
+    .item-content-image
+      position: absolute
+      @include filter(brightness(85%))
     .item-divider.first
+      z-index: 1
       padding: 10px
+      height: 100%
+      width: 100%
+      font-weight: bold
+      font-size: 2rem
+      line-height: 2.6rem
       @include boxsizing
-      @include flex(1 1 100%)
+      @include flex(0 1 100%)
       @include display-flex
       @include align-items(flex-end)
       @include justify-content(center)
     .item-divider.middle
+      z-index: 1
       @include flex(0 0 auto)
     .item-divider.last
-      @include flex(1 1 100%)
-      @include display-flex
-    img
+      z-index: 1
       height: 100%
       width: 100%
+      @include flex(0 1 100%)
+      @include display-flex
 
-.component-item.square.square-a.blank
+@media (max-width: 600px)
+  .item.square
+    @include aspect-3-2
+
+.item.square.blank
   @include aspect-1-1
   border: 1px solid $light-gray
   background-color: $offwhite
-  .component-item-content
+  .item-content
     color: white
     text-align: center
     @include aspect-content
@@ -86,35 +151,160 @@
     @include justify-content(center)
     @include align-items(center)
     @include flex-direction(column)
+// END SQUARE STYLES
 
-
-.component-item.list
-  .component-item-content
-    padding: 10px
+// LIST STYLES
+.item.list
+  float: none
+  .item-content
     @include boxsizing
     @include display-flex
     @include transition(100ms all linear)
+    @include align-items(flex-start)
     .item-content-image
-      @include flex(0 0 80px)
+      @include flex(0 0 100px)
+      border-radius: 6px
+      overflow: hidden
+      @include aspect-1-1
+      cs-image
+        @include aspect-content
     .item-content-text
       margin-left: 10px
       width: 100%
-      color: black
+      color: #333
       .item-title
         font-weight: bold
-    &:hover
-      background-color: $offwhite
+        font-size: 1.6rem
+        line-height: 2.4rem
+        margin-bottom: 10px
+      .item-description
+        p
+          margin-bottom: 0
+  &:hover
+    .item-content-image
+      cs-image
+        img
+          opacity: 0.7
+          @include transform(scale(1.1,1.1))
+// END LIST STYLES
 
-.component-item.media
-  .component-item-content
+// MEDIA STYLES
+.item.media
+  float: none
+  @include display-flex
+  @include flex-direction(column)
+  @include justify-content(space-between)
+  .item-content
     @include boxsizing
     .item-content-image
       width: 100%
-      margin-bottom: 10px
-      border-radius: 15px
+      margin-bottom: 25px
+      border-radius: 6px
       overflow: hidden
+      @include aspect-16-9
+      cs-image
+        @include aspect-content
     .item-content-text
       width: 100%
-      color: black
+      padding-left: 10px
+      padding-right: 10px
+      color: #333
+      @include boxsizing
       .item-title
         font-weight: bold
+        font-size: 1.6rem
+        line-height: 2.4rem
+        margin-bottom: 10px
+      .item-description
+        p
+          margin-bottom: 0
+  .item-action
+    margin-top: 20px
+    margin-left: 10px
+    @include display-flex
+
+// END MEDIA STYLES
+
+// HEADER STYLES
+.item.header
+  float: none
+  .item-content
+    text-align: center
+    @include boxsizing
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    @include flex-direction(column)
+    h2.header
+      margin-bottom: 0px
+    .subheader
+      font-size: 20px
+      margin-top: 10px
+// END HEADER STYLES
+
+// Forms
+.item-form
+  padding: 20px
+  border: 1px solid #ccc
+  width: 100%
+  @include boxsizing
+  input[type='text'], input[type='number'], textarea
+    width: 100%
+    border: 1px solid $light-gray
+    border-radius: 0px
+    margin-bottom: 20px
+    @include box-shadow(none)
+  textarea
+    min-height: 200px
+
+// Zoom hover
+.item-content-image.zoom-hover
+  // Fix for bug in Safari where overflow hidden doesn't work with css3 animations
+  -webkit-mask-image: -webkit-radial-gradient(circle, white, black)
+  cs-image
+    background-color: #333
+    img
+      opacity: 1
+      @include transform(scale3d(1,1,1))
+      -webkit-transition: -webkit-transform 500ms
+      -moz-transition: -moz-transform 500ms
+      -ms-transition: -ms-transform 500ms
+      -o-transition: -o-transform 500ms
+      transition: ease transform 500ms, ease opacity 500ms
+      @include backface-visibility(hidden)
+      &:hover
+        opacity: 0.7
+        @include transform(scale3d(1.06,1.06,1.06))
+
+// Themes
+.item.light
+  .item-content
+    .item-overlay
+      background-color: rgba(0,0,0,.2)
+    .item-title
+      color: white
+    .item-description
+      color: white
+    .item-button
+      border-color: white
+      color: white
+      &:hover
+        border: 1px solid $orange
+        color: white
+        background-color: $orange
+
+.item.dark
+  .item-content
+    .item-overlay
+      background-color: rgba(255,255,255,.2)
+    .item-title
+      color: #333
+    .item-description
+      color: #333
+    .item-button
+      border-color: #333
+      color: #333
+      &:hover
+        border: 2px solid $orange
+        color: white
+        background-color: $orange

@@ -2,11 +2,12 @@
   .box.box-solo
     - if params[:aw] && params[:email]
       %h3 Looks like you've already signed up for our newsletter!
-      %h5= "Click below and we'll send a default password to #{params[:email]}." 
+      %h5= "Click below and we'll send a default password to #{params[:email]}."
     - else
       %h2 Forgot your password?
       %h5 Enter your email for password reset instructions.
     = form_for @user, url: password_path(@user) do |f|
+      = devise_error_messages!
       - if params[:aw] && params[:email]
         = f.hidden_field :email, value: params[:email]
       - else

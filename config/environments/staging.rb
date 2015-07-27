@@ -81,9 +81,7 @@ Delve::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
-    [u, p] == ['delve', 'howtochef22'] || [u, p] == ['guest', 'sphere']
-  end
+  config.middleware.insert_after(::Rack::Lock, 'BasicAuthEnforcer', [/^\/api/, /^\/users\/session_me/])
 
   DISQUS_SHORTNAME = "delvestaging"
 
@@ -93,4 +91,6 @@ Delve::Application.configure do
       resource '/api/v0/*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete]
     end
   end
+
+  AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: '09aead6e71067484d11f3f4ff0b34364' }
 end

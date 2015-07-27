@@ -1,4 +1,6 @@
 require 'spork'
+require 'webmock/test_unit'
+
 
 Spork.prefork do
   unless ENV['DRB'].nil?
@@ -44,6 +46,14 @@ Spork.prefork do
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.clean_with(:truncation)
+
+      # Aggressively stub out all Algolia calls as they happen as side effects to activity saves
+      # not fun to have to turn them off every place in specs where that happens.
+      WebMock.stub_request(:any, /.*\.algolia\.(io|net).*/).to_return(:body => '{ "items": [] }')
+
+      # Adding Webmock, which delightfully alerts you to any live http calls happening during specs,
+      # but we already have existing mock strategies for other services, so let them through.
+      WebMock.disable_net_connect!(:allow => [/mixpanel/])
     end
 
     config.before(:all, js: true) do

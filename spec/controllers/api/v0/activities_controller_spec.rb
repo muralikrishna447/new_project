@@ -1,4 +1,6 @@
 describe Api::V0::ActivitiesController do
+  algolia_stub = nil
+
 
   before :each do
     @activity1 = Fabricate :activity, title: 'Activity 1', published: true

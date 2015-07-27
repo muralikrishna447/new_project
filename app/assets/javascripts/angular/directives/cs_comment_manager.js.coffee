@@ -1,4 +1,4 @@
-@app.directive 'csCommentManager', ['$http', '$timeout', '$rootScope', 'csConfig', ($http, $timeout, $rootScope, csConfig) ->
+@app.directive 'csCommentManager', ['$http', '$timeout', '$rootScope', 'csConfig', '$window', ($http, $timeout, $rootScope, csConfig, $window) ->
   restrict: 'EA'
   templateUrl: '/client_views/cs_comment_manager'
   scope: {
@@ -47,6 +47,6 @@
         $scope.commentCount = data["count"]
       )
 
-    # First time
-    $scope.updateCommentCount()
+    # First time - but only after whole page is loaded including images
+    $($window).load $scope.updateCommentCount
 ]

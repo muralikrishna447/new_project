@@ -1,4 +1,6 @@
-.master-column-container(cs-activity-columns)
+%div(cs-showcase collection-name='knives' ng-if="activity.id == 10355")
+
+.master-column-container(cs-activity-columns ng-if="activity.id != 10355")
   .master-column
     #main-content.main-content-container(ng-cloak)
 
@@ -19,39 +21,37 @@
             = render 'activities/new_equipment_list', model: "activity.equipment", required_string: "any", required: "any"
 
           .section
-            .quarter-medium-item(ng-show="editMode || !! activity.yield") 
+            .quarter-medium-item(ng-show="editMode || !! activity.yield")
               %h5 Yield
-              .inline.no-p-margin(  cs-contenteditable="editMode" 
-                        ng-model="activity.yield" 
-                        itemprop="recipeYield")
+              .inline.no-p-margin(  cs-contenteditable="editMode"
+                        ng-model="activity.yield")
               .inline.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
 
-            .quarter-medium-item(ng-show="editMode || !! activity.timing") 
+            .quarter-medium-item(ng-show="editMode || !! activity.timing")
               %h5 Timing
-              .inline.no-p-margin(  cs-contenteditable="editMode" 
+              .inline.no-p-margin(  cs-contenteditable="editMode"
                         ng-model="activity.timing")
               .inline.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
 
-          .section.noprint(ng-show='(! editMode) && (activity.used_in.length > 0)') 
+          .section.noprint(ng-show='(! editMode) && (activity.used_in.length > 0)')
             %h5 Used In
             %ul.no-bullet
               %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true | limitTo:10")
                 %a( ng-bind-html='item.title'
                     ng-href='/activities/{{item.slug}}'
                     target='_blank')
-                %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
+                %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe")
                   %i.icon-group
 
-          .section.noprint(ng-show='(! editMode) && (activity.forks.length > 0)') 
+          .section.noprint(ng-show='(! editMode) && (activity.forks.length > 0)')
             %h5 Forks
             %ul.no-bullet
               %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true | limitTo:10")
                 %a( ng-bind-html='item.title'
                     ng-href='/activities/{{item.slug}}'
                     target='_blank')
-                %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe") 
+                %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe")
                   %i.icon-group
 
       .ng-cloak.assembly-activity.relative(ng-controller="StepsController")
         = render 'activities/steps'
-

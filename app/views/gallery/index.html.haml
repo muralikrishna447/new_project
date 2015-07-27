@@ -33,11 +33,12 @@
 
     %ul.nav.filters-group(ng-class="{'filters-collapsed' : filtersCollapsed}")
       %li
-        %h5 Popular
-        %a( ng-repeat="x in suggestedSearches"
-            ng-click="search(x, true)"
-            ng-class="{'active' : filters['search_all'].toLowerCase() == x.toLowerCase()}")
-          %span {{x}}
+        %h5
+          Popular Tags
+          %small.fake-link(ng-if="filters['tag']" ng-click='clearTags()') Clear
+        %a( ng-repeat="x in suggestedTags"
+            ng-class="{'active' : filters['tag'].toLowerCase() == x.toLowerCase()}")
+          %span(ng-click="tags(x)") {{x}}
 
       %li
         %h5 Difficulty
@@ -48,7 +49,7 @@
         %csRadioButtons.first-separate(ng-model="generatorChoices" active="filters.generator")
 
       %li(ng-if="csAuthentication.isAdmin()")
-        %h5 Admincs
+        %h5 Admin
         %csRadioButtons.first-separate(ng-model="publishedStatusChoices" active="filters.published_status")
 
       %li
@@ -70,11 +71,11 @@
                     infinite-scroll-immediate-check='true'
                     infinite-scroll-distance='1')
 
-      .gallery-item(ng-repeat='activity in getResults() track by activity.id')
-        %cs-index-item.cs-index-item( cs-title='activity.title'
+      .gallery-item(ng-repeat='activity in getResults() track by activity.objectID')
+        %cs-index-item.cs-index-item( cs-title='activity.title || activity.objectID'
                                       url='activity.url'
                                       image='activity.image'
-                                      hover-info='<i class="icon-star-empty"></i> {{activity.likesCount}}')
+                                      hover-info='<i class="icon-star-empty"></i> {{activity.likes_count}}')
 
     .load-checker
     .loading-icon-group(ng-show="dataLoading > 0")

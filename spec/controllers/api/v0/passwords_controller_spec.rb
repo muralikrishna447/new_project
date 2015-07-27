@@ -4,11 +4,12 @@ describe Api::V0::PasswordsController do
     Api::V0::BaseController.send(:public, *Api::V0::BaseController.protected_instance_methods)
     @base_controller = Api::V0::BaseController.new
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
+    @aa = ActorAddress.create_for_user @user, client_metadata: "web"
   end
 
   context 'PUT /update' do
     before :each do
-      request.env['HTTP_AUTHORIZATION'] = @base_controller.create_token @user
+      request.env['HTTP_AUTHORIZATION'] = @aa.current_token.to_jwt
     end
 
     it 'should not update a user password if current password is not correct' do
@@ -29,10 +30,13 @@ describe Api::V0::PasswordsController do
 
   context 'PUT /update_from_email' do
     before :each do
-      valid_exp = ((Time.now + 1.day).to_f * 1000).to_i
-      invalid_exp = ((Time.now - 1.day).to_f * 1000).to_i
-      @password_token = @base_controller.create_token @user, valid_exp, 'Password Reset'
-      @expired_password_token = @base_controller.create_token @user, invalid_exp, 'Password Reset'
+      valid_exp = (Time.now + 1.day).to_i
+      invalid_exp = (Time.now - 1.day).to_i
+      aa = ActorAddress.create_for_user @user, client_metadata: "test"
+      restrict_to = 'password reset'
+      @password_token = aa.current_token(exp: valid_exp, restrict_to: restrict_to).to_jwt
+      #@base_controller.create_token @user valid_exp, restrict_to
+      @expired_password_token = aa.current_token(exp: invalid_exp, restrict_to: restrict_to).to_jwt
     end
 
     it 'should not update a user password if token is not present' do
@@ -49,7 +53,7 @@ describe Api::V0::PasswordsController do
       post :update_from_email, {id: @user.id, password: 'SomeNewPassword', token: @expired_password_token}
       response.should_not be_success
     end
-    
+
   end
 
   context 'POST /reset' do

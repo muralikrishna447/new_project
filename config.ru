@@ -2,3 +2,6 @@
 
 require ::File.expand_path('../config/environment',  __FILE__)
 run Delve::Application
+
+require 'librato-rack'
+use Librato::Rack

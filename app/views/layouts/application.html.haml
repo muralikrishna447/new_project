@@ -13,7 +13,11 @@
       window.logPerf = function(where) {d2 = new Date(); console.log(where + ": " + (d2 - window.lastPerfTime)); window.lastPerfTime = d2;};
       logPerf("HEAD");
 
-    %title= "#{yield :title} | ChefSteps"
+    -if "#{yield :title}".include? 'ChefSteps'
+      %title= "#{yield :title}"
+    -else
+      %title= "#{yield :title} | ChefSteps"
+
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
     %meta{charset: 'utf-8'}
@@ -23,9 +27,6 @@
       = yield :extra_head_tags
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1'}
     %meta{"http-equiv" => "Content-Language", content: "en"}
-    %meta{name: "google-signin-clientid", content: google_app_id}
-    %meta{name: "google-signin-scope", content: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.me https://www.googleapis.com/auth/userinfo.profile https://www.google.com/m8/feeds"}
-    %meta{name: "google-signin-requestvisibleactions", content: "http://schemas.google.com/AddActivity"}
     = csrf_meta_tags
     %meta{name: "google-signin-cookiepolicy", content: "single_host_origin"}
     = auto_discovery_link_tag :atom, feed_path
@@ -116,7 +117,6 @@
   / = render 'layouts/app_init'
 
   = render "layouts/login_hack"
-  %script(src="#{Rails.application.config.shared_config["bloom"]["community_endpoint"]}/export/loader.js")
   = javascript_include_tag 'application'
   %script(type="text/javascript")
     logPerf("POST APP");

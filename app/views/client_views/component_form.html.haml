@@ -1,27 +1,41 @@
-%form
-  %fieldset
-    %label
-      Name
-    %input(type='text' ng-model='component.form.name')
+.component-form
+  .experimental-nav
+    .experimental-nav-item
+      %label Name
+      %input(type='text' ng-model='component.form.name' placeholder='name')
+    .experimental-nav-item
+      %label Type
+      %select(ng-options="item for item in component.typeOptions" ng-model='component.form.componentType')
+    .experimental-nav-item
+      %label Size
+      %select(ng-options="item for item in component.sizeOptions" ng-model='component.form.meta.size')
+    .experimental-nav-item
+      %label Columns
+      %input(type='number' ng-model='component.form.meta.columns' ng-change='component.setNumItems()')
+    .experimental-nav-item
+      %label Rows
+      %input(type='number' ng-model='component.form.meta.rows' ng-change='component.setNumItems()')
+    .experimental-nav-item
+      %label Item Type
+      %select(ng-options="item.name as item.name for item in component.itemTypes" ng-model='component.form.meta.itemTypeName' ng-change='component.setItemType()')
+    .experimental-nav-item
+      %label Theme
+      %select(ng-options="theme for theme in component.themeOptions" ng-model='component.form.meta.theme' ng-change='component.setTheme()')
 
-  %fieldset
-    %label
-      Component Type
-    %select(ng-options="item for item in component.componentTypeOptions" ng-model='component.form.componentType')
+  %div(ng-include="'/client_views/component_feed_form.html'" ng-if="component.form.componentType=='feed'")
 
-  .component-styles
-    .component-styles-title Component Styles
-    %div Component Padding:
-    %div(component-size-picker component-model='component.form.metadata.allModes.styles.component')
+  %div(ng-include="'/client_views/component_matrix_form.html'" ng-if="component.form.componentType=='matrix'")
 
-  %div(single-form component='component' ng-if="component.form.componentType == 'single'")
-  %div(matrix-form component='component' ng-if="component.form.componentType == 'matrix'")
+  %pre
+    {{component.form | json}}
 
-  %button.btn.btn-secondary(type='submit' ng-click='component.save(component.form)')
-    Save
 
-  %button.btn.btn-secondary(type='submit' ng-click='component.clear()')
-    Clear
+  .nav-bottom
+    %a.btn-outline(type='submit' ng-click='component.save(component.form)')
+      Save
 
-  %a.btn.btn-secondary(ui-sref='components.index')
-    Cancel
+    %a(type='submit' ng-click='component.clear()')
+      Clear
+
+    %a(ui-sref='components.index')
+      Cancel

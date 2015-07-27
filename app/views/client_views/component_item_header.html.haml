@@ -1,0 +1,21 @@
+.item.header.header-a(ng-if="item && !viewMode")
+  .item-content
+    %h2.header(ng-class="'color-'+ item.styles.title.color")
+      {{item.content.header}}
+    .subheader
+      {{item.content.subheader}}
+
+.item.header.header-a.blank(ng-if="!item")
+  .item-content
+    %h2.header
+      Header
+    .subheader
+      Subheader
+
+%div(ng-if="item && viewMode=='edit'")
+
+  %label Header
+  %input(type='text' ng-model='item.content.header')
+
+  %label Subheader
+  %input(type='text' ng-model='item.content.subheader')

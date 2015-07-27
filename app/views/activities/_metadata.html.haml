@@ -12,8 +12,8 @@
         %button.btn(ng-repeat="actType in activityTypes" type="button" ng-click="toggleActivityType(actType)" ng-class="{active: hasActivityType(actType)}")
           {{actType}}
 
-    %h6.inline Tags
-    .btn.btn-link.inline(ng-click="showTagsModal = true") Select...    
+    %h6 Tags
+    .btn.btn-small.btn-primary(ng-click="showTagsModal = true") Select Tags...
     %input(type="hidden" ng-model="activity.tags" ui-select2="tagsSelect2()")
 
     %div(ng-show="csAuthentication.isAdmin()")
@@ -45,3 +45,12 @@
           %button.btn(type="button" ng-click="activity.show_only_in_course = false" ng-class="{active: ! activity.show_only_in_course}")
             No
 
+  %div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
+    .modal-header
+      %h2 Choose Tags
+      Pick all that apply. It is ok to have more than one in a category.
+    .modal-body.tag-bg
+      %csTagChooser(  ng-model="activity.tags"
+                      options="csTagService.activitySuggestedTags")
+    .modal-footer
+      %button.btn(ng-click="showTagsModal = false") Done

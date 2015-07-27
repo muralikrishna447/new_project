@@ -6,6 +6,8 @@ class HomeController < ApplicationController
   def manager
   end
 
+  instrument_action :index, :about
+
   def index
     @show_app_add = true
     @classes = Assembly.pubbed_courses.order('created_at desc').limit(3).to_a

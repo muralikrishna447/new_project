@@ -7,13 +7,16 @@
       = form_tag("/reports/stripe", id: "stripe_form") do
         .input
           Report Type
-          = select_tag('report_type', options_for_select(["stripe", "sales"]), class: "admin-input")
+          = select_tag('report_type', options_for_select(["stripe", "class sales"]), class: "admin-input")
         .input
           Start Date
           %input.admin-input(name="start_date" type="date")
         .input
           End Date
           %input.admin-input(name="end_date" type="date")
+        .input
+          Class name
+          = select_tag('class_name', options_for_select(["Whipping Siphons", "French Macarons", "Steak to Salmon", "Fluid Gels", "Salmon 104", "Barbecue", "Knife Sharpening", "Burgers"]), class: "admin-input")
         .input
           Email will be sent to:
           = current_user.email

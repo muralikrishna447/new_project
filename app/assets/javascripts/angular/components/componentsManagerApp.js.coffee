@@ -1,4 +1,4 @@
-@componentsManager = angular.module 'ComponentsManager', ['ui.router', 'ngResource', 'cs.components']
+@componentsManager = angular.module 'ComponentsManager', ['ui.router', 'ngResource', 'cs.components', 'cs.api', 'cs.helpers']
 
 @componentsManager.config ['$locationProvider', ($locationProvider) ->
 
@@ -24,13 +24,25 @@
 
     .state 'components.new'
       url: '/new'
-      controller: 'ComponentsNewController'
+      controller: 'ComponentsFormController'
       controllerAs: 'component'
       templateUrl: '/client_views/components_new.html'
 
     .state 'components.edit'
       url: '/:id/edit'
-      controller: 'ComponentsEditController'
+      controller: 'ComponentsFormController'
       controllerAs: 'component'
       templateUrl: '/client_views/components_edit.html'
+
+    .state 'components.examples'
+      url: '/examples'
+      controller: 'ComponentsExamplesController'
+      controllerAs: 'examples'
+      templateUrl: '/client_views/components_examples.html'
+
+    .state 'components.editExperimental'
+      url: '/:id/edit-experimental'
+      controller: 'ComponentsEditExperimentalController'
+      controllerAs: 'component'
+      templateUrl: '/client_views/components_edit_experimental.html'
 ]

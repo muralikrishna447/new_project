@@ -37,6 +37,8 @@ class User < ActiveRecord::Base
   has_many :circulator_users
   has_many :circulators, through: :circulator_users
 
+  has_many :actor_addresses, as: :actor
+
   serialize :viewed_activities, Array
 
   # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }
@@ -72,8 +74,6 @@ class User < ActiveRecord::Base
 
   ROLES = %w[admin contractor moderator collaborator user banned]
 
-  include Searchable
-
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
   end
@@ -82,9 +82,12 @@ class User < ActiveRecord::Base
     read_attribute(:role) || "user"
   end
 
-
   def admin?
     self.role == "admin"
+  end
+
+  def admin
+    self.admin?
   end
 
   def profile_complete?
@@ -226,10 +229,26 @@ class User < ActiveRecord::Base
     end
   end
 
-  def as_indexed_json(options={})
-    as_json(
-      only: [:name, :bio]
-    )
+  def valid_website_auth_token
+    aa = ActorAddress.find_for_user_and_unique_key(self, 'website')
+    if aa
+      Rails.logger.info "[auth] found existing website actor address #{aa.id} for user #{self.id}." if aa
+    else
+      Rails.logger.info "[auth] creating new website actor address for user #{self.id}"
+      begin
+        aa = ActorAddress.create_for_user(self, {unique_key: 'website'})
+      rescue ActiveRecord::RecordNotUnique
+        Rails.logger.info("[auth] Failed to create uplicate actor address")
+        aa = ActorAddress.find_for_user_and_unique_key(self, 'website')
+      end
+    end
+    unless aa
+      msg = "Failed to find actor address event after unique key conflict"
+      Rails.logger.warn("[auth] - #{msg}")
+      raise msg
+    end
+
+    aa.current_token(exp: 1.year.from_now.to_i)
   end
 
   def self.with_views_greater_than(view_count)

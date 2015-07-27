@@ -62,8 +62,16 @@ class IngredientsController < ApplicationController
   def index
     respond_to do |format|
       format.json do
+
         sort_string = (params[:sort] || "title") + " " + (params[:dir] || "ASC").upcase
-        result = apply_scopes(Ingredient).where("title <>''").order(sort_string).offset(params[:offset]).limit(params[:limit])
+        if params[:include_sub_activities] == "true"
+          # I couldn't get this to combine with the other scopes, but in the situation where we use this we don't actually need anything else so
+          # going with naked SQL.
+          result = Ingredient.find_by_sql(["SELECT * FROM ingredients i JOIN activities a ON i.sub_activity_id = a.id WHERE i.title iLIKE ? AND source_activity_id IS NULL AND a.title <> '' ORDER BY a.title ASC LIMIT ? OFFSET ?", "%#{params[:search_title]}%", params[:limit] || 20, params[:offset] || 0])
+        else
+          result = apply_scopes(Ingredient).where("title <>''").order(sort_string).offset(params[:offset]).limit(params[:limit])
+        end
+
         if params[:detailed] == "true"
           result = result.includes(:activities, steps: [:activity])
           render :json => result.as_json(include: {activities: {only: [:id, :title]}, steps: {only: :id, include: {activity: {only: [:id, :title]}}}})
@@ -201,7 +209,7 @@ class IngredientsController < ApplicationController
 
     # TODO: duplicate code in activities_controller.rb
   def get_all_tags
-    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + params[:q] + '%').all
+    result = ActsAsTaggableOn::Tag.where('name iLIKE ?', '%' + (params[:q] || '') + '%').all
     respond_to do |format|
       format.json {
         render :json => result.to_json()

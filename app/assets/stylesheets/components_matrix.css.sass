@@ -1,40 +1,110 @@
 @import 'mixins'
 
-// Matrix //
+$one-item-width: 100%
+$two-item-width: calc((100% - 50px)/2)
+$three-item-width: calc((100% - 80px)/3)
+$four-item-width: calc((100% - 120px)/4)
+$five-item-width: calc((100% - 160px)/5)
 
 .matrix
-  .matrix-row
-    margin-bottom: 20px
+  width: 100%
+  @include boxsizing
+  @include display-flex
+  @include flex-wrap(wrap)
+  .matrix-item
+    margin-bottom: 40px
+    margin-right: 40px
+    @include boxsizing
     @include display-flex
-    @include flex-direction(row)
-    &:last-of-type
-      margin-bottom: 0px
-    .matrix-column
-      margin-right: 20px
-      @include flex(0 1 100%)
-      // @include aspect-1-1
-      @include boxsizing
-      &:last-of-type
+
+.matrix.matrix-1-per-row
+  .matrix-item
+    margin-bottom: 0px
+    margin-right: 0px
+
+@media (min-width: 801px)
+  .matrix.matrix-1-per-row
+    .matrix-item
+      @include flex(0 1 $one-item-width)
+
+  .matrix.matrix-2-per-row
+    .matrix-item
+      @include flex(0 1 $two-item-width)
+      &:nth-of-type(2n + 2)
         margin-right: 0px
 
-.matrix-item-blank
-  @include aspect-1-1
-  border: 1px solid $light-gray
-  background-color: $offwhite
-  @include display-flex
-  @include justify-content(center)
-  @include align-items(center)
+  .matrix.matrix-3-per-row
+    .matrix-item
+      @include flex(0 1 $three-item-width)
+      &:nth-of-type(3n + 3)
+        margin-right: 0px
 
-.matrix-item-form
-  background-color: $offwhite
-  border-radius: 10px
-  padding: 20px
-  margin-bottom: 20px
+  .matrix.matrix-4-per-row
+    .matrix-item
+      @include flex(0 1 $four-item-width)
+      &:nth-of-type(4n + 4)
+        margin-right: 0px
 
-// Responsive Styles
+  .matrix.matrix-5-per-row
+    .matrix-item
+      @include flex(0 1 $five-item-width)
+      &:nth-of-type(5n + 5)
+        margin-right: 0px
+
+@media (min-width: 601px) and (max-width: 800px)
+  .matrix.matrix-1-per-row
+    .matrix-item
+      @include flex(0 1 $one-item-width)
+
+  .matrix.matrix-2-per-row
+    .matrix-item
+      @include flex(0 1 $two-item-width)
+      &:nth-of-type(2n + 2)
+        margin-right: 0px
+
+  .matrix.matrix-3-per-row
+    .matrix-item
+      @include flex(0 1 $two-item-width)
+      &:nth-of-type(2n + 2)
+        margin-right: 0px
+
+  .matrix.matrix-4-per-row
+    .matrix-item
+      @include flex(0 1 $two-item-width)
+      &:nth-of-type(2n + 2)
+        margin-right: 0px
+
+  .matrix.matrix-5-per-row
+    .matrix-item
+      @include flex(0 1 $two-item-width)
+      &:nth-of-type(2n + 2)
+        margin-right: 0px
 
 @media (max-width: 600px)
   .matrix
-    .matrix-row
-      .matrix-column
-        @include flex(0 0 100%)
+    .matrix-item
+      margin-right: 0px
+      margin-bottom: 30px
+      &:last-of-type
+        margin-bottom: 0px
+
+
+  .matrix.matrix-1-per-row
+    .matrix-item
+      @include flex(0 1 100%)
+
+  .matrix.matrix-2-per-row
+    .matrix-item
+      @include flex(0 1 100%)
+
+  .matrix.matrix-3-per-row
+    .matrix-item
+      @include flex(0 1 100%)
+
+  .matrix.matrix-4-per-row
+    .matrix-item
+      @include flex(0 1 100%)
+
+  .matrix.matrix-5-per-row
+    .matrix-item
+      @include flex(0 1 100%)

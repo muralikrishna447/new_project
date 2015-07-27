@@ -1,7 +1,7 @@
 .flex-title-item(ng-if="editMode")
   %h5 Title
 .flex-title-item
-  %h1.content-activity-title.section-tiny(ng-model="activity.title" cs-contenteditable = "editMode" itemprop="name" placeholder="'Title this masterpiece'" ng-if="showTitle()")
+  %h1.content-activity-title.section-tiny(ng-model="activity.title" cs-contenteditable = "editMode" placeholder="'Title this masterpiece'" ng-if="showTitle()")
 
 -if @activity
   .flex-title-item

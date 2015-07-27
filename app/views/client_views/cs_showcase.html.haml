@@ -1,11 +1,9 @@
 .cs-showcase
-  .cs-showcase-item(ng-repeat='item in collection' cs-showcase-item='item' ng-attr-id='{{item.id}}' ng-class='itemClass(item)')
+  .cs-showcase-item.active(ng-repeat='item in collection' cs-showcase-item='item' ng-attr-id='{{item.id}}' ng-class='itemClass(item)')
     .cs-showcase-item-text
       %h3
-        %span
-          {{item.title}}
-      %h4
-        %span(ng-bind-html='item.dimensions')
+        {{item.title}}
+      .cs-showcase-dim(ng-bind-html='item.dimensions')
       %hr(ng-if="item.type == 'title'")
       %div(ng-include="'_egg_timer_social.html'" ng-if="item.type != 'title'")
       %p(ng-bind-html='item.description')
@@ -13,7 +11,7 @@
         %btn.btn.btn-primary(ng-click='trackBuyButtonClick(item)')
           %a(ng-href='{{buyNowUrl(item)}}' target='_blank')
             Buy Now ${{item.price}}
-            
+
     .cs-showcase-container
       .cs-showcase-item-image(cs-showcase-image='item')
 

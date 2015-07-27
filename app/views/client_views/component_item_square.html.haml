@@ -1,0 +1,33 @@
+.item.square(ng-if="item && !viewMode" ng-class="theme")
+  //.item-content(ng-style="{'background-image':'linear-gradient(rgba(0, 0, 0, .25), rgba(0, 0, 0, .25)), url(' + (item.content.image | aspect1to1) + ')'}")
+  .item-content
+    %cs-image.item-content-image(url="item.content.image" aspect="1:1")
+    .item-divider.first.item-title
+      {{item.content.title}}
+    .item-divider.middle
+      %a.item-button.btn-outline(ng-href='{{item.content.url}}' ng-click="track()")
+        {{getButtonMessage()}}
+    .item-divider.last
+
+.item.square.blank(ng-if="!item")
+  .item-content
+    .item-divider.first.item-title
+      Title
+    .item-divider.middle
+      %a.item-button.btn-outline(ng-href='{{item.content.url}}')
+        Button
+    .item-divider.last
+
+%div(ng-if="item && viewMode=='edit'")
+  %label Title
+  %input(type='text' ng-model='item.content.title')
+
+  %label Image
+  %input(type='text' ng-model='item.content.image')
+  %div(filepicker ng-model='item.content.image')
+
+  %label Button Message
+  %input(type='text' ng-model='item.content.buttonMessage')
+
+  %label Url
+  %input(type='text' ng-model='item.content.url')

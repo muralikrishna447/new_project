@@ -3,7 +3,7 @@
 -##################################################################################
 
 %csEditPair
-  %csEditPairShow.show-group(itemprop="ingredients")
+  %csEditPairShow.show-group
     .quantity-and-unit
       .quantity-group.qtyfade
         %span.lbs-qty(csscalingeditable){style: "display: none;"}
@@ -26,37 +26,37 @@
   %csEditPairEdit.ingredient-edit-half
     %input.quantity(  cs-emit-focus
                             csselectonfocus
-                            cslimitquantity 
-                            placeholder="qty" 
-                            autocomplete="off" 
-                            ng-model="ai.display_quantity" 
+                            cslimitquantity
+                            placeholder="qty"
+                            autocomplete="off"
+                            ng-model="ai.display_quantity"
                             size=5)
 
 
     %select.unit( cs-emit-focus
-                  type="text" 
-                  ng-model="ai.unit" 
-                  required="true" 
-                  ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()") 
+                  type="text"
+                  ng-model="ai.unit"
+                  required="true"
+                  ng-options="u.name as u.menuName group by u.measures for u in getAllUnits()")
 
     %input.name(  cs-emit-focus
-                  csselectonfocus 
-                  type="text" 
-                  placeholder="New ingredient" 
-                  typeahead-editable="true" 
-                  autocomplete="off" 
-                  class="ingredient-typeahead" 
+                  csselectonfocus
+                  type="text"
+                  placeholder="New ingredient"
+                  typeahead-editable="true"
+                  autocomplete="off"
+                  class="ingredient-typeahead"
                   ng-model="ai.ingredient"
                   typeahead="i as i.title for i in all_ingredients($viewValue)")
 
     %input.note(  cs-emit-focus
                   csselectonfocus
-                  type="text" 
-                  placeholder="note" 
-                  autocomplete="off" 
+                  type="text"
+                  placeholder="note"
+                  autocomplete="off"
                   ng-model="ai.note")
 
-      
+
     .btn-toolbar.action-button-group
       .btn-group
         .btn.drag-handle.btn-small.btn-secondary(tooltip="Drag to reorder")

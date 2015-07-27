@@ -1,8 +1,14 @@
 module Api
   module V0
-    class BaseController < ActionController::Base
+    class BaseController < BaseApplicationController
       skip_before_filter :verify_authenticity_token
       # before_filter :cors_set_access_control_headers
+
+      rescue_from Exception do |exception|
+        logger.error exception
+        logger.error exception.backtrace
+        render json: {status: 500, message: 'Server error'}, status: 500
+      end
 
       def cors_set_access_control_headers
         headers['Access-Control-Allow-Origin'] = '*'
@@ -52,47 +58,41 @@ module Api
       end
 
       protected
-
       def ensure_authorized
         begin
           if request.authorization()
             token = request.authorization().split(' ').last
           else
             logger.info "Authorization token not set"
-            token = nil
+            render_api_response(401, {message: 'Unauthenticated'})
+            return
           end
-          unless valid_token?(token)
-            raise "INVALID TOKEN"
+
+          token = AuthToken.from_string(token)
+          aa = ActorAddress.find_for_token(token)
+          unless aa
+            logger.info "Not ActorAddress found for token #{token}"
+            render_unauthorized
+            return
           end
+
+          unless aa.valid_token?(token)
+            logger.info "Invalid token"
+            render_unauthorized
+            return
+          end
+
+          # TODO - handle non-user tokens gracefully
+          @user_id_from_token = token.claim['User']['id']
+
         rescue Exception => e
-          puts e
-          render json: {status: 401, message: 'Unauthorized.'}, status: 401
+          logger.error e
+          logger.error e.backtrace.join("\n")
+          render_unauthorized
         end
       end
 
-      def create_token(user, exp=nil, restrict_to=nil)
-        secret = ENV["AUTH_SECRET_KEY"]
-        key = OpenSSL::PKey::RSA.new secret, 'cooksmarter'
-        issued_at = (Time.now.to_f * 1000).to_i
-        claim = {
-          iat: issued_at,
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email
-          }
-        }
-        claim[:exp] = exp if exp
-        claim[:restrictTo] = restrict_to if restrict_to
-
-        jws = JSON::JWT.new(claim.as_json).sign(key.to_s)
-        jwe = jws.encrypt(key.public_key)
-        jwt = jwe.to_s
-        # puts "JWS: #{jws}"
-        # puts "JWE: #{jwe}"
-        # puts "JWT: #{jwt}"
-      end
-
+      # Still used by messaging service stuff
       def valid_token?(token, restrict_to = nil)
         key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
         decoded = JSON::JWT.decode(token, key)
@@ -108,6 +108,16 @@ module Api
         end
       end
 
+      def render_api_response status, contents = {}
+        contents[:request_id] = request.uuid()
+        contents[:status] = status
+        logger.info("API Response: #{contents.inspect}")
+        render json: contents, status: status
+      end
+
+      def render_unauthorized
+        render_api_response(403, {message: 'Unauthorized.'})
+      end
     end
   end
 end

@@ -64,7 +64,6 @@ describe ApplicationController do
 
   describe 'brombone' do
     controller do
-      before_filter :get_escaped_fragment_from_brombone
       def show
         render text: "Fall through to standard render"
       end
@@ -75,25 +74,6 @@ describe ApplicationController do
       Net::HTTP.stub!(:new).and_return @http
     end
 
-    it 'doesnt call brombone for static page when _escaped_fragment_ not present' do
-      @http.should_not_receive(:request)
-      get :show, id: 1
-    end
-
-    it 'calls brombone for static page when _escaped_fragment_ present' do
-      resp200 = mock :http_response, code: 200, body: ""
-      @http.should_receive(:request).with(an_instance_of(Net::HTTP::Get)).and_return(resp200)
-      get :show, id: 1, '_escaped_fragment_' => ''
-      expect(response.body).to_not include("Fall through")
-    end
-
-    it 'passes through to standard render if brombone errors' do
-      resp404 = mock :http_response, code: 404, body: ""
-      @http.should_receive(:request).with(an_instance_of(Net::HTTP::Get)).and_return(resp404)
-      get :show, id: 1, '_escaped_fragment_' => ''
-      expect(response.body).to include("Fall through")
-    end
-
     it 'sets is_brombone when brombone header is in request' do
       request.env["X-Crawl-Request"] = 'brombone'
       get :show, id: 1
@@ -101,4 +81,3 @@ describe ApplicationController do
     end
   end
 end
-

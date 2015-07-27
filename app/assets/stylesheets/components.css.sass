@@ -1,108 +1,71 @@
 @import 'mixins'
 
+.action-new_home
+  padding: 0
+
 .component-container
-  margin-bottom: 40px
+  width: 100%
+  margin-bottom: 80px
   @include display-flex
   @include justify-content(center)
-  .component-full
+  .component
+    position: relative
+  .component.small
+    @include flex(0 1 700px)
+    padding: 0 20px
+  .component.standard
+    @include flex(0 1 1080px)
+    padding: 0 20px
+  .component.full
     @include flex(0 1 100%)
 
-  .component-small
-    @include flex(0 1 400px)
-
-  .component-medium
-    @include flex(0 1 800px)
-
-  .component-large
-    @include flex(0 1 1200px)
+@media (max-width: 600px)
+  .component-container
+    margin-bottom: 60px
 
 .component-edit-button
-  @include display-flex
-  @include justify-content(center)
-
-.component-form
-  padding: 20px
-  @include boxsizing
-  @include flex(0 0 600px)
-  input[type='text'], input[type='number'], textarea
-    width: 100%
-    border: 1px solid $light-gray
-    border-radius: 0px
-    margin-bottom: 20px
-    @include box-shadow(none)
-  textarea
-    min-height: 200px
-
-.component-mapper
-  background-color: $offwhite
-  border-radius: 10px
-  padding: 20px
-  margin-bottom: 20px
-  .component-mapper-title
-    font-weight: bold
-    margin-bottom: 20px
-    text-align: center
-  table
-    font-size: 1.4rem
-    width: 100%
-    text-align: left
-    tr
-      th
-        font-weight: normal
-      td
-        width: 50%
-        select
-          width: 100%
-        input[type='text'], input[type='number']
-          min-width: 200px
-          border: 1px solid $light-gray
-          border-radius: 0px
-          margin-bottom: 10px
-          @include box-shadow(none)
+  position: absolute
+  top: 0px
+  right: 0px
+  background: white
+  z-index: 9999
+  padding: 5px 10px
+  border: 1px solid #ccc
+  color: #333
+  min-width: 100px
+  text-align: center
+  @include transition(200ms all)
+  &:hover
+    cursor: pointer
+    background: $orange
+    color: white
+    border: 1px solid $orange
 
 .component-preview
-  padding: 20px
-  @include boxsizing
-  @include flex(1 0 600px)
-  max-width: 1200px
-
-.component-styles
-  background-color: $offwhite
-  border-radius: 10px
-  padding: 20px
-  margin-bottom: 20px
-  .component-styles-title
-    font-weight: bold
-    margin-bottom: 20px
-    text-align: center
-
-.component-styles-color-picker
-  .color-current
-    padding: 5px
+  position: fixed
+  top: 0px
+  left: 50%
+  width: 50%
+  height: 100%
+  @include display-flex
+  @include flex-direction(column)
+  @include justify-content(flex-start)
+  @include align-items(flex-start)
+  .component-preview-header
+    width: 100%
+    padding-top: 20px
     @include boxsizing
-    @include display-flex
-    &:hover
-      cursor: pointer
-      background-color: $offwhite
-  .color-options
-    border: 1px solid black
+    @include flex(1 0 auto)
+  .component
+    width: 100%
+    overflow: auto
+    @include flex(0 1 100%)
+  .component-preview-json
+    width: 100%
+    margin-bottom: 0px
+    overflow: auto
     @include boxsizing
-    @include display-flex
-    @include flex-direction(column)
-    .color-option
-      padding: 5px
-      @include boxsizing
-      @include display-flex
-      &:hover
-        cursor: pointer
-        background-color: $offwhite
-
-  .color-box
-    width: 20px
-    height: 20px
-    border: 1px solid black
-    margin-right: 5px
-    @include boxsizing
+    @include flex(0 1 100%)
 
 // Notifications //
 .notifications
@@ -122,39 +85,36 @@
 
 .btn-outline
   display: block
-  border: 2px solid rgba(255,255,255,.8)
-  color: white
+  border: 1px solid #333
+  color: #333
   padding: 5px 20px
   background-color: none
   z-index: 1
   text-align: center
   @include transition(all 300ms)
   &:hover
-    border: 2px solid $orange
+    border: 1px solid $orange
     background-color: $orange
     color: white
     cursor: pointer
 
 .btn-outline-rounded
-  display: block
-  border: 2px solid rgba(255,255,255,.8)
-  border-radius: 3px
-  color: white
+  display: inline-block
+  border: 1px solid #333
+  border-radius: 20px
+  color: #333
   padding: 5px 20px
   background-color: none
   z-index: 1
   text-align: center
-  @include transition(all 300ms)
+  @include boxsizing
+  @include transition(all 200ms)
   &:hover
-    border: 2px solid $orange
-    background-color: $orange
-    color: white
+    border: 1px solid $orange
+    color: $orange
     cursor: pointer
 
 // TEMP NEW HOMEPAGE
-.new-home
-  h2
-    margin-bottom: 40px
 
 .home-component-split-container
   @include display-flex
@@ -163,16 +123,69 @@
 .home-component-split
   @include display-flex
   @include flex-wrap(wrap)
-  @include flex(0 1 1200px)
+  @include flex(0 1 1080px)
+  padding: 0px 20px
   .home-component-split-item
-    padding-right: 10px
+    padding-right: 20px
     @include flex(1 1 50%)
     @include boxsizing
     &:last-of-type
       padding-right: 0px
-      padding-left: 10px
+      padding-left: 20px
 
-@media (max-width: 600px)
+@media (max-width: 800px)
   .home-component-split
     .home-component-split-item
+      padding: 0px
       @include flex(0 1 100%)
+      &:last-of-type
+        padding: 0px
+
+// Temp Experimental
+.component-form
+  margin-bottom: 100px
+  .experimental-nav
+    width: 100%
+    padding: 10px
+    @include display-flex
+    .experimental-nav-item
+      margin-right: 20px
+      @include display-flex
+      @include align-items(center)
+      label
+        margin: 0
+        margin-right: 10px
+      input
+        margin: 0
+      select
+        margin: 0
+  .nav-bottom
+    position: fixed
+    bottom: 0
+    left: 0
+    width: 100%
+    padding: 10px
+    background-color: white
+    @include boxsizing
+    @include display-flex
+    @include align-items(center)
+    @include justify-content(center)
+    a
+      margin-right: 20px
+
+.search-typeahead
+  width: 100%
+  position: relative
+  .search-typeahead-input
+    width: 100%
+  .search-typeahead-results
+    position: absolute
+    background: white
+    width: 100%
+    z-index: 9999
+    .search-typeahead-result
+      padding: 5px
+      @include boxsizing
+      &:hover
+        color: $orange
+        cursor: pointer

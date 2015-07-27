@@ -1,4 +1,4 @@
-if Rails.env.production? || Rails.env.staging?
+if Rails.env.production? || Rails.env.staging? || Rails.env.staging2?
   Rails.configuration.stripe = {
     publishable_key: ENV["STRIPE_KEY"],
     secret_key: ENV["STRIPE_SECRET"]

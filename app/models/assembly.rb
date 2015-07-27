@@ -16,7 +16,6 @@ class Assembly < ActiveRecord::Base
 
   has_many :gift_certificates, inverse_of: :assembly
 
-
   scope :published, where(published: true)
   scope :projects, where(assembly_type: 'Project')
   scope :recipe_developments, where(assembly_type: 'Recipe Development')
@@ -27,6 +26,13 @@ class Assembly < ActiveRecord::Base
 
   ASSEMBLY_TYPE_SELECTION = ['Course', 'Project', 'Group', 'Recipe Development', 'Kit']
   INCLUDABLE_TYPE_SELECTION = ['Activity', 'Assembly', 'Page', 'Assignment']
+
+  before_save :check_published
+  def check_published
+    if self.published && self.published_at.blank?
+      self.published_at = DateTime.now
+    end
+  end
 
   def ingredients
     activities.map(&:ingredients).flatten.sort_by{|i|i.ingredient.title}.reject{|i| i.unit == 'recipe'}
@@ -138,6 +144,11 @@ class Assembly < ActiveRecord::Base
       pct = 0.75
     when 'b1b01d389a50'
       pct = 0.5
+
+    # MEATHEAD
+    when 'f2ba193b2f9f'
+      pct = 0.5
+
     # TIMDISCOUNT
     when 'fb912ad989a0'
       pct = 0

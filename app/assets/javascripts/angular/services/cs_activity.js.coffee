@@ -6,7 +6,6 @@
                       update: {method: "PUT"},
                       startedit: {method: "PUT", url: "/activities/:id/notify_start_edit"},
                       endedit: {method: "PUT", url: "/activities/:id/notify_end_edit"}
-                      index_as_json: {method: "GET", url: "/gallery/index_as_json.json", isArray: true}
                       get_as_json: {url: "/activities/:id/as_json", method: "GET"}
                     }
                   )
@@ -44,9 +43,6 @@
             images = activity.steps.map (step) -> step.image_id
             image_fpfile = images[images.length - 1]
             return JSON.parse(image_fpfile) if (image_fpfile? && (image_fpfile != ""))
-
-  this.queryIndex = ->
-    Activity.index_as_json
 
   this
 

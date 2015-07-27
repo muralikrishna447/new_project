@@ -4,10 +4,12 @@
 
   .nell-card-media
     // Need to find a more universal way to get an image, possibly ActivityMethods
-    %img( ng-if='obj.featured_image_id'
-          cs-responsive-image='obj.featured_image_id')
-    %img( ng-if='!obj.featured_image_id && obj.image_id'
-          cs-responsive-image='obj.image_id')
+    %cs-image( ng-if='obj.featured_image_id'
+               url='obj.featured_image_id'
+               aspect='16:9')
+    %cs-image( ng-if='!obj.featured_image_id && obj.image_id'
+               url='obj.image_id'
+               aspect='16:9')
 
   .nell-card-text
     .relative

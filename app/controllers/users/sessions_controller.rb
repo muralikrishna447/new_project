@@ -42,6 +42,9 @@ class Users::SessionsController < Devise::SessionsController
   end
 
   def destroy
+    # Delete persisted _chefsteps_token on logout
+    cookies.delete :_chefsteps_token
+
     unless request.xhr?
       super
     else

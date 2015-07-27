@@ -1,12 +1,11 @@
 .cs-index-item-container
   %a(ng-href="{{url}}" target="_blank")
-    .cs-index-item-title
-      {{csTitle}}
+    .cs-index-item-title(ng-bind-html='csTitle')
     .cs-index-item-image.relative
       .cs-index-item-image-group.relative
         %cs-image(url='image' aspect="16:9")
       .cs-index-item-hover-info(ng-bind-html="hoverInfo")
-     
+
     .cs-index-item-footer
       .footer-left
         {{difficulty}}

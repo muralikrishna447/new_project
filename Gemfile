@@ -28,9 +28,13 @@ gem 'filepicker-rails'
 
 gem 'comma'
 
+gem 'librato-rails'
+gem 'librato-rack'
+
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-access-control-headers'
 gem "rack-timeout"
+gem 'rack-proxy'
 
 gem 'pg_search'                             # Postgres text search
 gem 'acts-as-taggable-on'                   # Taggable models
@@ -60,17 +64,20 @@ gem 'nested-hstore'
 gem 'gibbon'
 gem 'faraday'
 gem 'nori'
-# gem 'elasticsearch'
-gem 'elasticsearch-model'
-gem 'elasticsearch-rails'
 gem 'aws-sdk'
 gem 'json-jwt'
 gem 'intercom'
+gem "algoliasearch-rails"
 
 # gem 'ar-octopus', :git => 'https://github.com/tchandy/octopus.git'
 gem 'resque'
 
 gem 'sanitize'
+
+group :test do
+  gem 'webmock'
+end
+
 
 group :development do
   gem 'spring'

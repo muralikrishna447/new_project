@@ -1,7 +1,6 @@
-class ApplicationController < ActionController::Base
+class ApplicationController < BaseApplicationController
   include StatusHelpers
   protect_from_forgery
-  before_filter :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user
 
   if Rails.env.angular? || Rails.env.development?
     require 'database_cleaner'
@@ -102,8 +101,8 @@ class ApplicationController < ActionController::Base
     when "staging", "staging2"
       ENV["GOOGLE_APP_ID"]
     else
-      "108479453177.apps.googleusercontent.com"
-      # "73963737070-9595b3hcj6kqpii3trkg398m4q5duck5.apps.googleusercontent.com"
+      # "108479453177.apps.googleusercontent.com"
+      "73963737070-9595b3hcj6kqpii3trkg398m4q5duck5.apps.googleusercontent.com"
     end
   end
 
@@ -228,23 +227,6 @@ private
     end
   end
 
-  before_filter :get_escaped_fragment_from_brombone
-  def get_escaped_fragment_from_brombone
-    if params.has_key?(:'_escaped_fragment_')
-      logger.info("Rendering #{request.path} from brombone snapshot")
-      base_url = "http://chefsteps.brombonesnapshots.com/www.chefsteps.com#{request.path}"
-      uri = URI.parse(base_url)
-      http = Net::HTTP.new(uri.host, uri.port)
-      response = http.request(Net::HTTP::Get.new(uri.request_uri))
-      logger.info(response.inspect)
-      if response.code.to_i == 200
-        render text: response.body
-      else
-        logger.info("Brombone returned #{response.code} for #{request.path} - falling back to standard page")
-      end
-    end
-  end
-
   def email_list_signup(name, email, source='unknown', listname='a61ebdcaa6')
     begin
       Gibbon::API.lists.subscribe(
@@ -266,33 +248,42 @@ private
     end
   end
 
+  def email_list_add_to_group(email, grouping_id, groups)
+    # Reject blank group names
+    groups = groups.reject{ |name| name.blank? } if groups.kind_of?(Array)
+
+    merge_vars = {
+      groupings: [
+        {
+          id: '8061',
+          groups: groups
+        }
+      ]
+    }
+
+    begin
+      puts "Adding user: #{email} to interest groups"
+      Gibbon::API.lists.update_member(
+        id: 'a61ebdcaa6',
+        email: { email: email },
+        merge_vars: merge_vars
+      )
+    rescue Exception => e
+      puts "Error adding user: #{email}"
+      puts "Error message: #{e.message}"
+    end
+  end
+
   # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
   # do not use CSRF for CORS options
   skip_before_filter :verify_authenticity_token, :only => [:options]
 
-  # before_filter :cors_set_access_control_headers
-  # before_filter :authenticate_cors_user
 
   def authenticate_cors_user
     if request.xhr? && !user_signed_in?
       error = { :error => "You must be logged in." }
       render :json => error, :status => 401
     end
-  end
-
-  def record_uuid_in_new_relic
-    ::NewRelic::Agent.add_custom_parameters({ request_id: request.uuid()})
-  end
-
-  def log_current_user
-    logger.info("current_user id: #{current_user.nil? ? "anon" : current_user.id}")
-  end
-
-  def cors_set_access_control_headers
-    headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-    headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type, Authorization'
-    headers['Access-Control-Max-Age'] = "1728000"
   end
 
   def set_referrer_in_mixpanel(key)
@@ -340,6 +331,4 @@ private
   def verified_request?
     super || form_authenticity_token == request.headers['X_XSRF_TOKEN']
   end
-
 end
-

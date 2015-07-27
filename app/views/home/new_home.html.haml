@@ -1,37 +1,35 @@
+-# TODO Make the metatags below angularized.  We won't be able to do this until we update application.html
+- content_for :title, "ChefSteps | Recipes & Videos for Sous Vide, Baking, Barbecue, & More".html_safe
+- content_for :description, "ChefSteps is here to make cooking more fun. Get recipes, tips, and videos that show the whys behind the hows for sous vide, grilling, baking, and more."
+- content_for :keywords, "ChefSteps, Chef, Cooking, Sous Vide, Modernist, Baking, Barbecue, Cooking School"
+
+-# TODO Make the madlib into a real component
+.container-fluid.well-gradient#madlib-container-new(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='homeMadlib'; setIntent('ftue')")
+  = render "devise/sessions/new_angular"
+  .row-fluid
+    .container
+      .row
+        .span10.offset1.relative
+          = render 'madlib'
+
 .new-home(ng-controller='homeController as home' ng-cloak)
-  .btn.btn-primary(ng-if='home.editable' ng-click="home.showEditable = ! home.showEditable")
-    Toggle Edit
 
-  %component-edit-button(component-name='Home Hero One' ng-if='home.editable && home.showEditable')
-  .component-container(component-load component-id='home-hero-one')
+  .component-container(component-load component-id='home-one')
 
-  %component-edit-button(component-name='Home Matrix One' ng-if='home.editable && home.showEditable')
-  .component-container(component-load component-id='home-matrix-one')
+  .component-container(component-load component-id='home-two')
 
-  %h2.text-center
-    Here are the newest recipes.
+  .component-container(component-load component-id='home-three')
 
-  .home-component-split-container
-    .home-component-split
-      .home-component-split-item
-        %component-edit-button(component-name='Home Story One' ng-if='home.editable && home.showEditable')
-        .component-container(component-load component-id='home-story-one')
+  .component-container(component-load component-id='home-four')
 
-      .home-component-split-item
-        %component-edit-button(component-name='Home List One' ng-if='home.editable && home.showEditable')
-        .component-container(component-load component-id='home-list-one')
+  .component-container(component-load component-id='home-five')
 
-  %h2.text-center
-    Make some recipes tonight.
+  .component-container(component-load component-id='home-six')
 
-  %component-edit-button(component-name='Home Matrix Two' ng-if='home.editable && home.showEditable')
-  .component-container(component-load component-id='home-matrix-two')
+  .component-container(component-load component-id='home-seven')
 
-  %component-edit-button(component-name='Home Hero Two' ng-if='home.editable && home.showEditable')
-  .component-container(component-load component-id='home-hero-two')
+  .component-container(component-load component-id='home-eight')
 
-  %h2.text-center
-    Make some recipes tonight.
-
-  %component-edit-button(component-name='Home Matrix Three' ng-if='home.editable && home.showEditable')
-  .component-container(component-load component-id='home-matrix-three')
+-# TODO Make the footer into a real component
+= content_for :footer do
+  = render 'layouts/footer'

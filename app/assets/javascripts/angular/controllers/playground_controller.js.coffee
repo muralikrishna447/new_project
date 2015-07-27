@@ -231,10 +231,10 @@
       $scope.getCirculatorsStatus = "Error: #{JSON.stringify(data)}"
 
   $scope.createCirculatorStatus = null
-  $scope.createCirculator = (token, serialNumber, notes) ->
+  $scope.createCirculator = (token, circulatorId, serialNumber, notes) ->
     $http.post(
       host + '/api/v0/circulators',
-      {serialNumber: serialNumber, notes: notes},
+      {circulator: {id: circulatorId, serial_number: serialNumber, notes: notes}},
       headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
     ).success((data, status, headers, cfg) ->
       console.log "success: "
@@ -245,6 +245,21 @@
       console.log data
       console.log headers
       $scope.createCirculatorStatus = "Error: #{JSON.stringify(data)}"
+
+  $scope.getCirculatorTokenStatus = null
+  $scope.getCirculatorToken = (token, circulatorId) ->
+    $http.get(
+      host + "/api/v0/circulators/#{circulatorId}/token",
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.getCirculatorTokenStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      console.log headers
+      $scope.getCirculatorTokenStatus = "Error: #{JSON.stringify(data)}"
 
   $scope.deleteCirculatorStatus = null
   $scope.deleteCirculator = (token, id) ->

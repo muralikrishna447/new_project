@@ -1,47 +1,22 @@
-%fieldset
-  %label Rows
-  %input(type='number' ng-model='component.form.metadata.rows')
+%label Button Message
+%input(type='text' ng-model='component.form.meta.buttonMessage')
 
-%fieldset
-  %label Columns
-  %input(type='number' ng-model='component.form.metadata.columns')
+%label Description Character Limit
+%input(type='number' ng-model='component.form.meta.descriptionCharLimit' ng-change='component.setDescriptionCharLimit()')
 
-%fieldset
-  %label Item Type
-  %select(ng-options="item.name for item in itemTypes track by item.name" ng-model='component.form.metadata.itemType')
+.btn.btn-secondary(ng-click='component.addItem()')
+  Add Item
 
-%fieldset
-  %label Mode
-  %label.radio
-    %input(type='radio' ng-model='component.form.mode' value='api')
-    API
-  %label.radio
-    %input(type='radio' ng-model='component.form.mode' value='custom')
-    Custom
-
-// Api Mode
-%fieldset(ng-if="component.form.mode=='api' && component.form.metadata.itemType")
-
-  // Example API endpoints
-  .btn(ng-click="component.form.metadata.api.source = 'http://www.chefsteps.com/api/v0/activities'")
-    &#47;api/v0/activities
-
-  %label Source
-  %input(type='text' ng-model='component.form.metadata.api.source')
-
-  %div( component-mapper
-        connections='component.form.metadata.api.mapper'
-        component-keys='component.form.metadata.itemType.attrs'
-        component='component'
-        source = 'component.form.metadata.api.source'
-        ng-show='component.form.metadata.api.source' )
-
-  %div(ng-if="component.form.metadata.itemType.name == 'Media A'")
-    %label Max number of sentences in description
-    %input(type='number' ng-model='component.form.metadata.api.styles.description.sentenceLength')
-
-// Custom Mode
-%div(ng-if="component.form.mode=='custom'")
-  .matrix-item-form(ng-repeat='item in component.form.metadata.custom.items track by $index')
-    {{item.styles}}
-    %div(component-item item='item' template-url="component.form.metadata.itemType.formTemplateUrl" mode='component.form.mode' styles='item.styles')
+.component-container
+  .component(ng-class="component.form.meta.size")
+    .matrix(ng-class="'matrix-' + component.form.meta.columns + '-per-row'")
+      .matrix-item(ng-repeat='componentItem in component.form.meta.items | limitTo: component.numItems track by $index')
+        .item-form
+          .btn.btn-secondary(ng-click='component.toggleObject[$index] = !component.toggleObject[$index]')
+            %span(ng-if='!component.toggleObject[$index]')
+              Edit
+            %span(ng-if='component.toggleObject[$index]')
+              Close
+          %div(search-typeahead custom-method='true' on-select="component.setItem(item, componentItem)" ng-show='component.toggleObject[$index]')
+          %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" view-mode="'edit'" theme='component.form.meta.theme' ng-show='component.toggleObject[$index]')
+          %div(component-item item='componentItem' item-type-name="component.form.meta.itemTypeName" theme='component.form.meta.theme' char-limit='component.form.meta.descriptionCharLimit' button-message='component.form.meta.buttonMessage')

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150501224129) do
+ActiveRecord::Schema.define(:version => 20150623222712) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -91,6 +91,25 @@ ActiveRecord::Schema.define(:version => 20150501224129) do
   add_index "activity_ingredients", ["activity_id"], :name => "index_activity_ingredients_on_activity_id"
   add_index "activity_ingredients", ["ingredient_id"], :name => "index_activity_ingredients_on_ingredient_id"
   add_index "activity_ingredients", ["ingredient_order"], :name => "index_activity_ingredients_on_ingredient_order"
+
+  create_table "actor_addresses", :force => true do |t|
+    t.string   "actor_type",                               :null => false
+    t.integer  "actor_id",                                 :null => false
+    t.string   "address_id"
+    t.string   "client_metadata"
+    t.integer  "sequence",        :default => 0,           :null => false
+    t.string   "ip_address"
+    t.string   "status",          :default => "something"
+    t.integer  "issued_at"
+    t.integer  "expires_at"
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+    t.string   "unique_key"
+  end
+
+  add_index "actor_addresses", ["actor_id"], :name => "index_actor_addresses_on_actor_id"
+  add_index "actor_addresses", ["actor_type", "actor_id", "unique_key"], :name => "index_actor_addresses_on_actor_type_and_actor_id_and_unique_key", :unique => true
+  add_index "actor_addresses", ["address_id"], :name => "index_actor_addresses_on_address_id"
 
   create_table "admin_users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -210,6 +229,7 @@ ActiveRecord::Schema.define(:version => 20150501224129) do
     t.string   "notes"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.string   "circulator_id", :null => false
   end
 
   create_table "comments", :force => true do |t|
@@ -228,8 +248,7 @@ ActiveRecord::Schema.define(:version => 20150501224129) do
     t.string   "name"
     t.string   "slug"
     t.string   "component_type"
-    t.string   "mode"
-    t.hstore   "metadata"
+    t.hstore   "meta"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end

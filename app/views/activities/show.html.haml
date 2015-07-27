@@ -1,10 +1,14 @@
 -################################ HEADER / LAYOUT STUFF ################################
 -# Sanitize everything in the head so that no javascript gets put in there.  However an admin will have javascript rendered for the rest of the page, while a user will not.
 -# This fixes potential problems for XSS attacks.
-- content_for :title, "#{sanitize(@activity.title)} | #{@activity.activity_type.first}".html_safe
+- content_for :title, "#{sanitize(@activity.title)} | #{@activity_type_title}".html_safe
 - content_for :description, sanitize(@activity.meta_description).html_safe
 - content_for :canonical_link, activity_url(@activity) if @activity.id
 - content_for :keywords, sanitize(@activity.tag_list.join(','))
+-# Don't have google index UGC. This is an experiment to see if it hurts our SEO
+-# before we consider a more radical move of cutting out UGC completely.
+-if @activity.read_attribute(:creator) != 0
+  - content_for :extra_head_tags, '<META NAME="ROBOTS" CONTENT="NOINDEX">'.html_safe
 - if @activity.id
   - content_for :facebook_og do
     %meta{property: 'og:url', content: activity_url(@activity)}
@@ -57,7 +61,9 @@
           .span10.offset1.relative
             = render 'home/madlib'
 
-.schema-container{:itemscope => true, :itemtype => (@activity.is_recipe? ? "http://schema.org/Recipe" : "http://schema.org/Article")}
+.schema-container
+  %script(type="application/ld+json" ng-if="shouldIncludeJSONLD()" ng-bind-html="getJSONLD()")
+
   .recipe-container
 
     = render 'activities/banner_image'
@@ -71,7 +77,7 @@
         -# dummy default button so no way a default click on some other button happens when return is pressed in a text field
         %input(ng-click="" type="submit" style="height: 0px !important; width:0px !important; margin-left: -10000px;")
 
-        #activity-body.recipe_schema(ng-class="addEditModeClass()"){data: {:'activity-id' => @activity.id}}
+        #activity-body(ng-class="addEditModeClass()"){data: {:'activity-id' => @activity.id}}
           = render 'activities/main_activity_content', activity: @activity
 
   %div(nell-popup)
@@ -110,15 +116,6 @@
   = render 'restore_autosave.html.haml'
   = render 'already_editing_modal.html.haml'
 
-  %div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
-    .modal-header
-      %h2 Choose Tags
-      Pick all that apply. It is ok to have more than one in a category.
-    .modal-body.tag-bg
-      %csTagChooser(  ng-model="activity.tags"
-                      options="csTagService.activitySuggestedTags")
-    .modal-footer
-      %button.btn(ng-click="showTagsModal = false") Done
 
   -################################ PRELOADED JSON FOR SPEED ################################
 

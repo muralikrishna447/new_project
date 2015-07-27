@@ -1,7 +1,7 @@
 angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootScope", "$element", "$timeout", "$http", ($scope, $rootScope, $element, $timeout, $http) ->
 
   $scope.step.presentation_hints ||= {}
-  $scope.step.presentation_hints.aside_position ?= "left"
+  $scope.step.presentation_hints.aside_position = "left"
 
   $scope.masterSelect = false
 
@@ -97,6 +97,7 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
       # $scope.step.presentation_hints.aside_position = 'right'
     else
       $scope.step.is_aside = false
+      $scope.step.presentation_hints = {}
       $scope.step.presentation_hints.width = t
 
   $scope.stepIndex = ->
