@@ -4,13 +4,13 @@
       .cs-nav-logo
         = link_to root_url do
           .logo-box
-            %img.regular-logo(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h-tagline.png")
+            %img.regular-logo(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png")
   - else
     .cs-nav(ng-controller="NavbarController" ng-cloak)
       .cs-nav-logo
         = link_to root_url do
           .logo-box
-            %img.regular-logo(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h-tagline.png" id="chefsteps-logo")
+            %img.regular-logo(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" id="chefsteps-logo")
       .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
         - if current_user
           = link_to user_profile_url(current_user) do
