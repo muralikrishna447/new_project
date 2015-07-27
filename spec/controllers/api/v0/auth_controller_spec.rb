@@ -12,13 +12,13 @@ describe Api::V0::AuthController do
     it 'should return a 400 when called with bad parameters' do
       post :authenticate
       response.should_not be_success
-      #response.code.should eq("400")
+      response.code.should eq("400")
     end
 
     it 'should return a status 401 Unauthorized if the password is incorrect' do
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: 'abcdef'}, client_metadata: 'cooking_app'
       response.should_not be_success
-      #response.code.should eq("401")
+      response.code.should eq("403")
     end
 
     it 'should persist client metadata' do
@@ -45,16 +45,7 @@ describe Api::V0::AuthController do
         token: @aa.current_token.to_jwt
 
       response.should_not be_success
-      #response.code.should eq("401")
-    end
-
-    it 'should reject mismatched token' do
-      @aa.revoke
-      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
-        token: @aa.current_token.to_jwt
-
-      response.should_not be_success
-      #response.code.should eq("401")
+      response.code.should eq("403")
     end
 
     it 'should reject improperly signed token' do
@@ -66,14 +57,14 @@ describe Api::V0::AuthController do
         token: forged_token
 
       response.should_not be_success
-      #response.code.should eq("401")
+      response.code.should eq("403")
     end
 
     describe 'token' do
       before :each do
         post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}, client_metadata: 'cooking_app'
         response.should be_success
-        #response.code.should eq("200")
+        response.code.should eq("200")
         @token = JSON.parse(response.body)['token']
       end
 
