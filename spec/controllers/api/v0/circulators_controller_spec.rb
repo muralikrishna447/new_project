@@ -68,7 +68,7 @@ describe Api::V0::CirculatorsController do
 
   xit 'should return 400 when token is called without id' do
     post :token
-    response.should == '400'
+    response.code.should == '400'
   end
 
   it 'should not provide a token if circulator does not exist' do
