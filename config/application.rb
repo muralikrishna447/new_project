@@ -111,11 +111,6 @@ module Delve
     # Had to comment this out, it kept sales from actually working.
     config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: [%r{/landing$}], only_environments: ['production', 'staging'], force_secure_cookies: false
 
-    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, except: ['/gallery'], only_environments: ['production', 'staging'], force_secure_cookies: false, strict: true
-    # Make sure there is no ssl within the class itself
-    # config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, except: [%r{^(?!.*landing).*classes.*$|.*projects.*$}], only_environments: ['production', 'staging'], force_secure_cookies: false
-    # config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, except: [%r{.*/activities.*}], only_environments: ['production', 'staging'], force_secure_cookies: false, strict: true
-
     config.middleware.use Rack::Deflater
 
     # Order matters here, Brombone must come before FreshSteps
