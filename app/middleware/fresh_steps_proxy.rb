@@ -39,6 +39,9 @@ class FreshStepsProxy < Rack::Proxy
   def should_proxy?(env)
     request = Rack::Request.new(env)
 
+    # Don't proxy explicit requests for .json, those must be API type calls (like old index_as_json.json for mobile app)
+    return false if request.path.end_with?('.json')
+
     # Don't proxy if this is google asking for HTML snapshot, that gets handled
     # in get_escaped_fragment_from_brombone
     leave_for_brombone = request.query_string.include?('_escaped_fragment_')
