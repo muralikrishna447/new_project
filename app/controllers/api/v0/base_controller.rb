@@ -50,10 +50,21 @@ module Api
       end
 
       def authenticate_active_admin_user!
-        authenticate_user!
-        unless current_user.role?(:contractor)
-          flash[:alert] = "Unauthorized Access!"
-          redirect_to root_path
+        # authenticate_user!
+        # unless current_user.role?(:contractor)
+        #   flash[:alert] = "Unauthorized Access!"
+        #   redirect_to root_path
+        # end
+        ensure_authorized
+        begin
+          user = User.find @user_id_from_token
+          unless user.admin
+            render_unauthorized
+          end
+        rescue Exception => e
+          logger.error e
+          logger.error e.backtrace.join("\n")
+          render_unauthorized
         end
       end
 
