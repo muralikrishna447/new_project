@@ -20,7 +20,7 @@
 @app.controller 'SearchController', ["$scope", "$sce", "$location", ($scope, $sce, $location) ->
 
   $scope.getSearchQuery = ->
-    hash = "#?search_all=#{$scope.navbarSearchQuery}&sort=relevance"
+    hash = "?search_all=#{$scope.navbarSearchQuery}&sort=relevance"
     url = $sce.trustAsResourceUrl("/gallery" + hash)
-    window.location = url  
+    window.location = url
 ]
