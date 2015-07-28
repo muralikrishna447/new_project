@@ -29,12 +29,17 @@
   font-weight: normal
   font-style: italic
 
-
-/* Although this font is medium, we use it as our bold */
 @font-face
   font-family: "Circular"
   src: font_url("lineto-circular-medium.eot")
   src: font_url("lineto-circular-medium.eot?#iefix") format("embedded-opentype"), font_url("lineto-circular-medium.woff") format("woff"), font_url("lineto-circular-medium.ttf") format("ttf"), font_url("lineto-circular-medium.svg#lineto-circular-medium") format("svg")
+  font-weight: 500
+  font-style: normal
+  
+@font-face
+  font-family: "Circular"
+  src: font_url("lineto-circular-bold.eot")
+  src: font_url("lineto-circular-bold.eot?#iefix") format("embedded-opentype"), font_url("lineto-circular-bold.woff") format("woff"), font_url("lineto-circular-bold.ttf") format("ttf"), font_url("lineto-circular-bold.svg#lineto-circular-bold") format("svg")
   font-weight: bold
   font-style: normal
 
@@ -51,7 +56,7 @@ body
 
 h1, h2, h3, h1 textarea, h2 textarea, h3 textarea
   @include primary-font
-  font-weight: bold
+  font-weight: 500
   color: inherit
   margin: 0
   p
