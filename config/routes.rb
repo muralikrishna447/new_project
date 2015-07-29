@@ -373,5 +373,5 @@ Delve::Application.routes.draw do
   match '/*path' => 'application#options', :via => :options
 
   # http://techoctave.com/c7/posts/36-rails-3-0-rescue-from-routing-error-solution
-  match '*a', to: 'errors#routing', constraints: lambda { |r| ! r.url.match(/jasmine/) }
+  match '*id', to: 'pages#show', constraints: lambda { |r| ! r.url.match(/jasmine/) }
 end
