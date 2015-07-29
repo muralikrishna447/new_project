@@ -1,6 +1,6 @@
 class Component < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :name, use: [:slugged, :history]
+  friendly_id :name, use: [:slugged]
 
   attr_accessible :component_type, :meta, :name
   serialize :meta, ActiveRecord::Coders::NestedHstore
