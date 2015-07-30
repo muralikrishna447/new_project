@@ -5,7 +5,6 @@
 To set up a new machine:
 
 
-
 ## Required
 
 - install homebrew (brew.sh)
