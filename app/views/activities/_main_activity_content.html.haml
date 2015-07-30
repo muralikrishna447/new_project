@@ -8,8 +8,9 @@
       = render 'activities/intro_block'
 
       -# Sous Vide CTA: Only show banner for sous vide steak, sous vide time and temp, and sous vide chicken breast
-      - if @activity.id == 29 || @activity.id == 6043 || @activity.id == 5961
-        = render 'activities/sous_vide_cta'
+      - if @activity
+        -if @activity.id == 29 || @activity.id == 6043 || @activity.id == 5961
+          = render 'activities/sous_vide_cta'
 
       .standard-item
         = render 'activities/metadata'
