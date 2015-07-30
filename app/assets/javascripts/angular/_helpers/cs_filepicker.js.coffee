@@ -80,7 +80,7 @@
 
     # Both width and height provided
     if width && height
-      convertURL = convertURL + "/convert?fit=crop&align=faces&w=#{width}&h=#{height}&quality=#{quality}&cache=true&rotate=exif"
+      convertURL = convertURL + "/convert?fit=crop&w=#{width}&h=#{height}&quality=#{quality}&cache=true&rotate=exif"
 
     convertURL
 
