@@ -131,7 +131,9 @@
   = render 'layouts/intercom'
   = render 'layouts/embedly'
   = yield(:custom_js)
-  = inline_svg('cs-icons.svg')
+  
+  .cs-icons
+    = inline_svg('cs-icons.svg')
 
 -# This load on every page, so a convenient place to make sure mixpanel identity is known
 - if current_user
