@@ -80,18 +80,9 @@ module Delve
     config.assets.version = '9'
     config.assets.initialize_on_precompile = false
 
-
-    # Caching intended for test, staging, and production environments
-    unless Rails.env.development?
-      config.cache_store = :dalli_store
-      config.action_dispatch.rack_cache = {
-        verbose: true,
-        metastore: Dalli::Client.new(nil, namespace: 'meta'),
-        entitystore: Dalli::Client.new(nil, namespace: 'entity'),
-        allow_reload: false,
-        allow_revalidate: false
-      }
-    end
+    # Don't use Rack::Cache - it messes with our BromboneProxy and barely helps us on the upside
+    require 'rack/cache'
+    config.middleware.delete Rack::Cache
 
     # CORS
 
