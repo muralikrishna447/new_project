@@ -8,7 +8,7 @@ angular.module('ChefStepsApp').controller 'ShoppingController', ["$scope", "$roo
 
   $scope.loggedIn = false
 
-  $scope.product = {}
+  $scope.product = {quantity: 0}
 
   $scope.lineItem = {quantity: 1, id: null}
 
@@ -17,6 +17,7 @@ angular.module('ChefStepsApp').controller 'ShoppingController', ["$scope", "$roo
     $window.location = "/sign_in?returnTo=#{$window.encodeURIComponent($window.location+params)}"
 
   $scope.addToCart = (options) ->
+    return if product.quantity <= 0
     $http.post('/api/v0/shopping/multipass', {product_id: options.product_id, quantity: options.quantity})
       .success((data, status, headers) ->
         $window.location = data.redirect_to

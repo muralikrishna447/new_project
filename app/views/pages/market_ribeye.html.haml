@@ -141,8 +141,11 @@
         / %img.product-photo{ src: 'https://cdn.shopify.com/s/files/1/0171/7850/products/ribeye_large.jpg?v=1436993533', alt: 'Ribeye Roast' }
         %span.product-name Six-Pound Ribeye Roast
         %span.product-description feeds eight hungry adults
-        %button.buy-button{ type: 'submit'}
-          %span Buy now
+        %button.buy-button(type='submit' ng-disabled="product.quantity <= 0")
+          %span(ng-show="product.quantity <= 0")
+            Sold Out
+          %span(ng-show="product.quantity > 0")
+            Buy now
         %span.product-pricing
           $120
           %span.product-shipping (free shipping)
@@ -156,8 +159,11 @@
           %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/SM6op45XTOSdrBrOog2n'" aspect="1:1")
         %span.product-name Six-Pound Ribeye Roast
         %span.product-description feeds eight hungry adults
-        %button.buy-button{ type: 'submit'}
-          %span Buy now
+        %button.buy-button(type='submit' ng-disabled="product.quantity <= 0")
+          %span(ng-show="product.quantity <= 0")
+            Sold Out
+          %span(ng-show="product.quantity > 0")
+            Buy now
         %span.product-pricing
           $120
           %span.product-shipping (free shipping)
