@@ -1,0 +1,9 @@
+.component.sous-vide-cta
+  .item-container
+    .item.header
+      .item-content
+        %h3 Looking for more sous vide tips?
+        %h4
+          %i Try our Sous Vide 101 Guide
+        %a.btn.btn-primary(href='/classes/cooking-sous-vide-getting-started/landing' onclick="mixpanel.track('Activity Sous Vide CTA clicked', {'activity':'#{@activity.title}'});" no-nell-popup='true')
+          Take me there!
