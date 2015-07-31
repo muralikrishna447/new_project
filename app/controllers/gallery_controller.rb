@@ -1,11 +1,6 @@
 class GalleryController < ApplicationController
   after_filter :track_iphone_app_activity, only: :index_as_json
 
-  def index
-    @show_app_add = true
-    @recipes = []
-   end
-
   # This is legacy only for the cs-mobile app until we change it to call Algolia directly
   # There are no other clients.
   # We'd have to do this anyhow b/c even if we push an app update, you'll have old versions
