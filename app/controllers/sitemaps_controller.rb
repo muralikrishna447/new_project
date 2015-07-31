@@ -7,16 +7,15 @@ class SitemapsController < ApplicationController
     # aren't reachable by a non-deep-linked alternative.
 
 
-    @main_stuff = Activity.published() | 
-                  Ingredient.no_sub_activities() | 
-                  Assembly.pubbed_courses() | 
-                  Assembly.prereg_courses() | 
-                  Assembly.projects().published() | 
-                  Page.all() | 
-                  Poll.all() | 
+    @main_stuff = Activity.published() |
+                  Ingredient.no_sub_activities() |
+                  Assembly.pubbed_courses() |
+                  Assembly.prereg_courses() |
+                  Assembly.projects().published() |
+                  Page.all() |
                   Upload.approved()
 
-    @other_routes = ["/", "/about", "/gallery", "/jobs", "/ingredients" ]
+    @other_routes = ["/", "/about", "/gallery", "/jobs"]
     respond_to do |format|
       format.xml {
         render

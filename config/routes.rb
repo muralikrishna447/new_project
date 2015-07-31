@@ -128,7 +128,7 @@ Delve::Application.routes.draw do
   get 'password-reset-sent' => 'pages#password_reset_sent', as: 'password_reset_sent'
   get 'sous-vide' => 'pages#sous_vide_resources', as: 'sous_vide_resources'
   get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
-  
+
   # TIMDISCOUNT for the 'tim' part only
 
   get 'tim' => 'courses#tim'
@@ -177,7 +177,7 @@ Delve::Application.routes.draw do
     end
   end
 
-  resources :ingredients, only: [:index, :show, :update, :create, :destroy] do
+  resources :ingredients, only: [:show, :update, :create, :destroy] do
     member do
       post 'merge' => 'ingredients#merge'
       get 'as_json' => 'ingredients#get_as_json'
@@ -186,15 +186,11 @@ Delve::Application.routes.draw do
     collection do
       get 'all_tags' => 'ingredients#get_all_tags'
       get 'manager' => 'ingredients#manager'
-      get 'index_for_gallery' => 'ingredients#index_for_gallery'
     end
   end
 
-  resources :gallery, only: [:index], path: 'gallery' do
-    collection do
-      get 'index_as_json' => 'gallery#index_as_json'
-    end
-  end
+  get 'gallery/index_as_json' => 'gallery#index_as_json'
+
   resources :user_activities, only: [:create]
   resources :uploads do
     resources :comments

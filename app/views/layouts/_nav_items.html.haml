@@ -12,27 +12,22 @@
     = link_to courses_url do
       Classes
   %li
-    = link_to gallery_index_url do
+    = link_to '/gallery' do
       Recipes
   %li
     %a(href='http://www.chefsteps.com/forum' onclick="mixpanel.track('Forum Nav Clicked')")
       Forum
-  .hide-mobile    
+  .hide-mobile
     %li.cs-nav-dropdown
       %a.cs-nav-dropdown-toggle(ng-click="toggleDropdown('resources')")
         Resources
         %i.fa.fa-caret-down
       .cs-nav-dropdown-menu(ng-show="showDropdown=='resources'" ng-cloak)
-        %ul               
-          %li
-            = link_to ingredients_url do
-              %i.fa.fa-leaf
-              Ingredient Wiki
+        %ul
           %li
             = link_to projects_url do
               %i.fa.fa-cubes
               Projects
-          .section-tiny
           %li
             = link_to 'http://www.chefsteps.com/activities/the-egg-calculator' do
               = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/l4FOGWE7Swuz1kgKrNmZ", width: "15px"
@@ -41,7 +36,7 @@
             = link_to "http://www.chefsteps.com/activities/sous-vide-time-and-temperature-guide" do
               %i.fa.fa-clock-o
               Time & Temperature Guide
-        
+
           %li
             = link_to knife_collection_url do
               = image_tag "https://d92f495ogyf88.cloudfront.net/static/nav-knife-icon.png", width: "15px"
@@ -72,9 +67,9 @@
   %li
     %a(href="//twitter.com/chefsteps" target="_blank" onclick="mixpanel.track('Social Click', {'source' : 'Nav', 'network': 'Twitter'});")
       %i.fa.fa-twitter
-      .hide-desktop Twitter                     
+      .hide-desktop Twitter
 
   %li.section
     %a(href="//facebook.com/chefsteps" target="_blank" onclick="mixpanel.track('Social Click', {'source' : 'Nav', 'network': 'Facebook'});")
-      %i.fa.fa-facebook 
+      %i.fa.fa-facebook
       .hide-desktop Facebook

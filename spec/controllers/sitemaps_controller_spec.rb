@@ -24,14 +24,13 @@ describe SitemapsController, "#get" do
       get :show, {format: :xml}
       expect(response).to be_success
       expect(assigns(:other_routes)).to have_at_least(4).items
-      expect(assigns(:main_stuff)).to have(8).items
+      expect(assigns(:main_stuff)).to have(7).items
       expect(response.body).to include("http://www.chefsteps.com/activities/bummy")
       expect(response.body).to include("http://www.chefsteps.com/ingredients/yummy")
       expect(response.body).to include("http://www.chefsteps.com/classes/clummy")
       expect(response.body).to include("http://www.chefsteps.com/classes/zummy")
       expect(response.body).to include("http://www.chefsteps.com/projects/nummy")
       expect(response.body).to include("http://www.chefsteps.com/pages/frummy")
-      expect(response.body).to include("http://www.chefsteps.com/polls/crrummy")
       expect(response.body).to include("http://www.chefsteps.com/uploads/ucrrummy")
       expect(response.body).to_not include("http://chefsteps.com")
 
