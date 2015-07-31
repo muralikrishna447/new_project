@@ -79,10 +79,6 @@ class IngredientsController < ApplicationController
           render :json => result.to_json
         end
       end
-
-      format.html do
-        render
-      end
     end
   end
 
