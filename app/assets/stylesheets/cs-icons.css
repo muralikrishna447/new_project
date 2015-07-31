@@ -1,215 +1,224 @@
 .cs-icon-arrow-large-dims {
-  width: 20px;
-  height: 14px;
+	width: 20px;
+	height: 14px;
 }
 
 .cs-icon-arrow-small-dims {
-  width: 13.5px;
-  height: 9.5px;
+	width: 13.5px;
+	height: 9.5px;
 }
 
 .cs-icon-bulb-dims {
-  width: 26.3px;
-  height: 28.7px;
+	width: 26.3px;
+	height: 28.7px;
 }
 
 .cs-icon-c-active-dims {
-  width: 12.6px;
-  height: 12.9px;
+	width: 12.6px;
+	height: 12.9px;
 }
 
 .cs-icon-c-inactive-dims {
-  width: 12px;
-  height: 12.9px;
+	width: 12px;
+	height: 12.9px;
 }
 
 .cs-icon-camera-dims {
-  width: 30.3px;
-  height: 21.7px;
+	width: 30.3px;
+	height: 21.7px;
 }
 
 .cs-icon-camera-filled-dims {
-  width: 30.3px;
-  height: 21.7px;
+	width: 30.3px;
+	height: 21.7px;
 }
 
 .cs-icon-camera-roll-dims {
-  width: 25px;
-  height: 25px;
+	width: 25px;
+	height: 25px;
 }
 
 .cs-icon-code-dims {
-  width: 22px;
-  height: 11.3px;
+	width: 22px;
+	height: 11.3px;
 }
 
 .cs-icon-comment-dims {
-  width: 23px;
-  height: 23.8px;
+	width: 23px;
+	height: 23.8px;
 }
 
 .cs-icon-comment-add-dims {
-  width: 23px;
-  height: 23.8px;
+	width: 23px;
+	height: 23.8px;
 }
 
 .cs-icon-degree-dims {
-  width: 8.1px;
-  height: 8.2px;
+	width: 8.1px;
+	height: 8.2px;
 }
 
 .cs-icon-edit-dims {
-  width: 19.9px;
-  height: 21.3px;
+	width: 19.9px;
+	height: 21.3px;
 }
 
 .cs-icon-edit-a-copy-dims {
-  width: 21.1px;
-  height: 18px;
+	width: 21.1px;
+	height: 18px;
 }
 
 .cs-icon-f-active-dims {
-  width: 6.8px;
-  height: 12.4px;
+	width: 6.8px;
+	height: 12.4px;
 }
 
 .cs-icon-f-inactive-dims {
-  width: 6.1px;
-  height: 12.4px;
+	width: 6.1px;
+	height: 12.4px;
 }
 
 .cs-icon-facebook-dims {
-  width: 11.4px;
-  height: 22px;
+	width: 11.4px;
+	height: 22px;
 }
 
 .cs-icon-google-plus-dims {
-  width: 20px;
-  height: 20px;
+	width: 20px;
+	height: 20px;
 }
 
 .cs-icon-home-dims {
-  width: 20.6px;
-  height: 18.5px;
+	width: 20.6px;
+	height: 18.5px;
+}
+
+.cs-icon-instagram-dims {
+	width: 22.1px;
+	height: 22.1px;
 }
 
 .cs-icon-mail-dims {
-  width: 26px;
-  height: 20px;
+	width: 26px;
+	height: 20px;
 }
 
 .cs-icon-menu-dims {
-  width: 18.2px;
-  height: 16px;
+	width: 18.2px;
+	height: 16px;
 }
 
 .cs-icon-more-dims {
-  width: 19.1px;
-  height: 4px;
+	width: 19.1px;
+	height: 4px;
 }
 
 .cs-icon-movie-dims {
-  width: 24px;
-  height: 24px;
+	width: 24px;
+	height: 24px;
 }
 
 .cs-icon-pinterest-dims {
-  width: 20px;
-  height: 20px;
+	width: 20px;
+	height: 20px;
+}
+
+.cs-icon-play-dims {
+	width: 11px;
+	height: 11px;
 }
 
 .cs-icon-power-dims {
-  width: 18.4px;
-  height: 20.5px;
+	width: 18.4px;
+	height: 20.5px;
 }
 
 .cs-icon-print-dims {
-  width: 22px;
-  height: 28px;
+	width: 22px;
+	height: 28px;
 }
 
 .cs-icon-rate-dims {
-  width: 35.5px;
-  height: 34px;
+	width: 35.5px;
+	height: 34px;
 }
 
 .cs-icon-rated-dims {
-  width: 35.5px;
-  height: 34px;
+	width: 35.5px;
+	height: 34px;
 }
 
 .cs-icon-save-dims {
-  width: 15px;
-  height: 26px;
+	width: 15px;
+	height: 26px;
 }
 
 .cs-icon-saved-dims {
-  width: 15px;
-  height: 26px;
+	width: 15px;
+	height: 26px;
 }
 
 .cs-icon-share-dims {
-  width: 19.2px;
-  height: 19.2px;
+	width: 19.2px;
+	height: 19.2px;
 }
 
 .cs-icon-sides-dims {
-  width: 19.5px;
-  height: 19.5px;
+	width: 19.5px;
+	height: 19.5px;
 }
 
 .cs-icon-spanner-dims {
-  width: 14.6px;
-  height: 8.3px;
+	width: 14.6px;
+	height: 8.3px;
 }
 
 .cs-icon-steps-dims {
-  width: 16.7px;
-  height: 16px;
+	width: 16.7px;
+	height: 16px;
 }
 
 .cs-icon-tick-dims {
-  width: 17.2px;
-  height: 13.2px;
+	width: 17.2px;
+	height: 13.2px;
 }
 
 .cs-icon-time-large-dims {
-  width: 28.4px;
-  height: 25.2px;
+	width: 28.4px;
+	height: 25.2px;
 }
 
 .cs-icon-time-small-dims {
-  width: 19.7px;
-  height: 17.5px;
+	width: 19.7px;
+	height: 17.5px;
 }
 
 .cs-icon-twitter-dims {
-  width: 27.1px;
-  height: 22px;
+	width: 27.1px;
+	height: 22px;
 }
 
 .cs-icon-wifi-medium-dims {
-  width: 11.3px;
-  height: 7.1px;
+	width: 11.3px;
+	height: 7.1px;
 }
 
 .cs-icon-wifi-protected-dims {
-  width: 11.3px;
-  height: 16px;
+	width: 11.3px;
+	height: 16px;
 }
 
 .cs-icon-wifi-strong-dims {
-  width: 16.9px;
-  height: 11.4px;
+	width: 16.9px;
+	height: 11.4px;
 }
 
 .cs-icon-wifi-weak-dims {
-  width: 3px;
-  height: 3px;
+	width: 3px;
+	height: 3px;
 }
 
 .cs-icon-x-dims {
-  width: 14px;
-  height: 14px;
+	width: 14px;
+	height: 14px;
 }
-

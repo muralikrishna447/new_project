@@ -271,7 +271,6 @@
 =editable_text
   @include boxsizing
   @include any-shadow(none)
-  @include primary-font-light
   background-color: transparent
   border: none
   border-radius: 0
@@ -295,7 +294,7 @@
 
 /* Typography */
 
-$baseline: 1.1rem /* = 11px/14px */
+$baseline: 1.2rem /* = 11px/14px */
 
 /* Experimental - establishing standard spacing on horizontal axis */
 $horz-baseline-small: 3px
@@ -309,19 +308,11 @@ $horz-baseline-large: 13px
   font-style: normal
 
 =primary-font
-  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
-  font-weight: 400
-  font-style: normal
-
-=primary-font-light
-  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
-  font-weight: 300
-  font-style: normal
+  font-family: 'Circular', 'Helvetica Neue', arial, sans-serif
 
 =primary-font-bold
-  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', arial, sans-serif
-  font-weight: 700
-  font-style: normal
+  font-family: 'Circular', 'Helvetica Neue', arial, sans-serif
+  font-weight: bold
 
 /* Animations */
 
@@ -461,18 +452,17 @@ $standard-bez-in-out: cubic-bezier(0.42,0,0.58,1)
 
 
 /* Colors */
-$orange: #e25f25
-//$orange: #DB7354
+$orange: rgb(255,103,77)
 $green: #49c1a4
-$dark-orange: #D25029
-$darker-orange: #B84724
+$dark-orange: rgb(237,93,77)
+$darker-orange: rgb(219,80,69)
 $light-blue: #0088CC
 $blue: #006DCC
 $blue-opaque: rgba(0,109,204,.8)
 $red: #DA4f49
 $red-opaque: rgba(218,79,73,.8)
 $light-gray: #ccc
-$light-black: rgb(51,51,51)
+$light-black: rgb(65,65,65)
 $dark-gray: rgb(146, 146, 146)
 $offwhite: #f1f1f1
 $white-opaque: rgba(255,255,255,.3)
@@ -480,6 +470,6 @@ $white-opaque: rgba(255,255,255,.3)
 
 
 /* Layout */
-$desktop-standard-item-width: 600px
+$desktop-standard-item-width: 700px
 $aside-width: 289px
 $aside-margin: 44px

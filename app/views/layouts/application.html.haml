@@ -89,7 +89,7 @@
 
     .container.noprint.cookies-disabled(style="display:none;")
       .row-fluid
-        %h1 We Need Cookies
+        %strong We Need Cookies
         ChefSteps accounts work best with cookies enabled in your browser. These are little text files stored on your computer that tell us to remember stuff. If you just want to look at recipes, go for it! If you want all the benefits of an account, please enable cookies.
 
     = yield
@@ -131,7 +131,9 @@
   = render 'layouts/intercom'
   = render 'layouts/embedly'
   = yield(:custom_js)
-  = inline_svg('cs-icons.svg')
+  
+  .cs-icons
+    = inline_svg('cs-icons.svg')
 
 -# This load on every page, so a convenient place to make sure mixpanel identity is known
 - if current_user

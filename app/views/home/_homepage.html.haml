@@ -60,13 +60,13 @@
     .span4
       .home-section
         %h3
-          = link_to "Latest", gallery_index_path, class: 'black-link'
+          = link_to "Latest", '/gallery', class: 'black-link'
         .whats-new.section
           - @latest.each.with_index do |item, index|
             = render 'shared/media_box_4', url: activity_path(item), title: item.title, image: item.featured_image, object: item
         .section.pull-right
           %h4.section
-            = link_to 'See more', gallery_index_path
+            = link_to 'See more', '/gallery'
 
       = render 'shared/bloom_hot'
 

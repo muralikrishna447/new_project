@@ -1,5 +1,8 @@
 @import 'mixins'
 
+body.activity_show
+  padding: 0!important
+
 .negative-z
   z-index: -10000
 
@@ -12,6 +15,7 @@ $banner-height: $baseline * 45
 .banner-image
   max-height: $banner-height
   width: 100%
+  overflow: hidden
   position: relative
   margin-bottom: $baseline
   cursor: pointer
@@ -171,6 +175,8 @@ $banner-height: $baseline * 45
 // Fix so that asides are always on top.  Triggered with isSeparateAside($index + 1)
 .is-aside
   z-index: 999
+  background-color: $offwhite
+  margin: 0 -20px
 
 @media (max-width: 900px)
   .banner-image
@@ -197,3 +203,9 @@ $banner-height: $baseline * 45
   .activity-columns-1
     .aside.rightInset
       margin-right: -16%
+  .is-aside
+    margin: 0
+  .activity-description
+    padding: 0 20px
+  .flex-title
+    text-align: center

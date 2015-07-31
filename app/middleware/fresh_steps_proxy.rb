@@ -6,10 +6,7 @@ class FreshStepsProxy < Rack::Proxy
   # work when proxying, but it also made regular page loads incredibly slow, I think because
   # browser-sync was pinging multiple times per second. Although without the proxy, rails returns 406 so
   # it is still doing work. Curious.
-  #
-  # TODO: I'm temporarily using /fs_gallery (and accepting that on the FS side) so we can have coexistence on prod
-  # for a little while. Just change fs_gallery to gallery once everything is good.
-  PREFIX = %w(/fs_gallery)
+  PREFIX = %w(/gallery)
 
   def initialize(app)
     @app = app
@@ -41,6 +38,9 @@ class FreshStepsProxy < Rack::Proxy
 
   def should_proxy?(env)
     request = Rack::Request.new(env)
+
+    # Don't proxy explicit requests for .json, those must be API type calls (like old index_as_json.json for mobile app)
+    return false if request.path.end_with?('.json')
 
     # Don't proxy if this is google asking for HTML snapshot, that gets handled
     # in get_escaped_fragment_from_brombone

@@ -1,49 +1,38 @@
 .container-fluid#footer.noprint(ng-cloak ng-hide="editMode")
-  .footer-image
-    .row-fluid
-      .span12
-        .row
-          .container#footer-body
-            .span12.well.well-opaque
-              .span3
-                %h3 About
-                %ul.unstyled
-                  %li= link_to 'About ChefSteps', '/about', onclick: "mixpanel.track('Footer Link', {'source' : 'About', url: window.location.pathname});"
-                  %li= link_to 'Blog', 'http://blog.chefsteps.com', onclick: "mixpanel.track('Footer Link', {'source' : 'Blog', url: window.location.pathname});"
-                  %li= link_to 'Jobs', '/jobs', onclick: "mixpanel.track('Footer Link', {'source' : 'Jobs', url: window.location.pathname});"
-                  %li= link_to 'Press Kit', 'http://chefsteps.com/pages/presskit', onclick: "mixpanel.track('Footer Link', {'source' : 'Press Kit', url: window.location.pathname});"
-
-              .span3
-                %h3 Learn 
-                %ul.unstyled
-                  %li= link_to 'Recipes', gallery_index_url + "#/?activity_type=Recipe", onclick: "mixpanel.track('Footer Link', {'source' : 'Recipes', url: window.location.pathname });"
-                  %li= link_to 'Techniques', gallery_index_url + "#/?activity_type=Technique", onclick: "mixpanel.track('Footer Link', {'source' : 'Techniques', url: window.location.pathname});"
-                  %li= link_to 'Classes', courses_url, onclick: "mixpanel.track('Footer Link', {'source' : 'Classes', url: window.location.pathname});"
-                  %li= link_to 'Science', gallery_index_url + "#/?activity_type=Science", onclick: "mixpanel.track('Footer Link', {'source' : 'Science', url: window.location.pathname});"
-                  %li= link_to 'Ingredients', ingredients_url, onclick: "mixpanel.track('Footer Link', {'source' : 'Ingredients', url: window.location.pathname});"
-
-              .span6.section.text-center
-                = image_tag 'https://d92f495ogyf88.cloudfront.net/static/logo-minimal.png'
-                .sup.trademark ®
-                %h5 ChefSteps is here to help you cook smarter.
-                %p Handmade at Pike Place Market in Seattle, WA
-            
-              .row
-                .span12
-                  %hr
-                  %small 
-                    = mail_to 'info@chefsteps.com'
-                    &middot; 
-                    %a{href: 'http://feeds.feedburner.com/ChefSteps'} 
-                      %i.icon-rss
-                        Subscribe to RSS
-                    &middot; 
-                    =link_to 'Legal', legal_url, onclick: "mixpanel.track('Footer Link', {'source' : 'Legal', url: window.location.pathname});"
-
-          .row
-            .span12.section.text-center
-              %p.creative-commons
-                %a{ href: 'http://creativecommons.org/licenses/by-nc-sa/3.0', ta: '_blank' }
-                  = image_tag 'https://d92f495ogyf88.cloudfront.net/static/by-nc-sa.png'
-                %a{href: 'https://mixpanel.com/f/partner'}
-                  %img{src: '//cdn.mxpnl.com/site_media/images/partner/badge_blue.png', alt: 'Mobile Analytics'}
+  .footer-items
+    .footer-item.footer-item-logo
+      %img(src='https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-white.png')
+      %a(href='https://www.facebook.com/Chefsteps' target='_blank')
+        %i(cs-icon='facebook')
+      %a(href='https://twitter.com/chefsteps' target='_blank')
+        %i(cs-icon='twitter')
+      %a(href='https://instagram.com/chefsteps' target='_blank')
+        %i(cs-icon='instagram')
+    .footer-item.footer-item-links
+      %ul
+        %li
+          %a(href='/classes')
+            Classes
+        %li
+          %a(href='/gallery')
+            Recipes
+        %li
+          %a(href='/forum')
+            Forum
+        %li
+          %a(href='http://blog.chefsteps.com')
+            Blog
+    .footer-item.footer-item-links
+      %ul
+        %li
+          %a(href='/about')
+            About ChefSteps
+        %li
+          %a(href='/jobs')
+            Jobs
+        %li
+          %a(href='/pages/presskit')
+            Press Kit
+        %li
+          %a(href='/legal')
+            Legal

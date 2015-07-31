@@ -5,7 +5,6 @@
 To set up a new machine:
 
 
-
 ## Required
 
 - install homebrew (brew.sh)
@@ -73,9 +72,9 @@ heroku run rake db:migrate --app staging2-chefsteps
 
 Copy Production Database to Staging2
 -
-1. heroku pgbackups:restore HEROKU_POSTGRESQL_CHARCOAL 'heroku pgbackups:url --app production-chefsteps' --app staging2-chefsteps
+1. heroku pg:backups restore `heroku pg:backups public-url --app production-chefsteps` DATABASE --app staging2-chefsteps
 
-2. This will give a warning asking you to type in 'staging2-chefsteps' to confirm the destructive action.  **Make sure it says staging2.**
+2. This will give a warning asking you to type in 'staging2-chefsteps' to confirm the destructive action.  **Make sure it says staging2!**
 ```
 
 # Dan's Notes on E2E testing

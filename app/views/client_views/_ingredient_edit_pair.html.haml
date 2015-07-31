@@ -14,8 +14,8 @@
       .unit.qtyfade(ng-bind="ai.unit")
     .ingredient-title
       %span(ng-switch="" on="ingredient_display_type(ai)")>
-        %a(ng-switch-default="" ng-href="/ingredients/{{ai.ingredient.slug}}" ng-bind-html="ai.ingredient.title")>
-        %a(ng-switch-when="subrecipe" ng-href="/activities/{{ai.ingredient.sub_activity_id}}" ng-bind-html="ai.ingredient.title" )>
+        %a(ng-switch-default="" ng-href="/ingredients/{{ai.ingredient.slug}}" ng-bind-html="ai.ingredient.title" onclick="mixpanel.track('Ingredient Link Clicked')")>
+        %a(ng-switch-when="subrecipe" ng-href="/activities/{{ai.ingredient.sub_activity_id}}" ng-bind-html="ai.ingredient.title" onclick="mixpanel.track('Ingredient Link Clicked')")>
         %span.fake-link(ng-switch-when="fake_link" ng-bind-html="ai.ingredient.title")>
       %span(ng-show="!!ai.note" ng-bind-html="', ' + (ai.note | shortcode)")>
       .for-sale(ng-if="ai.ingredient.product_url")

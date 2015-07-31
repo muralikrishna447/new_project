@@ -74,23 +74,15 @@ module Delve
     config.assets.enabled = true
     config.assets.paths << "#{Rails.root}/app/assets/videos"
     config.assets.paths << "#{Rails.root}/app/assets/maps"
+    config.assets.paths << "#{Rails.root}/app/assets/fonts"
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '9'
     config.assets.initialize_on_precompile = false
 
-
-    # Caching intended for test, staging, and production environments
-    unless Rails.env.development?
-      config.cache_store = :dalli_store
-      config.action_dispatch.rack_cache = {
-        verbose: true,
-        metastore: Dalli::Client.new(nil, namespace: 'meta'),
-        entitystore: Dalli::Client.new(nil, namespace: 'entity'),
-        allow_reload: false,
-        allow_revalidate: false
-      }
-    end
+    # Don't use Rack::Cache - it messes with our BromboneProxy and barely helps us on the upside
+    require 'rack/cache'
+    config.middleware.delete Rack::Cache
 
     # CORS
 
@@ -109,10 +101,6 @@ module Delve
     # SSL configuration using strict: true so that only specific requests are using ssl.
     # Had to comment this out, it kept sales from actually working.
     config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: [%r{/landing$}], only_environments: ['production', 'staging'], force_secure_cookies: false
-
-    # Make sure there is no ssl within the class itself
-    # config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, except: [%r{^(?!.*landing).*classes.*$|.*projects.*$}], only_environments: ['production', 'staging'], force_secure_cookies: false
-    # config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, except: [%r{.*/activities.*}], only_environments: ['production', 'staging'], force_secure_cookies: false, strict: true
 
     config.middleware.use Rack::Deflater
 

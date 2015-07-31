@@ -967,26 +967,82 @@ csembedyoutube, csembedvimeo
     border-width: 0px !important
     box-shadow: none !important
 
+.cs-icons
+  position: absolute
+  left: -10000px
+  bottom: 0
+  opacity: 0
+  
 #footer
-  padding-top: 50px
-  //background-image: url('http://d2eud0b65jr0pw.cloudfront.net/final_dish_IMG_5402.jpg')
-  background-position: center top
-  background-repeat: no-repeat
-  //background-size: 100%
-  margin-top: 60px
-  .footer-image
-    background: linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0)), url('https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx/convert?fit=max&w=1400&quality=90&cache=true') no-repeat left top
-    @include background-size(cover)
-    padding: 0 20px
-    margin-left: -20px
-    margin-right: -20px
-  #footer-body
-    margin-top: 50px
-    z-index: 999
-  .footer-social
+  background-color: $orange
+  display: flex
+  justify-content: center
+  align-items: center
+  padding: 112px 56px
+  .footer-items
+    width: 600px
+    display: flex
+
+.footer-item-logo
+  flex: 0 1 100%
+  border-right: 1px solid rgba(255,255,255,0.2)
+  color: white
+  padding-right: 70px
+  margin-right: 56px
+  img
+    width: 100%
+    margin-bottom: 28px
+  a
     color: white
+    padding-right: 14px
+    display: inline-block
+    width: 28px
+    transition: opacity 300ms
     &:hover
-      text-decoration: none
+      opacity: 0.6
+
+.footer-item-links
+  flex: 0 1 100%
+  padding-left: 14px
+  color: white
+  font-size: 18px
+  line-height: 28px
+  font-weight: normal
+  ul
+    list-style: none
+    padding: 0
+    margin: 0
+    li
+      a
+        color: white
+        &:hover
+          text-decoration: underline
+    
+@media (max-width: 700px)
+  #footer
+    padding: 56px 14px
+    
+  .footer-items
+    flex-direction: column
+    max-width: 180px
+      
+  .footer-item-logo
+    padding: 0
+    margin: 0 0 28px
+    border: 0px
+    text-align: center 
+    img 
+      margin-bottom: 14px
+      max-width: 150px
+    a 
+      padding: 14px
+      
+  .footer-item-links
+    padding: 28px 0
+    text-align: center
+    border-top: 1px solid rgba(255,255,255,0.2)   
+    ul
+      padding: 0px
 
 /* Labels */
 .label
@@ -1029,6 +1085,7 @@ csembedyoutube, csembedvimeo
   border-bottom: 1px $dark-orange solid
   border-radius: 0px
   margin-bottom: $baseline
+  text-shadow: none
   position: relative
   @include boxsizing
   @include transition(all .25s)
@@ -1399,7 +1456,6 @@ csequipmenteditpair
       margin-bottom: 0px
       max-width: 280px
       width: 100%
-      @include primary-font-light
       @include editable_text
 
     input.quantity-group
@@ -1775,11 +1831,6 @@ input.summary-tweet
       width: 100%
 
   #slider-container
-    margin: 0px -20px
-    padding: 0px 20px
-
-
-  #footer
     margin: 0px -20px
     padding: 0px 20px
 

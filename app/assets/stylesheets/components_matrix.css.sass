@@ -19,8 +19,9 @@ $five-item-width: calc((100% - 160px)/5)
 
 .matrix.matrix-1-per-row
   .matrix-item
-    margin-bottom: 0px
     margin-right: 0px
+    &:last-of-type
+      margin-bottom: 0px
 
 @media (min-width: 801px)
   .matrix.matrix-1-per-row
