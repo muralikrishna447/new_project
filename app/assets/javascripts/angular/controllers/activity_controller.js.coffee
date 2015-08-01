@@ -28,7 +28,7 @@ window.deepCopy = (obj) ->
 
   $scope.bannerImageDimensions = ->
     w = $('.banner-image').width()
-    h = 495
+    h = 540
     if w < 650
       h = w * 9.0 / 16.0
     {w: w, h: h}
