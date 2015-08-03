@@ -372,6 +372,9 @@ Delve::Application.routes.draw do
   # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
   match '/*path' => 'application#options', :via => :options
 
+  # show /pages/vegetarian-sous-vide-recipes also as /vegetarian-sous-vide-recipes
+  get ':id', to: 'pages#show', constraints: lambda { |r| ! r.url.match(/jasmine/) }
+
   # http://techoctave.com/c7/posts/36-rails-3-0-rescue-from-routing-error-solution
   match '*a', to: 'errors#routing', constraints: lambda { |r| ! r.url.match(/jasmine/) }
 end
