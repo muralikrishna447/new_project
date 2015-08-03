@@ -30,7 +30,7 @@ describe SitemapsController, "#get" do
       expect(response.body).to include("http://www.chefsteps.com/classes/clummy")
       expect(response.body).to include("http://www.chefsteps.com/classes/zummy")
       expect(response.body).to include("http://www.chefsteps.com/projects/nummy")
-      expect(response.body).to include("http://www.chefsteps.com/pages/frummy")
+      expect(response.body).to include("http://www.chefsteps.com/frummy")
       expect(response.body).to include("http://www.chefsteps.com/uploads/ucrrummy")
       expect(response.body).to_not include("http://chefsteps.com")
 
