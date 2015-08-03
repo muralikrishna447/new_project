@@ -52,7 +52,23 @@ div:not(.redactor_box)
   height: $baseline * 7
 
 .top-container
-  margin-top: $baseline * 7
+  margin-top: $baseline * 2
+
+// This is a digusting mess, compensating for our how our nav responds. Need to figure out a better way for FS.
+@media (min-width: 768px) and (max-width: 979px)
+  .top-container
+    margin-top: $baseline * 2
+    padding-top: 0
+
+@media (max-width: 767px)
+  .top-container
+    margin-top: 0
+    padding-top: $baseline * 7
+
+@media (max-width: 700px)
+  .top-container
+    padding-top: 0
+    margin-top: 0
 
 #main-container
   margin-bottom: $baseline * 7
@@ -972,7 +988,7 @@ csembedyoutube, csembedvimeo
   left: -10000px
   bottom: 0
   opacity: 0
-  
+
 #footer
   background-color: $orange
   display: flex
@@ -1017,30 +1033,30 @@ csembedyoutube, csembedvimeo
         color: white
         &:hover
           text-decoration: underline
-    
+
 @media (max-width: 700px)
   #footer
     padding: 56px 14px
-    
+
   .footer-items
     flex-direction: column
     max-width: 180px
-      
+
   .footer-item-logo
     padding: 0
     margin: 0 0 28px
     border: 0px
-    text-align: center 
-    img 
+    text-align: center
+    img
       margin-bottom: 14px
       max-width: 150px
-    a 
+    a
       padding: 14px
-      
+
   .footer-item-links
     padding: 28px 0
     text-align: center
-    border-top: 1px solid rgba(255,255,255,0.2)   
+    border-top: 1px solid rgba(255,255,255,0.2)
     ul
       padding: 0px
 
@@ -1765,9 +1781,6 @@ input.summary-tweet
   .activity-description
     height: 187px
 
-  .top-container
-    margin-top: 0px
-
   .container-fluid
     margin-left: -20px
     margin-right: -20px
@@ -1840,9 +1853,6 @@ input.summary-tweet
   .nav-item-border
     display: none
 
-  .top-container
-    margin-top: 0px
-
   .no-margin-padding
     padding: 0px
     margin: 0px
@@ -1905,10 +1915,6 @@ input.summary-tweet
     input[type='text'], input[type='email']
       width: 80%
       font-size: 20px
-
-
-  .top-container
-    margin-top: 0px
 
   .static-height
     height: 10px

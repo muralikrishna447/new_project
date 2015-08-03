@@ -2,6 +2,8 @@
   = f.inputs do
     = f.input :title
     = f.input :content
+    = f.input :short_description, input_html: { rows: 3}
+    = f.input :show_footer
     = f.input :primary_path
     = render '/shared/filepicker_group', label_text: "Image", param: "page[image_id]", value: @page.image_id
 
