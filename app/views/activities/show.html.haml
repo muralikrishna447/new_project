@@ -13,7 +13,7 @@
   - content_for :facebook_og do
     %meta{property: 'og:url', content: activity_url(@activity)}
     %meta{property: 'og:title', content: sanitize(@activity.title).html_safe}
-    %meta{property: 'og:description', content: @activity.description.to_s != "" ? sanitize(@activity.description).html_safe : sanitize(@activity.title).html_safe}
+    %meta{property: 'og:description', content: sanitize(@activity.meta_description).html_safe}
     - if @activity.image_id?
       %meta{property: 'og:image', content: filepicker_activity_hero_image(@activity.image_id)}
     - elsif @activity.featured_image_id?
@@ -21,7 +21,7 @@
   - content_for :twitter_cards do
     %meta{property: 'twitter:site', content: '@chefsteps'}
     %meta{property: 'twitter:title', content: sanitize(@activity.title).html_safe }
-    %meta{property: 'twitter:description', content: @activity.description}
+    %meta{property: 'twitter:description', content: sanitize(@activity.meta_description).html_safe}
     - if @activity.image_id?
       %meta{property: 'twitter:image:src', content: filepicker_activity_hero_image(@activity.image_id)}
     - elsif @activity.featured_image_id?
