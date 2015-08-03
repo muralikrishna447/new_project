@@ -21,9 +21,11 @@
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'print',  media: 'print'
     %meta{charset: 'utf-8'}
-    %meta{name: 'description', content: yield(:description)}
-    %meta{name: 'keywords', content: yield(:keywords)}
-    -unless yield(:extra_head_tags).blank?
+    -if yield(:description).present?
+      %meta{name: 'description', content: yield(:description)}
+    -if yield(:keywords).present?
+      %meta{name: 'keywords', content: yield(:keywords)}
+    -if yield(:extra_head_tags).present?
       = yield :extra_head_tags
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1'}
     %meta{"http-equiv" => "Content-Language", content: "en"}
@@ -131,7 +133,7 @@
   = render 'layouts/intercom'
   = render 'layouts/embedly'
   = yield(:custom_js)
-  
+
   .cs-icons
     = inline_svg('cs-icons.svg')
 

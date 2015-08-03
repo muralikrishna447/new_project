@@ -1,4 +1,6 @@
 - content_for :title, "#{@page.title}".html_safe
+- content_for :description, sanitize(@page.short_description).html_safe if @page.short_description.present?
+- content_for :canonical_link, "#{root_url}/#{@page.slug}"
 
 .container.top-container
   .row
