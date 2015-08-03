@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe 'routes for errors' do
-  it 'routes bogus top level url to the errors controller' do
-    expect(get: '/xxx').to route_to(action: 'routing', controller: 'errors', a: 'xxx')
+  it 'routes unknown top level url to the pages controller (which may redirect)' do
+    expect(get: '/xxx').to route_to(action: 'show', controller: 'pages', id: 'xxx')
   end
 
   it 'routes bogus second level url to the errors controller' do
