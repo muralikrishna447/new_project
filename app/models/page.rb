@@ -1,6 +1,6 @@
 class Page < ActiveRecord::Base
   extend FriendlyId
-  attr_accessible :title, :content, :image_id, :primary_path, :short_description
+  attr_accessible :title, :content, :image_id, :primary_path, :short_description, :show_footer
 
   friendly_id :title, use: [:slugged, :history]
 
