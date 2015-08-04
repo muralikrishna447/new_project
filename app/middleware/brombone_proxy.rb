@@ -21,21 +21,26 @@ class BromboneProxy < Rack::Proxy
 
       # NOTE odd URI:
       # Should be like http://chefsteps.brombonesnapshots.com/www.chefsteps.com/activities/blini
-      env["HTTP_HOST"] = @backend_host
-      env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/www.chefsteps.com#{env["PATH_INFO"]}"
-      env["QUERY_STRING"] = ""
+      proxy_env = env.deep_dup
+      proxy_env["HTTP_HOST"] = @backend_host
+      proxy_env["REQUEST_PATH"] = proxy_env["REQUEST_URI"] = proxy_env["PATH_INFO"] = "/www.chefsteps.com#{proxy_env["PATH_INFO"]}"
+      proxy_env["QUERY_STRING"] = ""
 
-      response = perform_request(env)
+      response = perform_request(proxy_env)
       headers = response[1]
 
       # See explanatory comment in fresh_steps_proxy
       if headers.has_key?('cache-control') && headers['cache-control'].kind_of?(Array)
         headers['cache-control'] = headers['cache-control'][0]
       end
-      response
-    else
-      @app.call(env)
+
+      # If we succeed or get a response indicating the requester already has a good cache, done.
+      return response if (response[0] == 200) || (response[0] == 304)
+      Rails.logger.info("Brombone request for path [#{env['REQUEST_URI']}] failed with code #{response[0]}- rendering locally")
     end
+
+    # Either not proxied or proxy failed
+    @app.call(env)
   end
 
   def should_proxy?(env)
