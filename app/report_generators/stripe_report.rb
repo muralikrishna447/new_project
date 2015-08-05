@@ -386,7 +386,7 @@
 
     def refund_transaction(stripe_record, refund, refunds)
       refunds << ["TRNS", "1", "CHECK", Time.at(refund["created"]).to_s(:slashes), "Stripe Account", nil, "Admin", stripe_record["total_refund"], "Refund of charge #{stripe_record["id"]}"]
-      refunds << ["SPL", "2", "CHECK", Time.at(refund["created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Returns", "Online Sales", "Admin", stripe_record["refund_revenue"], "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_paid?"] == "true"}: #{stripe_record["id"]}"]
+      refunds << ["SPL", "2", "CHECK", Time.at(refund["created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Returns", "Online Sales", "Admin", stripe_record["refund_revenue"], "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_collected"] == "true"}: #{stripe_record["id"]}"]
       line_number = 3
       if stripe_record["sales_tax_collected"] == "true"
         refunds << ["SPL", line_number, "CHECK", Time.at(refund["created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["refund_tax"].to_f, "Sales Tax for charge ID: #{stripe_record["id"]}"]
