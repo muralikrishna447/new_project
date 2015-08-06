@@ -1,10 +1,11 @@
 module Api
   module V0
-    class ShoppingController < ApplicationController
+    class ShoppingController < BaseController
       def product
         product = Rails.cache.fetch("shopping/product/#{params[:product_id]}", expires_in: 1.minute) do
           product_result = ShopifyAPI::Product.get(params[:product_id])
           product_result[:quantity] = product_result["variants"].first["inventory_quantity"]
+          product_result[:price] = product_result["variants"].first["price"]
           product_result
         end
         render(json: product)
