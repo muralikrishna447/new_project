@@ -23,7 +23,7 @@ module Api
             email: current_user.email,
             first_name: current_user.name.split(' ')[0],
             last_name: (current_user.name.split(' ').size > 1 ? current_user.name.split(' ')[1] : nil),
-            return_to: ShopifyAPI::Base.site + "/cart/#{add_to_cart}"
+            return_to: (ShopifyAPI::Base.site + "/cart/#{add_to_cart}").to_s
           }
         end
       end

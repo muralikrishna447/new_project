@@ -362,7 +362,7 @@ Delve::Application.routes.draw do
           # match '/product/:product_id', to: 'shopping#product'
         end
         resources :users do
-          match '/multipass', to: 'users#multipass'
+          post :multipass, on: :collection
         end
       end
 
