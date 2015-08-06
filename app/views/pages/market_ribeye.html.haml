@@ -81,7 +81,6 @@
     .product-name
       font-size: 20px
       line-height: 22px
-      margin-top: 15px
       font-weight: 500
       display: block
     .product-description
@@ -136,8 +135,6 @@
         / action: 'https://delve.myshopify.com/cart/add', method: 'post', target: '_blank' }
         / %input{ name: 'return_to', type: 'hidden', value: 'checkout' }
         %input{ name: 'handle', type: 'hidden', value: 'ribeye-special' }
-        .product-photo
-          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/SM6op45XTOSdrBrOog2n'" aspect="1:1")
         / %img.product-photo{ src: 'https://cdn.shopify.com/s/files/1/0171/7850/products/ribeye_large.jpg?v=1436993533', alt: 'Ribeye Roast' }
         %span.product-name Six-Pound Ribeye Roast
         %span.product-description feeds eight hungry adults
@@ -146,17 +143,17 @@
             Sold Out
           %span(ng-show="product.quantity > 0")
             Buy now
-        %span.product-pricing
-          $120
-          %span.product-shipping (free shipping)
-        %div
-          %small
-            {{product.quantity || 0}} remaining
+        .product-details(ng-hide="product.quantity <= 0")
+          %span.product-pricing
+            ${{product.price}}
+            %span.product-shipping (free Fedex shipping)
+          %div
+            %small
+              {{product.quantity || 0}} remaining
+
     / For when they aren't logged in
     .buybox(ng-show="!loggedIn")
       %form(ng-submit="loginThenAddToCart({product_id: '4652374913', quantity: '1'})")
-        .product-photo
-          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/SM6op45XTOSdrBrOog2n'" aspect="1:1")
         %span.product-name Six-Pound Ribeye Roast
         %span.product-description feeds eight hungry adults
         %button.buy-button(type='submit' ng-disabled="product.quantity <= 0")
@@ -164,22 +161,22 @@
             Sold Out
           %span(ng-show="product.quantity > 0")
             Buy now
-        %span.product-pricing
-          $120
-          %span.product-shipping (free shipping)
-        %div
-          %small
-            {{product.quantity || 0}} remaining
-
-      / <div data-embed_type="product" data-shop="delve.myshopify.com" data-product_name="Ribeye Special" data-product_handle="ribeye-special" data-has_image="true" data-display_size="compact" data-redirect_to="checkout" data-buy_button_text="Buy now" data-button_background_color="7db461" data-button_text_color="ffffff"></div>
-      / <script type="text/javascript">document.getElementById('ShopifyEmbedScript') || document.write('<script type="text/javascript" src="https://widgets.shopifyapps.com/assets/widgets/embed/client.js" id="ShopifyEmbedScript"><\/script>');
-      / </script>
-      / <noscript><a href="https://delve.myshopify.com/cart/4652374913:1" target="_blank">Buy Ribeye Special</a></noscript>
+        .product-details(ng-hide="product.quantity <= 0")
+          %span.product-pricing
+            ${{product.price}}
+            %span.product-shipping (free Fedex shipping)
+          %div
+            %small
+              {{product.quantity || 0}} remaining
 
     .market-body
-      %p Tell your family, your friends, your neighbors, and that guy on the sidewalk—you're about to throw a beef party of epic, earth-shattering proportions. You, good sir or madam, are about to be the proud owner of a six-pound cut of rib-eye roast—a tender, sliceable piece of meat that'll easily feed a party of eight hungry lumberjacks—or your husband and kids, if you prefer. This beef is 100% grass-fed, free-range, pasture-raised, and certified flavorful-as-all-get-out. What do all those things mean, exactly? Read on for more details, including a three-step process for cooking that thing to perfection.
-
-      %p When you purchase, we'll send you a vacuum-packed six-pound roast (no shipping charge), ready to drop into a sous vide water bath as soon as it arrives at your doorstep. The only catch? We've only got twenty cuts in stock, so order quickly!
+      %h2 The Details
+      %p Freshly-carved ribeye roast is a crowd-friendly, easy-to-prepare, and downright impressive dinner. We've hand-selected this cut just for ChefSteps members.
+      %ul
+        %li Limited availability. (Order quickly! We only have twenty!)
+        %li Only available until August 21st (so it's nice and fresh).
+        %li Six pounds of highest-quality, 100% grass-fed, pasture-raised beef
+        %li Free overnight shipping
 
       %h2 How do I cook it?
       %p You'll receive your ribeye roast carefully vacuum-packed and ready to cook sous vide. Follow the steps below to cook it to perfection.
@@ -198,7 +195,7 @@
       %h2 What's the difference between regular beef and grass-fed beef?
       %p Grass-fed beef has a more robust, clean, beefy flavor. That’s because the cows spend their whole lives roaming around eating greens, which keep them lean and healthy. Most beef is grain-fed, because grain will fatten up the cow and make the meat more tender. Grain-fed beef, while certainly tender and fatty, tends to have less flavor, while grass-fed beef (and this beef in particular) is packed with natural, earthy flavor.
 
-      %h2 I like local products. Why should I buy beef from New Zealand?
+      %h2 Why is New Zealand beef so good?
       %p There are two primary reasons New Zealand's beef is so high-quality:
       %ol
         %li
@@ -206,12 +203,28 @@
             The genetics of the cattle. [Read more](http://nzgrassfedbeef.com/why-black-angus-beef-special) about why 100% New Zealand certified black angus beef tastes great, and is sustainable and healthy.
         %li How the cattle are raised. These cows are pasture-raised, 100% grass-fed, free-range cattle. This means the meat will be flavorful, consistent, and lean. New Zealand farmers have been raising free-range, grass-fed cows for well over a century—generations of knowledge and expertise shows in the quality of the meat.
 
-      %h2 Why should I cook this meat sous vide?
+      %h2 Why should I cook it sous vide?
       %p Sous vide is the easiest, most convenient way to get consistent results. Just take the meat right out of the box, put it into the water bath, and wait until you're ready to eat it. When it's time for dinner, just throw it in the oven for a quick roast, slice, and serve.
 
-      %h2 What is a ribeye roast? Why should I try one?
+      %h2 What is a ribeye roast?
       %p Ribeye roast is a tender cut from between the 7th and 8th and 12th and 13th ribs of the cow. What do we like about ribeye roasts in particular? They're great for serving a crowd. You can cook one big hunk of meat all at once, sprinkle it with rub, and finish it off in the oven for a six- to eight-person feast you can carve up right at the table. Sounds like you're about to be a hero, doesn't it?
 
       %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/vK8MgA4PSICi3BLLeB5R'")
+
+      %h2 FAQ
+      %strong How does delivery work? 
+      %p The meat ships directly to your door for free via FedEx overnight delivery.
+
+      %strong How will my beef be packaged? 
+      %p Your six-pound ribeye roast will be vacuum-sealed, ready for sous vide, and packed with dry ice for delivery to your kitchen.
+
+      %strong What if I have questions? 
+      %p Email john@chefsteps.com if you have any questions. We’re happy to help.
+
+      %strong Where do you deliver? 
+      %p Anywhere in the US.
+
+      %strong How did you source this beef?
+      %p We worked directly with a ChefSteps community member to find the best-quality, grass-fed, pasture-raised Black Angus beef from small farms in New Zealand. We’ve cooked and eaten this beef in our kitchen, and we’re sure you’re going to love it just as much as we do.
 
 =render 'layouts/footer'
