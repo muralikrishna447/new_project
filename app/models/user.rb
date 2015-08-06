@@ -171,6 +171,10 @@ class User < ActiveRecord::Base
   end
 
   def enrolled?(enrollable)
+    if enrollable.nil?
+      return false
+    end
+
     enrollment = Enrollment.where(user_id: self.id, enrollable_type: enrollable.class.to_s, enrollable_id: enrollable.id).first
     case
     when enrollment.blank?
