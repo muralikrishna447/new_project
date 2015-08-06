@@ -991,16 +991,16 @@ csembedyoutube, csembedvimeo
 
 #footer
   background-color: $orange
-  display: flex
-  justify-content: center
-  align-items: center
+  @include display-flex
+  @include justify-content(center)
+  @include align-items(center)
   padding: 112px 56px
   .footer-items
     width: 600px
-    display: flex
+    @include display-flex
 
 .footer-item-logo
-  flex: 0 1 100%
+  @include flex(0 1 100%)
   border-right: 1px solid rgba(255,255,255,0.2)
   color: white
   padding-right: 70px
@@ -1013,12 +1013,12 @@ csembedyoutube, csembedvimeo
     padding-right: 14px
     display: inline-block
     width: 28px
-    transition: opacity 300ms
+    @include transition(opacity 300ms)
     &:hover
       opacity: 0.6
 
 .footer-item-links
-  flex: 0 1 100%
+  @include flex(0 1 100%)
   padding-left: 14px
   color: white
   font-size: 18px
@@ -1039,10 +1039,11 @@ csembedyoutube, csembedvimeo
     padding: 56px 14px
 
   .footer-items
-    flex-direction: column
+    @include flex-direction(column)
     max-width: 180px
 
   .footer-item-logo
+    @include flex(none)
     padding: 0
     margin: 0 0 28px
     border: 0px
@@ -1054,6 +1055,7 @@ csembedyoutube, csembedvimeo
       padding: 14px
 
   .footer-item-links
+    @include flex(none)
     padding: 28px 0
     text-align: center
     border-top: 1px solid rgba(255,255,255,0.2)
