@@ -1,6 +1,7 @@
 require 'resque/server'
 
 Delve::Application.routes.draw do
+  get '/robots.txt' => RobotsTxt
 
   resque_constraint = lambda do |request|
     request.env['warden'].authenticate? and request.env['warden'].user.admin?
