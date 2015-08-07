@@ -7,10 +7,11 @@
       -# With this intro block, we should be able to get rid of shared/tools, activities/title and eventually make them into directives/components.
       = render 'activities/intro_block'
 
-      -# Sous Vide CTA: Only show banner for sous vide steak, sous vide time and temp, and sous vide chicken breast
-      - if @activity
-        -if @activity.id == 29 || @activity.id == 6043 || @activity.id == 5961
-          = render 'activities/sous_vide_cta'
+      / promotion that displays when appropriate
+      / NOTE: broke viewing courses before adding check for the activity being defined
+      - if defined? activity
+        - if activity.tag_list.include?("sous vide") && !current_user.enrolled?(activity.containing_course)
+          = render 'activities/sous_vide_class_promo'
 
       .standard-item
         = render 'activities/metadata'
