@@ -10,8 +10,12 @@
       / promotion that displays when appropriate
       / NOTE: broke viewing courses before adding check for the activity being defined
       - if defined? activity
-        - if activity.tag_list.include?("sous vide") && !current_user.enrolled?(activity.containing_course)
-          = render 'activities/sous_vide_class_promo'
+        - if activity.tag_list.include?("sous vide")
+          - if current_user
+            - if !current_user.enrolled?(activity.containing_course)
+              = render 'activities/sous_vide_class_promo'
+          - else
+            = render 'activities/sous_vide_class_promo'
 
       .standard-item
         = render 'activities/metadata'

@@ -16,6 +16,14 @@ describe ActivitiesController do
         expect(response).to render_template(:show)
       end
 
+      it 'goes to an activity within a sous vide class' do
+        @activity1 = Fabricate :activity, title: 'Sous vide chicken', description: 'an activity description', published: true
+        @assembly1 = Fabricate :assembly, title: 'Assembly 1', description: 'an assembly description', assembly_type: 'Course', published: true
+        @assembly_inclusion1 = Fabricate :assembly_inclusion, assembly: @assembly1, includable: @activity1
+        get :show, id: @activity1.slug
+        expect(response).to render_template(:show)
+      end
+
       it 'only returns secret circulator machine instructions if asked nicely' do
         get :get_as_json, id: @activity.slug
         expect(response.body).to_not include("Hola")
@@ -139,5 +147,3 @@ describe ActivitiesController do
     end
   end
 end
-
-
