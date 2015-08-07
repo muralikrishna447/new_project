@@ -4,6 +4,7 @@ describe Api::V0::ComponentsController do
     @admin_user = Fabricate :user, name: 'Admin User', email: 'admin@chefsteps.com', role: 'admin'
     @component = Fabricate :component, component_type: 'matrix', meta: { size: 'standard' }
     sign_in @admin_user
+    controller.request.env['HTTP_AUTHORIZATION'] = @admin_user.valid_website_auth_token.to_jwt
   end
 
   # GET /api/v0/components
