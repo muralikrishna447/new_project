@@ -35,7 +35,7 @@
       -moz-order: 1
       -ms-flex-order: 1
       order: 1
-    .steps-gallery
+    .steps-gallery, .guarantee
       display: flex
       display: -webkit-flex
       display: -moz-flex
@@ -76,8 +76,26 @@
       margin-right: 30px
     .step cs-image
       margin-bottom: 10px
-    .step img, .product-photo img
+    .step img, .product-photo img, .guarantee img
       border-radius: 8px
+
+    .guarantee .quote
+      -webkit-flex: 1 1 210px
+      -moz-flex: 1 1 210px
+      -ms-flex: 1 1 210px
+      -o-flex: 1 1 210px
+      flex: 1 1 210px
+    .guarantee cs-image
+      -webkit-flex: 1 1 110px
+      -moz-flex: 1 1 110px
+      -ms-flex: 1 1 110px
+      -o-flex: 1 1 110px
+      flex: 1 1 110px
+
+      margin-right: 30px
+
+    .product-photo
+      margin-bottom: 15px
     .product-name
       font-size: 20px
       line-height: 22px
@@ -135,17 +153,18 @@
         / action: 'https://delve.myshopify.com/cart/add', method: 'post', target: '_blank' }
         / %input{ name: 'return_to', type: 'hidden', value: 'checkout' }
         %input{ name: 'handle', type: 'hidden', value: 'ribeye-special' }
-        / %img.product-photo{ src: 'https://cdn.shopify.com/s/files/1/0171/7850/products/ribeye_large.jpg?v=1436993533', alt: 'Ribeye Roast' }
+        .product-photo
+          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/CsFYqm95SsuU5GYoEK0H'")
         %span.product-name Six-Pound Ribeye Roast
-        %span.product-description feeds eight hungry adults
+        %span.product-description feeds 10–12 adults
         %button.buy-button(type='submit' ng-disabled="product.quantity <= 0")
           %span(ng-show="product.quantity <= 0")
             Sold Out
           %span(ng-show="product.quantity > 0")
             Buy now
-        .product-details(ng-hide="product.quantity <= 0")
+        %span.product-details(ng-hide="product.quantity <= 0")
           %span.product-pricing
-            ${{product.price}}
+            ${{product.price | number:0}}
             %span.product-shipping (free Fedex shipping)
           %div
             %small
@@ -154,36 +173,88 @@
     / For when they aren't logged in
     .buybox(ng-show="!loggedIn")
       %form(ng-submit="loginThenAddToCart({product_id: '4652374913', quantity: '1'})")
+        .product-photo  
+          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/CsFYqm95SsuU5GYoEK0H'")
         %span.product-name Six-Pound Ribeye Roast
-        %span.product-description feeds eight hungry adults
+        %span.product-description feeds 10–12 adults
         %button.buy-button(type='submit' ng-disabled="product.quantity <= 0")
           %span(ng-show="product.quantity <= 0")
             Sold Out
           %span(ng-show="product.quantity > 0")
             Buy now
-        .product-details(ng-hide="product.quantity <= 0")
+        %span.product-details(ng-hide="product.quantity <= 0")
           %span.product-pricing
-            ${{product.price}}
+            ${{product.price | number:0}}
             %span.product-shipping (free Fedex shipping)
           %div
             %small
               {{product.quantity || 0}} remaining
 
     .market-body
-      %h2 The Details
-      %p Freshly-carved ribeye roast is a crowd-friendly, easy-to-prepare, and downright impressive dinner. We've hand-selected this cut just for ChefSteps members.
+      %h2 Throw an Epic End-of-Summer Meatfest!
+      %p Hand-carved ribeye is a crowd-friendly, easy-to-prepare, and downright impressive meal. We’ve partnered with New Zealand’s Silver Fern Farms to bring this phenomenal cut to ChefSteps members.
+    
       %ul
-        %li Limited availability. (Order quickly! We only have twenty!)
-        %li Only available until August 21st (so it's nice and fresh).
-        %li Six pounds of highest-quality, 100% grass-fed, pasture-raised beef
-        %li Free overnight shipping
+        %li Flavor-packed beef from grass-fed cows raised on New Zealand’s lush green pastures
+        %li Exquisitely tender results with our simple, three-step sous vide technique
+        %li Expert support—our kitchen team is here to help from start to finish
+        %li An extraordinary dinner that will amaze your friends and family
+        %li Our personal guarantee—love it, or receive a 100% refund
 
+      %h2 A Fantastic Feast in Three Simple Steps
+      %p You'll receive your ribeye roast carefully vacuum-packed and ready to cook sous vide. Follow the steps below to cook it to perfection. 
+
+      .steps-gallery
+        .step
+          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/7WJZltrWQraASpT5uInY'" aspect="1:1")
+          .step-description Preheat your water bath to 136 °F / 58 °C for medium-rare. Cook for six hours (or up to fourteen).
+        .step
+          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/BIbM0ZOrSmiEc9yqH9rv'" aspect="1:1")
+          .step-description Remove the roast from the bath and cut open the bag. Pat dry and season with your favorite rub. We use equal parts salt, pepper, and chopped rosemary.
+        .step
+          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/F7ZYItJoS92Ckwq4dKYU'" aspect="1:1")
+          .step-description Just before serving, preheat your oven to 392 °F / 200 °C. Roast the beef for 10–15 mins to develop a nice brown crust. Slice, and serve.
+
+      %h2 We're Here to Help
+      .guarantee
+        %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/PBnCGlhXTaqVNWsz3qsO'" aspect="1:1")
+        .quote
+          %p Our kitchen team will be standing by to answer any questions you have about preparing your roast. Want to smoke your meat? Cook in a traditional oven? Turn it into individual steaks? We’ll make sure you have an amazing experience with this incredible cut of beef. 
+          %p —Grant Crilly, ChefSteps co-founder
+
+      %h2 About This Beef
+
+      %h3 Why Silver Fern Farms?
+      %p Silver Fern Farms is a farmer co-operative based in the town of Dunedin, on New Zealand’s pasture-rich South Island. Its sophisticated meat-grading system, combined with the the country’s idyllic cattle-raising conditions, guarantee beef is always fresh and remarkably flavorful.  In partnering with Silver Fern, ChefSteps can bring the world’s very best beef directly to your doorstep—so you can focus on working your magic in the kitchen.
+
+      %h3 What makes New Zealand beef special? 
+      :markdown 
+        There are two primary reasons New Zealand's beef is so high-quality:
+
+        * The genetics of the cattle. [Read more](http://nzgrassfedbeef.com/why-black-angus-beef-special) about why 100% New Zealand certified black angus beef tastes great, and is sustainable and healthy. 
+        * How the cattle are raised. These cows are pasture-raised, 100% grass-fed, free-range cattle. This means the meat will be flavorful, consistent, and lean. New Zealand farmers have been raising free-range, grass-fed cows for well over a century—generations of knowledge and expertise shows in the quality of the meat.
+      %h3 Why is grass-fed beef better?
+      %p Grass-fed beef has a more robust, clean, beefy flavor than the meat to which most of us are accustomed. It’s how beef was meant to taste. That’s because the cows spend their whole lives roaming around eating greens, which keep them lean and healthy. These days most beef is grain-fed, because grain will fatten up the cow and make the meat more tender. Grain-fed beef, while certainly tender and fatty, tends to have less flavor, while grass-fed beef (and this cut in particular) tastes natural and earthy. Cooking it sous vide allows to achieve amazing tenderness, without sacrificing flavor. 
+
+      %h3 What is a ribeye roast?
+      %p Ribeye roast is a tender cut from between the 7th and 8th and 12th and 13th ribs of the cow. What do we like about ribeye roasts in particular? They're great for serving a crowd. You can cook one big hunk of meat all at once, sprinkle it with rub, and finish it off in the oven for a 10-to-12 person feast you can carve up right at the table. Sounds like you're about to be a hero, doesn't it?
+
+      %h2 The Nitty-Gritty
       
-.component-container(component-load component-id='mm-testimonial')
-.component-container(component-load component-id='mm-about-silver-fern')
-.component-container(component-load component-id='mm-faq-header')
-.component-container(component-load component-id='mm-faq')
-.component-container(component-load component-id='mm-recipes-header')
-.component-container(component-load component-id='mm-recipes')
+      %strong How will my beef be packaged?
+      %p Your six-pound ribeye roast will be vacuum-sealed, ready for sous vide, and packed with dry ice for delivery to your kitchen.
+
+      %strong What if I have questions?
+      :markdown
+        Email <john@chefsteps.com> if you have any questions. We’re happy to help.
+
+      %strong Where do you deliver?
+      %p Anywhere in the US.
+  
+/ .component-container(component-load component-id='mm-testimonial')
+/ .component-container(component-load component-id='mm-about-nz-beef')
+/ .component-container(component-load component-id='mm-about-silver-fern')
+/ .component-container(component-load component-id='mm-faq-header')
+/ .component-container(component-load component-id='mm-faq')
 
 =render 'layouts/footer'
