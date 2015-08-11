@@ -1,6 +1,6 @@
 class ActivitiesController < ApplicationController
 
-  instrument_action :show
+  instrument_action :show, :get_as_json
 
   # expose(:activity) { Activity.find_published(params[:id], params[:token]) }
   expose(:cache_show) { params[:token].blank? }
