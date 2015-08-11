@@ -16,7 +16,9 @@
       "free_classes" : #{current_user.enrollments.where(price: 0).count},
       "uploads" : #{current_user.uploads.count},
       "recipes_created" : #{current_user.created_activities.count},
-      "recipes_published" : #{current_user.created_activities.published.count}
+      "recipes_published" : #{current_user.created_activities.published.count},
+      "enrolled_101" : #{current_user.enrollments.map(&:enrollable_id).include?(141)},
+      "enrolled_201" : #{current_user.enrollments.map(&:enrollable_id).include?(133)}
     };
 - else
   :javascript
