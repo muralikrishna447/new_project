@@ -3,7 +3,7 @@ class CreateComponentPages < ActiveRecord::Migration
     create_table :component_pages do |t|
       t.integer :component_id
       t.integer :page_id
-      t.integer :order
+      t.integer :position
       t.timestamps
     end
 

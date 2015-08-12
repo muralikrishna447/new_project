@@ -247,7 +247,7 @@ ActiveRecord::Schema.define(:version => 20150812202847) do
   create_table "component_pages", :force => true do |t|
     t.integer  "component_id"
     t.integer  "page_id"
-    t.integer  "order"
+    t.integer  "position"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
