@@ -80,6 +80,11 @@ module Delve
     config.assets.version = '9'
     config.assets.initialize_on_precompile = false
 
+    # We *do* want Rails caching
+    unless Rails.env.development?
+      config.cache_store = :dalli_store
+    end
+
     # Don't use Rack::Cache - it messes with our BromboneProxy and barely helps us on the upside
     require 'rack/cache'
     config.middleware.delete Rack::Cache
