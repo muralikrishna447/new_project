@@ -1,6 +1,6 @@
 class ActivitiesController < ApplicationController
 
-  instrument_action :show
+  instrument_action :show, :get_as_json
 
   # expose(:activity) { Activity.find_published(params[:id], params[:token]) }
   expose(:cache_show) { params[:token].blank? }
@@ -176,7 +176,11 @@ class ActivitiesController < ApplicationController
     # For the relations, sending only the fields that are visible in the UI; makes it a lot
     # clearer what to do on update.
     unless @activity.containing_course && current_user && current_user.enrollments.where(enrollable_id: @activity.containing_course.id, enrollable_type: @activity.containing_course.class).first.try(:free_trial_expired?) && @activity.containing_course.price > 0
-      render :json => @activity.to_json
+      t1 = Time.new
+      activity_json = @activity.to_json
+      t2 = Time.new
+      Librato.timing 'activitiescontroller.get_as_json.render', (t2-t1)*1000
+      render :json => activity_json
     else
       if mixpanel_anonymous_id
         mixpanel.track(mixpanel_anonymous_id, 'Free Trial Expired', {slug: @activity.containing_course.slug, length: current_user.class_enrollment(@activity.containing_course).free_trial_length.to_s})
