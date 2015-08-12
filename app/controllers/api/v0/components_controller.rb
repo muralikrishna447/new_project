@@ -15,7 +15,6 @@ module Api
       end
 
       def create
-        puts "Params: #{params}"
         component_params = convert_hash_keys(params[:component])
         @component = Component.new(component_params)
         if @component.save
@@ -41,7 +40,6 @@ module Api
       end
 
       def convert_hash_keys(value)
-        puts "VALUE IS: #{value}"
         case value
           when Array
             value.map { |v| convert_hash_keys(v) }
