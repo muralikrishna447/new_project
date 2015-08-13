@@ -10,7 +10,7 @@ class Page < ActiveRecord::Base
   has_many :likes, as: :likeable, dependent: :destroy
   has_many :component_pages, order: :position
   has_many :components, through: :component_pages, order: 'component_pages.position'
-  accepts_nested_attributes_for :component_pages
+  accepts_nested_attributes_for :component_pages, allow_destroy: true
 
   def featured_image
     image_id
