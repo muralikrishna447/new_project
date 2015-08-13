@@ -194,24 +194,6 @@ private
     end
   end
 
-  def mixpanel
-    if Rails.env.production?
-      @mixpanel ||= ChefstepsMixpanel.new '84272cf32ff65b70b86639dacd53c0e0'
-    else
-      @mixpanel ||= ChefstepsMixpanel.new 'd6d82f805f7d8a138228a52f17d6aaec'
-    end
-  end
-
-  def mixpanel_anonymous_id
-    begin
-      JSON.parse(cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"])['distinct_id']
-    rescue
-      id = request.session_options[:id]
-      cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"] = {distinct_id: id}.to_json
-      id
-    end
-  end
-
   # See http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on
   after_filter  :set_csrf_cookie_for_ng
 
