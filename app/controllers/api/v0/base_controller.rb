@@ -7,7 +7,6 @@ module Api
       rescue_from Exception do |exception|
         logger.error exception
         logger.error exception.backtrace
-        puts exception
         render json: {status: 500, message: 'Server error'}, status: 500
       end
 

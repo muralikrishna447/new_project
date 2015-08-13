@@ -35,7 +35,7 @@ module Api
         # Allows the api to accept params[:page][:component] and updates it to something rails prefers for nested associations
         page_params = value
         if value[:components]
-          page_params[:component_pages_attributes] = value[:components]
+          page_params[:components_attributes] = value[:components]
           page_params.delete :components
         end
         page_params

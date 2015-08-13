@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150812202847) do
+ActiveRecord::Schema.define(:version => 20150813054610) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -244,24 +244,16 @@ ActiveRecord::Schema.define(:version => 20150812202847) do
 
   add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
 
-  create_table "component_pages", :force => true do |t|
-    t.integer  "component_id"
-    t.integer  "page_id"
-    t.integer  "position"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
-  add_index "component_pages", ["component_id"], :name => "index_component_pages_on_component_id"
-  add_index "component_pages", ["page_id"], :name => "index_component_pages_on_page_id"
-
   create_table "components", :force => true do |t|
     t.string   "name"
     t.string   "slug"
     t.string   "component_type"
     t.hstore   "meta"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+    t.string   "component_parent_type"
+    t.integer  "component_parent_id"
+    t.integer  "position"
   end
 
   create_table "copies", :force => true do |t|

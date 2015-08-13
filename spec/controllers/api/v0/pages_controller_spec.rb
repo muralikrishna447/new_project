@@ -4,12 +4,9 @@ describe Api::V0::PagesController do
     @admin_user = Fabricate :user, name: 'Admin User', email: 'admin@chefsteps.com', role: 'admin'
 
     @page = Fabricate :page, title: 'Test Page'
-    @component_1 = Fabricate :component, id: 1, component_type: 'hero'
-    @component_2 = Fabricate :component, id: 2, component_type: 'matrix'
-    @component_3 = Fabricate :component, id: 3, component_type: 'matrix'
-    @component_page_1 = Fabricate :component_page, id: 4, component: @component_1, page: @page, position: 3
-    @component_page_2 = Fabricate :component_page, id: 5, component: @component_2, page: @page, position: 2
-    @component_page_3 = Fabricate :component_page, id: 6, component: @component_3, page: @page, position: 5
+    @component_1 = Fabricate :component, id: 1, component_type: 'hero', component_parent: @page, position: 4
+    @component_2 = Fabricate :component, id: 2, component_type: 'matrix', component_parent: @page, position: 5
+    @component_3 = Fabricate :component, id: 3, component_type: 'matrix', component_parent: @page, position: 6
 
     sign_in @admin_user
     controller.request.env['HTTP_AUTHORIZATION'] = @admin_user.valid_website_auth_token.to_jwt
@@ -26,6 +23,7 @@ describe Api::V0::PagesController do
     get :show, id: @page.id
     response.should be_success
     page = JSON.parse(response.body)
+    puts page
     page['title'].should eq('Test Page')
   end
 
@@ -47,9 +45,9 @@ describe Api::V0::PagesController do
 
   it 'should update a page with a new comonent_page association' do
     components = [
-      { id: @component_page_1.id, position: 1 },
-      { id: @component_page_2.id, position: 2 },
-      { id: @component_page_3.id, position: 3 }
+      { id: @component_1.id, position: 1 },
+      { id: @component_2.id, position: 2 },
+      { id: @component_3.id, position: 3 }
     ]
     page = {
       title: 'Sous Vide',
@@ -59,15 +57,15 @@ describe Api::V0::PagesController do
     response.should be_success
     page = JSON.parse(response.body)
     page['title'].should eq('Sous Vide')
-    page['components'].first['id'].should eq(@component_page_1.id)
-    page['components'].last['id'].should eq(@component_page_3.id)
+    page['components'].first['id'].should eq(@component_1.id)
+    page['components'].last['id'].should eq(@component_3.id)
   end
 
   it 'should not update a page if components do not exist' do
     components = [
-      { id: @component_page_1.id, position: 1 },
-      { id: @component_page_2.id, position: 2 },
-      { id: @component_page_3.id, position: 3 },
+      { id: @component_1.id, position: 1 },
+      { id: @component_2.id, position: 2 },
+      { id: @component_3.id, position: 3 },
       { id: 99999, position: 4 }
     ]
     page = {
@@ -80,9 +78,9 @@ describe Api::V0::PagesController do
 
   it 'should remove a component' do
     components = [
-      { id: @component_page_1.id, position: 1 },
-      { id: @component_page_2.id, position: 2 },
-      { id: @component_page_3.id, position: 3, _destroy: true }
+      { id: @component_1.id, position: 1 },
+      { id: @component_2.id, position: 2 },
+      { id: @component_3.id, position: 3, _destroy: true }
     ]
     page = {
       title: 'Sous Vide',
