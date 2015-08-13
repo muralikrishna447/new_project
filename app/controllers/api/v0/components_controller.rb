@@ -32,7 +32,7 @@ module Api
 
       private
       def underscore_key(k)
-        if k == 'componentType'
+        if k == 'componentType' || k == 'componentParentType' || k == 'componentParentId'
           k.to_s.underscore.to_sym
         else
           k
