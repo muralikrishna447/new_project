@@ -105,14 +105,16 @@
       font-size: 16px
       color: #767676
       display: block
-    .product-pricing
+    .product-pricing, .product-urgency
       color: #767676
+    .product-pricing
       font-size: 22px
-      margin-top: 10px
       vertical-align: middle
       display: inline-block
     .product-shipping
       font-size: 14px
+    .form form
+      display: inline
     .buy-button
       background-color: rgb(125, 180, 97)
       color: rgb(255,255,255)
@@ -147,48 +149,27 @@
 .component-container(component-load component-id='ribeye-hero')
 .component-container(ng-cloak ng-controller='ShoppingController' ng-init="loggedIn=#{current_user != nil}; getProduct(1538566017); #{params[:add_to_cart] ? 'addToCart({product_id: 4652374913, quantity: 1})' : ''}")
   .component.standard.market-container
-    /  For when they are logged in
-    .buybox(ng-show="loggedIn")
-      %form(ng-submit="addToCart({product_id: 4652374913, quantity: 1})")
-        / action: 'https://delve.myshopify.com/cart/add', method: 'post', target: '_blank' }
-        / %input{ name: 'return_to', type: 'hidden', value: 'checkout' }
-        %input{ name: 'handle', type: 'hidden', value: 'ribeye-special' }
-        .product-photo
-          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/CsFYqm95SsuU5GYoEK0H'")
-        %span.product-name Six-Pound Ribeye Roast
-        %span.product-description feeds 10–12 adults
-        %button.buy-button(type='submit' ng-disabled="product.quantity <= 0")
-          %span(ng-show="product.quantity <= 0")
-            Sold Out
-          %span(ng-show="product.quantity > 0")
-            Buy now
+    .buybox
+      .product-photo  
+        %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/CsFYqm95SsuU5GYoEK0H'")
+      %span.product-name Six-Pound Ribeye Roast
+      %span.product-description feeds 8–12 adults
+      .form(ng-show="product.quantity > 0")
+        %form(ng-show="loggedIn" ng-submit="addToCart({product_id: 4652374913, quantity: 1})")
+          %input{ name: 'handle', type: 'hidden', value: 'ribeye-special' }
+          %button.buy-button(type='submit' ng-disabled="product.quantity <= 0")
+            %span Buy now
+        %form(ng-show="!loggedIn" ng-submit="loginThenAddToCart({product_id: '4652374913', quantity: '1'})")
+          %button.buy-button(type='submit' ng-disabled="product.quantity <= 0")
+            %span Buy now
         %span.product-details(ng-hide="product.quantity <= 0")
           %span.product-pricing
             ${{product.price | number:0}}
             %span.product-shipping (free Fedex shipping)
-          %div
-            %small
-              {{product.quantity || 0}} remaining
-
-    / For when they aren't logged in
-    .buybox(ng-show="!loggedIn")
-      %form(ng-submit="loginThenAddToCart({product_id: '4652374913', quantity: '1'})")
-        .product-photo  
-          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/CsFYqm95SsuU5GYoEK0H'")
-        %span.product-name Six-Pound Ribeye Roast
-        %span.product-description feeds 10–12 adults
-        %button.buy-button(type='submit' ng-disabled="product.quantity <= 0")
-          %span(ng-show="product.quantity <= 0")
-            Sold Out
-          %span(ng-show="product.quantity > 0")
-            Buy now
-        %span.product-details(ng-hide="product.quantity <= 0")
-          %span.product-pricing
-            ${{product.price | number:0}}
-            %span.product-shipping (free Fedex shipping)
-          %div
-            %small
-              {{product.quantity || 0}} remaining
+          .product-urgency
+            {{product.quantity || 0}} remaining, order before August 25th
+      .sold-out(ng-show="product.quantity <= 0")
+        Sold Out :(
 
     .market-body
       %h2 Throw an Epic End-of-Summer Meatfest!
