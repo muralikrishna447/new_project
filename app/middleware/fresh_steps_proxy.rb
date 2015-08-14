@@ -7,7 +7,7 @@ class FreshStepsProxy < Rack::Proxy
   # browser-sync was pinging multiple times per second. Although without the proxy, rails returns 406 so
   # it is still doing work. Curious.
   PREFIX = %w(/gallery /logout)
-  EXACT = nil
+  EXACT = "/"
 
   def initialize(app)
     @app = app
