@@ -51,8 +51,8 @@
 
 
 -################################ PRIMARY CONTENT ################################
--# Sous Vide CTA: don't show madlib for sous vide steak
--if ! is_brombone && @activity.id != 29
+-# Sous Vide CTA: don't show madlib sous vide content
+-unless is_brombone || @activity.tag_list.include?("sous vide")
   .container-fluid.well-gradient.full-bleed.no-bottom-margin(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='activityMadlib'; setIntent('ftue')")
     = render "devise/sessions/new_angular"
     .row-fluid
