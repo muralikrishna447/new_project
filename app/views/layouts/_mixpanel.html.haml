@@ -15,12 +15,4 @@
     mixpanel.track_links("#email-share", "Email Link", {"$email":"#{current_user.email}", "Activity Name":"#{@activity.title.html_safe}" });
 
 :javascript
-  mixpanel.register({'application': 'site', 'loggedIn' : "#{current_user != nil}"});
-
-
-
-
-
-
-
-
+  mixpanel.register({'application': 'site', 'loggedIn' : "#{current_user != nil}", requestId: "#{request.uuid()}"});
