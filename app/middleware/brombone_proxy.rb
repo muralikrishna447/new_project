@@ -59,7 +59,7 @@ class BromboneProxy < Rack::Proxy
     # (Presumably we could use only this test and not the _escaped_fragment_ one but that one
     # is so explicit no reason to ignore it.)
     result = env["HTTP_USER_AGENT"] =~ /(google|yahoo|bing|baidu|jeeves|facebook|Facebot|twitter|linkedin|slack)/
-    Rails.logger.info("User agent: #{env['HTTP_USER_AGENT']}, proxy: #{result ? 'yes' : 'no'}")
+    Rails.logger.info("User agent: #{env['HTTP_USER_AGENT']}, proxy: #{result ? 'yes' : 'no'}, path: #{env['REQUEST_URI']} query: #{env['QUERY_STRING']}")
     result
   end
 end
