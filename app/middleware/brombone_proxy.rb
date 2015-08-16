@@ -35,6 +35,7 @@ class BromboneProxy < Rack::Proxy
       end
 
       # If we succeed or get a response indicating the requester already has a good cache, done.
+      Rails.logger.info "Response: #{response[0]} #{response[0].class}"
       return response if [200, 304, 206].include? response[0]
       Rails.logger.info("Brombone request for path [#{env['REQUEST_URI']}] failed with code #{response[0]}- rendering locally")
     end
