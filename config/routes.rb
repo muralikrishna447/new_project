@@ -129,6 +129,7 @@ Delve::Application.routes.draw do
   get 'password-reset-sent' => 'pages#password_reset_sent', as: 'password_reset_sent'
   get 'sous-vide' => 'pages#sous_vide_resources', as: 'sous_vide_resources'
   get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
+  get 'meat-market' => 'pages#market_ribeye', as: 'market_ribeye'
 
   # TIMDISCOUNT for the 'tim' part only
 
@@ -355,6 +356,15 @@ Delve::Application.routes.draw do
 
       resources :circulators, only: [:index, :create, :destroy] do
         get :token, on: :member
+      end
+
+      namespace :shopping do
+        resources :products do
+          # match '/product/:product_id', to: 'shopping#product'
+        end
+        resources :users do
+          post :multipass, on: :collection
+        end
       end
 
       match '/*path' => 'base#options', :via => :options
