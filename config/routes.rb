@@ -335,7 +335,7 @@ Delve::Application.routes.draw do
       resources :activities, only: [:index, :show] do
         get :likes, on: :member
       end
-      resources :components, only: [:index, :show, :create, :update]
+      resources :components, only: [:index, :show, :create, :update, :destroy]
       resources :ingredients, only: [:index, :show]
       resources :pages, only: [:index, :show, :create, :update]
       resources :passwords, only: [:update] do

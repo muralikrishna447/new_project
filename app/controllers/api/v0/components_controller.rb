@@ -30,6 +30,13 @@ module Api
         end
       end
 
+      def destroy
+        @component = Component.find(params[:id])
+        if @component.destroy
+          render nothing: true, status: 200
+        end
+      end
+
       private
       def underscore_key(k)
         if k == 'componentType' || k == 'componentParentType' || k == 'componentParentId'
