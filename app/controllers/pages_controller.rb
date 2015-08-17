@@ -41,4 +41,11 @@ class PagesController < ApplicationController
     @mobile_about = Page.find 'mobile-about'
     render layout: false
   end
+
+  def market_ribeye
+    if params[:add_to_cart]
+      redirect_to multipass_api_v0_shopping_index_path(product_id: params[:product_id], quantity: params[:quantity], autoredirect: true)
+    end
+  end
+
 end
