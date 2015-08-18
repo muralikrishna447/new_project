@@ -146,11 +146,11 @@
         -ms-flex: 0
         -o-flex: 0
 
-.component-container(component-load component-id='ribeye-hero')
+.component-container(component-load component-id="ribeye-hero")
 .component-container(ng-cloak ng-controller='ShoppingController' ng-init="loggedIn=#{current_user != nil}; getProduct(1538566017); #{params[:add_to_cart] ? 'addToCart({product_id: 4652374913, quantity: 1})' : ''}")
   .component.standard.market-container
     .buybox
-      .product-photo  
+      .product-photo
         %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/CsFYqm95SsuU5GYoEK0H'")
       %span.product-name Six-Pound Ribeye Roast
       %span.product-description feeds 8–12 adults
@@ -174,7 +174,7 @@
     .market-body
       %h2 Throw an Epic End-of-Summer Meatfest!
       %p Hand-carved ribeye is a crowd-friendly, easy-to-prepare, and downright impressive meal. We’ve partnered with New Zealand’s Silver Fern Farms to bring this phenomenal cut to ChefSteps members.
-    
+
       %ul
         %li Flavor-packed beef from grass-fed cows raised on New Zealand’s lush green pastures
         %li Exquisitely tender results with our simple, three-step sous vide technique
@@ -183,7 +183,7 @@
         %li Our personal guarantee—love it, or receive a 100% refund
 
       %h2 A Fantastic Feast in Three Simple Steps
-      %p You'll receive your ribeye roast carefully vacuum-packed and ready to cook sous vide. Follow the steps below to cook it to perfection. 
+      %p You'll receive your ribeye roast carefully vacuum-packed and ready to cook sous vide. Follow the steps below to cook it to perfection.
 
       .steps-gallery
         .step
@@ -207,13 +207,13 @@
       %h3 Why Silver Fern Farms?
       %p Silver Fern Farms is a farmer co-operative based in the town of Dunedin, on New Zealand’s pasture-rich South Island. The company’s sophisticated meat-grading system, combined with its attention to animal welfare and New Zealand's idyllic cattle-raising conditions, guarantee beef is tender and flavorful. In partnering with Silver Fern Farms, ChefSteps can bring this superb cut directly to your doorstep—so you can focus on working your magic in the kitchen.
 
-      %h3 What makes New Zealand beef special? 
-      :markdown 
+      %h3 What makes New Zealand beef special?
+      :markdown
         There are two primary reasons New Zealand's beef is so high-quality:
 
-        * The genetics of the cattle. [Read more](http://nzgrassfedbeef.com/why-black-angus-beef-special) about why 100% New Zealand certified black angus beef tastes great, and is sustainable and healthy. 
+        * The genetics of the cattle. [Read more](http://nzgrassfedbeef.com/why-black-angus-beef-special) about why 100% New Zealand certified black angus beef tastes great, and is sustainable and healthy.
         * How the cattle are raised. These cows are pasture-raised, 100% grass-fed, free-range cattle. This means the meat will be flavorful, consistent, and lean. New Zealand farmers have been raising free-range, grass-fed cows for well over a century—generations of knowledge and expertise shows in the quality of the meat.
-      
+
       %h3 Why is grass-fed beef better?
       %p Grass-fed beef has a more meaty flavor than the grain-fed beef to which most of us are accustomed. Why is grain-fed so prominent these days? A cow will grow faster on grain than grass—meaning farmers can send it to market sooner. And while a younger cow is more tender than its more mature counterpart, its meat will be less robustly flavored. When you combine the meaty flavor of a grass-fed cow with the tenderness-imparting ability of sous vide, you’ll wind up with one extraordinary roast, imbued with the distinctly delicious "flavors of the field”—the wild plants that make up its healthy diet—along with the exquisite texture that results from slowly cooking it in a temperature-controlled water bath.
 
@@ -221,7 +221,7 @@
       %p Ribeye roast is a tender cut from between the 7th and 8th and 12th and 13th ribs of the cow. What do we like about ribeye roasts in particular? They're great for serving a crowd. You can cook one big hunk of meat all at once, sprinkle it with rub, and finish it off in the oven for a 10-to-12 person feast you can carve up right at the table. Sounds like you're about to be a hero, doesn't it?
 
       %h2 The Nitty-Gritty
-      
+
       %strong How will my beef be packaged?
       %p Your six-pound ribeye roast will be vacuum-sealed, ready for sous vide, and packed with dry ice for delivery to your kitchen.
 
@@ -231,5 +231,5 @@
 
       %strong Where do you deliver?
       %p Anywhere in the US.
-  
+
 =render 'layouts/footer'

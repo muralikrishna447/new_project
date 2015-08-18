@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150803180035) do
+ActiveRecord::Schema.define(:version => 20150813054610) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -249,8 +249,11 @@ ActiveRecord::Schema.define(:version => 20150803180035) do
     t.string   "slug"
     t.string   "component_type"
     t.hstore   "meta"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+    t.string   "component_parent_type"
+    t.integer  "component_parent_id"
+    t.integer  "position"
   end
 
   create_table "copies", :force => true do |t|

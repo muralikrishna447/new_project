@@ -15,7 +15,6 @@ module Api
       end
 
       def create
-        puts "Params: #{params}"
         component_params = convert_hash_keys(params[:component])
         @component = Component.new(component_params)
         if @component.save
@@ -31,9 +30,16 @@ module Api
         end
       end
 
+      def destroy
+        @component = Component.find(params[:id])
+        if @component.destroy
+          render nothing: true, status: 200
+        end
+      end
+
       private
       def underscore_key(k)
-        if k == 'componentType'
+        if k == 'componentType' || k == 'componentParentType' || k == 'componentParentId'
           k.to_s.underscore.to_sym
         else
           k
@@ -41,7 +47,6 @@ module Api
       end
 
       def convert_hash_keys(value)
-        puts "VALUE IS: #{value}"
         case value
           when Array
             value.map { |v| convert_hash_keys(v) }
