@@ -69,7 +69,6 @@ module Api
           mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
           mixpanel.track(@user.email, 'Signed Up', {source: 'api'})
 
-          source = params[:source] || 'unknown'
           Librato.increment 'user.signup', sporadic: true
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
