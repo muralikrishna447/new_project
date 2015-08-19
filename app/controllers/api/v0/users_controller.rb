@@ -64,16 +64,13 @@ module Api
       # Why is this code duplicated here?
       def create_new_user(user)
         if user.save
-          begin
-            source = params[:source] || 'unknown'
-            Librato.increment 'user.signup', source: source
-          rescue
-            logger.error "User signup increment failed"
-          end
           email_list_signup(user.name, user.email, params[:source])
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
           mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
           mixpanel.track(@user.email, 'Signed Up', {source: 'api'})
+
+          source = params[:source] || 'unknown'
+          Librato.increment 'user.signup', source: source
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
           logger.warn "create_new_user errors: #{user.errors.inspect}"
