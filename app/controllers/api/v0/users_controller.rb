@@ -70,7 +70,7 @@ module Api
           mixpanel.track(@user.email, 'Signed Up', {source: 'api'})
 
           source = params[:source] || 'unknown'
-          Librato.increment 'user.signup', source: source
+          Librato.increment 'user.signup', sporadic: true
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
           logger.warn "create_new_user errors: #{user.errors.inspect}"

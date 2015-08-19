@@ -30,7 +30,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
     if @user.save
       sign_in @user
-      Librato.increment 'user.signup', source: 'old-signup'
+      Librato.increment 'user.signup', sporadic: true
       email_list_signup(@user.name, @user.email, "ajax_signup_form")
       cookies.delete(:viewed_activities)
       mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
