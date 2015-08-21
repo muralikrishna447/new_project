@@ -18,6 +18,20 @@
       console.log data
       $scope.getTokenStatus = "Error: #{JSON.stringify(data)}"
 
+  $scope.logout = (token) ->
+    $http.post(
+      host + '/api/v0/logout'
+      {}
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.logoutStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      $scope.logoutStatus = "Error: #{JSON.stringify(data)}"
+
   $scope.getTokenFacebookStatus = null
   $scope.getTokenFacebook = (user) ->
     user = {}
