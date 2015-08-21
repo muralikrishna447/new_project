@@ -2,7 +2,7 @@ module Api
   module V0
     class AuthController < BaseController
       before_filter :ensure_authorized_service, only: [:validate]
-
+      before_filter :ensure_authorized, only: [:logout]
       instrument_action :authenticate
 
       def authenticate
@@ -102,6 +102,20 @@ module Api
           logger.error "Authenticate Exception: #{e.class} #{e}"
           logger.error e.backtrace.join("\n")
           render json: {status: 500, message: 'Internal Server Error'}, status: 500
+        end
+      end
+
+      def logout
+        # For now, don't invalidate token since we're re-using the actor address
+        # across multiple sessions
+        user = User.find (@user_id_from_token)
+        if user
+          # Warden logout will clear rememberable and set logged-out session cookie
+          warden.logout
+          render_api_response 200
+        else
+          logger.info "No user found for id [#{@user_id_from_token}]"
+          render_unauthorized
         end
       end
 

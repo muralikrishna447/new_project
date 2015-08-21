@@ -83,6 +83,7 @@ module Api
           end
 
           token = AuthToken.from_string(token)
+
           aa = ActorAddress.find_for_token(token)
           unless aa
             logger.info "Not ActorAddress found for token #{token}"
@@ -98,6 +99,12 @@ module Api
 
           # TODO - handle non-user tokens gracefully
           @user_id_from_token = token.claim['User']['id']
+
+          unless @user_id_from_token
+            logger.info "Not user id found in token claim #{token.claim.inspect}"
+            render_unauthorized
+            return
+          end
 
         rescue Exception => e
           logger.error e

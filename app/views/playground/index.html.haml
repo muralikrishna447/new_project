@@ -39,6 +39,25 @@
             clear
           %div
             {{getTokenStatus}}
+    %hr
+
+    .row
+      .span8.well-border
+        %h4 Logging out (involves cookies)
+        %p
+          %i POST /api/v0/logout
+        %p Clear the users rememberable cookie using an auth token, I know, I know...
+        %form(ng-submit='logout(user.token)')
+          .control-group
+            %input(type='text' ng-model='user.token' placeholder='token')
+          .control-group
+            %input.btn(type='submit' value='Logout')
+        .alert(ng-if='logoutStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{logoutStatus}}
+
 
     %hr
 
