@@ -167,7 +167,7 @@
             ${{product.price | number:0}}
             %span.product-shipping (free Fedex shipping)
           .product-urgency
-            {{product.quantity || 0}} remaining, order before August 25th
+            {{product.quantity || 0}} remaining, order before September 1st
       .sold-out(ng-show="product.quantity <= 0")
         Sold Out :(
 
@@ -223,7 +223,7 @@
       %h2 The Nitty-Gritty
 
       %strong How will my beef be packaged?
-      %p Your six-pound ribeye roast will be vacuum-sealed, ready for sous vide, and packed with dry ice for delivery to your kitchen.
+      %p Shipped with gel packs to keep it chilled, your six-pound ribeye roast arrives vacuum-sealed  and ready to be cooked sous vide.
 
       %strong What if I have questions?
       :markdown
