@@ -116,4 +116,17 @@ describe Api::V0::AuthController do
       expect(JSON.parse(response.body)['tokenValid']).to be_false
     end
   end
+
+  context 'POST /logout' , focus:true do
+    it 'should log out properly' do
+      request.env['HTTP_AUTHORIZATION'] = @aa.current_token.to_jwt
+      post :logout
+      response.code.should eq("200")
+    end
+
+    it 'should return error when no token supplied' do
+      post :logout
+      response.code.should eq("401")
+    end
+  end
 end
