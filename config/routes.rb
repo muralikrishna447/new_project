@@ -366,6 +366,7 @@ Delve::Application.routes.draw do
         end
         resources :users do
           post :multipass, on: :collection
+          get :multipass, on: :collection
         end
       end
 
