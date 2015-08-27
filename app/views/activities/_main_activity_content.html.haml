@@ -1,6 +1,6 @@
 %div(cs-showcase collection-name='knives' ng-if="activity.id == 10355")
 
-.master-column-container(cs-activity-columns ng-if="activity.id != 10355")
+.master-column-container(cs-activity-columns ng-hide="activity.id == 10355")
   .master-column
     #main-content.main-content-container(ng-cloak)
 
