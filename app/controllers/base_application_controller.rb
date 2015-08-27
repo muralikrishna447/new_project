@@ -12,12 +12,18 @@ class BaseApplicationController < ActionController::Base
     # coming from "similar" origins (same domain, possibly different protocol)
 
     if request.headers['origin']
+      begin
+        origin_hostname = URI(request.headers['origin']).host
+      rescue URI::InvalidURIError
+        Rails.logger.info "[cors] Invalid origin #{request.headers['origin']} setting no CORS headers"
+        return
+      end
+
       headers['Access-Control-Allow-Origin'] = request.headers['origin']
       headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
       headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type, Authorization'
       headers['Access-Control-Max-Age'] = "1728000"
 
-      origin_hostname = URI(request.headers['origin']).host
       # host header is not a URI as it doesn't include protocol but it does include a port
       host_hostname = request.headers['host'].split(':')[0]
 

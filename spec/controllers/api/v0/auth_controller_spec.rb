@@ -117,7 +117,7 @@ describe Api::V0::AuthController do
     end
   end
 
-  context 'POST /logout' , focus:true do
+  context 'POST /logout' do
     it 'should log out properly' do
       request.env['HTTP_AUTHORIZATION'] = @aa.current_token.to_jwt
       post :logout
