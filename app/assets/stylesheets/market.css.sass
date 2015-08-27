@@ -1,0 +1,81 @@
+@import 'mixins'
+
+.market-container
+  @include display-flex
+  @include flex(0 1 100%)
+  max-width: 1080px
+  box-sizing: border-box
+
+  cs-image
+    img
+      width: 100%
+
+.buybox
+  @include flex(1 0 300px)
+  @include order(1)
+
+.market-body
+  @include flex(0 1 100%)
+  padding-right: 30px
+  @include boxsizing
+  h2
+    margin-bottom: $baseline
+
+.buy-button
+  background-color: rgb(125, 180, 97)
+  color: rgb(255,255,255)
+  padding: 4px 8px
+  margin: 10px 10px 0 0
+  border: 1px solid #71a257
+  border-radius: 3px
+
+.steps-gallery
+  @include display-flex
+  margin-bottom: 30px
+  .step
+    @include flex(1 1 100%)
+    margin-right: 30px
+
+.guarantee
+  @include display-flex
+  margin-bottom: 30px
+  .guarantee-image
+    @include flex(0 1 50%)
+    margin-right: 20px
+  .quote
+    @include flex(0 1 50%)
+
+@media (max-width: 1120px)
+  .market-container
+    padding: 0 20px
+
+@media (max-width: 768px)
+  .market-container
+    padding: 0
+
+  .steps-gallery
+    display: block
+    margin-bottom: 0px
+    .step
+      margin-right: 0px
+      margin-bottom: 30px
+
+@media (max-width: 680px)
+  .market-container
+    @include flex-wrap(wrap)
+
+  .market-body
+    padding-right: 0
+
+  .buybox
+    @include flex(0 1 100%)
+    width: 100%
+    @include order(0)
+
+  .market-body
+    width: 100%
+
+  .guarantee
+    display: block
+    .guarantee-image
+      margin-right: 0px
