@@ -34,9 +34,12 @@ Spork.prefork do
 
     config.treat_symbols_as_metadata_keys_with_true_values = true
 
-    # Allow focusing on a single spec/context with the :focus tag.
-    config.filter_run :focus
-    config.run_all_when_everything_filtered = true
+    # Allow focusing on a single spec/context with the :focus tag unless were running in codeship
+    unless ENV['CI']
+
+      config.filter_run :focus
+      config.run_all_when_everything_filtered = true
+    end
 
     config.include Devise::TestHelpers, type: :controller
     config.extend ControllerMacros, type: :controller
@@ -96,5 +99,3 @@ end
 def current_path_info
   current_url.sub(%r{.*?://},'')[%r{[/\?\#].*}] || '/'
 end
-
-
