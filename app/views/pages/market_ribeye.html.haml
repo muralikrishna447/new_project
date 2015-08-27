@@ -5,7 +5,7 @@
 
 .component-container(component-load component-id="ribeye-hero")
 .component-container(ng-cloak ng-controller='ShoppingController' ng-init="loggedIn=#{current_user != nil}; getProduct(1538566017); #{params[:add_to_cart] ? 'addToCart({product_id: 4652374913, quantity: 1})' : ''}")
-  .component.standard.market-container
+  .market-container
     .buybox
       .product-photo
         %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/CsFYqm95SsuU5GYoEK0H'")
@@ -55,7 +55,8 @@
 
       %h2 We're Here to Help
       .guarantee
-        %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/PBnCGlhXTaqVNWsz3qsO'" aspect="1:1")
+        .guarantee-image
+          %cs-image(url="'https://d3awvtnmmsvyot.cloudfront.net/api/file/PBnCGlhXTaqVNWsz3qsO'" aspect="1:1")
         .quote
           %p Our team of chefs will be standing by to answer any questions you have about preparing your roast. Want to smoke your meat? Cook in a traditional oven? Turn it into individual steaks? We’ll make sure you have an amazing experience with this incredible cut of beef.
 

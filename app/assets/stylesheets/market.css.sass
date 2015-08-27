@@ -1,7 +1,14 @@
 @import 'mixins'
 
-.component.standard.market-container
+.market-container
   @include display-flex
+  @include flex(0 1 100%)
+  max-width: 1080px
+  box-sizing: border-box
+
+  cs-image
+    img
+      width: 100%
 
 .buybox
   @include flex(1 0 300px)
@@ -14,55 +21,6 @@
   h2
     margin-bottom: $baseline
 
-.steps-gallery, .guarantee
-  @include display-flex
-  margin-bottom: 30px
-
-.step
-  @include flex(0 1 100%)
-  margin-right: 30px
-  cs-image
-    margin-bottom: 10px
-
-.step img, .product-photo img, .guarantee img
-  border-radius: 8px
-
-.guarantee
-  @include display-flex
-  cs-image
-    width: 50%
-    margin-right: 30px
-  .quote
-    width: 50%
-
-.product-photo
-  margin-bottom: 15px
-
-.product-name
-  font-size: 20px
-  line-height: 22px
-  font-weight: 500
-  display: block
-
-.product-description
-  font-size: 16px
-  color: #767676
-  display: block
-
-.product-pricing, .product-urgency
-  color: #767676
-
-.product-pricing
-  font-size: 22px
-  vertical-align: middle
-  display: inline-block
-
-.product-shipping
-  font-size: 14px
-
-.form form
-  display: inline
-
 .buy-button
   background-color: rgb(125, 180, 97)
   color: rgb(255,255,255)
@@ -71,25 +29,53 @@
   border: 1px solid #71a257
   border-radius: 3px
 
-@media (max-width: 600px)
-  .component.standard.market-container
-    display: block
-    padding: 0px
+.steps-gallery
+  @include display-flex
+  margin-bottom: 30px
+  .step
+    @include flex(1 1 100%)
+    margin-right: 30px
 
-  .market-body
-    padding-right: 0px
-    padding-left: 0px
+.guarantee
+  @include display-flex
+  margin-bottom: 30px
+  .guarantee-image
+    @include flex(0 1 50%)
+    margin-right: 20px
+  .quote
+    @include flex(0 1 50%)
+
+@media (max-width: 1120px)
+  .market-container
+    padding: 0 20px
+
+@media (max-width: 768px)
+  .market-container
+    padding: 0
 
   .steps-gallery
     display: block
+    margin-bottom: 0px
     .step
       margin-right: 0px
       margin-bottom: 30px
 
+@media (max-width: 680px)
+  .market-container
+    @include flex-wrap(wrap)
+
+  .market-body
+    padding-right: 0
+
+  .buybox
+    @include flex(0 1 100%)
+    width: 100%
+    @include order(0)
+
+  .market-body
+    width: 100%
+
   .guarantee
     display: block
-    cs-image
-      width: 100%
+    .guarantee-image
       margin-right: 0px
-    .quote
-      width: 100%
