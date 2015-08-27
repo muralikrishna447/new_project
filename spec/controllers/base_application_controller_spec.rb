@@ -68,5 +68,19 @@ describe BaseApplicationController, type: :controller do
 
       should_have_cors_headers(@prod_origin, true)
     end
+
+    it 'should handle bad origins gracefully' do |variable|
+      request.env['host'] = @prod_host
+      request.env['origin'] = "file://" # this was actually seen in prod
+      get :show, id: 1
+      should_have_no_cors_headers
+    end
+
+    it 'should handle a gibberish origins gracefully' do |variable|
+      request.env['host'] = @prod_host
+      request.env['origin'] = "sdfw54%&*"
+      get :show, id: 1
+      should_have_no_cors_headers
+    end
   end
 end
