@@ -1,10 +1,17 @@
 module Api
   module V0
     class UsersController < BaseController
+
+      # Required since this only this controller contains the code to actually
+      # set the cookie and not just generate the token
+      include Devise::Controllers::Rememberable
       before_filter :ensure_authorized, except: [:create]
 
       def me
         @user = User.find @user_id_from_token
+
+        remember_me @user # sets remember_user_token cookie
+        warden.set_user @user # sets session cookie, unsure if this is necessary
 
         if @user
           method_includes = [:avatar_url]
