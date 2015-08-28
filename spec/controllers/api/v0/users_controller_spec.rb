@@ -7,9 +7,12 @@ describe Api::V0::UsersController do
   end
 
   context 'GET /me' do
-    it 'should return a users info when a valid token is provided' do
+    it 'should return a users info when a valid token is provided', focus: true do
       request.env['HTTP_AUTHORIZATION'] = @token
+
       get :me
+
+      response.code.should == "200"
       result = JSON.parse(response.body)
       # TODO - write a nice utility for this sort of comparison
       result.delete('id').should == @user.id
@@ -20,8 +23,6 @@ describe Api::V0::UsersController do
       result.delete('intercom_user_hash').should == ApplicationController.new.intercom_user_hash(@user)
       result.delete('request_id')
       result.empty?.should == true
-
-      response.should be_success
     end
 
     it 'should include admin flag when user is admin' do

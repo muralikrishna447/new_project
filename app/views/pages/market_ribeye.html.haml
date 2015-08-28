@@ -4,7 +4,7 @@
 
 
 .component-container(component-load component-id="ribeye-hero")
-.component-container(ng-cloak ng-controller='ShoppingController' ng-init="loggedIn=#{current_user != nil}; getProduct(1538566017); #{params[:add_to_cart] ? 'addToCart({product_id: 4652374913, quantity: 1})' : ''}")
+.component-container(ng-cloak ng-controller='ShoppingController' ng-init="loggedIn=#{current_user != nil}; getProduct(1538566017)")
   .market-container
     .buybox
       .product-photo
@@ -12,7 +12,9 @@
       %span.product-name Six-Pound Ribeye Roast
       %span.product-description feeds 8–12 adults
       .form(ng-show="product.quantity > 0")
-        %form(ng-show="loggedIn" ng-submit="addToCart({product_id: 4652374913, quantity: 1})")
+        %form(ng-show="loggedIn" action="/api/v0/shopping/users/multipass" method="POST")
+          %input{ type: 'hidden', name: 'product_id',  value: 4652374913 }
+          %input{ type: 'hidden', name: 'quantity',  value: 1 }
           %input{ name: 'handle', type: 'hidden', value: 'ribeye-special' }
           %button.buy-button(type='submit' ng-disabled="product.quantity <= 0")
             %span Buy now
