@@ -10,11 +10,7 @@ module Api
           add_to_cart = "#{params[:product_id]}:#{params[:quantity]}"
           token = ShopifyMultipass.new.generate_token(user_data(add_to_cart))
           # This is for when it is coming from a sign in/up request.
-          if params[:autoredirect]
-            redirect_to (ShopifyAPI::Base.site + "/account/login/multipass/#{token}").to_s
-          else
-            render(json: {redirect_to: (ShopifyAPI::Base.site + "/account/login/multipass/#{token}").to_s})
-          end
+          redirect_to ("https://delve.myshopify.com/account/login/multipass/#{token}").to_s
         end
 
         private
