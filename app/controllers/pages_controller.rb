@@ -44,7 +44,7 @@ class PagesController < ApplicationController
 
   def market_ribeye
     if params[:add_to_cart]
-      redirect_to multipass_api_v0_shopping_users_path(product_id: params[:product_id], quantity: params[:quantity], autoredirect: true)
+      redirect_to multipass_api_v0_shopping_users_path(product_id: params[:product_id], quantity: params[:quantity])
     end
   end
 

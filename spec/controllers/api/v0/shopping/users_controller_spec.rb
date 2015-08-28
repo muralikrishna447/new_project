@@ -13,16 +13,9 @@ describe Api::V0::Shopping::UsersController do
     describe 'autoredirect' do
       it 'should redirect to multipass' do
         get :multipass, {product_id: 123, quantity: 1, autoredirect: true}
-        response.should redirect_to("https://test.myshopify.com/account/login/multipass/abc123")
+        response.should redirect_to("https://delve.myshopify.com/account/login/multipass/abc123")
       end
 
-    end
-    describe 'ajax request' do
-      it "should return a json with multipass" do
-        get :multipass, {product_id: 123, quantity: 1}
-        redirect = JSON.parse(response.body)
-        redirect['redirect_to'].should == "https://test.myshopify.com/account/login/multipass/abc123"
-      end
     end
   end
 
