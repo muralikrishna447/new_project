@@ -28,7 +28,10 @@
           .product-urgency
             {{product.quantity || 0}} remaining, order before September 1st
       .sold-out(ng-show="product.quantity <= 0")
-        Sold Out :(
+        We're sorry, we have sold out of our Ribeye Roast.  Please email
+        %a(mailto="john@chefsteps.com")
+          John Lusk
+        if you are interested in ordering this or other offerings in the future.
 
     .market-body
       %h2 Throw an Epic End-of-Summer Meatfest!
