@@ -44,7 +44,7 @@ class GiftCertificate < ActiveRecord::Base
               recipient_message: gift_info["recipientMessage"],
               email_to_recipient: gift_info["emailToRecipient"]
             )
-      unless purchaser.admin?
+      unless (purchaser.admin? || purchaser.role == 'collaborator')
         collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, purchaser, stripe_token, existing_card)
       end
       gc.send_email(gift_info["emailToRecipient"])
