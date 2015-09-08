@@ -2,12 +2,12 @@ describe Api::V0::UsersController do
 
   before :each do
     @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
-    aa = ActorAddress.create_for_user @user, client_metadata: "test"
-    @token = 'Bearer ' + aa.current_token.to_jwt
+    @aa = ActorAddress.create_for_user @user, client_metadata: "test"
+    @token = 'Bearer ' + @aa.current_token.to_jwt
   end
 
   context 'GET /me' do
-    it 'should return a users info when a valid token is provided', focus: true do
+    it 'should return a users info when a valid token is provided' do
       request.env['HTTP_AUTHORIZATION'] = @token
 
       get :me
@@ -23,6 +23,13 @@ describe Api::V0::UsersController do
       result.delete('intercom_user_hash').should == ApplicationController.new.intercom_user_hash(@user)
       result.delete('request_id')
       result.empty?.should == true
+    end
+
+    it 'should work with old style auth token' do
+      old_style_token = AuthToken.new({'address_id' => @aa.address_id, 'User' => {'id' => @user.id}, 'seq' => @aa.sequence})
+      request.env['HTTP_AUTHORIZATION'] = old_style_token.to_jwt
+      get :me
+      response.code.should == "200"
     end
 
     it 'should include admin flag when user is admin' do

@@ -14,7 +14,7 @@ namespace :api do
       puts "Using AUTH_SECRET_KEY environment variable"
       key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
     end
-
+    puts "Key: #{key.inspect}"
     issued_at = (Time.now.to_f * 1000).to_i
     claim = {
       iat: issued_at,
@@ -23,8 +23,9 @@ namespace :api do
            id: 200,
          }
     }
-    jws = JSON::JWT.new(claim.as_json).sign(key.to_s)
-    token = jws.to_s
-    puts "token: #{token}"
+    puts AuthToken.new(claim).to_jwt
+    # jws = JSON::JWT.new(claim.as_json).sign(key.to_s)
+    # token = jws.to_s
+    # puts "token: #{token}"
   end
 end

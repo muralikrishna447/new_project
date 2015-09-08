@@ -23,19 +23,21 @@ describe Api::V0::AuthController do
 
     it 'should persist client metadata' do
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}, client_metadata: "cooking_app"
+      response.code.should eq("200")
       token = AuthToken.from_string JSON.parse(response.body)['token']
-      address_id = token['address_id']
+      address_id = token['a']
       ActorAddress.where(address_id: address_id).first.client_metadata.should == 'cooking_app'
     end
 
     it 'should re-use an existing address' do
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
         token: @aa.current_token.to_jwt
+      response.code.should eq("200")
       token = JSON.parse(response.body)['token']
 
       decoded = JSON.parse(UrlSafeBase64.decode64(token.split('.')[1]))
 
-      decoded['address_id'].should == @aa.address_id
+      decoded['a'].should == @aa.address_id
       decoded['seq'].should == (@aa.sequence + 2)
     end
 
@@ -74,8 +76,7 @@ describe Api::V0::AuthController do
 
       it 'should be authenticatable with a valid secret' do
         verified = JSON::JWT.decode(@token, @key.to_s)
-        id = verified['User']['id']
-        id.should eq(@user.id)
+        verified['a'].should_not be_empty
       end
     end
   end

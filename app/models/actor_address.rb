@@ -1,6 +1,10 @@
 class ActorAddress < ActiveRecord::Base
   belongs_to :actor, polymorphic: true
 
+  ADDRESS_LENGTH = 16
+  HASHID_SALT = '3cc6500d43f5b8456bf164a313889639'
+  @@hashids = Hashids.new(HASHID_SALT, 16, '01233456789abcdef')
+
   def self.create_for_actor(actor, opts = {})
     logger.info "Creating new ActorAddress for #{actor} with opts #{opts.inspect}"
     aa = ActorAddress.new()
@@ -14,14 +18,29 @@ class ActorAddress < ActiveRecord::Base
       aa.unique_key = opts[:unique_key]
     end
 
-  ActorAddress.transaction do
+    ActorAddress.transaction do
       # save first only so we can re-use id for address_id when not specified
       aa.save!
       if opts.has_key? :address_id
-        aa.address_id = opts[:address_id]
+        address_id = opts[:address_id]
+        # TODO -clean up exceptions and bubble up to API level
+        unless address_id.length == 16
+          throw Error.new ("Invalid address_id length [#{address_id.length}] - length must be 16 hex chars")
+        end
+
+        unless address_id =~ /^[0-9a-f]+$/
+          throw Error.new ("Invalid address_id [#{address_id}] contains non-hex characters")
+        end
+
+        aa.address_id = address_id
       else
-        # TODO - the address should be obfuscated
-        aa.address_id = aa.id.to_s
+        hashid = @@hashids.encode(aa.id)
+        if hashid.length > ADDRESS_LENGTH
+          # This should never happpen given input is auto-incrementing field
+          raise "Hashid length is too long - id [#{hashid}]"
+        end
+
+        aa.address_id = hashid
       end
       aa.save!
     end
@@ -47,9 +66,8 @@ class ActorAddress < ActiveRecord::Base
 
   def claim (exp = nil, restrict_to = nil)
     c = {:iat => self.issued_at,
-     :address_id => self.address_id,
-     :seq => self.sequence,
-     "#{self.actor_type}" => {"id" => self.actor_id}}
+     :a => self.address_id,
+     :seq => self.sequence}
     c[:exp] = exp if exp
     c[:restrictTo] = restrict_to if restrict_to
     c
@@ -73,13 +91,21 @@ class ActorAddress < ActiveRecord::Base
     self.save
   end
 
+  # TODO - fork here
   def valid_token?(auth_token, sequence_offset = 0, restrict_to = nil)
+    logger.info "Testing validity of #{auth_token.inspect}"
     return false if auth_token.nil?
 
     valid = true
 
     auth_claim = auth_token.claim
-    if self.address_id != auth_claim[:address_id]
+
+    old_address_matches = self.address_id == auth_claim[:address_id]
+    new_address_matches = self.address_id == auth_claim[:a]
+
+    # either old or new should match, both matching should never happen and
+    # neither matching is an invalid token
+    if !(old_address_matches ^ new_address_matches)
       logger.info "Address does not match"
       valid = false
     end
@@ -126,17 +152,31 @@ class ActorAddress < ActiveRecord::Base
     self.status == "revoked"
   end
 
+  # fork here
   def self.find_for_token(token)
-    actor_type = actor_type_from_token(token)
-    actor_id = token.claim[actor_type]['id']
-    address_id = token.claim['address_id']
+    logger.info "Finding actor address for token [#{token.inspect}]"
+    old_address_id = token.claim['address_id']
+    new_address_id = token.claim['a']
 
-    aa = ActorAddress.where(actor_type: actor_type, actor_id: actor_id, address_id: address_id).first
-    unless aa
-      logger.info ("No ActorAddress found for token #{token.claim.inspect}")
+    if new_address_id
+      return ActorAddress.where(address_id: new_address_id).first
+    elsif old_address_id
+      actor_type = actor_type_from_token(token)
+      actor_id = token.claim[actor_type]['id']
+
+      aa = ActorAddress.where(actor_type: actor_type, actor_id: actor_id, address_id: old_address_id).first
+      unless aa
+        logger.info ("No ActorAddress found for token #{token.claim.inspect}")
+        return nil
+      end
+      return aa
+    else
+      logger.info ("Token contains neither 'address_id' or 'a' value")
       return nil
     end
-    aa
+      # Old style token
+
+
   end
 
   def self.find_for_user_and_unique_key(user, unique_key)
