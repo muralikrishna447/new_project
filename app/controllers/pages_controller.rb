@@ -18,10 +18,6 @@ class PagesController < ApplicationController
     # @knife_page = Page.find 'knife-collection'
   end
 
-  def sv_collection
-    @sv_page = Page.find 'sous-vide-collection'
-  end
-
   def egg_timer
     if Rails.env.production?
       authenticate_or_request_with_http_basic('Tools') do |username, password|

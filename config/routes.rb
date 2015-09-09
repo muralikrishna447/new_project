@@ -123,7 +123,7 @@ Delve::Application.routes.draw do
   get 'ftue' => 'dashboard#ftue', as: 'ftue'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
   get 'egg-timer' => 'pages#egg_timer', as: 'egg_timer'
-  get 'sous-vide-collection' => 'pages#sv_collection', as: 'sv_collection'
+  get 'sous-vide-collection', to: redirect('/sous-vide')
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
   get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
   get 'password-reset-sent' => 'pages#password_reset_sent', as: 'password_reset_sent'
