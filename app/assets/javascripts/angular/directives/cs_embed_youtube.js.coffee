@@ -12,13 +12,6 @@
     playerId = "YT" + Date.now()
     $(element).find('.video-iframe').attr('id', playerId)
 
-    mixpanelProperties =
-      host: 'youtube'
-      videoId: attrs.videoId
-      containerSlug: attrs.containerSlug
-
-    mixpanel.track('Video Embed Loaded', mixpanelProperties)
-
     createPlayer = ->
       if window.youtubeAPIReady && attrs.videoId
         console.log('createPlayer')
@@ -41,11 +34,6 @@
             'onReady' : (event) ->
               console.log("onReady #{player.getVideoUrl()}")
               player.setPlaybackQuality?('hd1080')
-
-            'onStateChange': (event) ->
-              console.log("onStateChange #{event.data} #{player.getVideoUrl()}")
-              if event.data == 1
-                  mixpanel.track('Video Embed Played', mixpanelProperties)
         )
       else
         # If the YT api isn't ready yet, try again a little later
