@@ -25,30 +25,30 @@
       .cs-nav-dropdown-menu(ng-show="showDropdown=='resources'" ng-cloak)
         %ul
           %li
-            = link_to projects_url do
-              %i.fa.fa-cubes
-              Projects
+            = link_to "http://www.chefsteps.com/activities/sous-vide-time-and-temperature-guide" do
+              %i.fa.fa-clock-o
+              Time & Temperature Guide
+          %li
+            = link_to '/sous_vide' do
+              = image_tag "https://d92f495ogyf88.cloudfront.net/static/nav-circulator-icon.png", width: "15px"
+              Sous Vide Resources
           %li
             = link_to 'http://www.chefsteps.com/activities/the-egg-calculator' do
               = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/l4FOGWE7Swuz1kgKrNmZ", width: "15px"
               Egg Calculator
           %li
-            = link_to "http://www.chefsteps.com/activities/sous-vide-time-and-temperature-guide" do
-              %i.fa.fa-clock-o
-              Time & Temperature Guide
-
-          %li
             = link_to knife_collection_url do
               = image_tag "https://d92f495ogyf88.cloudfront.net/static/nav-knife-icon.png", width: "15px"
               Knife Collection
           %li
-            = link_to sv_collection_url do
-              = image_tag "https://d92f495ogyf88.cloudfront.net/static/nav-circulator-icon.png", width: "15px"
-              Sous Vide Collection
-          %li
             %a(href="http://store.chefsteps.com/collections/cookbooks-we-love")
               %i.fa.fa-book
               Cookbook Collection
+          %li
+            = link_to projects_url do
+              %i.fa.fa-cubes
+              Projects
+
   %li
     %a(href='/about')
       About
