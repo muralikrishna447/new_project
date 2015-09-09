@@ -552,6 +552,10 @@ class Activity < ActiveRecord::Base
     }
   end
 
+  def chefsteps_generated
+    creator.blank?
+  end
+
   private
 
   def check_published
