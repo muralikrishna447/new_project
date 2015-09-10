@@ -149,6 +149,10 @@ class Assembly < ActiveRecord::Base
     when 'f2ba193b2f9f'
       pct = 0.5
 
+    # INSTAGRAM 50k followers
+    when 'c919af43ba6c'
+      pct = 0.5
+
     # TIMDISCOUNT
     when 'fb912ad989a0'
       pct = 0
