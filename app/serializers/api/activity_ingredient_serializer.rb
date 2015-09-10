@@ -1,6 +1,6 @@
 class Api::ActivityIngredientSerializer < ApplicationSerializer
   format_keys :lower_camel
-  attributes :order, :title, :quantity, :unit
+  attributes :order, :title, :quantity, :unit, :note
 
   has_one :ingredient, serializer: Api::IngredientIndexSerializer
 
