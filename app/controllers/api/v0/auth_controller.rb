@@ -71,13 +71,25 @@ module Api
       end
 
       def authenticate_facebook
-        user = User.find_by_email(params[:email])
-        aa = ActorAddress.create_for_user user, client_metadata: "facebook"
-        if user && user.provider == 'facebook' && user.facebook_user_id == params[:facebook_user_id]
-          render json: {status: '200 Success', token: aa.current_token.to_jwt}, status: 200
-        else
-          render_unauthorized
-        end
+        # params[:accessToken]
+        # params[:userId]
+
+        # Verify Facebook Token
+
+        # Find ChefSteps User
+
+        # If user exists log them in
+
+        # If user does not exist, create an account
+
+
+        # user = User.find_by_email(params[:email])
+        # aa = ActorAddress.create_for_user user, client_metadata: "facebook"
+        # if user && user.provider == 'facebook' && user.facebook_user_id == params[:facebook_user_id]
+        #   render json: {status: '200 Success', token: aa.current_token.to_jwt}, status: 200
+        # else
+        #   render_unauthorized
+        # end
       end
 
       # To be used by the Messaging Service
