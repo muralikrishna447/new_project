@@ -71,8 +71,70 @@ module Api
       end
 
       def authenticate_facebook
-        # params[:accessToken]
-        # params[:userId]
+
+        puts '*'*30
+        puts '*'*30
+
+        access_token = params[:user][:access_token]
+        user_id = params[:user][:user_id]
+        puts "access_token: #{access_token}"
+        puts "user_id: #{user_id}"
+
+        oauth = Koala::Facebook::OAuth.new(facebook_app_id, facebook_secret)
+        puts "oauth: #{oauth.inspect}"
+        app_access_token = oauth.get_app_access_token
+        puts "app_access_token: #{app_access_token}"
+
+        fb = Koala::Facebook::API.new(app_access_token)
+        fb.debug_token(access_token) do |response|
+          puts "Response: #{response}"
+          response_data = response['data']
+          if response_data && response_data['is_valid'] && response_data['user_id'] == user_id
+            fb_user_api = Koala::Facebook::API.new(access_token)
+            fb_user = fb_user_api.get_object('me')
+            puts "me: #{fb_user.inspect}"
+            cs_user = User.where(email: fb_user['email']).first
+
+            if cs_user
+              puts "CS USER EXISTS!"
+            else
+              puts "CS USER DOES NOT EXIST!"
+              cs_user = User.new({
+                name: fb_user['name'],
+                email: fb_user['email']
+              })
+              cs_user.facebook_user_id = fb_user['id']
+              cs_user = User.facebook_connect(cs_user)
+            end
+
+            aa = ActorAddress.create_for_user cs_user, client_metadata: "facebook"
+            render json: {status: '200 Success', token: aa.current_token.to_jwt}, status: 200
+
+          else
+            render_unauthorized
+          end
+        end
+
+        # fb = Koala::Facebook::API.new(params[:user][:authentication_token])
+        # puts fb.debug_token(params[:user][:user_id])
+        puts '*'*30
+        puts '*'*30
+        # puts fb.get_object('chefsteps')
+        # exit
+        #
+        # oauth = Koala::Facebook::OAuth.new("249352241894051", "57601926064dbde72d57fedd0af8914f") #copied from staging
+        # #app_access_token = oauth.get_app_access_token
+        # app_access_token = "249352241894051|57601926064dbde72d57fedd0af8914f" # concatenated access token
+        # puts "Access token: #{app_access_token}"
+        # oauth_access_token = 'CAADiyNfNUqMBAFmuk7iVEKK0a2eKj764HoXTILI0aGAFtZBMZCBbOjokZA54ZA4vjhw6uAM9lGauyYZCqzwcPW2sxxgi26X3JeW4Ge0dIVhUgkW5C5ZBzTOc5QKoFvCzQ1uE0c1f3cpCOZBkLtZCP6e7R3mMlWfME8YQNfSyKO7hXkaYYwVCoK96MhraLryBiD7s5xdyvzVtbKVIQqlcDc6l'
+        # fb = Koala::Facebook::API.new(app_access_token)
+        # puts fb.inspect
+        # #puts fb.get_object("me").inspect
+        # puts fb.debug_token(oauth_access_token)
+        # puts fb.debug_token(app_access_token)
+        #
+        # fb = Koala::Facebook::API.new(oauth_access_token)
+        # puts fb.get_object("me").inspect
 
         # Verify Facebook Token
 

@@ -36,6 +36,30 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
+  helper_method :facebook_app_id
+  def facebook_app_id
+    case Rails.env
+    when "production"
+      "380147598730003"
+    when "staging", "staging2"
+      "642634055780525"
+    else
+      "249352241894051"
+    end
+  end
+
+  helper_method :facebook_secret
+  def facebook_secret
+    case Rails.env
+    when "production"
+      ENV["FACEBOOK_SECRET"]
+    when "staging", "staging2"
+      "1cb4115088bd42aed2dc6d9d11c82930"
+    else
+      "57601926064dbde72d57fedd0af8914f"
+    end
+  end
+
   def log_current_user
     logger.info("current_user id: #{current_user.nil? ? "anon" : current_user.id}")
   end
