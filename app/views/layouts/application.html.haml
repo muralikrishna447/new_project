@@ -36,17 +36,34 @@
     %meta{:name => "google-translate-customization", :content => "d64492c5d22d7921-60170f9c9b7267c6-g7179c5f7a7e64573-d"}
     %link{href: 'https://plus.google.com/106370441183974123730?rel=author'}
 
-    - if Rails.env.development?
-      %link{href: "/favicon-dev.png"}
-    - else
-      %link{href: "/favicon.ico", rel: "shortcut icon"}
+    -# Favicons
+    %link( rel="apple-touch-icon" sizes="57x57" href="https://d92f495ogyf88.cloudfront.net/favicons/apple-touch-icon-57x57.png?v=yyy4wNKzaA")
+    %link( rel="apple-touch-icon" sizes="60x60" href="https://d92f495ogyf88.cloudfront.net/favicons/apple-touch-icon-60x60.png?v=yyy4wNKzaA")
+    %link( rel="apple-touch-icon" sizes="72x72" href="https://d92f495ogyf88.cloudfront.net/favicons/apple-touch-icon-72x72.png?v=yyy4wNKzaA")
+    %link( rel="apple-touch-icon" sizes="76x76" href="https://d92f495ogyf88.cloudfront.net/favicons/apple-touch-icon-76x76.png?v=yyy4wNKzaA")
+    %link( rel="apple-touch-icon" sizes="114x114" href="https://d92f495ogyf88.cloudfront.net/favicons/apple-touch-icon-114x114.png?v=yyy4wNKzaA")
+    %link( rel="apple-touch-icon" sizes="120x120" href="https://d92f495ogyf88.cloudfront.net/favicons/apple-touch-icon-120x120.png?v=yyy4wNKzaA")
+    %link( rel="apple-touch-icon" sizes="144x144" href="https://d92f495ogyf88.cloudfront.net/favicons/apple-touch-icon-144x144.png?v=yyy4wNKzaA")
+    %link( rel="apple-touch-icon" sizes="152x152" href="https://d92f495ogyf88.cloudfront.net/favicons/apple-touch-icon-152x152.png?v=yyy4wNKzaA")
+    %link( rel="apple-touch-icon" sizes="180x180" href="https://d92f495ogyf88.cloudfront.net/favicons/apple-touch-icon-180x180.png?v=yyy4wNKzaA")
+    %link( rel="icon" type="image/png" href="https://d92f495ogyf88.cloudfront.net/favicons/favicon-32x32.png?v=yyy4wNKzaA" sizes="32x32")
+    %link( rel="icon" type="image/png" href="https://d92f495ogyf88.cloudfront.net/favicons/favicon-194x194.png?v=yyy4wNKzaA" sizes="194x194")
+    %link( rel="icon" type="image/png" href="https://d92f495ogyf88.cloudfront.net/favicons/favicon-96x96.png?v=yyy4wNKzaA" sizes="96x96")
+    %link( rel="icon" type="image/png" href="https://d92f495ogyf88.cloudfront.net/favicons/android-chrome-192x192.png?v=yyy4wNKzaA" sizes="192x192")
+    %link( rel="icon" type="image/png" href="https://d92f495ogyf88.cloudfront.net/favicons/favicon-16x16.png?v=yyy4wNKzaA" size="16x16")
+    %link( rel="manifest" href="https://d92f495ogyf88.cloudfront.net/favicons/manifest.json?v=yyy4wNKzaA")
+    %link( rel="shortcut icon" href="https://d92f495ogyf88.cloudfront.net/favicons/favicon.ico?v=yyy4wNKzaA")
+    %meta( name="msapplication-TileColor" content="#da532c")
+    %meta( name="msapplication-TileImage" content="https://d92f495ogyf88.cloudfront.net/favicons/mstile-144x144.png?v=yyy4wNKzaA")
+    %meta( name="theme-color" content="#ffffff")
+
     - unless yield(:canonical_link).blank?
       %link{rel: "canonical", href: yield(:canonical_link) }
     %link{href: "//cloud.typography.com/7213652/651062/css/fonts.css", type: "text/css", rel: "stylesheet"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css", rel: "stylesheet", type: "text/css"}
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
     %link(href="/chefsteps-icons.css" rel="stylesheet" type="text/css")
-    %link{href:"/apple-touch-icon.png", rel:"apple-touch-icon" }
+
     = render 'layouts/mixpanel'
     = render 'layouts/google_analytics'
     = render 'layouts/filepicker'
