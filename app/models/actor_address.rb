@@ -3,7 +3,8 @@ class ActorAddress < ActiveRecord::Base
 
   ADDRESS_LENGTH = 16
   HASHID_SALT = '3cc6500d43f5b8456bf164a313889639'
-  @@hashids = Hashids.new(HASHID_SALT, 16, '01233456789abcdef')
+  SEQUENCE_GENERATED_ADDRESS_PREFIX = 'a00000'
+  @@hashids = Hashids.new(HASHID_SALT, ADDRESS_LENGTH - SEQUENCE_GENERATED_ADDRESS_PREFIX.length, '01233456789abcdef')
 
   def self.create_for_actor(actor, opts = {})
     logger.info "Creating new ActorAddress for #{actor} with opts #{opts.inspect}"
@@ -34,7 +35,8 @@ class ActorAddress < ActiveRecord::Base
 
         aa.address_id = address_id
       else
-        hashid = @@hashids.encode(aa.id)
+        hashid = SEQUENCE_GENERATED_ADDRESS_PREFIX + @@hashids.encode(aa.id)
+        puts hashid
         if hashid.length > ADDRESS_LENGTH
           # This should never happpen given input is auto-incrementing field
           raise "Hashid length is too long - id [#{hashid}]"
