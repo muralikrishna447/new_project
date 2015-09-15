@@ -81,9 +81,9 @@ module Api
         app_access_token = oauth.get_app_access_token
 
         fb = Koala::Facebook::API.new(app_access_token)
+
         # Use debug to check the validity of the token
         fb.debug_token(access_token) do |response|
-
           response_data = response['data']
           if response_data && response_data['is_valid'] && response_data['user_id'] == user_id
             fb_user_api = Koala::Facebook::API.new(access_token)

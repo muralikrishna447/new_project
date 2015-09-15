@@ -129,4 +129,79 @@ describe Api::V0::AuthController do
       response.code.should eq("401")
     end
   end
+
+  context 'POST /authenticate_facebook' do
+
+    before :each do
+      @fake_app_access_token = 'fakeAppAccessToken'
+      @fake_user_access_token = 'fakeUserAccessToken'
+
+      oauth = mock(:oauth, get_app_access_token: @fake_app_access_token)
+      Koala::Facebook::OAuth.stub!(:new).and_return(oauth)
+
+      # Mock Koala::Facebook::API App Access
+      Koala::Facebook::API.stub!(:new).with(@fake_app_access_token)
+      @fb = Koala::Facebook::API.new(@fake_app_access_token)
+
+
+      # Mock Koala::Facebook::API for User Graph Info
+      Koala::Facebook::API.stub!(:new).with(@fake_user_access_token)
+      @fb_user_api = Koala::Facebook::API.new(@fake_user_access_token)
+
+    end
+
+    it 'should return a token for a new user connecting with Facebook' do
+      fb_mock_response = {
+        "data" => {
+          "is_valid" => true,
+          "user_id" => '6789'
+        }
+      }
+      @fb.stub(:debug_token).with(@fake_user_access_token).and_yield fb_mock_response
+
+      fb_user_api_mock_response = {
+        "id" => '6789',
+        "email" => 'test@test.com',
+        "name" => 'Test User'
+      }
+      @fb_user_api.stub(:get_object).with('me').and_return fb_user_api_mock_response
+
+      user = {
+        access_token: @fake_user_access_token,
+        user_id: '6789'
+      }
+      post :authenticate_facebook, {user:user}
+      response.code.should eq("200")
+      expect(response.body['token']).not_to be_empty
+    end
+
+    it 'should return a token for an existing user connecting with Facebook' do
+      exiting_user = Fabricate :user, email: 'existing@test.com', password: '123456', name: 'Existing Dude'
+      fb_mock_response = {
+        "data" => {
+          "is_valid" => true,
+          "user_id" => '54321'
+        }
+      }
+      @fb.stub(:debug_token).with(@fake_user_access_token).and_yield fb_mock_response
+
+      fb_user_api_mock_response = {
+        "id" => '54321',
+        "email" => 'existing@test.com',
+        "name" => 'Existing Dude'
+      }
+      @fb_user_api.stub(:get_object).with('me').and_return fb_user_api_mock_response
+
+      user = {
+        access_token: @fake_user_access_token,
+        user_id: '54321'
+      }
+      post :authenticate_facebook, {user:user}
+      response.code.should eq("200")
+      expect(response.body['token']).not_to be_empty
+      u = User.where(email: 'existing@test.com').first
+      expect(u.provider).to eq('facebook')
+      expect(u.facebook_user_id).to eq('54321')
+    end
+  end
 end
