@@ -18,7 +18,7 @@ module User::Facebook
   end
 
   def facebook_connect(user_options)
-    logger.info "Instance Methods facebook_connect with user options: #{user.inspect}"
+    logger.info "Instance Methods facebook_connect with user options: #{user_options.inspect}"
     self.update_attributes({facebook_user_id: user_options[:user_id], provider: "facebook"}, without_protection: true)
   end
 
