@@ -72,35 +72,35 @@ module Api
 
       def authenticate_facebook
 
-        puts '*'*30
-        puts '*'*30
-
         access_token = params[:user][:access_token]
         user_id = params[:user][:user_id]
-        puts "access_token: #{access_token}"
-        puts "user_id: #{user_id}"
 
+        # Get an oauth token with our credentials
+        # This will be used later to validate the access_token we recieve from the client
         oauth = Koala::Facebook::OAuth.new(facebook_app_id, facebook_secret)
-        puts "oauth: #{oauth.inspect}"
         app_access_token = oauth.get_app_access_token
-        puts "app_access_token: #{app_access_token}"
 
         fb = Koala::Facebook::API.new(app_access_token)
+        # Use debug to check the validity of the token
         fb.debug_token(access_token) do |response|
-          puts "Response: #{response}"
+
           response_data = response['data']
           if response_data && response_data['is_valid'] && response_data['user_id'] == user_id
             fb_user_api = Koala::Facebook::API.new(access_token)
             fb_user = fb_user_api.get_object('me')
             fb_user_id = fb_user['id']
-            puts "me: #{fb_user.inspect}"
+
+            # Search for existing user
             cs_user = User.where(email: fb_user['email']).first
 
             if cs_user
-              puts "CS USER EXISTS!"
+              # If the user exists in ChefSteps
+              # Store the Facebook UserID
               cs_user.facebook_connect({user_id: fb_user_id})
+              logger.info "Existing ChefSteps user connected with facebook: #{cs_user.inspect}"
             else
-              puts "CS USER DOES NOT EXIST!"
+              # If the user does not exist in ChefSteps
+              # Use the information from the Facebook API
               user_options = {
                 name: fb_user['name'],
                 email: fb_user['email'],
@@ -108,55 +108,17 @@ module Api
               }
               cs_user = User.facebook_connect(user_options)
               cs_user.save!
-              puts "cs_user after connect: #{cs_user.inspect}"
+              logger.info "New ChefSteps user connected with facebook: #{cs_user.inspect}"
             end
 
-            puts "CREATING ACTOR ADDRESS FOR USER: #{cs_user.inspect}"
             aa = ActorAddress.create_for_user cs_user, client_metadata: "facebook"
+            logger.info "ActorAddress created for facebook user: #{aa.inspect}"
             render json: {status: '200 Success', token: aa.current_token.to_jwt}, status: 200
-
           else
             render_unauthorized
           end
         end
 
-        # fb = Koala::Facebook::API.new(params[:user][:authentication_token])
-        # puts fb.debug_token(params[:user][:user_id])
-        puts '*'*30
-        puts '*'*30
-        # puts fb.get_object('chefsteps')
-        # exit
-        #
-        # oauth = Koala::Facebook::OAuth.new("249352241894051", "57601926064dbde72d57fedd0af8914f") #copied from staging
-        # #app_access_token = oauth.get_app_access_token
-        # app_access_token = "249352241894051|57601926064dbde72d57fedd0af8914f" # concatenated access token
-        # puts "Access token: #{app_access_token}"
-        # oauth_access_token = 'CAADiyNfNUqMBAFmuk7iVEKK0a2eKj764HoXTILI0aGAFtZBMZCBbOjokZA54ZA4vjhw6uAM9lGauyYZCqzwcPW2sxxgi26X3JeW4Ge0dIVhUgkW5C5ZBzTOc5QKoFvCzQ1uE0c1f3cpCOZBkLtZCP6e7R3mMlWfME8YQNfSyKO7hXkaYYwVCoK96MhraLryBiD7s5xdyvzVtbKVIQqlcDc6l'
-        # fb = Koala::Facebook::API.new(app_access_token)
-        # puts fb.inspect
-        # #puts fb.get_object("me").inspect
-        # puts fb.debug_token(oauth_access_token)
-        # puts fb.debug_token(app_access_token)
-        #
-        # fb = Koala::Facebook::API.new(oauth_access_token)
-        # puts fb.get_object("me").inspect
-
-        # Verify Facebook Token
-
-        # Find ChefSteps User
-
-        # If user exists log them in
-
-        # If user does not exist, create an account
-
-
-        # user = User.find_by_email(params[:email])
-        # aa = ActorAddress.create_for_user user, client_metadata: "facebook"
-        # if user && user.provider == 'facebook' && user.facebook_user_id == params[:facebook_user_id]
-        #   render json: {status: '200 Success', token: aa.current_token.to_jwt}, status: 200
-        # else
-        #   render_unauthorized
-        # end
       end
 
       # To be used by the Messaging Service
