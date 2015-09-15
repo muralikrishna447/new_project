@@ -101,13 +101,17 @@ module Api
               cs_user.facebook_connect({user_id: fb_user_id})
             else
               puts "CS USER DOES NOT EXIST!"
-              cs_user = User.new({
+              user_options = {
                 name: fb_user['name'],
-                email: fb_user['email']
-              })
-              cs_user = User.facebook_connect({user_id: fb_user_id})
+                email: fb_user['email'],
+                user_id: fb_user_id
+              }
+              cs_user = User.facebook_connect(user_options)
+              cs_user.save!
+              puts "cs_user after connect: #{cs_user.inspect}"
             end
 
+            puts "CREATING ACTOR ADDRESS FOR USER: #{cs_user.inspect}"
             aa = ActorAddress.create_for_user cs_user, client_metadata: "facebook"
             render json: {status: '200 Success', token: aa.current_token.to_jwt}, status: 200
 
