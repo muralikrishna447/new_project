@@ -92,19 +92,20 @@ module Api
           if response_data && response_data['is_valid'] && response_data['user_id'] == user_id
             fb_user_api = Koala::Facebook::API.new(access_token)
             fb_user = fb_user_api.get_object('me')
+            fb_user_id = fb_user['id']
             puts "me: #{fb_user.inspect}"
             cs_user = User.where(email: fb_user['email']).first
 
             if cs_user
               puts "CS USER EXISTS!"
+              cs_user.facebook_connect({user_id: fb_user_id})
             else
               puts "CS USER DOES NOT EXIST!"
               cs_user = User.new({
                 name: fb_user['name'],
                 email: fb_user['email']
               })
-              cs_user.facebook_user_id = fb_user['id']
-              cs_user = User.facebook_connect(cs_user)
+              cs_user = User.facebook_connect({user_id: fb_user_id})
             end
 
             aa = ActorAddress.create_for_user cs_user, client_metadata: "facebook"

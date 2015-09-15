@@ -18,11 +18,13 @@ module User::Facebook
   end
 
   def facebook_connect(user_options)
+    puts "FACEBOOK CONNECT WITH USER OPTIONS: #{user_options.inspect}"
     self.update_attributes({facebook_user_id: user_options[:user_id], provider: "facebook"}, without_protection: true)
   end
 
   module ClassMethods
     def facebook_connect(user)
+      puts "Class Methods FACEBOOK CONNECT WITH USER OPTIONS: #{user}"
       user_options = {email: user[:email], provider: user[:provider], facebook_user_id: user[:user_id]}
       User.where("users.email = :email OR (users.provider = :provider AND users.facebook_user_id = :facebook_user_id)", user_options).
         first_or_initialize(user_options.merge(password: Devise.friendly_token[0,20], name: user[:name]), without_protection: true)
