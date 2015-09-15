@@ -203,5 +203,22 @@ describe Api::V0::AuthController do
       expect(u.provider).to eq('facebook')
       expect(u.facebook_user_id).to eq('54321')
     end
+
+    it 'should not return a ChefSteps token for an invalid Facebook token' do
+      fb_mock_response = {
+        "data" => {
+          "is_valid" => false,
+          "user_id" => '54321'
+        }
+      }
+      @fb.stub(:debug_token).with(@fake_user_access_token).and_yield fb_mock_response
+
+      user = {
+        access_token: @fake_user_access_token,
+        user_id: '54321'
+      }
+      post :authenticate_facebook, {user:user}
+      response.code.should eq("403")
+    end
   end
 end
