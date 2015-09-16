@@ -36,6 +36,11 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
+  helper_method :facebook_app_id
+  def facebook_app_id
+    Rails.application.config.shared_config[:facebook][:app_id]
+  end
+
   helper_method :facebook_secret
   def facebook_secret
     case Rails.env

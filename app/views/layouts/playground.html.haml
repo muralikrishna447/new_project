@@ -122,7 +122,7 @@
   :javascript
     window.fbAsyncInit = function() {
       FB.init({
-        appId: '#{Rails.application.config.shared_config[:facebook][:app_id]}',
+        appId: '#{facebook_app_id}',
         xfbml: true,
         version: 'v2.1'
       });

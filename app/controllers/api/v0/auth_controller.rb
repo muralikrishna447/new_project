@@ -71,9 +71,6 @@ module Api
       end
 
       def authenticate_facebook
-
-        facebook_app_id = Rails.application.config.shared_config[:facebook][:app_id]
-
         access_token = params[:user][:access_token]
         facebook_user_id = params[:user][:user_id]
 

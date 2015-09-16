@@ -133,7 +133,7 @@ describe Api::V0::AuthController do
   context 'POST /authenticate_facebook' do
 
     before :each do
-      @facebook_app_id = Rails.application.config.shared_config[:facebook][:app_id]
+      @facebook_app_id = controller.facebook_app_id
       @fake_app_access_token = 'fakeAppAccessToken'
       @fake_user_access_token = 'fakeUserAccessToken'
 
