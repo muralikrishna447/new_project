@@ -7,6 +7,9 @@ development:
     api_endpoint: "http://localhost:5000"
     community_endpoint: "http://localhost:9001"
     env: "dev"
+  facebook: &development_facebook
+    app_id: "249352241894051"
+    secret: "57601926064dbde72d57fedd0af8914f"
 
 production:
   env: "production"
@@ -17,6 +20,9 @@ production:
     api_endpoint: "https://cs-bloom-api-production.herokuapp.com"
     community_endpoint: "https://cs-bloom-community-production.herokuapp.com"
     env: "production"
+  facebook:
+    app_id: "380147598730003"
+    secret: FACEBOOK_SECRET
 
 staging:
   env: "staging"
@@ -27,6 +33,9 @@ staging:
     api_endpoint: "https://cs-bloom-api-staging.herokuapp.com"
     community_endpoint: "https://cs-bloom-community-staging.herokuapp.com"
     env: "staging"
+  facebook: &staging_facebook
+    app_id: "642634055780525"
+    secret: "1cb4115088bd42aed2dc6d9d11c82930"
 
 staging2:
   env: "staging"
@@ -35,6 +44,8 @@ staging2:
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom:
     <<: *staging_bloom
+  facebook:
+    <<: *staging_facebook
 
 test:
   env: "test"
@@ -43,3 +54,5 @@ test:
     api_endpoint: "bloomAPI"
     community_endpoint: "communityAPI"
     env: "test"
+  facebook:
+    <<: *development_facebook

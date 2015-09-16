@@ -90,4 +90,6 @@ Delve::Application.configure do
   end
 
   AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: ENV['ALGOLIA_API_KEY'] }
+
+  FACEBOOK_SECRET = ENV["FACEBOOK_SECRET"]
 end
