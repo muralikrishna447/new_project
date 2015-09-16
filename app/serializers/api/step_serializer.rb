@@ -4,10 +4,6 @@ class Api::StepSerializer < ApplicationSerializer
 
   has_many :ingredients, serializer: Api::ActivityIngredientSerializer
 
-  def id
-    object.step_id
-  end
-
   def order
     object.step_order
   end

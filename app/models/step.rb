@@ -19,10 +19,6 @@ class Step < ActiveRecord::Base
 
   default_scope { ordered }
 
-  def step_id
-    self.id
-  end
-
   def title(index=nil)
     return "Step %d" % (index.to_i + 1) if self[:title].blank? and index.present?
     return "" if self[:title] == "-"
