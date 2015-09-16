@@ -17,12 +17,14 @@ module User::Facebook
     facebook_user_id.present? && provider == 'facebook'
   end
 
+  # Use the instance method if the ChefSteps user already exists
   def facebook_connect(user_options)
     logger.info "Instance Methods facebook_connect with user options: #{user_options.inspect}"
     self.update_attributes({facebook_user_id: user_options[:user_id], provider: "facebook"}, without_protection: true)
   end
 
   module ClassMethods
+    # Use the class method if the ChefSteps user does not exist
     def facebook_connect(user)
       logger.info "Class Methods facebook_connect with user_options: #{user.inspect}"
       user_options = {email: user[:email], provider: user[:provider], facebook_user_id: user[:user_id]}
