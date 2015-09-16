@@ -178,7 +178,7 @@ describe Api::V0::AuthController do
     end
 
     it 'should return a token for an existing user connecting with Facebook' do
-      exiting_user = Fabricate :user, email: 'existing@test.com', password: '123456', name: 'Existing Dude'
+      exiting_user = Fabricate :user, email: 'existing@test.com', password: '123456', name: 'Existing Dude', provider: 'facebook', facebook_user_id: '54321'
       fb_mock_response = {
         "data" => {
           "is_valid" => true,

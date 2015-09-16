@@ -92,7 +92,7 @@ module Api
             fb_user_id = fb_user['id']
 
             # Search for existing user
-            cs_user = User.where(email: fb_user['email']).first
+            cs_user = User.where(provider: 'facebook').where(facebook_user_id: fb_user_id).first
 
             if cs_user
               # If the user exists in ChefSteps
