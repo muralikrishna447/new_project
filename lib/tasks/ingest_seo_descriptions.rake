@@ -10,7 +10,7 @@ task :ingest_seo_descriptions, [:url] => :environment do |t, args|
     
     unless row['SEO description'].nil? then
       activity = Activity.find(slug)    
-      activity.short_description = row['SEO description']
+      activity.short_description = row['SEO description'].force_encoding("utf-8")
       activity.save!
     end
   end
