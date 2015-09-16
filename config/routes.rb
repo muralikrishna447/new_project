@@ -68,6 +68,8 @@ Delve::Application.routes.draw do
   match '/classes/sous-vide-cooking/landing',
     to: redirect('/classes/cooking-sous-vide-getting-started/landing')
 
+  # For convenient youtube CTAs
+  match '/coffee', to: redirect { |params, request| "/classes/coffee/landing?#{request.params.to_query}" }
 
   get "styleguide" => "styleguide#index"
 

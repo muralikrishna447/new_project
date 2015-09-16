@@ -8,20 +8,9 @@
     $(iframe).attr('id', scope.playerId)
     player = $f(iframe)
 
-    mixpanelProperties =
-      host: 'vimeo'
-      videoId: attrs.videoId
-      containerSlug: attrs.containerSlug
-
-    mixpanel.track('Video Embed Loaded', mixpanelProperties)
-
     scope.$on 'playVideo', (event, play) ->
       console.log("playVideo: #{play}")
       player.api(if play then 'play' else 'pause')
-
-    player.addEvent 'ready', ->
-      player.addEvent 'play', ->
-        mixpanel.track('Video Embed Played', mixpanelProperties)
 
   template: """
     <div class="video-iframe-container">
