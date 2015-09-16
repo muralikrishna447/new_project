@@ -84,36 +84,40 @@ module Api
         # Use debug to check the validity of the token
         fb.debug_token(access_token) do |response|
           response_data = response['data']
-          puts "Response_data: #{response_data.inspect}"
           if response_data && response_data['is_valid'] && response_data['app_id'] == facebook_app_id && response_data['user_id'] == facebook_user_id
             fb_user_api = Koala::Facebook::API.new(access_token)
             fb_user = fb_user_api.get_object('me')
             fb_user_id = fb_user['id']
 
             # Search for existing user
-            cs_user = User.where(provider: 'facebook').where(facebook_user_id: fb_user_id).first
-
-            if cs_user
-              # If the user exists in ChefSteps
-              # Store the Facebook UserID
-              cs_user.facebook_connect({user_id: fb_user_id})
-              logger.info "Existing ChefSteps user connected with facebook: #{cs_user.inspect}"
+            cs_user = User.where(email: fb_user['email']).first
+            if cs_user && cs_user.provider != 'facebook'
+              render_api_response 401, {message: 'Please provide ChefSteps password.', user: {id: cs_user.id, email: cs_user.email}}
             else
-              # If the user does not exist in ChefSteps
-              # Use the information from the Facebook API
-              user_options = {
-                name: fb_user['name'],
-                email: fb_user['email'],
-                user_id: fb_user_id
-              }
-              cs_user = User.facebook_connect(user_options)
-              cs_user.save!
-              logger.info "New ChefSteps user connected with facebook: #{cs_user.inspect}"
-            end
+              cs_fb_user = User.where(provider: 'facebook').where(facebook_user_id: fb_user_id).first
 
-            aa = ActorAddress.create_for_user cs_user, client_metadata: "facebook"
-            logger.info "ActorAddress created for facebook user: #{aa.inspect}"
-            render_api_response 200, {token: aa.current_token.to_jwt}
+              if cs_fb_user
+                # If the user exists in ChefSteps
+                # Store the Facebook UserID
+                cs_fb_user.facebook_connect({user_id: fb_user_id})
+                logger.info "Existing ChefSteps user connected with facebook: #{cs_fb_user.inspect}"
+              else
+                # If the user does not exist in ChefSteps
+                # Use the information from the Facebook API
+                user_options = {
+                  name: fb_user['name'],
+                  email: fb_user['email'],
+                  user_id: fb_user_id
+                }
+                cs_fb_user = User.facebook_connect(user_options)
+                cs_fb_user.save!
+                logger.info "New ChefSteps user connected with facebook: #{cs_fb_user.inspect}"
+              end
+
+              aa = ActorAddress.create_for_user cs_fb_user, client_metadata: "facebook"
+              logger.info "ActorAddress created for facebook user: #{aa.inspect}"
+              render_api_response 200, {token: aa.current_token.to_jwt}
+            end
           else
             render_unauthorized
           end
