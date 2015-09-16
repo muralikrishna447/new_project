@@ -114,7 +114,7 @@ module Api
                 logger.info "New ChefSteps user connected with facebook: #{cs_fb_user.inspect}"
               end
 
-              aa = ActorAddress.create_for_user cs_fb_user, client_metadata: "facebook"
+              aa = ActorAddress.create_for_user cs_fb_user, client_metadata: "facebook", unique_key: "facebook"
               logger.info "ActorAddress created for facebook user: #{aa.inspect}"
               render_api_response 200, {token: aa.current_token.to_jwt}
             end
