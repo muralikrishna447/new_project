@@ -133,6 +133,7 @@ describe Api::V0::AuthController do
   context 'POST /authenticate_facebook' do
 
     before :each do
+      @facebook_app_id = controller.facebook_app_id
       @fake_app_access_token = 'fakeAppAccessToken'
       @fake_user_access_token = 'fakeUserAccessToken'
 
@@ -154,7 +155,8 @@ describe Api::V0::AuthController do
       fb_mock_response = {
         "data" => {
           "is_valid" => true,
-          "user_id" => '6789'
+          "user_id" => '6789',
+          "app_id" => @facebook_app_id
         }
       }
       @fb.stub(:debug_token).with(@fake_user_access_token).and_yield fb_mock_response
@@ -180,7 +182,8 @@ describe Api::V0::AuthController do
       fb_mock_response = {
         "data" => {
           "is_valid" => true,
-          "user_id" => '54321'
+          "user_id" => '54321',
+          "app_id" => @facebook_app_id
         }
       }
       @fb.stub(:debug_token).with(@fake_user_access_token).and_yield fb_mock_response
@@ -208,7 +211,26 @@ describe Api::V0::AuthController do
       fb_mock_response = {
         "data" => {
           "is_valid" => false,
-          "user_id" => '54321'
+          "user_id" => '54321',
+          "app_id" => @facebook_app_id
+        }
+      }
+      @fb.stub(:debug_token).with(@fake_user_access_token).and_yield fb_mock_response
+
+      user = {
+        access_token: @fake_user_access_token,
+        user_id: '54321'
+      }
+      post :authenticate_facebook, {user:user}
+      response.code.should eq("403")
+    end
+
+    it 'should not return a ChefSteps token if the Facebook token is not valid for the ChefSteps Facebook App' do
+      fb_mock_response = {
+        "data" => {
+          "is_valid" => true,
+          "user_id" => '54321',
+          "app_id" => 'SomeOtherAppID'
         }
       }
       @fb.stub(:debug_token).with(@fake_user_access_token).and_yield fb_mock_response
