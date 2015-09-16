@@ -114,7 +114,7 @@ module Api
 
             aa = ActorAddress.create_for_user cs_user, client_metadata: "facebook"
             logger.info "ActorAddress created for facebook user: #{aa.inspect}"
-            render json: {status: '200 Success', token: aa.current_token.to_jwt}, status: 200
+            render_api_response 200, {token: aa.current_token.to_jwt}
           else
             render_unauthorized
           end
