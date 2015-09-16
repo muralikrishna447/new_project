@@ -14,7 +14,7 @@ module Api
         warden.set_user @user # sets session cookie, unsure if this is necessary
 
         if @user
-          method_includes = [:avatar_url]
+          method_includes = [:avatar_url, :encrypted_bloom_info]
           # Don't leak admin flag if user is not admin
           if @user.admin?
             method_includes << :admin
@@ -22,7 +22,7 @@ module Api
 
           @user[:intercom_user_hash] = ApplicationController.new.intercom_user_hash(@user)
 
-          render json: @user.to_json(only: [:id, :name, :slug, :email, :intercom_user_hash, :encrypted_bloom_info], methods: method_includes), status:200
+          render json: @user.to_json(only: [:id, :name, :slug, :email, :intercom_user_hash], methods: method_includes), status:200
         else
           render json: {status: 501, message: 'User not found.'}, status: 501
         end
