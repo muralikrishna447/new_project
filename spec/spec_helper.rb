@@ -54,7 +54,7 @@ Spork.prefork do
       # not fun to have to turn them off every place in specs where that happens.
       WebMock.stub_request(:any, /.*\.algolia\.(io|net).*/).to_return(:body => '{ "items": [] }')
 
-      WebMock.stub_request(:get, /http:\/\/\/bloomAPI\/encrypt\?apiKey=xchefsteps&secret=ilovesousvideYgpsagNPdJ&string=%7B%22userId%22:%22100%22%7D/).
+      WebMock.stub_request(:get, /http:\/\/\/bloomAPI\/encrypt\?apiKey=xchefsteps/).
         with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.8.9'}).
         to_return(:status => 200, :body => "", :headers => {})
 
