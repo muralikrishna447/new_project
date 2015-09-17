@@ -119,7 +119,10 @@ module Api
               logger.info "New ChefSteps user connected with facebook: #{cs_fb_user.email}"
             end
 
-            aa = ActorAddress.create_for_user cs_fb_user, client_metadata: "facebook", unique_key: "facebook"
+            aa = ActorAddress.find_for_user_and_unique_key(cs_fb_user, 'facebook')
+            unless aa
+              aa = ActorAddress.create_for_user cs_fb_user, client_metadata: "facebook", unique_key: "facebook"
+            end
             logger.info "ActorAddress created for facebook user: #{aa.inspect}"
             # newUser param is returned for client side FTUE flows
             render_api_response 200, {token: aa.current_token.to_jwt, newUser: new_user}
