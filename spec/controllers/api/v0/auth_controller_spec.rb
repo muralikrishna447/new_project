@@ -173,8 +173,9 @@ describe Api::V0::AuthController do
         user_id: '6789'
       }
       post :authenticate_facebook, {user:user}
-      response.code.should eq("200")
+      expect(response.code).to eq("200")
       expect(response.body['token']).not_to be_empty
+      expect(response.body['newUser']).to be_true
     end
 
     it 'should return a token for an existing user connecting with Facebook' do
@@ -200,7 +201,7 @@ describe Api::V0::AuthController do
         user_id: '54321'
       }
       post :authenticate_facebook, {user:user}
-      response.code.should eq("200")
+      expect(response.code).to eq("200")
       expect(response.body['token']).not_to be_empty
       u = User.where(email: 'existing@test.com').first
       expect(u.provider).to eq('facebook')
@@ -222,7 +223,7 @@ describe Api::V0::AuthController do
         user_id: '54321'
       }
       post :authenticate_facebook, {user:user}
-      response.code.should eq("403")
+      expect(response.code).to eq("403")
     end
 
     it 'should not return a ChefSteps token if the Facebook token is not valid for the ChefSteps Facebook App' do
@@ -240,7 +241,7 @@ describe Api::V0::AuthController do
         user_id: '54321'
       }
       post :authenticate_facebook, {user:user}
-      response.code.should eq("403")
+      expect(response.code).to eq("403")
     end
 
     it 'should return 401 when an existing ChefSteps with provider != facebook tries to log in' do
@@ -266,8 +267,9 @@ describe Api::V0::AuthController do
         user_id: '54321'
       }
       post :authenticate_facebook, {user:user}
-      response.code.should eq("401")
+      expect(response.code).to eq("401")
       expect(response.body['user']).not_to be_empty
+      expect(response.body['newUser']).to be_false
     end
   end
 end

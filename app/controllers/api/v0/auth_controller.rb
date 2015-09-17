@@ -96,6 +96,7 @@ module Api
             else
               cs_fb_user = User.where(provider: 'facebook').where(facebook_user_id: fb_user_id).first
 
+              new_user = false
               if cs_fb_user
                 # If the user exists in ChefSteps
                 # Store the Facebook UserID
@@ -104,6 +105,7 @@ module Api
               else
                 # If the user does not exist in ChefSteps
                 # Use the information from the Facebook API
+                new_user = true
                 user_options = {
                   name: fb_user['name'],
                   email: fb_user['email'],
@@ -116,7 +118,7 @@ module Api
 
               aa = ActorAddress.create_for_user cs_fb_user, client_metadata: "facebook", unique_key: "facebook"
               logger.info "ActorAddress created for facebook user: #{aa.inspect}"
-              render_api_response 200, {token: aa.current_token.to_jwt}
+              render_api_response 200, {token: aa.current_token.to_jwt, newUser: new_user}
             end
           else
             render_unauthorized
