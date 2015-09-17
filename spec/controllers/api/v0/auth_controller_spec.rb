@@ -303,10 +303,10 @@ describe Api::V0::AuthController do
       post :authenticate_facebook, {user:user}
 
       expect(response.code).to eq("200")
-      # expect(response.body['token']).not_to be_empty
-      # u = User.where(email: 'existing@test.com').first
-      # expect(u.provider).to eq('facebook')
-      # expect(u.facebook_user_id).to eq('54321')
+      expect(response.body['token']).not_to be_empty
+      u = User.where(email: 'existing@test.com').first
+      expect(u.provider).to eq('facebook')
+      expect(u.facebook_user_id).to eq('54321')
     end
 
   end
