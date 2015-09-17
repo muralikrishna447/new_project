@@ -83,6 +83,7 @@ module Api
 
         # Use debug to check the validity of the token
         fb.debug_token(access_token) do |response|
+          logger.info "Facebook debug_token response: #{response}"
           response_data = response['data']
           if response_data && response_data['is_valid'] && response_data['app_id'] == facebook_app_id && response_data['user_id'] == facebook_user_id
             fb_user_api = Koala::Facebook::API.new(access_token)
@@ -92,35 +93,36 @@ module Api
             # Search for existing user
             cs_user = User.where(email: fb_user['email']).first
             if cs_user && cs_user.provider != 'facebook'
-              render_api_response 401, {message: 'Please provide ChefSteps password.', user: {id: cs_user.id, email: cs_user.email}}
-            else
-              cs_fb_user = User.where(facebook_user_id: fb_user_id).first
-
-              new_user = false
-              if cs_fb_user
-                # If the user exists in ChefSteps
-                # Store the Facebook UserID
-                cs_fb_user.facebook_connect({user_id: fb_user_id})
-                logger.info "Existing ChefSteps user connected with facebook: #{cs_fb_user.email}"
-              else
-                # If the user does not exist in ChefSteps
-                # Use the information from the Facebook API
-                new_user = true
-                user_options = {
-                  name: fb_user['name'],
-                  email: fb_user['email'],
-                  user_id: fb_user_id
-                }
-                cs_fb_user = User.facebook_connect(user_options)
-                cs_fb_user.save!
-                logger.info "New ChefSteps user connected with facebook: #{cs_fb_user.email}"
-              end
-
-              aa = ActorAddress.create_for_user cs_fb_user, client_metadata: "facebook", unique_key: "facebook"
-              logger.info "ActorAddress created for facebook user: #{aa.inspect}"
-              # newUser param is returned for client side FTUE flows
-              render_api_response 200, {token: aa.current_token.to_jwt, newUser: new_user}
+              # render_api_response 401, {message: 'Please provide ChefSteps password.', user: {id: cs_user.id, email: cs_user.email}}
+              logger.info "Existing ChefSteps user attempted to log in with Facebook. email: #{cs_fb_user.email}"
             end
+
+            cs_fb_user = User.where(facebook_user_id: fb_user_id).first
+
+            new_user = false
+            if cs_fb_user
+              # If the user exists in ChefSteps
+              # Store the Facebook UserID
+              cs_fb_user.facebook_connect({user_id: fb_user_id})
+              logger.info "Existing ChefSteps user connected with facebook: #{cs_fb_user.email}"
+            else
+              # If the user does not exist in ChefSteps
+              # Use the information from the Facebook API
+              new_user = true
+              user_options = {
+                name: fb_user['name'],
+                email: fb_user['email'],
+                user_id: fb_user_id
+              }
+              cs_fb_user = User.facebook_connect(user_options)
+              cs_fb_user.save!
+              logger.info "New ChefSteps user connected with facebook: #{cs_fb_user.email}"
+            end
+
+            aa = ActorAddress.create_for_user cs_fb_user, client_metadata: "facebook", unique_key: "facebook"
+            logger.info "ActorAddress created for facebook user: #{aa.inspect}"
+            # newUser param is returned for client side FTUE flows
+            render_api_response 200, {token: aa.current_token.to_jwt, newUser: new_user}
           else
             render_unauthorized
           end

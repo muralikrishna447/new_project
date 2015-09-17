@@ -244,32 +244,34 @@ describe Api::V0::AuthController do
       expect(response.code).to eq("403")
     end
 
-    it 'should return 401 when an existing ChefSteps with provider != facebook tries to log in' do
-      exiting_user = Fabricate :user, email: 'existing@test.com', password: '123456', name: 'Existing Dude', provider: nil, facebook_user_id: nil
-      fb_mock_response = {
-        "data" => {
-          "is_valid" => true,
-          "user_id" => '54321',
-          "app_id" => @facebook_app_id
-        }
-      }
-      @fb.stub(:debug_token).with(@fake_user_access_token).and_yield fb_mock_response
+    # TODO Currently we are just logging the case.  When we handle it properly, we can turn this test back on.
+    # it 'should return 401 when an existing ChefSteps with provider != facebook tries to log in' do
+    #   exiting_user = Fabricate :user, email: 'existing@test.com', password: '123456', name: 'Existing Dude', provider: nil, facebook_user_id: nil
+    #   fb_mock_response = {
+    #     "data" => {
+    #       "is_valid" => true,
+    #       "user_id" => '54321',
+    #       "app_id" => @facebook_app_id
+    #     }
+    #   }
+    #   @fb.stub(:debug_token).with(@fake_user_access_token).and_yield fb_mock_response
+    #
+    #   fb_user_api_mock_response = {
+    #     "id" => '54321',
+    #     "email" => 'existing@test.com',
+    #     "name" => 'Existing Dude'
+    #   }
+    #   @fb_user_api.stub(:get_object).with('me').and_return fb_user_api_mock_response
+    #
+    #   user = {
+    #     access_token: @fake_user_access_token,
+    #     user_id: '54321'
+    #   }
+    #   post :authenticate_facebook, {user:user}
+    #   expect(response.code).to eq("401")
+    #   expect(response.body['user']).not_to be_empty
+    #   expect(response.body['newUser']).to be_false
+    # end
 
-      fb_user_api_mock_response = {
-        "id" => '54321',
-        "email" => 'existing@test.com',
-        "name" => 'Existing Dude'
-      }
-      @fb_user_api.stub(:get_object).with('me').and_return fb_user_api_mock_response
-
-      user = {
-        access_token: @fake_user_access_token,
-        user_id: '54321'
-      }
-      post :authenticate_facebook, {user:user}
-      expect(response.code).to eq("401")
-      expect(response.body['user']).not_to be_empty
-      expect(response.body['newUser']).to be_false
-    end
   end
 end
