@@ -89,4 +89,3 @@ class Step < ActiveRecord::Base
     ingredients.where(ingredient_id: old_ingredient_ids).destroy_all
   end
 end
-

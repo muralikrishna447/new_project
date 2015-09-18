@@ -14,7 +14,7 @@ module Api
         warden.set_user @user # sets session cookie, unsure if this is necessary
 
         if @user
-          method_includes = [:avatar_url]
+          method_includes = [:avatar_url, :encrypted_bloom_info]
           # Don't leak admin flag if user is not admin
           if @user.admin?
             method_includes << :admin
