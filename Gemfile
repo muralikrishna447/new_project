@@ -14,6 +14,7 @@ gem "devise"
 gem 'oauth2'
 gem 'omniauth'
 gem 'omniauth-facebook'
+gem 'koala'
 
 gem 'haml'
 gem 'activeadmin'
