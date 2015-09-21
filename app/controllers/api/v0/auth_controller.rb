@@ -94,7 +94,7 @@ module Api
             cs_user = User.where(email: fb_user['email']).first
             if cs_user && cs_user.provider != 'facebook'
               # render_api_response 401, {message: 'Please provide ChefSteps password.', user: {id: cs_user.id, email: cs_user.email}}
-              logger.info "Existing ChefSteps user attempted to log in with Facebook. email: #{cs_fb_user.email}"
+              logger.info "Existing ChefSteps user attempted to log in with Facebook. email: #{cs_user.email}"
             end
 
             cs_fb_user = User.where(facebook_user_id: fb_user_id).first
