@@ -5,7 +5,7 @@ require "open-uri"
 task :ingest_seo_descriptions, [:url] => :environment do |t, args|
   CSV.new(open("#{args[:url]}/export?format=csv"), :headers => :first_row).each do |line|
     row = line.to_hash
-    row.each { |k,v| row[k] = v.force_encoding("utf-8") } # we had an issue where the encoding was coming back unset
+    row.each { |k,v| v.nil? ? row[k] = "" : row[k] = v.force_encoding("utf-8") } # we had an issue where the encoding was coming back unset
     
     prefix = 'http://chefsteps.com/activities/' # in the spreadsheet so reviewers can click through
     slug = row['url'][prefix.length..-1]
