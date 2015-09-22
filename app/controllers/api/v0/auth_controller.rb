@@ -137,7 +137,14 @@ module Api
       # To generate the token, run rake api:generate_service_token[SERVICE_NAME]
       def validate
         begin
-          token = AuthToken.from_string(params[:token])
+          begin
+            logger.info "Validating token #{params[:token]}"
+            token = AuthToken.from_string(params[:token])
+          rescue JSON::JWS::VerificationFailed
+            logger.info ("Token verification failed")
+            render_unauthorized
+            return
+          end
 
           aa = ActorAddress.find_for_token(token)
           unless aa
@@ -177,7 +184,13 @@ module Api
         allowed_services = ['Messaging']
         request_auth = request.authorization()
         if request_auth
-          token = AuthToken.from_string(request_auth.split(' ').last)
+          begin
+            token = AuthToken.from_string(request_auth.split(' ').last)
+          rescue JSON::JWS::VerificationFailed => e
+            logger.info ("Service token verification failed")
+            render_unauthorized
+            return
+          end
           if allowed_services.include? token.claim['service']
             return true
           else

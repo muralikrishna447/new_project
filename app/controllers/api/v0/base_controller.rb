@@ -91,17 +91,17 @@ module Api
             return
           end
 
+          logger.info "Found actor address: [#{aa.inspect}]"
           unless aa.valid_token?(token)
             logger.info "Invalid token"
             render_unauthorized
             return
           end
 
-          # TODO - handle non-user tokens gracefully
-          @user_id_from_token = token.claim['User']['id']
-
-          unless @user_id_from_token
-            logger.info "Not user id found in token claim #{token.claim.inspect}"
+          if aa.actor_type == 'User'
+            @user_id_from_token = aa.actor_id
+          else
+            logger.info "Actor address for type [#{aa.actor_type}] not 'User'"
             render_unauthorized
             return
           end

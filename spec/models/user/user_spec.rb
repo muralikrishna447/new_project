@@ -40,7 +40,7 @@ describe User do
     it 'should return a valid auth token when no actor address exists' do
       aa = ActorAddress.create_for_user(user, unique_key: 'website')
       token = user.valid_website_auth_token
-      token.claim[:address_id].should == aa.address_id
+      token.claim[:a].should == aa.address_id
       aa.valid_token?(token).should be true
     end
   end

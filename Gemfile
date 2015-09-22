@@ -28,6 +28,7 @@ gem 'gravtastic'
 gem 'filepicker-rails'
 
 gem 'comma'
+gem 'hashids'
 
 gem 'librato-rails'
 gem 'librato-rack'

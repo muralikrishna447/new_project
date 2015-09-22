@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ActorAddress  do
   before :each do
     @user = Fabricate :user
-    @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '123'
+    @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1234123412341234'
     @for_user = ActorAddress.create_for_user(@user)
   end
 
@@ -44,7 +44,7 @@ describe ActorAddress  do
   it 'should reject incrementing to mismatched token' do
     a = ActorAddress.create_for_user(@user)
     next_token = a.tentative_next_token
-    next_token.claim[:address_id] = 123
+    next_token.claim[:a] = 123
     expect {a.increment_to next_token }.to raise_error
   end
 
@@ -62,4 +62,19 @@ describe ActorAddress  do
     id2 = ActorAddress.create_for_user(@user).address_id
     id1.should_not == id2
   end
+
+  it 'should find for old style token'  do
+    claim = {'User' => {'id' => @user.id}, 'address_id' => @for_user.address_id}
+    token = AuthToken.new(claim)
+    aa = ActorAddress.find_for_token(token)
+    aa.id.should == @for_user.id
+  end
+
+  it 'should find for new style token' do
+    claim  ={'a' => @for_user.address_id}
+    token = AuthToken.new(claim)
+    aa = ActorAddress.find_for_token(token)
+    aa.id.should == @for_user.id
+  end
+
 end
