@@ -96,7 +96,7 @@ class HomeController < ApplicationController
         bio: "Sir Richard Wallace. Illegitimate son of the 4th Marquess of Hertford. Collector of fine European art. Friend to the besieged residence of Paris facing a Prussian invasion. That Richard Wallace does not work here. Our Richard Wallace is the one born in Louisiana, who's been working as a designer and motion graphics artist in Seattle area technology and creative agencies for a dozen years or so. Catch a glimpse of him through our windows at his standing desk, battling his desire to eat lunch early as he stares at beautiful footage of beautiful food all day long."
       },
       {
-        name: 'Riley Moffit',
+        name: 'Riley Moffitt',
         image: 'https://d3awvtnmmsvyot.cloudfront.net/api/file/8mg2DHfSTsmVLQlQeXBV/convert?fit=max&w=300&h=300&cache=true',
         bio: "Riley decided he wanted to become a professional cook when he was just ten years old, and he's been pursuing that dream ever since. He attended the French Culinary Institute in Manhattan, and went on to work in several award-winning kitchens such as Blue Hill at Stone Barns, Mistral Kitchen, and the Willows Inn. Riley is also an occasional musician and actor (featured prominently in many-a-ChefSteps video), and the man washes dishes like a boss."
       },
