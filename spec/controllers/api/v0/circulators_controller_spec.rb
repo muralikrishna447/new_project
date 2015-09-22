@@ -1,11 +1,11 @@
 describe Api::V0::CirculatorsController do
   before :each do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
-    @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '123'
+    @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1212121212121212'
     @admin_user = Fabricate :user, email: 'admin@chefsteps.com', password: '123456', name: 'John Doe', role: 'admin'
 
     @aa = ActorAddress.create_for_circulator @circulator
-    @other_circulator = Fabricate :circulator, notes: 'some other notes', circulator_id: '456'
+    @other_circulator = Fabricate :circulator, notes: 'some other notes', circulator_id: '4545454545454545'
     @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
 
     token = ActorAddress.create_for_user(@user, client_metadata: "create").current_token
@@ -23,8 +23,8 @@ describe Api::V0::CirculatorsController do
   end
 
   it 'should create circulator' do
-    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => 'circ_533'}
-
+    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '7878787878787878'}
+    response.should be_success
     returnedCirculator = JSON.parse(response.body)
     circulator = Circulator.where(circulator_id: returnedCirculator['circulatorId']).first
     circulator.should_not be_nil
@@ -34,20 +34,21 @@ describe Api::V0::CirculatorsController do
     circulator_user = CirculatorUser.find_by_circulator_and_user(circulator, @user)
     circulator_user.owner.should be_true
 
-    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => 'circ_544'}
+    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => 'cc78787878787878'}
     response.should be_success
   end
 
   it 'should prevent duplicate circulators' do
-    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '891'}
+    circulator_id = '8911898989898989'
+    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => circulator_id}
     response.should be_success
-    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '891'}
+    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => circulator_id}
     response.code.should == '409'
   end
 
   it 'should assign ownership correctly' do
-    post :create, {circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '533'}, :owner => false}
-
+    post :create, {circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '8911898989898989'}, :owner => false}
+    response.should be_success
     returnedCirculator = JSON.parse(response.body)
 
     circulator = Circulator.where(circulator_id: returnedCirculator['circulatorId']).first
@@ -61,7 +62,6 @@ describe Api::V0::CirculatorsController do
     result = JSON.parse(response.body)
     result['token'].should_not be_empty
     token = AuthToken.from_string result['token']
-    token['Circulator']['id'].should == @circulator.id
     # TODO - use timecop
     (token['iat'] - Time.now.to_i).abs.should < 2
   end
