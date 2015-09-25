@@ -11,6 +11,10 @@ Delve::Application.routes.draw do
     mount Resque::Server.new, :at => "/resque"
   end
 
+  # Redirect non www. to www.
+  constraints(host: /^(?!www\.)/i) do
+    match "*any", to: redirect(:subdomain => 'www', :path => "/%{any}")
+  end
 
   # Redirect old forum.chefsteps.com to new forum
   constraints :subdomain => "forum" do
