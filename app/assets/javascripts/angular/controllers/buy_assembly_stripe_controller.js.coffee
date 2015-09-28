@@ -139,9 +139,10 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.trackEnrollmentWorkaround(eventData)
 
       _gaq.push(['_trackEvent', 'Course', 'Purchased', $scope.assembly.title, $scope.discounted_price, true])
-      $scope.shareASale($scope.discounted_price, response.id)
+      $scope.shareASale($scope.discounted_price, response?.id)
       # Adwords tracking see http://stackoverflow.com/questions/2082129/how-to-track-a-google-adwords-conversion-onclick
       csAdwords.track(998032928,'x2qKCIDkrAgQoIzz2wM')
+      console.log 'Paid class Facebook conversion: ', 6014798037826
       csFacebookConversion.track(6014798037826,$scope.discounted_price)
 
     ).error((data, status, headers, config) ->
@@ -256,6 +257,8 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
         Intercom?('trackEvent', 'timf-incentive-enrolled', eventData)
       $scope.trackEnrollmentWorkaround(eventData)
+      console.log 'Free class Facebook Conversion: ', 6014798037826
+      csFacebookConversion.track(6014798037826,0)
 
   $scope.shareASale = (amount, tracking) ->
     $http(

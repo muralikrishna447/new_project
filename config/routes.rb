@@ -12,8 +12,10 @@ Delve::Application.routes.draw do
   end
 
   # Redirect non www. to www.
-  constraints(host: /^(?!www\.)/i) do
-    match "*any", to: redirect(:subdomain => 'www', :path => "/%{any}")
+  if Rails.env.production? || Rails.env.staging?
+    constraints(host: /^(?!www\.)/i) do
+      match "*any", to: redirect(:subdomain => 'www', :path => "/%{any}")
+    end
   end
 
   # Redirect old forum.chefsteps.com to new forum
