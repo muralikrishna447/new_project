@@ -27,7 +27,8 @@ class BaseApplicationController < ActionController::Base
       # host header is not a URI as it doesn't include protocol but it does include a port
       host_hostname = request.headers['host'].split(':')[0]
 
-      similar_origin = (origin_hostname == host_hostname)
+      # chefsteps.dev is required for testing Facebook auth locally
+      similar_origin = (origin_hostname == host_hostname || origin_hostname == 'chefsteps.dev')
       if similar_origin
         headers['Access-Control-Allow-Credentials'] = 'true'
       else

@@ -107,8 +107,7 @@ module Delve
 
     # SSL configuration using strict: true so that only specific requests are using ssl.
     # Had to comment this out, it kept sales from actually working.
-    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only: [%r{/landing$}], only_environments: ['production', 'staging'], force_secure_cookies: false
-
+    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only_environments: ['production', 'staging']
     config.middleware.use Rack::Deflater
 
     # Order matters here, Brombone must come before FreshSteps
