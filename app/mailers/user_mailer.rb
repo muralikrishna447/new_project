@@ -10,8 +10,8 @@ class UserMailer < ActionMailer::Base
 
   def reset_password(to, token)
     @token = token
-    # host = 'https://chefsteps.com'
-    host = 'https://staging2-chefsteps.herokuapp.com'
+    # TODO - move to config
+    host = 'https://www.chefsteps.com'
     @update_password_link = host + "/passwords/edit_from_email/#/?token=#{token}"
     mail(to: to, subject: "ChefSteps Password Reset")
   end
