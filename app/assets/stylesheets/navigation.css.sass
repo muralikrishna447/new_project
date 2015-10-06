@@ -1,8 +1,29 @@
 @import 'mixins'
 
-// #mainView:first-child.component-matrix
-//   margin-top: 0px
-//
+.button
+  display: inline-block
+  border: 1px solid $black
+  color: $black
+  background-color: transparent
+  border-radius: 42px
+  box-sizing: border-box
+  font-size: 18px
+  height: 42px
+  line-height: 28px
+  font-weight: 500
+  padding: 6px 28px 8px
+  -webkit-transition-property: background-color, border, color, opacity
+  transition-property: background-color, border, color, opacity
+  -webkit-transition-duration: 200ms
+  transition-duration: 200ms
+  &:hover
+    color: $white
+    background-color: $black
+
+.button.small
+  height: 35px
+  line-height: 14px
+  padding: 9px 14px 6px
 
 body
   margin-top: $nav-height
@@ -83,7 +104,7 @@ body
       color: $black
       text-decoration: none
       transition: color ease 300ms
-      &:befor
+      &:before
         content: ""
         position: absolute
         width: 100%

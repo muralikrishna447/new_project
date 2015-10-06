@@ -10,8 +10,9 @@
         %img.logo-color(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" id="chefsteps-logo")
         %img.logo-white(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-white.png" id="chefsteps-logo")
 
-    .cs-nav-right
-      %a.cs-nav-item.hide-mobile(ui-sref='main.gallery')
+    .cs-nav-right(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
+      = render "devise/sessions/new_angular"
+      %a.cs-nav-item.hide-mobile(href='/gallery')
         %i.fa.fa-search
 
       .dropdown.dropdown-right.cs-nav-item.hide-mobile(ng-controller='csDropdownController as dropdown' ng-if="app.currentUser")
@@ -29,7 +30,7 @@
               %a(ng-href="/logout")Sign Out
 
 
-      %a.cs-nav-item.button.small.hide-mobile#nav-login(ng-click='nav.login()' ng-if='! app.currentUser')
+      %a.cs-nav-item.button.small.hide-mobile#nav-login(ng-click="openModal('login')" ng-if='! app.currentUser')
         Sign In
 
       %button.cs-nav-item.cs-nav-menu-toggle.lines-btn.hide-desktop(ng-click="nav.showMenu = ! nav.showMenu")
