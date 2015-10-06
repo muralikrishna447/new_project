@@ -120,8 +120,10 @@ body
 
 @media (max-width: 900px)
 
-  .hide-desktopdisplay: block
-  .hide-mobildisplay: none
+  .hide-desktop
+    display: block
+  .hide-mobile
+    display: none
 
   .cs-nav-container
     // Override intercom z position
@@ -282,6 +284,63 @@ body
       .cs-nav-left
         background-color: $white
         transition: background-color ease 400ms 400ms
+
+
+body .cs-nav-container.nav-fixed
+  position: fixed
+  transform: translate3d(0,-$nav-height,0)
+  transition: transform ease 400ms
+  .cs-nav
+    background-color: $white
+    border-bottom: 1px solid $light-gray
+    color: $black
+    .cs-nav-item
+      color: $black
+      &:before
+        background-color: $black
+
+      &.button:hover
+        color: $white
+
+
+    .cs-nav-left
+      .logo-color
+        display: block
+
+      .logo-white
+        display: none
+
+
+    .cs-nav-right
+      .cs-nav-menu-toggle
+        .lines, .lines::before, .lines::after
+          background-color: $black
+
+
+
+
+  &.nav-hidden
+    visibility: hidden
+
+  &.nav-visible
+    visibility: visible
+    transform: translate3d(0,0,0)
+    transition: transform ease 400ms
+
+  &.nav-visible-add, &.nav-visible-remove
+    visibility: visible
+    transition: transform ease 400ms
+
+  &.nav-show-menu
+    .cs-nav-right
+      .cs-nav-menu-toggle
+        .lines, .lines::before, .lines::after
+          background-color: transparent
+
+        .lines::before, .lines::after
+          background-color: $black
+
+
 
 
 
