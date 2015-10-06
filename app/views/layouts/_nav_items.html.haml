@@ -1,75 +1,138 @@
-.cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
-  %li
-    .cs-nav-search-toggle(ng-click="toggleSearch()")
-      %i.fa.fa-search
-    .cs-nav-search-input(ng-show="showSearch" ng-cloak)
-      %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
-        %input(placeholder="search" ng-model="navbarSearchQuery")
-    .cs-nav-search-close(ng-click="toggleSearch()")
-      %i.fa.fa-times
-.cs-nav-links(ng-hide="showSearch")
-  %li
-    = link_to courses_url do
-      Classes
-  %li
-    = link_to '/gallery' do
-      Recipes
-  %li
-    %a(href='http://www.chefsteps.com/forum' onclick="mixpanel.track('Forum Nav Clicked')")
-      Forum
-  .hide-mobile
-    %li.cs-nav-dropdown
-      %a.cs-nav-dropdown-toggle(ng-click="toggleDropdown('resources')")
-        Resources
-        %i.fa.fa-caret-down
-      .cs-nav-dropdown-menu(ng-show="showDropdown=='resources'" ng-cloak)
-        %ul
-          %li
-            = link_to "http://www.chefsteps.com/activities/sous-vide-time-and-temperature-guide" do
-              %i.fa.fa-clock-o
-              Time & Temperature Guide
-          %li
-            = link_to '/sous-vide' do
-              = image_tag "https://d92f495ogyf88.cloudfront.net/static/nav-circulator-icon.png", width: "15px"
-              Sous Vide Resources
-          %li
-            = link_to 'http://www.chefsteps.com/activities/the-egg-calculator' do
-              = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/l4FOGWE7Swuz1kgKrNmZ", width: "15px"
-              Egg Calculator
-          %li
-            = link_to knife_collection_url do
-              = image_tag "https://d92f495ogyf88.cloudfront.net/static/nav-knife-icon.png", width: "15px"
-              Knife Collection
-          %li
-            %a(href="http://store.chefsteps.com/collections/cookbooks-we-love")
-              %i.fa.fa-book
-              Cookbook Collection
-          %li
-            = link_to projects_url do
-              %i.fa.fa-cubes
-              Projects
+%a.cs-nav-item.button.hide-desktop(ng-click='nav.login()' ng-if='!app.currentUser')
+  Sign In
 
-  %li
-    %a(href='/about')
-      About
-  - if current_admin?
-    %li.cs-nav-dropdown
-      %a.cs-nav-dropdown-toggle(ng-click="toggleDropdown('adminResources')")
-        Admin
-        %i.fa.fa-caret-down
-      .cs-nav-dropdown-menu(ng-show="showDropdown=='adminResources'" ng-cloak)
-        %ul
-          %li
-            %a(href="/forum/admin/dashboard")
-              Comments Dashboard
-          %li= link_to 'Manage Ingredients', manager_ingredients_path
-          %li= link_to 'Manage Equipment', equipment_index_path
-  %li
-    %a(href="//twitter.com/chefsteps" target="_blank" onclick="mixpanel.track('Social Click', {'source' : 'Nav', 'network': 'Twitter'});")
-      %i.fa.fa-twitter
-      .hide-desktop Twitter
+%a.cs-nav-item(href='/classes')
+  Classes
+%a.cs-nav-item(ui-sref='main.gallery')
+  Recipes
+%a.cs-nav-item(href='https://www.chefsteps.com/forum')
+  Forum
 
-  %li.section
-    %a(href="//facebook.com/chefsteps" target="_blank" onclick="mixpanel.track('Social Click', {'source' : 'Nav', 'network': 'Facebook'});")
-      %i.fa.fa-facebook
-      .hide-desktop Facebook
+.cs-nav-item
+  .dropdown(ng-controller='csDropdownController as dropdown')
+    .dropdown-toggle(ng-click='dropdown.toggle($event)')
+      Resources
+    .dropdown-menu(ng-show='dropdown.showMenu')
+      .dropdown-wrapper
+        .dropdown-menu-item
+          %a(href="/activities/sous-vide-time-and-temperature-guide")
+            Time & Temperature Guide
+        .dropdown-menu-item
+          %a(href="/sous-vide")
+            Sous Vide Resources
+        .dropdown-menu-item
+          %a(href="/activities/the-egg-calculator")
+            Egg Calculator
+        .dropdown-menu-item
+          %a(href="/knife-collection")
+            Knife Collection
+        .dropdown-menu-item
+          %a(href="http://store.chefsteps.com/collections/cookbooks-we-love")
+            Cookbook Collection
+        .dropdown-menu-item
+          %a(href="/projects")
+            Projects
+
+%a.cs-nav-item(href='/about')
+  About
+
+%a.cs-nav-item.hide-desktop(ng-href="/logout" ng-if='app.currentUser')
+  Sign Out
+
+.dropdown.cs-nav-item(ng-controller='csDropdownController as dropdown' ng-if='nav.currentUser.admin')
+  .dropdown-toggle(ng-click='dropdown.toggle($event)')
+    Admin
+  .dropdown-menu(ng-show='dropdown.showMenu')
+    .dropdown-wrapper
+      .dropdown-menu-item
+        %a(href="https://www.chefsteps.com/forum/admin/dashboard")
+          Comments Dashboard
+      .dropdown-menu-item
+        %a(href="/ingredients/manager")
+          Manage Ingredients
+      .dropdown-menu-item
+        %a(href="/equipment")
+          Manage Equipment
+
+-# .cs-nav-item
+-#   %i(cs-icon='twitter')
+-# .cs-nav-item
+-#   %i(cs-icon='facebook')
+
+
+
+-# .cs-nav-search(ng-class="{'cs-nav-search-open': showSearch}")
+-#   %li
+-#     .cs-nav-search-toggle(ng-click="toggleSearch()")
+-#       %i.fa.fa-search
+-#     .cs-nav-search-input(ng-show="showSearch" ng-cloak)
+-#       %form(ng-submit="getSearchQuery()" method="get" name="search" ng-controller="SearchController")
+-#         %input(placeholder="search" ng-model="navbarSearchQuery")
+-#     .cs-nav-search-close(ng-click="toggleSearch()")
+-#       %i.fa.fa-times
+-# .cs-nav-links(ng-hide="showSearch")
+-#   %li
+-#     = link_to courses_url do
+-#       Classes
+-#   %li
+-#     = link_to '/gallery' do
+-#       Recipes
+-#   %li
+-#     %a(href='http://www.chefsteps.com/forum' onclick="mixpanel.track('Forum Nav Clicked')")
+-#       Forum
+-#   .hide-mobile
+-#     %li.cs-nav-dropdown
+-#       %a.cs-nav-dropdown-toggle(ng-click="toggleDropdown('resources')")
+-#         Resources
+-#         %i.fa.fa-caret-down
+-#       .cs-nav-dropdown-menu(ng-show="showDropdown=='resources'" ng-cloak)
+-#         %ul
+-#           %li
+-#             = link_to "http://www.chefsteps.com/activities/sous-vide-time-and-temperature-guide" do
+-#               %i.fa.fa-clock-o
+-#               Time & Temperature Guide
+-#           %li
+-#             = link_to '/sous-vide' do
+-#               = image_tag "https://d92f495ogyf88.cloudfront.net/static/nav-circulator-icon.png", width: "15px"
+-#               Sous Vide Resources
+-#           %li
+-#             = link_to 'http://www.chefsteps.com/activities/the-egg-calculator' do
+-#               = image_tag "https://d3awvtnmmsvyot.cloudfront.net/api/file/l4FOGWE7Swuz1kgKrNmZ", width: "15px"
+-#               Egg Calculator
+-#           %li
+-#             = link_to knife_collection_url do
+-#               = image_tag "https://d92f495ogyf88.cloudfront.net/static/nav-knife-icon.png", width: "15px"
+-#               Knife Collection
+-#           %li
+-#             %a(href="http://store.chefsteps.com/collections/cookbooks-we-love")
+-#               %i.fa.fa-book
+-#               Cookbook Collection
+-#           %li
+-#             = link_to projects_url do
+-#               %i.fa.fa-cubes
+-#               Projects
+-#
+-#   %li
+-#     %a(href='/about')
+-#       About
+-#   - if current_admin?
+-#     %li.cs-nav-dropdown
+-#       %a.cs-nav-dropdown-toggle(ng-click="toggleDropdown('adminResources')")
+-#         Admin
+-#         %i.fa.fa-caret-down
+-#       .cs-nav-dropdown-menu(ng-show="showDropdown=='adminResources'" ng-cloak)
+-#         %ul
+-#           %li
+-#             %a(href="/forum/admin/dashboard")
+-#               Comments Dashboard
+-#           %li= link_to 'Manage Ingredients', manager_ingredients_path
+-#           %li= link_to 'Manage Equipment', equipment_index_path
+-#   %li
+-#     %a(href="//twitter.com/chefsteps" target="_blank" onclick="mixpanel.track('Social Click', {'source' : 'Nav', 'network': 'Twitter'});")
+-#       %i.fa.fa-twitter
+-#       .hide-desktop Twitter
+-#
+-#   %li.section
+-#     %a(href="//facebook.com/chefsteps" target="_blank" onclick="mixpanel.track('Social Click', {'source' : 'Nav', 'network': 'Facebook'});")
+-#       %i.fa.fa-facebook
+-#       .hide-desktop Facebook
