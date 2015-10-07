@@ -1,4 +1,4 @@
-@app.controller 'csDropdownController', ($scope, $window, $rootScope) ->
+@app.controller 'csDropdownController', ['$scope', '$window', '$rootScope', ($scope, $window, $rootScope) ->
   @showMenu = false
 
   @toggle = (e) =>
@@ -20,3 +20,4 @@
       $scope.$apply()
 
   this
+]

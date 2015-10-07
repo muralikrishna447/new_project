@@ -1,4 +1,4 @@
-@app.controller 'NavController', ($scope, $window, csAuthentication) ->
+@app.controller 'NavController', ['$scope', '$window', 'csAuthentication', ($scope, $window, csAuthentication) ->
   @visibleNav = false
   @fixedNav = false
   @previousNavState = false
@@ -26,3 +26,4 @@
   ,200)
 
   this
+]
