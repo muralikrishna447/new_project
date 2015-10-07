@@ -1,7 +1,7 @@
 .cs-nav-container.nav-fixed.nav-visible(ng-controller='NavController as nav' ng-class="{'nav-visible': nav.visibleNav, 'nav-hidden': nav.hiddenNav, 'nav-fixed': nav.fixedNav, 'nav-show-menu': nav.showMenu}")
   %alerts
-  .cs-nav
-
+  .cs-nav(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
+    = render "devise/sessions/new_angular"
     .cs-nav-center.hide-mobile
       = render 'layouts/nav_items'
 
@@ -10,12 +10,12 @@
         %img.logo-color(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" id="chefsteps-logo")
         %img.logo-white(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-white.png" id="chefsteps-logo")
 
-    - if current_user
-      .cs-nav-right(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
-        = render "devise/sessions/new_angular"
-        %a.cs-nav-item.hide-mobile(href='/gallery')
-          %i.fa.fa-search
+    .cs-nav-right
 
+      %a.cs-nav-item.hide-mobile(href='/gallery')
+        %i.fa.fa-search
+
+      - if current_user
         .dropdown.dropdown-right.cs-nav-item.hide-mobile(ng-controller='csDropdownController as dropdown')
           .dropdown-toggle(ng-click='dropdown.toggle($event)')
             - if current_user.image_id.blank?

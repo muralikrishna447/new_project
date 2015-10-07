@@ -1,6 +1,10 @@
-%a.cs-nav-item.button.hide-desktop(ng-click='nav.login()' ng-if='!app.currentUser')
+%a.cs-nav-item.button.hide-desktop(ng-click="openModal('login'); nav.showMenu = false" ng-if='!authentication.currentUser()')
   Sign In
 
+- if current_user
+  %a.cs-nav-item.hide-desktop(ng-href="/profiles/{{authentication.currentUser().slug}}")
+    Profile
+    
 %a.cs-nav-item(href='/classes')
   Classes
 %a.cs-nav-item(href='/gallery')
@@ -36,23 +40,24 @@
 %a.cs-nav-item(href='/about')
   About
 
-%a.cs-nav-item.hide-desktop(ng-href="/logout" ng-if='app.currentUser')
+%a.cs-nav-item.hide-desktop(ng-href="/logout" ng-if='authentication.currentUser()')
   Sign Out
 
-.dropdown.cs-nav-item(ng-controller='csDropdownController as dropdown' ng-if='nav.currentUser.admin')
-  .dropdown-toggle(ng-click='dropdown.toggle($event)')
-    Admin
-  .dropdown-menu(ng-show='dropdown.showMenu')
-    .dropdown-wrapper
-      .dropdown-menu-item
-        %a(href="https://www.chefsteps.com/forum/admin/dashboard")
-          Comments Dashboard
-      .dropdown-menu-item
-        %a(href="/ingredients/manager")
-          Manage Ingredients
-      .dropdown-menu-item
-        %a(href="/equipment")
-          Manage Equipment
+- if current_admin?
+  .dropdown.cs-nav-item(ng-controller='csDropdownController as dropdown')
+    .dropdown-toggle(ng-click='dropdown.toggle($event)')
+      Admin
+    .dropdown-menu(ng-show='dropdown.showMenu')
+      .dropdown-wrapper
+        .dropdown-menu-item
+          %a(href="https://www.chefsteps.com/forum/admin/dashboard")
+            Comments Dashboard
+        .dropdown-menu-item
+          %a(href="/ingredients/manager")
+            Manage Ingredients
+        .dropdown-menu-item
+          %a(href="/equipment")
+            Manage Equipment
 
 -# .cs-nav-item
 -#   %i(cs-icon='twitter')
