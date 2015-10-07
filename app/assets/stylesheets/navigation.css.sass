@@ -1,380 +1,361 @@
-/* Global Nav 08-May-2014 */
-
 @import 'mixins'
 
-=navpadding
-  height: 6rem
-  padding: 0.8rem
-  line-height: 4.4rem
-
-input.search-query
-  +radius(2px)
-  border: none
-  width: 250px
-
-input:focus
-  border: none
-  outline: none
-
-.course-global-nav
-  .cs-nav
-    margin-top: -6rem
-
-.cs-nav
-  display: block
-  background: rgba(255,255,255,0.9)
-  position: fixed
-  width: 100%
-  z-index: 1000
-  height: $baseline * 7
-  left: 0px
-  top: 0px
-  -webkit-transform: translate3d(0,0,0)
-  ::selection
-    background: none
-    color: $orange
-
-.cs-nav-logo
-  height: 100%
-  padding: 2.2rem
-  float: left
-  @include boxsizing
-  .logo-box
-    .regular-logo
-      height: 36px
-    .loading-logo
-      height: 36px
-      display: none
-    .loading-no-logo
-      display: none
-      img
-        height: 40px
-        margin-top: -4px
-
-.cs-nav-items
-  height: 100%
-  padding-top: $baseline
-  padding-bottom: $baseline
-  margin-right: -20px
-  @include boxsizing
-  ul
-    margin: 0px
-    padding: 0px
-    li
-      list-style: none
-      display: inline-block
-      position: relative
-      @include boxsizing
-      @include navpadding
-      a
-        display: block
-        text-transform: none
-        color: $light-black
-        font-size: 16px
-        font-weight: 500
-        @include transition(all .3s)
-        &:hover
-          color: $orange
-          cursor: pointer
-
-.fa-times:before
-  margin-left: 4px
-
-.cs-nav-items-toggle
-  float: right
-  @include boxsizing
-  height: 6rem
-  padding: 0.8rem 0rem
-  line-height: 4.4rem
-  text-transform: none
-  color: $light-black
-  &:hover
-    color: $orange
-    cursor: pointer
-
-.cs-nav-links-container
-  float: right
-  // position: absolute
-  // right: 145px
-
-.cs-nav-links
+.button
   display: inline-block
-  float: left
-  margin-right: 10px
-
-.cs-nav-dropdown-menu
-  position: absolute
-  left: 0px
-  top: 6.5rem
-  background: rgb(255, 255, 255)
-  border: none
-  border-top: 1px solid $orange
-  white-space: nowrap
-  @include anim-basic-fade (300ms)
-  hr
-    margin: 5px 0 5px 0px
-  ul
-    margin: $baseline $horz-baseline-small
-    li
-      display: block
-      height: 4rem
-      a
-        font-weight: 200
-
-.cs-nav-search
-  width: 40px
-  right: 85px
-  position: absolute
-  height: 6rem
-  margin-right: 0px
-  overflow: hidden
-  @include anim-basic-fade(100ms)
-
-  .cs-nav-search-toggle, .cs-nav-search-close
-    float: left
-    height: 100%
-    width: 20px
-    @include boxsizing
-    i
-      line-height: inherit
-      margin-left: 0px
-    &:hover
-      color: $orange
-      cursor: pointer
-  .cs-nav-search-input
-    float: left
-    width: 414px
-    height: 100%
-    margin: 0px
-    padding: 0.8rem
-    @include boxsizing
-    form
-      height: 100%
-      margin: 0px
-      input
-        float: left
-        height: 100%
-        width: 100%
-        background: none
-        border: none
-        padding: 0.4rem
-        font-size: 18px
-        font-weight: 100
-        @include boxsizing
-
-
-.cs-nav-profile-container
-  float: right
-  display: block
-  padding-top: $baseline
-  padding-right: $baseline
-  padding-bottom: $baseline
-  padding-left: $baseline
-
-.cs-nav-notifs
-  float: right
-  height: 6rem
-  padding: 8px 0px
-  @include boxsizing
-  .bloom-notifs
-    .icon
-      i.bloom-globe
-        line-height: inherit
-
-.cs-nav-profile
-  float: right
-  width: 4rem
-  height: 6rem
-  padding: 1.5rem 0.5rem
-  margin-right: 32px
-  @include boxsizing
-  .profile-image
-    img
-      float: left
-      width: 100%
-      border-radius: 100%
-
-.profile-button
-  display: block
-  text-transform: none
-  color: $light-black
-  font-size: 16px
+  border: 1px solid $black
+  color: $black
+  background-color: transparent
+  border-radius: 42px
+  box-sizing: border-box
+  font-size: 18px
+  height: 42px
+  line-height: 28px
   font-weight: 500
-  padding: 19px 15px
-  @include transition(all .3s)
+  padding: 6px 28px 8px
+  -webkit-transition-property: background-color, border, color, opacity
+  transition-property: background-color, border, color, opacity
+  -webkit-transition-duration: 200ms
+  transition-duration: 200ms
   &:hover
-    color: $orange
-    cursor: pointer
+    color: $white
+    background-color: $black
 
-.cs-nav-search.cs-nav-search-open
-  width: 475px
+.button.small
+  height: 35px
+  line-height: 14px
+  padding: 9px 14px 6px
+
+body
+  margin-top: $nav-height
 
 
-#nav-sign-in-button
-  color: $orange
-  height: 6rem
-  margin-right: 0px
-  padding: 10px 10px
-  border-radius: 55px
-  border: 1px solid $orange
-  font-weight: 300
-  line-height: 6rem
-  @include boxsizing
-  @include transition(all 300ms)
-  &:hover
-    color: white
-    background: $orange
-    border: 1px solid $orange
-
-.menu-popover-arrow
-  @include popover-arrow(-5px, 290px)
-
-.cs-nav-click-box
+//Top nav styles
+.cs-nav-container
   position: absolute
+  width: 100%
   top: 0px
   left: 0px
-  width: 100%
-  height: 100%
+  z-index: 9999
+
+  .cs-nav
+    height: $nav-height
+    padding: 23px 2*$base
+    box-sizing: border-box
+    background-color: $white
+    @include display-flex
+    @include transition(background ease 700ms)
+
+    //Nav Links (center) styling
+    .cs-nav-center
+      @include display-flex
+      width: 100%
+      @include justify-content(center)
+      @include align-items(center)
+
+    //Nav Logo (left) styling
+    .cs-nav-left
+      position: absolute
+      height: $nav-height - 46px
+      top: 23px
+      left: 2*$base
+      img
+        height: 100%
+
+      .logo-color
+        display: block
+
+      .logo-white
+        display: none
+
+    //Nav icons (right) styling
+    .cs-nav-right
+      position: absolute
+      height: $nav-height - 46px
+      top: 23px
+      right: 2*$base
+      @include display-flex
+      @include align-items(center)
+      .cs-nav-item
+        margin: 0 0 0 $base
+        &:before
+          display: none
+
+      .cs-nav-item:last-of-type
+        margin-right: 0
+
+      img
+        width: 2*$base - 2px
+        height: 2*$base - 2px
+        border: 2px solid $white
+        border-radius: $base
+
+
+
+    //Nav item styling
+    .cs-nav-item
+      position: relative
+      margin: 0px $base
+      font-weight: 500
+      font-size: 17/14*$base
+      color: $black
+      text-decoration: none
+      @include transition(color ease 300ms)
+      &:before
+        content: ""
+        position: absolute
+        width: 100%
+        height: 2px
+        bottom: -1px
+        left: 0
+        background-color: $black
+        visibility: hiddenn
+        @include transform(scale3d(0,1,1))
+        @include transition(transform ease 200ms)
+
+      &:hover
+        text-decoration: none
+        cursor: pointer
+        &:before
+          visibility: visible
+          transform: scale3d(1,1,1)
+
+
+
+    .button
+      &:hover
+        color: $white
+
+//Hide hamburger button on desktop
+.cs-nav-menu-toggle
   display: none
+
 
 .hide-desktop
   display: none
-
 .hide-mobile
-  display: inline-block
+  display: inherit
 
-
-// MEDIA QUERIES //
-
-@media(min-width: 831px)
-  .cs-nav-items-desktop
-    display: none
-  .cs-nav-links
-    position: absolute
-    right: 120px
-  .cs-nav-items-toggle
-    display: none
-  .cs-nav-dropdown-menu
-    ul
-      li
-        height: 4rem
-        width: 400px
-        padding-left: 20px
-        a
-          line-height: 1.6rem
-          text-transform: none
-
-
-@media(max-width: 830px)
-  .cs-nav-items-desktop
-    display: none
+@media (max-width: 900px)
 
   .hide-desktop
-    display: inline
-
+    display: block
   .hide-mobile
     display: none
 
-  .cs-nav
-    position: absolute
-    width: 100%
-  .cs-nav-items
-    ul
-      li
-        a
-          text-transform: none
-          font-weight: 300
-  .cs-nav-items-toggle
-    display: inline-block
-    font-weight: 500
-    font-size: 16px
-    position: relative
-    z-index: 10000
-  .cs-nav-items
-    ul.cs-nav-links-container
-      background: white
-      border-top: 1px solid $orange
-      border-left: none
-
-      position: absolute
-      padding-top: 1rem
-      text-align: center
-      top: 75px !important
-      width: 100%
-      @include boxsizing
-      @include shadow
-  .cs-nav-logo
-    padding-top: $baseline * 2
-    padding-bottom: $baseline * 2
-    .logo-box
-      .regular-logo
-        height: 36px
-
-  .cs-nav-links
-    width: 100%
-    margin-left: 0px
-  .cs-nav-items
-    ul.cs-nav-links-container
-      li
-        width: 100%
-        line-height: $baseline * 4
-        height: $baseline * 4
-        padding: 0px
-        a
-          &:hover
-            margin-left: 3px
-
-      li.cs-nav-dropdown
+  .cs-nav-container
+    // Override intercom z position
+    z-index: 2147483001
+    overflow: hidden
+    .cs-nav
+      z-index: -1
+      .cs-nav-center
+        visibility: hidden
+        position: absolute
         display: block
-        height: inherit
-        .cs-nav-dropdown-toggle
-          display: none
-        .cs-nav-dropdown-menu
-          display: block !important
+        width: 100%
+        height: 100%
+        overflow-x: hidden
+        overflow-y: scroll
+        -webkit-overflow-scrolling: touch
+        @include boxsizing
+        top: 0
+        left: 0
+        background-color: transparent
+        padding-top: $nav-height + 3*$base
+        padding-bottom: 4*$base
+        @include transition(background ease 0ms 0ms)
+        @include transition(visibility ease 0ms 400ms)
+        &:before
+          content: ""
+          position: absolute
+          z-index: 0
+          top: 0
+          left: 0
+          width: 200%
+          height: 140%
+          border-radius: 100%
+          background-color: $white
+          opacity: 0
+          @include transform(translate3d(-25%,-55%,0) scale3d(0.4,0.4,0.4))
+          @include transition(transform cubic-bezier(.3,.51,1,1.1) 300ms)
+          @include transition(opacity ease 300ms)
+          -webkit-transform-origin: top right
+          -moz-transform-origin: top right
+          transform-origin: top right
+
+        .cs-nav-item
+          opacity: 0
+          display: block
+          width: 100%
+          margin: 0 0 2*$base
+          @include transition(opacity ease 400ms 0ms)
+          text-align: center
+          @include align-items(center)
+          color: $black
+          &.button
+            max-width: 200px
+            margin: 0 auto 2*$base
+            &:hover
+              color: $white
+
+
+          &:before
+            display: none
+
+
+
+      .cs-nav-left
+        height: $nav-height
+        top: 0
+        left: 0
+        padding: 23px 2*$base
+        background-color: transparent
+        width: 100%
+        @include transition(background-color ease 0ms 0ms)
+        @include boxsizing
+        img
+          height: $nav-height - 46px
+
+
+      .cs-nav-left, .cs-nav-right
+        z-index: 999
+
+
+
+
+  //Menu button on mobile
+  .cs-nav-menu-toggle
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
+    padding: 12px 6px
+    cursor: pointer
+    user-select: none
+    background-color: transparent
+    border: none
+    outline: none
+    font-size: 6px
+    line-height: 20px
+    .lines, .lines::before, .lines::after
+      display: inline-block
+      width: 21px
+      height: 2px
+      background-color: $black
+      border-radius: 1.71429px
+      @include transition(0.3s)
+
+    .lines::before, .lines::after
+      position: absolute
+      left: 0
+      content: ''
+      @include transform-origin(1.71429px center)
+
+    .lines
+      position: relative
+
+    .lines::before
+      top: 7px
+
+    .lines::after
+      top: -7px
+
+
+
+  //Show menu on mobile
+  .cs-nav-container.nav-show-menu
+    position: fixed
+    transform: none!important
+    visibility: visible!important
+    height: 100%
+    .cs-nav
+      .cs-nav-menu-toggle
+        .lines
+          background-color: transparent!important
+
+        .lines:before, .lines:after
+          @include transform-origin(50% 50%)
+          top: 0
+          background-color: $black
+
+        .lines:before
+          @include transform(rotate3d(0, 0, 1, 45deg))
+
+        .lines:after
+          @include transform(rotate3d(0, 0, 1, -45deg))
+
+
+      .cs-nav-lef
+        .logo-colordisplay: block
+        .logo-whitdisplay: none
+
+      .cs-nav-center
+        visibility: visible
+        @include transition(visibility ease 0ms 0ms)
+        @include transition(background ease 0ms 400ms)
+        background-color: $white
+        overflow-y: scroll
+        &:before
           opacity: 1
-          position: relative
-          border: 0px
-          top: 0px
-          margin-top: 0px
+          @include transform(translate3d(-25%,-20%,0) scale3d(1,1,1))
 
-  .cs-nav-search
-    width: 100%
-    position: initial
-    height: $baseline * 6
-    padding: 0.8rem 0px
-    @include boxsizing
-    .cs-nav-search-input
-      display: block !important
-      width: 100%
-      padding: 0px
-      margin: 0px
-      input
-        text-align: center
-    .cs-nav-search-close
-      display: none
-  .cs-nav-search-toggle
-    display: none
+        .cs-nav-item
+          opacity: 1
+          @include transition(opacity ease 400ms 200ms)
 
-  .cs-nav-click-box
-    display: block
 
-  .profile-button
-    padding: 19px 0px
+      .cs-nav-left
+        background-color: $white
+        @include transition(background-color ease 400ms 400ms)
 
-@media(max-width: 700px)
-
+body .cs-nav-container.nav-fixed
+  position: fixed
+  @include transform(translate3d(0,-$nav-height,0))
+  @include transition(transform ease 400ms)
   .cs-nav
-    position: relative
-    width: 100%
-  .nav-spacer
-    height: $baseline !important
-  .cs-nav-dropdown-menu
+    background-color: $white
+    color: $black
+    .cs-nav-item
+      color: $black
+      &:before
+        background-color: $black
 
-  .cs-nav-profile
-    margin-right: 0px
+      &.button:hover
+        color: $white
 
 
-@media(max-width: 320px)
-  .cs-nav
-    width: calc(100% + 50px)
-    margin-left: -30px
+    .cs-nav-left
+      .logo-color
+        display: block
+
+      .logo-white
+        display: none
+
+
+    .cs-nav-right
+      .cs-nav-menu-toggle
+        .lines, .lines::before, .lines::after
+          background-color: $black
+
+
+
+
+  &.nav-hidden
+    visibility: hidden
+
+  &.nav-visible
+    visibility: visible
+    @include transform(translate3d(0,0,0))
+    @include transition(transform ease 400ms)
+
+  &.nav-visible-add, &.nav-visible-remove
+    visibility: visible
+    @include transition(transform ease 400ms)
+
+  &.nav-show-menu
+    .cs-nav-right
+      .cs-nav-menu-toggle
+        .lines, .lines::before, .lines::after
+          background-color: transparent
+
+        .lines::before, .lines::after
+          background-color: $black

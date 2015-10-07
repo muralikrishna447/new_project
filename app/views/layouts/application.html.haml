@@ -101,9 +101,9 @@
 
     #rails-flash.hide
       = flash.to_json
-    - unless @hide_nav == true
-      = render 'layouts/navigation', external: false
-      .nav-spacer.noprint
+
+    = render 'layouts/navigation', external: false
+    .nav-spacer.noprint
 
     .container.noprint.cookies-disabled(style="display:none;")
       .row-fluid

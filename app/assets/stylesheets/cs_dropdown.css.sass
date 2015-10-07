@@ -1,0 +1,245 @@
+@import 'mixins'
+
+.dropdown
+  position: relative
+
+
+.dropdown-toggle
+  &:hover
+    cursor: pointer
+
+
+
+.dropdown-menu
+  position: absolute
+  top: 100%
+  left: 50%
+  margin-top: 23px
+  transform: translate3d(-50%,0,0)
+  text-align: center
+  z-index: 1
+  padding: 0px
+  border: 0px
+  @include box-shadow(none)
+  .dropdown-wrapper
+    position: relative
+    min-width: 200px
+    height: 100%
+    border: 1px solid $light-gray
+    border-radius: 4px
+    padding: 1.5*$base $base
+    box-sizing: border-box
+    white-space: nowrap
+    overflow: hidden
+    z-index: 1
+    &:before
+      content: ""
+      position: absolute
+      width: 200%
+      height: 200%
+      border-radius: 100%
+      background-color: $white
+      z-index: -1
+
+
+  &:before, &:after
+    content: ""
+    border-style: solid
+    border-width: 10px
+    width: 0
+    height: 0
+    position: absolute
+    top: -19px
+    left: calc(50% - 10px)
+    z-index: 2
+
+  &:before
+    border-color: transparent transparent $light-gray
+
+  &:after
+    margin-top: 2px
+    border-color: transparent transparent $white
+
+
+
+.dropdown-menu-item
+  font-size: 17/14*$base
+  line-height: 2.5*$base
+  margin: 0 $base
+  font-weight: normal
+  color: $black
+  &:last-of-type
+    margin-bottom: 0
+
+
+  a
+    color: $black
+    display: block
+    opacity: 1
+    transition: opacity ease 200ms
+    &:hover
+      opacity: 0.5
+      cursor: pointer
+
+
+
+
+//Dropdown for right side
+.dropdown-right
+  .dropdown-menu
+    margin-top: 18px
+    transform: translate3d(-100%,0,0)
+    .dropdown-wrapper
+      border-top-right-radius: 0
+      &:before
+        transform-origin: top right
+        transform: translate3d(-50%,-45%,0) scale3d(1,1,1)
+
+
+    &:before, &:after
+      opacity: 1
+      top: -10px
+      right: 1px
+      left: auto
+      transition: opacity ease 300ms 100ms, transform cubic-bezier(.2,.51,1,1.1) 400ms
+
+    &:before
+      right: 0px
+      border-top: none
+      border-right: none
+      border-bottom: 10px solid $light-gray
+      border-left: 13px solid transparent
+
+    &:after
+      margin-top: 2px
+      border-top: none
+      border-right: none
+      border-bottom: 10px solid $white
+      border-left: 13px solid transparent
+
+
+
+
+//animations
+.dropdown-menu
+  opacity: 1
+  transform: translate3d(-50%,0,0)
+  transform-origin: top
+  transition: opacity ease 400ms, transform cubic-bezier(.2,.51,1,1.1) 400ms
+  //Dropdown triangles
+  &:before, &:after
+    transform: translate3d(0,0,0)
+    opacity: 1
+    transition: opacity ease 400ms 0ms, transform ease 400ms 0ms
+
+  //menu container
+  .dropdown-wrapper
+    transition: border ease 300ms 200ms
+    //animated background
+    &:before
+      transform: translate3d(-50%,-35%,0) scale3d(1,1,1)
+      transform-origin: top
+      transition: transform ease 400ms
+
+    .dropdown-menu-item
+      opacity: 1
+      transition: opacity 400ms 200ms
+
+
+
+  //Hidden state
+  &.ng-hide
+    opacity: 0
+    transform: translate3d(-50%,-10px,0)
+    transition: opacity ease 300ms, transform cubic-bezier(.2,.51,1,1.1) 300ms
+    //Dropdown triangles
+    &:before, &:after
+      opacity: 0
+      transform: translate3d(0,5px,0)
+      transition: opacity ease 300ms 0ms, transform ease 300ms 0ms
+
+    //menu container
+    .dropdown-wrapper
+      border: 1px solid transparent
+      transition: border ease 100ms 0ms
+      //animated background
+      &:before
+        transform: translate3d(-50%,-20%,0) scale3d(0.2,0.2,0.2)
+
+      .dropdown-menu-item
+        opacity: 0
+        transition: opacity 400ms 0ms
+
+
+
+
+
+//Right Dropdown
+.dropdown-right .dropdown-menu
+  //Triangles
+  &:before, &:after
+    transition: opacity ease 300ms 100ms, transform cubic-bezier(.2,.51,1,1.1) 400ms
+
+  //Menu Background
+  .dropdown-wrapper
+    &:before
+      transform-origin: top right
+      transform: translate3d(-50%,-45%,0) scale3d(1,1,1)
+
+
+
+  &.ng-hide
+    transform: translate3d(-100%,-10px,0)
+    &:before, &:after
+      transform: translate3d(-2px,10px,0)
+      transition: opacity ease 300ms 0ms, transform ease 300ms 0ms
+
+    .dropdown-wrapper
+      transition: border ease 100ms 0ms
+      &:before
+        transform: translate3d(-25%,-50%,0) scale3d(0.2,0.2,0.2)
+
+
+
+
+
+@media (max-width: 900px)
+  .dropdown
+    width: 100%
+    .dropdown-menu
+      width: 100%
+      position: relative
+      border-top: 0px
+      margin-top: 2*$base
+      margin-bottom: 2*$base
+      top: auto
+      left: auto
+      right: auto
+      transform: translate3d(0,0,0) scale3d(1,1,1)
+      opacity: 1
+      transition: opacity ease 400ms
+      &:before, &:after
+        display: none
+
+      .dropdown-wrapper
+        padding: 2*$base 0px
+        background-color: $light-gray
+        border: none
+        border-radius: 0
+        &:before
+          display: none
+          border: none
+
+        .dropdown-menu-item
+          margin-bottom: 2*$base
+          line-height: 1.5*$base
+
+        .dropdown-menu-item:last-of-type
+          margin-bottom: 0px
+
+
+
+      //Animation
+      &.ng-hide
+        opacity: 0
+        transform: translate3d(0,0,0) scale3d(1,1,1)
