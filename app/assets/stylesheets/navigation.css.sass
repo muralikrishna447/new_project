@@ -42,16 +42,15 @@ body
     padding: 23px 2*$base
     box-sizing: border-box
     background-color: $white
-    display: flex
-    transition: background ease 700ms
+    @include display-flex
+    @include transition(background ease 700ms)
 
     //Nav Links (center) styling
     .cs-nav-center
-      display: flex
+      @include display-flex
       width: 100%
-      justify-content: center
-      align-items: center
-
+      @include justify-content(center)
+      @include align-items(center)
 
     //Nav Logo (left) styling
     .cs-nav-left
@@ -68,21 +67,18 @@ body
       .logo-white
         display: none
 
-
-
     //Nav icons (right) styling
     .cs-nav-right
       position: absolute
       height: $nav-height - 46px
       top: 23px
       right: 2*$base
-      display: flex
-      align-items: center
+      @include display-flex
+      @include align-items(center)
       .cs-nav-item
         margin: 0 0 0 $base
         &:before
           display: none
-
 
       .cs-nav-item:last-of-type
         margin-right: 0
@@ -103,7 +99,7 @@ body
       font-size: 17/14*$base
       color: $black
       text-decoration: none
-      transition: color ease 300ms
+      @include transition(color ease 300ms)
       &:before
         content: ""
         position: absolute
@@ -113,8 +109,8 @@ body
         left: 0
         background-color: $black
         visibility: hiddenn
-        transform: scale3d(0,1,1)
-        transition: transform ease 200ms
+        @include transform(scale3d(0,1,1))
+        @include transition(transform ease 200ms)
 
       &:hover
         text-decoration: none
@@ -161,16 +157,17 @@ body
         overflow-x: hidden
         overflow-y: scroll
         -webkit-overflow-scrolling: touch
-        box-sizing: border-box
+        @include boxsizing
         top: 0
         left: 0
         background-color: transparent
         padding-top: $nav-height + 3*$base
         padding-bottom: 4*$base
-        transition: visibility ease 0ms 400ms, background ease 0ms 0ms
+        @include transition(background ease 0ms 0ms)
+        @include transition(visibility ease 0ms 400ms)
         &:before
           content: ""
-          position:absolute
+          position: absolute
           z-index: 0
           top: 0
           left: 0
@@ -179,18 +176,21 @@ body
           border-radius: 100%
           background-color: $white
           opacity: 0
-          transform: translate3d(-25%,-55%,0) scale3d(0.4,0.4,0.4)
+          @include transform(translate3d(-25%,-55%,0) scale3d(0.4,0.4,0.4))
+          @include transition(transform cubic-bezier(.3,.51,1,1.1) 300ms)
+          @include transition(opacity ease 300ms)
+          -webkit-transform-origin: top right
+          -moz-transform-origin: top right
           transform-origin: top right
-          transition: transform cubic-bezier(.3,.51,1,1.1) 300ms, opacity ease 300ms
 
         .cs-nav-item
           opacity: 0
           display: block
           width: 100%
           margin: 0 0 2*$base
-          transition: opacity ease 400ms 0ms
+          @include transition(opacity ease 400ms 0ms)
           text-align: center
-          align-items: center
+          @include align-items(center)
           color: $black
           &.button
             max-width: 200px
@@ -211,8 +211,8 @@ body
         padding: 23px 2*$base
         background-color: transparent
         width: 100%
-        transition: background-color ease 0ms 0ms
-        box-sizing: border-box
+        @include transition(background-color ease 0ms 0ms)
+        @include boxsizing
         img
           height: $nav-height - 46px
 
@@ -225,9 +225,9 @@ body
 
   //Menu button on mobile
   .cs-nav-menu-toggle
-    display: flex
-    justify-content: center
-    align-items: center
+    @include display-flex
+    @include justify-content(center)
+    @include align-items(center)
     padding: 12px 6px
     cursor: pointer
     user-select: none
@@ -242,13 +242,13 @@ body
       height: 2px
       background-color: $black
       border-radius: 1.71429px
-      transition: 0.3s
+      @include transition(0.3s)
 
     .lines::before, .lines::after
       position: absolute
       left: 0
       content: ''
-      transform-origin: 1.71429px center
+      @include transform-origin(1.71429px center)
 
     .lines
       position: relative
@@ -273,15 +273,15 @@ body
           background-color: transparent!important
 
         .lines:before, .lines:after
-          transform-origin: 50% 50%
+          @include transform-origin(50% 50%)
           top: 0
           background-color: $black
 
         .lines:before
-          transform: rotate3d(0, 0, 1, 45deg)
+          @include transform(rotate3d(0, 0, 1, 45deg))
 
         .lines:after
-          transform: rotate3d(0, 0, 1, -45deg)
+          @include transform(rotate3d(0, 0, 1, -45deg))
 
 
       .cs-nav-lef
@@ -290,27 +290,27 @@ body
 
       .cs-nav-center
         visibility: visible
-        transition: visibility ease 0ms 0ms, background ease 0ms 400ms
+        @include transition(visibility ease 0ms 0ms)
+        @include transition(background ease 0ms 400ms)
         background-color: $white
         overflow-y: scroll
         &:before
           opacity: 1
-          transform: translate3d(-25%,-20%,0) scale3d(1,1,1)
+          @include transform(translate3d(-25%,-20%,0) scale3d(1,1,1))
 
         .cs-nav-item
           opacity: 1
-          transition: opacity ease 400ms 200ms
+          @include transition(opacity ease 400ms 200ms)
 
 
       .cs-nav-left
         background-color: $white
-        transition: background-color ease 400ms 400ms
-
+        @include transition(background-color ease 400ms 400ms)
 
 body .cs-nav-container.nav-fixed
   position: fixed
-  transform: translate3d(0,-$nav-height,0)
-  transition: transform ease 400ms
+  @include transform(translate3d(0,-$nav-height,0))
+  @include transition(transform ease 400ms)
   .cs-nav
     background-color: $white
     border-bottom: 1px solid $light-gray
@@ -345,12 +345,12 @@ body .cs-nav-container.nav-fixed
 
   &.nav-visible
     visibility: visible
-    transform: translate3d(0,0,0)
-    transition: transform ease 400ms
+    @include transform(translate3d(0,0,0))
+    @include transition(transform ease 400ms)
 
   &.nav-visible-add, &.nav-visible-remove
     visibility: visible
-    transition: transform ease 400ms
+    @include transition(transform ease 400ms)
 
   &.nav-show-menu
     .cs-nav-right
