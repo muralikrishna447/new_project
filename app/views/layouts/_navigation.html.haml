@@ -10,28 +10,34 @@
         %img.logo-color(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" id="chefsteps-logo")
         %img.logo-white(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-white.png" id="chefsteps-logo")
 
-    .cs-nav-right(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
-      = render "devise/sessions/new_angular"
-      %a.cs-nav-item.hide-mobile(href='/gallery')
-        %i.fa.fa-search
+    - if current_user
+      .cs-nav-right(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
+        = render "devise/sessions/new_angular"
+        %a.cs-nav-item.hide-mobile(href='/gallery')
+          %i.fa.fa-search
 
-      .dropdown.dropdown-right.cs-nav-item.hide-mobile(ng-controller='csDropdownController as dropdown' ng-if="authentication.currentUser()")
-        .dropdown-toggle(ng-click='dropdown.toggle($event)')
-          = image_tag current_user.avatar_url
-        .dropdown-menu(ng-show='dropdown.showMenu')
-          .dropdown-wrapper
-            .dropdown-menu-item
-              %a(ng-href="/profiles/{{authentication.currentUser().slug}}")Profile
+        .dropdown.dropdown-right.cs-nav-item.hide-mobile(ng-controller='csDropdownController as dropdown')
+          .dropdown-toggle(ng-click='dropdown.toggle($event)')
+            - if current_user.image_id.blank?
+              .profile-button
+                Profile
+            - else
+              .cs-nav-profile
+                .profile-image
+                  = image_tag current_user.avatar_url
+          .dropdown-menu(ng-show='dropdown.showMenu')
+            .dropdown-wrapper
+              .dropdown-menu-item
+                %a(ng-href="/profiles/{{authentication.currentUser().slug}}")Profile
 
-            .dropdown-menu-item
-              %a(ng-href="/profiles/{{authentication.currentUser().slug}}/edit")Settings
+              .dropdown-menu-item
+                %a(ng-href="/profiles/{{authentication.currentUser().slug}}/edit")Settings
 
-            .dropdown-menu-item
-              %a(ng-href="/logout")Sign Out
-
-
-      %a.cs-nav-item.button.small.hide-mobile#nav-login(ng-click="openModal('login')" ng-if='! authentication.currentUser()')
-        Sign In
+              .dropdown-menu-item
+                %a(ng-href="/logout")Sign Out
+      - else
+        %a.cs-nav-item.button.small.hide-mobile#nav-login(ng-click="openModal('login')")
+          Sign In
 
       %button.cs-nav-item.cs-nav-menu-toggle.lines-btn.hide-desktop(ng-click="nav.showMenu = ! nav.showMenu")
         %span.lines
