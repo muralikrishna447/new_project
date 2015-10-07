@@ -1,45 +1,84 @@
-- if ! @minimal
-  - if external
-    .cs-nav
-      .cs-nav-logo
-        = link_to root_url do
-          .logo-box
-            %img.regular-logo(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png")
-  - else
-    .cs-nav(ng-controller="NavbarController" ng-cloak)
-      .cs-nav-logo
-        = link_to root_url do
-          .logo-box
-            %img.regular-logo(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" id="chefsteps-logo")
-      .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
-        - if current_user
-          = link_to user_profile_url(current_user) do
-            - if current_user.image_id.blank?
-              .profile-button
-                Profile
-            - else
-              .cs-nav-profile
-                .profile-image
-                  = image_tag current_user.avatar_url
-          / .cs-nav-notifs
-          /   %csnotifs
-        - else
-          %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
-          = render "devise/sessions/new_angular"
-          %a(ng-href="{{'/profiles/' + authentication.currentUser().slug}}" ng-if="authentication.currentUser()")
-            .profile-button
-              Profile
-          / .cs-nav-notifs(ng-if="authentication.currentUser()")
-          /   %csnotifs
-      .cs-nav-items(ng-show="!editMode")
-        %ul.cs-nav-links-container.hide-mobile
-          = render 'layouts/nav_items'
-        .cs-nav-items-toggle(ng-click="toggleMenu()")
-          Menu
-        %ul.cs-nav-links-container.anim-basic-fade.hide-desktop(ng-show="showMenu")
-          = render 'layouts/nav_items'
+.cs-nav-container.nav-fixed.nav-visible(ng-controller='NavController as nav' ng-class="{'nav-visible': nav.visibleNav, 'nav-hidden': nav.hiddenNav, 'nav-fixed': nav.fixedNav, 'nav-show-menu': nav.showMenu}")
+  %alerts
+  .cs-nav
 
-      %div
-        -if @include_edit_toolbar
-          #nav-edit-toolbar(collapse="!editMode")
-            = render 'activities/edit_toolbar'
+    .cs-nav-center.hide-mobile
+      = render 'layouts/nav_items'
+
+    .cs-nav-left
+      %a(href='/')
+        %img.logo-color(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" id="chefsteps-logo")
+        %img.logo-white(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-white.png" id="chefsteps-logo")
+
+    .cs-nav-right(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
+      = render "devise/sessions/new_angular"
+      %a.cs-nav-item.hide-mobile(href='/gallery')
+        %i.fa.fa-search
+
+      .dropdown.dropdown-right.cs-nav-item.hide-mobile(ng-controller='csDropdownController as dropdown' ng-if="app.currentUser")
+        .dropdown-toggle(ng-click='dropdown.toggle($event)')
+          %img(ng-src="{{app.currentUser.avatar_url}}" ng-if="app.currentUser.avatar_url")
+        .dropdown-menu(ng-show='dropdown.showMenu')
+          .dropdown-wrapper
+            .dropdown-menu-item
+              %a(ng-href="/profiles/{{app.currentUser.slug}}")Profile
+
+            .dropdown-menu-item
+              %a(ng-href="/profiles/{{app.currentUser.slug}}/edit")Settings
+
+            .dropdown-menu-item
+              %a(ng-href="/logout")Sign Out
+
+
+      %a.cs-nav-item.button.small.hide-mobile#nav-login(ng-click="openModal('login')" ng-if='! app.currentUser')
+        Sign In
+
+      %button.cs-nav-item.cs-nav-menu-toggle.lines-btn.hide-desktop(ng-click="nav.showMenu = ! nav.showMenu")
+        %span.lines
+
+
+-# - if ! @minimal
+-#   - if external
+-#     .cs-nav
+-#       .cs-nav-logo
+-#         = link_to root_url do
+-#           .logo-box
+-#             %img.regular-logo(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png")
+-#   - else
+-#     .cs-nav(ng-controller="NavbarController" ng-cloak)
+-#       .cs-nav-logo
+-#         = link_to root_url do
+-#           .logo-box
+-#             %img.regular-logo(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" id="chefsteps-logo")
+-#       .cs-nav-profile-container(ng-show="!editMode" ng-cloak ng-controller="LoginController" ng-init="registrationSource='nav'; authentication.setCurrentUser(#{current_user.to_json(methods: :authentication_token, include: [:enrollments])}); setIntent('ftue')")
+-#         - if current_user
+-#           = link_to user_profile_url(current_user) do
+-#             - if current_user.image_id.blank?
+-#               .profile-button
+-#                 Profile
+-#             - else
+-#               .cs-nav-profile
+-#                 .profile-image
+-#                   = image_tag current_user.avatar_url
+-#           / .cs-nav-notifs
+-#           /   %csnotifs
+-#         - else
+-#           %a#nav-sign-in-button(ng-show="(! authentication.currentUser())" ng-click="openModal('login')") Sign In
+-#           = render "devise/sessions/new_angular"
+-#           %a(ng-href="{{'/profiles/' + authentication.currentUser().slug}}" ng-if="authentication.currentUser()")
+-#             .profile-button
+-#               Profile
+-#           / .cs-nav-notifs(ng-if="authentication.currentUser()")
+-#           /   %csnotifs
+-#       .cs-nav-items(ng-show="!editMode")
+-#         %ul.cs-nav-links-container.hide-mobile
+-#           = render 'layouts/nav_items'
+-#         .cs-nav-items-toggle(ng-click="toggleMenu()")
+-#           Menu
+-#         %ul.cs-nav-links-container.anim-basic-fade.hide-desktop(ng-show="showMenu")
+-#           = render 'layouts/nav_items'
+-#
+-#       %div
+-#         -if @include_edit_toolbar
+-#           #nav-edit-toolbar(collapse="!editMode")
+-#             = render 'activities/edit_toolbar'
