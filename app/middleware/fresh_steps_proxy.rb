@@ -49,10 +49,12 @@ class FreshStepsProxy < Rack::Proxy
     leave_for_brombone = request.query_string.include?('_escaped_fragment_')
     prefix_match = PREFIX.include?(request.path) || PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")}
     exact_match = EXACT == request.path
-    puts "HERE IS THE REQUEST: #{request.inspect}"
-    puts "HERE IS THE REQUEST.path: #{request.path}"
-    # activity_show_match = request.path.starts_with?('/activities') && !request.path.end_with?('?start_in_edit=true')
-    activity_show_match = request.get? && request.path.starts_with?('/activities') && request.params['start_in_edit'].blank? && !SUFFIX.any?{|suffix| request.path.end_with?(suffix)}
+
+    # The logic below will only proxy GET requests with path /activities/:id
+    activity_show_match = request.get? &&
+                          request.path.starts_with?('/activities') &&
+                          request.params['start_in_edit'].blank? &&
+                          !SUFFIX.any?{|suffix| request.path.end_with?(suffix)}
 
     !leave_for_brombone && (prefix_match || exact_match || activity_show_match)
   end
