@@ -41,3 +41,7 @@
 
       %button.cs-nav-item.cs-nav-menu-toggle.lines-btn.hide-desktop(ng-click="nav.showMenu = ! nav.showMenu")
         %span.lines
+  .cs-nav(ng-show="editMode")
+    -if @include_edit_toolbar
+      .nav-edit-toolbar(collapse="!editMode")
+        = render 'activities/edit_toolbar'
