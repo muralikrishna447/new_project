@@ -75,7 +75,11 @@ module Api
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
           mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
           mixpanel.track(@user.email, 'Signed Up', {source: 'api'})
-
+          begin
+            HTTParty.get("#{Rails.application.config.shared_config[:bloom][:api_endpoint]}/users/#{user.id}/update?apiKey=xchefsteps")
+          rescue Exception => e
+            logger.error "Bloom user update error: #{e.class} #{e}"
+          end
           Librato.increment 'user.signup', sporadic: true
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
