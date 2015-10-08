@@ -18,7 +18,7 @@ class Api::ActivitySerializer < ApplicationSerializer
 
   def used_in
     activities = object.used_in_activities.chefsteps_generated.published
-    ActiveModel::ArraySerializer.new(activities, each_serializer: Api::ActivitySerializer)
+    ActiveModel::ArraySerializer.new(activities, each_serializer: Api::ActivityIndexSerializer)
   end
 
   def chefsteps_generated

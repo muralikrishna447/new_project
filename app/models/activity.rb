@@ -168,6 +168,10 @@ class Activity < ActiveRecord::Base
     title.present?
   end
 
+  def has_video
+    youtube_id.present? || vimeo_id.present?
+  end
+
   include Rails.application.routes.url_helpers
 
   class SourceType
