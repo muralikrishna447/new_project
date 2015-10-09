@@ -8,11 +8,6 @@ describe AssembliesController do
 
   describe 'discount' do
     context "price computation" do
-      it "should compute the right discount for a coupon" do
-        get :show, id: @assembly.id, coupon: 'a2a72a39da72'
-        assigns(:discounted_price).should eq(29.25)
-      end
-
       it "should not offer the signup incentive since we aren't signed in" do
         get :show, id: @assembly.id
         assigns(:discounted_price).should eq(39.00)
