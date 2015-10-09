@@ -219,10 +219,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       eventData = {'class' : $scope.assembly.title}
       mixpanel.track('Class Enrolled', eventData)
       Intercom?('trackEvent', 'free-class-enrolled', eventData)
-      if $scope.assembly.price > 0
-        mixpanel.track('TimF Incentive Enrolled', eventData)
-
-        Intercom?('trackEvent', 'timf-incentive-enrolled', eventData)
       $scope.trackEnrollmentWorkaround(eventData)
       console.log 'Free class Facebook Conversion: ', 6014798037826
       csFacebookConversion.track(6014798037826,0)
