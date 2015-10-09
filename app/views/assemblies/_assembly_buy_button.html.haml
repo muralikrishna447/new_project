@@ -5,7 +5,7 @@
 
 .buy-buttons(ng-controller="BuyAssemblyStripeController"
               ng-cloak
-              ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_type_path(assembly)}"; completed="#{completed ? true : false}"; gift_certificate=#{gift_certificate.to_json}; rails_env="#{Rails.env}"; split_name="#{@split_name}"; registrationSource="class"; ambassador="#{session[:ambassador]}"; assemblyTypeName="#{assembly_type_name}";' )
+              ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_type_path(assembly)}"; completed="#{completed ? true : false}"; gift_certificate=#{gift_certificate.to_json}; rails_env="#{Rails.env}"; split_name="#{@split_name}"; registrationSource="class"; assemblyTypeName="#{assembly_type_name}";' )
 
   -#
   -# Primary CTA
