@@ -129,26 +129,10 @@ class Assembly < ActiveRecord::Base
   def discounted_price(coupon, signup_incentive_available = nil)
     return 0 if ! self.price
 
-    # Coupons
     pct = 1
-    case coupon
-    when 'a2a72a39da72'
-      pct = 0.75
-    when 'b1b01d389a50'
-      pct = 0.5
 
-    # MEATHEAD
-    when 'f2ba193b2f9f'
-      pct = 0.5
-
-    # INSTAGRAM 50k followers
-    when 'c919af43ba6c'
-      pct = 0.5
-
-    # TIMDISCOUNT
-    when 'fb912ad989a0'
-      pct = 0
-    end
+    # Coupons. No coupons codes right now, but leaving the mechanism in place in
+    # case we change our minds or want to make the slightly more sophisticated.
 
     # New users who haven't used their enrollment incentive yet always get 50%
     if signup_incentive_available
