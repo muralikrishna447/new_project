@@ -52,10 +52,6 @@ module ActsAsChargeable
             currency: 'usd'
           )
         end
-
-        if base_price > discounted_price
-          user.update_attributes(signup_incentive_available: false)
-        end
       end
     end
 
