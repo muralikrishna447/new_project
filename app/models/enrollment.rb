@@ -10,18 +10,16 @@ class Enrollment < ActiveRecord::Base
   validates :enrollable_id, uniqueness: {scope: [:user_id, :enrollable_type], message: 'can only be enrolled once per student.'}
 
   class << self
-    def enroll_user_in_assembly(user, ip_address, assembly, discounted_price, stripe_token, free_trial_hours=0, existing_card=nil)
+    def enroll_user_in_assembly(user, ip_address, assembly, discounted_price, stripe_token, existing_card=nil)
       enrollment = Enrollment.where(user_id: user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
-      raise "You are already enrolled!" if enrollment.present? && !enrollment.free_trial?
+      raise "You are already enrolled!" if enrollment.present?
 
       @enrollment = nil
 
       # Logic control flow
       Enrollment.transaction do
         case
-        when assembly.paid? && free_trial_hours > 0 # Paid Class and Free Trial
-          free_trial_enrollment(user, ip_address, assembly, discounted_price, stripe_token, free_trial_hours)
-        when assembly.paid? && free_trial_hours == 0 # Paid Class and No Free Trial
+        when assembly.paid? # Paid Class
           # TIMDISCOUNT
           if (discounted_price == 0) && user.timf_incentive_available
             free_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
@@ -46,14 +44,10 @@ class Enrollment < ActiveRecord::Base
       gross_price, tax, extra_descrip = get_tax_info(assembly.price, discounted_price, ip_address)
       enrollment = Enrollment.where(user_id: user.id, enrollable_id: assembly.id, enrollable_type: 'Assembly').first
       logger.info("Found enrollment #{enrollment}")
-      if enrollment && enrollment.free_trial?
-        logger.info("Updating free trial enrollment")
-        enrollment.update_attributes({price: gross_price, sales_tax: tax, trial_expires_at: nil}, without_protection: true)
-        @enrollment = enrollment
-      else
-        logger.info("Creating enrollment")
-        @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
-      end
+
+      logger.info("Creating enrollment")
+      @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: gross_price, sales_tax: tax)
+
       logger.info("Collecting money")
       collect_money(assembly.price, discounted_price, assembly.title, extra_descrip, user, stripe_token, existing_card)
     end
@@ -63,23 +57,6 @@ class Enrollment < ActiveRecord::Base
       @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: 0, sales_tax: 0)
     end
 
-    def free_trial_enrollment(user, ip_address, assembly, discounted_price, stripe_token, free_trial_hours)
-      @enrollment = Enrollment.create!(user_id: user.id, enrollable: assembly, price: 0, sales_tax: 0) do |e|
-        e.trial_expires_at = (Time.now+(free_trial_hours.hours))
-      end
-    end
   end
 
-  def free_trial?
-    trial_expires_at.present?
-  end
-
-  def free_trial_expired?
-    free_trial? && trial_expires_at < Time.now
-  end
-
-  def free_trial_length
-    return nil unless free_trial?
-    ((trial_expires_at - created_at)/1.hours).round
-  end
 end

@@ -58,15 +58,15 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :token_authenticatable, :omniauth_providers => [:google_oauth2]
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :free_trial, :survey_results, :events_count, :signup_incentive_available, :timf_incentive_available, :premium_member, :premium_member_date
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :survey_results, :events_count, :signup_incentive_available, :timf_incentive_available, :premium_member, :premium_member_date
 
   # This is for active admin, so that it can edit the role (and so normal users can't edit their role)
   attr_accessible :name, :email, :password, :password_confirmation,
     :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :role, :referred_from, :referrer_id, as: :admin
 
-  attr_accessor :free_trial, :skip_name_validation
+  attr_accessor :skip_name_validation
 
-  validates_presence_of :name, unless: Proc.new {|user| user.free_trial == true || user.skip_name_validation == true}
+  validates_presence_of :name, unless: Proc.new {|user| user.skip_name_validation == true}
 
   validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
 
@@ -179,8 +179,6 @@ class User < ActiveRecord::Base
     case
     when enrollment.blank?
       false
-    when enrollment.free_trial?
-      !enrollment.free_trial_expired?
     else
       true
     end

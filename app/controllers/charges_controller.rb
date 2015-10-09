@@ -8,7 +8,6 @@ class ChargesController < ApplicationController
   def create
     assembly = Assembly.find(params[:assembly_id])
     @gift_info = JSON.parse(params[:gift_info]) if params[:gift_info]
-    @free_trial = params[:free_trial]
 
     case
     when is_a_gift_purchase? # This is for *buying* a gift certificate
@@ -16,22 +15,13 @@ class ChargesController < ApplicationController
     when is_a_gift_redemption? # This is for *redeeming* a gift certificate
       @enrollment = GiftCertificate.redeem(current_user, JSON.parse(params[:gift_certificate])["id"])
       session[:gift_token] = nil
-    when is_a_free_trial? # This is for doing a free trial right now it's really similar to normal course but with an extra param
-      hours = Assembly.free_trial_hours(@free_trial)
-      @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, 0, nil, hours)
-      session.delete(:free_trial)
-      if @enrollment && mixpanel_anonymous_id
-        mixpanel.track(current_user.email, 'Free Trial Enrolled', {slug: assembly.slug, length: hours.to_s})
-      end
     else # Normal course enrollment (paid or free)
-      if current_user.enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first.try(:free_trial?) && assembly.paid? && mixpanel_anonymous_id
-        mixpanel.track(current_user.email, "Free Trial Conversion", {slug: assembly.slug, length: current_user.class_enrollment(assembly).free_trial_length.to_s})
-      end
+
       if assembly.paid?
         mixpanel.track(current_user.email, "#{assembly.assembly_type} Purchased Server Side", {slug: assembly.slug})
       end
       if params[:existingCard]
-        @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken], 0, params[:existingCard])
+        @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken], params[:existingCard])
       else
         @enrollment = Enrollment.enroll_user_in_assembly(current_user, request.remote_ip, assembly, params[:discounted_price].to_f, params[:stripeToken])
       end
@@ -65,8 +55,5 @@ class ChargesController < ApplicationController
     params[:gift_certificate]
   end
 
-  def is_a_free_trial?
-    @free_trial.present?
-  end
 
 end

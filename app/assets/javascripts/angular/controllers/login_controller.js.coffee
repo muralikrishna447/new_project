@@ -520,49 +520,10 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
     $scope.dataLoadingService.setFullScreen(false)
     $close()
 
-  $scope.freeTrialRegister = ->
-    $scope.dataLoading += 1
-    $scope.resetMessages()
-    $http(
-      method: 'POST'
-      url: "/users.json"
-      data:
-        user:
-          free_trial: true
-          email: $scope.register_user.email
-          password: $scope.register_user.password
-      )
-      .success( (data, status) ->
-        if (status == 200)
-          $scope.logged_in = true
-          $timeout( -> # Done so that the modal has time to close before triggering events
-            $scope.$apply()
-            $scope.authentication.setCurrentUser(data.user)
-            $scope.dataLoading -= 1
-            unless $scope.formFor == "purchase"
-              $scope.loadFriends()
-          , 300)
-          # $scope.notifyLogin(data.user)
-      )
-      .error( (data, status) ->
-        $scope.dataLoading -= 1
-        if (status == 401)
-          $scope.message = data.info;
-          $scope.register_error.errors = data.errors
-          $scope.register_error.errors.password = ["Please enter a password"] if !$scope.register_user.password
-          $scope.register_error.errors.email = ["Please enter a valid email"] unless /.*@.*\..*/.test($scope.register_user.email)
-          $scope.showForm = "signUp"
-          $scope.openModal("login")
-        else
-          $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
-      )
-
   $scope.startedDataFill = ->
     unless $scope.showMadlibPassword
       $scope.showMadlibPassword = true
-      mixpanel.track("Free Trial Data Entered")
     if /.*@.*\..*/.test($scope.register_user.email) && !$scope.validEmailSent
-      mixpanel.track("Free Trial Valid Email Filled")
       $scope.validEmailSent = true
 
   # This submits a fake login request to a hidden iframe.  It's to do the remember me stuff in the browser
