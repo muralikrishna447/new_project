@@ -7,7 +7,7 @@ task :migrate_enrollments_to_memberships => [:environment] do
     u = User.find(result[0])
     next if u.premium_member
     u.premium_member = true
-    u.premium_member_date = premium_start_date
+    u.premium_membership_created_at = premium_start_date
     # Three users that already don't pass validation so can't be resaved; not fixing right now
     u.save(validate: false)
     puts "Granting premium membership to: #{u.email}"

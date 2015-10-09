@@ -149,8 +149,6 @@ Delve::Application.routes.draw do
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
-  get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle|timf/
-
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
   resources :activities, only: [:show, :new] do
