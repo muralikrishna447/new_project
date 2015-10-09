@@ -7,7 +7,7 @@ describe "Activities" do
       @activity = Fabricate(:activity, title: 'Slug A Bug', published: true)
     end
 
-    it "creates a basic slug" do
+    it "creates a basic slug", pending: true do
       visit activity_path(@activity)
       p1 = current_path
       p1.should eq "/activities/slug-a-bug"
