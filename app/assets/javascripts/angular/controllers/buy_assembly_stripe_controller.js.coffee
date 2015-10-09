@@ -36,12 +36,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.logged_in = true
     $scope.enrolled = true if $scope.isEnrolled() #(data.user)
 
-    # This is unfortunate; it is replicating logic on the server in Assembly#discounted_price
-    # it can be made better but since this is kind of a skunk test and this code all needs
-    # to be thrown out anyhow, I'm going to live with it.
-    if data.user.signup_incentive_available && $scope.discounted_price > ($scope.assembly.price / 2.0)
-      $scope.discounted_price = $scope.assembly.price / 2.0
-
     if $scope.waitingForFreeEnrollment
       $scope.waitingForFreeEnrollment = false
       $scope.free_enrollment()

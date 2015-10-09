@@ -129,7 +129,7 @@ private
       raise "Viewed Unplublished Assembly" if !@assembly.published? && cannot?(:update, @assembly)
       # Once verified that coupons are working everywhere, delete the following:
       session[:coupon] = params[:coupon] || session[:coupon]
-      @discounted_price = @assembly.discounted_price(session[:coupon], current_user && current_user.signup_incentive_available)
+      @discounted_price = @assembly.discounted_price(session[:coupon])
       # Changing so that it accepts a param gift_token as well, this is solely for e2e testing and shouldn't be given to customers as it
       # doesn't store the information in the sesion so they MUST use it on that page.
       gc_token = session[:gift_token] || params[:gift_token]

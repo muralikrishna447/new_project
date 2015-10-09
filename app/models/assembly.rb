@@ -126,18 +126,13 @@ class Assembly < ActiveRecord::Base
     price && price > 0
   end
 
-  def discounted_price(coupon, signup_incentive_available = nil)
+  def discounted_price(coupon)
     return 0 if ! self.price
 
     pct = 1
 
     # Coupons. No coupons codes right now, but leaving the mechanism in place in
     # case we change our minds or want to make the slightly more sophisticated.
-
-    # New users who haven't used their enrollment incentive yet always get 50%
-    if signup_incentive_available
-      pct = 0.5 unless pct < 0.5
-    end
 
     (self.price * pct).round(2)
   end

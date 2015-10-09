@@ -6,15 +6,6 @@ describe AssembliesController do
     @assembly = Fabricate(:assembly, price: 39.00, assembly_type: "Course", published: true)
   end
 
-  describe 'discount' do
-    context "price computation" do
-      it "should not offer the signup incentive since we aren't signed in" do
-        get :show, id: @assembly.id
-        assigns(:discounted_price).should eq(39.00)
-      end
-    end
-  end
-
   describe 'redeem' do
 
     context "invalid token" do
@@ -93,11 +84,6 @@ describe AssembliesController do
 
         it "should set the flash notice" do
           expect{get :redeem, gift_token: "used"}.to change{flash[:notice]}.to("Gift code already used; click the orange button below to continue your class. If you need assistance, contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>.")
-        end
-
-        it "should offer the signup incentive for new user" do
-          get :show, id: @assembly.id
-          assigns(:discounted_price).should eq(19.50)
         end
       end
     end
