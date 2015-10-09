@@ -110,17 +110,6 @@ describe ChargesController do
           expect(assigns(:enrollment)).to be_an_instance_of(Enrollment)
         end
       end
-
-      # TIMDISCOUNT
-      context "Tim Ferriss free enrollment" do
-        subject { post :create, assembly_id: assembly.id, discounted_price: 0}
-
-        it "should only allow one free enrollment to a paid class" do
-          subject
-          user.reload
-          expect(user.timf_incentive_available).to be(false)
-        end
-      end
     end
   end
 end

@@ -86,13 +86,5 @@ describe 'Ambassador program' do
       expect(session[:ambassador]).to eq('testambassador')
       expect(response).to render_template("courses/index")
     end
-
-    # TIMDISCOUNT
-    it 'special Tim Ferriss ambassador behavior' do
-      get '/tim'
-      expect(session[:coupon]).to eq('fb912ad989a0')
-      expect(session[:ambassador]).to eq('tim')
-      expect(response).to render_template("courses/tim_landing")
-    end
   end
 end

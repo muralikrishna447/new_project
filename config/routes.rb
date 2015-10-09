@@ -142,9 +142,6 @@ Delve::Application.routes.draw do
   get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
 
-  # TIMDISCOUNT for the 'tim' part only
-
-  get 'tim' => 'courses#tim'
   match '/mp', to: redirect('/courses/spherification')
   match '/MP', to: redirect('/courses/spherification')
   match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')

@@ -20,13 +20,7 @@ class Enrollment < ActiveRecord::Base
       Enrollment.transaction do
         case
         when assembly.paid? # Paid Class
-          # TIMDISCOUNT
-          if (discounted_price == 0) && user.timf_incentive_available
-            free_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
-            user.update_attributes(timf_incentive_available: false, signup_incentive_available: false)
-          else
-            paid_enrollment(user, ip_address, assembly, discounted_price, stripe_token, existing_card)
-          end
+          paid_enrollment(user, ip_address, assembly, discounted_price, stripe_token, existing_card)
         when !assembly.paid? # Free Class
           free_enrollment(user, ip_address, assembly, discounted_price, stripe_token)
         end
