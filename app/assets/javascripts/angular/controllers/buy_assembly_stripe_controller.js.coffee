@@ -86,7 +86,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     # also tracking the same data right in the event name.
     Intercom?('trackEvent', "class-enrolled-#{$scope.assembly.slug}", eventData)
 
-
   $scope.createCharge = (response, existingCard) ->
     console.log 'This is the response: '
     console.log response
@@ -187,15 +186,9 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
     $scope.processing = true
     $http(
       method: 'POST'
-      params:
-        assembly_id: $scope.assembly.id
-        discounted_price: $scope.discounted_price
-        gift_certificate: $scope.gift_certificate
-      url: '/charges'
+      url: "/assemblies/#{$scope.assembly.id}/enroll"
     ).success((data, status, headers, config) ->
       $scope.enrolled = true
-      if $scope.gift_certificate
-        mixpanel.track('Gift Enrolled', _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug}, $rootScope.splits, $scope.gift_certificate))
     )
     $scope.processing = false
 
@@ -216,6 +209,19 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.trackEnrollmentWorkaround(eventData)
       console.log 'Free class Facebook Conversion: ', 6014798037826
       csFacebookConversion.track(6014798037826,0)
+
+  $scope.premium_enrollment = ->
+    if $scope.check_signed_in()
+      $scope.enroll()
+      $scope.state = "free_enrollment"
+      $scope.buyModalOpen = true
+      eventData = {'class' : $scope.assembly.title}
+      mixpanel.track('Class Enrolled', eventData)
+      Intercom?('trackEvent', 'premium-class-enrolled', eventData)
+      $scope.trackEnrollmentWorkaround(eventData)
+      # PREMIUMTODO - need new pixels
+      #console.log 'Free class Facebook Conversion: ', 6014798037826
+      #csFacebookConversion.track(6014798037826,0)
 
   $scope.shareASale = (amount, tracking) ->
     $http(

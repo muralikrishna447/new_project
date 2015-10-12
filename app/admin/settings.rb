@@ -3,4 +3,15 @@ ActiveAdmin.register Setting do
 
   form :partial => "form"
 
+  index do
+    id_column
+    actions
+  end
+
+  show do
+    attributes_table do
+      row :premium_membership_price
+    end
+  end
+
 end
