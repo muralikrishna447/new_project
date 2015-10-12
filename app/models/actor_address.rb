@@ -8,16 +8,20 @@ class ActorAddress < ActiveRecord::Base
 
   def addressable_addresses
     if self.actor_type == 'User'
-      user = User.find(self.actor_id)
-      other_ids = user.circulator_ids
+      actor_class = User
+      method = 'circulator_ids'
       other_actor = 'Circulator'
     elsif self.actor_type == 'Circulator'
-      circulator = Circulator.find(self.actor_id)
-      other_ids = circulator.user_ids
+      actor_class = Circulator
+      method = 'user_ids'
       other_actor = 'User'
     else
+      logger.debug "No addressable actors for #{self.actor_type}"
       return []
     end
+
+    actor = actor_class.find(self.actor_id)
+    other_ids = actor.method(method).call()
     logger.debug "Trying to find #{other_actor} #{other_ids}"
     addresses = ActorAddress.where(
       actor_type: other_actor, actor_id: other_ids, status: 'active'
