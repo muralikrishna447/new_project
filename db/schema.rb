@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151009164704) do
+ActiveRecord::Schema.define(:version => 20151012184541) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -552,19 +552,20 @@ ActiveRecord::Schema.define(:version => 20151009164704) do
 
   create_table "settings", :force => true do |t|
     t.string   "footer_image"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at",                                                                :null => false
+    t.datetime "updated_at",                                                                :null => false
     t.integer  "featured_activity_1_id"
     t.integer  "featured_activity_2_id"
     t.integer  "featured_activity_3_id"
     t.text     "global_message"
-    t.boolean  "global_message_active",  :default => false
+    t.boolean  "global_message_active",                                  :default => false
     t.boolean  "forum_maintenance"
-    t.string   "hero_cms_title",         :default => ""
-    t.text     "hero_cms_image",         :default => ""
-    t.text     "hero_cms_description",   :default => ""
-    t.string   "hero_cms_button_text",   :default => ""
-    t.string   "hero_cms_url",           :default => ""
+    t.string   "hero_cms_title",                                         :default => ""
+    t.text     "hero_cms_image",                                         :default => ""
+    t.text     "hero_cms_description",                                   :default => ""
+    t.string   "hero_cms_button_text",                                   :default => ""
+    t.string   "hero_cms_url",                                           :default => ""
+    t.decimal  "premium_membership_price", :precision => 8, :scale => 2
   end
 
   create_table "step_ingredients", :force => true do |t|

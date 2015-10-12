@@ -234,7 +234,9 @@ Delve::Application.routes.draw do
   end
   resources :assemblies, only: [:index, :show] do
     resources :comments
-    resources :enrollments
+    member do
+      post 'enroll' => 'assemblies#enroll'
+    end
   end
   match "/gift/:gift_token", to: 'assemblies#redeem'
   match "/gift", to: 'assemblies#redeem_index'
