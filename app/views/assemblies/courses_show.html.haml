@@ -84,30 +84,11 @@
             ng-class="inclusionActiveClass(inclusion)"
             ng-click='loadInclusion(inclusion.includable_type, inclusion.includable_slug)'
             ng-include="'_recursive_assembly_syllabus.html'")
-      // @discounted_price isn't always being set.  This is a hack to not show this when there is no free trial.  load_assembly may have weird edge cases we haven't thought of.
+      // @discounted_price isn't always being set. load_assembly may have weird edge cases we haven't thought of.
       - if @course.price
         - final_price = @discounted_price ? @discounted_price : @course.price
       - else
         - final_price = 0
-      .free-trial-section(ng-controller="BuyAssemblyStripeController" ng-cloak
-        ng-init='assembly=#{@course.to_json}; discounted_price=#{final_price}; logged_in=#{current_user != nil};freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; assemblyPath="#{class_url(@course, protocol: "http")}"' ng-show="isFreeTrial()")
-        %p
-          %span(ng-show="differenceInTime() > 60 && differenceInTime() > 0")
-            You're in a free trial.
-            %br
-            Want to move at your own pace?
-          %span(ng-show="differenceInTime() < 60 && differenceInTime() > 0")
-            You're in a free trial.
-            %br
-            {{differenceInTime() | number:0}} minutes remaining
-          %span(ng-show="differenceInTime() <= 0")
-            Your free trial has expired.
-            %br
-            Please buy now to continue the class.
-        .buy-button
-          %a.btn.btn-primary#buy-now(ng-click="openModal(false)")
-            %b Buy Now {{discounted_price | niceDollars}}
-        =render 'buy_modal'
 
     .course-nav-hamburger-wrapper
       .course-nav-hamburger(ng-click="toggleShowCourseMenu()")

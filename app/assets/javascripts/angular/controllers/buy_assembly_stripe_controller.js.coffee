@@ -19,12 +19,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.alertService = csAlertService
   $scope.isAdmin = csAuthentication.isAdmin()
 
-  $scope.loginState = null
-  $scope.freeTrialText = null
-  $scope.freeTrialCode = false
-  $scope.freeTrialHours = null
-  $scope.trialNotificationSent = false
-
   # $scope.currentCustomerId = $scope.authentication.currentUser().stripe_id
 
   if $scope.authentication.currentUser() && $scope.authentication.currentUser().stripe_id
@@ -41,30 +35,19 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
     $scope.enrolled = true if $scope.isEnrolled() #(data.user)
-    # In the process of switching this over to a state rather than a boolean configuration.
-    switch($scope.loginState)
-      when "freeTrial"
-        $scope.loginState = null
-        $scope.freeTrial()
-      else
-        # This is unfortunate; it is replicating logic on the server in Assembly#discounted_price
-        # it can be made better but since this is kind of a skunk test and this code all needs
-        # to be thrown out anyhow, I'm going to live with it.
-        if data.user.signup_incentive_available && $scope.discounted_price > ($scope.assembly.price / 2.0)
-          $scope.discounted_price = $scope.assembly.price / 2.0
 
-        if $scope.waitingForFreeEnrollment
-          $scope.waitingForFreeEnrollment = false
-          $scope.free_enrollment()
-        if $scope.waitingForRedemption
-          $scope.waitingForRedemption = false
-          $scope.redeemGift()
-        if $scope.waitingForLogin
-          $scope.waitingForLogin = false
-          if $scope.isEnrolled(data.user) && $scope.isGift == false
-            window.location = $scope.assemblyPath
-          else
-            $scope.openModal($scope.isGift)
+    if $scope.waitingForFreeEnrollment
+      $scope.waitingForFreeEnrollment = false
+      $scope.free_enrollment()
+    if $scope.waitingForRedemption
+      $scope.waitingForRedemption = false
+      $scope.redeemGift()
+    if $scope.waitingForLogin
+      $scope.waitingForLogin = false
+      if $scope.isEnrolled(data.user) && $scope.isGift == false
+        window.location = $scope.assemblyPath
+      else
+        $scope.openModal($scope.isGift)
 
   # A little hacky but it didn't like setting the variable directly from the view
   $scope.buyingGift = ->
@@ -78,9 +61,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
 
   $scope.waitForFreeEnrollment = ->
     $scope.waitingForFreeEnrollment = true
-
-  $scope.setLoginState = (state) ->
-    $scope.loginState = state
 
   $scope.handleStripe = (status, response) ->
     console.log "STRIPE status: " + status + ", response: " + response
@@ -133,7 +113,7 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.processing = false
       $scope.enrolled = true unless $scope.isGift
       $scope.state = "thanks"
-      eventData = _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'price': $scope.assembly.price, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'ambassador' : $scope.ambassador, 'chargedWith' : $scope.chargedWith}, $rootScope.splits)
+      eventData = _.extend({'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug, 'price': $scope.assembly.price, 'discounted_price': $scope.discounted_price, 'payment_type': paymentType, 'card_type': cardType, 'gift' : $scope.isGift, 'chargedWith' : $scope.chargedWith}, $rootScope.splits)
       mixpanel.track('Course Purchased', eventData)
       Intercom?('trackEvent', 'course-purchased', eventData)
       $scope.trackEnrollmentWorkaround(eventData)
@@ -187,25 +167,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
   $scope.isEnrolled = ->
     !!$scope.enrollment()
 
-  $scope.isFreeTrial = ->
-    enrollment = $scope.enrollment()
-    return false unless enrollment
-    !!enrollment.trial_expires_at
-
-  $scope.differenceInTime = ->
-    enrollment = $scope.enrollment()
-    return false unless enrollment
-    trial_expiration = new Date(enrollment.trial_expires_at)
-    current_time = new Date()
-    difference = trial_expiration - current_time
-    (difference/(1000*60))
-
-  $scope.isExpired = ->
-    enrollment = $scope.enrollment()
-    console.log enrollment
-    return false if !enrollment || isNaN(Date.parse(enrollment.trial_expires_at))
-    new Date(enrollment.trial_expires_at) < new Date()
-
   $scope.openModal = (gift) ->
     $scope.isGift = gift
     $scope.recipientMessage = ""
@@ -252,10 +213,6 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       eventData = {'class' : $scope.assembly.title}
       mixpanel.track('Class Enrolled', eventData)
       Intercom?('trackEvent', 'free-class-enrolled', eventData)
-      if $scope.assembly.price > 0
-        mixpanel.track('TimF Incentive Enrolled', eventData)
-
-        Intercom?('trackEvent', 'timf-incentive-enrolled', eventData)
       $scope.trackEnrollmentWorkaround(eventData)
       console.log 'Free class Facebook Conversion: ', 6014798037826
       csFacebookConversion.track(6014798037826,0)
@@ -288,32 +245,4 @@ angular.module('ChefStepsApp').controller 'BuyAssemblyStripeController', ["$scop
       $scope.errorText = data.errors[0].message || data.errors[0]
       $scope.processing = false
     )
-
-  $scope.freeTrial = ->
-    $scope.processing = true
-    $http(
-      method: 'POST'
-      params:
-        assembly_id: $scope.assembly.id
-        discounted_price: 0
-        free_trial: $scope.freeTrialCode
-      url: '/charges'
-    ).success( (data, status, headers, config) ->
-      $scope.processing = false
-      $scope.state = "free_trial"
-      $scope.buyModalOpen = true
-    ).error( (data, status, headers, config) ->
-      $scope.processing = false
-      console.log "FAIL" + data
-    )
-
-  $scope.freeTrialExpiredNotice = ->
-    if $scope.isExpired()
-      $scope.alertService.addAlert({message: "Your free trial has expired, please buy the class to continue.<br/>Please contact info@chefsteps.com if there are any problems.", type: "success", class: "long-header"})
-
-  $scope.freeTrialLogger = ->
-    if $scope.freeTrialCode && (! $scope.isExpired()) && (! $scope.trialNotificationSent)
-      mixpanel.track('Free Trial Offered', {context:'course', title: $scope.assembly.title, slug: $scope.assembly.slug, length: $scope.freeTrialHours})
-      $scope.trialNotificationSent = true
-
 ]

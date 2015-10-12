@@ -94,33 +94,6 @@ describe ChargesController do
         end
       end
 
-      context 'free_trial' do
-        subject { post :create, assembly_id: assembly.id, free_trial: Base64.encode64("#{assembly.id}-64") }
-        it "should Enrollment.call enroll_user_in_assembly" do
-          Enrollment.should_receive(:enroll_user_in_assembly).and_call_original
-          subject
-        end
-
-        it "should create an enrollment" do
-          expect{subject}.to change(Enrollment, :count).by(1)
-        end
-
-        it "should set @enrollment" do
-          subject
-          expect(assigns(:enrollment)).to be_an_instance_of(Enrollment)
-        end
-
-        it "should have trial_expires_at set" do
-          subject
-          assigns(:enrollment).trial_expires_at.should_not be nil
-        end
-
-        it "should call mixpanel track" do
-          ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
-          subject
-        end
-      end
-
       context "normal enrollment" do
         subject { post :create, assembly_id: assembly.id, discounted_price: 39}
         it "should Enrollment.call enroll_user_in_assembly" do
@@ -135,42 +108,6 @@ describe ChargesController do
         it "should set @enrollment" do
           subject
           expect(assigns(:enrollment)).to be_an_instance_of(Enrollment)
-        end
-
-        it "should have trial_expires_at set" do
-          subject
-          assigns(:enrollment).trial_expires_at.should be nil
-        end
-
-        context "previously a free trial" do
-          before do
-            Fabricate(:enrollment, user_id: user.id, enrollable: assembly, trial_expires_at: Time.now, price: 0)
-          end
-
-          it "should not create an additional enrollment record" do
-            expect{subject}.to change(Enrollment, :count).by(0)
-          end
-
-          it "should remove the trial_expired_at" do
-            subject
-            assigns(:enrollment).trial_expires_at.should be nil
-          end
-
-          it "should call mixpanel track" do
-            ApplicationController.any_instance.should_receive(:mixpanel).at_least(1).times.and_call_original
-            subject
-          end
-        end
-      end
-
-      # TIMDISCOUNT
-      context "Tim Ferriss free enrollment" do
-        subject { post :create, assembly_id: assembly.id, discounted_price: 0}
-
-        it "should only allow one free enrollment to a paid class" do
-          subject
-          user.reload
-          expect(user.timf_incentive_available).to be(false)
         end
       end
     end

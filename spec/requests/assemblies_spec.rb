@@ -77,22 +77,3 @@ describe 'AssembliesController', pending: true do
     end
   end
 end
-
-describe 'Ambassador program' do
-  describe '/ambasssador valid' do
-    it 'sets session and renders class index' do
-      get '/testambassador'
-      expect(session[:coupon]).to eq('a1b71d389a50')
-      expect(session[:ambassador]).to eq('testambassador')
-      expect(response).to render_template("courses/index")
-    end
-
-    # TIMDISCOUNT
-    it 'special Tim Ferriss ambassador behavior' do
-      get '/tim'
-      expect(session[:coupon]).to eq('fb912ad989a0')
-      expect(session[:ambassador]).to eq('tim')
-      expect(response).to render_template("courses/tim_landing")
-    end
-  end
-end

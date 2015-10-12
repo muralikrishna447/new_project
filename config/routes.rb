@@ -142,17 +142,12 @@ Delve::Application.routes.draw do
   get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
 
-  # TIMDISCOUNT for the 'tim' part only
-
-  get 'tim' => 'courses#tim'
   match '/mp', to: redirect('/courses/spherification')
   match '/MP', to: redirect('/courses/spherification')
   match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
   match '/PS', to: redirect('/courses/accelerated-sous-vide-cooking-course')
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
-
-  get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle|timf/
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
@@ -243,7 +238,6 @@ Delve::Application.routes.draw do
   end
   match "/gift/:gift_token", to: 'assemblies#redeem'
   match "/gift", to: 'assemblies#redeem_index'
-  match "/trial/:trial_token", to: 'assemblies#trial'
 
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'

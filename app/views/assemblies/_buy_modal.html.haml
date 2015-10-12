@@ -114,7 +114,7 @@
         // PINTEREST PIXEL TRACKING
         %div(style='opacity: 0;')
           %img(height="1" width="1" alt="" src="https://ct.pinterest.com/?tid=EIJLKrYQczq")
-          
+
         .section.text-center
           .btn.btn-large.btn-primary
             %a(ng-href="{{assemblyPath}}")
@@ -159,18 +159,3 @@
           %a(ng-href="{{assemblyPath}}")
             .btn.btn-large.btn-primary
               Start The {{assemblyTypeName}}
-
-    .row-fluid(ng-switch-when="free_trial")
-      .text-center(ng-show="processing")
-        %i.icon-spinner.icon-2x.icon-spin
-        Starting your free trial
-
-      %div(ng-show="! processing")
-        %p
-          Welcome to the ChefSteps' {{assembly.title}} class. Thank you for beginning your free trial of the class.  We hope you will enjoy it.  If we can be of any assistance, we are always happy to hear from you at&nbsp;
-          %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
-          \.
-        .section.text-center
-          %a(ng-href="{{assemblyPath}}")
-            .btn.btn-large.btn-primary
-              Start The Class

@@ -1,4 +1,4 @@
-.container.classes-index(ng-controller="CourseIndexItemController" ng-cloak ng-init="assembly=#{course.to_json}; discounted_price=#{course.discounted_price(session[:coupon], current_user && current_user.signup_incentive_available)};")
+.container.classes-index(ng-controller="CourseIndexItemController" ng-cloak ng-init="assembly=#{course.to_json}; discounted_price=#{course.discounted_price(session[:coupon])};")
   .row.section
     .span6
       = render 'shared/media_box_2', url: landing_class_path(course), image: course.image_id, object: course

@@ -5,12 +5,12 @@
 
 .buy-buttons(ng-controller="BuyAssemblyStripeController"
               ng-cloak
-              ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_type_path(assembly)}"; completed="#{completed ? true : false}"; gift_certificate=#{gift_certificate.to_json}; rails_env="#{Rails.env}"; split_name="#{@split_name}"; freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; freeTrialHours="#{@hours}"; freeTrialExpiredNotice(); freeTrialLogger(); registrationSource="class"; ambassador="#{session[:ambassador]}"; assemblyTypeName="#{assembly_type_name}";' )
+              ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_type_path(assembly)}"; completed="#{completed ? true : false}"; gift_certificate=#{gift_certificate.to_json}; rails_env="#{Rails.env}"; split_name="#{@split_name}"; registrationSource="class"; assemblyTypeName="#{assembly_type_name}";' )
 
   -#
   -# Primary CTA
   -#
-  %div(ng-show="(!gift_certificate && (! enrolled) && assembly.price && discounted_price > 0) && (!freeTrialCode || isExpired())")
+  %div(ng-show="(!gift_certificate && (! enrolled) && assembly.price && discounted_price > 0) ")
     -# Not Signed in, paid class
     .main-cta(ng-controller="LoginController" ng-show="!logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#sign-in-and-buy-button(ng-click="waitForLogin(); openModal('login')")
@@ -61,7 +61,7 @@
   -#
 
   -# Sell gift certificate
-  %div(ng-show="(! gift_certificate) && (assembly.price > 0) && (!freeTrialCode || isExpired())")
+  %div(ng-show="(! gift_certificate) && (assembly.price > 0) ")
     -# Not Logged in but want to buy gift certificate
     .gift-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-secondary.btn-large.input-block-level#sign-in-and-gift-button(ng-click="waitForLogin(); buyingGift(); openModal('login')")
@@ -75,16 +75,5 @@
         Send As Gift
         %div.inline(ng-show="enrolled")
           = render 'activities/latest/assembly_price'
-
-  %div.free-trial(ng-show="(! enrolled) && (freeTrialCode) && (assembly.price > 0) && (! isExpired())")
-    .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'; headerText='Create an account on ChefSteps to get access to our free trial.<br/>The account allows you to pick up from where you left off and continue your class on any device.'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#sign-in-and-free-trial-button(ng-click="showForm='signUp'; setLoginState('freeTrial'); openModal('login')")
-        START YOUR FREE TRIAL
-        = render "devise/sessions/new_angular"
-    .main-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#free-trial-button(ng-click="freeTrial()")
-        START YOUR FREE TRIAL
-    %p.additional-information
-      %small (No Credit Card Required)
 
   =render 'buy_modal'

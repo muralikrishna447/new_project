@@ -73,14 +73,14 @@ describe Enrollment do
         expect{ Enrollment.enroll_user_in_assembly(purchaser, ip_address, assembly, discounted_price, stripe_token) }.to change(Enrollment, :count).by(1)
       end
 
-      context "paid class with no free trial" do
+      context "paid class" do
         subject{ Enrollment.enroll_user_in_assembly(purchaser, ip_address, assembly, discounted_price, stripe_token) }
         its(:user_id){ should eq purchaser.id }
         its(:enrollable){ should eq assembly }
         its(:price){ should eq 19.00 }
         its(:sales_tax){ should eq 0.0 }
 
-        it "should call free_trial_enrollment" do
+        it "should call paid_enrollment" do
           Enrollment.should_receive(:paid_enrollment)
           subject
         end
@@ -116,36 +116,8 @@ describe Enrollment do
         its(:price){ should eq 0.0 }
         its(:sales_tax){ should eq 0.0 }
 
-        it "should call free_trial_enrollment" do
+        it "should call free_enrollment" do
           Enrollment.should_receive(:free_enrollment)
-          subject
-        end
-
-        it "should not call get_tax_info" do
-          Enrollment.should_not_receive(:get_tax_info)
-          subject
-        end
-
-        it "should not call collect_money" do
-          Enrollment.should_not_receive(:collect_money)
-          subject
-        end
-      end
-
-      context "paid class with a free trial" do
-        before do
-          Time.stub(:now).and_return(Time.parse("2014-01-01 00:00:01"))
-        end
-
-        subject{ Enrollment.enroll_user_in_assembly(purchaser, ip_address, assembly, discounted_price, stripe_token, 3) }
-        its(:user_id){ should eq purchaser.id }
-        its(:enrollable){ should eq assembly }
-        its(:price){ should eq 0 }
-        its(:sales_tax){ should eq 0 }
-        its(:trial_expires_at){ should eq Time.now+(3.hours)}
-
-        it "should call free_trial_enrollment" do
-          Enrollment.should_receive(:free_trial_enrollment)
           subject
         end
 
@@ -195,23 +167,6 @@ describe Enrollment do
       its(:enrollable){ should eq free_assembly }
       its(:price){ should eq 0.0 }
       its(:sales_tax){ should eq 0.0 }
-
-      it "should create a record" do
-        expect{subject}.to change(Enrollment, :count).by(1)
-      end
-    end
-
-    context "#free_trial_enrollment" do
-      before do
-        Time.stub(:now).and_return(Time.parse("2014-01-01 00:00:01"))
-      end
-
-      subject { Enrollment.free_trial_enrollment(purchaser, ip_address, assembly, discounted_price, stripe_token, 3) }
-      its(:user_id){ should eq purchaser.id }
-      its(:enrollable){ should eq assembly }
-      its(:price){ should eq 0 }
-      its(:sales_tax){ should eq 0 }
-      its(:trial_expires_at){ should eq Time.now+(3.hours)}
 
       it "should create a record" do
         expect{subject}.to change(Enrollment, :count).by(1)

@@ -13,113 +13,107 @@
   %meta{name: "fragment", content: "!"}
 
 %div(ng-controller="AssemblyLandingPageController" ng-init='assembly=#{@assembly.to_json}; discounted_price=#{@discounted_price};')
-  - if !current_user && session[:free_trial] && @hours
-    %div.free-trial-landing-page(ng-controller="BuyAssemblyStripeController" ng-cloak ng-init='logged_in=#{current_user.present?}; assemblyPath="#{class_url(@assembly, protocol: "http")}"; freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; freeTrialHours="#{@hours}"; freeTrialLogger(); assemblyTypeName=#{assembly_type_name};')
-      %div(ng-controller="LoginController" ng-init="registrationSource='freeTrial'")
-        = landing_page_content(@course)
-        = render "devise/sessions/new_angular"
-        = render 'buy_modal'
-  - else
-    .section
-    .section
-    .section
-    .assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
-      .container
-        .row
-          -if (! @no_video) && ((! @course.youtube_id.empty?) || (! @course.vimeo_id.blank?))
-            .span8.section.noprint
-              %csEmbedVideo(  youtube-id="{{assembly.youtube_id}}"
-                              vimeo-id="{{assembly.vimeo_id}}"
-                              container-slug="{{assembly.slug}}")
 
-          -else
-            .span8.section
-              = image_tag filepicker_hero_image(@course.image_id)
+  .section
+  .section
+  .section
+  .assembly-course-landing(ng-controller="TabOrDropdown" ng-cloak)
+    .container
+      .row
+        -if (! @no_video) && ((! @course.youtube_id.empty?) || (! @course.vimeo_id.blank?))
+          .span8.section.noprint
+            %csEmbedVideo(  youtube-id="{{assembly.youtube_id}}"
+                            vimeo-id="{{assembly.vimeo_id}}"
+                            container-slug="{{assembly.slug}}")
 
-          .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
-            .buy-box
-              -# abtest here just to record the split in mixpanel, no difference in ui
-              %div(cs-abtest test-name="Madlib Signup Incentive4")
-              - discounted_price = @course.price ? @discounted_price : 0
-              = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate, free_trial_hours: @free_trial_hours, assembly_type_name: assembly_type_name
-              .text-center.enroll-count.section
-                %h4= "#{@course.enrollments.count} Enrolled"
-              .text-center.section(ng-show="#{@assembly.average_rating} > 0" ng-click="switchTab('reviews', 'Reviews')")
-                %csrating.rating(value="#{@assembly.average_rating}" readonly="true")
-                %div (#{pluralize(@assembly.comments.count, 'review')})
-              %h5= "#{assembly_type_name} Includes"
-              %ul
-                - if @course.price
-                  %li
-                    Unlimited Access
-                %li= "#{@course.video_count} HD Videos"
-                / %li Three Fundamental Fillings Explained
-                = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
+        -else
+          .span8.section
+            = image_tag filepicker_hero_image(@course.image_id)
+
+        .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
+          .buy-box
+            -# abtest here just to record the split in mixpanel, no difference in ui
+            %div(cs-abtest test-name="Madlib Signup Incentive4")
+            - discounted_price = @course.price ? @discounted_price : 0
+            = render 'assemblies/assembly_buy_button', assembly: @assembly, enrolled: current_user && current_user. enrolled?(@assembly), discounted_price: discounted_price, completed: current_user && current_user. completed_course?(@assembly), gift_certificate: @gift_certificate, assembly_type_name: assembly_type_name
+            .text-center.enroll-count.section
+              %h4= "#{@course.enrollments.count} Enrolled"
+            .text-center.section(ng-show="#{@assembly.average_rating} > 0" ng-click="switchTab('reviews', 'Reviews')")
+              %csrating.rating(value="#{@assembly.average_rating}" readonly="true")
+              %div (#{pluralize(@assembly.comments.count, 'review')})
+            %h5= "#{assembly_type_name} Includes"
+            %ul
               - if @course.price
-                %h4 100% satisfaction guaranteed or your money back
-            .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/#{assembly_type_name.downcase.pluralize}/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
-              = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/#{assembly_type_name.downcase.pluralize}/#{@course.slug}/landing"
-            .testimonials.well(ng-click="switchTab('reviews', 'Reviews')" ng-show="#{!@course.testimonial_copy.blank?}" ng-bind-html="'#{@course.testimonial_copy}'")
+                %li
+                  Unlimited Access
+              %li= "#{@course.video_count} HD Videos"
+              / %li Three Fundamental Fillings Explained
+              = @course.buy_box_extra_bullets.html_safe if @course.buy_box_extra_bullets
+            - if @course.price
+              %h4 100% satisfaction guaranteed or your money back
+          .section(ng-controller="NonAngularSocialController" ng-init="title='#{@course.title}'; url='https://www.chefsteps.com/#{assembly_type_name.downcase.pluralize}/#{@course.slug}/landing'; media='#{filepicker_hero_image(@course.image_id)}'")
+            = render 'layouts/social_buttons', media_object: @course, url: "https://www.chefsteps.com/#{assembly_type_name.downcase.pluralize}/#{@course.slug}/landing"
+          .testimonials.well(ng-click="switchTab('reviews', 'Reviews')" ng-show="#{!@course.testimonial_copy.blank?}" ng-bind-html="'#{@course.testimonial_copy}'")
 
-        .row
-          .span8
-            %ul.nav.nav-tabs.underline.landing-tab-menu
-              = render 'landing_page_tab_links'
-            %ul.nav
-              %li.dropdown.landing-tab-dropdown
-                %a.dropdown-toggle(ng-click="showDropdown = ! showDropdown")
-                  %span {{tabTitle}}
-                  %b.caret
-                %ul.dropdown-menu(ng-show="showDropdown")
-                  = render 'landing_page_tab_links'
+      .row
+        .span8
+          %ul.nav.nav-tabs.underline.landing-tab-menu
+            = render 'landing_page_tab_links'
+          %ul.nav
+            %li.dropdown.landing-tab-dropdown
+              %a.dropdown-toggle(ng-click="showDropdown = ! showDropdown")
+                %span {{tabTitle}}
+                %b.caret
+              %ul.dropdown-menu(ng-show="showDropdown")
+                = render 'landing_page_tab_links'
 
-            .tab-content#class-overview
-              %div(ng-show="tab=='menu'")
-                %div(cs-abtest test-name="{{assembly.title}} Description" ng-if="assembly.description_alt")
-                  %div(cs-abtest-item)
-                    :markdown
-                      #{apply_shortcodes(@course.description)}
-                  %div(cs-abtest-item)
-                    :markdown
-                      #{apply_shortcodes(@course.description_alt)}
-                %div(ng-if="!assembly.description_alt")
+          .tab-content#class-overview
+            %div(ng-show="tab=='menu'")
+              %div(cs-abtest test-name="{{assembly.title}} Description" ng-if="assembly.description_alt")
+                %div(cs-abtest-item)
                   :markdown
                     #{apply_shortcodes(@course.description)}
-                - if @course.landing_bottom
-                  .section
-                    :markdown
-                      #{@course.landing_bottom.content}
-
-              %div(ng-show="tab=='reviews'")
-
-                %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, #{(current_user && current_user.id) || 0}, true)")
-                  = render 'comments/reviews'
-
-              - if @course.faq
-                %div(ng-show="tab=='faq'")
+                %div(cs-abtest-item)
                   :markdown
-                    #{apply_shortcodes(@course.faq.content)}
-
-              - if @course.ingredients_equipment
-                %div(ng-show="tab=='ingredients-equipment'")
+                    #{apply_shortcodes(@course.description_alt)}
+              %div(ng-if="!assembly.description_alt")
+                :markdown
+                  #{apply_shortcodes(@course.description)}
+              - if @course.landing_bottom
+                .section
                   :markdown
-                    #{apply_shortcodes(@course.ingredients_equipment.content)}
+                    #{@course.landing_bottom.content}
 
-              - if @course.uploads.approved.any?
-                %div(ng-show="tab=='student-projects'")
-                  .section
-                    .row
-                      - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
-                        .span4
-                          = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
-              %div(ng-show="tab=='preview'")
+            %div(ng-show="tab=='reviews'")
+
+              %div(ng-controller='CommentsController' ng-init="init('assemblies',#{@course.id}, #{(current_user && current_user.id) || 0}, true)")
+                = render 'comments/reviews'
+
+            - if @course.faq
+              %div(ng-show="tab=='faq'")
+                :markdown
+                  #{apply_shortcodes(@course.faq.content)}
+
+            - if @course.ingredients_equipment
+              %div(ng-show="tab=='ingredients-equipment'")
+                :markdown
+                  #{apply_shortcodes(@course.ingredients_equipment.content)}
+
+            - if @course.uploads.approved.any?
+              %div(ng-show="tab=='student-projects'")
                 .section
                   .row
-                    .span6.section
-                      = render 'syllabus'
-                    .span6.offset1.section
-                      :markdown
-                        #{@course.preview_copy}
+                    - @course.uploads.approved.order("updated_at DESC").limit(6).each do |upload|
+                      .span4
+                        = render 'shared/media_box_2', size: 'medium', url: upload_path(upload), title: upload.title, image: upload.image_id, object: upload
+            %div(ng-show="tab=='preview'")
+              .section
+                .row
+                  .span6.section
+                    = render 'syllabus'
+                  .span6.offset1.section
+                    :markdown
+                      #{@course.preview_copy}
 
   = render 'layouts/footer'
   = render 'layouts/stripe'
