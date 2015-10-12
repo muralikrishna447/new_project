@@ -36,7 +36,6 @@ class ActorAddress < ActiveRecord::Base
         aa.address_id = address_id
       else
         hashid = SEQUENCE_GENERATED_ADDRESS_PREFIX + @@hashids.encode(aa.id)
-        puts hashid
         if hashid.length > ADDRESS_LENGTH
           # This should never happpen given input is auto-incrementing field
           raise "Hashid length is too long - id [#{hashid}]"
