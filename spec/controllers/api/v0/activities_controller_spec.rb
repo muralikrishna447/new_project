@@ -70,7 +70,7 @@ describe Api::V0::ActivitiesController do
       get :likes, id: @activity1.id
       response.should be_success
       parsed = JSON.parse response.body
-      ids = parsed.map{|user| user['id']}
+      ids = parsed.map{|user| user['userId']}
       expect(ids.include?(@user1.id)).to be_true
     end
 
