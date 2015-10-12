@@ -1,6 +1,6 @@
 class Api::ProfileSerializer < ApplicationSerializer
   format_keys :lower_camel
-  attributes :id, :name, :bio, :image, :meta
+  attributes :id, :name, :bio, :image, :meta, :slug
 
   def image
     filepicker_to_s3_url(object.profile_image_id)
