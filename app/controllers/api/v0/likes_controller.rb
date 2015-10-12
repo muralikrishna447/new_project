@@ -16,25 +16,12 @@ module Api
       end
 
       def destroy
-          if params[:likeable_type] && params[:likeable_id]
-            @like = Like.where(likeable_type: params[:likeable_type], likeable_id: params[:likeable_id], user_id: current_user.id).first
-            puts "@LIKE: #{@like.inspect}"
-            if @like.destroy
-              reindex(params[:likeable_type], params[:likeable_id])
-            end
-          end
-          render json: @like.to_json
+        @like = Like.find params[:id]
+        if @like.destroy
+          reindex(@like.likeable_type, @like.likeable_id)
+        end
+        render json: @like.to_json
       end
-
-      # def unlike
-      #   if params[:likeable_type] && params[:likeable_id]
-      #     @like = Like.where(likeable_type: params[:likeable_type], likeable_id: params[:likeable_id], user_id: current_user.id).first
-      #     if @like.destroy
-      #       reindex(params[:likeable_type], params[:likeable_id])
-      #     end
-      #   end
-      #   render json: @like.to_json
-      # end
 
       private
       def reindex(likeable_type, likeable_id)

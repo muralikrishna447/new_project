@@ -17,10 +17,10 @@ describe Api::V0::LikesController do
     parsed['user_id'].should eq(@user.id)
   end
 
-  # POST /api/v0/likes#unlike
+  # DELETE /api/v0/likes
   it 'should delete a like' do
-    @like = Fabricate :like, likeable_id: 'Activity', likeable_id: @activity.id, user_id: @user.id
-    delete :destroy, { likeable_type: 'Activity', likeable_id: @activity.id}
+    @like = Fabricate :like, id:9999, likeable_id: 'Activity', likeable_id: @activity.id, user_id: @user.id
+    delete :destroy, id: @like.id
     response.should be_success
     parsed = JSON.parse response.body
     parsed['likeable_type'].should eq('Activity')
