@@ -92,7 +92,8 @@ describe Api::V0::AuthController do
       }
       @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
 
-      @user = Fabricate :user, id: 200, email: 'user@chefsteps.com', password: '123456', name: 'A User', role: 'user'
+      @user = Fabricate(:user, id: 200, email: 'user@chefsteps.com',
+                        password: '123456', name: 'A User', role: 'user')
       aa = ActorAddress.create_for_user @user, client_metadata: "test"
       @valid_token = aa.current_token.to_jwt
       @invalid_token = 'Bearer Some Bad Token'
