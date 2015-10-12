@@ -7,9 +7,20 @@ describe Api::V0::LikesController do
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
   end
 
-  # POST /api/v0/components
+  # POST /api/v0/likes
   it 'should create a like' do
     post :create, { likeable_type: 'Activity', likeable_id: @activity.id}
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed['likeable_type'].should eq('Activity')
+    parsed['likeable_id'].should eq(@activity.id)
+    parsed['user_id'].should eq(@user.id)
+  end
+
+  # POST /api/v0/likes#unlike
+  it 'should delete a like' do
+    @like = Fabricate :like, likeable_id: 'Activity', likeable_id: @activity.id, user_id: @user.id
+    delete :destroy, { likeable_type: 'Activity', likeable_id: @activity.id}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['likeable_type'].should eq('Activity')
