@@ -1,8 +1,9 @@
 class Api::ActivitySerializer < ApplicationSerializer
   format_keys :lower_camel
-  attributes :used_in, :id, :title, :description, :image, :youtube_id, :vimeo_id, :url, :likes_count, :yield, :timing , :short_description, :tag_list, :source_activity_id, :chefsteps_generated
+  attributes :used_in, :id, :title, :description, :image, :youtube_id, :vimeo_id, :url, :likes_count, :yield, :timing , :short_description, :tag_list, :chefsteps_generated
 
   has_one :creator, serializer: Api::ProfileSerializer
+  has_one :source_activity, serializer: Api::ActivityIndexSerializer
 
   has_many :ingredients, serializer: Api::ActivityIngredientSerializer
   has_many :steps, serializer: Api::StepSerializer
