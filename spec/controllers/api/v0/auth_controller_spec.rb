@@ -94,8 +94,14 @@ describe Api::V0::AuthController do
 
       @user = Fabricate(:user, id: 200, email: 'user@chefsteps.com',
                         password: '123456', name: 'A User', role: 'user')
-      aa = ActorAddress.create_for_user @user, client_metadata: "test"
-      @valid_token = aa.current_token.to_jwt
+      @circulator = Fabricate(:circulator, notes: 'some notes',
+                              circulator_id: '1212121212121212')
+      @user.circulators = [@circulator]
+
+      @for_circ = ActorAddress.create_for_circulator(@circulator)
+      @for_user = ActorAddress.create_for_user @user, client_metadata: "test"
+
+      @valid_token = @for_user.current_token.to_jwt
       @invalid_token = 'Bearer Some Bad Token'
     end
 
@@ -104,6 +110,14 @@ describe Api::V0::AuthController do
       get :validate, token: @valid_token
       response.should be_success
       expect(JSON.parse(response.body)['tokenValid']).to be_true
+    end
+
+    it 'should have correct addressable_addresses field' do
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      get :validate, token: @valid_token
+      response.should be_success
+      json_resp = JSON.parse(response.body)
+      expect(json_resp['addressableAddresses']).to eq([@for_circ.address_id])
     end
 
     it 'should not validate if no valid service token provided' do

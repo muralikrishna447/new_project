@@ -158,7 +158,15 @@ module Api
             return
           end
 
-          render json: {message: 'Success.', tokenValid: true, data: token.claim}, status: 200
+          addressable_addresses = aa.addressable_addresses.map{|a| a.address_id}
+          resp = {
+            message: 'Success.',
+            tokenValid: true,
+            addressableAddresses: addressable_addresses,
+            data: token.claim,
+          }
+
+          render json: resp, status: 200
         rescue Exception => e
           logger.error "Authenticate Exception: #{e.class} #{e}"
           logger.error e.backtrace.join("\n")
