@@ -2,17 +2,17 @@
 -# would be to retrieve this info via a resource (which could be pre-rendered like)
 -# we do for activity show view.
 
-.buy-buttons(ng-controller="BuyAssemblyStripeController"
+.buy-buttons(ng-controller="EnrollAssemblyController"
               ng-cloak
-              ng-init='assembly=#{assembly.to_json}; logged_in=#{current_user != nil}; premium=#{current_user.premium_member}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_type_path(assembly)}"; completed="#{completed ? true : false}"; rails_env="#{Rails.env}"; split_name="#{@split_name}"; registrationSource="class"; assemblyTypeName="#{assembly_type_name}";' )
+              ng-init='assembly=#{assembly.to_json}; logged_in=#{current_user != nil}; premium=#{(current_user && current_user.premium?) ? true : false}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_type_path(assembly)}"; completed="#{completed ? true : false}"; rails_env="#{Rails.env}"; split_name="#{@split_name}"; registrationSource="class"; assemblyTypeName="#{assembly_type_name}";' )
 
   -#
   -# Primary CTA
   -#
 
   -# Already enrolled
-  %div(ng-show="logged_in && enrolled")
-    .main-cta(ng-class="{'purchase-started': buyModalOpen}")
+  %div(ng-show="enrolled")
+    .main-cta(ng-class="{'purchase-started': assemblyWelcomeModalOpen}")
       %div
         %a.btn.btn-primary.btn-large.input-block-level#completed-button(ng-href="{{assemblyPath}}")
           %span View Class
@@ -21,13 +21,13 @@
   %div(ng-show="(! enrolled) && assembly.price")
 
     -# Not signed in, or signed in but not premium - take them to premium landing page
-    .main-cta(ng-controller="LoginController" ng-show="(!logged_in) || (! premium)")
+    .main-cta(ng-show="! premium")
       This class and many more are included in our
       %a(href="/premium-membership") Premium Membership
 
     -# Signed in, premium
-    .main-cta
-      .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="premium_enrollment()")
+    .main-cta(ng-show="premium")
+      .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="createEnrollment()")
         C'mon In Primo!
 
 
@@ -35,14 +35,14 @@
   %div(ng-show="(! enrolled) && (! assembly.price)")
 
     -# Not signed in
-    .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+    .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-class="{'purchase-started': assemblyWelcomeModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#sign-in-and-enroll-free-button(ng-click="waitForFreeEnrollment(); openModal('signUp');")
         Enroll for Free
         = render "devise/sessions/new_angular"
 
     -# Signed in
-    .main-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="free_enrollment()")
+    .main-cta(ng-show="logged_in" ng-class="{'purchase-started': assemblyWelcomeModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="createEnrollment()")
         Enroll For Free
 
-  =render 'buy_modal'
+  =render 'assembly_welcome_modal'
