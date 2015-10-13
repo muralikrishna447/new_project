@@ -251,8 +251,6 @@ Delve::Application.routes.draw do
   resources :client_views, only: [:show]
   resources :stream_views, only: [:show]
 
-  resources :charges, only: [:create]
-
   # Legacy needed b/c the courses version of this URL was public in a few places
   get '/courses/accelerated-sous-vide-cooking-course', to: redirect('/classes/sous-vide-cooking')
   get '/courses/accelerated-sous-vide-cooking-course/:activity_id', to: redirect('/classes/sous-vide-cooking#/%{activity_id}')

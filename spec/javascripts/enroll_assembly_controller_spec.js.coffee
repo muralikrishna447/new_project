@@ -1,4 +1,4 @@
-describe "BuyAssemblyStripeController", ->
+describe "EnrollAssemblyController", ->
   scope = null
   controller = null
 
@@ -14,7 +14,7 @@ describe "BuyAssemblyStripeController", ->
     scope = $rootScope.$new()
     # we're just declaring the httpBackend here, we're not setting up expectations or when's - they change on each test
     scope.httpBackend = _$httpBackend_
-    $controller("BuyAssemblyStripeController", {$scope: scope})
+    $controller("EnrollAssemblyController", {$scope: scope})
     mixpanel = {
       people:
         track_charge: ((price)-> true)
@@ -35,23 +35,11 @@ describe "BuyAssemblyStripeController", ->
     scope.httpBackend.verifyNoOutstandingExpectation()
     scope.httpBackend.verifyNoOutstandingRequest()
 
-  describe "#buyingGift", ->
-    it "should set isGift to true", ->
-      scope.isGift = false
-      scope.buyingGift()
-      expect(scope.isGift).toBe(true)
-
   describe "#waitForLogin", ->
     it "should set waitingForLogin to true", ->
       scope.waitingForLogin = false
       scope.waitForLogin()
       expect(scope.waitingForLogin).toBe(true)
-
-  describe "#waitForRedemption", ->
-    it "should set waitingForRedemption to true", ->
-      scope.waitingForRedemption = false
-      scope.waitForRedemption()
-      expect(scope.waitingForRedemption).toBe(true)
 
   describe "#waitForFreeEnrollment", ->
     it "should set waitingForFreeEnrollment to true", ->
@@ -59,69 +47,6 @@ describe "BuyAssemblyStripeController", ->
       scope.waitForFreeEnrollment()
       expect(scope.waitingForFreeEnrollment).toBe(true)
 
-  describe "#handleStripe", ->
-    beforeEach ->
-      spyOn(scope, 'shareASale')
-
-    describe "response has an error", ->
-      it "should set processing false", ->
-        scope.handleStripe(200, {error: {message: "Error on processing"}})
-        expect(scope.processing).toBe(false)
-
-      it "should set the errorText to the response error", ->
-        scope.handleStripe(200, {error: {message: "Error on processing"}})
-        expect(scope.errorText).toEqual("Error on processing")
-
-    describe "ajax is successful", ->
-      beforeEach ->
-        scope.assembly = {id:321}
-        scope.discounted_price = 19.99
-        scope.giftInfo = "None"
-        scope.httpBackend.expect(
-          'POST'
-          '/charges?assembly_id=321&discounted_price=19.99&gift_info=None&stripeToken=123'
-        ).respond(200, {'success': true})
-        scope.handleStripe(200, {id:123, card: {type: "VISA"}})
-        scope.httpBackend.flush()
-
-      it "should set processing to be false", ->
-        expect(scope.processing).toBe(false)
-
-      describe "if gift", ->
-        beforeEach ->
-          scope.isGift = true
-          scope.enrolled = false
-
-        it "should not set enrolled", ->
-          expect(scope.enrolled).toBe(false)
-
-      describe "if not gift", ->
-        it "should set enrolled to be true", ->
-          expect(scope.enrolled).toBe(true)
-
-      it "should state to be thanks", ->
-        expect(scope.state).toEqual("thanks")
-
-      it "should call shareASale", ->
-        expect(scope.shareASale).toHaveBeenCalled()
-
-    describe "ajax responds with an error", ->
-      beforeEach ->
-        scope.assembly = {id:321}
-        scope.discounted_price = 19.99
-        scope.giftInfo = "None"
-        scope.httpBackend.expect(
-          'POST'
-          '/charges?assembly_id=321&discounted_price=19.99&gift_info=None&stripeToken=123'
-        ).respond(500, {'success': false, errors: ["This broke"]})
-        scope.handleStripe(200, {id:123, card: {type: "VISA"}})
-        scope.httpBackend.flush()
-
-      it "should set the errorText variable", ->
-        expect(scope.errorText).toBe("This broke")
-
-      it "should set processing to be false", ->
-        expect(scope.processing).toBe(false)
 
   describe "#maybeStartProcessing", ->
     describe "if valid", ->
@@ -135,14 +60,7 @@ describe "BuyAssemblyStripeController", ->
         scope.maybeStartProcessing(form)
         expect(scope.errorText).toBe(false)
 
-  describe "#maybeMoveToCharge", ->
-    describe "if valid", ->
-      it "should set the scope state to charge", ->
-        form = jasmine.createSpyObj('form', ['$valid'])
-        scope.maybeMoveToCharge(form)
-        expect(scope.state).toBe("charge")
-
-  describe "#check_signed_in", ->
+ describe "#check_signed_in", ->
     it "should return true if angular rails env is set", ->
       scope.rails_env = "angular"
       expect(scope.check_signed_in()).toBe(true)
@@ -186,16 +104,6 @@ describe "BuyAssemblyStripeController", ->
       beforeEach ->
         scope.assembly = {id: 1, title: "Testing Fun", slug:"Testing-Fun"}
 
-      it "should set isGift to the passed in value", ->
-        scope.isGift = false
-        scope.openModal(true)
-        expect(scope.isGift).toBe(true)
-
-      it "should set the state to gift", ->
-        scope.state = null
-        scope.openModal(true)
-        expect(scope.state).toBe("gift")
-
       it "it should set assemblyWelcomeModalOpen to true if signed in", ->
         scope.logged_in = true
         scope.openModal(true)
@@ -212,11 +120,9 @@ describe "BuyAssemblyStripeController", ->
   describe "#enroll", ->
     beforeEach ->
       scope.assembly = {id: 321}
-      scope.discounted_price = "19.99"
-      scope.gift_certificate = 1
       scope.httpBackend.expect(
         'POST'
-        '/charges?assembly_id=321&discounted_price=19.99&gift_certificate=1'
+        '/assemblies/321/enroll'
       ).respond(200, {'success': true})
 
     it "should set processing to false when completed", ->
@@ -230,33 +136,12 @@ describe "BuyAssemblyStripeController", ->
         scope.httpBackend.flush()
         expect(scope.enrolled).toBe(true)
 
-  describe "#redeemGift", ->
-    beforeEach ->
-      spyOn(scope, "enroll")
-      scope.logged_in = true
-
-    it "should set state to thanks_redeem", ->
-      scope.redeemGift()
-      expect(scope.state).toEqual("thanks_redeem")
-
-    it "should set assemblyWelcomeModalOpen to true", ->
-      scope.redeemGift()
-      expect(scope.assemblyWelcomeModalOpen).toBe(true)
-
-    it "should call enroll", ->
-      scope.redeemGift()
-      expect(scope.enroll()).toHaveBeenCalled
-
-  describe "#free_enrollment", ->
+  describe "#createEnrollment free", ->
     beforeEach ->
       scope.assembly = {id: 1, title: "Testing Fun", slug:"Testing-Fun"}
       spyOn(scope, "enroll")
       scope.logged_in = true
 
-    it "should set state to free_enrollment", ->
-      scope.free_enrollment()
-      expect(scope.state).toEqual("free_enrollment")
-
     it "should set assemblyWelcomeModalOpen to true", ->
       scope.free_enrollment()
       expect(scope.assemblyWelcomeModalOpen).toBe(true)
@@ -264,53 +149,6 @@ describe "BuyAssemblyStripeController", ->
     it "should call enroll", ->
       scope.free_enrollment()
       expect(scope.enroll()).toHaveBeenCalled
-
-  describe "#shareASale", ->
-    it "should make the http request", ->
-      scope.httpBackend.expect(
-        'GET'
-        '/affiliates/share_a_sale?amount=19.99&tracking=321'
-      ).respond(200)
-      scope.shareASale("19.99", "321")
-      scope.httpBackend.flush()
-
-  describe "#adminSendGift", ->
-    describe "success", ->
-      beforeEach ->
-        scope.assembly = {id:321}
-        scope.discounted_price = 0.0
-        scope.giftInfo = "None"
-        scope.httpBackend.expect(
-          'POST'
-          '/charges?assembly_id=321&discounted_price=0&gift_info=None&stripeToken='
-        ).respond(200, {'success': true})
-        scope.handleStripe(200, {id:123, card: {type: "VISA"}})
-        scope.httpBackend.flush()
-
-        it "should set processing to false", ->
-          scope.adminSendGift()
-          expect(scope.processing).toBe(false)
-
-        it "should set the state to thanks", ->
-          scope.adminSendGift()
-          expect(scope.state).toBe("thanks")
-    describe "error", ->
-      beforeEach ->
-        scope.assembly = {id:321}
-        scope.discounted_price = 19.99
-        scope.giftInfo = "None"
-        scope.httpBackend.expect(
-          'POST'
-          '/charges?assembly_id=321&discounted_price=19.99&gift_info=None&stripeToken=123'
-        ).respond(500, {'success': false, errors: ["This broke"]})
-        scope.handleStripe(200, {id:123, card: {type: "VISA"}})
-        scope.httpBackend.flush()
-
-      it "should set the errorText variable", ->
-        expect(scope.errorText).toBe("This broke")
-
-      it "should set processing to be false", ->
-        expect(scope.processing).toBe(false)
 
   describe "$on", ->
     beforeEach ->
