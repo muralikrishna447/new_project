@@ -5,8 +5,8 @@ module Api
       before_filter :ensure_authorized
 
       def create
-        if params[:likeable_type] && params[:likeable_id] && params[:user_id]
-          @like = Like.new(likeable_type: params[:likeable_type], likeable_id: params[:likeable_id], user_id: params[:user_id])
+        if params[:likeable_type] && params[:likeable_id]
+          @like = Like.new(likeable_type: params[:likeable_type], likeable_id: params[:likeable_id], user_id: @user_id_from_token)
           if @like.save!
             reindex(params[:likeable_type], params[:likeable_id])
           end
