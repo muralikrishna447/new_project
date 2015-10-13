@@ -7,7 +7,7 @@ feature 'timeline' do
     @upload = Fabricate :upload, title: 'My awesome Lamb Burger', notes: 'This is a story of the greatest lamb burger ever.', activity_id: @activity.id
     @poll = Fabricate :poll, title: 'Test Poll', description: 'Test Poll description'
     @poll_item = Fabricate :poll_item, title: 'Test Poll Item', description: 'Test Poll Item description', poll: @poll
-    @user = Fabricate :user, name: 'Test User', email: 'test@test.com'
+    @user = Fabricate :user, name: 'Test User', email: 'test@test.com', premium_member: false
   end
 
   # scenario 'upload comments can be viewed' do

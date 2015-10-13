@@ -18,7 +18,7 @@
           %span View Class
 
   -# Not enrolled, premium class
-  %div(ng-show="(! enrolled) && assembly.price")
+  %div(ng-show="(! enrolled) && assembly.premium")
 
     -# Not signed in, or signed in but not premium - take them to premium landing page
     .main-cta(ng-show="! premium")
@@ -32,7 +32,7 @@
 
 
   -# Not enrolled, free class
-  %div(ng-show="(! enrolled) && (! assembly.price)")
+  %div(ng-show="(! enrolled) && (! assembly.premium)")
 
     -# Not signed in
     .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-class="{'purchase-started': assemblyWelcomeModalOpen, 'login-started': loginModalOpen}")

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151012184541) do
+ActiveRecord::Schema.define(:version => 20151013184529) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -166,6 +166,7 @@ ActiveRecord::Schema.define(:version => 20151012184541) do
     t.string   "prereg_email_list_id"
     t.text     "description_alt"
     t.string   "vimeo_id"
+    t.boolean  "premium",                                                 :default => false
   end
 
   create_table "assembly_inclusions", :force => true do |t|

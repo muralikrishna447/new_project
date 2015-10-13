@@ -61,7 +61,7 @@ class AssembliesController < ApplicationController
   end
 
   def enroll
-    if @assembly.price && (@assembly.price > 0) && (! current_user.premium?)
+    if @assembly.premium && (! current_user.premium?)
       raise "Trying to enroll non-premium member in premium class."
     end
 
@@ -117,9 +117,7 @@ private
     begin
       @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], true)
       raise "Viewed Unplublished Assembly" if !@assembly.published? && cannot?(:update, @assembly)
-      # Once verified that coupons are working everywhere, delete the following:
-      session[:coupon] = params[:coupon] || session[:coupon]
-      @discounted_price = @assembly.discounted_price(session[:coupon])
+
       # Changing so that it accepts a param gift_token as well, this is solely for e2e testing and shouldn't be given to customers as it
       # doesn't store the information in the sesion so they MUST use it on that page.
       gc_token = session[:gift_token] || params[:gift_token]

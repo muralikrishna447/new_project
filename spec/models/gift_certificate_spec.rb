@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe GiftCertificate do
+describe GiftCertificate, pending: true do
   let(:purchaser){ Fabricate(:user, name: "Purchaser", email: "test@chefsteps.com") }
   let(:ip_address) { "10.0.0.1" }
   let(:assembly) { Fabricate(:assembly, price: 39.00, assembly_type: "Course") }
