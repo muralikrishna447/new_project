@@ -49,7 +49,11 @@ module Api
 
       def show
         @activity = Activity.find(params[:id])
-        render json: @activity, serializer: Api::ActivitySerializer
+        if @activity.show_only_in_course
+          render json: @activity, serializer: Api::ActivityAssemblySerializer
+        else
+          render json: @activity, serializer: Api::ActivitySerializer
+        end
       end
 
       def likes
