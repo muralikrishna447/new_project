@@ -9,7 +9,7 @@ describe Api::V0::LikesController do
 
   # POST /api/v0/likes
   it 'should create a like' do
-    post :create, { likeable_type: 'Activity', likeable_id: @activity.id}
+    post :create, { likeable_type: 'Activity', likeable_id: @activity.id, user_id: @user.id}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['likeable_type'].should eq('Activity')
