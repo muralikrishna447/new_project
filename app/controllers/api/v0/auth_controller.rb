@@ -166,7 +166,7 @@ module Api
             message: 'Success.',
             tokenValid: true,
             addressableAddresses: addressable_addresses,
-            actorType: aa.actor_type,
+            actorType: aa.actor_type, # this one can probably be in claim
             data: token.claim,
           }
 
