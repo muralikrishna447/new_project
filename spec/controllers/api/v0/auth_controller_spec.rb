@@ -113,7 +113,9 @@ describe Api::V0::AuthController do
       request.env['HTTP_AUTHORIZATION'] = @service_token
       get :validate, token: @valid_token
       response.should be_success
-      expect(JSON.parse(response.body)['tokenValid']).to be_true
+      json_resp = JSON.parse(response.body)
+      expect(json_resp['tokenValid']).to be_true
+      expect(json_resp['actorType']).to eq('User')
     end
 
     it 'should have correct addressable_addresses field' do

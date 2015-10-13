@@ -159,10 +159,14 @@ module Api
           end
 
           addressable_addresses = aa.addressable_addresses.map{|a| a.address_id}
+
+          # TODO: We are storing minimal info in the claim itself, and
+          # decorating with other data on validate.
           resp = {
             message: 'Success.',
             tokenValid: true,
             addressableAddresses: addressable_addresses,
+            actorType: aa.actor_type,
             data: token.claim,
           }
 
