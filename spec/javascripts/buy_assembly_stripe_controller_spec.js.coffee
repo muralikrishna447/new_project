@@ -196,18 +196,18 @@ describe "BuyAssemblyStripeController", ->
         scope.openModal(true)
         expect(scope.state).toBe("gift")
 
-      it "it should set buyModalOpen to true if signed in", ->
+      it "it should set assemblyWelcomeModalOpen to true if signed in", ->
         scope.logged_in = true
         scope.openModal(true)
-        expect(scope.buyModalOpen).toBe(true)
+        expect(scope.assemblyWelcomeModalOpen).toBe(true)
 
   describe "#closeModal", ->
     beforeEach ->
       scope.assembly = {id: 1, title: "Testing Fun", slug:"Testing-Fun"}
 
-    it "should set buyModalOpen to be false", ->
+    it "should set assemblyWelcomeModalOpen to be false", ->
       scope.closeModal()
-      expect(scope.buyModalOpen).toBe(false)
+      expect(scope.assemblyWelcomeModalOpen).toBe(false)
 
   describe "#enroll", ->
     beforeEach ->
@@ -239,9 +239,9 @@ describe "BuyAssemblyStripeController", ->
       scope.redeemGift()
       expect(scope.state).toEqual("thanks_redeem")
 
-    it "should set buyModalOpen to true", ->
+    it "should set assemblyWelcomeModalOpen to true", ->
       scope.redeemGift()
-      expect(scope.buyModalOpen).toBe(true)
+      expect(scope.assemblyWelcomeModalOpen).toBe(true)
 
     it "should call enroll", ->
       scope.redeemGift()
@@ -257,9 +257,9 @@ describe "BuyAssemblyStripeController", ->
       scope.free_enrollment()
       expect(scope.state).toEqual("free_enrollment")
 
-    it "should set buyModalOpen to true", ->
+    it "should set assemblyWelcomeModalOpen to true", ->
       scope.free_enrollment()
-      expect(scope.buyModalOpen).toBe(true)
+      expect(scope.assemblyWelcomeModalOpen).toBe(true)
 
     it "should call enroll", ->
       scope.free_enrollment()
