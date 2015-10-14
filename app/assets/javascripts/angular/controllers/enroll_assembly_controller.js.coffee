@@ -1,20 +1,20 @@
 # This mixes the concerns of managing a general purpose modal for charging stripe with
 # the special case of buying an assembly. Would be better to separate.
 
-angular.module('ChefStepsApp').controller 'EnrollAssemblyController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService", "csAdwords", "csFacebookConversion", "csStripe", "$timeout", ($scope, $rootScope, $http, csAuthentication, csAlertService, csAdwords, csFacebookConversion, csStripe, $timeout) ->
-
-  $scope.assemblyWelcomeModalOpen = false
-  $scope.modalOptions = {dialogFade:true, backdrop: 'static'}
-
-  $scope.waitingforFreeEnrollment = false
+angular.module('ChefStepsApp').controller 'EnrollAssemblyController', ["$scope", "$rootScope", "$http", "csAuthentication", "csAlertService","$timeout", ($scope, $rootScope, $http, csAuthentication, csAlertService, $timeout) ->
 
   $scope.authentication = csAuthentication
   $scope.alertService = csAlertService
+
+  $scope.waitingforFreeEnrollment = false
+  $scope.assemblyWelcomeModalOpen = false
+
+  $scope.modalOptions = {dialogFade:true, backdrop: 'static'}
   $scope.isAdmin = csAuthentication.isAdmin()
 
   $scope.$on "login", (event, data) ->
     $scope.logged_in = true
-    $scope.enrolled = true if $scope.isEnrolled() #(data.user)
+    $scope.enrolled = true if $scope.isEnrolled()
 
     if $scope.waitingForFreeEnrollment
       $scope.waitingForFreeEnrollment = false
@@ -68,7 +68,9 @@ angular.module('ChefStepsApp').controller 'EnrollAssemblyController', ["$scope",
     if abandon
       mixpanel.track('Modal Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
 
-  # Free enrollment, either for a free class or redeeming a gift
+  # Enroll in a free or premium class. The UI won't present the option of
+  # enrolling in premium if the user isn't premium, but if someone tries, it
+  # will be rejected from the server side.
   $scope.enroll = ->
     $scope.processing = true
     $http(
@@ -87,6 +89,4 @@ angular.module('ChefStepsApp').controller 'EnrollAssemblyController', ["$scope",
       mixpanel.track('Class Enrolled', eventData)
       Intercom?('trackEvent', 'class-enrolled', eventData)
       $scope.trackEnrollmentWorkaround(eventData)
-      console.log 'Class Facebook Conversion: ', 6014798037826
-      csFacebookConversion.track(6014798037826,0)
 ]

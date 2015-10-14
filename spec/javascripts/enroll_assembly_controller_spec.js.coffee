@@ -60,107 +60,107 @@ describe "EnrollAssemblyController", ->
         scope.maybeStartProcessing(form)
         expect(scope.errorText).toBe(false)
 
- describe "#check_signed_in", ->
-    it "should return true if angular rails env is set", ->
-      scope.rails_env = "angular"
-      expect(scope.check_signed_in()).toBe(true)
+   describe "#check_signed_in", ->
+      it "should return true if angular rails env is set", ->
+        scope.rails_env = "angular"
+        expect(scope.check_signed_in()).toBe(true)
 
-    it "should return true if logged in", ->
-      scope.logged_in = true
-      expect(scope.check_signed_in()).toBe(true)
+      it "should return true if logged in", ->
+        scope.logged_in = true
+        expect(scope.check_signed_in()).toBe(true)
 
-    it "should return false if not logged in", ->
-      scope.logged_in = false
-      expect(scope.check_signed_in()).toBe(false)
+      it "should return false if not logged in", ->
+        scope.logged_in = false
+        expect(scope.check_signed_in()).toBe(false)
 
-  describe "#isEnrolled", ->
-    it "should return true if the user is enrolled in the activity", ->
-      scope.assembly = {id: 1}
-      user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly"}]}
-      scope.authentication.setCurrentUser(user)
-      expect(scope.isEnrolled()).toBe(true)
+    describe "#isEnrolled", ->
+      it "should return true if the user is enrolled in the activity", ->
+        scope.assembly = {id: 1}
+        user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly"}]}
+        scope.authentication.setCurrentUser(user)
+        expect(scope.isEnrolled()).toBe(true)
 
-    it "should return false if the user is not enrolled in the activity", ->
-      scope.assembly = {id: 1}
-      user = {email:"me3@danahern.com",enrollments:[]}
-      scope.authentication.setCurrentUser(user)
-      expect(scope.isEnrolled()).toBe(false)
+      it "should return false if the user is not enrolled in the activity", ->
+        scope.assembly = {id: 1}
+        user = {email:"me3@danahern.com",enrollments:[]}
+        scope.authentication.setCurrentUser(user)
+        expect(scope.isEnrolled()).toBe(false)
 
-  describe "#enrollment", ->
-    it "should return an enrollment for the user if they are enrolled", ->
-      scope.assembly = {id: 1}
-      user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly"}]}
-      scope.authentication.setCurrentUser(user)
-      expect(scope.enrollment()).toEqual({enrollable_id:1,enrollable_type:"Assembly"})
+    describe "#enrollment", ->
+      it "should return an enrollment for the user if they are enrolled", ->
+        scope.assembly = {id: 1}
+        user = {email:"me3@danahern.com",enrollments:[{enrollable_id:1,enrollable_type:"Assembly"}]}
+        scope.authentication.setCurrentUser(user)
+        expect(scope.enrollment()).toEqual({enrollable_id:1,enrollable_type:"Assembly"})
 
-    it "should return null if not enrolled", ->
-      scope.assembly = {id: 1}
-      user = {email:"me3@danahern.com",enrollments:[]}
-      scope.authentication.setCurrentUser(user)
-      expect(scope.enrollment()).toEqual(null)
+      it "should return null if not enrolled", ->
+        scope.assembly = {id: 1}
+        user = {email:"me3@danahern.com",enrollments:[]}
+        scope.authentication.setCurrentUser(user)
+        expect(scope.enrollment()).toEqual(null)
 
-  describe "#openModal", ->
-    describe "if it is a gift", ->
+    describe "#openModal", ->
+      describe "if it is a gift", ->
+        beforeEach ->
+          scope.assembly = {id: 1, title: "Testing Fun", slug:"Testing-Fun"}
+
+        it "it should set assemblyWelcomeModalOpen to true if signed in", ->
+          scope.logged_in = true
+          scope.openModal(true)
+          expect(scope.assemblyWelcomeModalOpen).toBe(true)
+
+    describe "#closeModal", ->
       beforeEach ->
         scope.assembly = {id: 1, title: "Testing Fun", slug:"Testing-Fun"}
 
-      it "it should set assemblyWelcomeModalOpen to true if signed in", ->
-        scope.logged_in = true
-        scope.openModal(true)
-        expect(scope.assemblyWelcomeModalOpen).toBe(true)
+      it "should set assemblyWelcomeModalOpen to be false", ->
+        scope.closeModal()
+        expect(scope.assemblyWelcomeModalOpen).toBe(false)
 
-  describe "#closeModal", ->
-    beforeEach ->
-      scope.assembly = {id: 1, title: "Testing Fun", slug:"Testing-Fun"}
+    describe "#enroll", ->
+      beforeEach ->
+        scope.assembly = {id: 321}
+        scope.httpBackend.expect(
+          'POST'
+          '/assemblies/321/enroll'
+        ).respond(200, {'success': true})
 
-    it "should set assemblyWelcomeModalOpen to be false", ->
-      scope.closeModal()
-      expect(scope.assemblyWelcomeModalOpen).toBe(false)
-
-  describe "#enroll", ->
-    beforeEach ->
-      scope.assembly = {id: 321}
-      scope.httpBackend.expect(
-        'POST'
-        '/assemblies/321/enroll'
-      ).respond(200, {'success': true})
-
-    it "should set processing to false when completed", ->
-      scope.enroll()
-      scope.httpBackend.flush()
-      expect(scope.processing).toBe(false)
-
-    describe "success", ->
-      it "should set enrolled to true", ->
+      it "should set processing to false when completed", ->
         scope.enroll()
         scope.httpBackend.flush()
+        expect(scope.processing).toBe(false)
+
+      describe "success", ->
+        it "should set enrolled to true", ->
+          scope.enroll()
+          scope.httpBackend.flush()
+          expect(scope.enrolled).toBe(true)
+
+    describe "#createEnrollment", ->
+      beforeEach ->
+        scope.assembly = {id: 1, title: "Testing Fun", slug:"Testing-Fun"}
+        spyOn(scope, "enroll")
+        scope.logged_in = true
+
+      it "should set assemblyWelcomeModalOpen to true", ->
+        scope.createEnrollment()
+        expect(scope.assemblyWelcomeModalOpen).toBe(true)
+
+      it "should call enroll", ->
+        scope.createEnrollment()
+        expect(scope.enroll()).toHaveBeenCalled
+
+    describe "$on", ->
+      beforeEach ->
+        scope.enrolled = false
+        scope.assembly = {id: 123}
+        spyOn(scope.authentication, "currentUser").andReturn({name: "Dan Ahern", enrollments: [{enrollable_id: 123, enrollable_type: "Assembly"}]})
+
+      it "should set logged_in to true", ->
+        scope.$broadcast("login", {user: {name: "Dan Ahern"}})
+        expect(scope.logged_in).toBe(true)
+
+      it "should set enrolled to true if in the class", ->
+        scope.$broadcast("login", {user: {name: "Dan Ahern", enrollments: [{enrollable_id: 123, enrollable_type: "Assembly"}]}})
         expect(scope.enrolled).toBe(true)
-
-  describe "#createEnrollment free", ->
-    beforeEach ->
-      scope.assembly = {id: 1, title: "Testing Fun", slug:"Testing-Fun"}
-      spyOn(scope, "enroll")
-      scope.logged_in = true
-
-    it "should set assemblyWelcomeModalOpen to true", ->
-      scope.free_enrollment()
-      expect(scope.assemblyWelcomeModalOpen).toBe(true)
-
-    it "should call enroll", ->
-      scope.free_enrollment()
-      expect(scope.enroll()).toHaveBeenCalled
-
-  describe "$on", ->
-    beforeEach ->
-      scope.enrolled = false
-      scope.assembly = {id: 123}
-      spyOn(scope.authentication, "currentUser").andReturn({name: "Dan Ahern", enrollments: [{enrollable_id: 123, enrollable_type: "Assembly"}]})
-
-    it "should set logged_in to true", ->
-      scope.$broadcast("login", {user: {name: "Dan Ahern"}})
-      expect(scope.logged_in).toBe(true)
-
-    it "should set enrolled to true if in the class", ->
-      scope.$broadcast("login", {user: {name: "Dan Ahern", enrollments: [{enrollable_id: 123, enrollable_type: "Assembly"}]}})
-      expect(scope.enrolled).toBe(true)
 

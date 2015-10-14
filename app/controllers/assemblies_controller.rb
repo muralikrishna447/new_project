@@ -61,8 +61,17 @@ class AssembliesController < ApplicationController
   end
 
   def enroll
+    puts "Enroll request"
+    puts @assembly.inspect
+
+    if ! current_user
+      logger.info("Assembly#enroll no current_user: #{params.inspect}")
+      render json: {status: 400, message: 'Bad Request'}, status: 400 and return
+    end
+
     if @assembly.premium && (! current_user.premium?)
-      raise "Trying to enroll non-premium member in premium class."
+      logger.info("Assembly#enroll Trying to enroll non-premium member in premium class: #{params.inspect}")
+      render json: {status: 400, message: 'Bad Request'}, status: 400 and return
     end
 
     logger.info("Creating enrollment user: #{current_user.slug}, assembly: #{@assembly.slug}")
