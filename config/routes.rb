@@ -350,6 +350,9 @@ Delve::Application.routes.draw do
       end
       resources :components, only: [:index, :show, :create, :update, :destroy]
       resources :ingredients, only: [:index, :show]
+      resources :likes, only: [:create, :destroy] do
+        post :unlike, on: :collection
+      end
       resources :pages, only: [:index, :show, :create, :update]
       resources :passwords, only: [:update] do
         post :send_reset_email, on: :collection

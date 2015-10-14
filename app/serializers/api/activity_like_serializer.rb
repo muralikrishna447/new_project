@@ -3,10 +3,10 @@ class Api::ActivityLikeSerializer < ApplicationSerializer
 
   # id, name, and avatar_url refer to the user, not the like
   # created_at returns the like created_at, not user created_at
-  attributes :id, :name, :avatar_url, :created_at, :profile_url
+  attributes :id, :name, :avatar_url, :created_at, :profile_url, :user_id
 
   # Returns the user id, not the like id
-  def id
+  def user_id
     object.user.id
   end
 

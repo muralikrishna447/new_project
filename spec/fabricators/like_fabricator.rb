@@ -1,5 +1,5 @@
 Fabricator(:like) do
   user_id       1
   likeable_id   1
-  likeable_type "MyString"
+  likeable_type "Activity"
 end

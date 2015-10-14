@@ -173,6 +173,7 @@ window.deepCopy = (obj) ->
     $scope.clearLocalStorage()
     $scope.saveBaseToLocalStorage()
     $scope.activity.$endedit()
+    window.location = "/activities/#{$scope.activity?.slug}"
     true
 
   $scope.endEditMode = ->
