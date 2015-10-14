@@ -92,14 +92,22 @@ describe Api::V0::ActivitiesController do
       @admin_user = Fabricate :user, name: 'Admin User', email: 'admin@chefsteps.com', password: '678910', role: 'admin'
     end
 
-    it 'should redirect to class landing if no user is signed in' do
+    it 'should return the containing assembly if no user is signed in' do
       get :show, id: @activity3
       response.should be_success
       parsed = JSON.parse response.body
       expect(parsed['containingAssembly']['id']).to eq(@assembly.id)
     end
 
-    it 'should return an activty if user is an admin' do
+    it 'should return the containing assembly if the signed in user is not an admin' do
+      sign_in @user3
+      get :show, id: @activity3
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed['containingAssembly']['id']).to eq(@assembly.id)
+    end
+
+    it 'should return an activity if user is an admin' do
       sign_in @admin_user
       controller.request.env['HTTP_AUTHORIZATION'] = @admin_user.valid_website_auth_token.to_jwt
       get :show, id: @activity3

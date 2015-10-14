@@ -49,13 +49,19 @@ module Api
 
       def show
         @activity = Activity.find(params[:id])
-        
+
         http_auth =  request.headers['HTTP_AUTHORIZATION']
         if http_auth
           ensure_authorized
           @user = User.find @user_id_from_token
           if @user && @user.role == 'admin'
             render json: @activity, serializer: Api::ActivitySerializer
+          else
+            if @activity.show_only_in_course
+              render json: @activity, serializer: Api::ActivityAssemblySerializer
+            else
+              render json: @activity, serializer: Api::ActivitySerializer
+            end
           end
         else
           if @activity.published
