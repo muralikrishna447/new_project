@@ -95,16 +95,14 @@ describe Api::V0::ActivitiesController do
     it 'should return the containing assembly if no user is signed in' do
       get :show, id: @activity3
       response.should be_success
-      parsed = JSON.parse response.body
-      expect(parsed['containingAssembly']['id']).to eq(@assembly.id)
+      expect_containing_assembly(response, @assembly)
     end
 
     it 'should return the containing assembly if the signed in user is not an admin' do
       sign_in @user3
       get :show, id: @activity3
       response.should be_success
-      parsed = JSON.parse response.body
-      expect(parsed['containingAssembly']['id']).to eq(@assembly.id)
+      expect_containing_assembly(response, @assembly)
     end
 
     it 'should return an activity if user is an admin' do
@@ -112,27 +110,32 @@ describe Api::V0::ActivitiesController do
       controller.request.env['HTTP_AUTHORIZATION'] = @admin_user.valid_website_auth_token.to_jwt
       get :show, id: @activity3
       response.should be_success
-      parsed = JSON.parse response.body
-      expect(parsed['id']).to eq(@activity3.id)
-      expect(parsed['title']).to eq(@activity3.title)
+      expect_activity_object(response, @activity3)
     end
 
     it 'should return an activity if is_google' do
       controller.request.env['HTTP_USER_AGENT'] = 'googlebot/'
       get :show, id: @activity3
       response.should be_success
-      parsed = JSON.parse response.body
-      expect(parsed['id']).to eq(@activity3.id)
-      expect(parsed['title']).to eq(@activity3.title)
+      expect_activity_object(response, @activity3)
     end
 
     it 'should return an activity if is_brombone' do
       controller.request.env["X-Crawl-Request"] = 'brombone'
       get :show, id: @activity3
       response.should be_success
+      expect_activity_object(response, @activity3)
+    end
+
+    def expect_activity_object(response, activity)
       parsed = JSON.parse response.body
-      expect(parsed['id']).to eq(@activity3.id)
-      expect(parsed['title']).to eq(@activity3.title)
+      expect(parsed['id']).to eq(activity.id)
+      expect(parsed['title']).to eq(activity.title)
+    end
+
+    def expect_containing_assembly(response, assembly)
+      parsed = JSON.parse response.body
+      expect(parsed['containingAssembly']['id']).to eq(assembly.id)
     end
   end
 end
