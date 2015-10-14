@@ -1,14 +1,11 @@
 %a.cs-nav-item.button.hide-desktop(ng-click="openModal('login'); nav.showMenu = false" ng-if='!authentication.currentUser()')
   Sign In
 
-- if current_user
-  %a.cs-nav-item.hide-desktop(ng-href="/profiles/{{authentication.currentUser().slug}}")
-    Profile
-    
+%a.cs-nav-item(href='/gallery')
+  %span.hide-desktop Search
+  Recipes
 %a.cs-nav-item(href='/classes')
   Classes
-%a.cs-nav-item(href='/gallery')
-  Recipes
 %a.cs-nav-item(href='https://www.chefsteps.com/forum')
   Forum
 
@@ -39,6 +36,13 @@
 
 %a.cs-nav-item(href='/about')
   About
+
+- if current_user
+  %hr.cs-nav-item.hide-desktop
+
+- if current_user
+  %a.cs-nav-item.hide-desktop(ng-href="/profiles/{{authentication.currentUser().slug}}")
+    Profile
 
 %a.cs-nav-item.hide-desktop(ng-href="/logout" ng-if='authentication.currentUser()')
   Sign Out
