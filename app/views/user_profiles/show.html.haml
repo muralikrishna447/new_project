@@ -16,7 +16,7 @@
 
         .span10
           %h1= @user.name
-          -if @user.premium_member
+          -if @user.premium?
             ChefSteps Premium Member
           -if can? :manage, User
             =link_to @user.email, "mailto:" + @user.email, { target: "_blank", class: "profile-email-addr"}

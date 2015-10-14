@@ -94,6 +94,10 @@ class User < ActiveRecord::Base
     chef_type.present?
   end
 
+  def premium?
+    self.premium_member || admin
+  end
+
   def viewed_activities_in_course(course)
     # events.scoped_by('Inclusion', 'show').where(inclusions: {course_id: 8}).map(&:trackable).select{|a| a.published=true}.uniq
     # course.inclusions.joins(:events).where('events.user_id = ?', self.id).map(&:activity).select{|a| a.published=true}.uniq
@@ -182,6 +186,13 @@ class User < ActiveRecord::Base
     else
       true
     end
+  end
+
+  def make_premium_member
+    self.premium_member = true
+    self.premium_membership_created_at = Date.now
+    # There are users that already don't pass validation so can't be resaved; not fixing right now
+    self.save(validate: false)
   end
 
   def completed_course?(course)

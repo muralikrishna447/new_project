@@ -34,26 +34,6 @@ class AssembliesController < ApplicationController
         redirect_to landing_assembly_path(@assembly)
       end
     end
-    # @hide_nav = true
-    # @upload = Upload.new
-    # case @assembly.assembly_type
-    # when 'Course', 'Project'
-    #   # Currently not requiring enrollment for free assembly-based course. This will probably want to change?
-    #   if current_user && current_user.admin?
-    #     render "courses_#{params[:action]}"
-    #   else
-    #     if (current_user && current_user.enrolled?(@assembly)) || (! @assembly.price)
-    #       render "courses_#{params[:action]}"
-    #     else
-    #       @no_shop = true
-    #       redirect_to landing_class_url(@assembly, anchor: '')
-    #     end
-    #   end
-    # when 'Recipe Development'
-    #   render "courses_#{params[:action]}"
-    # else
-    #   render "#{@assembly.assembly_type.underscore.pluralize.gsub(' ','_')}_#{params[:action]}"
-    # end
   end
 
   def landing
@@ -78,6 +58,23 @@ class AssembliesController < ApplicationController
 
   def show_as_json
     render :json => @assembly
+  end
+
+  def enroll
+
+    if ! current_user
+      logger.info("Assembly#enroll no current_user: #{params.inspect}")
+      render json: {status: 400, message: 'No user'}, status: 400 and return
+    end
+
+    if @assembly.premium && (! current_user.premium?)
+      logger.info("Assembly#enroll Trying to enroll non-premium member in premium class: #{params.inspect}")
+      render json: {status: 401, message: 'User not premium'}, status: 401 and return
+    end
+
+    logger.info("Creating enrollment, user: #{current_user.slug}, assembly: #{@assembly.slug}")
+    @enrollment = Enrollment.create!(user_id: current_user.id, enrollable: @assembly)
+    render nothing: true
   end
 
   # Note that although this is called "redeem", it only starts the redemption process
@@ -127,9 +124,7 @@ private
     begin
       @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], true)
       raise "Viewed Unplublished Assembly" if !@assembly.published? && cannot?(:update, @assembly)
-      # Once verified that coupons are working everywhere, delete the following:
-      session[:coupon] = params[:coupon] || session[:coupon]
-      @discounted_price = @assembly.discounted_price(session[:coupon])
+
       # Changing so that it accepts a param gift_token as well, this is solely for e2e testing and shouldn't be given to customers as it
       # doesn't store the information in the sesion so they MUST use it on that page.
       gc_token = session[:gift_token] || params[:gift_token]

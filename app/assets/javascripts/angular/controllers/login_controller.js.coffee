@@ -217,18 +217,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
             $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
       )
 
-  # Not ready yet.
-  # $scope.password_reset = ->
-  #   $scope.submit(
-  #     method: 'POST'
-  #     url: '/users/password/new.json'
-  #     data:
-  #       user:
-  #         email: $scope.login_user.email
-  #     success_message: "Reset instructions have been sent to your e-mail address."
-  #     error_entity: $scope.login_error
-  #   )
-
   $scope.register = (source = "unknown") ->
     unless $scope.validNameAndEmail() && $scope.register_user.password
       $scope.register_error.errors.name = ["Please provide a name"] unless !!$scope.register_user.name
@@ -286,57 +274,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
           $scope.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
       )
 
-  # Not ready yet.
-  # $scope.change_password = ->
-  #   $scope.submit(
-  #     method: 'PUT'
-  #     url: '/users/password.json'
-  #     data: {user: {email: $scope.register_user.email
-  #       password: $scope.register_user.password
-  #       password_confirmation: $scope.register_user.password_confirmation}}
-  #     success_message: "Your password has been updated."
-  #     error_entity: $scope.register_error)
-
-  # Not ready yet.
-  # $scope.submit = (parameters) ->
-  #   $scope.dataLoading += 1
-  #   $scope.resetMessages();
-
-  #   $http(
-  #     method: parameters.method,
-  #     url: parameters.url,
-  #     data: parameters.data
-  #     )
-  #     .success( (data, status) ->
-  #       $scope.dataLoading -= 1
-  #       if (status == 200)
-  #         $scope.message = parameters.success_message
-  #         $scope.logged_in = true
-  #       else if (status == 201 || status == 204)
-  #         parameters.error_entity.message = parameters.success_message;
-  #         $scope.reset_users();
-  #       else
-  #         if (data.error)
-  #           parameters.error_entity.message = data.info;
-  #           parameters.error_entity.errors = data.errors
-  #         else
-  #           parameters.error_entity.message = "Success, but with an unexpected success code, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
-  #     )
-  #     .error( (data, status) ->
-  #       $scope.dataLoading -= 1
-  #       if (status == 422 || status == 401)
-  #         parameters.error_entity.message = data.info;
-  #         parameters.error_entity.errors = data.errors
-  #       else
-  #         if (data.error)
-  #           parameters.error_entity.message = data.info;
-  #           parameters.error_entity.errors = data.errors
-  #         else
-  #           parameters.error_entity.message = "Unexplained error, potentially a server error, please report via support channels as this indicates a code defect.  Server response was: " + JSON.stringify(data);
-  #     )
-
-  # This is the call that gets the facebook credientials and then passes them into our rails server,
-  # which then creates the user or logs them in.
   $scope.facebookConnect = (source="undefined") ->
     $scope.facebook.connect().then( (user) ->
       $scope.dataLoadingService.start()

@@ -22,7 +22,7 @@ describe "Login", ->
       input("login_user.password").enter("apassword")
       element("button.signin").click()
       sleep 2
-      expect(element(".buy-modal-body").count()).toBe(0)
+      expect(element(".assembly-welcome-modal-body").count()).toBe(0)
       expect(element(".profile-link").count()).toBe(1)
 
   describe "sign up", ->
