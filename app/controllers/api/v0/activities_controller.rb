@@ -49,6 +49,19 @@ module Api
 
       def show
         @activity = Activity.find(params[:id])
+        # if (! current_admin?) && (! is_google) && (! is_brombone)
+        #   if @activity.show_only_in_course
+        #     # redirect_to class_path(@activity.containing_course), :status => :moved_permanently
+        #     if current_user
+        #       if current_user.enrolled?(@activity.containing_course) == false
+        #         redirect_to landing_assembly_path(@activity.containing_course)
+        #       end
+        #     else
+        #       redirect_to landing_assembly_path(@activity.containing_course)
+        #     end
+        #   end
+        # end
+
         if @activity.show_only_in_course
           render json: @activity, serializer: Api::ActivityAssemblySerializer
         else

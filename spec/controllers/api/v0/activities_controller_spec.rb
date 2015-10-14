@@ -82,4 +82,21 @@ describe Api::V0::ActivitiesController do
       expect(ids.include?(@user2.id)).to be_false
     end
   end
+
+  context 'GET activities in an assembly' do
+    before :each do
+      @activity3 = Fabricate :activity, title: 'Activity 3', show_only_in_course: true, published: true
+      @assembly = Fabricate :assembly, title: 'Assembly', published: true, assembly_type: 'Course', published: true
+      @assembly_inclusion1 = Fabricate :assembly_inclusion, assembly: @assembly, includable: @activity3
+      @user3 = Fabricate :user, name: 'User 3', email: 'user3@user3.com', password: '123456'
+      @admin_user = Fabricate :user, name: 'Admin User', email: 'admin@chefsteps.com', password: '678910', role: 'admin'
+    end
+
+    it 'should redirect to class landing if no user is signed in' do
+      get :show, id: @activity3
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed['containingAssembly']['id']).to eq(@assembly.id)
+    end
+  end
 end
