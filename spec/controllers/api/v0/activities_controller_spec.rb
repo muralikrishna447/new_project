@@ -98,5 +98,33 @@ describe Api::V0::ActivitiesController do
       parsed = JSON.parse response.body
       expect(parsed['containingAssembly']['id']).to eq(@assembly.id)
     end
+
+    it 'should return an activty if user is an admin' do
+      sign_in @admin_user
+      controller.request.env['HTTP_AUTHORIZATION'] = @admin_user.valid_website_auth_token.to_jwt
+      get :show, id: @activity3
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed['id']).to eq(@activity3.id)
+      expect(parsed['title']).to eq(@activity3.title)
+    end
+
+    it 'should return an activity if is_google' do
+      controller.request.env['HTTP_USER_AGENT'] = 'googlebot/'
+      get :show, id: @activity3
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed['id']).to eq(@activity3.id)
+      expect(parsed['title']).to eq(@activity3.title)
+    end
+
+    it 'should return an activity if is_brombone' do
+      controller.request.env["X-Crawl-Request"] = 'brombone'
+      get :show, id: @activity3
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed['id']).to eq(@activity3.id)
+      expect(parsed['title']).to eq(@activity3.title)
+    end
   end
 end
