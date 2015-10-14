@@ -61,8 +61,6 @@ class AssembliesController < ApplicationController
   end
 
   def enroll
-    puts "Enroll request"
-    puts @assembly.inspect
 
     if ! current_user
       logger.info("Assembly#enroll no current_user: #{params.inspect}")
