@@ -64,15 +64,15 @@ class AssembliesController < ApplicationController
 
     if ! current_user
       logger.info("Assembly#enroll no current_user: #{params.inspect}")
-      render json: {status: 400, message: 'Bad Request'}, status: 400 and return
+      render json: {status: 400, message: 'No user'}, status: 400 and return
     end
 
     if @assembly.premium && (! current_user.premium?)
       logger.info("Assembly#enroll Trying to enroll non-premium member in premium class: #{params.inspect}")
-      render json: {status: 400, message: 'Bad Request'}, status: 400 and return
+      render json: {status: 401, message: 'User not premium'}, status: 401 and return
     end
 
-    logger.info("Creating enrollment user: #{current_user.slug}, assembly: #{@assembly.slug}")
+    logger.info("Creating enrollment, user: #{current_user.slug}, assembly: #{@assembly.slug}")
     @enrollment = Enrollment.create!(user_id: current_user.id, enrollable: @assembly)
     render nothing: true
   end

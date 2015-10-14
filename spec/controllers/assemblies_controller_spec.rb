@@ -65,7 +65,7 @@ describe AssembliesController do
     end
 
     it 'errors if enrolling non-premium user in premium class' do
-      test_enroll(@user, @assembly_premium, 400)
+      test_enroll(@user, @assembly_premium, 401)
     end
 
     it 'enrolls non-premium user in free class' do
