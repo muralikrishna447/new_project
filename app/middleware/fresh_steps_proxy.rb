@@ -8,7 +8,7 @@ class FreshStepsProxy < Rack::Proxy
   # it is still doing work. Curious.
   PREFIX = %w(/gallery /logout /fs_pages /fs_activities /sous-vide /grilling /indoor-barbecue)
   EXACT = "/"
-  SUFFIX = %w(/fork /notify_start_edit /notify_end_edit /as_json /the-egg-calculator)
+  SUFFIX = %w(/fork /notify_start_edit /notify_end_edit /as_json /the-egg-calculator /new)
 
   def initialize(app)
     @app = app
