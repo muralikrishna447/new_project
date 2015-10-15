@@ -241,6 +241,10 @@ Delve::Application.routes.draw do
   match "/gift/:gift_token", to: 'assemblies#redeem'
   match "/gift", to: 'assemblies#redeem_index'
 
+  resources :charges, only: [:create]
+
+
+
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'
 
