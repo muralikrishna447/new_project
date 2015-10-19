@@ -190,7 +190,7 @@ class User < ActiveRecord::Base
 
   def make_premium_member
     self.premium_member = true
-    self.premium_membership_created_at = Date.now
+    self.premium_membership_created_at = DateTime.now
     # There are users that already don't pass validation so can't be resaved; not fixing right now
     self.save(validate: false)
   end
