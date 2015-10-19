@@ -119,7 +119,7 @@ module Delve
 
     if Rails.env.test? || Rails.env.development?
       ENV["AUTH_SECRET_KEY"] = File.read("config/rsa_test.pem")
-      ENV["AES_KEY"] = 'adkfj1n349ufdnc(mz&109sjp{'
+      ENV["AES_KEY"] = 'bUg7wjYZ4ygQEyqtBesU(+R9urFB+CNv'
     end
 
     # In development set to staging unless explicitely overridden
