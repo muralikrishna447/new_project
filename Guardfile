@@ -37,7 +37,7 @@ guard 'spork' do
   watch(%r{^spec/support/.*\.rb$})
 end
 
-guard 'rspec', cli: "--profile --color --drb --fail-fast -f #{ENV['RSPEC_FORMAT'] || 'progress'}", bundler: false, all_on_start: false, all_after_pass: false do
+guard 'rspec', cli: "--profile -b --color --drb --fail-fast -f #{ENV['RSPEC_FORMAT'] || 'progress'}", bundler: false, all_on_start: false, all_after_pass: false do
   watch(%r{spec/(.*)_spec.rb})
   watch(%r{app/(.*)\.rb})                            { |m| "spec/#{m[1]}_spec.rb" }
   watch(%r{app/(.*\.haml)})                          { |m| "spec/#{m[1]}_spec.rb" }
@@ -51,5 +51,3 @@ guard 'jasmine', server_env: :test, server: :thin, all_on_start: false do #, jas
   watch(%r{^spec/javascripts/(.+)_spec\.(js\.coffee|js|coffee)$})
   watch(%r{app/assets/javascripts/(.+?)\.(js\.coffee|js|coffee)$}) { |m| "spec/javascripts/#{m[1]}_spec.#{m[2]}" }
 end
-
-
