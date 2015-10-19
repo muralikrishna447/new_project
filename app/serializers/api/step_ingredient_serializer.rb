@@ -1,9 +1,8 @@
-class Api::ActivityIngredientSerializer < ApplicationSerializer
+class Api::StepIngredientSerializer < ApplicationSerializer
   format_keys :lower_camel
   attributes :order, :title, :quantity, :unit, :note
 
   has_one :ingredient, serializer: Api::IngredientIndexSerializer
-  has_one :activity, serializer: Api::ActivityIndexSerializer
 
   def order
     object.ingredient_order
