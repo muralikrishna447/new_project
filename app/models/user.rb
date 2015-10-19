@@ -58,7 +58,7 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :token_authenticatable, :omniauth_providers => [:google_oauth2]
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :survey_results, :events_count, :premium_member, :premium_membership_created_at
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :survey_results, :events_count, :premium_member, :premium_membership_created_at, :premium_membership_price
 
   # This is for active admin, so that it can edit the role (and so normal users can't edit their role)
   attr_accessible :name, :email, :password, :password_confirmation,
@@ -188,9 +188,11 @@ class User < ActiveRecord::Base
     end
   end
 
-  def make_premium_member
+  def make_premium_member(price)
+    raise "Already a premium member" if self.premium?
     self.premium_member = true
     self.premium_membership_created_at = DateTime.now
+    self.premium_membership_price = price
     # There are users that already don't pass validation so can't be resaved; not fixing right now
     self.save(validate: false)
   end

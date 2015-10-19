@@ -26,6 +26,11 @@ describe Api::V0::ChargesController do
         expect(response.status).to eq(200)
       end
 
+      it 'should error if user is already premium' do
+        @user.make_premium_member(10)
+        post :create, skus: '[1000]', stripeToken: 'xxx'
+        expect(response.status).to eq(422)
+      end
     end
   end
 end

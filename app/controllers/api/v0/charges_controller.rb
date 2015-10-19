@@ -18,7 +18,7 @@ module Api
         # and give them premium right away which is a smoother, faster experience on the frontend, and
         # queue up the charge which can take a little while.
 
-        @user.make_premium_member()
+        @user.make_premium_member(Setting.last.premium_membership_price)
 
         Resque.enqueue(StripeChargeProcessor, @user.email, params[:stripeToken], Setting.last.premium_membership_price,  'ChefSteps Premium')
 
