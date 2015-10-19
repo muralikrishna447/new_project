@@ -2,6 +2,8 @@ class Circulator < ActiveRecord::Base
   has_many :circulator_users, dependent: :destroy
   has_many :users, through: :circulator_users
 
+  attr_encrypted :secret_key, :key => ENV["AES_KEY"]
+
 #  has_many :actor_addresses, as: actor
 
   validates :notes, length: { maximum: 50 }
