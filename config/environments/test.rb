@@ -14,6 +14,15 @@ Delve::Application.configure do
   config.serve_static_assets = true
   config.static_cache_control = "public, max-age=3600"
 
+  # Enable logs for tests.  ActiveRecord logs are a bit verbose, so disabling
+  config.logger = Logger.new(STDOUT)
+  config.log_level = :error
+  config.after_initialize do
+    ActiveRecord::Base.logger.level = Logger::WARN
+  end
+
+
+
   # Log error messages when you accidentally call methods on nil
   config.whiny_nils = true
 
