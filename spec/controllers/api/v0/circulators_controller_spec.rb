@@ -20,6 +20,7 @@ describe Api::V0::CirculatorsController do
     circulators.length.should == 1
     circulators[0]['circulatorId'].should == @circulator.circulator_id
     circulators[0]['notes'].should == 'some notes'
+    circulators[0]['secretKey'].should == nil
   end
 
   it 'should create circulator' do
@@ -52,6 +53,22 @@ describe Api::V0::CirculatorsController do
 
     post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => 'cc78787878787878'}
     response.should be_success
+  end
+
+  it 'should create circulator with no secret key' do
+    @circulator
+    post(:create,
+         circulator: {
+           :serial_number => 'abc123',
+           :notes => 'red one',
+           :id => '7878787878787878'
+         }
+    )
+    response.should be_success
+    returnedCirculator = JSON.parse(response.body)
+    circ_id = returnedCirculator['circulatorId']
+    circulator = Circulator.where(circulator_id: circ_id).first
+    circulator.encrypted_secret_key.should == nil
   end
 
   it 'should prevent duplicate circulators' do

@@ -34,8 +34,7 @@ module Api
           circulator.serial_number = circ_params[:serial_number]
           circulator.circulator_id = circulator_id
 
-          # TODO: null check for secret_key?
-          circulator.secret_key = circ_params[:secret_key] || ''
+          circulator.secret_key = circ_params[:secret_key] || nil
           logger.info "Creating circulator #{circulator.inspect}"
 
           circulator.save!
