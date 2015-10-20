@@ -58,6 +58,10 @@ Spork.prefork do
         with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.8.9'}).
         to_return(:status => 200, :body => "", :headers => {})
 
+      WebMock.stub_request(:get, /http:\/\/\/bloomAPI\/users.*\/initial\?apiKey=xchefsteps/).
+        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.8.9'}).
+        to_return(:status => 200, :body => "", :headers => {})
+
       # Adding Webmock, which delightfully alerts you to any live http calls happening during specs,
       # but we already have existing mock strategies for other services, so let them through.
       WebMock.disable_net_connect!(:allow => [/mixpanel/])
