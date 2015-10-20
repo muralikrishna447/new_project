@@ -8,11 +8,21 @@
       %dt Name
       %dd= user.name
 
-      %dt Role
-      %dd= user.role
-
       %dt Email
       %dd= user.email
+
+      %dt Premium Member?
+      %dd= user.premium_member
+
+      -if user.premium_member
+        %dt Premium Member Since
+        %dd= user.premium_membership_created_at
+
+        %dt Premium Member Price Paid
+        %dd= user.premium_membership_price
+
+      %dt Role
+      %dd= user.role
 
       %dt Sign in count
       %dd= user.sign_in_count
@@ -36,7 +46,7 @@
           - user.created_activities.each do |activity|
             %li
               = link_to  activity.title, activity_path(activity)
-      %dt Enrolled Classes 
+      %dt Enrolled Classes
       %dd
         %ol
           - user.enrollments.each do |course|
