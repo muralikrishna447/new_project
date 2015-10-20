@@ -77,4 +77,15 @@ describe ActorAddress  do
     aa.id.should == @for_user.id
   end
 
+  it 'should find addressable addresses' do
+    @user.circulators = [@circulator]
+    @user.save
+
+    a_circ = ActorAddress.create_for_circulator(@circulator)
+    a_user = @for_user
+
+    a_user.addressable_addresses.map{|a| a.address_id}.should == [a_circ.address_id]
+    a_circ.addressable_addresses.map{|a| a.address_id}.should == [a_user.address_id]
+  end
+
 end
