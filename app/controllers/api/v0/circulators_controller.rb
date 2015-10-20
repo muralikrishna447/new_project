@@ -28,18 +28,22 @@ module Api
           user = User.find @user_id_from_token
 
           #TODO correctly validate serial number
-          circulator = Circulator.new(params[:circulator])
+          circ_params = params[:circulator]
+          circulator = Circulator.new
+          circulator.notes = circ_params[:notes]
+          circulator.serial_number = circ_params[:serial_number]
           circulator.circulator_id = circulator_id
-          logger.info "Creating circulator #{circulator.inspect}}"
-          circulator.save!
 
+          circulator.secret_key = circ_params[:secret_key] || nil
+          logger.info "Creating circulator #{circulator.inspect}"
+
+          circulator.save!
           aa = ActorAddress.create_for_circulator(circulator)
           circulatorUser = CirculatorUser.new user: user, circulator: circulator
           unless params[:owner] == false
             circulatorUser.owner = true
           end
           circulatorUser.save!
-
           render json: circulator, serializer: Api::CirculatorSerializer
         end
       end

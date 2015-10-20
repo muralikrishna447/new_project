@@ -20,22 +20,55 @@ describe Api::V0::CirculatorsController do
     circulators.length.should == 1
     circulators[0]['circulatorId'].should == @circulator.circulator_id
     circulators[0]['notes'].should == 'some notes'
+    circulators[0]['secretKey'].should == nil
   end
 
   it 'should create circulator' do
-    post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => '7878787878787878'}
+    secret_key = '123456'
+    serial_number = 'abc123'
+    notes = 'red one'
+    post(:create,
+         circulator: {
+           :serial_number => serial_number,
+           :notes => notes,
+           :id => '7878787878787878',
+           :secret_key => secret_key
+         }
+    )
     response.should be_success
     returnedCirculator = JSON.parse(response.body)
+
+    returnedCirculator['secretKey'].should == secret_key
+    returnedCirculator['serialNumber'].should == serial_number
+    returnedCirculator['notes'].should == notes
+
     circulator = Circulator.where(circulator_id: returnedCirculator['circulatorId']).first
     circulator.should_not be_nil
-    circulator.notes.should == 'red one'
+    circulator.notes.should == notes
     circulator.users.first.should == @user
+    circulator.encrypted_secret_key.should_not == secret_key
 
     circulator_user = CirculatorUser.find_by_circulator_and_user(circulator, @user)
     circulator_user.owner.should be_true
 
     post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => 'cc78787878787878'}
     response.should be_success
+  end
+
+  it 'should create circulator with no secret key' do
+    @circulator
+    post(:create,
+         circulator: {
+           :serial_number => 'abc123',
+           :notes => 'red one',
+           :id => '7878787878787878'
+         }
+    )
+    response.should be_success
+    returnedCirculator = JSON.parse(response.body)
+    circ_id = returnedCirculator['circulatorId']
+    circulator = Circulator.where(circulator_id: circ_id).first
+    circulator.encrypted_secret_key.should == nil
   end
 
   it 'should prevent duplicate circulators' do
