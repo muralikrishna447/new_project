@@ -36,13 +36,15 @@ module Api
 
           secret_key = nil
           if circ_params[:secret_key]
-            if circ_params[:secret_key].length != 32
+            non_hex = /[^a-fA-F0-9]/
+            sk = circ_params[:secret_key]
+            if sk.length != 32 or non_hex.match sk
               render_api_response 400, {message: "Invalid secret key"}
               return
             end
             # We receive a hex encoded string... convert to a binary
             # string before saving to database
-            secret_key = [circ_params[:secret_key]].pack('H*')
+            secret_key = [sk].pack('H*')
           end
 
           circulator.secret_key = secret_key

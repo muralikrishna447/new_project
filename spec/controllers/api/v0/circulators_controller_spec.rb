@@ -56,18 +56,20 @@ describe Api::V0::CirculatorsController do
   end
 
   it 'should not create circulator if bad secret key' do
-    secret_key = '1234'
-    serial_number = 'abc123'
-    notes = 'red one'
-    post(:create,
-         circulator: {
-           :serial_number => serial_number,
-           :notes => notes,
+    bad_keys = ['1234', '6b714257175f73150228454466307d1z']
+    bad_keys.each do |secret_key|
+      serial_number = 'abc123'
+      notes = 'red one'
+      post(:create,
+           circulator: {
+             :serial_number => serial_number,
+             :notes => notes,
            :id => '7878787878787878',
            :secret_key => secret_key
-         }
-    )
-    response.should_not be_success
+           }
+          )
+      response.should_not be_success
+    end
   end
 
   it 'should create circulator with no secret key' do
