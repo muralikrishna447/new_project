@@ -24,7 +24,7 @@ describe Api::V0::CirculatorsController do
   end
 
   it 'should create circulator' do
-    secret_key = '123456'
+    secret_key = '6b714257175f73150228454466307d16'
     serial_number = 'abc123'
     notes = 'red one'
     post(:create,
@@ -53,6 +53,21 @@ describe Api::V0::CirculatorsController do
 
     post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => 'cc78787878787878'}
     response.should be_success
+  end
+
+  it 'should not create circulator if bad secret key' do
+    secret_key = '1234'
+    serial_number = 'abc123'
+    notes = 'red one'
+    post(:create,
+         circulator: {
+           :serial_number => serial_number,
+           :notes => notes,
+           :id => '7878787878787878',
+           :secret_key => secret_key
+         }
+    )
+    response.should_not be_success
   end
 
   it 'should create circulator with no secret key' do

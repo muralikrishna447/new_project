@@ -34,7 +34,18 @@ module Api
           circulator.serial_number = circ_params[:serial_number]
           circulator.circulator_id = circulator_id
 
-          circulator.secret_key = circ_params[:secret_key] || nil
+          secret_key = nil
+          if circ_params[:secret_key]
+            if circ_params[:secret_key].length != 32
+              render_api_response 400, {message: "Invalid secret key"}
+              return
+            end
+            # We receive a hex encoded string... convert to a binary
+            # string before saving to database
+            secret_key = [circ_params[:secret_key]].pack('H*')
+          end
+
+          circulator.secret_key = secret_key
           logger.info "Creating circulator #{circulator.inspect}"
 
           circulator.save!
