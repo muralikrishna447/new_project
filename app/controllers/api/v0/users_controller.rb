@@ -75,21 +75,7 @@ module Api
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
           mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
           mixpanel.track(@user.email, 'Signed Up', {source: 'api'})
-          begin
-            response = Faraday.get do |req|
-              req.url "#{Rails.application.config.shared_config[:bloom][:api_endpoint]}/users/#{user.id}/initial?apiKey=xchefsteps&ssoId=#{user.id}"
-              req.options[:timeout] = 3
-              req.options[:open_timeout] = 2
-            end
-            puts "This is the response for Bloom update user: #{response.body}"
-            response.body
-          rescue Faraday::Error::TimeoutError => e
-            logger.warn "Unable to update user info for Bloom: #{e}"
-            return ''
-          rescue Faraday::Error::ConnectionFailed => e
-            logger.warn "Unable to update info for Bloom: #{e}"
-            return ''
-          end
+          Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
           Librato.increment 'user.signup', sporadic: true
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
