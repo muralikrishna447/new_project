@@ -293,7 +293,7 @@ module ApplicationHelper
   end
 
   def is_google
-    request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (http_referer_uri && http_referer_uri.host.index('google') || (cs_referer_uri && cs_referer_uri.host.index('google')))
+    request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (http_referer_uri && http_referer_uri.host && http_referer_uri.host.index('google')) || (cs_referer_uri && cs_referer_uri.host && cs_referer_uri.host.index('google'))
   end
 
   def is_brombone
