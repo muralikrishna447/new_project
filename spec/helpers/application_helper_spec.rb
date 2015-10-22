@@ -85,4 +85,9 @@ describe ApplicationHelper do
     controller.request.env['HTTP_REFERER'] = 'http://www.chefsteps.com'
     helper.is_google.should be_false
   end
+
+  it 'returns is_google false when the request is not a bot or referer is nothing' do
+    controller.request.env['HTTP_REFERER'] = ''
+    helper.is_google.should be_false
+  end
 end
