@@ -28,18 +28,35 @@ module Api
           user = User.find @user_id_from_token
 
           #TODO correctly validate serial number
-          circulator = Circulator.new(params[:circulator])
+          circ_params = params[:circulator]
+          circulator = Circulator.new
+          circulator.notes = circ_params[:notes]
+          circulator.serial_number = circ_params[:serial_number]
           circulator.circulator_id = circulator_id
-          logger.info "Creating circulator #{circulator.inspect}}"
-          circulator.save!
 
+          secret_key = nil
+          if circ_params[:secret_key]
+            non_hex = /[^a-fA-F0-9]/
+            sk = circ_params[:secret_key]
+            if sk.length != 32 or non_hex.match sk
+              render_api_response 400, {message: "Invalid secret key"}
+              return
+            end
+            # We receive a hex encoded string... convert to a binary
+            # string before saving to database
+            secret_key = [sk].pack('H*')
+          end
+
+          circulator.secret_key = secret_key
+          logger.info "Creating circulator #{circulator.inspect}"
+
+          circulator.save!
           aa = ActorAddress.create_for_circulator(circulator)
           circulatorUser = CirculatorUser.new user: user, circulator: circulator
           unless params[:owner] == false
             circulatorUser.owner = true
           end
           circulatorUser.save!
-
           render json: circulator, serializer: Api::CirculatorSerializer
         end
       end

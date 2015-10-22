@@ -288,8 +288,12 @@ module ApplicationHelper
     request.env["HTTP_REFERER"] && URI.parse(request.env["HTTP_REFERER"])
   end
 
+  def cs_referer_uri
+    request.env["HTTP_CS_REFERER"] && URI.parse(request.env["HTTP_CS_REFERER"])
+  end
+
   def is_google
-    request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (http_referer_uri && http_referer_uri.host.index('google'))
+    request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (http_referer_uri && http_referer_uri.host.index('google') || (cs_referer_uri && cs_referer_uri.host.index('google')))
   end
 
   def is_brombone
@@ -359,4 +363,3 @@ module ApplicationHelper
   end
 
 end
-

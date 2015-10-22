@@ -6,6 +6,29 @@ class ActorAddress < ActiveRecord::Base
   SEQUENCE_GENERATED_ADDRESS_PREFIX = 'a00000'
   @@hashids = Hashids.new(HASHID_SALT, ADDRESS_LENGTH - SEQUENCE_GENERATED_ADDRESS_PREFIX.length, '01233456789abcdef')
 
+  def addressable_addresses
+    if self.actor_type == 'User'
+      actor_class = User
+      method = 'circulator_ids'
+      other_actor = 'Circulator'
+    elsif self.actor_type == 'Circulator'
+      actor_class = Circulator
+      method = 'user_ids'
+      other_actor = 'User'
+    else
+      logger.debug "No addressable actors for #{self.actor_type}"
+      return []
+    end
+
+    actor = actor_class.find(self.actor_id)
+    other_ids = actor.method(method).call()
+    logger.debug "Trying to find #{other_actor} #{other_ids}"
+    addresses = ActorAddress.where(
+      actor_type: other_actor, actor_id: other_ids, status: 'active'
+    )
+    addresses
+  end
+
   def self.create_for_actor(actor, opts = {})
     logger.info "Creating new ActorAddress for #{actor} with opts #{opts.inspect}"
     aa = ActorAddress.new()
@@ -36,7 +59,6 @@ class ActorAddress < ActiveRecord::Base
         aa.address_id = address_id
       else
         hashid = SEQUENCE_GENERATED_ADDRESS_PREFIX + @@hashids.encode(aa.id)
-        puts hashid
         if hashid.length > ADDRESS_LENGTH
           # This should never happpen given input is auto-incrementing field
           raise "Hashid length is too long - id [#{hashid}]"
