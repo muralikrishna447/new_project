@@ -14,6 +14,7 @@ describe Api::V0::UsersController do
 
       response.code.should == "200"
       result = JSON.parse(response.body)
+
       # TODO - write a nice utility for this sort of comparison
       result.delete('id').should == @user.id
       result.delete('name').should == @user.name
@@ -23,6 +24,8 @@ describe Api::V0::UsersController do
       result.delete('intercom_user_hash').should == ApplicationController.new.intercom_user_hash(@user)
       result.delete('encrypted_bloom_info')
       result.delete('request_id')
+      result.delete('premium').should == false
+      result.delete('admin').should == false
       result.empty?.should == true
     end
 
