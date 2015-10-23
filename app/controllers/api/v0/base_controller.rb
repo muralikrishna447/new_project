@@ -72,40 +72,45 @@ module Api
       end
 
       protected
+
+      class AuthorizationError < StandardError
+      end
+
+      def get_valid_actor_address
+        unless request.authorization()
+          raise AuthorizationError("No Authorization header set")
+        end
+
+        token = request.authorization().split(' ').last
+        token = AuthToken.from_string(token)
+        aa = ActorAddress.find_for_token(token)
+        unless aa
+          logger.info "Not ActorAddress found for token #{token}"
+          return
+        end
+
+        logger.debug "Found actor address: [#{aa.inspect}]"
+        unless aa.valid_token?(token)
+          logger.info "Invalid token #{token}"
+          return
+        end
+
+        return aa
+      end
+
       def ensure_authorized
         begin
-          if request.authorization()
-            token = request.authorization().split(' ').last
-          else
+          if not request.authorization()
             logger.info "Authorization token not set"
             render_api_response(401, {message: 'Unauthenticated'})
             return
           end
-
-          token = AuthToken.from_string(token)
-
-          aa = ActorAddress.find_for_token(token)
-          unless aa
-            logger.info "Not ActorAddress found for token #{token}"
+          aa = get_valid_actor_address()
+          if not aa or aa.actor_type != 'User'
             render_unauthorized
             return
           end
-
-          logger.info "Found actor address: [#{aa.inspect}]"
-          unless aa.valid_token?(token)
-            logger.info "Invalid token"
-            render_unauthorized
-            return
-          end
-
-          if aa.actor_type == 'User'
-            @user_id_from_token = aa.actor_id
-          else
-            logger.info "Actor address for type [#{aa.actor_type}] not 'User'"
-            render_unauthorized
-            return
-          end
-
+          @user_id_from_token = aa.actor_id
         rescue Exception => e
           logger.error e
           logger.error e.backtrace.join("\n")
