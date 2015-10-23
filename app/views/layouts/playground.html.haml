@@ -112,7 +112,7 @@
   / = render 'layouts/app_init'
 
   = render "layouts/login_hack"
-  %script(src="#{Rails.application.config.shared_config["bloom"]["community_endpoint"]}/export/loader.js")
+  %script(src="#{Rails.application.config.shared_config["bloom"]["community_endpoint"]}/export/loader.js" crossorigin="anonymous")
   = javascript_include_tag 'application'
   %script(type="text/javascript")
     logPerf("POST APP");
