@@ -20,4 +20,9 @@ describe Api::V0::FirmwareController do
     resp['version'].should_not be_nil
     resp['location'].should_not be_nil
   end
+  it 'should fail if bad token' do
+    request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
+    get :latest_version
+    response.should_not be_success
+  end
 end
