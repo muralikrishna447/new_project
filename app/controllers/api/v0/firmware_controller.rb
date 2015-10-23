@@ -10,7 +10,7 @@ module Api
         end
         data = {
           "version" => "1.0.0",
-          "location" => "https://foo.com"
+          "location" => "https://www.foo.com/firmware.tar.gz"
         }
         render json: data
       end
