@@ -98,6 +98,25 @@ module Api
         return aa
       end
 
+      def ensure_authorized_or_anonymous
+        begin
+          if not request.authorization()
+            logger.debug "No Authorization header set, continuing as anonymous"
+            return
+          end
+          aa = get_valid_actor_address()
+          if not aa or aa.actor_type != 'User'
+            render_unauthorized
+            return
+          end
+          @user_id_from_token = aa.actor_id
+        rescue StandardError => e
+          logger.error e
+          logger.error e.backtrace.join("\n")
+          render_unauthorized
+        end
+      end
+
       def ensure_authorized
         begin
           if not request.authorization()
