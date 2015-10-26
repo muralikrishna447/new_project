@@ -16,5 +16,8 @@ class StripeChargeProcessor
       :description => description,
       :currency    => 'usd'
     )
+
+    mixpanel = ChefstepsMixpanel.new
+    mixpanel.track(email, 'Charge Server Side', {price: price, description: description})
   end
 end

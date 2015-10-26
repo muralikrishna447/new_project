@@ -60,11 +60,7 @@ class BaseApplicationController < ActionController::Base
 
   private
   def mixpanel
-    if Rails.env.production?
-      @mixpanel ||= ChefstepsMixpanel.new '84272cf32ff65b70b86639dacd53c0e0'
-    else
-      @mixpanel ||= ChefstepsMixpanel.new 'd6d82f805f7d8a138228a52f17d6aaec'
-    end
+    @mixpanel ||= ChefstepsMixpanel.new
   end
 
   def mixpanel_anonymous_id
