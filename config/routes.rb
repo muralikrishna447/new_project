@@ -238,8 +238,6 @@ Delve::Application.routes.draw do
       post 'enroll' => 'assemblies#enroll'
     end
   end
-  match "/gift/:gift_token", to: 'assemblies#redeem'
-  match "/gift", to: 'assemblies#redeem_index'
 
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'
@@ -378,7 +376,9 @@ Delve::Application.routes.draw do
         end
       end
 
-      resources :charges, only: [:create]
+      resources :charges, only: [:create] do
+        get :redeem, on: :member
+      end
 
       match '/*path' => 'base#options', :via => :options
 

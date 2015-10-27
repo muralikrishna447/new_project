@@ -18,9 +18,13 @@ module Api
         # and give them premium right away which is a smoother, faster experience on the frontend, and
         # queue up the charge which can take a little while.
 
-        @user.make_premium_member(Setting.last.premium_membership_price)
+        if params[:gift]
+          PremiumGiftCertificate.create!(purchaser_id: @user.id, price: Setting.last.premium_membership_price, redeemed: false)
+        else
+          @user.make_premium_member(Setting.last.premium_membership_price)
+        end
 
-        Resque.enqueue(StripeChargeProcessor, @user.email, params[:stripeToken], Setting.last.premium_membership_price,  'ChefSteps Premium')
+        Resque.enqueue(StripeChargeProcessor, @user.email, params[:stripeToken], Setting.last.premium_membership_price, params[:gift], 'ChefSteps Premium')
 
         render_api_response 200
 
@@ -28,6 +32,11 @@ module Api
         puts e.inspect
         msg = (e.message || "(blank)")
         render_api_response 422, { error: msg}
+      end
+
+      def redeem
+        @user = User.find @user_id_from_token
+        PremiumGiftCertificate.redeem(@user, params[:id])
       end
     end
   end
