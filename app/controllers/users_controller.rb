@@ -50,7 +50,7 @@ class UsersController < ApplicationController
       end
       render json: user_data.to_json, status:200
     else
-      render json: {status: 401, message: 'Unauthorized'}, status: 401
+      render json: {logged_in: false}.to_json, status: 200
     end
 
   end
