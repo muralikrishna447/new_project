@@ -3,8 +3,7 @@ class PremiumGiftCertificateMailer < ActionMailer::Base
 
   def recipient_email(purchaser, redeem_url)
     set_variables(purchaser, redeem_url)
-      mail(to: @purchaser.email, subject: "ChefSteps.com - ChefSteps Premium gift purchase")
-    end
+    mail(to: @purchaser.email, subject: "ChefSteps.com - ChefSteps Premium gift purchase")
   end
 
 private

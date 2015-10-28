@@ -19,7 +19,7 @@ class PremiumGiftCertificate < ActiveRecord::Base
   end
 
   def self.redeem(user, token)
-    gc = PremiumGiftCertificate.where(token: token).last
+    gc = PremiumGiftCertificate.where(token: token.to_s).last
     raise "Gift certificate #{token} not found" if gc == nil
     raise "Gift certificate #{token} already redeemed" if gc.redeemed
     enrollment = nil
@@ -28,16 +28,5 @@ class PremiumGiftCertificate < ActiveRecord::Base
       gc.save!
       user.make_premium_member(gc.price)
     end
-  end
-
-  def send_email(to_recipient)
-    # Little hack cuz I can't get pow to work lately
-    dom = DOMAIN
-    dom = "localhost:3000" if dom == "delve.dev"
-
-    PremiumGiftCertificateMailer.recipient_email(
-        User.find(purchaser_id),
-        "http://" + dom + "/gift/" + token,
-      ).deliver()
   end
 end
