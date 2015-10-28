@@ -20,6 +20,8 @@ class PremiumGiftCertificate < ActiveRecord::Base
 
   def self.redeem(user, token)
     gc = PremiumGiftCertificate.where(token: token).last
+    raise "Gift certificate #{token} not found" if gc == nil
+    raise "Gift certificate #{token} already redeemed" if gc.redeemed
     enrollment = nil
     PremiumGiftCertificate.transaction do
       gc.redeemed = true

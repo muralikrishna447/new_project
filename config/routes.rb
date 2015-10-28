@@ -377,7 +377,7 @@ Delve::Application.routes.draw do
       end
 
       resources :charges, only: [:create] do
-        get :redeem, on: :member
+        put :redeem, on: :member
       end
 
       match '/*path' => 'base#options', :via => :options

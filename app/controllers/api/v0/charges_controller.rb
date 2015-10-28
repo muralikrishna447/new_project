@@ -28,7 +28,7 @@ module Api
 
         render_api_response 200
 
-      rescue Exception => e
+      rescue StandardError => e
         puts e.inspect
         msg = (e.message || "(blank)")
         render_api_response 422, { error: msg}
@@ -37,6 +37,11 @@ module Api
       def redeem
         @user = User.find @user_id_from_token
         PremiumGiftCertificate.redeem(@user, params[:id])
+        render_api_response 200
+      rescue StandardError => e
+        puts e.inspect
+        msg = (e.message || "(blank)")
+        render_api_response 422, { error: msg}
       end
     end
   end
