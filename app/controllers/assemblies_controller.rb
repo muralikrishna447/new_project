@@ -77,45 +77,6 @@ class AssembliesController < ApplicationController
     render nothing: true
   end
 
-  # Note that although this is called "redeem", it only starts the redemption process
-  # sending them to the landing page with the GC in the session. The reason we don't immediately
-  # redeem it is they might not be logged in.
-
-  def redeem
-    session[:gift_token] = params[:gift_token]
-    @gift_certificate = GiftCertificate.where(token: session[:gift_token].downcase).first
-
-    if @gift_certificate
-      @assembly = @gift_certificate.assembly
-      if ! @gift_certificate.redeemed
-        # Normal redemption
-        flash[:notice] = "To get your gift, click the orange button below!"
-        redirect_to landing_class_url(@assembly)
-      else
-        # Already redeemed, probably the same user so tell 'em what to do
-        if current_user
-          # Logged in? Just continue.
-          flash[:notice] = "Gift code already used; click the orange button below to continue your class. If you need assistance, contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
-          redirect_to landing_class_url(@assembly)
-        else
-          # Not logged in, send 'em to log in
-          flash[:notice] = "Gift code already used; please sign in to continue your class. If you need assistance, contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
-          session[:force_return_to] = request.original_url
-          redirect_to sign_in_url
-        end
-
-      end
-
-    else
-      # Gift certificate we've never heard of. Someone try to rip us off?
-      flash[:error] = "Invalid gift code. Contact <a href='mailto:info@chefsteps.com'>info@chefsteps.com</a>."
-      redirect_to '/'
-    end
-  end
-
-  def redeem_index
-    render 'redeem_index'
-  end
 
 private
 
@@ -124,11 +85,6 @@ private
     begin
       @assembly = Assembly.includes(:assembly_inclusions => :includable).find_published(params[:id], params[:token], true)
       raise "Viewed Unplublished Assembly" if !@assembly.published? && cannot?(:update, @assembly)
-
-      # Changing so that it accepts a param gift_token as well, this is solely for e2e testing and shouldn't be given to customers as it
-      # doesn't store the information in the sesion so they MUST use it on that page.
-      gc_token = session[:gift_token] || params[:gift_token]
-      @gift_certificate = GiftCertificate.where(token: gc_token.downcase).first if gc_token
 
     rescue
       # If they are looking for a course that isn't yet published, take them to a page where

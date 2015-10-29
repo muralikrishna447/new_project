@@ -4,7 +4,7 @@
 
 class StripeChargeProcessor
   @queue = :stripe_charge_processor
-  def self.perform(email, token, price, description)
+  def self.perform(email, token, price, gift, description)
     customer = Stripe::Customer.create(
       email: email,
       card: token
@@ -18,6 +18,6 @@ class StripeChargeProcessor
     )
 
     mixpanel = ChefstepsMixpanel.new
-    mixpanel.track(email, 'Charge Server Side', {price: price, description: description})
+    mixpanel.track(email, 'Charge Server Side', {price: price, gift: gift, description: description})
   end
 end

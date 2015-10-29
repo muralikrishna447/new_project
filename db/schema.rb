@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151019174739) do
+ActiveRecord::Schema.define(:version => 20151027001131) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -489,6 +489,18 @@ ActiveRecord::Schema.define(:version => 20151019174739) do
     t.text     "image_id"
     t.datetime "closed_at"
   end
+
+  create_table "premium_gift_certificates", :force => true do |t|
+    t.integer  "purchaser_id"
+    t.decimal  "price",        :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",    :precision => 8, :scale => 2, :default => 0.0
+    t.string   "token"
+    t.boolean  "redeemed",                                   :default => false
+    t.datetime "created_at",                                                    :null => false
+    t.datetime "updated_at",                                                    :null => false
+  end
+
+  add_index "premium_gift_certificates", ["token"], :name => "index_premium_gift_certificates_on_token"
 
   create_table "private_tokens", :force => true do |t|
     t.string   "token",      :null => false
