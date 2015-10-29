@@ -73,6 +73,7 @@ describe Api::V0::UsersController do
 
   context 'POST /create' do
     it 'should create a user' do
+      Resque.should_receive(:enqueue)
       post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should be_success
     end
