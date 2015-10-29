@@ -10,8 +10,10 @@ module Api
           @user = nil
         end
         version = 'v1.0.0'
-
         link = get_firmware_link(version)
+        logger.debug("Handing out firmware link for #{version} to user " \
+                     "[#{@user_id_from_token}]: #{link}")
+
         data = {
           "version" => version,
           "location" => link
