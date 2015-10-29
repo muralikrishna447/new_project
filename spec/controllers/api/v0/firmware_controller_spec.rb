@@ -2,6 +2,9 @@ describe Api::V0::FirmwareController do
   before :each do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     @token = ActorAddress.create_for_user(@user, client_metadata: "create").current_token
+
+    @link = 'http://www.foo.com'
+    controller.stub(:get_firmware_link).and_return(@link)
   end
 
   it 'should get firmware version' do
@@ -18,7 +21,7 @@ describe Api::V0::FirmwareController do
     response.should be_success
     resp = JSON.parse(response.body)
     resp['version'].should_not be_nil
-    resp['location'].should_not be_nil
+    resp['location'].should == @link
   end
   it 'should fail if bad token' do
     request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
