@@ -7,9 +7,8 @@ module Api
         @user = User.find @user_id_from_token
 
         # ECOMTODO: this bit is just a stub where Dan can plug in real products/orders/tax/etc.
-        # Harcoded right now to accept a single sku, cs10000, for Premium and get the price from global settings.
-        skus = JSON.parse(params[:skus])
-        raise "Invalid SKUs #{params[:skus]}" if skus != ['cs10000']
+        # Harcoded right now to accept a single sku, cs10002, for Premium and get the price from global settings.
+        raise "Invalid sku #{params[:sku]}" if params[:sku] != 'cs10002'
 
         # ECOMTODO: this is hardcoded only to buy memberships for now; needs a robust system
         # for differentiating digital entitlements from physical products.

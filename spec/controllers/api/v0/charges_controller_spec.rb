@@ -1,10 +1,10 @@
 describe Api::V0::ChargesController do
-  premium_sku = '["cs10000"]'
+  premium_sku = "cs10002"
 
   context 'POST /create' do
 
     it 'should error if not logged in' do
-      post :create, skus: premium_sku
+      post :create, sku: premium_sku
       expect(response.status).to eq(401)
     end
 
@@ -17,26 +17,26 @@ describe Api::V0::ChargesController do
       end
 
       it 'should error if purchasing anything other than premium membership' do
-        post :create, skus: '["blah"]'
+        post :create, sku: '["blah"]'
         expect(response.status).to eq(422)
       end
 
       it 'should queue charge and make member premium when called correctly' do
         User.any_instance.should_receive(:make_premium_member)
         Resque.should_receive(:enqueue)
-        post :create, skus: premium_sku, stripeToken: 'xxx'
+        post :create, sku: premium_sku, stripeToken: 'xxx'
         expect(response.status).to eq(200)
       end
 
       it 'should error if user is already premium' do
         @user.make_premium_member(10)
-        post :create, skus: premium_sku, stripeToken: 'xxx'
+        post :create, sku: premium_sku, stripeToken: 'xxx'
         expect(response.status).to eq(422)
       end
 
       it 'should queue charge and create gift certificate when called correctly' do
         Resque.should_receive(:enqueue)
-        post :create, skus: premium_sku, gift: "true", stripeToken: 'xxx'
+        post :create, sku: premium_sku, gift: "true", stripeToken: 'xxx'
         expect(PremiumGiftCertificate.count).to eq(1)
         expect(PremiumGiftCertificate.last.redeemed).to eq(false)
         expect(response.status).to eq(200)
