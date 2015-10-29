@@ -11,7 +11,7 @@ module Api
         end
         version = 'v1.0.0'
 
-        link = get_firmware_link('v1.0.0')
+        link = get_firmware_link(version)
         data = {
           "version" => version,
           "location" => link
