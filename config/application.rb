@@ -82,6 +82,8 @@ module Delve
     config.assets.version = '9'
     config.assets.initialize_on_precompile = false
 
+    config.firmware_bucket = 'chefsteps-firmware-staging'
+
     # We *do* want Rails caching
     unless Rails.env.development?
       config.cache_store = :dalli_store
