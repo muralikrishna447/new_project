@@ -3,6 +3,8 @@ module Api
     class FirmwareController < BaseController
       before_filter :ensure_authorized_or_anonymous
 
+      LINK_EXPIRE_SECS = 60 * 5
+
       def latest_version
         if @user_id_from_token
           @user = User.find @user_id_from_token
@@ -29,8 +31,7 @@ module Api
         key_name = "joule/#{version}/application.bin"
         bucket = AWS::S3::Bucket.new(bucket_name, :client => s3_client)
         o = bucket.objects[key_name]
-        expire_secs = 60 * 5
-        o.url_for(:get, {:secure => true, :expires => expire_secs}).to_s
+        o.url_for(:get, {:secure => true, :expires => LINK_EXPIRE_SECS}).to_s
       end
     end
   end
