@@ -31,6 +31,7 @@ module Api
       rescue StandardError => e
         puts e.inspect
         msg = (e.message || "(blank)")
+        logger.error("ChargesController#create error: #{e.message}")
         render_api_response 422, { error: msg}
       end
 
@@ -42,6 +43,7 @@ module Api
       rescue StandardError => e
         puts e.inspect
         msg = (e.message || "(blank)")
+        logger.error("ChargesController#redeem error: #{e.message}")
         render_api_response 422, { error: msg}
       end
     end
