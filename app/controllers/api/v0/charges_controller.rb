@@ -4,26 +4,88 @@ module Api
       before_filter :ensure_authorized
 
       def create
+
         @user = User.find @user_id_from_token
-
-        # ECOMTODO: this bit is just a stub where Dan can plug in real products/orders/tax/etc.
-        # Harcoded right now to accept a single sku, cs10002, for Premium and get the price from global settings.
-        raise "Invalid sku #{params[:sku]}" if params[:sku] != 'cs10002'
-
-        # ECOMTODO: this is hardcoded only to buy memberships for now; needs a robust system
-        # for differentiating digital entitlements from physical products.
-
-        # ECOMTODO: since this has already gone through stripe.js which validates the card, we go ahead
-        # and give them premium right away which is a smoother, faster experience on the frontend, and
-        # queue up the charge which can take a little while.
-
-        if params[:gift] == "true"
-          PremiumGiftCertificate.create!(purchaser_id: @user.id, price: Setting.last.premium_membership_price, redeemed: false)
-        else
-          @user.make_premium_member(Setting.last.premium_membership_price)
+        # Doing this so we can call the actual charge stuff multiple times if needs be to collect the money
+        circulator, premium = StripeOrder.stripe_products
+        idempotency_key = Time.now.to_f.to_s+rand(10000)
+        data = {sku: params[:sku]}
+        data[:circulator_sale] = false
+        data[:premium_discount] = false
+        data[:gift] = params[:gift]
+        data[:circulator_tax_code] = circulator.metadata[:tax_code]
+        data[:premium_tax_code] = premium.metadata[:tax_code]
+        data[:circulator_discount] = (circulator[:price]-circulator.metadata['premiumPrice'])
+        data[:circulator_base_price] = circulator[:price]
+        data[:premium_base_price] = premium[:price]
+        if params[:sku] == "cs10001" # Circulator
+          if @user.premium_member
+            data[:price] = circulator['premiumPrice']
+            data[:description] = 'Joule + Premium Discount'
+            data[:premium_discount] = true
+            data[:circulator_sale] = true
+          else
+            data[:price] = circulator[:price]
+            data[:description] = 'Joule + ChefSteps Premium'
+            data[:premium_discount] = false
+            data[:circulator_sale] = true
+          end
+        elsif params[:sku] == 'cs10002' # Premium
+          data[:price] = circulator[:price]
+          data[:description] = 'ChefSteps Premium'
+          data[:premium_discount] = false
+          data[:circulator_sale] = false
         end
 
-        Resque.enqueue(StripeChargeProcessor, @user.email, params[:stripeToken], Setting.last.premium_membership_price, params[:gift], 'ChefSteps Premium')
+        raise "Price Mismatch" if price != params[:price]
+
+        price = data[:price]+(params[:tax].to_f*100)
+
+
+        data.merge({
+          billing_address_line1: params[:billing_address_line1],
+          billing_address_city: params[:billing_address_city],
+          billing_address_state: params[:billing_address_state],
+          billing_address_zip: params[:billing_address_zip],
+          billing_address_country: params[:billing_address_country],
+          shipping_address_line1: params[:shipping_address_line1],
+          shipping_address_city: params[:shipping_address_city],
+          shipping_address_state: params[:shipping_address_state],
+          shipping_address_zip: params[:shipping_address_zip],
+          shipping_address_country: params[:shipping_address_country],
+          token: parmas['stripeToken']
+        })
+
+        mixpanel = ChefstepsMixpanel.new
+        mixpanel.track(email, 'Charge Server Side', {price: price, description: description})
+
+        stripe_order = StripeOrder.create({idempotency_key: idempotency_key, user_id: @user.id, data: data})
+
+        Resque.enqueue(StripeChargeProcessor, stripe_order.id)
+
+        if @user.stripe_id.blank?
+          customer = Stripe::Customer.create(email: @user.email, card: data[:token])
+        else
+          customer = Stripe::Customer.retrieve(@user.stripe_id)
+          customer.source = data[:token]
+          customer.save
+        end
+
+        stripe_order.data[:tax_amount] = stripe_order.get_tax(false)[:taxable_amount]
+
+        stripe_order.save
+
+        Stripe::Order.create(stripe_order.stripe_order)
+
+
+        stripe_order.submitted = true
+        stripe_order.save
+
+        if params[:gift] == true
+          PremiumGiftCertificate.create!(purchaser_id: @user.id, price: Setting.last.premium_membership_price, redeemed: false)
+        else
+          @user.make_premium_member(data[:premium_base_price])
+        end
 
         render_api_response 200
 
