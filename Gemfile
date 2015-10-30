@@ -56,7 +56,7 @@ gem 'cancan'
 gem 'simple-rss'
 gem 'active_model_serializers'
 gem 'mixpanel_client'
-gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+gem 'stripe'
 gem 'geokit-rails'
 gem 'rack-ssl-enforcer'
 gem 'redcarpet'
@@ -77,6 +77,8 @@ gem 'shopify_api'
 gem 'resque'
 
 gem 'sanitize'
+
+gem 'avatax'
 
 group :test do
   gem 'webmock'
