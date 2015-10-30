@@ -158,7 +158,19 @@ module Api
             return
           end
 
-          render json: {message: 'Success.', tokenValid: true, data: token.claim}, status: 200
+          addressable_addresses = aa.addressable_addresses.map{|a| a.address_id}
+
+          # TODO: We are storing minimal info in the claim itself, and
+          # decorating with other data on validate.
+          resp = {
+            message: 'Success.',
+            tokenValid: true,
+            addressableAddresses: addressable_addresses,
+            actorType: aa.actor_type, # this one can probably be in claim
+            data: token.claim,
+          }
+
+          render json: resp, status: 200
         rescue Exception => e
           logger.error "Authenticate Exception: #{e.class} #{e}"
           logger.error e.backtrace.join("\n")

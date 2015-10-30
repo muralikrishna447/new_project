@@ -228,9 +228,10 @@ ActiveRecord::Schema.define(:version => 20151027001131) do
   create_table "circulators", :force => true do |t|
     t.string   "serial_number"
     t.string   "notes"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
-    t.string   "circulator_id", :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.string   "circulator_id",                      :null => false
+    t.string   "encrypted_secret_key", :limit => 64
   end
 
   create_table "comments", :force => true do |t|

@@ -82,6 +82,8 @@ module Delve
     config.assets.version = '9'
     config.assets.initialize_on_precompile = false
 
+    config.firmware_bucket = 'chefsteps-firmware-staging'
+
     # We *do* want Rails caching
     unless Rails.env.development?
       config.cache_store = :dalli_store
@@ -119,6 +121,7 @@ module Delve
 
     if Rails.env.test? || Rails.env.development?
       ENV["AUTH_SECRET_KEY"] = File.read("config/rsa_test.pem")
+      ENV["AES_KEY"] = 'bUg7wjYZ4ygQEyqtBesU(+R9urFB+CNv'
     end
 
     # In development set to staging unless explicitely overridden

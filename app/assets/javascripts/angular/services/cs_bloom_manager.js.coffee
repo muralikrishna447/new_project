@@ -11,6 +11,7 @@
     script = document.createElement "script"
     script.type = "text/javascript"
     script.src = "#{csConfig.bloom.community_endpoint}/export/loader.js"
+    script.setAttribute('crossorigin', 'anonymous')
     script.async = true
     script.onload = =>
       Bloom.configure {

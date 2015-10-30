@@ -366,6 +366,8 @@ Delve::Application.routes.draw do
         get :token, on: :member
       end
 
+      get 'firmware/latest_version', to: 'firmware#latest_version'
+
       namespace :shopping do
         resources :products do
           # match '/product/:product_id', to: 'shopping#product'
