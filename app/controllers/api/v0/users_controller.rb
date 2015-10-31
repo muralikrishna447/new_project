@@ -73,8 +73,9 @@ module Api
         if user.save
           email_list_signup(user.name, user.email, params[:source])
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
-          mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
-          mixpanel.track(@user.email, 'Signed Up', {source: 'api'})
+          # mixpanel.alias needs to be called with @user.id instead of @user.email for consistant tracking with the client
+          mixpanel.alias(@user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
+          mixpanel.track(@user.id, 'Signed Up', {source: 'api'})
           Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
           Librato.increment 'user.signup', sporadic: true
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
