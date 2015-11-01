@@ -384,6 +384,8 @@ Delve::Application.routes.draw do
 
       resources :products, only: [:index]
 
+      resources :products, only: [:index]
+
       match '/*path' => 'base#options', :via => :options
 
       # match 'activities/', to: 'activities#index', via: [:get, :options]
