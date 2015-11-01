@@ -11,7 +11,8 @@ describe SitemapsController, "#get" do
     let!(:assembly1) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 39.00, published: true ) }
     let!(:assembly3) { Fabricate(:assembly, title: "Zummy", assembly_type: "Course", price: 39.00, published: false, show_prereg_page_in_index: true ) }
     let!(:project1) {Fabricate(:assembly, title: "Nummy", assembly_type: "Project", price: 39.00, published: true) }
-    let!(:page1) { Fabricate(:page, title: "Frummy")}
+    let!(:page1) { Fabricate(:page, title: "Frummy", published: true)}
+    let!(:page2) { Fabricate(:page, title: "Hummy", published: false)}
     let!(:poll1) { Fabricate(:poll, title: "Crrummy")}
     let!(:upload) { Fabricate(:upload, title: "uCrrummy", approved: true)}
 
@@ -33,6 +34,7 @@ describe SitemapsController, "#get" do
       expect(response.body).to include("http://www.chefsteps.com/frummy")
       expect(response.body).to include("http://www.chefsteps.com/uploads/ucrrummy")
       expect(response.body).to_not include("http://chefsteps.com")
+      expect(response.body).to_not include("http://www.chefsteps.com/hummy")
 
     end
   end
