@@ -7,7 +7,7 @@ describe PagesController do
     end
 
     it 'renders page page' do
-      @page = Fabricate :page, title: 'So Pagey', content: 'smuckers'
+      @page = Fabricate :page, title: 'So Pagey', content: 'smuckers', published: true
       get :show, id: @page.slug
       expect(response).to render_template(:show)
     end
@@ -20,4 +20,3 @@ describe PagesController do
     end
   end
 end
-
