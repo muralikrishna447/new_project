@@ -2,7 +2,8 @@ module Api
   module V0
     class ProductsController < BaseController
       def index
-        tax_percent = get_tax_estimate
+        location = Geokit::Geocoders::MultiGeocoder.geocode(request.ip)
+        tax_percent = get_tax_estimate(location)
         products =  Rails.cache.fetch("stripe_products", expires_in: 5.minutes){
           Stripe::Product.all(active: true)
         }
@@ -16,7 +17,7 @@ module Api
           end
         end
 
-        result = {'taxPercent' => tax_percent, products: {circulator[:sku] => circulator, premium[:sku] => premium}}
+        result = {'taxPercent' => tax_percent, country: location.country_code, state: location.state, products: {circulator[:sku] => circulator, premium[:sku] => premium}}
         render(json: result)
       end
 
@@ -30,10 +31,9 @@ module Api
       end
 
       private
-      def get_tax_estimate
+      def get_tax_estimate(location)
         #Null for no geocode and 0 for no tax
         tax_service = AvaTax::TaxService.new
-        location = Geokit::Geocoders::MultiGeocoder.geocode(request.ip)
         if location.latitude && location.longitude
           geo_tax_result = tax_service.estimate({latitude: location.latitude, longitude: location.longitude}, 100)
           geo_tax_result["Rate"]

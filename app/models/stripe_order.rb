@@ -3,15 +3,11 @@ class StripeOrder < ActiveRecord::Base
   serialize :data, JSON
   belongs_to :user
 
-  circulator_plus_premium = 'Joule + ChefSteps Premium'
-  circulator_plus_discount = 'Joule + Premium Discount'
-  premium_description = 'ChefSteps Premium'
-
   def stripe_order
     {
       currency: "usd",
       email: user.email,
-      customer: user.stripe_user_id,
+      customer: user.stripe_id,
       items: stripe_items,
       metadata: {
         user_id: user_id,
@@ -22,16 +18,16 @@ class StripeOrder < ActiveRecord::Base
   end
 
   def stripe_shipping
-    if data[:circulator_sale]
+    if data['circulator_sale']
       {
-        name: data[:shipping_address_name],
+        name: data['shipping_address_name'],
         # phone: data[:shipping_phone],
         address: {
-          line1: data[:shipping_address_line1],
-          city: data[:shipping_address_city],
-          state: data[:shipping_address_state],
-          postal_code: data[:shipping_address_zip],
-          country: data[:shipping_address_country]
+          line1: data['shipping_address_line1'],
+          city: data['shipping_address_city'],
+          state: data['shipping_address_state'],
+          postal_code: data['shipping_address_zip'],
+          country: data['shipping_address_country']
         }
       }
     end
@@ -40,10 +36,10 @@ class StripeOrder < ActiveRecord::Base
 
   def stripe_items
     line_items = []
-    if data[:circulator_sale]
-      if data[:premium_discount]
+    if data['circulator_sale']
+      if data['premium_discount']
         line_items << {
-          amount: data[:circulator_base_price],
+          amount: data['circulator_base_price'],
           currency: 'usd',
           description: 'Joule Circulator',
           parent: 'cs10001',
@@ -52,7 +48,7 @@ class StripeOrder < ActiveRecord::Base
         }
 
         line_items << {
-          amount: data[:circulator_discount],
+          amount: data['circulator_discount'],
           currency: 'usd',
           description: 'ChefSteps Premium Joule Discount',
           parent: nil,
@@ -61,7 +57,7 @@ class StripeOrder < ActiveRecord::Base
         }
       else
         line_items << {
-          amount: data[:price],
+          amount: data['price'],
           currency: 'usd',
           description: 'Joule Circulator',
           parent: 'cs10001',
@@ -69,7 +65,7 @@ class StripeOrder < ActiveRecord::Base
           type: 'sku'
         }
         line_items << {
-          amount: 0,
+          amount: '0',
           currency: 'usd',
           description: 'ChefSteps Premium',
           parent: 'cs10002',
@@ -79,7 +75,7 @@ class StripeOrder < ActiveRecord::Base
       end
     else
       line_items << {
-        amount: data[:price,
+        amount: data['price'],
         currency: 'usd',
         description: 'ChefSteps Premium',
         parent: 'cs10002',
@@ -88,10 +84,10 @@ class StripeOrder < ActiveRecord::Base
       }
     end
 
-    tax_amount = data[:tax_amount].present? ? data[:tax_amount] : get_tax(false)[:taxable_amount]
+    tax_amount = data['tax_amount'].present? ? data['tax_amount'] : get_tax(false)[:taxable_amount]
 
     # if we are taking tax add it as an item
-    if tax_amount && tax_amount > 0
+    if tax_amount && tax_amount.to_i > 0
       line_items << {
         amount: tax_amount,
         currency: 'usd',
@@ -109,11 +105,8 @@ class StripeOrder < ActiveRecord::Base
   def get_tax(collected=false)
     tax_service = AvaTax::TaxService.new
     tax_request = {
-      # Document Level Elements
-      # Required Request Parameters
       :CustomerCode => user_id,
       :DocDate => Time.now.to_s(:avatax),
-      # Best Practice Request Parameters
       :CompanyCode => "ChefSteps",
       :Client => "ChefSteps.com",
       :DocCode => id,
@@ -121,14 +114,8 @@ class StripeOrder < ActiveRecord::Base
       :DetailLevel => "Tax",
       :Commit => collected,
       :DocType => (collected ? "SalesOrder" : "SalesInvoice"),
-      # Optional Request Parameters
-      # :PurchaseOrderNo => "PO123456", # Figure out what to use this for
-      # :ReferenceCode => "ref123456", # Figure out what to use this for
-      # :PosLaneCode => "09", # Used for POS
       :CurrencyCode => "USD",
-      # Address Data
       :Addresses => tax_shipping_addresses,
-      # Line Data
       :Lines => tax_line_items
     }
     tax_result = tax_service.get(tax_request)
@@ -137,30 +124,30 @@ class StripeOrder < ActiveRecord::Base
   end
 
   def tax_shipping_addresses
-    if data[:circulator_sale]
+    if data['circulator_sale']
       [{
         :AddressCode => "01",
-        :Line1 => data[:shipping_address_line1],
-        :City => data[:shipping_address_city],
-        :Region => data[:shipping_address_state],
-        :PostalCode => data[:shipping_address_zip],
-        :Country => data[:shipping_address_country]
+        :Line1 => data['shipping_address_line1'],
+        :City => data['shipping_address_city'],
+        :Region => data['shipping_address_state'],
+        :PostalCode => data['shipping_address_zip'],
+        :Country => data['shipping_address_country']
       }]
     end
   end
 
   def tax_line_items
     line_items = []
-    if data[:circulator_sale] # Bought Circulator
+    if data['circulator_sale'] # Bought Circulator
       line_items << {
         # Required Parameters
         :LineNo => 1,
         :ItemCode => "cs10001",
         :Qty => 1,
-        :Amount => data[:price],
+        :Amount => data['price'],
         :DestinationCode => "01",
-        :Description => data[:description],
-        :TaxCode => data[:circulator_tax_code]
+        :Description => data['description'],
+        :TaxCode => data['circulator_tax_code']
       }
     else
       line_items << {
@@ -168,48 +155,75 @@ class StripeOrder < ActiveRecord::Base
         :LineNo => 1,
         :ItemCode => "cs10002",
         :Qty => 1,
-        :Amount => data[:price],
+        :Amount => data['price'],
         :DestinationCode => "01",
-        :Description => data[:description],
-        :TaxCode => data[:premium_tax_code]
+        :Description => data['description'],
+        :TaxCode => data['premium_tax_code']
       }
     end
   end
 
+  def send_to_stripe
+    self.create_or_update_user
 
-  class << self
-    def stripe_products
-      products = Stripe::Product.all(active: true)
-      circulator = premium = nil
-      products.each do |product|
-        sku = product.skus.first
-        if product.id == 'cs-premium'
-          premium = {sku: sku.id, title: product.name, price: (sku.price.to_f/100.0), msrp: (sku.metadata[:msrp].to_f/100.0), tax_code: sku.metadata[:tax_code]}
-        elsif product.id == 'cs-joule'
-          circulator = {sku: sku.id, title: product.name, price: (sku.price.to_f/100.0), msrp: (sku.metadata[:msrp].to_f/100.0), 'premiumPrice' => (sku.metadata[:premium_price].to_f/100.0), tax_code: sku.metadata[:tax_code]}
-        end
-      end
-      return [circulator, premium]
+    self.data['tax_amount'] = self.get_tax(false)['taxable_amount']
+
+    self.save
+
+    stripe = Stripe::Order.create(self.stripe_order, idempotency_key: self.idempotency_key)
+    stripe.pay(source: data['token'])
+    if stripe.status == 'paid'
+      self.submitted = true
+      self.save
     end
 
-    def set_price_description(circulator, premium, skus, premium_discount, user)
-      price = description = nil
+    user.make_premium_member(data['premium_base_price']) if !user.premium_member && !data['gift']
+    user.update_attribute(:used_ciruclator_discount, true) if data['premium_discount']
+  end
 
-      if skus.include?(circulator[:sku])
-        if premium_discount # Switch this to something else?
-          description = circulator_plus_discount
-          price = circulator['premiumPrice']
-        else
-          description = circulator_plus_premium
-          price = circulator[:price]
-        end
-      end
-
-      if skus.include?(premium[:sku])
-        description = premium_description
-        price = premium[:price]
-      end
-      return [price, description]
+  def create_or_update_user
+    if user.stripe_id.blank?
+      customer = Stripe::Customer.create(email: user.email, card: data['token'])
+    else
+      customer = Stripe::Customer.retrieve(user.stripe_id)
+      customer.source = data['token']
+      customer.save
     end
+  end
+
+
+
+  def self.stripe_products
+    products = Stripe::Product.all(active: true)
+    circulator = premium = nil
+    products.each do |product|
+      sku = product.skus.first
+      if product.id == 'cs-premium'
+        premium = {sku: sku.id, title: product.name, price: (sku.price.to_f/100.0), msrp: (sku.metadata[:msrp].to_f/100.0), tax_code: sku.metadata[:tax_code]}
+      elsif product.id == 'cs-joule'
+        circulator = {sku: sku.id, title: product.name, price: (sku.price.to_f/100.0), msrp: (sku.metadata[:msrp].to_f/100.0), 'premiumPrice' => (sku.metadata[:premium_price].to_f/100.0), tax_code: sku.metadata[:tax_code]}
+      end
+    end
+    return [circulator, premium]
+  end
+
+  def self.set_price_description(circulator, premium, skus, premium_discount, user)
+    price = description = nil
+
+    if skus.include?(circulator[:sku])
+      if premium_discount # Switch this to something else?
+        description = circulator_plus_discount
+        price = circulator['premiumPrice']
+      else
+        description = circulator_plus_premium
+        price = circulator[:price]
+      end
+    end
+
+    if skus.include?(premium[:sku])
+      description = premium_description
+      price = premium[:price]
+    end
+    return [price, description]
   end
 end
