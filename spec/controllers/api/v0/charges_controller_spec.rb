@@ -1,10 +1,8 @@
 describe Api::V0::ChargesController do
-  premium_sku = "cs10002"
-
   context 'POST /create' do
 
     it 'should error if not logged in' do
-      post :create, sku: premium_sku
+      post :create, sku: ''
       expect(response.status).to eq(401)
     end
 
@@ -15,10 +13,10 @@ describe Api::V0::ChargesController do
         token = ActorAddress.create_for_user(@user, client_metadata: "create").current_token
         request.env['HTTP_AUTHORIZATION'] = token.to_jwt
 
-        premium = {sku: "cs10002", title: "Premium", price: 5000, msrp: "100.0", tax_code: "ODD"}
-        circulator = {sku: "cs10001", title: "Circulator", price: 20000, msrp: "250.00", 'premiumPrice' => 17000, tax_code: "TPP"}
+        @premium = {sku: "cs10002", title: "Premium", price: 5000, msrp: "100.0", tax_code: "ODD"}
+        @circulator = {sku: "cs10001", title: "Circulator", price: 20000, msrp: "250.00", 'premiumPrice' => 17000, tax_code: "TPP"}
 
-        StripeOrder.stub(:stripe_products).and_return([circulator, premium])
+        StripeOrder.stub(:stripe_products).and_return([@circulator, @premium])
         StripeOrder.any_instance.stub(:send_to_stripe).and_return(nil)
 
 
@@ -34,23 +32,23 @@ describe Api::V0::ChargesController do
 
       it 'should queue charge when called correctly' do
         Resque.should_receive(:enqueue).and_return
-        post :create, sku: premium[:sku], stripeToken: 'xxx', price: '50.0'
+        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '50.0'
         expect(response.status).to eq(200)
       end
 
       it 'should call mixpanel track' do
         ChefstepsMixpanel.any_instance.should_receive(:track).and_return
-        post :create, sku: premium[:sku], stripeToken: 'xxx', price: '50.0'
+        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '50.0'
       end
 
       it 'should error if user is already premium' do
         @user.make_premium_member(10)
-        post :create, sku: premium[:sku], stripeToken: 'xxx', price: '50.0'
+        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '50.0'
         expect(response.status).to eq(422)
       end
 
       it "should create the stripe_order object and set the user to premium when ordering the circulator" do
-        options = {sku: circulator[:sku], stripeToken: 'xxx', price: '200.0', gift: false}.merge(@billing_address).merge(@shipping_address)
+        options = {sku: @circulator[:sku], stripeToken: 'xxx', price: '200.0', gift: false}.merge(@billing_address).merge(@shipping_address)
         post :create, options
         stripe_order = StripeOrder.last
         stripe_order.user_id.should == @user.id
@@ -65,7 +63,7 @@ describe Api::V0::ChargesController do
         request.env['HTTP_AUTHORIZATION'] = token.to_jwt
         @user.premium_member.should == true
 
-        options = {sku: circulator[:sku], stripeToken: 'xxx', price: '170.0', gift: false}.merge(@billing_address).merge(@shipping_address)
+        options = {sku: @circulator[:sku], stripeToken: 'xxx', price: '170.0', gift: false}.merge(@billing_address).merge(@shipping_address)
         post :create, options
         expect(response.status).to eq(200)
         stripe_order = StripeOrder.last
@@ -78,7 +76,7 @@ describe Api::V0::ChargesController do
       end
 
       it "should create the stripe_order without the billing and shipping" do
-        options = {sku: premium[:sku], stripeToken: 'xxx', price: '50.0', gift: false}
+        options = {sku: @premium[:sku], stripeToken: 'xxx', price: '50.0', gift: false}
         post :create, options
         expect(response.status).to eq(200)
         stripe_order = StripeOrder.last
@@ -90,7 +88,7 @@ describe Api::V0::ChargesController do
 
       it 'should let you buy a premium class if you already have one if it is a gift' do
         @user.make_premium_member(10)
-        post :create, sku: premium[:sku], stripeToken: 'xxx', price: '50.0', gift: true
+        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '50.0', gift: true
         expect(response.status).to eq(200)
       end
 
@@ -100,17 +98,9 @@ describe Api::V0::ChargesController do
         request.env['HTTP_AUTHORIZATION'] = token.to_jwt
         @user.premium_member.should == true
 
-        options = {sku: circulator[:sku], stripeToken: 'xxx', price: '170.0', gift: false}.merge(@billing_address).merge(@shipping_address)
+        options = {sku: @circulator[:sku], stripeToken: 'xxx', price: '170.0', gift: false}.merge(@billing_address).merge(@shipping_address)
         post :create, options
         expect(response.status).to eq(422)
-      end
-
-      it 'should queue charge and create gift certificate when called correctly' do
-        Resque.should_receive(:enqueue)
-        post :create, sku: premium[:sku], gift: "true", stripeToken: 'xxx'
-        expect(PremiumGiftCertificate.count).to eq(1)
-        expect(PremiumGiftCertificate.last.redeemed).to eq(false)
-        expect(response.status).to eq(200)
       end
 
       it 'should redeem a valid gift certificate' do

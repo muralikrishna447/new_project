@@ -177,7 +177,11 @@ class StripeOrder < ActiveRecord::Base
       self.save
     end
 
-    user.make_premium_member(data['premium_base_price']) if !user.premium_member && !data['gift']
+    if data['gift']
+      PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
+    else
+      user.make_premium_member(data['price']) if !user.premium_member && !data['gift']
+    end
     user.update_attribute(:used_ciruclator_discount, true) if data['premium_discount']
   end
 

@@ -184,9 +184,18 @@ describe StripeOrder do
       @stripe_circulator_order.send_to_stripe
     end
 
-    it "should call make_premium_member" do
+    it "should call make_premium_member if not gift" do
       User.any_instance.should_receive(:make_premium_member)
       @stripe_circulator_order.send_to_stripe
+      expect(PremiumGiftCertificate.count).to eq(0)
+    end
+
+    it "should create a premium gift certificate if gift" do
+      User.any_instance.should_not_receive(:make_premium_member)
+      stripe_order = Fabricate(:stripe_order, idempotency_key: 'CS321', user_id: @user.id, data: @premium_sale.merge(gift: true))
+      stripe_order.send_to_stripe
+      expect(PremiumGiftCertificate.count).to eq(1)
+      expect(PremiumGiftCertificate.last.redeemed).to eq(false)
     end
   end
 
