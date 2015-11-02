@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
 
   def show
-    @page = Page.find(params[:id])
+    @page = Page.find_published(params[:id])
     respond_to do |format|
       format.html
       format.json do

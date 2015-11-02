@@ -12,7 +12,7 @@ class SitemapsController < ApplicationController
                   Assembly.pubbed_courses() |
                   Assembly.prereg_courses() |
                   Assembly.projects().published() |
-                  Page.all() |
+                  Page.published() |
                   Upload.approved()
 
     @other_routes = ["/", "/about", "/gallery", "/jobs"]

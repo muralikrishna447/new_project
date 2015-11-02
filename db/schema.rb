@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151016225227) do
+ActiveRecord::Schema.define(:version => 20151031165901) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -458,6 +458,7 @@ ActiveRecord::Schema.define(:version => 20151016225227) do
     t.string   "primary_path"
     t.text     "short_description"
     t.boolean  "show_footer",       :default => false
+    t.boolean  "published",         :default => false
   end
 
   create_table "pg_search_documents", :force => true do |t|
