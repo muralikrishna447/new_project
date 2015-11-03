@@ -4,19 +4,9 @@ module Api
       def index
         location = Geokit::Geocoders::MultiGeocoder.geocode(request.ip)
         tax_percent = get_tax_estimate(location)
-        products =  Rails.cache.fetch("stripe_products", expires_in: 5.minutes){
-          Stripe::Product.all(active: true)
+        circulator, premium =  Rails.cache.fetch("stripe_products", expires_in: 5.minutes){
+          StripeOrder.stripe_products
         }
-        circulator = premium = nil
-        products.each do |product|
-          sku = product.skus.first
-          if product.id == 'cs-premium'
-            premium = {sku: sku.id, title: product.name, price: (sku.price.to_f/100.0), msrp: (sku.metadata[:msrp].to_f/100.0), shippable: product.shippable}
-          elsif product.id == 'cs-joule'
-            circulator = {sku: sku.id, title: product.name, price: (sku.price.to_f/100.0), msrp: (sku.metadata[:msrp].to_f/100.0), 'premiumPrice' => (sku.metadata[:premium_price].to_f/100.0), shippable: product.shippable}
-          end
-        end
-
         result = {'taxPercent' => tax_percent, country: location.country_code, state: location.state, products: {circulator[:sku] => circulator, premium[:sku] => premium}}
         render(json: result)
       end

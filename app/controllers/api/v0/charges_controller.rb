@@ -46,15 +46,15 @@ module Api
           return render_api_response 422, { error: "User Already Premium"}
         end
 
-        if data[:price] != (params[:price].to_f*100).to_i
+        if data[:price].to_i != params[:price].to_i
           #raise "Price Mismatch #{data[:price]} - #{(params[:price].to_f*100).to_i}"
-          return render_api_response 422, { error: "Price Mismatch #{data[:price]} - #{(params[:price].to_f*100).to_i}"}
+          return render_api_response 422, { error: "Price Mismatch #{data[:price]} - #{params[:price]}"}
         end
 
         if params[:tax]
-          price = data[:price]+(params[:tax].to_f*100)
+          price = data[:price].to_i+params[:tax].to_i
         else
-          price = data[:price]
+          price = data[:price].to_i
         end
 
         data.merge!({
@@ -87,7 +87,7 @@ module Api
       rescue StandardError => e
         puts e.inspect
         msg = (e.message || "(blank)")
-        logger.error("ChargesController#create error: #{e.message}")
+        logger.error("ChargesController#create error: #{e.message}\n#{e.backtrace.join('\n')}")
         render_api_response 422, { error: msg}
       end
 

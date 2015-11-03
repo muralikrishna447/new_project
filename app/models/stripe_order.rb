@@ -170,9 +170,9 @@ class StripeOrder < ActiveRecord::Base
 
     self.save
 
-    stripe = Stripe::Order.create(self.stripe_order, idempotency_key: self.idempotency_key)
-    stripe.pay(source: data['token'])
-    if stripe.status == 'paid'
+    stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
+    stripe_charge = stripe.pay({source: data['token']}, {idempotency_key: (self.idempotency_key+"A")})
+    if stripe_charge.status == 'paid'
       self.submitted = true
       self.save
     end
@@ -203,9 +203,9 @@ class StripeOrder < ActiveRecord::Base
     products.each do |product|
       sku = product.skus.first
       if product.id == 'cs-premium'
-        premium = {sku: sku.id, title: product.name, price: (sku.price.to_f/100.0), msrp: (sku.metadata[:msrp].to_f/100.0), tax_code: sku.metadata[:tax_code]}
+        premium = {sku: sku.id, title: product.name, price: sku.price, msrp: sku.metadata[:msrp].to_i, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
       elsif product.id == 'cs-joule'
-        circulator = {sku: sku.id, title: product.name, price: (sku.price.to_f/100.0), msrp: (sku.metadata[:msrp].to_f/100.0), 'premiumPrice' => (sku.metadata[:premium_price].to_f/100.0), tax_code: sku.metadata[:tax_code]}
+        circulator = {sku: sku.id, title: product.name, price: sku.price, msrp: sku.metadata[:msrp].to_i, 'premiumPrice' => sku.metadata[:premium_price].to_i, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
       end
     end
     return [circulator, premium]
