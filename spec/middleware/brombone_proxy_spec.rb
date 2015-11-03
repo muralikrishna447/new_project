@@ -1,8 +1,12 @@
 require 'spec_helper'
 
-SRC_PATH = "/activities/booze"
+SRC_PATH = "/activities/zooze"
 SRC_URL = "http://chefsteps.com" + SRC_PATH
-DST_PATH = '/www.chefsteps.com/activities/booze'
+DST_PATH = '/www.chefsteps.com/activities/zooze'
+
+SRC_PATH2 = "/activities/aooze"
+SRC_URL2 = "http://chefsteps.com" + SRC_PATH
+DST_PATH2 = '/www.chefsteps.com/activities/aooze'
 
 describe 'brombone_proxy' do |variable|
   let(:app) do
@@ -23,14 +27,14 @@ describe 'brombone_proxy' do |variable|
     middleware.call request_env("http://chefsteps.com/fonts/fargug.woff")
   end
 
-  it 'Proxies when request has _escaped_fragment_ query param' do
-    expect_proxy
-    response = middleware.call request_env("#{SRC_URL}?_escaped_fragment_=")
-  end
-
   it 'Proxies when user agent looks like Google' do
     expect_proxy
     response = middleware.call request_env(SRC_URL, {'HTTP_USER_AGENT' => 'Googlebot/2.1 (+http://www.googlebot.com/bot.html)'})
+  end
+
+  it 'Does not when user agent looks like Google if activity slug starts with a-m' do
+    expect_no_proxy
+    response = middleware.call request_env(SRC_URL2, {'HTTP_USER_AGENT' => 'Googlebot/2.1 (+http://www.googlebot.com/bot.html)'})
   end
 
   it 'Proxies when user agent looks like Facebook' do
