@@ -164,14 +164,14 @@ class StripeOrder < ActiveRecord::Base
   end
 
   def send_to_stripe
-    self.create_or_update_user
+    user = self.create_or_update_user
 
     self.data['tax_amount'] = self.get_tax(false)['taxable_amount']
 
     self.save
 
     stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
-    stripe_charge = stripe.pay({source: data['token']}, {idempotency_key: (self.idempotency_key+"A")})
+    stripe_charge = stripe.pay({customer: user.id}, {idempotency_key: (self.idempotency_key+"A")})
     if stripe_charge.status == 'paid'
       self.submitted = true
       self.save
@@ -186,6 +186,7 @@ class StripeOrder < ActiveRecord::Base
   end
 
   def create_or_update_user
+    customer = nil
     if user.stripe_id.blank?
       customer = Stripe::Customer.create(email: user.email, card: data['token'])
     else
@@ -193,6 +194,7 @@ class StripeOrder < ActiveRecord::Base
       customer.source = data['token']
       customer.save
     end
+    return customer
   end
 
 

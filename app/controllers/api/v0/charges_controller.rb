@@ -87,8 +87,8 @@ module Api
       rescue StandardError => e
         puts e.inspect
         msg = (e.message || "(blank)")
-        logger.error("ChargesController#create error: #{e.message}\n#{e.backtrace.join('\n')}")
-        render_api_response 422, { error: msg}
+        logger.error("ChargesController#create error: #{e.message}\n#{e.backtrace.join("\n")}")
+        render_api_response 422, { error: 'Something went wrong, please try again'}
       end
 
       def redeem
