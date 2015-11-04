@@ -51,7 +51,7 @@ module Api
         @activity = Activity.find(params[:id])
 
         http_auth =  request.headers['HTTP_AUTHORIZATION']
-        if http_auth
+        if http_auth.present?
           ensure_authorized
           @user = User.find @user_id_from_token
           if @user && @user.role == 'admin'
