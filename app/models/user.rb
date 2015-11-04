@@ -197,6 +197,11 @@ class User < ActiveRecord::Base
     self.save(validate: false)
   end
 
+  def use_premium_discount
+    self.used_circulator_discount = true
+    self.save(validate: false)
+  end
+
   def completed_course?(course)
     self.badges.include?(course.badge)
   end

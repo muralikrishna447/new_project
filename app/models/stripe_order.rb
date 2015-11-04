@@ -20,7 +20,7 @@ class StripeOrder < ActiveRecord::Base
   def stripe_shipping
     if data['circulator_sale']
       {
-        name: data['shipping_address_name'],
+        name: data['shipping_name'],
         # phone: data[:shipping_phone],
         address: {
           line1: data['shipping_address_line1'],
@@ -48,7 +48,7 @@ class StripeOrder < ActiveRecord::Base
         }
 
         line_items << {
-          amount: data['circulator_discount'],
+          amount: data['circulator_discount'].to_i*-1,
           currency: 'usd',
           description: 'ChefSteps Premium Joule Discount',
           parent: nil,
@@ -64,14 +64,22 @@ class StripeOrder < ActiveRecord::Base
           quantity: 1,
           type: 'sku'
         }
-        line_items << {
-          amount: '0',
-          currency: 'usd',
-          description: 'ChefSteps Premium',
-          parent: 'cs10002',
-          quantity: 1,
-          type: 'sku'
-        }
+        # line_items << {
+        #   amount: 0,
+        #   currency: 'usd',
+        #   description: 'ChefSteps Premium',
+        #   parent: 'cs10002',
+        #   quantity: 1,
+        #   type: 'sku'
+        # }
+        # line_items << {
+        #   amount: -39,
+        #   currency: 'usd',
+        #   description: 'ChefSteps Premium Discount',
+        #   parent: nil,
+        #   quantity: 1,
+        #   type: 'discount'
+        # }
       end
     else
       line_items << {
@@ -84,19 +92,21 @@ class StripeOrder < ActiveRecord::Base
       }
     end
 
-    tax_amount = data['tax_amount'].present? ? data['tax_amount'] : get_tax(false)[:taxable_amount]
+
+    # We have integrated avalara with stripe directly this is no longer needed at the moment.
+    # tax_amount = data['tax_amount'].present? ? data['tax_amount'] : get_tax(false)[:taxable_amount]
 
     # if we are taking tax add it as an item
-    if tax_amount && tax_amount.to_i > 0
-      line_items << {
-        amount: tax_amount,
-        currency: 'usd',
-        description: "Sales Tax",
-        parent: nil,
-        quantity: nil,
-        type: 'tax'
-      }
-    end
+    # if tax_amount && tax_amount.to_i > 0
+    #   line_items << {
+    #     amount: tax_amount,
+    #     currency: 'usd',
+    #     description: "Sales Tax",
+    #     parent: nil,
+    #     quantity: nil,
+    #     type: 'tax'
+    #   }
+    # end
 
     line_items
   end
@@ -114,7 +124,7 @@ class StripeOrder < ActiveRecord::Base
       :DetailLevel => "Tax",
       :Commit => collected,
       :DocType => (collected ? "SalesOrder" : "SalesInvoice"),
-      :CurrencyCode => "USD",
+        :CurrencyCode => "USD",
       :Addresses => tax_shipping_addresses,
       :Lines => tax_line_items
     }
@@ -166,9 +176,8 @@ class StripeOrder < ActiveRecord::Base
   def send_to_stripe
     user = self.create_or_update_user
 
-    self.data['tax_amount'] = self.get_tax(false)['taxable_amount']
-
-    self.save
+    # self.data['tax_amount'] = self.get_tax(false)['taxable_amount']
+    # self.save
 
     stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
     stripe_charge = stripe.pay({customer: user.id}, {idempotency_key: (self.idempotency_key+"A")})
@@ -177,18 +186,29 @@ class StripeOrder < ActiveRecord::Base
       self.save
     end
 
-    if data['gift']
+    if data['gift'] == 'true'
+      logger.debug("Making premium gift certificate")
       PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
     else
-      user.make_premium_member(data['price']) if !user.premium_member && !data['gift']
+      logger.debug("Making user premium")
+      if !self.user.premium_member
+        logger.debug("Premium Yo")
+        self.user.make_premium_member(data['price'])
+      end
     end
-    user.update_attribute(:used_ciruclator_discount, true) if data['premium_discount']
+
+    logger.debug("Using premium discount")
+    if data['premium_discount'] == 'true'
+      user.use_premium_discount
+    end
   end
 
   def create_or_update_user
     customer = nil
     if user.stripe_id.blank?
       customer = Stripe::Customer.create(email: user.email, card: data['token'])
+      user.stripe_id = customer.id
+      user.save
     else
       customer = Stripe::Customer.retrieve(user.stripe_id)
       customer.source = data['token']
