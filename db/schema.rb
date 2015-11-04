@@ -166,6 +166,7 @@ ActiveRecord::Schema.define(:version => 20151031165901) do
     t.string   "prereg_email_list_id"
     t.text     "description_alt"
     t.string   "vimeo_id"
+    t.boolean  "premium",                                                 :default => false
   end
 
   create_table "assembly_inclusions", :force => true do |t|
@@ -491,6 +492,18 @@ ActiveRecord::Schema.define(:version => 20151031165901) do
     t.datetime "closed_at"
   end
 
+  create_table "premium_gift_certificates", :force => true do |t|
+    t.integer  "purchaser_id"
+    t.decimal  "price",        :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "sales_tax",    :precision => 8, :scale => 2, :default => 0.0
+    t.string   "token"
+    t.boolean  "redeemed",                                   :default => false
+    t.datetime "created_at",                                                    :null => false
+    t.datetime "updated_at",                                                    :null => false
+  end
+
+  add_index "premium_gift_certificates", ["token"], :name => "index_premium_gift_certificates_on_token"
+
   create_table "private_tokens", :force => true do |t|
     t.string   "token",      :null => false
     t.datetime "created_at", :null => false
@@ -554,19 +567,20 @@ ActiveRecord::Schema.define(:version => 20151031165901) do
 
   create_table "settings", :force => true do |t|
     t.string   "footer_image"
-    t.datetime "created_at",                                :null => false
-    t.datetime "updated_at",                                :null => false
+    t.datetime "created_at",                                                                :null => false
+    t.datetime "updated_at",                                                                :null => false
     t.integer  "featured_activity_1_id"
     t.integer  "featured_activity_2_id"
     t.integer  "featured_activity_3_id"
     t.text     "global_message"
-    t.boolean  "global_message_active",  :default => false
+    t.boolean  "global_message_active",                                  :default => false
     t.boolean  "forum_maintenance"
-    t.string   "hero_cms_title",         :default => ""
-    t.text     "hero_cms_image",         :default => ""
-    t.text     "hero_cms_description",   :default => ""
-    t.string   "hero_cms_button_text",   :default => ""
-    t.string   "hero_cms_url",           :default => ""
+    t.string   "hero_cms_title",                                         :default => ""
+    t.text     "hero_cms_image",                                         :default => ""
+    t.text     "hero_cms_description",                                   :default => ""
+    t.string   "hero_cms_button_text",                                   :default => ""
+    t.string   "hero_cms_url",                                           :default => ""
+    t.decimal  "premium_membership_price", :precision => 8, :scale => 2
   end
 
   create_table "step_ingredients", :force => true do |t|
@@ -654,25 +668,25 @@ ActiveRecord::Schema.define(:version => 20151031165901) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "email",                      :default => "",   :null => false
-    t.string   "encrypted_password",         :default => "",   :null => false
+    t.string   "email",                                                       :default => "",    :null => false
+    t.string   "encrypted_password",                                          :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",              :default => 0
+    t.integer  "sign_in_count",                                               :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
-    t.string   "name",                       :default => "",   :null => false
+    t.datetime "created_at",                                                                     :null => false
+    t.datetime "updated_at",                                                                     :null => false
+    t.string   "name",                                                        :default => "",    :null => false
     t.string   "provider"
     t.string   "facebook_user_id"
-    t.string   "location",                   :default => ""
-    t.string   "website",                    :default => ""
-    t.text     "quote",                      :default => ""
-    t.string   "chef_type",                  :default => "",   :null => false
+    t.string   "location",                                                    :default => ""
+    t.string   "website",                                                     :default => ""
+    t.text     "quote",                                                       :default => ""
+    t.string   "chef_type",                                                   :default => "",    :null => false
     t.string   "slug"
     t.boolean  "from_aweber"
     t.text     "viewed_activities"
@@ -680,7 +694,7 @@ ActiveRecord::Schema.define(:version => 20151031165901) do
     t.text     "image_id"
     t.text     "bio"
     t.integer  "sash_id"
-    t.integer  "level",                      :default => 0
+    t.integer  "level",                                                       :default => 0
     t.string   "role"
     t.string   "stripe_id"
     t.string   "authentication_token"
@@ -694,8 +708,11 @@ ActiveRecord::Schema.define(:version => 20151031165901) do
     t.string   "twitter_user_id"
     t.string   "twitter_auth_token"
     t.string   "twitter_user_name"
-    t.boolean  "signup_incentive_available", :default => true
-    t.boolean  "timf_incentive_available",   :default => true
+    t.boolean  "signup_incentive_available",                                  :default => true
+    t.boolean  "timf_incentive_available",                                    :default => true
+    t.boolean  "premium_member",                                              :default => false
+    t.datetime "premium_membership_created_at"
+    t.decimal  "premium_membership_price",      :precision => 8, :scale => 2, :default => 0.0
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

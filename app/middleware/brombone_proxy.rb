@@ -50,9 +50,14 @@ class BromboneProxy < Rack::Proxy
     # of our pages end with extensions, but our assets do.
     return false if request.path =~ /\..{1,4}$/
 
-    # Proxy if requester is explicitly asking for an HTML snapshot
-    # (https://developers.google.com/webmasters/ajax-crawling/docs/specification)
-    return true if request.query_string.include?('_escaped_fragment_')
+    # Never proxy API!
+    return false if request.path =~ /^\/api/
+
+    # 11/3/15 For activities, running a split test where those whose slug starts with a-m just returns
+    # the normal page to google, and n-z returns the snapshot. Right now only for google as we
+    # don't think other crawlers are smart enough to run the javascript yet. The hope is that this
+    # will help with including images in SERPs.
+    return false if env["HTTP_USER_AGENT"] =~ /(google)/ && request.path =~ /activities\/[a-m]/
 
     # Proxy if requester appears to be a crawler etc. This especially helps when someone
     # pastes one of our AJAX urls into facebook e.g.
