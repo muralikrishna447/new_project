@@ -5,7 +5,7 @@ SRC_URL = "http://chefsteps.com" + SRC_PATH
 DST_PATH = '/www.chefsteps.com/activities/zooze'
 
 SRC_PATH2 = "/activities/aooze"
-SRC_URL2 = "http://chefsteps.com" + SRC_PATH
+SRC_URL2 = "http://chefsteps.com" + SRC_PATH2
 DST_PATH2 = '/www.chefsteps.com/activities/aooze'
 
 describe 'brombone_proxy' do |variable|
