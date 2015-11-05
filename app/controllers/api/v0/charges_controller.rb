@@ -18,7 +18,8 @@ module Api
         # queue up the charge which can take a little while.
 
         if params[:gift] == "true"
-          PremiumGiftCertificate.create!(purchaser_id: @user.id, price: Setting.last.premium_membership_price, redeemed: false)
+          pgc = PremiumGiftCertificate.create!(purchaser_id: @user.id, price: Setting.last.premium_membership_price, redeemed: false)
+          PremiumGiftCertificateMailer.prepare(@user, pgc.token).deliver
         else
           @user.make_premium_member(Setting.last.premium_membership_price)
           PremiumWelcomeMailer.prepare(@user).deliver

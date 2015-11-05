@@ -1,14 +1,9 @@
-class PremiumGiftCertificateMailer < ActionMailer::Base
-  default from: "info@chefsteps.com"
 
-  def recipient_email(purchaser, redeem_url)
-    set_variables(purchaser, redeem_url)
-    mail(to: @purchaser.email, subject: "ChefSteps.com - ChefSteps Premium gift purchase")
-  end
-
-private
-  def set_variables(purchaser, redeem_url)
-    @purchaser = purchaser
-    @redeem_url = redeem_url
+class PremiumGiftCertificateMailer < BaseMandrillMailer
+  def prepare(user, redeem_token)
+    subject = "ChefSteps Premium Gift Certificate"
+    merge_vars = {"REDEEM_TOKEN" => redeem_token}
+    body = mandrill_template("premium-gift-certificate", merge_vars)
+    send_mail(user.email, subject, body)
   end
 end
