@@ -64,22 +64,6 @@ class StripeOrder < ActiveRecord::Base
           quantity: 1,
           type: 'sku'
         }
-        # line_items << {
-        #   amount: 0,
-        #   currency: 'usd',
-        #   description: 'ChefSteps Premium',
-        #   parent: 'cs10002',
-        #   quantity: 1,
-        #   type: 'sku'
-        # }
-        # line_items << {
-        #   amount: -39,
-        #   currency: 'usd',
-        #   description: 'ChefSteps Premium Discount',
-        #   parent: nil,
-        #   quantity: 1,
-        #   type: 'discount'
-        # }
       end
     else
       line_items << {
@@ -91,114 +75,30 @@ class StripeOrder < ActiveRecord::Base
         type: 'sku'
       }
     end
-
-
-    # We have integrated avalara with stripe directly this is no longer needed at the moment.
-    # tax_amount = data['tax_amount'].present? ? data['tax_amount'] : get_tax(false)[:taxable_amount]
-
-    # if we are taking tax add it as an item
-    # if tax_amount && tax_amount.to_i > 0
-    #   line_items << {
-    #     amount: tax_amount,
-    #     currency: 'usd',
-    #     description: "Sales Tax",
-    #     parent: nil,
-    #     quantity: nil,
-    #     type: 'tax'
-    #   }
-    # end
-
     line_items
   end
 
-
-  def get_tax(collected=false)
-    tax_service = AvaTax::TaxService.new
-    tax_request = {
-      :CustomerCode => user_id,
-      :DocDate => Time.now.to_s(:avatax),
-      :CompanyCode => "ChefSteps",
-      :Client => "ChefSteps.com",
-      :DocCode => id,
-      #:DetailLevel => "Diagnostic", # ECOMTODO Don't go to prod
-      :DetailLevel => "Tax",
-      :Commit => collected,
-      :DocType => (collected ? "SalesOrder" : "SalesInvoice"),
-        :CurrencyCode => "USD",
-      :Addresses => tax_shipping_addresses,
-      :Lines => tax_line_items
-    }
-    tax_result = tax_service.get(tax_request)
-
-    {total_taxable: (tax_result['TotalTaxable'].to_f*100).to_i, taxable_amount: (tax_result['TotalTax'].to_f*100).to_i}
-  end
-
-  def tax_shipping_addresses
-    if data['circulator_sale']
-      [{
-        :AddressCode => "01",
-        :Line1 => data['shipping_address_line1'],
-        :City => data['shipping_address_city'],
-        :Region => data['shipping_address_state'],
-        :PostalCode => data['shipping_address_zip'],
-        :Country => data['shipping_address_country']
-      }]
-    end
-  end
-
-  def tax_line_items
-    line_items = []
-    if data['circulator_sale'] # Bought Circulator
-      line_items << {
-        # Required Parameters
-        :LineNo => 1,
-        :ItemCode => "cs10001",
-        :Qty => 1,
-        :Amount => data['price'],
-        :DestinationCode => "01",
-        :Description => data['description'],
-        :TaxCode => data['circulator_tax_code']
-      }
-    else
-      line_items << {
-        # Required Parameters
-        :LineNo => 1,
-        :ItemCode => "cs10002",
-        :Qty => 1,
-        :Amount => data['price'],
-        :DestinationCode => "01",
-        :Description => data['description'],
-        :TaxCode => data['premium_tax_code']
-      }
-    end
-  end
-
   def send_to_stripe
-    user = self.create_or_update_user
-
-    # self.data['tax_amount'] = self.get_tax(false)['taxable_amount']
-    # self.save
+    stripe_user = self.create_or_update_user
 
     stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
-    stripe_charge = stripe.pay({customer: user.id}, {idempotency_key: (self.idempotency_key+"A")})
+    stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
     if stripe_charge.status == 'paid'
       self.submitted = true
       self.save
     end
 
-    if data['gift'] == 'true'
-      logger.debug("Making premium gift certificate")
+    if data['gift']
       PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
     else
-      logger.debug("Making user premium")
       if !self.user.premium_member
-        logger.debug("Premium Yo")
         self.user.make_premium_member(data['price'])
+      else
+        raise "Should never get here"
       end
     end
 
-    logger.debug("Using premium discount")
-    if data['premium_discount'] == 'true'
+    if data['premium_discount']
       user.use_premium_discount
     end
   end
@@ -218,6 +118,33 @@ class StripeOrder < ActiveRecord::Base
   end
 
 
+  def self.build_stripe_order_data(params, circulator, premium)
+    data = {sku: params[:sku]}
+    data[:circulator_sale] = false
+    data[:premium_discount] = false
+    data[:gift] = params[:gift]
+    data[:circulator_tax_code] = circulator[:tax_code]
+    data[:premium_tax_code] = premium[:tax_code]
+    data[:circulator_discount] = (circulator[:price]-circulator['premiumPrice'])
+    data[:circulator_base_price] = circulator[:price]
+    data[:premium_base_price] = premium[:price]
+    data.merge!({
+      billing_name: params[:billing_name],
+      billing_address_line1: params[:billing_address_line1],
+      billing_address_city: params[:billing_address_city],
+      billing_address_state: params[:billing_address_state],
+      billing_address_zip: params[:billing_address_zip],
+      billing_address_country: params[:billing_address_country],
+      shipping_name: params[:shipping_name],
+      shipping_address_line1: params[:shipping_address_line1],
+      shipping_address_city: params[:shipping_address_city],
+      shipping_address_state: params[:shipping_address_state],
+      shipping_address_zip: params[:shipping_address_zip],
+      shipping_address_country: params[:shipping_address_country],
+      token: params['stripeToken']
+    })
+    data
+  end
 
   def self.stripe_products
     products = Stripe::Product.all(active: true)

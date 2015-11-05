@@ -4,26 +4,16 @@ module Api
       before_filter :ensure_authorized
 
       def create
-        if !['cs10001', 'cs10002'].include?(params[:sku])
-          #return render(json: "Not valid product", code: 422)
-          return render_api_response 422, { error: "Not valid product"}
-        end
+        return render_api_response 422, { error: "Not valid product"} if !['cs10001', 'cs10002'].include?(params[:sku])
 
         @user = User.find @user_id_from_token
-        # Doing this so we can call the actual charge stuff multiple times if needs be to collect the money
-        circulator, premium = StripeOrder.stripe_products
+
         idempotency_key = Time.now.to_f.to_s+request.ip.to_s
-        data = {sku: params[:sku]}
-        data[:circulator_sale] = false
-        data[:premium_discount] = false
-        data[:gift] = params[:gift]
-        data[:circulator_tax_code] = circulator[:tax_code]
-        data[:premium_tax_code] = premium[:tax_code]
-        data[:circulator_discount] = (circulator[:price]-circulator['premiumPrice'])
-        data[:circulator_base_price] = circulator[:price]
-        data[:premium_base_price] = premium[:price]
+        circulator, premium = StripeOrder.stripe_products
+        data = StripeOrder.build_stripe_order_data(params, circulator, premium)
+
         if params[:sku] == "cs10001" # Circulator
-          if @user.premium_member && !@user.used_circulator_discount
+          if @user.can_receive_circulator_discount?
             data[:price] = circulator['premiumPrice']
             data[:description] = 'Joule + Premium Discount'
             data[:premium_discount] = true
@@ -48,7 +38,7 @@ module Api
 
         if data[:price].to_i != params[:price].to_i
           #raise "Price Mismatch #{data[:price]} - #{(params[:price].to_f*100).to_i}"
-          return render_api_response 422, { error: "Price Mismatch #{data[:price]} - #{params[:price]}"}
+          return render_api_response 422, { error: "Price Mismatch"}
         end
 
         if params[:tax]
@@ -57,21 +47,6 @@ module Api
           price = data[:price].to_i
         end
 
-        data.merge!({
-          billing_name: params[:billing_name],
-          billing_address_line1: params[:billing_address_line1],
-          billing_address_city: params[:billing_address_city],
-          billing_address_state: params[:billing_address_state],
-          billing_address_zip: params[:billing_address_zip],
-          billing_address_country: params[:billing_address_country],
-          shipping_name: params[:shipping_name],
-          shipping_address_line1: params[:shipping_address_line1],
-          shipping_address_city: params[:shipping_address_city],
-          shipping_address_state: params[:shipping_address_state],
-          shipping_address_zip: params[:shipping_address_zip],
-          shipping_address_country: params[:shipping_address_country],
-          token: params['stripeToken']
-        })
 
         mixpanel = ChefstepsMixpanel.new
         mixpanel.track(@user.email, 'Charge Server Side', {price: price, description: data[:description]})
@@ -85,10 +60,9 @@ module Api
         render_api_response 200
 
       rescue StandardError => e
-        puts e.inspect
-        msg = (e.message || "(blank)")
+        msg = (e.message || "(Something Went Wrong)")
         logger.error("ChargesController#create error: #{e.message}\n#{e.backtrace.join("\n")}")
-        render_api_response 422, { error: 'Something went wrong, please try again'}
+        render_api_response 500, { error: msg }
       end
 
       def redeem

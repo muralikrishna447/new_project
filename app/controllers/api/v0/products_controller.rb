@@ -3,21 +3,20 @@ module Api
     class ProductsController < BaseController
       def index
         location = Geokit::Geocoders::MultiGeocoder.geocode(request.ip)
-        tax_percent = get_tax_estimate(location)
-        circulator, premium =  Rails.cache.fetch("stripe_products", expires_in: 5.minutes){
+        if location.success?
+          ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 0)
+          tax_percent = get_tax_estimate(location)
+        else
+          Rails.logger.info("Failed to geo-locate")
+          ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 1)
+          tax_percent = nil
+        end
+
+        circulator, premium = Rails.cache.fetch("stripe_products", expires_in: 5.minutes){
           StripeOrder.stripe_products
         }
         result = {'taxPercent' => tax_percent, country: location.country_code, state: location.state, products: {circulator[:sku] => circulator, premium[:sku] => premium}}
         render(json: result)
-      end
-
-      def show
-        results = Rails.cache.fetch("stripe_results/#{params[:id]}", expires_in: 5.minutes){
-          sku = Stripe::SKU.retrieve(params[:id])
-          product = Stripe::Product.retrieve(sku.product)
-          result_values = {name: product.name, caption: product.description, description: product.caption, shippable: product.shippable, active: sku.active, price: (sku.price/100.0), msrp: (sku.metadata[:msrp]/100.0), discount: (sku.metadata[:preorder]/100.0)}
-        }
-        render(json: results)
       end
 
       private
