@@ -4,7 +4,7 @@ module Api
       before_filter :ensure_authorized
 
       def create
-        return render_api_response 422, { error: "Not valid product"} if !['cs10001', 'cs10002'].include?(params[:sku])
+        return render_api_response 500, { error: "Not valid product"} if !['cs10001', 'cs10002'].include?(params[:sku])
 
         @user = User.find @user_id_from_token
 
@@ -33,12 +33,12 @@ module Api
 
         if !params[:gift] && params[:sku] == 'cs10002' && @user.premium_member
           #raise "User Already Premium"
-          return render_api_response 422, { error: "User Already Premium"}
+          return render_api_response 500, { error: "User Already Premium"}
         end
 
         if data[:price].to_i != params[:price].to_i
           #raise "Price Mismatch #{data[:price]} - #{(params[:price].to_f*100).to_i}"
-          return render_api_response 422, { error: "Price Mismatch"}
+          return render_api_response 500, { error: "Price Mismatch"}
         end
 
         if params[:tax]
@@ -74,7 +74,7 @@ module Api
         puts e.inspect
         msg = (e.message || "(blank)")
         logger.error("ChargesController#redeem error: #{e.message}")
-        render_api_response 422, { error: msg}
+        render_api_response 500, { error: msg}
       end
     end
   end
