@@ -73,6 +73,7 @@ gem "algoliasearch-rails"
 
 gem 'shopify_api'
 gem 'attr_encrypted', '1.3.4'
+gem 'mandrill-api'
 
 # gem 'ar-octopus', :git => 'https://github.com/tchandy/octopus.git'
 gem 'resque'
