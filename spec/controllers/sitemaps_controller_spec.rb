@@ -26,16 +26,15 @@ describe SitemapsController, "#get" do
       expect(response).to be_success
       expect(assigns(:other_routes)).to have_at_least(4).items
       expect(assigns(:main_stuff)).to have(7).items
-      expect(response.body).to include("http://www.chefsteps.com/activities/bummy")
-      expect(response.body).to include("http://www.chefsteps.com/ingredients/yummy")
-      expect(response.body).to include("http://www.chefsteps.com/classes/clummy")
-      expect(response.body).to include("http://www.chefsteps.com/classes/zummy")
-      expect(response.body).to include("http://www.chefsteps.com/projects/nummy")
-      expect(response.body).to include("http://www.chefsteps.com/frummy")
-      expect(response.body).to include("http://www.chefsteps.com/uploads/ucrrummy")
-      expect(response.body).to_not include("http://chefsteps.com")
-      expect(response.body).to_not include("http://www.chefsteps.com/hummy")
-
+      expect(response.body).to include("https://www.chefsteps.com/activities/bummy")
+      expect(response.body).to include("https://www.chefsteps.com/ingredients/yummy")
+      expect(response.body).to include("https://www.chefsteps.com/classes/clummy")
+      expect(response.body).to include("https://www.chefsteps.com/classes/zummy")
+      expect(response.body).to include("https://www.chefsteps.com/projects/nummy")
+      expect(response.body).to include("https://www.chefsteps.com/frummy")
+      expect(response.body).to include("https://www.chefsteps.com/uploads/ucrrummy")
+      expect(response.body).to_not include("https://chefsteps.com")
+      expect(response.body).to_not include("https://www.chefsteps.com/hummy")
     end
   end
 end
