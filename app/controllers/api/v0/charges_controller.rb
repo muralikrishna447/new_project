@@ -21,6 +21,7 @@ module Api
           PremiumGiftCertificate.create!(purchaser_id: @user.id, price: Setting.last.premium_membership_price, redeemed: false)
         else
           @user.make_premium_member(Setting.last.premium_membership_price)
+          PremiumWelcomeMailer.prepare(@user).deliver
         end
 
         Resque.enqueue(StripeChargeProcessor, @user.email, params[:stripeToken], Setting.last.premium_membership_price, params[:gift], 'ChefSteps Premium')
