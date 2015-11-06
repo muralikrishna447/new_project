@@ -1,5 +1,5 @@
 # Hard coded b/c I want to see absolute paths with no
-base_url = "http://www.chefsteps.com"
+base_url = "https://www.chefsteps.com"
 xml.instruct! :xml, :version=>'1.0'
 xml.tag! 'urlset', 'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9' do
   @other_routes.each do |other|

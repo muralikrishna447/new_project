@@ -1,5 +1,5 @@
 class PageSerializer < ApplicationSerializer
-  attributes :id, :title, :content, :featured_image, :likes_count, :like_users, :path
+  attributes :id, :title, :content, :featured_image, :likes_count, :like_users, :path, :published
 
   def featured_image
     object.featured_image

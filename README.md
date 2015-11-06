@@ -90,7 +90,16 @@ createdb delve_angular
 ```
 
 Once they are installed you can run the command:
+```
 script/e2e
 ```
 
 This will start the server.  It will automatically watch all files in the spec/javascripts/e2e folder and run the tests when you save a file.
+
+# Testing account creation
+To succesfully test account creation redis needs to be running to handle the job being enqueued.
+```
+brew install redis
+launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+```
