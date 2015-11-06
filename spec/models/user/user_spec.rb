@@ -53,4 +53,26 @@ describe User do
       expect {@user.make_premium_member(10)}.to raise_error
     end
   end
+
+  context "use_premium_discount" do
+    it "should set used_circulator_discount to true" do
+      @user.use_premium_discount
+      @user.used_circulator_discount.should eq true
+    end
+  end
+
+  context "can_receive_circulator_discount" do
+    it "should return true if the user is a premium member and hasn't used their discount" do
+      @user.make_premium_member(10)
+      @user.can_receive_circulator_discount?.should eq true
+    end
+
+    it 'should return false if the user has used their discount' do
+      @user.make_premium_member(10)
+      @user.use_premium_discount
+      @user.can_receive_circulator_discount?.should eq false
+    end
+  end
+
+
 end

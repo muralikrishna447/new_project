@@ -25,6 +25,7 @@ describe Api::V0::UsersController do
       result.delete('encrypted_bloom_info')
       result.delete('request_id')
       result.delete('premium').should == false
+      result.delete('used_circulator_discount').should == false
       result.delete('admin').should == false
       result.empty?.should == true
     end

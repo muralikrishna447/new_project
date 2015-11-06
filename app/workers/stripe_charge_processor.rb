@@ -4,20 +4,10 @@
 
 class StripeChargeProcessor
   @queue = :stripe_charge_processor
-  def self.perform(email, token, price, gift, description)
-    customer = Stripe::Customer.create(
-      email: email,
-      card: token
-    )
 
-    charge = Stripe::Charge.create(
-      :customer    => customer.id,
-      :amount      => (price.to_f * 100).to_i,
-      :description => description,
-      :currency    => 'usd'
-    )
-
-    mixpanel = ChefstepsMixpanel.new
-    mixpanel.track(email, 'Charge Server Side', {price: price, gift: gift, description: description})
+  def self.perform(stripe_order_id)
+    stripe_order = StripeOrder.find(stripe_order_id)
+    stripe_order.send_to_stripe
   end
+
 end

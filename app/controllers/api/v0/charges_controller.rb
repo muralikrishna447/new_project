@@ -4,34 +4,65 @@ module Api
       before_filter :ensure_authorized
 
       def create
+        return render_api_response 500, { error: "Not valid product"} if !['cs10001', 'cs10002'].include?(params[:sku])
+
         @user = User.find @user_id_from_token
 
-        # ECOMTODO: this bit is just a stub where Dan can plug in real products/orders/tax/etc.
-        # Harcoded right now to accept a single sku, cs10002, for Premium and get the price from global settings.
-        raise "Invalid sku #{params[:sku]}" if params[:sku] != 'cs10002'
+        idempotency_key = Time.now.to_f.to_s+request.ip.to_s
+        circulator, premium = StripeOrder.stripe_products
+        data = StripeOrder.build_stripe_order_data(params, circulator, premium)
 
-        # ECOMTODO: this is hardcoded only to buy memberships for now; needs a robust system
-        # for differentiating digital entitlements from physical products.
-
-        # ECOMTODO: since this has already gone through stripe.js which validates the card, we go ahead
-        # and give them premium right away which is a smoother, faster experience on the frontend, and
-        # queue up the charge which can take a little while.
-
-        if params[:gift] == "true"
-          PremiumGiftCertificate.create!(purchaser_id: @user.id, price: Setting.last.premium_membership_price, redeemed: false)
-        else
-          @user.make_premium_member(Setting.last.premium_membership_price)
+        if params[:sku] == "cs10001" # Circulator
+          if @user.can_receive_circulator_discount?
+            data[:price] = circulator['premiumPrice']
+            data[:description] = 'Joule + Premium Discount'
+            data[:premium_discount] = true
+            data[:circulator_sale] = true
+          else
+            data[:price] = circulator[:price]
+            data[:description] = 'Joule + ChefSteps Premium'
+            data[:premium_discount] = false
+            data[:circulator_sale] = true
+          end
+        elsif params[:sku] == 'cs10002' # Premium
+          data[:price] = premium[:price]
+          data[:description] = 'ChefSteps Premium'
+          data[:premium_discount] = false
+          data[:circulator_sale] = false
         end
 
-        Resque.enqueue(StripeChargeProcessor, @user.email, params[:stripeToken], Setting.last.premium_membership_price, params[:gift], 'ChefSteps Premium')
+        if !params[:gift] && params[:sku] == 'cs10002' && @user.premium_member
+          #raise "User Already Premium"
+          return render_api_response 500, { error: "User Already Premium"}
+        end
+
+        if data[:price].to_i != params[:price].to_i
+          #raise "Price Mismatch #{data[:price]} - #{(params[:price].to_f*100).to_i}"
+          return render_api_response 500, { error: "Price Mismatch"}
+        end
+
+        if params[:tax]
+          price = data[:price].to_i+params[:tax].to_i
+        else
+          price = data[:price].to_i
+        end
+
+
+        mixpanel = ChefstepsMixpanel.new
+        mixpanel.track(@user.email, 'Charge Server Side', {price: price, description: data[:description]})
+
+        stripe_order = StripeOrder.create({idempotency_key: idempotency_key, user_id: @user.id, data: data})
+
+        Resque.enqueue(StripeChargeProcessor, stripe_order.id)
+
+        stripe_order.send_to_stripe
 
         render_api_response 200
 
       rescue StandardError => e
-        puts e.inspect
-        msg = (e.message || "(blank)")
-        logger.error("ChargesController#create error: #{e.message}")
-        render_api_response 422, { error: msg}
+        msg = (e.message || "(Something Went Wrong)")
+        logger.error("ChargesController#create error: #{e.message}\n#{e.backtrace.join("\n")}")
+        render_api_response 500, { error: msg }
       end
 
       def redeem
@@ -43,7 +74,7 @@ module Api
         puts e.inspect
         msg = (e.message || "(blank)")
         logger.error("ChargesController#redeem error: #{e.message}")
-        render_api_response 422, { error: msg}
+        render_api_response 500, { error: msg}
       end
     end
   end
