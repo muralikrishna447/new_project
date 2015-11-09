@@ -623,6 +623,30 @@ ActiveRecord::Schema.define(:version => 20151031165901) do
   add_index "steps", ["activity_id"], :name => "index_steps_on_activity_id"
   add_index "steps", ["step_order"], :name => "index_steps_on_step_order"
 
+  create_table "stripe_events", :force => true do |t|
+    t.string   "event_id"
+    t.string   "object"
+    t.string   "api_version"
+    t.string   "request_id"
+    t.string   "event_type"
+    t.integer  "created"
+    t.datetime "event_at"
+    t.boolean  "livemode"
+    t.text     "data"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.boolean  "processed",   :default => false
+  end
+
+  create_table "stripe_orders", :force => true do |t|
+    t.string   "idempotency_key"
+    t.integer  "user_id"
+    t.text     "data"
+    t.boolean  "submitted",       :default => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
@@ -713,6 +737,7 @@ ActiveRecord::Schema.define(:version => 20151031165901) do
     t.boolean  "premium_member",                                              :default => false
     t.datetime "premium_membership_created_at"
     t.decimal  "premium_membership_price",      :precision => 8, :scale => 2, :default => 0.0
+    t.boolean  "used_circulator_discount",                                    :default => false
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
