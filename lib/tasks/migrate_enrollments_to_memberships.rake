@@ -1,6 +1,6 @@
 task :migrate_enrollments_to_memberships => [:environment] do
 
-  premium_start_date = DateTime.new(2015, 11, 18)
+  premium_start_date = DateTime.new(2015, 11, 17)
   count = 0
 
   Enrollment.where('price > 0').group_by(&:user_id).each do |result|
