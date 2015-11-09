@@ -3,7 +3,7 @@ task :migrate_enrollments_to_memberships => [:environment] do
   premium_start_date = DateTime.new(2015, 11, 18)
   count = 0
 
-  Enrollment.where('price > 0').group_by(&:user_id).each do |result|
+  Enrollment.where('(price > 0) OR (gift_certificate_id IS NOT NULL)').group_by(&:user_id).each do |result|
     u = User.find(result[0])
     next if u.premium_member
     u.premium_member = true
