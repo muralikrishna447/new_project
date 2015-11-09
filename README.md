@@ -24,7 +24,7 @@ To set up a new machine:
 - launch Xcode once
 - `xcode-select --install`
 - `rvm install ruby 1.9.3` (the version our Gemfile calls for, --with-gcc=clang may be required)
-- `gem install bundle`
+- `gem install bundle` (if this seg faults, try ```rvm reinstall ruby-1.9.3 --with-gcc=clang```
 - `bundle`
 - `createuser -l -s -r delve`
 - `rake db:create`
