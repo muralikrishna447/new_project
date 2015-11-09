@@ -6,7 +6,7 @@ class FreshStepsProxy < Rack::Proxy
   # work when proxying, but it also made regular page loads incredibly slow, I think because
   # browser-sync was pinging multiple times per second. Although without the proxy, rails returns 406 so
   # it is still doing work. Curious.
-  PREFIX = %w(/gallery /logout /fs_pages /fs_activities /sous-vide /grilling /indoor-barbecue /gift)
+  PREFIX = %w(/gallery /logout /fs_pages /fs_activities /sous-vide /grilling /indoor-barbecue /gift /classes /premium)
   EXACT = "/"
   SUFFIX = %w(/fork /notify_start_edit /notify_end_edit /as_json /the-egg-calculator /new)
 
