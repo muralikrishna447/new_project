@@ -122,7 +122,7 @@ class StripeOrder < ActiveRecord::Base
     data = {sku: params[:sku]}
     data[:circulator_sale] = false
     data[:premium_discount] = false
-    data[:gift] = params[:gift]
+    data[:gift] = data[:gift] = params[:gift] == 'true'
     data[:circulator_tax_code] = circulator[:tax_code]
     data[:premium_tax_code] = premium[:tax_code]
     data[:circulator_discount] = (circulator[:price]-circulator['premiumPrice'])
