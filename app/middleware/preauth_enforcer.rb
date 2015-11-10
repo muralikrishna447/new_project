@@ -31,7 +31,6 @@ class PreauthEnforcer
   
   def preauthed?(env)
     request = ActionDispatch::Request.new(env)
-    puts request.cookie_jar.inspect 
     raw_token = request.cookie_jar[:cs_preauth]
 
     if raw_token.nil?
