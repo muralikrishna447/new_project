@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  # before_filter :authenticate_user!
+  before_filter :authenticate_user!, :only => :preauth
   def show
     @user = User.find(params[:id])
     user_json = @user.to_json(only: [:id, :name], methods: :avatar_url)
@@ -52,6 +52,28 @@ class UsersController < ApplicationController
     else
       render json: {logged_in: false}.to_json, status: 200
     end
-
   end
+  
+  def preauth
+    logger.info "Preauth for [#{current_user.email}] admin [#{current_user.admin?}]"
+    @existing_preauth_cookie = false
+    unless current_user.admin?
+      return render status:401
+    end
+
+    if params[:clear]
+      cookies.delete :cs_preauth
+    else
+      if cookies[:cs_preauth]
+        logger.info "Existing preauth cookie present #{cookies[:cs_preauth]}"
+        @existing_preauth_cookie = true
+      end
+      # Always set new cookie to keep things simple
+      logger.info "Setting preauth cookie for user #{current_user.id} / #{current_user.email}"
+      cookies.permanent[:cs_preauth] = current_user.valid_website_auth_token.to_jwt      
+    end
+    
+    @preauth_cookie = cookies[:cs_preauth]
+  end
+
 end

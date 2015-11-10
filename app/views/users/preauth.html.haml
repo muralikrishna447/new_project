@@ -1,0 +1,17 @@
+- if current_user.admin?
+  %h1 Welcome to the pre-auth portal
+  %ul
+    %li
+      Existing cookie:
+      = @existing_preauth_cookie
+    %li
+      Current cookie:
+      = @preauth_cookie.inspect
+    %li
+      - if @preauth_cookie
+        = link_to 'Clear your preauth cookie', 'preauth?clear=true'
+      - else
+        = link_to 'Set preauth cookie', 'preauth'
+- else
+  %p
+    Please sign in as admin user
