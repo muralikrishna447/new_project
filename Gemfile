@@ -81,6 +81,8 @@ gem 'sanitize'
 
 gem 'avatax'
 
+gem 'geoip2'
+
 group :test do
   gem 'webmock'
 end

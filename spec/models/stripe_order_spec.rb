@@ -148,4 +148,35 @@ describe StripeOrder do
     end
   end
 
+
+  context "class methods" do
+    before :each do
+      circulator = double('stripe_circulator', id: 'cs10001', name: 'Joule Circulator', price: 24900, metadata: {msrp: '29900', tax_code: 'TP0000', premium_price: '22900'})
+      premium = double('stripe_circulator', id: 'cs10002', price: 2900, metadata: {msrp: '4900', tax_code: 'OD10001'})
+      circ_product = double('stripe_circulator_product', id: 'cs10001', skus: [circulator], shippable: true, name: 'Joule Circulator')
+      premium_product = double('stripe_premium_product', id: 'cs10002', skus: [premium], shippable: false, name: 'ChefSteps Premium')
+      stripe_product_result = [circ_product, premium_product]
+      Stripe::Product.stub(:all).and_return(stripe_product_result)
+    end
+
+    context "build_stripe_order_data" do
+      let(:params) { {sku: 'cs10001', gift: false, billing_name: 'Bill To', billing_address_line1: '123 Any Street', billing_address_city: 'Any Town', billing_address_state: 'WA', billing_address_zip: '98101', billing_address_country: 'US', shipping_name: 'Ship To', shipping_address_line1: '123 Any Street', shipping_address_city: 'Any Town', shipping_address_state: 'WA', shipping_address_zip: '98101', shipping_address_country: 'US', 'stripeToken' => 'ABC321'}}
+      it "should take params and turn them into a data hash" do
+        circulator, premium = StripeOrder.stripe_products
+        data = StripeOrder.build_stripe_order_data(params, circulator, premium)
+        data.should include( sku: 'cs10001', gift: false, billing_name: 'Bill To', billing_address_line1: '123 Any Street', billing_address_city: 'Any Town', billing_address_state: 'WA', billing_address_zip: '98101', billing_address_country: 'US', shipping_name: 'Ship To', shipping_address_line1: '123 Any Street', shipping_address_city: 'Any Town', shipping_address_state: 'WA', shipping_address_zip: '98101', shipping_address_country: 'US', token: 'ABC321')
+        data.should include( circulator_sale: false, premium_discount: false, circulator_tax_code: 'TP0000', premium_tax_code: 'OD10001', circulator_base_price: 24900, premium_base_price: 2900 )
+      end
+    end
+
+
+    context "stripe_products" do
+      it 'should return two objects with the product information' do
+        array = StripeOrder.stripe_products
+        array.size.should eq 2
+        array[0].should include(sku: 'cs10001', title: 'Joule Circulator', price: 24900, msrp: 29900, 'premiumPrice' => 22900, tax_code: 'TP0000', shippable: true)
+        array[1].should include(sku: 'cs10002', title: 'ChefSteps Premium', price: 2900, msrp: 4900, tax_code: 'OD10001', shippable: false)
+      end
+    end
+  end
 end

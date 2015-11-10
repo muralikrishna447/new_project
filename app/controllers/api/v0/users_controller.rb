@@ -27,6 +27,7 @@ module Api
       end
 
       def create
+        optout = (params[:optout] && params[:optout]=="true") #email list optout
         params[:source] ||= "api_standard"
         if params[:user][:provider] && params[:user][:provider] == 'facebook'
           is_new_user = User.find_by_email(params[:user][:email]).blank?
@@ -39,7 +40,7 @@ module Api
           end
         else
           @user = User.new(params[:user])
-          create_new_user(@user)
+          create_new_user(@user, optout)
         end
       end
 
@@ -58,12 +59,20 @@ module Api
         end
       end
 
+      def international_joule
+        # ECOMMTODO Do mailchimp stuff
+        @user = User.find @user_id_from_token
+        # Something like this
+        # email_list_add_to_group(@user.email, '8061', ['international_joule'])
+        render json: {}, code: :ok
+      end
+
       private
 
       # Why is this code duplicated here?
-      def create_new_user(user)
+      def create_new_user(user, optout = false)
         if user.save
-          email_list_signup(user.name, user.email, params[:source])
+          email_list_signup(user.name, user.email, params[:source]) unless optout
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
           # mixpanel.alias needs to be called with @user.id instead of @user.email for consistant tracking with the client
           mixpanel.alias(@user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
