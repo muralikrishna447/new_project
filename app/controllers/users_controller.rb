@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, :only => :preauth
   def show
     @user = User.find(params[:id])
     user_json = @user.to_json(only: [:id, :name], methods: :avatar_url)
@@ -55,6 +54,11 @@ class UsersController < ApplicationController
   end
   
   def preauth
+    unless current_user
+      logger.info "Preauth redirecting to sign-in"
+      redirect_to '/sign_in?returnTo=/users/preauth'
+      return
+    end
     logger.info "Preauth for [#{current_user.email}] admin [#{current_user.admin?}]"
     @existing_preauth_cookie = false
     unless current_user.admin?

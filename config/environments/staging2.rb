@@ -89,7 +89,7 @@ Delve::Application.configure do
     end
   end
 
-  config.middleware.insert_before('BromboneProxy', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/])
+  config.middleware.insert_before('BromboneProxy', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/])
 
   DISQUS_SHORTNAME = "delvestaging"
 
