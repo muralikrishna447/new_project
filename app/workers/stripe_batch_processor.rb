@@ -32,7 +32,7 @@ class StripeBatchProcessor
 
 
   def loop_stripe_orders(options)
-    loop
+    loop do
       stripe_orders = Stripe::Order.all(options)
       stripe_orders.each do |stripe_order|
         yield(stripe_order)
