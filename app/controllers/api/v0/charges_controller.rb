@@ -59,7 +59,7 @@ module Api
 
         # stripe_order.send_to_stripe
         if !gift
-          @user.make_premium_member(premium[:price])
+          @user.make_premium_member(premium[:price], false)
         end
 
         if data[:premium_discount]
