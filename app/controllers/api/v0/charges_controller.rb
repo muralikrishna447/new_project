@@ -55,7 +55,14 @@ module Api
 
         Resque.enqueue(StripeChargeProcessor, stripe_order.id)
 
-        stripe_order.send_to_stripe
+        # stripe_order.send_to_stripe
+        if !params[:gift]
+          @user.make_premium_member(premium[:price])
+        end
+
+        if data[:premium_discount]
+          @user.use_premium_discount
+        end
 
         render_api_response 200
 
