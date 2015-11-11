@@ -188,8 +188,10 @@ class User < ActiveRecord::Base
     end
   end
 
-  def make_premium_member(price)
-    raise "Already a premium member" if self.premium?
+  def make_premium_member(price, validate_premium=true)
+    if self.premium? && validate_premium
+      raise "Already a premium member"
+    end
     self.premium_member = true
     self.premium_membership_created_at = DateTime.now
     self.premium_membership_price = price

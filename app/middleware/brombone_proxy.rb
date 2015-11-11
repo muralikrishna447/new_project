@@ -57,7 +57,12 @@ class BromboneProxy < Rack::Proxy
     # the normal page to google, and n-z returns the snapshot. Right now only for google as we
     # don't think other crawlers are smart enough to run the javascript yet. The hope is that this
     # will help with including images in SERPs.
-    return false if env["HTTP_USER_AGENT"] =~ /(google)/ && request.path =~ /activities\/[a-m]/
+    #
+    # 11/11/15 So this split test was going badly; the [a-m] pages seem to be missing
+    # from the google index even though the are in the sitemap and fetch as googlebot
+    # shows the fine. Reducing the split test to just the slugs starting with a
+    # so we can wait awhile longer to see if they come back.
+    return false if env["HTTP_USER_AGENT"] =~ /(google)/ && request.path =~ /activities\/a/
 
     # Proxy if requester appears to be a crawler etc. This especially helps when someone
     # pastes one of our AJAX urls into facebook e.g.
