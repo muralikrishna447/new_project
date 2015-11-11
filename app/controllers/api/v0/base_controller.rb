@@ -4,11 +4,11 @@ module Api
       skip_before_filter :verify_authenticity_token
       # before_filter :cors_set_access_control_headers
 
-      # rescue_from Exception do |exception|
-      #   logger.error exception
-      #   logger.error exception.backtrace
-      #   render json: {status: 500, message: 'Server error'}, status: 500
-      # end
+      rescue_from Exception do |exception|
+        logger.error exception
+        logger.error exception.backtrace
+        render json: {status: 500, message: 'Server error'}, status: 500
+      end
 
       def cors_set_access_control_headers
         headers['Access-Control-Allow-Origin'] = '*'
