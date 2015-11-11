@@ -89,8 +89,6 @@ Delve::Application.configure do
     end
   end
 
-  config.middleware.insert_before('BromboneProxy', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/])
-
   DISQUS_SHORTNAME = "delvestaging"
 
   AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: '09aead6e71067484d11f3f4ff0b34364' }
