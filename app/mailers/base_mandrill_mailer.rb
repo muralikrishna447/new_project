@@ -2,6 +2,7 @@ require "mandrill"
 
 # From https://robots.thoughtbot.com/how-to-send-transactional-emails-from-rails-with-mandrill
 
+
 class BaseMandrillMailer < ActionMailer::Base
   default(
     from: "info@chefsteps.com",
