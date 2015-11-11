@@ -22,13 +22,15 @@
 
     -# Not signed in, or signed in but not premium - take them to premium landing page
     .main-cta(ng-show="! premium")
-      This class and many more are included in our
-      %a(href="/premium-membership") Premium Membership
+      Buy ChefSteps Premium to access this class, and many more.
+      %a.btn.btn-primary.btn-large.input-block-level#enroll-free-button(href="/premium")
+        Learn more
 
     -# Signed in, premium
     .main-cta(ng-show="premium")
       .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="createEnrollment()")
-        C'mon In Primo!
+        Let's go!
+      This class is included in your ChefSteps Premium membership.
 
 
   -# Not enrolled, free class

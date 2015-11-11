@@ -112,6 +112,7 @@ Delve::Application.routes.draw do
   end
 
   get 'users/session_me' => 'users#session_me'
+  get 'users/preauth' => 'users#preauth'
   get 'users/verify' => 'tokens#verify', as: 'verify'
   get 'getUser' => 'users#get_user'
   resources :users, only: [:index, :show] do

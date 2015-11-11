@@ -3,19 +3,14 @@ class SitemapsController < ApplicationController
   caches_page :show, :expires_in => 1.hour
 
   def show
-    # This will have to change when we start to have deep links that rails doesn't know about and that
-    # aren't reachable by a non-deep-linked alternative.
-
-
-    @main_stuff = Activity.published() |
+    @main_stuff = Activity.chefsteps_generated.published() |
                   Ingredient.no_sub_activities() |
                   Assembly.pubbed_courses() |
                   Assembly.prereg_courses() |
                   Assembly.projects().published() |
-                  Page.published() |
-                  Upload.approved()
+                  Page.published()
 
-    @other_routes = ["/", "/about", "/gallery", "/jobs"]
+    @other_routes = ["/", "/about", "/gallery", "/jobs", "/classes"]
     respond_to do |format|
       format.xml {
         render
