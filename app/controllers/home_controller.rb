@@ -170,11 +170,9 @@ class HomeController < ApplicationController
   end
 
   def terms
-    render(partial: 'terms')
   end
 
   def privacy_policy
-    render(partial: 'privacy_policy')
   end
 
   def facebook_optout
