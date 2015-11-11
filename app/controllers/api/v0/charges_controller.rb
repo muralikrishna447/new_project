@@ -47,7 +47,6 @@ module Api
           price = data[:price].to_i
         end
 
-
         mixpanel = ChefstepsMixpanel.new
         mixpanel.track(@user.email, 'Charge Server Side', {price: price, description: data[:description]})
 
