@@ -12,6 +12,8 @@ module Api
         circulator, premium = StripeOrder.stripe_products
         data = StripeOrder.build_stripe_order_data(params, circulator, premium)
 
+        gift = (params[:gift] == "true")
+
         if params[:sku] == "cs10001" # Circulator
           if @user.can_receive_circulator_discount?
             data[:price] = circulator['premiumPrice']
@@ -31,7 +33,7 @@ module Api
           data[:circulator_sale] = false
         end
 
-        if !params[:gift] && params[:sku] == 'cs10002' && @user.premium_member
+        if !gift && params[:sku] == 'cs10002' && @user.premium_member
           #raise "User Already Premium"
           return render_api_response 500, { error: "User Already Premium"}
         end
@@ -56,7 +58,7 @@ module Api
         Resque.enqueue(StripeChargeProcessor, stripe_order.id)
 
         # stripe_order.send_to_stripe
-        if !params[:gift]
+        if !gift
           @user.make_premium_member(premium[:price])
         end
 
