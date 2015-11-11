@@ -168,4 +168,19 @@ class HomeController < ApplicationController
 
   def jsapi
   end
+
+  def terms
+    render(partial: 'terms')
+  end
+
+  def privacy_policy
+    render(partial: 'privacy_policy')
+  end
+
+  def facebook_optout
+    if request.post?
+      GenericMailer.recipient_email('info@chefsteps.com', 'Facebook Audience Opt-Out', "Please opt out #{params[:email]} from our facebook custom audience").deliver
+      redirect_to root_path
+    end
+  end
 end

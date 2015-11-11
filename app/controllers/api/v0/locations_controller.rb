@@ -26,8 +26,13 @@ module Api
         #Null for no geocode and 0 for no tax
         tax_service = AvaTax::TaxService.new
         if location[:latitude] && location[:longitude]
-          geo_tax_result = tax_service.estimate({latitude: location[:latitude], longitude: location[:longitude]}, 100)
-          geo_tax_result["Rate"]
+          begin
+            geo_tax_result = tax_service.estimate({latitude: location[:latitude], longitude: location[:longitude]}, 100)
+            geo_tax_result["Rate"]
+          rescue => e
+            Rails.logger.info("Failed to calculate tax - #{e.response}")
+            nil
+          end
         else
           nil
         end
