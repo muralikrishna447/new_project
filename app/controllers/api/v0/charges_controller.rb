@@ -69,6 +69,7 @@ module Api
         puts 'Redeem'
         @user = User.find @user_id_from_token
         PremiumGiftCertificate.redeem(@user, params[:id])
+        PremiumWelcomeMailer.prepare(@user).deliver
         render_api_response 200
       rescue StandardError => e
         puts e.inspect

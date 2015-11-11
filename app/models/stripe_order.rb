@@ -88,11 +88,15 @@ class StripeOrder < ActiveRecord::Base
       self.save
     end
 
+    GenericReceiptMailer.prepare(self).deliver rescue nil
+
     if data['gift']
-      PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
+      pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
+      PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver rescue nil
     else
       if !self.user.premium_member
         self.user.make_premium_member(data['price'])
+        PremiumWelcomeMailer.prepare(self.user).deliver rescue nil
       else
         raise "Should never get here"
       end
