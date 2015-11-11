@@ -82,6 +82,18 @@ describe Api::V0::UsersController do
       response.should be_success
     end
 
+    it 'should call email signup' do
+      Api::V0::BaseController.any_instance.should_receive(:email_list_signup)
+      post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      response.should be_success
+    end
+
+    it 'should not call email signup if the user opts out' do
+      Api::V0::BaseController.any_instance.should_not_receive(:email_list_signup)
+      post :create, optout: "true", user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      response.should be_success
+    end
+
     it 'should not create a user if require fields are missing' do
       post :create, user: {email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should_not be_success
@@ -104,6 +116,12 @@ describe Api::V0::UsersController do
       post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
       response.should be_success
       expect(JSON.parse(response.body)['token'].length).to be > 0
+    end
+  end
+
+  context 'POST /international_joule' do
+    it "should add the user to mailchimp" do
+      pending "Gotta figure out the mailchimp stuff"
     end
   end
 

@@ -31,6 +31,11 @@ Delve::Application.routes.draw do
   # match '/new_home', to: 'home#new_home'
   match '/home_manager', to: 'home#manager'
 
+  match '/terms', to: 'home#terms'
+  match '/privacy', to: 'home#privacy'
+  match '/facebook_optout', to: 'home#facebook_optout'
+
+
   match '/forum', to: 'bloom#forum'
   match '/forum/*path', to: 'bloom#forum'
   match "/forum/*path" => redirect("/?goto=%{path}")
@@ -328,6 +333,8 @@ Delve::Application.routes.draw do
     get :edit_from_email, on: :collection
   end
 
+  resources :stripe_webhooks, only: [:create]
+
   # resources :components, only: [:index]
   match '/components', to: 'components#index'
   match '/components/*path', to: 'components#index'
@@ -351,6 +358,7 @@ Delve::Application.routes.draw do
         post :send_reset_email, on: :collection
         post :update_from_email, on: :collection
       end
+      resources :locations, only: [:index]
       resources :profiles, only: [:show] do
         get :classes, on: :member
         get :likes, on: :member
@@ -361,6 +369,7 @@ Delve::Application.routes.draw do
       resources :search, only: [:index]
       resources :users, only: [:index, :create, :update] do
         get :me, on: :collection
+        post :international_joule, on: :collection
       end
 
       resources :circulators, only: [:index, :create, :destroy] do

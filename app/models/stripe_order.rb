@@ -151,32 +151,12 @@ class StripeOrder < ActiveRecord::Base
     circulator = premium = nil
     products.each do |product|
       sku = product.skus.first
-      if product.id == 'cs-premium'
+      if product.id == 'cs-premium' || product.id == 'cs10002'
         premium = {sku: sku.id, title: product.name, price: sku.price, msrp: sku.metadata[:msrp].to_i, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
-      elsif product.id == 'cs-joule'
+      elsif product.id == 'cs-joule' || product.id == 'cs10001'
         circulator = {sku: sku.id, title: product.name, price: sku.price, msrp: sku.metadata[:msrp].to_i, 'premiumPrice' => sku.metadata[:premium_price].to_i, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
       end
     end
     return [circulator, premium]
-  end
-
-  def self.set_price_description(circulator, premium, skus, premium_discount, user)
-    price = description = nil
-
-    if skus.include?(circulator[:sku])
-      if premium_discount # Switch this to something else?
-        description = circulator_plus_discount
-        price = circulator['premiumPrice']
-      else
-        description = circulator_plus_premium
-        price = circulator[:price]
-      end
-    end
-
-    if skus.include?(premium[:sku])
-      description = premium_description
-      price = premium[:price]
-    end
-    return [price, description]
   end
 end
