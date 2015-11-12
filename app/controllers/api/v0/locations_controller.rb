@@ -3,13 +3,13 @@ module Api
     class LocationsController < BaseController
       # For doing geolocation lookup
       def index
-        # result = Rails.cache.fetch("location_lookup_#{request.ip}", expires_in: 1.week) do
+        result = Rails.cache.fetch("location_lookup_#{request.ip}", expires_in: 1.week) do
           begin
-            geocode = Geoip2.city('199.231.242.34')
+            geocode = ((request.ip == '127.0.0.1') ? nil : Geoip2.city(request.ip))
           rescue => error
             Rails.logger.error("Received error while geocoding #{request.ip}.  #{error}")
           end
-          # geocode = ((request.ip == '127.0.0.1') ? nil : Geoip2.city(request.ip))
+
           if geocode.present? && geocode.error.blank? && geocode.location.present?
             ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 1)
             @location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.names.en, state: geocode.subdivisions.first.iso_code, zip: geocode.postal.code}
@@ -21,7 +21,7 @@ module Api
             @tax_percent = nil
           end
           result = @location.merge('taxPercent' => @tax_percent)
-        # end
+        end
         render(json: result)
       end
 
