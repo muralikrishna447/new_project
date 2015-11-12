@@ -2,6 +2,8 @@
 - description = @ingredient.text_fields && @ingredient.text_fields["description"] ? sanitize(@ingredient.text_fields["description"]).html_safe : sanitize(@ingredient.title).html_safe
 - content_for :description, description
 - content_for :canonical_link, ingredient_url(@ingredient) if @ingredient.id
+-if ! @ingredient.well_edited
+  - content_for :extra_head_tags, '<META NAME="ROBOTS" CONTENT="NOINDEX">'.html_safe
 -# content_for :keywords, @ingredient.tag_list.join(',')
 - if @ingredient.id
   - content_for :facebook_og do
