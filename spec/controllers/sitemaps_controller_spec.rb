@@ -7,7 +7,8 @@ describe SitemapsController, "#get" do
 
     # Should be included
     let!(:activity1) { Fabricate(:activity, title: "bummy", published: true)}
-    let!(:ingredient1) { Fabricate(:ingredient, title: "yummy")}
+    let!(:ingredient1) { Fabricate(:ingredient, title: "yummy", text_fields: "now is the time for all good men to come to the aid of their respective parties and to the republic for which it stands one nation under god individisble")}
+    let!(:ingredient2) { Fabricate(:ingredient, title: "mummy", text_fields: "now is the time")}
     let!(:assembly1) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 39.00, published: true ) }
     let!(:assembly3) { Fabricate(:assembly, title: "Zummy", assembly_type: "Course", price: 39.00, published: false, show_prereg_page_in_index: true ) }
     let!(:project1) {Fabricate(:assembly, title: "Nummy", assembly_type: "Project", price: 39.00, published: true) }
@@ -34,6 +35,7 @@ describe SitemapsController, "#get" do
       expect(response.body).to_not include("https://chefsteps.com")
       expect(response.body).to_not include("https://www.chefsteps.com/hummy")
       expect(response.body).to_not include("https://www.chefsteps.com/activities/rummy")
+      expect(response.body).to_not include("https://www.chefsteps.com/ingredients/mummy")
     end
   end
 end
