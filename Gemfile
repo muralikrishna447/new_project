@@ -98,6 +98,7 @@ end
 group :development, :test do
   gem "simplecov", require: false
   gem 'angularjs-rails'
+  gem 'guard-resque'
 end
 
 group :assets, :angular, :test, :development do

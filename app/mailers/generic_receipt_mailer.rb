@@ -5,21 +5,34 @@ def format_currency(amount)
 end
 
 class GenericReceiptMailer < BaseMandrillMailer
-  def prepare(order)
+  def prepare(order, stripe_charge)
+
     subject = "ChefSteps Receipt"
     user = order.user
     lines = order.stripe_items
+
+    total = stripe_charge.amount
+    subtotal = total
+    tax = 0
+    tax_line = stripe_charge.items.find { |i| i.type == "tax" }
+    if tax_line
+      tax = tax_line.amount
+      subtotal = subtotal - tax
+    end
+
+    card = Stripe::Charge.retrieve(stripe_charge.charge).card
+
     merge_vars = {
       "ITEM1_NAME" => lines[0][:description],
       "ITEM1_PRICE" => format_currency(lines[0][:amount]),
       "ITEM2_NAME" => lines.count > 1 ? lines[1][:description] : "",
       "ITEM2_PRICE" => lines.count > 1 ? format_currency(lines[1][:amount]) : "",
-      "SUBTOTAL" => "DANTODO-subtotal",
-      "TAX" => "DANTODO-tax",
-      "TOTAL" => "DANTODO-total",
+      "SUBTOTAL" => format_currency(subtotal),
+      "TAX" => format_currency(tax),
+      "TOTAL" => format_currency(total),
       "PURCHASE_DATE" => DateTime.now.strftime('%B %d, %Y'),
-      "CARD_AND_LAST4" => "DANTODO-cardandlast4",
-      "ORDER_ID" => "DANTODO-orderid"
+      "CARD_AND_LAST4" => card.brand + " " + card.last4,
+      "ORDER_ID" => stripe_charge.id
     }
 
     body = mandrill_template("generic-receipt", merge_vars)

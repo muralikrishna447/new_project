@@ -241,6 +241,9 @@ GEM
       multi_json (~> 1.0)
     guard-pow (1.0.0)
       guard (>= 1.1)
+    guard-resque (0.0.5)
+      guard (>= 0.8)
+      resque
     guard-rspec (2.5.4)
       guard (>= 1.1)
       rspec (~> 2.11)
@@ -611,6 +614,7 @@ DEPENDENCIES
   guard-jasmine
   guard-livereload
   guard-pow
+  guard-resque
   guard-rspec
   guard-spork
   haml
@@ -682,3 +686,6 @@ DEPENDENCIES
   unicorn
   webmock
   xray-rails
+
+BUNDLED WITH
+   1.10.6
