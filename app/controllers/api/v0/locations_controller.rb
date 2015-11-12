@@ -4,6 +4,7 @@ module Api
       # For doing geolocation lookup
       def index
         result = Rails.cache.fetch("location_lookup_#{request.ip}", expires_in: 1.week) do
+          geocode = nil
           begin
             geocode = ((request.ip == '127.0.0.1') ? nil : Geoip2.city(request.ip))
           rescue => error
