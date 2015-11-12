@@ -9,6 +9,7 @@ module Api
             geocode = ((request.ip == '127.0.0.1') ? nil : Geoip2.city(request.ip))
           rescue => error
             Rails.logger.error("Received error while geocoding #{request.ip}.  #{error}")
+            ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 0)
           end
 
           if geocode.present? && geocode.error.blank? && geocode.location.present?
