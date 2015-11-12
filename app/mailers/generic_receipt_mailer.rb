@@ -20,6 +20,18 @@ class GenericReceiptMailer < BaseMandrillMailer
       subtotal = subtotal - tax
     end
 
+    # If Joule and including premium for free, document that
+    if lines.count == 1 && lines[0][:parent] == 'cs10001'
+      lines << {
+        amount: 0,
+        currency: 'usd',
+        description: 'ChefSteps Premium',
+        parent: 'cs10002',
+        quantity: 1,
+        type: 'sku'
+      }
+    end
+
     card = Stripe::Charge.retrieve(stripe_charge.charge).card
 
     merge_vars = {

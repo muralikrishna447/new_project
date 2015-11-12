@@ -82,20 +82,25 @@ class StripeOrder < ActiveRecord::Base
     stripe_user = self.create_or_update_user
 
     stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
-    stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
 
-    if stripe_charge.status == 'paid'
-      self.submitted = true
-      self.save
-      GenericReceiptMailer.prepare(self, stripe_charge).deliver rescue nil
+    if stripe.status != 'paid'
+      stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
+
+      if stripe_charge.status == 'paid'
+        self.submitted = true
+        self.save
+        GenericReceiptMailer.prepare(self, stripe_charge).deliver rescue nil
+
+        if data['gift']
+          pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
+          PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver rescue nil
+        end
+      end
     end
 
-    if data['gift']
-      pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
-      PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver rescue nil
-    else
+    if ! data['gift']
+      # Normally redundant
       self.user.make_premium_member(data['price'])
-      PremiumWelcomeMailer.prepare(self.user).deliver rescue nil
     end
 
     if data['premium_discount']
