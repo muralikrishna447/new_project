@@ -33,6 +33,7 @@ Delve::Application.routes.draw do
 
   match '/terms', to: 'home#terms'
   match '/privacy', to: 'home#privacy'
+  match '/libraries', to: 'home#libraries'
   match '/facebook_optout', to: 'home#facebook_optout'
 
 
