@@ -40,9 +40,11 @@ class Ingredient < ActiveRecord::Base
   # scope :started, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) > 0 AND count(DISTINCT(events.user_id)) < 3")
   # scope :well_edited, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) >= 3")
 
+  MIN_WELL_EDITED_LENGTH = 150
+
   scope :not_started, where('CHAR_LENGTH(text_fields) < 10')
-  scope :started, where('CHAR_LENGTH(text_fields) > 10 AND CHAR_LENGTH(text_fields) < 150')
-  scope :well_edited, where('CHAR_LENGTH(text_fields) > 150')
+  scope :started, where('CHAR_LENGTH(text_fields) > 10 AND CHAR_LENGTH(text_fields) < ?', MIN_WELL_EDITED_LENGTH)
+  scope :well_edited, where('CHAR_LENGTH(text_fields) > ?', MIN_WELL_EDITED_LENGTH)
 
   include PgSearch
   multisearchable :against => [:title, :text_fields, :product_url]
@@ -164,6 +166,10 @@ class Ingredient < ActiveRecord::Base
 
     self.reload
 
+  end
+
+  def well_edited
+    text_fields && text_fields.to_s.length > MIN_WELL_EDITED_LENGTH
   end
 
   def avatar_url
