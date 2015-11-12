@@ -49,7 +49,6 @@ module Api
           price = data[:price].to_i
         end
 
-
         mixpanel = ChefstepsMixpanel.new
         mixpanel.track(@user.email, 'Charge Server Side', {price: price, description: data[:description]})
 
@@ -59,7 +58,8 @@ module Api
 
         # stripe_order.send_to_stripe
         if !gift
-          @user.make_premium_member(premium[:price], false)
+          @user.make_premium_member(premium[:price])
+          PremiumWelcomeMailer.prepare(@user).deliver rescue nil
         end
 
         if data[:premium_discount]
@@ -75,9 +75,10 @@ module Api
       end
 
       def redeem
-        puts 'Redeem'
+        logger.info('Redeem gift cert #{params[:id]}')
         @user = User.find @user_id_from_token
         PremiumGiftCertificate.redeem(@user, params[:id])
+        PremiumWelcomeMailer.prepare(@user).deliver
         render_api_response 200
       rescue StandardError => e
         puts e.inspect

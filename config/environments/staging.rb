@@ -61,7 +61,6 @@ Delve::Application.configure do
     address: 'smtp.mandrillapp.com',
     user_name: ENV['MANDRILL_USERNAME'],
     password: ENV['MANDRILL_APIKEY'],
-    doman: 'heroku.com',
     authentication: :plain
   }
 

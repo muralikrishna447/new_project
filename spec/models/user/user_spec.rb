@@ -48,10 +48,6 @@ describe User do
       expect(@user.premium_membership_price).to eq(10)
     end
 
-    it "should only allow you to become premium once" do
-      @user.make_premium_member(10)
-      expect {@user.make_premium_member(10)}.to raise_error
-    end
   end
 
   context "use_premium_discount" do
