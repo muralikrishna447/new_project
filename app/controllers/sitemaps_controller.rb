@@ -4,7 +4,7 @@ class SitemapsController < ApplicationController
 
   def show
     @main_stuff = Activity.chefsteps_generated.published() |
-                  Ingredient.no_sub_activities() |
+                  Ingredient.well_edited.no_sub_activities() |
                   Assembly.pubbed_courses() |
                   Assembly.prereg_courses() |
                   Assembly.projects().published() |
