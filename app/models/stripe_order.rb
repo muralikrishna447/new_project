@@ -1,4 +1,5 @@
 class StripeOrder < ActiveRecord::Base
+  # This is ephemeral data that is used to get the order correctly into stripe.
   attr_accessible :idempotency_key, :user_id, :data
   serialize :data, JSON
   belongs_to :user
@@ -11,7 +12,8 @@ class StripeOrder < ActiveRecord::Base
       items: stripe_items,
       metadata: {
         user_id: user_id,
-        id: id
+        id: id,
+        env: Rails.env
         },
       shipping: stripe_shipping
     }
