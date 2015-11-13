@@ -32,7 +32,8 @@ describe Api::V0::ChargesController do
       end
 
       it 'should queue charge when called correctly' do
-        Resque.should_receive(:enqueue).and_return
+        Resque.should_receive(:enqueue).with(StripeChargeProcessor, 1)
+        Resque.should_receive(:enqueue).with(UserSync, @user.id)
         post :create, {sku: @premium[:sku], stripeToken: 'xxx', price: '5000', gift: 'false'}.merge(@billing_address)
         expect(response.status).to eq(200)
       end
