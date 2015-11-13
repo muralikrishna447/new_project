@@ -1,0 +1,27 @@
+%h1 Welcome to location testing portal
+%p
+  Current IP:
+  = @ip_address
+
+.form
+  %form(action='/users/set_location' method='post')
+    %p
+      %input(type='number' maxlength="3" name='ip_address_1' id='ip_address_1')
+      %input(type='number' maxlength="3" name='ip_address_2' id='ip_address_2')
+      %input(type='number' maxlength="3" name='ip_address_3' id='ip_address_3')
+      %input(type='number' maxlength="3" name='ip_address_4' id='ip_address_4')
+    %p
+      %input(type='submit' value='Set location')
+%p
+  Delete Cookie
+%p
+  %form(action='/users/set_location' method='delete')
+    %input(type='submit' value="Clear")
+
+
+%h3 Interesting IPs
+%ul
+  %li UK - 85.90.227.224
+  %li ChefSteps - 199.231.242.34
+  %li Bremerton - 76.121.32.10
+  %li New Jersey - 128.235.44.252

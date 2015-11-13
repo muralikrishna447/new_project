@@ -52,7 +52,7 @@ class UsersController < ApplicationController
       render json: {logged_in: false}.to_json, status: 200
     end
   end
-  
+
   def preauth
     unless current_user
       logger.info "Preauth redirecting to sign-in"
@@ -74,10 +74,23 @@ class UsersController < ApplicationController
       end
       # Always set new cookie to keep things simple
       logger.info "Setting preauth cookie for user #{current_user.id} / #{current_user.email}"
-      cookies.permanent[:cs_preauth] = current_user.valid_website_auth_token.to_jwt      
+      cookies.permanent[:cs_preauth] = current_user.valid_website_auth_token.to_jwt
     end
-    
+
     @preauth_cookie = cookies[:cs_preauth]
+  end
+
+
+  unless Rails.env.production?
+    def set_location
+      @ip_address = (cookies[:cs_location] || request.ip)
+      if request.post?
+        ip_address = "#{params[:ip_address_1]}.#{params[:ip_address_2]}.#{params[:ip_address_3]}.#{params[:ip_address_4]}"
+        cookies[:cs_location] = ip_address
+      elsif request.delete?
+        cookies.delete :cs_location
+      end
+    end
   end
 
 end
