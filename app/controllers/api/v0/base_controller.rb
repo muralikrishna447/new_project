@@ -28,7 +28,8 @@ module Api
         {root: false}
       end
 
-      def email_list_signup(name, email, source='unknown', listname='a61ebdcaa6')
+      # TODO - this method is needlessly duplicated from application controller
+      def email_list_signup(name, email, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
         begin
           Gibbon::API.lists.subscribe(
             id: listname,
