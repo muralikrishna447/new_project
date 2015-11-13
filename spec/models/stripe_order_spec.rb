@@ -118,14 +118,22 @@ describe StripeOrder do
 
   context 'send_to_stripe' do
     before :each do
-      stripe = double('stripe')
-      stripe.stub(:pay).and_return(stripe)
-      stripe.stub(:status).and_return('paid')
+      stripe2 = double('stripe', amount: 9999, status: 'paid', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe2.stub(:status).and_return('paid')
+
+      stripe = double('stripe', amount: 9999, status: 'created', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe.stub(:status).and_return('created')
+      stripe.stub(:pay).and_return(stripe2)
+
+
       @stripe_user = double('stripe_user')
       @stripe_user.stub(:id).and_return("tok_123")
       StripeOrder.any_instance.stub(:create_or_update_user).and_return(@stripe_user)
       StripeOrder.any_instance.stub(:get_tax).and_return({taxable_amount: '7'})
       Stripe::Order.stub(:create).and_return(stripe)
+      BaseMandrillMailer.any_instance.stub(:send_mail).and_return(double('mailer', deliver: true))
+      BaseMandrillMailer.any_instance.stub(:mandrill_template)
+
     end
 
     it "should call create_or_update_user" do

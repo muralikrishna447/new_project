@@ -188,10 +188,11 @@ class User < ActiveRecord::Base
     end
   end
 
-  def make_premium_member(price, validate_premium=true)
-    if self.premium? && validate_premium
-      raise "Already a premium member"
-    end
+  def make_premium_member(price)
+    # Not an error b/c we do this on both main and worker, can be
+    # racing each other.
+    return if self.premium?
+
     self.premium_member = true
     self.premium_membership_created_at = DateTime.now
     self.premium_membership_price = price

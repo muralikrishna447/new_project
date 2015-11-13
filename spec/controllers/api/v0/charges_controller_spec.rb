@@ -85,9 +85,9 @@ describe Api::V0::ChargesController do
         stripe_order.data.should include('price' => 5000, 'description' => 'ChefSteps Premium', 'premium_discount' => false, 'circulator_sale' => false, 'circulator_discount' => 3000)
       end
 
-      it 'should let you buy a premium class if you already have one if it is a gift' do
-        @user.make_premium_member(10)
-        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '5000', gift: 'true'
+      it 'should let give premium as a gift even if you are already premium yourself' do
+        @user.make_premium_member(11)
+        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '5000', gift: "true"
         expect(response.status).to eq(200)
       end
 

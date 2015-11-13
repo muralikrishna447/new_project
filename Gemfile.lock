@@ -241,6 +241,9 @@ GEM
       multi_json (~> 1.0)
     guard-pow (1.0.0)
       guard (>= 1.1)
+    guard-resque (0.0.5)
+      guard (>= 0.8)
+      resque
     guard-rspec (2.5.4)
       guard (>= 1.1)
       rspec (~> 2.11)
@@ -325,6 +328,9 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    mandrill-api (1.0.53)
+      excon (>= 0.16.0, < 1.0)
+      json (>= 1.7.7, < 2.0)
     memcachier (0.0.1)
     merit (1.6.1)
       ambry (~> 0.3.0)
@@ -608,6 +614,7 @@ DEPENDENCIES
   guard-jasmine
   guard-livereload
   guard-pow
+  guard-resque
   guard-rspec
   guard-spork
   haml
@@ -628,6 +635,7 @@ DEPENDENCIES
   librato-rack
   librato-rails
   listen
+  mandrill-api
   memcachier
   merit
   meta_request
@@ -678,3 +686,6 @@ DEPENDENCIES
   unicorn
   webmock
   xray-rails
+
+BUNDLED WITH
+   1.10.6
