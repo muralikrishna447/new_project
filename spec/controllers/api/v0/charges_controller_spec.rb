@@ -18,6 +18,8 @@ describe Api::V0::ChargesController do
         StripeOrder.stub(:stripe_products).and_return([@circulator, @premium])
         StripeOrder.any_instance.stub(:send_to_stripe).and_return(nil)
 
+        BaseMandrillMailer.any_instance.stub(:send_mail).and_return(double('mailer', deliver: true))
+        BaseMandrillMailer.any_instance.stub(:mandrill_template)
 
         @billing_address = {billing_name: 'Joe Example', billing_address_line1: '123 Any Place', billing_address_city: 'Seattle', billing_address_state: 'WA', billing_address_zip: '98101', billing_address_country: 'US'}
         @shipping_address = {shipping_name: 'Joe Example', shipping_address_line1: '123 Any Place', shipping_address_city: 'Seattle', shipping_address_state: 'WA', shipping_address_zip: '98101', shipping_address_country: 'US'}
