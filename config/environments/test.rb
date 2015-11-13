@@ -54,4 +54,10 @@ Delve::Application.configure do
 
   AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: 'c534846f01761db79637ebedc4bde21a' }
 
+  config.mailchimp = {
+    :api_key => 'test-api-key',
+    :list_id => 'test-list-id',
+    :premium_group_id => 'test-purchase-group-id'
+  }
+  ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 end
