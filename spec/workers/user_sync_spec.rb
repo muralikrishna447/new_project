@@ -18,7 +18,7 @@ describe UserSync do
     @user_sync.sync_mailchimp_premium
   end
 
-  it 'should throw is mailchimp is premium and database is not' do
+  it 'should throw if mailchimp is premium and database is not' do
     setup_member_info true
     # Test would fail if POST request was made since it's not stubbed
     expect {@user_sync.sync_mailchimp_premium}.to raise_exception
