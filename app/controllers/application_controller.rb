@@ -185,7 +185,7 @@ private
     end
   end
 
-  def email_list_signup(name, email, source='unknown', listname='a61ebdcaa6')
+  def email_list_signup(name, email, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
     begin
       Gibbon::API.lists.subscribe(
         id: listname,
@@ -222,7 +222,7 @@ private
     begin
       puts "Adding user: #{email} to interest groups"
       Gibbon::API.lists.update_member(
-        id: 'a61ebdcaa6',
+        id: Rails.configuration.mailchimp[:list_id],
         email: { email: email },
         merge_vars: merge_vars
       )
