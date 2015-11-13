@@ -26,8 +26,8 @@ describe UserSync do
     
   it 'should sync premium status to mailchimp' do
     setup_member_info false
-    stub_post = WebMock.stub_request(:post, "https://api.mailchimp.com/2.0/lists/update-member").
-      with(:body => "{\"apikey\":null,\"id\":\"test-list-id\",\"email\":{\"email\":\"johndoe@chefsteps.com\"},\"merge_vars\":{\"groupings\":[{\"id\":\"test-purchase-group-id\",\"groups\":[\"Premium Member\"]}]}}").
+    stub_post = WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
+      with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"johndoe@chefsteps.com\"},\"merge_vars\":{\"groupings\":[{\"id\":\"test-purchase-group-id\",\"groups\":[\"Premium Member\"]}]}}").
       to_return(:status => 200, :body => "", :headers => {})
 
     setup_premium_user
@@ -38,8 +38,9 @@ describe UserSync do
   
   def setup_member_info (premium)
     result = {:success_count => 1, :data => [{"GROUPINGS"=>[{"id"=>'test-purchase-group-id', "name"=>"Doesn't matter", "groups"=>[{"name"=>"Premium Member", "interested"=>premium}]}]}]}
-    WebMock.stub_request(:post, "https://api.mailchimp.com/2.0/lists/member-info").
-       with(:body => "{\"apikey\":null,\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
+    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
+       with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
+       #with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
        to_return(:status => 200, :body => result.to_json, :headers => {})
   end
   
