@@ -81,6 +81,7 @@ class StripeOrder < ActiveRecord::Base
   end
 
   def send_to_stripe
+    mixpanel = ChefstepsMixpanel.new
     stripe_user = self.create_or_update_user
 
     stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
@@ -89,6 +90,7 @@ class StripeOrder < ActiveRecord::Base
       stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
 
       if stripe_charge.status == 'paid'
+        mixpanel.track(user.email, 'Charge Server Side', {price: (data['price']/100.0), description: description, gift: data['gift']})
         self.submitted = true
         self.save
         GenericReceiptMailer.prepare(self, stripe_charge).deliver rescue nil
@@ -107,6 +109,18 @@ class StripeOrder < ActiveRecord::Base
 
     if data['premium_discount']
       user.use_premium_discount
+    end
+  end
+
+  def description
+    if data['circulator_sale']
+      if data['premium_discount']
+        "ChefSteps Joule with Premium Discount"
+      else
+        "ChefSteps Joule and Premium"
+      end
+    else
+      "ChefSteps Premium"
     end
   end
 
