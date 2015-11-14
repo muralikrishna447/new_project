@@ -37,6 +37,20 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
+
+  def catch_and_retry(retry_count)
+    begin
+      yield
+    rescue => error
+      retry_count -= 1
+      if retry_count > 0
+        retry
+      else
+        Rails.logger.error("Received Error #{error}")
+      end
+    end
+  end
+
   helper_method :facebook_app_id
   def facebook_app_id
     Rails.application.config.shared_config[:facebook][:app_id]

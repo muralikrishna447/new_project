@@ -3,22 +3,13 @@ module Api
     class LocationsController < BaseController
       # For doing geolocation lookup
       def index
-        count = 5
         ip_address = get_ip_address
         Rails.logger.info("Geolocation for #{ip_address}")
         result = cache_for_production(ip_address) do
           geocode = nil
-          begin
+          catch_and_retry(5) do
             geocode = ((ip_address == '127.0.0.1') ? nil : Geoip2.city(ip_address))
             Rails.logger.info("Geolocation returned for #{geocode}")
-          rescue => error
-            count-=1
-            if count > 0
-              retry
-            else
-              Rails.logger.error("Received error while geocoding #{ip_address}.  #{error}")
-              ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 0)
-            end
           end
 
           if geocode.present? && geocode.error.blank? && geocode.location.present?
