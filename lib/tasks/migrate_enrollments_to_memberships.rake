@@ -11,6 +11,8 @@ task :migrate_enrollments_to_memberships => [:environment] do
     # Three users that already don't pass validation so can't be resaved; not fixing right now
     u.save(validate: false)
     puts "Granting premium membership to: #{u.email}"
+    # Sync premium status to mailchimp
+    Resque.enqueue(UserSync, u.id)
     count += 1
   end
 
