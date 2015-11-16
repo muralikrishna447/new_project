@@ -48,6 +48,11 @@ describe User do
       expect(@user.premium_membership_price).to eq(10)
     end
 
+    it 'make_premium should enqueue user sync job' do
+      Resque.should_receive(:enqueue).with(UserSync, @user.id)
+      @user.make_premium_member(10)
+    end
+
   end
 
   context "use_premium_discount" do

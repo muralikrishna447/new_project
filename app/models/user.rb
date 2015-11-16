@@ -198,6 +198,7 @@ class User < ActiveRecord::Base
     self.premium_membership_price = price
     # There are users that already don't pass validation so can't be resaved; not fixing right now
     self.save(validate: false)
+    Resque.enqueue(UserSync, self.id)
   end
 
   def use_premium_discount
