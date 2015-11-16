@@ -38,11 +38,6 @@ describe Api::V0::ChargesController do
         expect(response.status).to eq(200)
       end
 
-      it 'should call mixpanel track' do
-        ChefstepsMixpanel.any_instance.should_receive(:track).and_return
-        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '5000'
-      end
-
       it 'should error if user is already premium' do
         @user.make_premium_member(10)
         post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '5000'

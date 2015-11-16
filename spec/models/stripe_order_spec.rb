@@ -154,6 +154,12 @@ describe StripeOrder do
       expect(PremiumGiftCertificate.count).to eq(1)
       expect(PremiumGiftCertificate.last.redeemed).to eq(false)
     end
+
+    it 'should call mixpanel track' do
+      ChefstepsMixpanel.any_instance.should_receive(:track).and_return
+      stripe_order = Fabricate(:stripe_order, idempotency_key: 'CS321', user_id: @user.id, data: @premium_sale.merge(gift: true))
+      stripe_order.send_to_stripe
+    end
   end
 
 
