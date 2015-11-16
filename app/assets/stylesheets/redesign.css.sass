@@ -996,7 +996,7 @@ csembedyoutube, csembedvimeo
   @include align-items(center)
   padding: 112px 56px
   .footer-items
-    width: 600px
+    width: 700px
     @include display-flex
 
 .footer-item-logo
@@ -1007,6 +1007,7 @@ csembedyoutube, csembedvimeo
   margin-right: 56px
   img
     width: 100%
+    max-width: 150px
     margin-bottom: 28px
   a
     color: white
@@ -1021,7 +1022,7 @@ csembedyoutube, csembedvimeo
   @include flex(0 1 100%)
   padding-left: 14px
   color: white
-  font-size: 18px
+  font-size: 16px
   line-height: 28px
   font-weight: normal
   ul
@@ -1033,6 +1034,10 @@ csembedyoutube, csembedvimeo
         color: white
         &:hover
           text-decoration: underline
+
+.updated
+  font-size: 12px
+  opacity: 0.7
 
 @media (max-width: 700px)
   #footer
