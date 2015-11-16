@@ -90,7 +90,7 @@ class StripeOrder < ActiveRecord::Base
       stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
 
       if stripe_charge.status == 'paid'
-        mixpanel.track(user.email, 'Charge Server Side', {price: (data['price']/100.0), description: description, gift: data['gift']})
+        mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
         self.submitted = true
         self.save
         GenericReceiptMailer.prepare(self, stripe_charge).deliver rescue nil
