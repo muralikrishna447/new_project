@@ -3,21 +3,21 @@ module Api
     class LocationsController < BaseController
       # For doing geolocation lookup
       def index
-        result = Rails.cache.fetch("location_lookup_#{request.ip}", expires_in: 1.week) do
+        ip_address = get_ip_address
+        Rails.logger.info("Geolocation for #{ip_address}")
+        result = cache_for_production(ip_address) do
           geocode = nil
-          begin
-            geocode = ((request.ip == '127.0.0.1') ? nil : Geoip2.city(request.ip))
-          rescue => error
-            Rails.logger.error("Received error while geocoding #{request.ip}.  #{error}")
-            ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 0)
+          catch_and_retry(5) do
+            geocode = ((ip_address == '127.0.0.1') ? nil : Geoip2.city(ip_address))
+            Rails.logger.info("Geolocation returned for #{geocode}")
           end
 
           if geocode.present? && geocode.error.blank? && geocode.location.present?
             ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 1)
-            @location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.names.en, state: geocode.subdivisions.first.iso_code, zip: geocode.postal.code}
+            @location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.try(:names).try(:en), state: geocode.subdivisions.try(:first).try(:iso_code), zip: geocode.try(:postal).try(:code)}
             @tax_percent = get_tax_estimate(@location)
           else
-            Rails.logger.info("Failed to geo-locate #{request.ip}")
+            Rails.logger.info("Failed to geo-locate #{ip_address}")
             ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 0)
             @location = {country: nil, latitude: nil, longitude: nil, city: nil, state: nil, zip: nil}
             @tax_percent = nil
@@ -29,6 +29,26 @@ module Api
 
 
       private
+      def get_ip_address
+        unless Rails.env.production?
+          (cookies[:cs_location] || request.ip)
+        else
+          request.ip
+        end
+      end
+
+      def cache_for_production(ip_address)
+        result = nil
+        if Rails.env.production?
+          result = Rails.cache.fetch("location_lookup_#{ip_address}", expires_in: 1.week) do
+            yield
+          end
+        else
+          result = yield
+        end
+        return result
+      end
+
       def get_tax_estimate(location)
         #Null for no geocode and 0 for no tax
         tax_service = AvaTax::TaxService.new
