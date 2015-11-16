@@ -50,27 +50,6 @@ describe Api::V0::UsersController do
     end
   end
 
-  context 'GET /index' do
-
-    it 'should verify a token' do
-      request.env['HTTP_AUTHORIZATION'] = @token
-      get :index
-      response.should be_success
-    end
-
-    it 'should respond with error when provided incorrect token' do
-      request.env['HTTP_AUTHORIZATION'] = 'Bearer SomeBadToken'
-      get :index
-      response.should_not be_success
-    end
-
-    it 'should respond with error when authentication header is not properly set' do
-      request.env['HTTP_AUTHORIZATION'] = ''
-      get :index, auth_token: @token
-      response.should_not be_success
-    end
-  end
-
   context 'POST /create' do
     it 'should create a user' do
       Resque.should_receive(:enqueue)
@@ -91,15 +70,14 @@ describe Api::V0::UsersController do
 
     it 'should create a new Facebook user' do
       post :create, user: {name: "New Facebook User", email: "newfb@user.com", password: "newUserPassword", provider: "facebook"}
-      response.should be_success
-      expect(JSON.parse(response.body)['token'].length).to be > 0
+      response.code.should == "403"
     end
 
     it 'should connect an existing Facebook user' do
       post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
+      response.code.should == "403"
       post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
-      response.should be_success
-      expect(JSON.parse(response.body)['token'].length).to be > 0
+      response.code.should == "403"
     end
   end
 
