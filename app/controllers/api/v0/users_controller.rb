@@ -28,23 +28,12 @@ module Api
         end
       end
 
-      def index
-        per = params[:per] ? params[:per] : 12
-        @users = User.page(params[:page]).per(per)
-        render json: @users.to_json(only: [:id, :name, :slug], methods: :avatar_url)
-      end
-
       def create
         params[:source] ||= "api_standard"
+        # TODO - deprecate this branch completely, in the short-run we need to
+        # verify that this branch is not used.
         if params[:user][:provider] && params[:user][:provider] == 'facebook'
-          is_new_user = User.find_by_email(params[:user][:email]).blank?
-          @user = User.facebook_connect(params[:user])
-          if is_new_user
-            create_new_user(@user)
-          else
-            aa = ActorAddress.create_for_user @user, client_metadata: "create"
-            render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
-          end
+          render_unauthorized
         else
           @user = User.new(params[:user])
           create_new_user(@user)
