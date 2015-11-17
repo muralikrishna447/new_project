@@ -31,6 +31,11 @@ Delve::Application.routes.draw do
   # match '/new_home', to: 'home#new_home'
   match '/home_manager', to: 'home#manager'
 
+  match '/terms', to: 'home#terms'
+  match '/privacy', to: 'home#privacy'
+  match '/libraries', to: 'home#libraries'
+  match '/facebook_optout', to: 'home#facebook_optout'
+
   match '/forum', to: 'bloom#forum'
   match '/forum/*path', to: 'bloom#forum'
   match "/forum/*path" => redirect("/?goto=%{path}")
@@ -369,6 +374,7 @@ Delve::Application.routes.draw do
       resources :search, only: [:index]
       resources :users, only: [:index, :create, :update] do
         get :me, on: :collection
+        get :shown_terms, on: :collection
       end
 
       resources :circulators, only: [:index, :create, :destroy] do
