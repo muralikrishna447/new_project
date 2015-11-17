@@ -369,6 +369,7 @@ Delve::Application.routes.draw do
       resources :search, only: [:index]
       resources :users, only: [:index, :create, :update] do
         get :me, on: :collection
+        get :shown_terms, on: :collection
       end
 
       resources :circulators, only: [:index, :create, :destroy] do

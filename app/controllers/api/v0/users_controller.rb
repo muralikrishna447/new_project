@@ -22,7 +22,7 @@ module Api
 
           @user[:intercom_user_hash] = ApplicationController.new.intercom_user_hash(@user)
 
-          render json: @user.to_json(only: [:id, :name, :slug, :email, :intercom_user_hash], methods: method_includes), status:200
+          render json: @user.to_json(only: [:id, :name, :slug, :email, :intercom_user_hash, :needs_special_terms], methods: method_includes), status:200
         else
           render json: {status: 501, message: 'User not found.'}, status: 501
         end
@@ -53,6 +53,12 @@ module Api
         else
           render json: {status: 401, message: 'Unauthorized.', debug: "From token: #{@user_id_from_token}, ID: #{@user.id}"}, status: 401
         end
+      end
+
+      def shown_terms
+        @user = User.find @user_id_from_token
+        @user.was_shown_terms
+        render json: {status: 200}, status: 200
       end
 
       private

@@ -255,6 +255,10 @@ class User < ActiveRecord::Base
     aa.current_token(exp: 1.year.from_now.to_i)
   end
 
+  def was_shown_terms
+    self.update_attribute(:needs_special_terms, false)
+  end
+
   def self.with_views_greater_than(view_count)
     user_count = User.joins(:events).select('events.user_id').group('events.user_id').having("count(events.id) >=#{view_count}").count
     user_ids = user_count.keys
