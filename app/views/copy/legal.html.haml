@@ -7,8 +7,8 @@
 
     .tab-content
       = tab_pane 'terms' do
-        = render 'legal_layout', title: 'Terms of Service', copy: terms_of_service
+        = render 'home/terms'
       = tab_pane 'privacy' do
-        = render 'legal_layout', title: 'Privacy Policy', copy: privacy_policy
+        = render 'home/privacy'
       = tab_pane 'licensing' do
         = render 'legal_layout', title: 'Licensing', copy: licensing

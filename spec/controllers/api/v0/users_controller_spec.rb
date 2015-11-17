@@ -14,6 +14,7 @@ describe Api::V0::UsersController do
 
       response.code.should == "200"
       result = JSON.parse(response.body)
+
       # TODO - write a nice utility for this sort of comparison
       result.delete('id').should == @user.id
       result.delete('name').should == @user.name
@@ -25,6 +26,9 @@ describe Api::V0::UsersController do
       result.delete('encrypted_bloom_info')
 
       result.delete('request_id')
+      result.delete('premium').should == false
+      result.delete('used_circulator_discount').should == false
+      result.delete('admin').should == false
       result.empty?.should == true
     end
 
@@ -59,6 +63,18 @@ describe Api::V0::UsersController do
       response.should be_success
     end
 
+    it 'should call email signup' do
+      Api::V0::BaseController.any_instance.should_receive(:email_list_signup)
+      post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      response.should be_success
+    end
+
+    it 'should not call email signup if the user opts out' do
+      Api::V0::BaseController.any_instance.should_not_receive(:email_list_signup)
+      post :create, optout: "true", user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      response.should be_success
+    end
+
     it 'should not create a user if require fields are missing' do
       post :create, user: {email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should_not be_success
@@ -80,6 +96,12 @@ describe Api::V0::UsersController do
       response.code.should == "403"
       post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
       response.code.should == "403"
+    end
+  end
+
+  context 'POST /international_joule' do
+    it "should add the user to mailchimp" do
+      pending "Gotta figure out the mailchimp stuff"
     end
   end
 

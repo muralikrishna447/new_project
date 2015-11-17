@@ -4,12 +4,12 @@
     = f.input :assembly_type, as: :select, collection: Assembly::ASSEMBLY_TYPE_SELECTION
     = f.input :published, as: :boolean
     = f.input :show_prereg_page_in_index, label: "Show pre-reg in index (only if a course and currently unpublished). Turn on once you are ready for preregistrations to happen and the appropriate aweber list has been created."
+    = f.input :premium, label: "Only for premium members"
     = f.input :title
     = f.input :description
     = f.input :description_alt
     = f.input :short_description, hint: "Used for course index"
     = f.input :badge_id, as: :select, collection: Merit::Badge
-    = f.input :price, hint: "Leave blank for free project/course"
     = f.input :buy_box_extra_bullets, hint: "Appends the bullets in buy box.  Use the html li tag to generate the list item bullet"
     = render '/shared/filepicker_group', label_text: "Image", param: "assembly[image_id]", value: @assembly.image_id
     .section Pre-Registration

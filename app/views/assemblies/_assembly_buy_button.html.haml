@@ -1,90 +1,50 @@
--# Note! Really important to use class_url, not class_path, so we get off SSL after purchase.
 -# This way of using ng_init is ugly, need to come up with a better plan. One way
 -# would be to retrieve this info via a resource (which could be pre-rendered like)
 -# we do for activity show view.
 
-.buy-buttons(ng-controller="BuyAssemblyStripeController"
+.buy-buttons(ng-controller="EnrollAssemblyController"
               ng-cloak
-              ng-init='assembly=#{assembly.to_json}; discounted_price=#{@discounted_price}; logged_in=#{current_user != nil}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_type_path(assembly)}"; completed="#{completed ? true : false}"; gift_certificate=#{gift_certificate.to_json}; rails_env="#{Rails.env}"; split_name="#{@split_name}"; freeTrialCode="#{session[:free_trial]}"; freeTrialText="#{@free_trial_text}"; freeTrialHours="#{@hours}"; freeTrialExpiredNotice(); freeTrialLogger(); registrationSource="class"; ambassador="#{session[:ambassador]}"; assemblyTypeName="#{assembly_type_name}";' )
+              ng-init='assembly=#{assembly.to_json}; logged_in=#{current_user != nil}; premium=#{(current_user && current_user.premium?) ? true : false}; enrolled=#{enrolled ? true : false}; assemblyPath="#{assembly_type_path(assembly)}"; completed="#{completed ? true : false}"; rails_env="#{Rails.env}"; split_name="#{@split_name}"; registrationSource="class"; assemblyTypeName="#{assembly_type_name}";' )
 
   -#
   -# Primary CTA
   -#
-  %div(ng-show="(!gift_certificate && (! enrolled) && assembly.price && discounted_price > 0) && (!freeTrialCode || isExpired())")
-    -# Not Signed in, paid class
-    .main-cta(ng-controller="LoginController" ng-show="!logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#sign-in-and-buy-button(ng-click="waitForLogin(); openModal('login')")
-        BUY NOW
-        = render 'activities/latest/assembly_price'
-        = render "devise/sessions/new_angular"
-    -# Not enrolled, paid class, not admin
-    .main-cta(ng-show="logged_in && !isAdmin" ng-class="{'purchase-started': buyModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#buy-button(ng-click="openModal(false)")
-        BUY NOW
-        = render 'activities/latest/assembly_price'
-    // Not Enrolled, paid class, admin
-    .main-cta(ng-show="logged_in && isAdmin" ng-class="{'purchase-started': buyModalOpen}")
-      %a.btn.btn-primary.btn-large.input-block-level#completed-button(ng-href="{{assemblyPath}}")
-        = render 'activities/latest/assembly_price'
-        %span (View as Admin)
 
   -# Already enrolled
-  %div(ng-show="logged_in && enrolled")
-    .main-cta(ng-class="{'purchase-started': buyModalOpen}")
+  %div(ng-show="enrolled")
+    .main-cta(ng-class="{'purchase-started': assemblyWelcomeModalOpen}")
       %div
         %a.btn.btn-primary.btn-large.input-block-level#completed-button(ng-href="{{assemblyPath}}")
           %span View Class
 
-  %div(ng-show="gift_certificate && (! enrolled) && assembly.price")
-    -# Not logged in but gift certificate available
-    .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#sign-in-and-redeem-gift-button(ng-click="showForm='signUp'; waitForRedemption(); openModal('login')")
-        Get My Gift
-        = render "devise/sessions/new_angular"
-    -# Not enrolled, paid class, gift certificate available
-    .main-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#redeem-gift-button(ng-click="redeemGift()")
-        Get My Gift
+  -# Not enrolled, premium class
+  %div(ng-show="(! enrolled) && assembly.premium")
+
+    -# Not signed in, or signed in but not premium - take them to premium landing page
+    .main-cta(ng-show="! premium")
+      Buy ChefSteps Premium to access this class, and many more.
+      %a.btn.btn-primary.btn-large.input-block-level#enroll-free-button(href="/premium")
+        Learn more
+
+    -# Signed in, premium
+    .main-cta(ng-show="premium")
+      .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="createEnrollment()")
+        Let's go!
+      This class is included in your ChefSteps Premium membership.
+
 
   -# Not enrolled, free class
-  %div(ng-show="(! gift_certificate) && (! enrolled) && (discounted_price == '0')")
-    .main-cta(ng-controller="LoginController" ng-show="(! logged_in)" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
+  %div(ng-show="(! enrolled) && (! assembly.premium)")
+
+    -# Not signed in
+    .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-class="{'purchase-started': assemblyWelcomeModalOpen, 'login-started': loginModalOpen}")
       .btn.btn-primary.btn-large.input-block-level#sign-in-and-enroll-free-button(ng-click="waitForFreeEnrollment(); openModal('signUp');")
         Enroll for Free
         = render "devise/sessions/new_angular"
-    .main-cta(ng-show="(logged_in)" ng-class="{'purchase-started': buyModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="free_enrollment()")
+
+    -# Signed in
+    .main-cta(ng-show="logged_in" ng-class="{'purchase-started': assemblyWelcomeModalOpen}")
+      .btn.btn-primary.btn-large.input-block-level#enroll-free-button(ng-click="createEnrollment()")
         Enroll For Free
 
-  -#
-  -# Secondary CTA
-  -#
-
-  -# Sell gift certificate
-  %div(ng-show="(! gift_certificate) && (assembly.price > 0) && (!freeTrialCode || isExpired())")
-    -# Not Logged in but want to buy gift certificate
-    .gift-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
-      .btn.btn-secondary.btn-large.input-block-level#sign-in-and-gift-button(ng-click="waitForLogin(); buyingGift(); openModal('login')")
-        Send As Gift
-        %div.inline(ng-show="enrolled")
-          = render 'activities/latest/assembly_price'
-          = render "devise/sessions/new_angular"
-    -# Logged In
-    .gift-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
-      .btn.btn-secondary.btn-large.input-block-level#gift-button(ng-click="openModal(true)")
-        Send As Gift
-        %div.inline(ng-show="enrolled")
-          = render 'activities/latest/assembly_price'
-
-  %div.free-trial(ng-show="(! enrolled) && (freeTrialCode) && (assembly.price > 0) && (! isExpired())")
-    .main-cta(ng-controller="LoginController" ng-show="! logged_in" ng-init="formFor='purchase'; headerText='Create an account on ChefSteps to get access to our free trial.<br/>The account allows you to pick up from where you left off and continue your class on any device.'" ng-class="{'purchase-started': buyModalOpen, 'login-started': loginModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#sign-in-and-free-trial-button(ng-click="showForm='signUp'; setLoginState('freeTrial'); openModal('login')")
-        START YOUR FREE TRIAL
-        = render "devise/sessions/new_angular"
-    .main-cta(ng-show="logged_in" ng-class="{'purchase-started': buyModalOpen}")
-      .btn.btn-primary.btn-large.input-block-level#free-trial-button(ng-click="freeTrial()")
-        START YOUR FREE TRIAL
-    %p.additional-information
-      %small (No Credit Card Required)
-
-  =render 'buy_modal'
+  =render 'assembly_welcome_modal'

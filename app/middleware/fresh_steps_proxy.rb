@@ -7,8 +7,10 @@ class FreshStepsProxy < Rack::Proxy
   # browser-sync was pinging multiple times per second. Although without the proxy, rails returns 406 so
   # it is still doing work. Curious.
 
-  PREFIX = %w(/gallery /logout /fs_pages /fs_activities /sous-vide /grilling /indoor-barbecue /thanksgiving /chefsteps-debuts-joule /joule /admin/components)
-  EXACT = "/"
+
+
+  PREFIX = %w(/gallery /logout /fs_pages /fs_activities /gift /admin/components)
+  EXACT = %w(/ /classes /sous-vide /grilling /indoor-barbecue /thanksgiving /premium /chefsteps-debuts-joule /joule)
   SUFFIX = %w(/fork /notify_start_edit /notify_end_edit /as_json /the-egg-calculator /new)
 
   def initialize(app)
@@ -49,7 +51,7 @@ class FreshStepsProxy < Rack::Proxy
     # in get_escaped_fragment_from_brombone
     leave_for_brombone = request.query_string.include?('_escaped_fragment_')
     prefix_match = PREFIX.include?(request.path) || PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")}
-    exact_match = EXACT == request.path
+    exact_match = EXACT.include?(request.path)
 
     # The logic below will only proxy GET requests with path /activities/:id
     activity_show_match = request.get? &&

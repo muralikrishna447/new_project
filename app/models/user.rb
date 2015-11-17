@@ -58,15 +58,15 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :token_authenticatable, :omniauth_providers => [:google_oauth2]
 
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :free_trial, :survey_results, :events_count, :signup_incentive_available, :timf_incentive_available
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :survey_results, :events_count
 
   # This is for active admin, so that it can edit the role (and so normal users can't edit their role)
   attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :role, :referred_from, :referrer_id, as: :admin
+    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :role, :referred_from, :referrer_id, :premium_member, :premium_membership_created_at, :premium_membership_price, as: :admin
 
-  attr_accessor :free_trial, :skip_name_validation
+  attr_accessor :skip_name_validation
 
-  validates_presence_of :name, unless: Proc.new {|user| user.free_trial == true || user.skip_name_validation == true}
+  validates_presence_of :name, unless: Proc.new {|user| user.skip_name_validation == true}
 
   validates_inclusion_of :chef_type, in: CHEF_TYPES, allow_blank: true
 
@@ -92,6 +92,10 @@ class User < ActiveRecord::Base
 
   def profile_complete?
     chef_type.present?
+  end
+
+  def premium?
+    self.premium_member || admin
   end
 
   def viewed_activities_in_course(course)
@@ -179,11 +183,31 @@ class User < ActiveRecord::Base
     case
     when enrollment.blank?
       false
-    when enrollment.free_trial?
-      !enrollment.free_trial_expired?
     else
       true
     end
+  end
+
+  def make_premium_member(price)
+    # Not an error b/c we do this on both main and worker, can be
+    # racing each other.
+    return if self.premium?
+
+    self.premium_member = true
+    self.premium_membership_created_at = DateTime.now
+    self.premium_membership_price = price
+    # There are users that already don't pass validation so can't be resaved; not fixing right now
+    self.save(validate: false)
+    Resque.enqueue(UserSync, self.id)
+  end
+
+  def use_premium_discount
+    self.used_circulator_discount = true
+    self.save(validate: false)
+  end
+
+  def can_receive_circulator_discount?
+    premium_member && !used_circulator_discount
   end
 
   def completed_course?(course)

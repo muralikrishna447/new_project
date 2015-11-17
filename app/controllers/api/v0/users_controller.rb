@@ -14,21 +14,14 @@ module Api
         warden.set_user @user # sets session cookie, unsure if this is necessary
 
         if @user
-          method_includes = [:avatar_url, :encrypted_bloom_info]
-          # Don't leak admin flag if user is not admin
-          if @user.admin?
-            method_includes << :admin
-          end
-
-          @user[:intercom_user_hash] = ApplicationController.new.intercom_user_hash(@user)
-
-          render json: @user.to_json(only: [:id, :name, :slug, :email, :intercom_user_hash, :needs_special_terms], methods: method_includes), status:200
+          render json: @user, serializer: Api::UserMeSerializer
         else
           render json: {status: 501, message: 'User not found.'}, status: 501
         end
       end
 
       def create
+        optout = (params[:optout] && params[:optout]=="true") #email list optout
         params[:source] ||= "api_standard"
         # TODO - deprecate this branch completely, in the short-run we need to
         # verify that this branch is not used.
@@ -36,7 +29,7 @@ module Api
           render_unauthorized
         else
           @user = User.new(params[:user])
-          create_new_user(@user)
+          create_new_user(@user, optout)
         end
       end
 
@@ -61,12 +54,20 @@ module Api
         render json: {status: 200}, status: 200
       end
 
+      def international_joule
+        # ECOMMTODO Do mailchimp stuff
+        @user = User.find @user_id_from_token
+        # Something like this
+        # email_list_add_to_group(@user.email, '8061', ['international_joule'])
+        render json: {}, code: :ok
+      end
+
       private
 
       # Why is this code duplicated here?
-      def create_new_user(user)
+      def create_new_user(user, optout = false)
         if user.save
-          email_list_signup(user.name, user.email, params[:source])
+          email_list_signup(user.name, user.email, params[:source]) unless optout
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
           # mixpanel.alias needs to be called with @user.id instead of @user.email for consistant tracking with the client
           mixpanel.alias(@user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id

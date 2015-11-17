@@ -114,6 +114,11 @@ Delve::Application.routes.draw do
   get 'users/session_me' => 'users#session_me'
   get 'users/preauth' => 'users#preauth'
   get 'users/verify' => 'tokens#verify', as: 'verify'
+
+  unless Rails.env.production?
+    match 'users/set_location' => 'users#set_location'
+  end
+
   get 'getUser' => 'users#get_user'
   resources :users, only: [:index, :show] do
     collection do
@@ -148,17 +153,12 @@ Delve::Application.routes.draw do
   get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
 
-  # TIMDISCOUNT for the 'tim' part only
-
-  get 'tim' => 'courses#tim'
   match '/mp', to: redirect('/courses/spherification')
   match '/MP', to: redirect('/courses/spherification')
   match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
   match '/PS', to: redirect('/courses/accelerated-sous-vide-cooking-course')
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
-
-  get '/:ambassador', to: 'courses#index', ambassador: /testambassador|johan|trevor|brendan|matthew|merridith|jack|brian|kyle|timf/
 
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
@@ -245,11 +245,10 @@ Delve::Application.routes.draw do
   end
   resources :assemblies, only: [:index, :show] do
     resources :comments
-    resources :enrollments
+    member do
+      post 'enroll' => 'assemblies#enroll'
+    end
   end
-  match "/gift/:gift_token", to: 'assemblies#redeem'
-  match "/gift", to: 'assemblies#redeem_index'
-  match "/trial/:trial_token", to: 'assemblies#trial'
 
   resources :streams, only: [:index, :show]
   get 'community-activity' => 'streams#feed', as: 'community_activity'
@@ -260,8 +259,6 @@ Delve::Application.routes.draw do
 
   resources :client_views, only: [:show]
   resources :stream_views, only: [:show]
-
-  resources :charges, only: [:create]
 
   # Legacy needed b/c the courses version of this URL was public in a few places
   get '/courses/accelerated-sous-vide-cooking-course', to: redirect('/classes/sous-vide-cooking')
@@ -341,6 +338,8 @@ Delve::Application.routes.draw do
     get :edit_from_email, on: :collection
   end
 
+  resources :stripe_webhooks, only: [:create]
+
   # resources :components, only: [:index]
   match '/components', to: 'components#index'
   match '/components/*path', to: 'components#index'
@@ -364,6 +363,7 @@ Delve::Application.routes.draw do
         post :send_reset_email, on: :collection
         post :update_from_email, on: :collection
       end
+      resources :locations, only: [:index]
       resources :profiles, only: [:show] do
         get :classes, on: :member
         get :likes, on: :member
@@ -375,6 +375,7 @@ Delve::Application.routes.draw do
       resources :users, only: [:index, :create, :update] do
         get :me, on: :collection
         get :shown_terms, on: :collection
+        post :international_joule, on: :collection
       end
 
       resources :circulators, only: [:index, :create, :destroy] do
@@ -392,6 +393,12 @@ Delve::Application.routes.draw do
           get :multipass, on: :collection
         end
       end
+
+      resources :charges, only: [:create] do
+        put :redeem, on: :member
+      end
+
+      resources :products, only: [:index]
 
       match '/*path' => 'base#options', :via => :options
 

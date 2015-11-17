@@ -37,6 +37,20 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
+
+  def catch_and_retry(retry_count)
+    begin
+      yield
+    rescue => error
+      retry_count -= 1
+      if retry_count > 0
+        retry
+      else
+        Rails.logger.error("Received Error #{error}")
+      end
+    end
+  end
+
   helper_method :facebook_app_id
   def facebook_app_id
     Rails.application.config.shared_config[:facebook][:app_id]
@@ -60,11 +74,7 @@ class BaseApplicationController < ActionController::Base
 
   private
   def mixpanel
-    if Rails.env.production?
-      @mixpanel ||= ChefstepsMixpanel.new '84272cf32ff65b70b86639dacd53c0e0'
-    else
-      @mixpanel ||= ChefstepsMixpanel.new 'd6d82f805f7d8a138228a52f17d6aaec'
-    end
+    @mixpanel ||= ChefstepsMixpanel.new
   end
 
   def mixpanel_anonymous_id

@@ -61,7 +61,6 @@ Delve::Application.configure do
     address: 'smtp.mandrillapp.com',
     user_name: ENV['MANDRILL_USERNAME'],
     password: ENV['MANDRILL_APIKEY'],
-    doman: 'heroku.com',
     authentication: :plain
   }
 
@@ -80,8 +79,6 @@ Delve::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
-
-  config.middleware.insert_before('BromboneProxy', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/])
 
   DISQUS_SHORTNAME = "delvestaging"
 

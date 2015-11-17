@@ -1,13 +1,14 @@
 %a.cs-nav-item.button.hide-desktop(ng-click="openModal('login'); nav.showMenu = false" ng-if='!authentication.currentUser()')
   Sign In
 
+%a.cs-nav-item(href='https://www.chefsteps.com/premium')
+  Premium
+
 %a.cs-nav-item(href='/gallery')
   %span.hide-desktop Search
   Recipes
 %a.cs-nav-item(href='/classes')
   Classes
-%a.cs-nav-item(href='https://www.chefsteps.com/forum')
-  Forum
 
 .cs-nav-item
   .dropdown(ng-controller='csDropdownController as dropdown')

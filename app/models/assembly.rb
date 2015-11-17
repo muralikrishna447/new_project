@@ -2,7 +2,7 @@ class Assembly < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
   friendly_id :title, use: [:slugged, :history]
-  attr_accessible :description, :image_id, :prereg_image_id, :title, :youtube_id, :vimeo_id, :slug, :assembly_type, :assembly_inclusions_attributes, :price, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets, :preview_copy, :testimonial_copy, :prereg_email_list_id, :description_alt
+  attr_accessible :description, :image_id, :prereg_image_id, :title, :youtube_id, :vimeo_id, :slug, :assembly_type, :assembly_inclusions_attributes, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets, :preview_copy, :testimonial_copy, :prereg_email_list_id, :description_alt, :premium
   has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :pages, through: :assembly_inclusions, source: :includable, source_type: 'Page'
@@ -121,49 +121,4 @@ class Assembly < ActiveRecord::Base
   def only_one_level
     self.assembly_inclusions.map(&:includable_type).include?('Assembly') ? false : true
   end
-
-  def paid?
-    price && price > 0
-  end
-
-  def self.free_trial_hours(b64string)
-    Base64.decode64(b64string).split('-').map(&:to_i)[1]
-  end
-
-  def self.free_trial_assembly(b64string)
-    Assembly.find(Base64.decode64(b64string).split('-').map(&:to_i)[0])
-  end
-
-  def discounted_price(coupon, signup_incentive_available = nil)
-    return 0 if ! self.price
-
-    # Coupons
-    pct = 1
-    case coupon
-    when 'a2a72a39da72'
-      pct = 0.75
-    when 'b1b01d389a50'
-      pct = 0.5
-
-    # MEATHEAD
-    when 'f2ba193b2f9f'
-      pct = 0.5
-
-    # INSTAGRAM 50k followers
-    when 'c919af43ba6c'
-      pct = 0.5
-
-    # TIMDISCOUNT
-    when 'fb912ad989a0'
-      pct = 0
-    end
-
-    # New users who haven't used their enrollment incentive yet always get 50%
-    if signup_incentive_available
-      pct = 0.5 unless pct < 0.5
-    end
-
-    (self.price * pct).round(2)
-  end
-
 end

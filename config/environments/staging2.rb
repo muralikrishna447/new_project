@@ -62,7 +62,6 @@ Delve::Application.configure do
     address: 'smtp.mandrillapp.com',
     user_name: ENV['MANDRILL_USERNAME'],
     password: ENV['MANDRILL_APIKEY'],
-    doman: 'heroku.com',
     authentication: :plain
   }
 
@@ -88,8 +87,6 @@ Delve::Application.configure do
       resource '/api/v0/*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete]
     end
   end
-
-  config.middleware.insert_before('BromboneProxy', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/])
 
   DISQUS_SHORTNAME = "delvestaging"
 

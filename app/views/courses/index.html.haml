@@ -7,21 +7,6 @@
     .text-center
       %h1
         Classes
-      -# TIMDISCOUNT
-      %div(ng-show="#{session[:ambassador] == 'tim' && timf_incentive_maybe_available}")
-        .section-small
-        %h3 Welcome Tim Ferriss fan! Choose any one
-        %h3 of our paid classes below for free.
-        .section-small
-      %div(ng-show="#{session[:ambassador] != 'tim' && current_user && current_user.signup_incentive_available}")
-        .section-small
-        %h3 Thanks for joining the ChefSteps community!
-        %h3 Enjoy a 50% discount on your first class.
-        .section-small
-  /     %a(href="/courses" onclick="mixpanel.track('Class Banner Clicked');")
-  /       %img.desktop-banner-retina(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/TiAbyp35QD2bwph7kXds")
-  /       %img.desktop-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/5NwrXpzgSuWOeCvPh6FJ")
-  /       %img.mobile-banner(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/78FLYvUqRAK8HVI9Fai7")
 
   - @assembly_courses.each do |course|
     = render 'one_course', course: course
