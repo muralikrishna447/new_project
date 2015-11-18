@@ -208,7 +208,7 @@ class StripeOrder < ActiveRecord::Base
         premium = {sku: sku.id, title: product.name, price: sku.price, msrp: sku.metadata[:msrp].to_i, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
       elsif product.id == 'cs-joule' || product.id == 'cs10001'
         # circulator = {sku: sku.id, title: product.name, price: sku.price, msrp: sku.metadata[:msrp].to_i, 'premiumPrice' => sku.metadata[:premium_price].to_i, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
-        circulator = {sku: nil, title: nil, price: 0, msrp: 0, 'premiumPrice' => 0, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
+        circulator = {sku: 'cs10001', title: nil, price: 0, msrp: 0, 'premiumPrice' => 0, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
       end
     end
     return [circulator, premium]
