@@ -1,7 +1,7 @@
 include ActionView::Helpers::NumberHelper
 
 def format_currency(amount)
-  number_to_currency(amount.to_i / 100)
+  number_to_currency(amount.to_i / 100.0)
 end
 
 class GenericReceiptMailer < BaseMandrillMailer
