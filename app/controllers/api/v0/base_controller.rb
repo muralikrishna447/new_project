@@ -92,7 +92,7 @@ module Api
 
         logger.debug "Found actor address: [#{aa.inspect}]"
         unless aa.valid_token?(token)
-          logger.info "Invalid token #{token}"
+          logger.info "Invalid token #{token.inspect}"
           return
         end
 
@@ -107,23 +107,23 @@ module Api
         ensure_authorized()
       end
 
-      def ensure_authorized
+      def ensure_authorized(render_response = true)
         begin
           if not request.authorization()
             logger.info "Authorization token not set"
-            render_api_response(401, {message: 'Unauthenticated'})
+            render_api_response(401, {message: 'Unauthenticated'}) if render_response
             return
           end
           aa = get_valid_actor_address()
           if not aa or aa.actor_type != 'User'
-            render_unauthorized
+            render_unauthorized if render_response
             return
           end
           @user_id_from_token = aa.actor_id
         rescue Exception => e
           logger.error e
           logger.error e.backtrace.join("\n")
-          render_unauthorized
+          render_unauthorized if render_response
         end
       end
 
