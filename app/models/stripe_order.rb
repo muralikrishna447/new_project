@@ -81,23 +81,28 @@ class StripeOrder < ActiveRecord::Base
   end
 
   def send_to_stripe
-    mixpanel = ChefstepsMixpanel.new
+    Rails.logger.info("Starting send_to_stripe")
     stripe_user = self.create_or_update_user
 
     stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
+    Rails.logger.info("Received Stripe info\n #{stripe.inspect}")
 
     if stripe.status != 'paid'
+      Rails.logger.info("Stripe Order #{id} not paid, charging now")
       stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
 
       if stripe_charge.status == 'paid'
+        Rails.logger.info("Stripe Order #{id} has been collected. Sending Analytics")
         analytics(stripe_charge)
         #mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
-
+        Rails.logger.info("Stripe Order #{id} - Analytics Sent Updating user")
         self.submitted = true
         self.save
+        Rails.logger.info("Stripe Order #{id} - User Updated - Sending Receipt")
         GenericReceiptMailer.prepare(self, stripe_charge).deliver rescue nil
 
         if data['gift']
+          Rails.logger.info("Stripe Order #{id} - Sending Gift Receipt")
           pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
           PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver rescue nil
         end
@@ -106,10 +111,12 @@ class StripeOrder < ActiveRecord::Base
 
     if ! data['gift']
       # Normally redundant
+      Rails.logger.info("Stripe Order #{id} - Making Premium")
       self.user.make_premium_member(data['price'])
     end
 
     if data['premium_discount']
+      Rails.logger.info("Stripe Order #{id} - Using Discount")
       user.use_premium_discount
     end
   end
@@ -157,15 +164,20 @@ class StripeOrder < ActiveRecord::Base
   end
 
   def create_or_update_user
+    Rails.logger.info("Stripe Order #{id} - create_or_update_user")
     customer = nil
     if user.stripe_id.blank?
+      Rails.logger.info("Stripe Order #{id} - Creating new user")
       customer = Stripe::Customer.create(email: user.email, card: data['token'])
       user.stripe_id = customer.id
       user.save
+      Rails.logger.info("Stripe Order #{id} - Sent to stripe")
     else
+      Rails.logger.info("Stripe Order #{id} - Current customer updating credit card")
       customer = Stripe::Customer.retrieve(user.stripe_id)
       customer.source = data['token']
       customer.save
+      Rails.logger.info("Stripe Order #{id} - Customer updated")
     end
     return customer
   end
