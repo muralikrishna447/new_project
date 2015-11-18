@@ -133,11 +133,16 @@ describe StripeOrder do
       Stripe::Order.stub(:create).and_return(stripe)
       BaseMandrillMailer.any_instance.stub(:send_mail).and_return(double('mailer', deliver: true))
       BaseMandrillMailer.any_instance.stub(:mandrill_template)
-
+      StripeOrder.any_instance.stub(:analytics)
     end
 
     it "should call create_or_update_user" do
       StripeOrder.any_instance.should_receive(:create_or_update_user).and_return(@stripe_user)
+      @stripe_circulator_order.send_to_stripe
+    end
+
+    it "should call analytics" do
+      StripeOrder.any_instance.should_receive(:analytics)
       @stripe_circulator_order.send_to_stripe
     end
 
@@ -154,11 +159,16 @@ describe StripeOrder do
       expect(PremiumGiftCertificate.count).to eq(1)
       expect(PremiumGiftCertificate.last.redeemed).to eq(false)
     end
+  end
 
-    it 'should call mixpanel track' do
-      ChefstepsMixpanel.any_instance.should_receive(:track).and_return
-      stripe_order = Fabricate(:stripe_order, idempotency_key: 'CS321', user_id: @user.id, data: @premium_sale.merge(gift: true))
-      stripe_order.send_to_stripe
+  context 'analytics' do
+    before :each do
+      @stripe_charge = Hashie::Mash.new(id: '123', amount: 20000, items: [{type: 'sku', parent: 'cs10001', description: 'Circulator', amount: 170000}, {type: 'tax', description: 'Tax', amount: 3000}] )
+    end
+
+    it 'should call Analytics.track' do
+      Analytics.should_receive(:track).with({:user_id=>@user.id, :event=>"Completed Order", :properties=>{:product_skus=>["cs10001"], :orderId=>"123", :total=>200.0, :revenue=>19970.0, :tax=>30.0, :shipping=>0, :discount=>0.0, :currency=>"USD", :products=>[{:id=>"cs10001", :sku=>"cs10001", :name=>"Circulator", :price=>1700.0, :quantity=>1}]}})
+      @stripe_circulator_order.analytics(@stripe_charge)
     end
   end
 

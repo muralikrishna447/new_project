@@ -84,6 +84,8 @@ gem 'avatax'
 
 gem 'geoip2'
 
+gem 'analytics-ruby', :require => "segment"
+
 group :test do
   gem 'webmock'
 end
