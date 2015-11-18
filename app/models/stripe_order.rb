@@ -32,6 +32,17 @@ class StripeOrder < ActiveRecord::Base
           country: data['shipping_address_country']
         }
       }
+    else
+      {
+        name: data['billing_name'],
+        address: {
+          line1: data['billing_address_line1'],
+          city: data['billing_address_city'],
+          state: data['billing_address_state'],
+          postal_code: data['billing_address_zip'],
+          country: data['billing_address_country']
+        }
+      }
     end
   end
 
@@ -168,15 +179,33 @@ class StripeOrder < ActiveRecord::Base
     customer = nil
     if user.stripe_id.blank?
       Rails.logger.info("Stripe Order #{id} - Creating new user")
-      customer = Stripe::Customer.create(email: user.email, card: data['token'])
-      user.stripe_id = customer.id
-      user.save
+      begin
+        customer = Stripe::Customer.create(email: user.email, card: data['token'])
+        user.stripe_id = customer.id
+        user.save
+      rescue Stripe::InvalidRequestError => error
+        Rails.logger.info("Stripe Order #{id} - Current customer Error #{error}")
+        if error.message.includes?("You cannot use a Stripe token more than once")
+          return customer
+        else
+          raise error
+        end
+      end
       Rails.logger.info("Stripe Order #{id} - Sent to stripe")
     else
       Rails.logger.info("Stripe Order #{id} - Current customer updating credit card")
-      customer = Stripe::Customer.retrieve(user.stripe_id)
-      customer.source = data['token']
-      customer.save
+      begin
+        customer = Stripe::Customer.retrieve(user.stripe_id)
+        customer.source = data['token']
+        customer.save
+      rescue Stripe::InvalidRequestError => error
+        Rails.logger.info("Stripe Order #{id} - Current customer Error #{error}")
+        if error.message.includes?("You cannot use a Stripe token more than once")
+          return customer
+        else
+          raise error
+        end
+      end
       Rails.logger.info("Stripe Order #{id} - Customer updated")
     end
     return customer
