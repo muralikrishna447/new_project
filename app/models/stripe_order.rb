@@ -135,10 +135,12 @@ class StripeOrder < ActiveRecord::Base
         product_skus: [purchased_item.parent],
         orderId: stripe_charge.id,
         total: (stripe_charge.amount.to_f/100.0),
-        revenue: (stripe_charge.amount-(tax_item.try(:amount) || 0)/100.0),
+        revenue: ((stripe_charge.amount-(tax_item.try(:amount) || 0))/100.0),
         tax: ((tax_item.try(:amount) || 0)/100.0),
         shipping: 0,
         discount: ((discount_item.try(:amount) || 0)/100.0),
+        discount_type: (data['premium_discount'] ? 'circulator' : nil ),
+        gift: data['gift'],
         currency: 'USD',
         products: [
           {
@@ -205,7 +207,8 @@ class StripeOrder < ActiveRecord::Base
       if product.id == 'cs-premium' || product.id == 'cs10002'
         premium = {sku: sku.id, title: product.name, price: sku.price, msrp: sku.metadata[:msrp].to_i, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
       elsif product.id == 'cs-joule' || product.id == 'cs10001'
-        circulator = {sku: sku.id, title: product.name, price: sku.price, msrp: sku.metadata[:msrp].to_i, 'premiumPrice' => sku.metadata[:premium_price].to_i, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
+        # circulator = {sku: sku.id, title: product.name, price: sku.price, msrp: sku.metadata[:msrp].to_i, 'premiumPrice' => sku.metadata[:premium_price].to_i, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
+        circulator = {sku: nil, title: nil, price: 0, msrp: 0, 'premiumPrice' => 0, tax_code: sku.metadata[:tax_code], shippable: product.shippable}
       end
     end
     return [circulator, premium]
