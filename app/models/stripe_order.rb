@@ -185,7 +185,7 @@ class StripeOrder < ActiveRecord::Base
         user.save
       rescue Stripe::InvalidRequestError => error
         Rails.logger.info("Stripe Order #{id} - Current customer Error #{error}")
-        if error.message.includes?("You cannot use a Stripe token more than once")
+        if error.message.include?("You cannot use a Stripe token more than once")
           return customer
         else
           raise error
@@ -200,7 +200,7 @@ class StripeOrder < ActiveRecord::Base
         customer.save
       rescue Stripe::InvalidRequestError => error
         Rails.logger.info("Stripe Order #{id} - Current customer Error #{error}")
-        if error.message.includes?("You cannot use a Stripe token more than once")
+        if error.message.include?("You cannot use a Stripe token more than once")
           return customer
         else
           raise error
