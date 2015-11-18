@@ -34,6 +34,7 @@ class UserSync
 
     if member_info['success_count'] == 0
       @logger.warn "User not found in MailChimp #{member_info.inspect}"
+      return
     end
     member_info = member_info['data'][0]
     

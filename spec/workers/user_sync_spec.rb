@@ -36,14 +36,24 @@ describe UserSync do
     WebMock.assert_requested stub_post
   end
   
+  it 'should not sync premium status to mailchimp when user is not in mailchimp' do
+    setup_member_info_not_in_mailchimp
+    @user_sync.sync_mailchimp_premium
+  end
+
   def setup_member_info (premium)
     result = {:success_count => 1, :data => [{"GROUPINGS"=>[{"id"=>'test-purchase-group-id', "name"=>"Doesn't matter", "groups"=>[{"name"=>"Premium Member", "interested"=>premium}]}]}]}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
        with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
-       #with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
        to_return(:status => 200, :body => result.to_json, :headers => {})
   end
   
+  def setup_member_info_not_in_mailchimp
+    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
+       with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
+       to_return(:status => 200, :body => {:success_count => 0}.to_json, :headers => {})
+  end
+
   def setup_premium_user
     @user.premium_member = true
     @user.save!
