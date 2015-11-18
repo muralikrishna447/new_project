@@ -124,6 +124,10 @@ module Delve
       ENV["AES_KEY"] = 'bUg7wjYZ4ygQEyqtBesU(+R9urFB+CNv'
     end
 
+    if Rails.env.staging? || Rails.env.staging2?
+        config.middleware.insert_before('BromboneProxy', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/])
+    end
+
     # In development set to staging unless explicitely overridden
     bloom_env = ENV["BLOOM_ENV"] || Rails.env
     if Rails.env == "development"  && !ENV["BLOOM_ENV"]

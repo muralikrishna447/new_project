@@ -103,3 +103,24 @@ brew install redis
 launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
 ```
+
+Then go into your chefsteps directory and do
+```
+rake resque:work QUEUE='*'
+```
+
+To setup stripe webhooks
+```
+brew install ngrok
+ngrok 3000
+Copy the Forwarding line http://[RANDOM].ngrok.com
+Login to stripe
+Click ChefSteps in the upper right corner
+Webhooks
+Add Endpoint
+Paste your line followed by /stripe_webhooks
+Make sure the environment is set to test
+All events
+```
+
+

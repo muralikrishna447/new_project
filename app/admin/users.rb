@@ -25,6 +25,7 @@ ActiveAdmin.register User do
     id_column
     column :email
     column :name
+    column :premium_member
     column :role
     column :current_sign_in_at
     column :last_sign_in_at
@@ -40,6 +41,7 @@ ActiveAdmin.register User do
     f.inputs "User Details" do
       f.input :email
       f.input :name
+      f.input :premium_member
       f.input :role, collection: User::ROLES, as: :select
       f.input :location
       f.input :website

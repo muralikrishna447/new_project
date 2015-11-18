@@ -56,7 +56,7 @@ gem 'cancan'
 gem 'simple-rss'
 gem 'active_model_serializers'
 gem 'mixpanel_client'
-gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+gem 'stripe'
 gem 'geokit-rails'
 gem 'rack-ssl-enforcer'
 gem 'redcarpet'
@@ -73,11 +73,18 @@ gem "algoliasearch-rails"
 
 gem 'shopify_api'
 gem 'attr_encrypted', '1.3.4'
+gem 'mandrill-api'
 
 # gem 'ar-octopus', :git => 'https://github.com/tchandy/octopus.git'
 gem 'resque'
 
 gem 'sanitize'
+
+gem 'avatax'
+
+gem 'geoip2'
+
+gem 'analytics-ruby', :require => "segment"
 
 group :test do
   gem 'webmock'
@@ -93,6 +100,7 @@ end
 group :development, :test do
   gem "simplecov", require: false
   gem 'angularjs-rails'
+  gem 'guard-resque'
 end
 
 group :assets, :angular, :test, :development do

@@ -1,0 +1,17 @@
+.assembly-welcome-modal(close="closeModal()" modal="assemblyWelcomeModalOpen" options="modalOptions" ng-cloak)
+  .modal-body.assembly-welcome-modal-body
+
+    .row-fluid
+      .text-center(ng-show="processing")
+        %i.icon-spinner.icon-2x.icon-spin
+        Enrolling you into the class
+
+      %div(ng-show="! processing")
+        %p
+          Welcome to the ChefSteps' {{assembly.title}} {{assemblyTypeName}}. If we can be of any assistance, we are always happy to hear from you at&nbsp;
+          %span>=link_to "info@chefsteps.com", "mailto:info@chefsteps.com", { target: "_blank", class: "profile-email-addr"}
+          \.
+        .section.text-center
+          %a(ng-href="{{assemblyPath}}")
+            .btn.btn-large.btn-primary
+              Start The {{assemblyTypeName}}

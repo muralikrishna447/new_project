@@ -1,0 +1,6 @@
+class OrderReportProcessor
+  @queue = :order_report_processor
+  def self.perform()
+    # Todo query for reports
+  end
+end

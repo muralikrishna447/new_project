@@ -1,0 +1,2 @@
+Fabricator :premium_gift_certificate do
+end

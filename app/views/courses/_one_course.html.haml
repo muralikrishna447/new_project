@@ -1,4 +1,4 @@
-.container.classes-index(ng-controller="CourseIndexItemController" ng-cloak ng-init="assembly=#{course.to_json}; discounted_price=#{course.discounted_price(session[:coupon], current_user && current_user.signup_incentive_available)};")
+.container.classes-index(ng-controller="CourseIndexItemController" ng-cloak ng-init="assembly=#{course.to_json};")
   .row.section
     .span6
       = render 'shared/media_box_2', url: landing_class_path(course), image: course.image_id, object: course
@@ -13,17 +13,12 @@
               = link_to 'See all reviews', landing_class_path(course, anchor: "reviews")
       %p= course.short_description
       .section-tiny
+        -# ECOMTODO this page is being replaced by a components page, so just putting in a tiny
+        -# hack for now so it doesn't error until then.
         .labeled-price-group
-          .labeled-price.sale-price(ng-if='discounted()')
-            .labeled-price-label SALE
-            .labeled-price-price(ng-if="discounted_price > 0") {{discounted_price | niceDollars}}
-            .labeled-price-price(ng-if="discounted_price <= 0") Free
-          .labeled-price.regular-price(ng-class='{struck: discounted()}')
-            .labeled-price-label {{priceLabel()}}
-            .labeled-price-price(ng-if="assembly.price > 0")
-              {{assembly.price | niceDollars}}
-              .labeled-price-strike
-
+          .labeled-price.sale-price(ng-if='assembly.premium')
+            .labeled-price-label ChefSteps Premium
+          .labeled-price.regular-price
             .labeled-price-price(ng-if="assembly.price <= 0") Free
       %a(href="#{landing_class_path(course)}")
         .btn.btn-primary.btn-large
