@@ -318,4 +318,26 @@ class User < ActiveRecord::Base
       f << data.to_json
     end
   end
+
+  def remember_token
+    if needs_special_terms
+      token = SecureRandom.base64
+    # Remaining conditional copied verbatim from rememberable.rb
+    elsif respond_to?(:authenticatable_salt) && (salt = authenticatable_salt)
+      token = salt
+    else
+      raise "authenticable_salt returned nil for the #{self.class.name} model. " \
+        "In order to use rememberable, you must ensure a password is always set " \
+        "or have a remember_token column in your model or implement your own " \
+        "rememberable_value in the model with custom logic."
+    end
+
+    logger.info "[auth] User [#{self.id}] special terms [#{needs_special_terms}] using remember_token value #{token}"
+    return token
+  end
+
+  def generate_remember_token?
+    logger.info "[auth] Returning false for generate remember token"
+    return false
+  end
 end
