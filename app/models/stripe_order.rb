@@ -90,7 +90,9 @@ class StripeOrder < ActiveRecord::Base
       stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
 
       if stripe_charge.status == 'paid'
-        mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
+        analytics(stripe_charge)
+        #mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
+
         self.submitted = true
         self.save
         GenericReceiptMailer.prepare(self, stripe_charge).deliver rescue nil
@@ -122,6 +124,34 @@ class StripeOrder < ActiveRecord::Base
     else
       "ChefSteps Premium"
     end
+  end
+
+  def analytics(stripe_charge)
+    tax_item = stripe_charge.items.detect{|item| item.type == 'tax'}
+    discount_item = stripe_charge.items.detect{|item| item.type == 'discount'}
+    purchased_item = stripe_charge.items.detect{|item| item.type == 'sku'}
+    Analytics.track(user_id: user_id, event: 'Completed Order',
+      properties: {
+        product_skus: [purchased_item.parent],
+        orderId: stripe_charge.id,
+        total: (stripe_charge.amount.to_f/100.0),
+        revenue: (stripe_charge.amount-(tax_item.try(:amount) || 0)/100.0),
+        tax: ((tax_item.try(:amount) || 0)/100.0),
+        shipping: 0,
+        discount: ((discount_item.try(:amount) || 0)/100.0),
+        currency: 'USD',
+        products: [
+          {
+            id: purchased_item.parent,
+            sku: purchased_item.parent,
+            name: purchased_item.description,
+            price: (purchased_item.amount.to_f/100.0),
+            quantity: 1
+          }
+        ]
+      }
+    )
+
   end
 
   def create_or_update_user
