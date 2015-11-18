@@ -67,7 +67,13 @@ describe StripeOrder do
       circulator_tax_code: 'TPP',
       circulator_discount: '30',
       premium_tax_code: 'ODD',
-      tax_amount: '7'
+      tax_amount: '7',
+      billing_name: 'Bill To',
+      billing_address_line1: '123 Any Street',
+      billing_address_city: 'Any Town',
+      billing_address_state: 'WA',
+      billing_address_zip: '98101',
+      billing_address_country: 'US'
     }
     @stripe_circulator_order = Fabricate(:stripe_order, idempotency_key: 'CS123', user_id: @user.id, data: @circulator_sale)
     @stripe_circulator_discount = Fabricate(:stripe_order, idempotency_key: 'CS123', user_id: @user.id, data: @circ_premium_price)
@@ -91,7 +97,7 @@ describe StripeOrder do
 
     it "should return nothing if it isn't a circulator sale" do
       order = @premium_order.stripe_shipping
-      order.should == nil
+      order.should include(name: 'Bill To', address: {line1: '123 Any Street', city: 'Any Town', state: 'WA', postal_code: '98101', country: 'US'}))
     end
   end
 
