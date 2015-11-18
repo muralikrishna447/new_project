@@ -31,7 +31,7 @@
             %div(ng-class="{error: login_error.errors.password}")
               %input.input-block-level(name="password" type="password" ng-model="login_user.password" placeholder="Password")
               %div.pull-right.tiny-note
-                = link_to 'Forgot your password?', new_user_password_path
+                = link_to 'Forgot your password?', '/password-reset'
               %div(ng-show="login_error.errors.email")
                 %div.error-text(ng-repeat="field_error in login_error.errors.password")
                   {{field_error}}
