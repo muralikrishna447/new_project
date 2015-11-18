@@ -36,7 +36,6 @@ Delve::Application.routes.draw do
   match '/libraries', to: 'home#libraries'
   match '/facebook_optout', to: 'home#facebook_optout'
 
-
   match '/forum', to: 'bloom#forum'
   match '/forum/*path', to: 'bloom#forum'
   match "/forum/*path" => redirect("/?goto=%{path}")
@@ -375,6 +374,7 @@ Delve::Application.routes.draw do
       resources :search, only: [:index]
       resources :users, only: [:index, :create, :update] do
         get :me, on: :collection
+        get :shown_terms, on: :collection
         post :international_joule, on: :collection
       end
 

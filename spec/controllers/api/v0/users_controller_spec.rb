@@ -22,7 +22,9 @@ describe Api::V0::UsersController do
       result.delete('slug').should == @user.slug
       result.delete('avatar_url').should == @user.avatar_url
       result.delete('intercom_user_hash').should == ApplicationController.new.intercom_user_hash(@user)
+      result.delete('needs_special_terms').should == @user.needs_special_terms
       result.delete('encrypted_bloom_info')
+
       result.delete('request_id')
       result.delete('premium').should == false
       result.delete('used_circulator_discount').should == false
@@ -50,27 +52,6 @@ describe Api::V0::UsersController do
 
     it 'should not return a users info when a token is missing' do
       get :me
-      response.should_not be_success
-    end
-  end
-
-  context 'GET /index' do
-
-    it 'should verify a token' do
-      request.env['HTTP_AUTHORIZATION'] = @token
-      get :index
-      response.should be_success
-    end
-
-    it 'should respond with error when provided incorrect token' do
-      request.env['HTTP_AUTHORIZATION'] = 'Bearer SomeBadToken'
-      get :index
-      response.should_not be_success
-    end
-
-    it 'should respond with error when authentication header is not properly set' do
-      request.env['HTTP_AUTHORIZATION'] = ''
-      get :index, auth_token: @token
       response.should_not be_success
     end
   end
@@ -107,15 +88,14 @@ describe Api::V0::UsersController do
 
     it 'should create a new Facebook user' do
       post :create, user: {name: "New Facebook User", email: "newfb@user.com", password: "newUserPassword", provider: "facebook"}
-      response.should be_success
-      expect(JSON.parse(response.body)['token'].length).to be > 0
+      response.code.should == "403"
     end
 
     it 'should connect an existing Facebook user' do
       post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
+      response.code.should == "403"
       post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
-      response.should be_success
-      expect(JSON.parse(response.body)['token'].length).to be > 0
+      response.code.should == "403"
     end
   end
 

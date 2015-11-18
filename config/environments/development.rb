@@ -85,5 +85,5 @@ Delve::Application.configure do
     :premium_group_id => '757'
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
-  
+
 end
