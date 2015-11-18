@@ -51,8 +51,9 @@ module Api
         @activity = Activity.find(params[:id])
 
         http_auth =  request.headers['HTTP_AUTHORIZATION']
-        if http_auth.present?
-          ensure_authorized
+        ensure_authorized(false) if http_auth.present?
+
+        if @user_id_from_token
           @user = User.find @user_id_from_token
           if @user && @user.role == 'admin'
             render json: @activity, serializer: Api::ActivitySerializer

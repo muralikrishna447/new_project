@@ -37,6 +37,19 @@ describe Api::V0::ActivitiesController do
       activities.map{|a|a['published']}.should include(false)
       activities.map{|a|a['published']}.should_not include(true)
     end
+
+    it 'should return activity even with invalid token' do
+      controller.request.env['HTTP_AUTHORIZATION'] = "badtoken"
+      get :show, id: @activity1
+      response.should be_success
+      expect_activity_object(response, @activity1)
+    end
+    
+    it 'should not return unpublished activity with invalid token' do
+      controller.request.env['HTTP_AUTHORIZATION'] = "badtoken"
+      get :show, id: @activity2
+      response.should_not be_success
+    end
   end
 
   # GET /api/v0/activities/:id
@@ -127,15 +140,16 @@ describe Api::V0::ActivitiesController do
       expect_activity_object(response, @activity3)
     end
 
-    def expect_activity_object(response, activity)
-      parsed = JSON.parse response.body
-      expect(parsed['id']).to eq(activity.id)
-      expect(parsed['title']).to eq(activity.title)
-    end
-
+    
     def expect_containing_assembly(response, assembly)
       parsed = JSON.parse response.body
       expect(parsed['containingAssembly']['id']).to eq(assembly.id)
     end
+  end
+
+  def expect_activity_object(response, activity)
+    parsed = JSON.parse response.body
+    expect(parsed['id']).to eq(activity.id)
+    expect(parsed['title']).to eq(activity.title)
   end
 end
