@@ -167,7 +167,7 @@ describe StripeOrder do
     end
 
     it 'should call Analytics.track' do
-      Analytics.should_receive(:track).with({:user_id=>@user.id, :event=>"Completed Order", :properties=>{:product_skus=>["cs10001"], :orderId=>"123", :total=>200.0, :revenue=>170.0, :tax=>30.0, :shipping=>0, :discount=>0.0, :currency=>"USD", :products=>[{:id=>"cs10001", :sku=>"cs10001", :name=>"Circulator", :price=>1700.0, :quantity=>1}]}})
+      Analytics.should_receive(:track).with({:user_id=>11, :event=>"Completed Order", :properties=>{:product_skus=>["cs10001"], :orderId=>"123", :total=>200.0, :revenue=>170.0, :tax=>30.0, :shipping=>0, :discount=>0.0, :discount_type=>nil, :gift=>false, :currency=>"USD", :products=>[{:id=>"cs10001", :sku=>"cs10001", :name=>"Circulator", :price=>1700.0, :quantity=>1}]}})
       @stripe_circulator_order.analytics(@stripe_charge)
     end
   end
