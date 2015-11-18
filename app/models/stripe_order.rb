@@ -92,6 +92,7 @@ class StripeOrder < ActiveRecord::Base
       stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
 
       if stripe_charge.status == 'paid'
+        Rails.logger.info("Stripe Order #{id} - Stripe Charge: #{stripe_charge.inspect}")
         Rails.logger.info("Stripe Order #{id} has been collected. Sending Analytics")
         analytics(stripe_charge)
         #mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
