@@ -23,7 +23,7 @@ module Api
             return
           end
 
-          unless user.deleted_at.blank?
+          if user.deleted_at.present?
             logger.info("User has been deleted")
             render_unauthorized
             return
