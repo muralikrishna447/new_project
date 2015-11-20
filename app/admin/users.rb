@@ -13,11 +13,32 @@ ActiveAdmin.register User do
     link_to('Send Password Reset Email', reset_password_admin_user_path(user), method: :post, confirm: 'Are you sure?')
   end
 
+  action_item only: [:show] do
+    if user.deleted_at.present?
+      link_to('Undelete User', undelete_admin_user_path(user), method: :post, confirm: 'Are you sure?')
+    else
+      link_to('Soft Delete User', soft_delete_admin_user_path(user), method: :post, confirm: 'Are you sure?')
+    end
+  end
+
   member_action :reset_password, method: :post do
     @user = User.find(params[:id])
     email = @user.email
     User.send_reset_password_instructions({email: email})
     redirect_to({action: :show}, notice: "Password reset email has been sent to #{email}")
+  end
+
+
+  member_action :soft_delete, method: :post do
+    @user = User.find(params[:id])
+    @user.soft_delete
+    redirect_to({action: :show}, notice: "User has been deleted")
+  end
+
+  member_action :undelete, method: :post do
+    @user = User.find(params[:id])
+    @user.undelete
+    redirect_to({action: :show}, notice: "User has been un-deleted")
   end
 
   index do

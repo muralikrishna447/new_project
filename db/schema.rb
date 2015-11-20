@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151117050815) do
+ActiveRecord::Schema.define(:version => 20151119220841) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -739,6 +739,7 @@ ActiveRecord::Schema.define(:version => 20151117050815) do
     t.decimal  "premium_membership_price",      :precision => 8, :scale => 2, :default => 0.0
     t.boolean  "used_circulator_discount",                                    :default => false
     t.boolean  "needs_special_terms",                                         :default => false
+    t.datetime "deleted_at"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true
