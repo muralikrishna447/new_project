@@ -1,8 +1,8 @@
 class PreauthEnforcer
-  # NOT FOR PROD! Enforces presence of a pre-auth cookie
-  def initialize(app, exceptions = [])
+  def initialize(app, exceptions = [], restrictions = [])
     @app = app
     @exceptions = exceptions
+    @restrictions = restrictions
     Rails.logger.info("[preauth] Initializing with exceptions #{@exceptions}")
   end
 
@@ -19,6 +19,14 @@ class PreauthEnforcer
 
   def passthrough?(env)
     path = env['REQUEST_PATH']
+
+    # Restrictions are always applied first
+    @restrictions.each do |restriction|
+      if restriction.match(path)
+        Rails.logger.info("[preauth] Request for path [#{path}] matches restriction #{restriction}")
+        return false
+      end
+    end
 
     @exceptions.each do |exception|
       if exception.match(path)
