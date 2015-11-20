@@ -15,10 +15,10 @@ describe Users::RegistrationsController do
       response.should redirect_to welcome_url(email: assigns(:user).email)
     end
 
-    it "should do email sign up" do
-      Users::RegistrationsController.any_instance.should_receive(:email_list_signup)
-      post :create, user: {email: "test@example.com", password: "apassword", name: "Test User"}
-    end
+    # it "should do email sign up" do
+    #   Users::RegistrationsController.any_instance.should_receive(:email_list_signup)
+    #   post :create, user: {email: "test@example.com", password: "apassword", name: "Test User"}
+    # end
 
     it "should set referred_from if session is set" do
       session[:referred_from] = "facebook"
