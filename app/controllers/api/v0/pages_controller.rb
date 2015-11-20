@@ -10,8 +10,12 @@ module Api
       end
 
       def show
-        @page = Page.find(params[:id])
-        render json: @page, serializer: Api::PageSerializer
+        @page = Page.find_by_id(params[:id])
+        if @page
+          render json: @page, serializer: Api::PageSerializer
+        else
+          render_api_response 404, {message: 'Page not found.'}
+        end
       end
 
       def create
