@@ -180,13 +180,13 @@ private
 
   def email_list_signup(name, email, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
     begin
-      Gibbon::API.lists.subscribe(
-        id: listname,
-        email: {email: email},
-        merge_vars: {NAME: name, SOURCE: source},
-        double_optin: false,
-        send_welcome: false
-      )
+      # Gibbon::API.lists.subscribe(
+      #   id: listname,
+      #   email: {email: email},
+      #   merge_vars: {NAME: name, SOURCE: source},
+      #   double_optin: false,
+      #   send_welcome: false
+      # )
 
     rescue Exception => e
       case Rails.env
