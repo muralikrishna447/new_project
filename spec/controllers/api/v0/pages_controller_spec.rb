@@ -27,11 +27,6 @@ describe Api::V0::PagesController do
     page['title'].should eq('Test Page')
   end
 
-  it "should return 404 when page doens't exist" do
-    get :show, id: 12423
-    response.code.should == "404"
-  end
-
   # POST /api/v0/pages
   it 'should create a page' do
     post :create, page: { title: 'Another Page'}
