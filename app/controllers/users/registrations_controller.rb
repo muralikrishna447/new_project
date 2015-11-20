@@ -31,7 +31,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
     if @user.save
       sign_in @user
       Librato.increment 'user.signup', sporadic: true
-      email_list_signup(@user.name, @user.email, "ajax_signup_form")
+      #removing to stop error for short term
+      #email_list_signup(@user.name, @user.email, "ajax_signup_form")
       cookies.delete(:viewed_activities)
       mixpanel.alias(@user.email, mixpanel_anonymous_id) if mixpanel_anonymous_id
       mixpanel.track(@user.email, 'Signed Up', {source: 'devise'})
