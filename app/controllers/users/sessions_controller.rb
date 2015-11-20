@@ -57,10 +57,15 @@ class Users::SessionsController < Devise::SessionsController
   def sign_in_and_redirect(resource_or_scope, resource=nil)
     scope = Devise::Mapping.find_scope!(resource_or_scope)
     resource ||= resource_or_scope
-    sign_in(scope, resource) unless warden.user(scope) == resource
-    current_user.ensure_authentication_token!  #make sure the user has a token generated
-    remember_and_track
-    return render status: 200, json: {success: true, info: "Logged in", user: current_user.to_json(methods: :authentication_token, include: [:enrollments])}
+    if resource.deleted_at.blank?
+      sign_in(scope, resource) unless warden.user(scope) == resource
+      current_user.ensure_authentication_token!  #make sure the user has a token generated
+      remember_and_track
+      return render status: 200, json: {success: true, info: "Logged in", user: current_user.to_json(methods: :authentication_token, include: [:enrollments])}
+    else
+      Rails.logger.info "User has been deleted"
+      return render status: 200, json: {success: true, info: "Your account has been deleted"}
+    end
   end
 
   def remember_and_track

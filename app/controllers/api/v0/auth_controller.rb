@@ -23,6 +23,12 @@ module Api
             return
           end
 
+          unless user.deleted_at.blank?
+            logger.info("User has been deleted")
+            render_unauthorized
+            return
+          end
+
           unless user.valid_password?(params[:user][:password])
             logger.info("Invalid password provided for user #{email}.")
             render_unauthorized
