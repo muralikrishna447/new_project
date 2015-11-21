@@ -12,6 +12,11 @@ module Api
         circulator, premium = StripeOrder.stripe_products
         data = StripeOrder.build_stripe_order_data(params, circulator, premium)
 
+        # Setup utm_ variables so that we can add them to our analytics calls to segment
+        [:utm_source, :utm_medium, :utm_campaign, :utm_name, :utm_term, :utm_content].each do |field|
+          data[field] = params[field] if params[field].present?
+        end
+
         gift = (params[:gift] == "true")
 
         if params[:sku] == "cs10001" # Circulator
