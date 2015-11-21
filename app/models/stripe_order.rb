@@ -149,6 +149,15 @@ class StripeOrder < ActiveRecord::Base
     discount_item = stripe_charge.items.detect{|item| item.type == 'discount'}
     purchased_item = stripe_charge.items.detect{|item| item.type == 'sku'}
     Analytics.track(user_id: user_id, event: 'Completed Order',
+      context: {
+        campaign: {
+          name: data['utm_name'],
+          source: data['utm_source'],
+          medium: data['utm_medium'],
+          term: data['utm_term'],
+          content: data['utm_content']
+        }
+      },
       properties: {
         product_skus: [purchased_item.parent],
         orderId: stripe_charge.id,
