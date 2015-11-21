@@ -29,6 +29,7 @@ describe Api::V0::UsersController do
       result.delete('premium').should == false
       result.delete('used_circulator_discount').should == false
       result.delete('admin').should == false
+      result.delete('purchased_joule').should == false
       result.empty?.should == true
     end
 

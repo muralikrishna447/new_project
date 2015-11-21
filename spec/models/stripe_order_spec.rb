@@ -152,6 +152,11 @@ describe StripeOrder do
       @stripe_circulator_order.send_to_stripe
     end
 
+    it "should set joule_purchased_at if circulator bought" do
+      @stripe_circulator_order.send_to_stripe
+      @user.reload.joule_purchased_at.should_not be_blank
+    end
+
     it "should call make_premium_member if not gift" do
       User.any_instance.should_receive(:make_premium_member)
       @stripe_circulator_order.send_to_stripe

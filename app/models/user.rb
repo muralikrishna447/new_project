@@ -206,6 +206,14 @@ class User < ActiveRecord::Base
     self.save(validate: false)
   end
 
+  def joule_purchased
+    if joule_purchased_at.blank?
+      self.update_attribute(:joule_purchased_at, Time.now)
+    else
+      Rails.logger.info("Tried to mark a joule purchased for user #{id} when they already had one purchased")
+    end
+  end
+
   def can_receive_circulator_discount?
     premium_member && !used_circulator_discount
   end

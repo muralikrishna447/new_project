@@ -112,6 +112,11 @@ class StripeOrder < ActiveRecord::Base
         Rails.logger.info("Stripe Order #{id} - User Updated - Sending Receipt")
         GenericReceiptMailer.prepare(self, stripe_charge).deliver rescue nil
 
+        if data['circulator_sale'] && !data['gift']
+          Rails.logger.info "Stripe Order #{id} - Marking user as purchased joule"
+          user.joule_purchased
+        end
+
         if data['gift']
           Rails.logger.info("Stripe Order #{id} - Sending Gift Receipt")
           pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
