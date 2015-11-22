@@ -38,6 +38,10 @@ module Api
           data[:circulator_sale] = false
         end
 
+        if data[:circulator_sale] && data[:shipping_address_country] != "United States"
+          return render_api_response 500, { error: "Sorry, we are currently only accepting orders for the United States."}
+        end
+
         if !gift && params[:sku] == 'cs10002' && @user.premium_member
           #raise "User Already Premium"
           return render_api_response 500, { error: "User Already Premium"}
