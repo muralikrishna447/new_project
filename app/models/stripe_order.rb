@@ -126,7 +126,8 @@ class StripeOrder < ActiveRecord::Base
       self.user.make_premium_member(data['price'])
     end
 
-    if data['premium_discount']
+    # Always mark a circulator sale as using the discount (because they are either buying it with premium or using their discount)
+    if data['circulator_sale'] #data['premium_discount'] # This would be only to use the discount if they purchased the cheaper circulator
       Rails.logger.info("Stripe Order #{id} - Using Discount")
       user.use_premium_discount
     end
