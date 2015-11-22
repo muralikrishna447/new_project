@@ -34,6 +34,7 @@ Delve::Application.routes.draw do
   match '/terms', to: 'home#terms'
   match '/privacy', to: 'home#privacy'
   match '/libraries', to: 'home#libraries'
+  match '/joule/warranty', to: 'home#joule_warranty'
   match '/facebook_optout', to: 'home#facebook_optout'
 
   match '/forum', to: 'bloom#forum'
@@ -127,7 +128,6 @@ Delve::Application.routes.draw do
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
-
   get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
 
   get 'thank-you' => 'copy#thank_you', as: 'thank_you'
