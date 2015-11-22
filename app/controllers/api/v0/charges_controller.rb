@@ -39,7 +39,7 @@ module Api
         end
 
         if data[:circulator_sale] && data[:shipping_address_country] != "United States"
-          return render_api_response 500, { error: "Sorry, we are currently only accepting orders for the United States."}
+          return render_api_response 500, { error: "Unfortunately Joule  isn't available in your country yet, but we're working to change that. Email us to get updates on availability"}
         end
 
         if !gift && params[:sku] == 'cs10002' && @user.premium_member
