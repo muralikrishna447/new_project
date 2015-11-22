@@ -348,6 +348,7 @@ class User < ActiveRecord::Base
   end
 
   def undelete
+    logger.info "Setting User #{id} as undeleted at #{Time.current}"
     update_attribute(:deleted_at, nil)
   end
 
