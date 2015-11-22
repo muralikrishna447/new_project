@@ -56,15 +56,18 @@ module Api
 
         stripe_order = StripeOrder.create({idempotency_key: idempotency_key, user_id: @user.id, data: data})
 
-        Resque.enqueue(StripeChargeProcessor, stripe_order.id)
-
-        # stripe_order.send_to_stripe
-        if !gift
+        if !gift && !@user.premium?
           @user.make_premium_member(premium[:price])
           PremiumWelcomeMailer.prepare(@user).deliver rescue nil
         end
 
-        if data[:premium_discount]
+        Resque.enqueue(StripeChargeProcessor, stripe_order.id)
+
+        # stripe_order.send_to_stripe
+
+
+        # Mark all circulator sales as using the premium discount because they are either buying their first one at the discount or buying it with premium
+        if data[:circulator_sale] # data[:premium_discount]
           @user.use_premium_discount
         end
 
