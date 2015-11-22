@@ -5,7 +5,7 @@ module Api
       def index
         ip_address = get_ip_address
         Rails.logger.info("Geolocation for #{ip_address}")
-        result = cache_for_production(ip_address) do
+        result = cache_for_production("location_lookup_#{ip_address}", 1.week) do
           geocode = nil
           catch_and_retry(5) do
             geocode = ((ip_address == '127.0.0.1') ? nil : Geoip2.city(ip_address))
@@ -37,17 +37,17 @@ module Api
         end
       end
 
-      def cache_for_production(ip_address)
-        result = nil
-        if Rails.env.production?
-          result = Rails.cache.fetch("location_lookup_#{ip_address}", expires_in: 1.week) do
-            yield
-          end
-        else
-          result = yield
-        end
-        return result
-      end
+      # def cache_for_production(ip_address)
+      #   result = nil
+      #   if Rails.env.production?
+      #     result = Rails.cache.fetch("location_lookup_#{ip_address}", expires_in: 1.week) do
+      #       yield
+      #     end
+      #   else
+      #     result = yield
+      #   end
+      #   return result
+      # end
 
       def get_tax_estimate(location)
         #Null for no geocode and 0 for no tax
