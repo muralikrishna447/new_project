@@ -21,8 +21,8 @@ describe Api::V0::ChargesController do
         BaseMandrillMailer.any_instance.stub(:send_mail).and_return(double('mailer', deliver: true))
         BaseMandrillMailer.any_instance.stub(:mandrill_template)
 
-        @billing_address = {billing_name: 'Joe Example', billing_address_line1: '123 Any Place', billing_address_city: 'Seattle', billing_address_state: 'WA', billing_address_zip: '98101', billing_address_country: 'US'}
-        @shipping_address = {shipping_name: 'Joe Example', shipping_address_line1: '123 Any Place', shipping_address_city: 'Seattle', shipping_address_state: 'WA', shipping_address_zip: '98101', shipping_address_country: 'US'}
+        @billing_address = {billing_name: 'Joe Example', billing_address_line1: '123 Any Place', billing_address_city: 'Seattle', billing_address_state: 'WA', billing_address_zip: '98101', billing_address_country: 'United States'}
+        @shipping_address = {shipping_name: 'Joe Example', shipping_address_line1: '123 Any Place', shipping_address_city: 'Seattle', shipping_address_state: 'WA', shipping_address_zip: '98101', shipping_address_country: 'United States'}
 
       end
 
@@ -49,8 +49,8 @@ describe Api::V0::ChargesController do
         post :create, options
         stripe_order = StripeOrder.last
         stripe_order.user_id.should == @user.id
-        stripe_order.data.should include('billing_name'=> 'Joe Example', 'billing_address_line1'=> '123 Any Place', 'billing_address_city'=> 'Seattle', 'billing_address_state'=> 'WA', 'billing_address_zip'=> '98101', 'billing_address_country'=> 'US')
-        stripe_order.data.should include('shipping_name'=> 'Joe Example', 'shipping_address_line1'=> '123 Any Place', 'shipping_address_city'=> 'Seattle', 'shipping_address_state'=> 'WA', 'shipping_address_zip'=> '98101', 'shipping_address_country'=> 'US')
+        stripe_order.data.should include('billing_name'=> 'Joe Example', 'billing_address_line1'=> '123 Any Place', 'billing_address_city'=> 'Seattle', 'billing_address_state'=> 'WA', 'billing_address_zip'=> '98101', 'billing_address_country'=> 'United States')
+        stripe_order.data.should include('shipping_name'=> 'Joe Example', 'shipping_address_line1'=> '123 Any Place', 'shipping_address_city'=> 'Seattle', 'shipping_address_state'=> 'WA', 'shipping_address_zip'=> '98101', 'shipping_address_country'=> 'United States')
         stripe_order.data.should include('price' => 20000, 'description' => 'Joule + ChefSteps Premium', 'premium_discount' => false, 'circulator_sale' => true, 'circulator_discount' => 3000)
       end
 
@@ -67,8 +67,8 @@ describe Api::V0::ChargesController do
         stripe_order.should_not be_blank
         stripe_order.user_id.should_not be blank?
         stripe_order.user_id.should == @user.id
-        stripe_order.data.should include('billing_name'=> 'Joe Example', 'billing_address_line1'=> '123 Any Place', 'billing_address_city'=> 'Seattle', 'billing_address_state'=> 'WA', 'billing_address_zip'=> '98101', 'billing_address_country'=> 'US')
-        stripe_order.data.should include('shipping_name'=> 'Joe Example', 'shipping_address_line1'=> '123 Any Place', 'shipping_address_city'=> 'Seattle', 'shipping_address_state'=> 'WA', 'shipping_address_zip'=> '98101', 'shipping_address_country'=> 'US')
+        stripe_order.data.should include('billing_name'=> 'Joe Example', 'billing_address_line1'=> '123 Any Place', 'billing_address_city'=> 'Seattle', 'billing_address_state'=> 'WA', 'billing_address_zip'=> '98101', 'billing_address_country'=> 'United States')
+        stripe_order.data.should include('shipping_name'=> 'Joe Example', 'shipping_address_line1'=> '123 Any Place', 'shipping_address_city'=> 'Seattle', 'shipping_address_state'=> 'WA', 'shipping_address_zip'=> '98101', 'shipping_address_country'=> 'United States')
         stripe_order.data.should include('price' => 17000, 'description' => 'Joule + Premium Discount', 'premium_discount' => true, 'circulator_sale' => true, 'circulator_discount' => 3000)
       end
 
@@ -78,8 +78,8 @@ describe Api::V0::ChargesController do
         expect(response.status).to eq(200)
         stripe_order = StripeOrder.last
         stripe_order.user_id.should == @user.id
-        stripe_order.data.should_not include('billing_name'=> 'Joe Example', 'billing_address_line1'=> '123 Any Place', 'billing_address_city'=> 'Seattle', 'billing_address_state'=> 'WA', 'billing_address_zip'=> '98101', 'billing_address_country'=> 'US')
-        stripe_order.data.should_not include('shipping_name'=> 'Joe Example', 'shipping_address_line1'=> '123 Any Place', 'shipping_address_city'=> 'Seattle', 'shipping_address_state'=> 'WA', 'shipping_address_zip'=> '98101', 'shipping_address_country'=> 'US')
+        stripe_order.data.should_not include('billing_name'=> 'Joe Example', 'billing_address_line1'=> '123 Any Place', 'billing_address_city'=> 'Seattle', 'billing_address_state'=> 'WA', 'billing_address_zip'=> '98101', 'billing_address_country'=> 'United States')
+        stripe_order.data.should_not include('shipping_name'=> 'Joe Example', 'shipping_address_line1'=> '123 Any Place', 'shipping_address_city'=> 'Seattle', 'shipping_address_state'=> 'WA', 'shipping_address_zip'=> '98101', 'shipping_address_country'=> 'United States')
         stripe_order.data.should include('price' => 5000, 'description' => 'ChefSteps Premium', 'premium_discount' => false, 'circulator_sale' => false, 'circulator_discount' => 3000)
       end
 
