@@ -13,6 +13,31 @@
 %a.cs-nav-item(href='/classes')
   Classes
 
+.cs-nav-item
+  .dropdown(ng-controller='csDropdownController as dropdown')
+    .dropdown-toggle(ng-click='dropdown.toggle($event)')
+      Resources
+    .dropdown-menu(ng-show='dropdown.showMenu')
+      .dropdown-wrapper
+        .dropdown-menu-item
+          %a(href="/activities/sous-vide-time-and-temperature-guide")
+            Time & Temperature Guide
+        .dropdown-menu-item
+          %a(href="/sous-vide")
+            Sous Vide Resources
+        .dropdown-menu-item
+          %a(href="/activities/the-egg-calculator")
+            Egg Calculator
+        .dropdown-menu-item
+          %a(href="/knife-collection")
+            Knife Collection
+        .dropdown-menu-item
+          %a(href="http://store.chefsteps.com/collections/cookbooks-we-love")
+            Cookbook Collection
+        .dropdown-menu-item
+          %a(href="/projects")
+            Projects
+
 %a.cs-nav-item(href='/about')
   About
 
