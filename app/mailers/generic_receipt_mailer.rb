@@ -10,7 +10,7 @@ class GenericReceiptMailer < BaseMandrillMailer
     addr = shipping[:address]
     <<-ADDRESS
     #{shipping[:name]}
-    <br>#{addr[:line1]}#{addr[:line2] + "<br>" if addr[:line2]}
+    <br>#{addr[:line1]}#{"<br>" + addr[:line2] if addr[:line2]}
     <br>#{addr[:city]}, #{addr[:state]} #{addr[:postal_code]}
     ADDRESS
   end
