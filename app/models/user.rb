@@ -343,10 +343,12 @@ class User < ActiveRecord::Base
 
   # instead of deleting, indicate the user requested a delete & timestamp it
   def soft_delete
+    logger.info "Setting User #{id} as soft deleted at #{Time.current}"
     update_attribute(:deleted_at, Time.current)
   end
 
   def undelete
+    logger.info "Setting User #{id} as undeleted at #{Time.current}"
     update_attribute(:deleted_at, nil)
   end
 
