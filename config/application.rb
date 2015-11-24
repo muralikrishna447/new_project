@@ -115,6 +115,7 @@ module Delve
     # Order matters here, Brombone must come before FreshSteps
     config.middleware.insert_before ActionDispatch::Static, 'BromboneProxy'
     config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
+    config.middleware.insert_after 'BromboneProxy', 'AnalyticsCookies'
 
     # Prefix each log line with a per-request UUID
     config.log_tags = [:uuid ]
