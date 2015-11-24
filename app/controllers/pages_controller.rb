@@ -44,4 +44,7 @@ class PagesController < ApplicationController
     end
   end
 
+  def joule_crawler
+  end
+
 end

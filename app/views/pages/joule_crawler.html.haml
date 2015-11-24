@@ -1,0 +1,19 @@
+- content_for :facebook_og do
+  %meta{property: 'og:url', content: "http://www.chefsteps.com/joule"}
+  %meta{property: 'og:type', content: "website"}
+
+  %meta{property: 'og:title', content: "ChefSteps Debuts Joule"}
+  %meta{property: 'og:description', content: "Introducing Joule, the sous vide tool that changes everything. Controlled by a groundbreaking custom app, Joule is a sleek, powerful cooking tool that makes sous vide a real part of today’s kitchen."}
+  %meta{property: 'og:image', content: "https://d3awvtnmmsvyot.cloudfront.net/api/file/AQWkF5GNTVSndYuIMGRg/convert?fit=max&w=1600&quality=90&cache=true"}
+
+- content_for :twitter_cards do
+  %meta{property: 'twitter:site', content: '@chefsteps'}
+  %meta{property: 'twitter:title', content: "ChefSteps Debuts Joule" }
+  %meta{property: 'twitter:description', content: "Introducing Joule, the sous vide tool that changes everything. Controlled by a groundbreaking custom app, Joule is a sleek, powerful cooking tool that makes sous vide a real part of today’s kitchen."}
+  %meta{property: 'twitter:image:src', content: "https://d3awvtnmmsvyot.cloudfront.net/api/file/AQWkF5GNTVSndYuIMGRg/convert?fit=max&w=1600&quality=90&cache=true"}
+  %meta{property: 'twitter:card', content: 'summary_large_image'}
+
+%div
+  Visit
+  %a(href="/joule") Joule
+  for all of the details.
