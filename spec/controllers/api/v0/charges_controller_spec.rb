@@ -96,6 +96,16 @@ describe Api::V0::ChargesController do
         expect(response.status).to eq(200)
       end
 
+      it 'should not error out when price is greater' do
+        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '6000', gift: "true"
+        expect(response.status).to eq(200)
+      end
+
+      it 'should error out when price is greater' do
+        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '1000', gift: "true"
+        expect(response.status).to eq(500)
+      end
+
       it 'should only let you buy the circulator cheap once' do
         @user = Fabricate(:user, email: 'sample_user@chefsteps.com', password: '123456', name: 'John Doe', premium_member: true, used_circulator_discount: true)
         token = ActorAddress.create_for_user(@user, client_metadata: "create").current_token
