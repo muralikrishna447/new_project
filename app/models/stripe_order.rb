@@ -117,6 +117,11 @@ class StripeOrder < ActiveRecord::Base
           pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
           PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver rescue nil
         end
+
+        if data['circulator_sale']
+          JouleConfirmationMailer.prepare(user).deliver rescue nil
+        end
+
       end
     end
 
@@ -152,12 +157,15 @@ class StripeOrder < ActiveRecord::Base
     Analytics.track(user_id: user_id, event: 'Completed Order',
       context: {
         campaign: {
-          name: data['utm_name'],
+          name: data['utm_campaign'],
           source: data['utm_source'],
           medium: data['utm_medium'],
           term: data['utm_term'],
           content: data['utm_content']
         }
+      },
+      referrer: {
+        link: data['utm_link']
       },
       properties: {
         product_skus: [purchased_item.parent],
