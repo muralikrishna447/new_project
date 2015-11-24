@@ -16,7 +16,7 @@ module Api
 
         [:utm_campaign, :utm_name, :utm_source, :utm_medium, :utm_term, :utm_content].each do |field|
           if cookies[field].present?
-            Rails.logger.info "\n\n\n\n\n\nSetting #{field}  to  #{cookies[field]}   \n\n\n\n\n"
+            Rails.logger.info "ChargesController#create - Setting #{field}  to  #{cookies[field]}"
             data[field] = cookies[field]
           end
         end
