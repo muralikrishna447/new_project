@@ -96,7 +96,7 @@ describe Api::V0::ChargesController do
         expect(response.status).to eq(200)
       end
 
-      it 'should not error out when price is greater' do
+      it 'should work when price is not greater' do
         post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '6000', gift: "true"
         expect(response.status).to eq(200)
       end
