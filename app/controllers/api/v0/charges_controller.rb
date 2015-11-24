@@ -13,11 +13,10 @@ module Api
         data = StripeOrder.build_stripe_order_data(params, circulator, premium)
 
         # Setup utm_ variables so that we can add them to our analytics calls to segment
-          if cookies[:utm].present?
-            utm_cookie = JSON.parse(cookies[:utm])
-            utm_cookie.each_pair do |k,v|
-              data[k] = v
-            end
+        if cookies[:utm].present?
+          utm_cookie = JSON.parse(cookies[:utm])
+          utm_cookie.each_pair do |k,v|
+            data[k] = v
           end
         end
 
