@@ -117,6 +117,11 @@ class StripeOrder < ActiveRecord::Base
           pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
           PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver rescue nil
         end
+
+        if data['circulator_sale']
+          JouleConfirmationMailer.prepare(user).deliver rescue nil
+        end
+
       end
     end
 
