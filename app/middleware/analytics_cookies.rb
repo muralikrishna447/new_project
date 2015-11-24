@@ -5,6 +5,7 @@ class AnalyticsCookies
 
   def call(env)
     req = Rack::Request.new(env)
+    referrer = req.referer
     utm_store = {}
     utm_params.each do |p|
       if req.params[p.to_s].present?
@@ -13,7 +14,8 @@ class AnalyticsCookies
     end
     status, headers, body = @app.call(env)
     unless utm_store.blank?
-      Rails.logger.info "AnalyticsCookies - Setting to #{utm_store.to_json}"
+      utm_store[:utm_link] = referrer
+      Rails.logger.info "AnalyticsCookies - Setting to [#{utm_store.to_json}]"
       Rack::Utils.set_cookie_header!(headers, 'utm', utm_store.to_json.to_s)
     end
 
@@ -21,6 +23,6 @@ class AnalyticsCookies
   end
 
   def utm_params
-    [:utm_campaign, :utm_name, :utm_source, :utm_medium, :utm_term, :utm_content]
+    [:utm_campaign, :utm_name, :utm_source, :utm_medium, :utm_term, :utm_content, :utm_referrer, :utm_link]
   end
 end
