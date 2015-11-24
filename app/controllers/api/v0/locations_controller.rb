@@ -14,8 +14,14 @@ module Api
 
           if geocode.present? && geocode.error.blank? && geocode.location.present?
             ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 1)
-            @location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.try(:names).try(:en), state: geocode.subdivisions.try(:first).try(:iso_code), zip: geocode.try(:postal).try(:code)}
-            @tax_percent = get_tax_estimate(@location)
+            begin
+              @location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.try(:names).try(:en), state: geocode.subdivisions.try(:first).try(:iso_code), zip: geocode.try(:postal).try(:code)}
+              @tax_percent = get_tax_estimate(@location)
+            rescue => error
+              Rails.logger.error("LocationsController#index - Geocode Error - #{error}")
+              @location = {country: nil, latitude: nil, longitude: nil, city: nil, state: nil, zip: nil}
+              @tax_percent = nil
+            end
           else
             Rails.logger.info("Failed to geo-locate #{ip_address}")
             ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 0)
@@ -57,7 +63,7 @@ module Api
             geo_tax_result = tax_service.estimate({latitude: location[:latitude], longitude: location[:longitude]}, 100)
             geo_tax_result["Rate"]
           rescue => e
-            Rails.logger.info("Failed to calculate tax - #{e.response}")
+            Rails.logger.error("Failed to calculate tax - #{e.response}")
             nil
           end
         else
