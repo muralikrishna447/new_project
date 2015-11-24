@@ -13,8 +13,16 @@ module Api
         data = StripeOrder.build_stripe_order_data(params, circulator, premium)
 
         # Setup utm_ variables so that we can add them to our analytics calls to segment
-        [:utm_source, :utm_medium, :utm_campaign, :utm_name, :utm_term, :utm_content].each do |field|
-          data[field] = params[field] if params[field].present?
+        begin
+          if cookies[:utm].present?
+            Rails.logger.info "ChargesController#create - Parsing utm cookie.  #{cookies[:utm]}"
+            utm_cookie = JSON.parse(cookies[:utm])
+            utm_cookie.each_pair do |k,v|
+              data[k] = v
+            end
+          end
+        rescue => e
+          Rails.logger.error "Something went wrong with the cookie parser #{e}"
         end
 
         gift = (params[:gift] == "true")

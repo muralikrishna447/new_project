@@ -38,6 +38,13 @@ describe Api::V0::ChargesController do
         expect(response.status).to eq(200)
       end
 
+      it 'should set the utm params if the cookie is set' do
+        request.cookies[:utm] = "{'utm_campaign': 'railstest'}"
+        options = {sku: @circulator[:sku], stripeToken: 'xxx', price: '20000', gift: 'false'}.merge(@billing_address).merge(@shipping_address)
+        post :create, options
+        expect(response.status).to eq(200)
+      end
+
       it 'should error if user is already premium' do
         @user.make_premium_member(10)
         post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '5000'
