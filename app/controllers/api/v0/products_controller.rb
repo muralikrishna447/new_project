@@ -26,9 +26,15 @@ module Api
           end
 
           if geocode.present? && geocode.error.blank? && geocode.location.present?
-            ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 1)
-            location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.try(:names).try(:en), state: geocode.subdivisions.try(:first).try(:iso_code), zip: geocode.try(:postal).try(:code)}
-            tax_percent = get_tax_estimate(location)
+            begin
+              ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 1)
+              location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.try(:names).try(:en), state: geocode.subdivisions.try(:first).try(:iso_code), zip: geocode.try(:postal).try(:code)}
+              tax_percent = get_tax_estimate(location)
+            rescue => e
+              Rails.logger.error("ProductsController#index - Geocode Error - #{error}")
+              location = {country: nil, latitude: nil, longitude: nil, city: nil, state: nil, zip: nil}
+              tax_percent = nil
+            end
           else
             Rails.logger.info("Failed to geo-locate #{ip_address}")
             ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 0)
