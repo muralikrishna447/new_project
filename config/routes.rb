@@ -152,6 +152,7 @@ Delve::Application.routes.draw do
   get 'sous-vide' => 'pages#sous_vide_resources', as: 'sous_vide_resources'
   get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
+  get 'joule-crawler' => 'pages#joule_crawler', as: 'joule_crawler'
 
   match '/mp', to: redirect('/courses/spherification')
   match '/MP', to: redirect('/courses/spherification')

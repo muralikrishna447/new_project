@@ -16,27 +16,38 @@ class BromboneProxy < Rack::Proxy
   end
 
   def call(env)
+
     if should_proxy?(env)
-      Rails.logger.info("Brombone request for path [#{env['REQUEST_URI']}]")
 
-      # NOTE odd URI:
-      # Should be like http://chefsteps.brombonesnapshots.com/www.chefsteps.com/activities/blini
-      proxy_env = env.deep_dup
-      proxy_env["HTTP_HOST"] = @backend_host
-      proxy_env["REQUEST_PATH"] = proxy_env["REQUEST_URI"] = proxy_env["PATH_INFO"] = "/www.chefsteps.com#{proxy_env["PATH_INFO"]}"
-      proxy_env["QUERY_STRING"] = ""
+      if env["PATH_INFO"] == '/joule'
+        Rails.logger.info("Special proxy for /joule to /joule-crawler")
+        proxy_env = env.deep_dup
+        proxy_env["PATH_INFO"] = '/joule-crawler'
+        return @app.call(proxy_env)
 
-      response = perform_request(proxy_env)
-      headers = response[1]
+      else
 
-      # See explanatory comment in fresh_steps_proxy
-      if headers.has_key?('cache-control') && headers['cache-control'].kind_of?(Array)
-        headers['cache-control'] = headers['cache-control'][0]
+        Rails.logger.info("Brombone request for path [#{env['REQUEST_URI']}]")
+
+        # NOTE odd URI:
+        # Should be like http://chefsteps.brombonesnapshots.com/www.chefsteps.com/activities/blini
+        proxy_env = env.deep_dup
+        proxy_env["HTTP_HOST"] = @backend_host
+        proxy_env["REQUEST_PATH"] = proxy_env["REQUEST_URI"] = proxy_env["PATH_INFO"] = "/www.chefsteps.com#{proxy_env["PATH_INFO"]}"
+        proxy_env["QUERY_STRING"] = ""
+
+        response = perform_request(proxy_env)
+        headers = response[1]
+
+        # See explanatory comment in fresh_steps_proxy
+        if headers.has_key?('cache-control') && headers['cache-control'].kind_of?(Array)
+          headers['cache-control'] = headers['cache-control'][0]
+        end
+
+        # If we succeed or get a response indicating the requester already has a good cache, done.
+        return response if [200, 304, 206].include? response[0]
+        Rails.logger.info("Brombone request for path [#{env['REQUEST_URI']}] failed with code #{response[0]}- rendering locally")
       end
-
-      # If we succeed or get a response indicating the requester already has a good cache, done.
-      return response if [200, 304, 206].include? response[0]
-      Rails.logger.info("Brombone request for path [#{env['REQUEST_URI']}] failed with code #{response[0]}- rendering locally")
     end
 
     # Either not proxied or proxy failed
