@@ -5,6 +5,16 @@ def format_currency(amount)
 end
 
 class GenericReceiptMailer < BaseMandrillMailer
+
+  def format_address(shipping)
+    addr = shipping[:address]
+    <<-ADDRESS
+    #{shipping[:name]}
+    <br>#{addr[:line1]}#{"<br>" + addr[:line2] if addr[:line2]}
+    <br>#{addr[:city]}, #{addr[:state]} #{addr[:postal_code]}
+    ADDRESS
+  end
+
   def prepare(order, stripe_charge)
 
     subject = "ChefSteps Receipt"
@@ -44,7 +54,8 @@ class GenericReceiptMailer < BaseMandrillMailer
       "TOTAL" => format_currency(total),
       "PURCHASE_DATE" => DateTime.now.strftime('%B %d, %Y'),
       "CARD_AND_LAST4" => card.brand + " " + card.last4,
-      "ORDER_ID" => stripe_charge.id
+      "ORDER_ID" => stripe_charge.id,
+      "SHIPPING_ADDRESS" => format_address(stripe_charge.shipping)
     }
 
     body = mandrill_template("generic-receipt", merge_vars)
