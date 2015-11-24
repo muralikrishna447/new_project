@@ -15,7 +15,7 @@ class AnalyticsCookies
       if utm_store.present?
         cookie_jar = ActionDispatch::Request.new(env).cookie_jar
         Rails.logger.info "AnalyticsCookies - Current Cookie #{cookie_jar[:utm]}\nSetting to #{utm_store.to_json}"
-        cookie_jar[:utm] = utm_store.to_json.to_s
+        cookie_jar.permanent[:utm] = utm_store.to_json.to_s
       end
     rescue => e
       Rails.logger.error "AnalyticsCookies - Something went wrong #{e}"
