@@ -13,11 +13,11 @@ module Api
         data = StripeOrder.build_stripe_order_data(params, circulator, premium)
 
         # Setup utm_ variables so that we can add them to our analytics calls to segment
-
-        [:utm_campaign, :utm_name, :utm_source, :utm_medium, :utm_term, :utm_content].each do |field|
-          if cookies[field].present?
-            Rails.logger.info "ChargesController#create - Setting #{field}  to  #{cookies[field]}"
-            data[field] = cookies[field]
+          if cookies[:utm].present?
+            utm_cookie = JSON.parse(cookies[:utm])
+            utm_cookie.each_pair do |k,v|
+              data[k] = v
+            end
           end
         end
 

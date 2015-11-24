@@ -12,14 +12,10 @@ class AnalyticsCookies
         utm_store[p] = req.params[p.to_s]
       end
     end
-    status, headers, body = @app.call(env)
-
-    utm_store.each do |k,v|
-      puts "AnalyticsCookies - Setting cookie #{k} to #{v}"
-      Rack::Utils.set_cookie_header!(headers, k.to_s, {:value => v, :path => "/"})
-    end
-
-    [status, headers, body]
+    cookie_jar = ActionDispatch::Request.new(env).cookie_jar
+    puts "Current Cookie #{cookie_jar[:utm]}\nSetting to #{utm_store.to_json}"
+    cookie_jar[:utm] = utm_store.to_json if utm_store.present?
+    @app.call(env)
   end
 
   def utm_params
