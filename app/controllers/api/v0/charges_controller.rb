@@ -55,7 +55,7 @@ module Api
           return render_api_response 500, { error: "User Already Premium"}
         end
 
-        if data[:price].to_i != params[:price].to_i
+        if data[:price].to_i > params[:price].to_i
           #raise "Price Mismatch #{data[:price]} - #{(params[:price].to_f*100).to_i}"
           return render_api_response 500, { error: "Price Mismatch"}
         end
