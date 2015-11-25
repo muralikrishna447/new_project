@@ -72,7 +72,8 @@ module Api
           # mixpanel.alias needs to be called with @user.id instead of @user.email for consistant tracking with the client
           mixpanel.alias(@user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
           mixpanel.track(@user.id, 'Signed Up', {source: 'api'})
-          Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
+          # Temporarily disabling because the worker is broken due to problems in bloom
+          # Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
           Librato.increment 'user.signup', sporadic: true
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
