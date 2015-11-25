@@ -28,28 +28,6 @@ module Api
         {root: false}
       end
 
-      # TODO - this method is needlessly duplicated from application controller
-      def email_list_signup(name, email, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
-        begin
-          # Gibbon::API.lists.subscribe(
-          #   id: listname,
-          #   email: {email: email},
-          #   merge_vars: {NAME: name, SOURCE: source},
-          #   double_optin: false,
-          #   send_welcome: false
-          # )
-
-        rescue Exception => e
-          case Rails.env
-          when "production", "staging", "staging2"
-            logger.error("MailChimp error: #{e.message}")
-            raise e unless e.message.include?("already subscribed to list")
-          else
-            logger.debug("MailChimp error, ignoring - did you set MAILCHIMP_API_KEY? Message: #{e.message}")
-          end
-        end
-      end
-
       def authenticate_active_admin_user!
         # Remove current_user logic when we move to full token
         if current_user
