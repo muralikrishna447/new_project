@@ -5,8 +5,10 @@ Rails.logger.info("Initializing Gibbon with proximo url [#{url}]")
 proximo_uri = URI.parse(url)
 
 Gibbon::APICategory.class_eval do
+  # These are all HTTParty options:
   default_options[:http_proxyaddr] = proximo_uri.host
   default_options[:http_proxyport] = 80
   default_options[:http_proxyuser] = proximo_uri.user
   default_options[:http_proxypass] = proximo_uri.password
+  default_options[:timeout] = 5
 end
