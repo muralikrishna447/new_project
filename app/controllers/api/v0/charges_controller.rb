@@ -70,7 +70,7 @@ module Api
 
         if !gift && !@user.premium?
           @user.make_premium_member(premium[:price])
-          PremiumWelcomeMailer.prepare(@user).deliver rescue nil
+          PremiumWelcomeMailer.prepare(@user, data[:circulator_sale]).deliver rescue nil
         end
 
         Resque.enqueue(StripeChargeProcessor, stripe_order.id)
