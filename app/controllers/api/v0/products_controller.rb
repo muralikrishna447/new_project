@@ -30,7 +30,7 @@ module Api
               ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 1)
               #location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.try(:names).try(:en), state: geocode.subdivisions.try(:first).try(:iso_code), zip: geocode.try(:postal).try(:code)}
               location = {country: nil, latitude: nil, longitude: nil, city: nil, state: nil, zip: nil}
-              tax_percent = get_tax_estimate(location)
+              #tax_percent = get_tax_estimate(location)
             rescue => error
               Rails.logger.error("ProductsController#index - Geocode Error - #{error}")
               location = {country: nil, latitude: nil, longitude: nil, city: nil, state: nil, zip: nil}
