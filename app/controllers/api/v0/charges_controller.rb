@@ -3,15 +3,15 @@ module Api
     class ChargesController < BaseController
       before_filter :ensure_authorized
 
-      def create
-        return render_api_response 500, { error: "Not valid product"} if !['cs10001', 'cs10002'].include?(params[:sku])
+      def google_analytics_client_id
+        google_analytics_cookie.gsub(/^GA\d\.\d\./, '')
+      end
 
-        @user = User.find @user_id_from_token
+      def google_analytics_cookie
+        cookies['_ga'] || ''
+      end
 
-        idempotency_key = Time.now.to_f.to_s+request.ip.to_s
-        circulator, premium = StripeOrder.stripe_products
-        data = StripeOrder.build_stripe_order_data(params, circulator, premium)
-
+      def set_analytics_parameters(data)
         # Setup utm_ variables so that we can add them to our analytics calls to segment
         begin
           if cookies[:utm].present?
@@ -21,9 +21,22 @@ module Api
               data[k] = v
             end
           end
+          data[:google_analytics_client_id] = google_analytics_client_id
         rescue => e
           Rails.logger.error "Something went wrong with the cookie parser #{e}"
         end
+      end
+
+      def create
+        return render_api_response 500, { error: "Not valid product"} if !['cs10001', 'cs10002'].include?(params[:sku])
+
+        @user = User.find @user_id_from_token
+
+        idempotency_key = Time.now.to_f.to_s+request.ip.to_s
+        circulator, premium = StripeOrder.stripe_products
+        data = StripeOrder.build_stripe_order_data(params, circulator, premium)
+
+        set_analytics_parameters(data)
 
         gift = (params[:gift] == "true")
 

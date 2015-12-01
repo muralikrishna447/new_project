@@ -165,7 +165,7 @@ class StripeOrder < ActiveRecord::Base
         }
       },
       referrer: {
-        link: data['utm_link']
+        id: data['utm_link']
       },
       properties: {
         product_skus: [purchased_item.parent],
