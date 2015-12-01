@@ -73,7 +73,12 @@ class BromboneProxy < Rack::Proxy
     # from the google index even though the are in the sitemap and fetch as googlebot
     # shows the fine. Reducing the split test to just the slugs starting with a
     # so we can wait awhile longer to see if they come back.
-    return false if env["HTTP_USER_AGENT"] =~ /(google)/ && request.path =~ /activities\/a/
+    #
+    # 12/1/15 Well, even after waiting almost a month, avocado-puree and apartment-ribs etc
+    # are still not in the SERPs. I have no idea why, Google claims it should be able to
+    # handle our JS according to http://googlewebmastercentral.blogspot.com/2015/10/deprecating-our-ajax-crawling-scheme.html
+    # Turning this off but leaving the code as a reminder to come back to it someday.
+    # return false if env["HTTP_USER_AGENT"] =~ /(google)/ && request.path =~ /activities\/a/
 
     # Proxy if requester appears to be a crawler etc. This especially helps when someone
     # pastes one of our AJAX urls into facebook e.g.
