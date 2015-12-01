@@ -32,11 +32,6 @@ describe 'brombone_proxy' do |variable|
     response = middleware.call request_env(SRC_URL, {'HTTP_USER_AGENT' => 'Googlebot/2.1 (+http://www.googlebot.com/bot.html)'})
   end
 
-  it 'Does not when user agent looks like Google if activity slug starts with a-m' do
-    expect_no_proxy
-    response = middleware.call request_env(SRC_URL2, {'HTTP_USER_AGENT' => 'Googlebot/2.1 (+http://www.googlebot.com/bot.html)'})
-  end
-
   it 'Proxies when user agent looks like Facebook' do
     expect_proxy
     response = middleware.call request_env(SRC_URL, {'HTTP_USER_AGENT' => 'facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)'})
