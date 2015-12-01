@@ -22,8 +22,16 @@ class AuthToken
   end
 
   def self.from_string(token)
-    key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
-    claim = JSON::JWT.decode(token, key.to_s)
-    AuthToken.new claim
+    begin
+      key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+      claim = JSON::JWT.decode(token, key.to_s)
+      AuthToken.new claim
+    rescue JSON::JWT::InvalidFormat => e
+      Rails.logger.warn "[auth] invalid token format for token [#{token}]"
+      raise e
+    rescue JSON::JWS::VerificationFailed => e
+      Rails.logger.warn "[auth] token verification failed for token [#{token}]"
+      raise e
+    end
   end
 end
