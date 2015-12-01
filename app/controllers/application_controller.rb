@@ -1,4 +1,4 @@
-require 'analytics_'
+require 'analytics_parametizer'
 class ApplicationController < BaseApplicationController
   include StatusHelpers
   protect_from_forgery

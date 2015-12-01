@@ -158,7 +158,7 @@ class StripeOrder < ActiveRecord::Base
       context: {
         'GoogleAnalytics' => {
           clientId: data['google_analytics_client_id']
-        }
+        },
         campaign: {
           name: data['utm_campaign'],
           source: data['utm_source'],
