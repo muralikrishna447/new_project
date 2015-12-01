@@ -123,6 +123,7 @@ module Api
               }
               cs_fb_user = User.facebook_connect(user_options)
               cs_fb_user.save!
+              subscribe_and_track cs_fb_user, false, 'facebook'
               logger.info "New ChefSteps user connected with facebook: #{cs_fb_user.email}"
             end
 

@@ -84,13 +84,28 @@ class BaseApplicationController < ActionController::Base
   def log_current_user
     logger.info("current_user id: #{current_user.nil? ? "anon" : current_user.id}")
   end
-
-  def email_list_signup(name, email, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
+  
+  # This subscribe / track logic does not belong here but since it's curently
+  # found in no less than three places throughout our code base this is the
+  # least invasive place to store it
+  def subscribe_and_track(user, optout, source)
+    email_list_signup(user, source) unless optout
+    # mixpanel.alias needs to be called with @user.id instead of @user.email for consistant tracking with the client
+    mixpanel.alias(user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
+    mixpanel.track(user.id, 'Signed Up', {source: 'api'})
+    # Temporarily disabling because the worker is broken due to problems in bloom
+    # Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
+    Librato.increment 'user.signup', sporadic: true
+    
+  end
+  
+  def email_list_signup(user, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
     begin
+      logger.info "[mailchimp] Subscribing [#{user.email}] to list #{[listname]}"
       Gibbon::API.lists.subscribe(
         id: listname,
-        email: {email: email},
-        merge_vars: {NAME: name, SOURCE: source},
+        email: {email: user.email},
+        merge_vars: {NAME: user.name, SOURCE: source},
         double_optin: false,
         send_welcome: false
       )
@@ -98,12 +113,12 @@ class BaseApplicationController < ActionController::Base
     rescue Exception => e
       case Rails.env
       when "production", "staging", "staging2"
-        logger.warn("MailChimp error: #{e.message}")
+        logger.warn("[mailchimp] error: #{e.message}")
         unless e.message.include?("already subscribed to list")
-          logger.error("Failed to add user to mailchimp")
+          logger.error("[mailchimp] Failed to add user to mailchimp")
         end
       else
-        logger.debug("MailChimp error, ignoring - did you set MAILCHIMP_API_KEY? Message: #{e.message}")
+        logger.debug("[mailchimp] error, ignoring - did you set MAILCHIMP_API_KEY? Message: #{e.message}")
       end
     end
   end

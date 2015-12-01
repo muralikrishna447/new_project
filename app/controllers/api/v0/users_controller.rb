@@ -29,7 +29,7 @@ module Api
           render_unauthorized
         else
           @user = User.new(params[:user])
-          create_new_user(@user, optout)
+          create_new_user(@user, optout, params[:source])
         end
       end
 
@@ -65,16 +65,11 @@ module Api
       private
 
       # Why is this code duplicated here?
-      def create_new_user(user, optout = false)
+      def create_new_user(user, optout, source)
         if user.save
-          email_list_signup(user.name, user.email, params[:source]) unless optout
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
-          # mixpanel.alias needs to be called with @user.id instead of @user.email for consistant tracking with the client
-          mixpanel.alias(@user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
-          mixpanel.track(@user.id, 'Signed Up', {source: 'api'})
-          # Temporarily disabling because the worker is broken due to problems in bloom
-          # Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
-          Librato.increment 'user.signup', sporadic: true
+          subscribe_and_track user, optout, source
+
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
           logger.warn "create_new_user errors: #{user.errors.inspect}"
