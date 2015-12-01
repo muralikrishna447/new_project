@@ -156,6 +156,9 @@ class StripeOrder < ActiveRecord::Base
     purchased_item = stripe_charge.items.detect{|item| item.type == 'sku'}
     Analytics.track(user_id: user_id, event: 'Completed Order',
       context: {
+        'GoogleAnalytics' => {
+          clientId: data['google_analytics_client_id']
+        }
         campaign: {
           name: data['utm_campaign'],
           source: data['utm_source'],
