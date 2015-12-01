@@ -10,7 +10,7 @@ class FreshStepsProxy < Rack::Proxy
 
 
   PREFIX = %w(/gallery /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq)
-  EXACT = %w(/ /classes /sous-vide /grilling /indoor-barbecue /thanksgiving /premium /password-reset /chefsteps-debuts-joule /joule /joule/ /joule/specs)
+  EXACT = %w(/ /classes /sous-vide /grilling /indoor-barbecue /thanksgiving /premium /password-reset /chefsteps-debuts-joule /joule /joule/ /joule/specs /joule/discussion)
   SUFFIX = %w(/fork /notify_start_edit /notify_end_edit /as_json /the-egg-calculator /new)
 
   def initialize(app)
