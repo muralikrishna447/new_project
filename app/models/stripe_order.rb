@@ -171,7 +171,7 @@ class StripeOrder < ActiveRecord::Base
         product_skus: [purchased_item.parent],
         orderId: stripe_charge.id,
         total: (stripe_charge.amount.to_f/100.0),
-        revenue: ((stripe_charge.amount-(tax_item.try(:amount) || 0))/100.0),
+        revenue: (((stripe_charge.amount-(tax_item.try(:amount) || 0))-(discount_item.try(:amount) || 0))/100.0),
         tax: ((tax_item.try(:amount) || 0)/100.0),
         shipping: 0,
         discount: ((discount_item.try(:amount) || 0)/100.0),
