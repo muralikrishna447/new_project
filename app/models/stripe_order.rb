@@ -103,14 +103,16 @@ class StripeOrder < ActiveRecord::Base
       stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
       Rails.logger.info("Stripe Order #{id} - Stripe Charge: #{stripe_charge.inspect}")
       if stripe_charge.status == 'paid'
-        Rails.logger.info("Stripe Order #{id} has been collected. Sending Analytics")
-        analytics(stripe_charge)
-        #mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
-        Rails.logger.info("Stripe Order #{id} - Analytics Sent Updating user")
+        Rails.logger.info("Stripe Order #{id} - Updating user")
         self.submitted = true
         self.save
-        Rails.logger.info("Stripe Order #{id} - User Updated - Sending Receipt")
+        Rails.logger.info("Stripe Order #{id} - Sending Receipt")
         GenericReceiptMailer.prepare(self, stripe_charge).deliver rescue nil
+
+        if data['circulator_sale'] && !data['gift']
+          Rails.logger.info "Stripe Order #{id} - Incrementing user joule purchase count"
+          user.joule_purchased
+        end
 
         if data['gift']
           Rails.logger.info("Stripe Order #{id} - Sending Gift Receipt")
@@ -121,6 +123,10 @@ class StripeOrder < ActiveRecord::Base
         if data['circulator_sale']
           JouleConfirmationMailer.prepare(user).deliver rescue nil
         end
+
+        Rails.logger.info("Stripe Order #{id} - Sending Analytics")
+        analytics(stripe_charge)
+        #mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
 
       end
     end
@@ -189,6 +195,8 @@ class StripeOrder < ActiveRecord::Base
         ]
       }
     )
+
+    Analytics.identify(user_id: user_id, traits: {joule_purchase_count: user.joule_purchase_count})
 
   end
 

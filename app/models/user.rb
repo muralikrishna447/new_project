@@ -206,6 +206,13 @@ class User < ActiveRecord::Base
     self.save(validate: false)
   end
 
+  def joule_purchased
+    if first_joule_purchased_at.blank?
+      self.update_attribute(:first_joule_purchased_at, Time.now)
+    end
+    self.update_attribute(:joule_purchase_count, self.joule_purchase_count + 1)
+  end
+
   def can_receive_circulator_discount?
     premium_member && !used_circulator_discount
   end
