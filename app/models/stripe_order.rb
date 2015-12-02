@@ -103,6 +103,7 @@ class StripeOrder < ActiveRecord::Base
       stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
       Rails.logger.info("Stripe Order #{id} - Stripe Charge: #{stripe_charge.inspect}")
       if stripe_charge.status == 'paid'
+        Librato.increment("credit_card.charged")
         Rails.logger.info("Stripe Order #{id} has been collected. Sending Analytics")
         analytics(stripe_charge)
         #mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
@@ -122,6 +123,20 @@ class StripeOrder < ActiveRecord::Base
           JouleConfirmationMailer.prepare(user).deliver rescue nil
         end
 
+      else
+        # We failed to collect the money for some reason
+        Rails.logger.info("Stripe Order #{id} - Failed to move into status paid")
+        Rails.logger.info("Stripe Order #{id} - Stripe Charge: #{stripe_charge.inspect}")
+        Librato.increment("credit_card.declined")
+        if data['circulator_sale']
+          Rails.logger.info("Stripe Order #{id} - Sending Joule declined email")
+          DeclinedMailer.joule(user).deliver rescue nil
+        else
+          Rails.logger.info("Stripe Order #{id} - Sending Premium declined email")
+          DeclinedMailer.premium(user).deliver rescue nil
+        end
+        Rails.logger.info("Stripe Order #{id} - Removing premium")
+        self.user.remove_premium_membership
       end
     end
 

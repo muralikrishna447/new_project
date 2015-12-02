@@ -201,6 +201,15 @@ class User < ActiveRecord::Base
     Resque.enqueue(UserSync, self.id)
   end
 
+  def remove_premium_membership
+    self.premium_member = false
+    self.premium_membership_created_at = nil
+    self.premium_membership_price = nil
+    # There are users that already don't pass validation so can't be resaved; not fixing right now
+    self.save(validate: false)
+    Resque.enqueue(UserSync, self.id)
+  end
+
   def use_premium_discount
     self.used_circulator_discount = true
     self.save(validate: false)
