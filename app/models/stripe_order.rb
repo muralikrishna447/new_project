@@ -171,7 +171,7 @@ class StripeOrder < ActiveRecord::Base
         product_skus: [purchased_item.parent],
         orderId: stripe_charge.id,
         total: (stripe_charge.amount.to_f/100.0),
-        revenue: (((stripe_charge.amount-(tax_item.try(:amount) || 0))-(discount_item.try(:amount) || 0))/100.0),
+        revenue: revenue(stripe_charge, tax_item, discount_item),
         tax: ((tax_item.try(:amount) || 0)/100.0),
         shipping: 0,
         discount: ((discount_item.try(:amount) || 0)/100.0),
@@ -190,6 +190,13 @@ class StripeOrder < ActiveRecord::Base
       }
     )
 
+  end
+
+  def revenue(stripe_charge, tax_item, discount_item)
+    charge = stripe_charge.amount
+    tax = (tax_item.try(:amount) || 0)
+    discount = (discount_item.try(:amount) || 0)
+    (((charge - discount) - tax)/100.0)
   end
 
   def create_or_update_user
