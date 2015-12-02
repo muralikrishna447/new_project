@@ -28,7 +28,7 @@ module Api
       end
 
       def create
-        return render_api_response 500, { error: "Not valid product"} if !['cs10001', 'cs10002'].include?(params[:sku])
+        return render_api_response 500, { error: "Not valid product"} unless ['cs10001', 'cs10002'].include?(params[:sku])
 
         @user = User.find @user_id_from_token
 
