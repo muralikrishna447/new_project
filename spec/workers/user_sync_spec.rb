@@ -13,7 +13,7 @@ describe UserSync do
       @user_sync.sync_mailchimp({premium: true})
     end
 
-    it 'should not re-sync premium status to mailchimp' do
+    it 'should not re-sync premium status to mailchimp', focus: true do
       setup_member_info true
       setup_premium_user
       # Test would fail if POST request was made since it's not stubbed

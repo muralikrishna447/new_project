@@ -39,60 +39,38 @@ class UserSync
     end
     member_info = member_info['data'][0]
 
-    sync_mailchimp_premium(member_info) if options[:premium]
-    sync_mailchimp_joule_purchase(member_info) if [:joule]
+    if options[:premium]
+      sync_mailchimp_attribute(member_info, :premium_group_id, PREMIUM_GROUP_NAME, @user.premium?)
+    end
+    if options[:joule]
+      sync_mailchimp_attribute(member_info, :joule_group_id, JOULE_GROUP_NAME, @user.joule_purchase_count > 0)
+    end
   end
 
   private
-  def sync_mailchimp_premium(member_info)
 
-    mailchimp_premium = in_mailchimp_group?(member_info, :premium_group_id)
-    cs_premium = @user.premium?
+  def sync_mailchimp_attribute(member_info, group_id, group_name, db_value)
+    mailchimp_value = in_mailchimp_group?(member_info, group_id, group_name)
 
-    @logger.info "Mailchimp premium [#{mailchimp_premium}]  ChefSteps premium [#{cs_premium}]"
+    @logger.info "#{group_name}: Mailchimp [#{mailchimp_value}], ChefSteps [#{db_value}]"
 
-    if mailchimp_premium && !cs_premium
-      msg = "User #{@user.id} is premium in mailchimp and not the database"
+    if mailchimp_value && !db_value
+      msg = "User #{@user.id} is a #{group_name} in mailchimp and not the database"
       @logger.error msg
       raise msg
     end
 
-    if !cs_premium
-      @logger.info "Not a premium member, not syncing to mailchimp"
+    if !db_value
+      @logger.info "Not a #{group_name}, not syncing to mailchimp"
       return
     end
 
-    if mailchimp_premium
-      @logger.info "Already premium in mailchimp"
+    if mailchimp_value
+      @logger.info "Already #{group_name} in mailchimp"
       return
     end
 
-    add_to_mailchimp_group(:premium_group_id, PREMIUM_GROUP_NAME)
-  end
-
-  def sync_mailchimp_joule_purchase(member_info)
-    mailchimp_joule_purchaser = in_mailchimp_group?(member_info, :joule_purchase_group_id)
-    cs_joule_purchaser = @user.joule_purchase_count > 0
-
-    @logger.info "Mailchimp Joule purchaser [#{mailchimp_joule_purchaser}]  ChefSteps Joule purchaser [#{cs_joule_purchaser}]"
-
-    if mailchimp_joule_purchaser && !cs_joule_purchaser
-      msg = "User #{@user.id} is a Joule purchaser in mailchimp and not the database"
-      @logger.error msg
-      raise msg
-    end
-
-    if !cs_joule_purchaser
-      @logger.info "Not a Joule purchaser, not syncing to mailchimp"
-      return
-    end
-
-    if mailchimp_joule_purchaser
-      @logger.info "Already Joule purchaser in mailchimp"
-      return
-    end
-
-    add_to_mailchimp_group(:joule_purchase_group_id, JOULE_PURCHASE_GROUP_NAME)
+    add_to_mailchimp_group(group_id, group_name)
   end
 
   def add_to_mailchimp_group(id, name)
@@ -115,22 +93,22 @@ class UserSync
     )
   end
 
-  def in_mailchimp_group?(member_info, id)
+  def in_mailchimp_group?(member_info, id, group_name)
     return false unless member_info
     return false unless member_info['GROUPINGS']
 
-    purchases = member_info['GROUPINGS'].find do |e|
+    group_outer = member_info['GROUPINGS'].find do |e|
       e['id'] == Rails.configuration.mailchimp[id]
     end
-    return false unless purchases
-    return false unless purchases['groups']
+    return false unless group_outer
+    return false unless group_outer['groups']
 
-    premium_purchase = purchases['groups'].find do |e|
-      e['name'] == PREMIUM_GROUP_NAME
+    group_inner = group_outer['groups'].find do |e|
+      e['name'] == group_name
     end
-    return false if premium_purchase.nil?
+    return false if group_inner.nil?
 
-    return true if premium_purchase["interested"] == true
+    return true if group_inner["interested"] == true
 
     return false
     # For an example of the gibberish returned by the mailchimp API

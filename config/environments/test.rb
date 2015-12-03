@@ -16,9 +16,9 @@ Delve::Application.configure do
 
   # Enable logs for tests.  ActiveRecord logs are a bit verbose, so disabling
   config.logger = Logger.new(STDOUT)
-  config.log_level = :warn
+  config.log_level = :info
   config.after_initialize do
-    ActiveRecord::Base.logger.level = Logger::WARN
+    ActiveRecord::Base.logger.level = Logger::INFO
   end
 
 
