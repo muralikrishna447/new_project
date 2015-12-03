@@ -3,32 +3,33 @@
 
 # Currently:
 #  - Mailchimp for premium users
+#  - Mailchimp for joule purchases
 #
 # But eventually other attributes too!
 
 class UserSync
   PREMIUM_GROUP_NAME = "Premium Member"
-  
+  JOULE_PURCHASE_GROUP_NAME = "Joule Purchase"
+
   @queue = :user_sync
 
   def self.perform(user_id)
     UserSync.new(user_id).sync
   end
-  
+
   def initialize(user_id)
     @logger = Rails.logger # TODO - set up proper logging
     @logger.info "Syncing user data for [#{user_id}]"
     @user = User.find(user_id)
   end
-  
-  def sync
-    sync_mailchimp_premium
-  end
-  
-  def sync_mailchimp_premium()
-    mailchimp_config = Rails.configuration.mailchimp
 
-    list_id = mailchimp_config[:list_id]
+  def sync
+    sync_mailchimp
+  end
+
+  def sync_mailchimp(options = {premium: true, joule: true})
+
+    list_id = Rails.configuration.mailchimp[:list_id]
     member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
     @logger.info member_info.inspect
 
@@ -37,36 +38,50 @@ class UserSync
       return
     end
     member_info = member_info['data'][0]
-    
-    mailchimp_premium = is_mailchimp_premium? member_info
-    cs_premium = @user.premium_member # TODO - update with real method once merged
 
-    @logger.info "Mailchimp premium [#{mailchimp_premium}]  ChefSteps premium [#{cs_premium}]"
+    if options[:premium]
+      sync_mailchimp_attribute(member_info, :premium_group_id, PREMIUM_GROUP_NAME, @user.premium?)
+    end
+    if options[:joule]
+      sync_mailchimp_attribute(member_info, :joule_group_id, JOULE_PURCHASE_GROUP_NAME, @user.joule_purchase_count > 0)
+    end
+  end
 
-    if mailchimp_premium && !cs_premium
-      msg = "User #{@user.id} is premium in mailchimp and not the database"
+  private
+
+  def sync_mailchimp_attribute(member_info, group_id, group_name, db_value)
+    mailchimp_value = in_mailchimp_group?(member_info, group_id, group_name)
+
+    @logger.info "#{group_name}: Mailchimp [#{mailchimp_value}], ChefSteps [#{db_value}]"
+
+    if mailchimp_value && !db_value
+      msg = "User #{@user.id} is a #{group_name} in mailchimp and not the database"
       @logger.error msg
       raise msg
     end
-    
-    if !cs_premium
-      @logger.info "Not a premium member, not syncing to mailchimp"
+
+    if !db_value
+      @logger.info "Not a #{group_name}, not syncing to mailchimp"
       return
     end
-    
-    if mailchimp_premium
-      @logger.info "Already premium in mailchimp"
+
+    if mailchimp_value
+      @logger.info "Already #{group_name} in mailchimp"
       return
     end
-    
+
+    add_to_mailchimp_group(group_id, group_name)
+  end
+
+  def add_to_mailchimp_group(id, name)
     # Note - if more attributes are added to the group then those values will
     # need to be copied from the initial read request or else they will be
     # deleted.
     merge_vars = {
         groupings: [
         {
-          id: mailchimp_config[:premium_group_id],
-          groups: [PREMIUM_GROUP_NAME]
+          id: Rails.configuration.mailchimp[id],
+          groups: [name]
         }
       ]
     }
@@ -77,26 +92,24 @@ class UserSync
       merge_vars: merge_vars
     )
   end
-  
-  
-  private
-  def is_mailchimp_premium? member_info
+
+  def in_mailchimp_group?(member_info, id, group_name)
     return false unless member_info
     return false unless member_info['GROUPINGS']
-    
-    purchases = member_info['GROUPINGS'].find do |e|
-      e['id'] == Rails.configuration.mailchimp[:premium_group_id]
-    end
-    return false unless purchases
-    return false unless purchases['groups']
-    
-    premium_purchase = purchases['groups'].find do |e|
-      e['name'] == PREMIUM_GROUP_NAME
-    end
-    return false if premium_purchase.nil?
 
-    return true if premium_purchase["interested"] == true
-    
+    group_outer = member_info['GROUPINGS'].find do |e|
+      e['id'] == Rails.configuration.mailchimp[id]
+    end
+    return false unless group_outer
+    return false unless group_outer['groups']
+
+    group_inner = group_outer['groups'].find do |e|
+      e['name'] == group_name
+    end
+    return false if group_inner.nil?
+
+    return true if group_inner["interested"] == true
+
     return false
     # For an example of the gibberish returned by the mailchimp API
     # {"email"=>"first@chocolateyshatner.com", "id"=>"7f6ce81444",

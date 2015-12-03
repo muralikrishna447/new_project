@@ -55,6 +55,26 @@ describe User do
 
   end
 
+  context "joule_purchased" do
+    it "should set date and count on first purchase" do
+      @user.joule_purchase_count.should eq(0)
+      @user.first_joule_purchased_at.present?.should be false
+
+      @user.joule_purchased
+
+      @user.first_joule_purchased_at.present?.should be true
+      @user.joule_purchase_count.should eq(1)
+    end
+
+    it "should change count but not date on second purchase" do
+      @user.joule_purchased
+      date = @user.first_joule_purchased_at
+      @user.joule_purchased
+      @user.first_joule_purchased_at.should eq(date)
+      @user.joule_purchase_count.should eq(2)
+    end
+  end
+
   context "use_premium_discount" do
     it "should set used_circulator_discount to true" do
       @user.use_premium_discount

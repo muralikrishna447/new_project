@@ -29,6 +29,7 @@ describe Api::V0::UsersController do
       result.delete('premium').should == false
       result.delete('used_circulator_discount').should == false
       result.delete('admin').should == false
+      result.delete('joule_purchase_count').should == 0
       result.empty?.should == true
     end
 
@@ -58,7 +59,7 @@ describe Api::V0::UsersController do
 
   context 'POST /create' do
     it 'should create a user' do
-      # Disabled until we fix the resque job 
+      # Disabled until we fix the resque job
       #Resque.should_receive(:enqueue)
       post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should be_success
