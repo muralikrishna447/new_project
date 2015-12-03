@@ -165,10 +165,12 @@ class StripeOrder < ActiveRecord::Base
           medium: data['utm_medium'],
           term: data['utm_term'],
           content: data['utm_content']
+        },
+        referrer: {
+          id: data['utm_link'],
+          url: data['utm_link'],
+          link: data['utm_link']
         }
-      },
-      referrer: {
-        id: data['utm_link']
       },
       properties: {
         product_skus: [purchased_item.parent],
