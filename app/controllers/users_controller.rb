@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_before_filter :set_analytics_cookie, only: [:session_me]
+
   def show
     @user = User.find(params[:id])
     user_json = @user.to_json(only: [:id, :name], methods: :avatar_url)
