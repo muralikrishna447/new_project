@@ -152,11 +152,9 @@ describe StripeOrder do
       @stripe_circulator_order.send_to_stripe
     end
 
-    it "should update joule purchase count and set date" do
+    it "should call joule_purchased" do
+      User.any_instance.should_receive(:joule_purchased)
       @stripe_circulator_order.send_to_stripe
-      @user.reload
-      @user.first_joule_purchased_at.should_not be_blank
-      @user.reload.joule_purchase_count.should be(1)
     end
 
     it "should call make_premium_member if not gift" do

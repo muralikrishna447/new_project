@@ -43,7 +43,7 @@ class UserSync
       sync_mailchimp_attribute(member_info, :premium_group_id, PREMIUM_GROUP_NAME, @user.premium?)
     end
     if options[:joule]
-      sync_mailchimp_attribute(member_info, :joule_group_id, JOULE_GROUP_NAME, @user.joule_purchase_count > 0)
+      sync_mailchimp_attribute(member_info, :joule_group_id, JOULE_PURCHASE_GROUP_NAME, @user.joule_purchase_count > 0)
     end
   end
 
