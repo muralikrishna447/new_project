@@ -128,6 +128,8 @@ class StripeOrder < ActiveRecord::Base
         analytics(stripe_charge)
         #mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
 
+        Rails.logger.info("Stripe Order #{id} - Queueing UserSync")
+        Resque.enqueue(UserSync, user.id)
       end
     end
 
