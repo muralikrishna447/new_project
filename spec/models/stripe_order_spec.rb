@@ -124,6 +124,9 @@ describe StripeOrder do
 
   context 'send_to_stripe' do
     before :each do
+      stripe3 = double('stripe', amount: 9999, status: 'failed', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe3.stub(:status).and_return('failed')
+
       stripe2 = double('stripe', amount: 9999, status: 'paid', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
       stripe2.stub(:status).and_return('paid')
 
@@ -140,6 +143,29 @@ describe StripeOrder do
       BaseMandrillMailer.any_instance.stub(:send_mail).and_return(double('mailer', deliver: true))
       BaseMandrillMailer.any_instance.stub(:mandrill_template)
       StripeOrder.any_instance.stub(:analytics)
+    end
+
+    it 'should send out an email' do
+      stripe = double('stripe', amount: 9999, status: 'created', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe.stub(:status).and_return('created')
+      stripe3 = double('stripe', amount: 9999, status: 'failed', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe3.stub(:status).and_return('failed')
+      stripe.stub(:pay).and_return(stripe3)
+      Stripe::Order.stub(:create).and_return(stripe)
+      DeclinedMailer.should_receive(:joule)
+      @stripe_circulator_order.send_to_stripe
+    end
+
+    it 'should remove premium' do
+      stripe = double('stripe', amount: 9999, status: 'created', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe.stub(:status).and_return('created')
+      stripe3 = double('stripe', amount: 9999, status: 'failed', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe3.stub(:status).and_return('failed')
+      stripe.stub(:pay).and_return(stripe3)
+      Stripe::Order.stub(:create).and_return(stripe)
+      @user.make_premium_member(1)
+      User.any_instance.should_receive(:remove_premium_membership)
+      @stripe_circulator_order.send_to_stripe
     end
 
     it "should call create_or_update_user" do

@@ -136,7 +136,7 @@ class StripeOrder < ActiveRecord::Base
           DeclinedMailer.premium(user).deliver rescue nil
         end
         Rails.logger.info("Stripe Order #{id} - Removing premium")
-        self.user.remove_premium_membership
+        user.remove_premium_membership
       end
     end
 
@@ -169,7 +169,7 @@ class StripeOrder < ActiveRecord::Base
     tax_item = stripe_charge.items.detect{|item| item.type == 'tax'}
     discount_item = stripe_charge.items.detect{|item| item.type == 'discount'}
     purchased_item = stripe_charge.items.detect{|item| item.type == 'sku'}
-    Analytics.track(user_id: user_id, event: 'Completed Order',
+    analytics_data = {user_id: user_id, event: 'Completed Order',
       context: {
         campaign: {
           name: data['utm_campaign'],
@@ -203,7 +203,9 @@ class StripeOrder < ActiveRecord::Base
           }
         ]
       }
-    )
+    }
+
+    Analytics.track(analytics_data)
 
   end
 
