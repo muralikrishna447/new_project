@@ -171,20 +171,22 @@ class StripeOrder < ActiveRecord::Base
     tax_item = stripe_charge.items.detect{|item| item.type == 'tax'}
     discount_item = stripe_charge.items.detect{|item| item.type == 'discount'}
     purchased_item = stripe_charge.items.detect{|item| item.type == 'sku'}
-
     ['Completed Order', 'Completed Order Workaround'].each do |event_name|
       Analytics.track(user_id: user_id, event: event_name,
         context: {
+          'GoogleAnalytics' => {
+            clientId: data['google_analytics_client_id']
+          },
           campaign: {
             name: data['utm_campaign'],
             source: data['utm_source'],
             medium: data['utm_medium'],
             term: data['utm_term'],
             content: data['utm_content']
+          },
+          referrer: {
+            link: data['utm_link']
           }
-        },
-        referrer: {
-          link: data['utm_link']
         },
         properties: {
           product_skus: [purchased_item.parent],
