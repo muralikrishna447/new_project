@@ -25,17 +25,22 @@ class FreshStepsProxy < Rack::Proxy
 
   def call(env)
     if should_proxy?(env)
+      req = Rack::Request.new(env)
+      referer = req.referer
+      params = AnalyticsParametizer.get_params(req.params)
+      cookie_value = AnalyticsParametizer.set_params(params, referer)
+
       Rails.logger.info("FreshStepsProxy request for path [#{env['REQUEST_URI']}]")
       env["HTTP_HOST"] = @backend_host
       env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/index.html"
-      response = perform_request(env)
-      headers = response[1]
+      status, headers, body = perform_request(env)
       # The rack proxy mutates the http headers in a way which causes the rack
       # cache layer to crash.  This un-does the mutation.
       if headers.has_key?('cache-control') && headers['cache-control'].kind_of?(Array)
         headers['cache-control'] = headers['cache-control'][0]
       end
-      response
+      Rack::Utils.set_cookie_header!(headers, 'utm', cookie_value)
+      [status, headers, body]
     else
       @app.call(env)
     end

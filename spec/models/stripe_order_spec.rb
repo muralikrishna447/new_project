@@ -178,6 +178,11 @@ describe StripeOrder do
       @stripe_circulator_order.send_to_stripe
     end
 
+    it "should call joule_purchased" do
+      User.any_instance.should_receive(:joule_purchased)
+      @stripe_circulator_order.send_to_stripe
+    end
+
     it "should call make_premium_member if not gift" do
       User.any_instance.should_receive(:make_premium_member)
       @stripe_circulator_order.send_to_stripe
@@ -199,7 +204,8 @@ describe StripeOrder do
     end
 
     it 'should call Analytics.track' do
-      Analytics.should_receive(:track)
+      Analytics.should_receive(:track).twice
+      Analytics.should_receive(:identify).once
       @stripe_circulator_order.analytics(@stripe_charge)
     end
   end
