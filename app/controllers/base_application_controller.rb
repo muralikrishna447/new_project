@@ -84,21 +84,20 @@ class BaseApplicationController < ActionController::Base
   def log_current_user
     logger.info("current_user id: #{current_user.nil? ? "anon" : current_user.id}")
   end
-  
+
   # This subscribe / track logic does not belong here but since it's curently
   # found in no less than three places throughout our code base this is the
   # least invasive place to store it
   def subscribe_and_track(user, optout, source)
     email_list_signup(user, source) unless optout
-    # mixpanel.alias needs to be called with @user.id instead of @user.email for consistant tracking with the client
     mixpanel.alias(user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
     mixpanel.track(user.id, 'Signed Up', {source: 'api'})
     # Temporarily disabling because the worker is broken due to problems in bloom
     # Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
     Librato.increment 'user.signup', sporadic: true
-    
+
   end
-  
+
   def email_list_signup(user, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
     begin
       logger.info "[mailchimp] Subscribing [#{user.email}] to list #{[listname]}"

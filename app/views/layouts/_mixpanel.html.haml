@@ -7,7 +7,7 @@
 
 - if current_user
   :javascript
-    mixpanel.identify("#{current_user.email}");
+    mixpanel.identify("#{current_user.id}");
     mixpanel.name_tag("#{current_user.name}");
 
 - if current_user && @activity
