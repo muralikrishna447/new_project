@@ -211,6 +211,7 @@ class StripeOrder < ActiveRecord::Base
     end
 
     # Send joule purchase count as a user property
+    Rails.logger.info("Stripe Order #{id} - JPC #{user.joule_purchase_count} ")
     Analytics.identify(user_id: user_id, traits: {joule_purchase_count: user.joule_purchase_count})
 
   end
