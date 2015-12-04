@@ -104,9 +104,17 @@ class StripeOrder < ActiveRecord::Base
       Rails.logger.info("Stripe Order #{id} - Stripe Charge: #{stripe_charge.inspect}")
 
       if stripe_charge.status == 'paid'
+<<<<<<< HEAD
+        Librato.increment("credit_card.charged")
+        Rails.logger.info("Stripe Order #{id} has been collected. Sending Analytics")
+        analytics(stripe_charge)
+        #mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
+        Rails.logger.info("Stripe Order #{id} - Analytics Sent Updating user")
+=======
         # Analytics.track 99% good here
 
         Rails.logger.info("Stripe Order #{id} - Updating user")
+>>>>>>> develop
         self.submitted = true
         self.save
         Rails.logger.info("Stripe Order #{id} - Sending Receipt")
@@ -129,6 +137,22 @@ class StripeOrder < ActiveRecord::Base
           JouleConfirmationMailer.prepare(user).deliver rescue nil
         end
 
+<<<<<<< HEAD
+      else
+        # We failed to collect the money for some reason
+        Rails.logger.info("Stripe Order #{id} - Failed to move into status paid")
+        Rails.logger.info("Stripe Order #{id} - Stripe Charge: #{stripe_charge.inspect}")
+        Librato.increment("credit_card.declined")
+        if data['circulator_sale']
+          Rails.logger.info("Stripe Order #{id} - Sending Joule declined email")
+          DeclinedMailer.joule(user).deliver rescue nil
+        else
+          Rails.logger.info("Stripe Order #{id} - Sending Premium declined email")
+          DeclinedMailer.premium(user).deliver rescue nil
+        end
+        Rails.logger.info("Stripe Order #{id} - Removing premium")
+        user.remove_premium_membership
+=======
         # Analytics.track mostly bad here
 
         Rails.logger.info("Stripe Order #{id} - Queueing UserSync")
@@ -139,6 +163,7 @@ class StripeOrder < ActiveRecord::Base
         Rails.logger.info("Stripe Order #{id} - Sending Analytics")
         self.analytics(stripe_charge)
         Analytics.flush()
+>>>>>>> develop
       end
     end
 
@@ -215,7 +240,6 @@ class StripeOrder < ActiveRecord::Base
     # Send joule purchase count as a user property
     Rails.logger.info("Stripe Order #{id} - JPC #{user.joule_purchase_count} ")
     Analytics.identify(user_id: user_id, traits: {joule_purchase_count: user.joule_purchase_count})
-
   end
 
   def revenue(stripe_charge, tax_item, discount_item)
