@@ -178,7 +178,8 @@ describe StripeOrder do
     end
 
     it 'should call Analytics.track' do
-      Analytics.should_receive(:track)
+      Analytics.should_receive(:track).twice
+      Analytics.should_receive(:identify).once
       @stripe_circulator_order.analytics(@stripe_charge)
     end
   end

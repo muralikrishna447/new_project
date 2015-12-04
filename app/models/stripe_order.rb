@@ -102,7 +102,10 @@ class StripeOrder < ActiveRecord::Base
       Rails.logger.info("Stripe Order #{id} not paid, charging now")
       stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
       Rails.logger.info("Stripe Order #{id} - Stripe Charge: #{stripe_charge.inspect}")
+
       if stripe_charge.status == 'paid'
+        # Analytics.track 99% good here
+
         Rails.logger.info("Stripe Order #{id} - Updating user")
         self.submitted = true
         self.save
@@ -111,25 +114,31 @@ class StripeOrder < ActiveRecord::Base
 
         if data['circulator_sale'] && !data['gift']
           Rails.logger.info "Stripe Order #{id} - Incrementing user joule purchase count"
-          user.joule_purchased
+          user.joule_purchased rescue nil
         end
 
         if data['gift']
           Rails.logger.info("Stripe Order #{id} - Sending Gift Receipt")
-          pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false)
+          pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false) rescue nil
           PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver rescue nil
         end
+
+        # Analytics.track mostly good here
 
         if data['circulator_sale']
           JouleConfirmationMailer.prepare(user).deliver rescue nil
         end
 
-        Rails.logger.info("Stripe Order #{id} - Sending Analytics")
-        analytics(stripe_charge)
-        #mixpanel.track(user.email, 'Charge Server Side', {price: (data['price'].to_f/100.0), description: description, gift: data['gift']})
+        # Analytics.track mostly bad here
 
         Rails.logger.info("Stripe Order #{id} - Queueing UserSync")
         Resque.enqueue(UserSync, user.id)
+
+        # Trying analytics.track with a manual flush here until we
+        # really resolve this issue.
+        Rails.logger.info("Stripe Order #{id} - Sending Analytics")
+        self.analytics(stripe_charge)
+        Analytics.flush()
       end
     end
 
@@ -162,42 +171,47 @@ class StripeOrder < ActiveRecord::Base
     tax_item = stripe_charge.items.detect{|item| item.type == 'tax'}
     discount_item = stripe_charge.items.detect{|item| item.type == 'discount'}
     purchased_item = stripe_charge.items.detect{|item| item.type == 'sku'}
-    Analytics.track(user_id: user_id, event: 'Completed Order',
-      context: {
-        campaign: {
-          name: data['utm_campaign'],
-          source: data['utm_source'],
-          medium: data['utm_medium'],
-          term: data['utm_term'],
-          content: data['utm_content']
-        }
-      },
-      referrer: {
-        link: data['utm_link']
-      },
-      properties: {
-        product_skus: [purchased_item.parent],
-        orderId: stripe_charge.id,
-        total: (stripe_charge.amount.to_f/100.0),
-        revenue: revenue(stripe_charge, tax_item, discount_item),
-        tax: ((tax_item.try(:amount) || 0)/100.0),
-        shipping: 0,
-        discount: ((discount_item.try(:amount) || 0)/100.0),
-        discount_type: (data['premium_discount'] ? 'circulator' : nil ),
-        gift: data['gift'],
-        currency: 'USD',
-        products: [
-          {
-            id: purchased_item.parent,
-            sku: purchased_item.parent,
-            name: purchased_item.description,
-            price: (purchased_item.amount.to_f/100.0),
-            quantity: 1
-          }
-        ]
-      }
-    )
 
+    ['Completed Order', 'Completed Order Workaround'].each do |event_name|
+      Analytics.track(user_id: user_id, event: event_name,
+        context: {
+          campaign: {
+            name: data['utm_campaign'],
+            source: data['utm_source'],
+            medium: data['utm_medium'],
+            term: data['utm_term'],
+            content: data['utm_content']
+          }
+        },
+        referrer: {
+          link: data['utm_link']
+        },
+        properties: {
+          product_skus: [purchased_item.parent],
+          orderId: stripe_charge.id,
+          total: (stripe_charge.amount.to_f/100.0),
+          revenue: revenue(stripe_charge, tax_item, discount_item),
+          tax: ((tax_item.try(:amount) || 0)/100.0),
+          shipping: 0,
+          discount: ((discount_item.try(:amount) || 0)/100.0),
+          discount_type: (data['premium_discount'] ? 'circulator' : nil ),
+          gift: data['gift'],
+          currency: 'USD',
+          products: [
+            {
+              id: purchased_item.parent,
+              sku: purchased_item.parent,
+              name: purchased_item.description,
+              price: (purchased_item.amount.to_f/100.0),
+              quantity: 1
+            }
+          ]
+        }
+      )
+    end
+
+    # Send joule purchase count as a user property
+    Rails.logger.info("Stripe Order #{id} - JPC #{user.joule_purchase_count} ")
     Analytics.identify(user_id: user_id, traits: {joule_purchase_count: user.joule_purchase_count})
 
   end
