@@ -1,3 +1,4 @@
+require 'analytics_parametizer'
 class ApplicationController < BaseApplicationController
   include StatusHelpers
   protect_from_forgery
@@ -13,6 +14,15 @@ class ApplicationController < BaseApplicationController
       DatabaseCleaner.clean
       render nothing: true
     end
+  end
+
+
+  before_filter :set_analytics_cookie
+  def set_analytics_cookie
+    referer = request.referer
+    url_params = AnalyticsParametizer.get_params(params)
+    cookie_value = AnalyticsParametizer.set_params(url_params, referer)
+    cookies[:utm] = cookie_value
   end
 
 
