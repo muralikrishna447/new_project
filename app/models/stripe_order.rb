@@ -205,7 +205,7 @@ class StripeOrder < ActiveRecord::Base
           }
         },
         properties: {
-          label: purchased_item.parent,
+          label: "Completed Order #{purchased_item.parent}",
           product_skus: [purchased_item.parent],
           orderId: stripe_charge.id,
           total: (stripe_charge.amount.to_f/100.0),
