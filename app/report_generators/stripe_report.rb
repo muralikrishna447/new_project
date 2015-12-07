@@ -445,16 +445,16 @@
     def quickbooks_description(stripe_record)
       deposit = deposit_type(stripe_record)
       if deposit == 'Joule'
-        "Income from Operations:Retail Sales:Digital Sales:#{deposit}"
+        "Income from Operations:Retail Sales:Product Sales:#{deposit}"
       else
-        "Income from Operations:Retail Sales:Physical Sales:#{deposit}"
+        "Income from Operations:Retail Sales:Digital Sales:#{deposit}"
       end
     end
 
     def quickbooks_return_description(stripe_record)
       deposit = deposit_type(stripe_record)
       if deposit == 'Joule'
-        "Income from Operations:Retail Sales:Physical Sales:Physical Sales Returns"
+        "Income from Operations:Retail Sales:Product Sales:Product Sales Returns"
       else
         "Income from Operations:Retail Sales:Digital Sales:Digital Sales Returns"
       end
@@ -463,7 +463,7 @@
     def quickbooks_dispute_description(stripe_record)
       deposit = deposit_type(stripe_record)
       if deposit == 'Joule'
-        "Income from Operations:Retail Sales:Physical Sales:Physical Sales Disputes"
+        "Income from Operations:Retail Sales:Product Sales:Product Sales Disputes"
       else
         "Income from Operations:Retail Sales:Digital Sales:Digital Sales Disputes"
       end
