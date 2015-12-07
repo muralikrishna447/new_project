@@ -20,16 +20,17 @@ Delve::Application.configure do
   config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.delivery_method = :smtp
+  config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.default_url_options = { host: DOMAIN }
   ENV['MANDRILL_APIKEY'] = 'OejVCvKIRLNbenVLLI3alw' # test key, never sends
-  config.action_mailer.smtp_settings = {
-    port: '587',
-    address: 'smtp.mandrillapp.com',
-    user_name: 'app11245891@heroku.com',
-    password:  ENV['MANDRILL_APIKEY'],
-    authentication: :plain
-  }
+  # config.action_mailer.smtp_settings = {
+  #   port: '587',
+  #   address: 'smtp.mandrillapp.com',
+  #   user_name: 'app11245891@heroku.com',
+  #   password:  ENV['MANDRILL_APIKEY'],
+  #   authentication: :plain
+  # }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
