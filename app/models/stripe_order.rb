@@ -95,12 +95,32 @@ class StripeOrder < ActiveRecord::Base
     Rails.logger.info("Starting send_to_stripe")
     stripe_user = self.create_or_update_user
 
-    stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
+    begin
+      stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
+    rescue Stripe::CardError => e
+      Rails.logger.error("Stripe Order #{id} - Error Creating order in Stripe! #{stripe_order.inspect}")
+      if data['circulator_sale']
+        DeclinedMailer.joule(user).deliver rescue nil
+      else
+        DeclinedMailer.premium(user).deliver rescue nil
+      end
+      raise e
+    end
     Rails.logger.info("Received Stripe info\n #{stripe.inspect}")
 
     if stripe.status != 'paid'
       Rails.logger.info("Stripe Order #{id} not paid, charging now")
-      stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
+      begin
+        stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
+      rescue Stripe::CardError => e
+        Rails.logger.error("Stripe Order #{id} - Error charging order in Stripe! #{stripe_order.inspect}")
+        if data['circulator_sale']
+          DeclinedMailer.joule(user).deliver rescue nil
+        else
+          DeclinedMailer.premium(user).deliver rescue nil
+        end
+        raise e
+      end
       Rails.logger.info("Stripe Order #{id} - Stripe Charge: #{stripe_charge.inspect}")
 
       if stripe_charge.status == 'paid'
