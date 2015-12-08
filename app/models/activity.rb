@@ -651,7 +651,6 @@ class Activity < ActiveRecord::Base
   # We don't deal with the case where the same activity is in multiple real classes,
   # in that case one arbitrary one is found.
   def recursive_find_root(includable_type, includable_id)
-    puts "RFR: #{includable_type} #{includable_id}"
     if includable_type == "Assembly"
       assembly = Assembly.find(includable_id)
 
