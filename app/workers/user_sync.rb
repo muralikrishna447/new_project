@@ -39,17 +39,26 @@ class UserSync
     end
     member_info = member_info['data'][0]
 
+    # TODO - This is a quick fix that will still remove the user from groups
+    # other than premium and joule purchase
+
+    groups = []
+
     if options[:premium]
-      sync_mailchimp_attribute(member_info, :premium_group_id, PREMIUM_GROUP_NAME, @user.premium?)
+      add_to_group_param(groups, member_info, :premium_group_id, PREMIUM_GROUP_NAME, @user.premium?)
     end
+
     if options[:joule]
-      sync_mailchimp_attribute(member_info, :joule_group_id, JOULE_PURCHASE_GROUP_NAME, @user.joule_purchase_count > 0)
+      add_to_group_param(groups, member_info, :joule_group_id, JOULE_PURCHASE_GROUP_NAME, @user.joule_purchase_count > 0)
     end
+
+    add_to_groups(groups)
   end
+
 
   private
 
-  def sync_mailchimp_attribute(member_info, group_id, group_name, db_value)
+  def add_to_group_param(groups, member_info, group_id, group_name, db_value)
     mailchimp_value = in_mailchimp_group?(member_info, group_id, group_name)
 
     @logger.info "#{group_name}: Mailchimp [#{mailchimp_value}], ChefSteps [#{db_value}]"
@@ -61,29 +70,23 @@ class UserSync
     end
 
     if !db_value
-      @logger.info "Not a #{group_name}, not syncing to mailchimp"
+      @logger.info "Not a #{group_name}"
       return
     end
-
-    if mailchimp_value
-      @logger.info "Already #{group_name} in mailchimp"
-      return
-    end
-
-    add_to_mailchimp_group(group_id, group_name)
+    groups << [group_id, group_name]
   end
 
-  def add_to_mailchimp_group(id, name)
+  def add_to_groups (groups)
+    return if groups.empty?
+
     # Note - if more attributes are added to the group then those values will
     # need to be copied from the initial read request or else they will be
     # deleted.
+    groupings = groups.collect do |id, name|
+      {id: Rails.configuration.mailchimp[id], groups: [name]}
+    end
     merge_vars = {
-        groupings: [
-        {
-          id: Rails.configuration.mailchimp[id],
-          groups: [name]
-        }
-      ]
+        groupings: groupings
     }
 
     Gibbon::API.lists.update_member(

@@ -1,11 +1,12 @@
 describe UserSync do
   before :each do
+    WebMock.reset!
     @user_id = 100
     @user = Fabricate :user, id: @user_id, email: 'johndoe@chefsteps.com'
     @user_sync = UserSync.new(@user_id)
   end
 
-  describe 'sync premium' do
+  describe 'sync premium and joule' do
 
     it 'should not set premium status in mailchimp for non-premium member' do
       setup_member_premium false
@@ -13,11 +14,12 @@ describe UserSync do
       @user_sync.sync_mailchimp({premium: true})
     end
 
-    it 'should not re-sync premium status to mailchimp' do
+    it 'should re-sync premium status to mailchimp' do
       setup_member_premium true
+      stub_post = stub_mailchimp_post(Rails.configuration.mailchimp[:premium_group_id], UserSync::PREMIUM_GROUP_NAME)
       setup_premium_user
-      # Test would fail if POST request was made since it's not stubbed
       @user_sync.sync_mailchimp({premium: true})
+      WebMock.assert_requested stub_post
     end
 
     it 'should throw if mailchimp is premium and database is not' do
@@ -38,20 +40,20 @@ describe UserSync do
       setup_member_info_not_in_mailchimp
       @user_sync.sync_mailchimp({premium: true})
     end
-
-    def setup_member_premium(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:premium_group_id], UserSync::PREMIUM_GROUP_NAME, in_group)
+    
+    it 'should sync premium members who purchased joule' do
+      setup_member_joule_purchase true
+      setup_joule_purchaser
+      setup_premium_user
+      
+      # TODO - refactor stub method being mindful of parameter order, etc.
+      WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
+        with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"johndoe@chefsteps.com\"},\"merge_vars\":{\"groupings\":[{\"id\":\"test-purchase-group-id\",\"groups\":[\"Premium Member\"]},{\"id\":\"test-joule-group-id\",\"groups\":[\"Joule Purchase\"]}]}}").
+        to_return(:status => 200, :body => "", :headers => {})
+        
+      @user_sync.sync_mailchimp
     end
-
-    def setup_premium_user
-      @user.premium_member = true
-      @user.save!
-      # since user is read in the constructor need to create a new worker
-      @user_sync = UserSync.new(@user_id)
-    end
-  end
-
-  describe 'sync joule purchase' do
+  
 
     it 'should not set joule purchase in mailchimp for non-joule member' do
       setup_member_joule_purchase false
@@ -59,11 +61,13 @@ describe UserSync do
       @user_sync.sync_mailchimp({joule: true})
     end
 
-    it 'should not re-sync joule purchase to mailchimp' do
+    it 'should re-sync joule purchase to mailchimp' do
       setup_member_joule_purchase true
+      stub_post = stub_mailchimp_post(Rails.configuration.mailchimp[:joule_group_id], UserSync::JOULE_PURCHASE_GROUP_NAME)
+
       setup_joule_purchaser
-      # Test would fail if POST request was made since it's not stubbed
       @user_sync.sync_mailchimp({joule: true})
+      WebMock.assert_requested stub_post
     end
 
     it 'should throw if mailchimp is joule purchaser and database is not' do
@@ -83,6 +87,17 @@ describe UserSync do
     it 'should not sync joule purchase to mailchimp when user is not in mailchimp' do
       setup_member_info_not_in_mailchimp
       @user_sync.sync_mailchimp({premium: true})
+    end
+  
+    def setup_member_premium(in_group)
+      setup_member_info(Rails.configuration.mailchimp[:premium_group_id], UserSync::PREMIUM_GROUP_NAME, in_group)
+    end
+
+    def setup_premium_user
+      @user.premium_member = true
+      @user.save!
+      # since user is read in the constructor need to create a new worker
+      @user_sync = UserSync.new(@user_id)
     end
 
     def setup_member_joule_purchase(in_group)
