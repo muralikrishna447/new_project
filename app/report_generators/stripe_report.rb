@@ -53,7 +53,7 @@
       end_time = Time.parse(end_date).end_of_day
       # Check is for money going out
       # Deposit for money going in
-      stripe_lifetime_export()
+      # stripe_lifetime_export()
       header = []
       transfers = []
       charges = []
@@ -391,7 +391,7 @@
     def tax_charged(stripe_order)
       tax_item = stripe_order.items.detect{|item| item.type == 'tax'}
       if has_tax?(stripe_order)
-        tax_item.try(:amount)
+        (tax_item.try(:amount)/100.0)
       else
         0
       end

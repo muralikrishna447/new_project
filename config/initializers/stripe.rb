@@ -5,8 +5,8 @@ if Rails.env.production? || Rails.env.staging? || Rails.env.staging2?
   }
 else
   Rails.configuration.stripe = {
-    publishable_key: 'pk_live_b1CQV9HfmNE8djLHCKpykTxc',
-    secret_key:  'sk_live_WAwZz56nyVf1OAH2D6uCMmfK'
+    publishable_key: 'pk_test_0BuspZCCAn7jj1bpW2d1LG51',
+    secret_key:  'sk_test_vbGt58BNlwRrgjEvq9QtYf0G'
   }
 end
 
