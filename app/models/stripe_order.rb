@@ -96,6 +96,7 @@ class StripeOrder < ActiveRecord::Base
     stripe_user = self.create_or_update_user
 
     begin
+      Rails.logger.info("Stripe Order #{id} - Creating Stripe Order")
       stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
     rescue Stripe::CardError => e
       Rails.logger.error("Stripe Order #{id} - Error Creating order in Stripe! #{stripe_order.inspect}")
