@@ -100,6 +100,7 @@ class StripeOrder < ActiveRecord::Base
       stripe = Stripe::Order.create(self.stripe_order, {idempotency_key: self.idempotency_key})
     rescue Stripe::CardError => e
       Rails.logger.error("Stripe Order #{id} - Error Creating order in Stripe! #{stripe_order.inspect}")
+      Librato.increment("credit_card.declined")
       if data['circulator_sale']
         DeclinedMailer.joule(user).deliver rescue nil
       else
@@ -115,6 +116,7 @@ class StripeOrder < ActiveRecord::Base
         stripe_charge = stripe.pay({customer: stripe_user.id}, {idempotency_key: (self.idempotency_key+"A")})
       rescue Stripe::CardError => e
         Rails.logger.error("Stripe Order #{id} - Error charging order in Stripe! #{stripe_order.inspect}")
+        Librato.increment("credit_card.declined")
         if data['circulator_sale']
           DeclinedMailer.joule(user).deliver rescue nil
         else
