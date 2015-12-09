@@ -78,6 +78,28 @@ describe Assembly do
 
       expect(activity1.containing_course).to be_nil
     end
+
+    it 'finds containing course even if child has two parents, one of which is a dead end' do
+      activity1 = Fabricate :activity, title: 'activity1', youtube_id: 'activity1'
+      assembly_direct_parent = Fabricate :assembly, title: 'Test Parent', description: 'Test Parent Description', assembly_type: 'Assembly'
+      assembly_inclusion_1 = Fabricate :assembly_inclusion, assembly: assembly_direct_parent, includable: activity1
+      assembly_inclusion_2 = Fabricate :assembly_inclusion, assembly: @assembly, includable: assembly_direct_parent
+      assembly_dead_end_parent = Fabricate :assembly, title: 'Dead end parent', description: 'Dead End Parent Description', assembly_type: 'Assembly'
+      assembly_dead_end_includsion = Fabricate :assembly_inclusion, assembly: assembly_dead_end_parent, includable: activity1
+
+      expect(activity1.containing_course).to eq(@assembly)
+    end
+
+    it 'ditto with order reversed' do
+      activity1 = Fabricate :activity, title: 'activity1', youtube_id: 'activity1'
+      assembly_direct_parent = Fabricate :assembly, title: 'Test Parent', description: 'Test Parent Description', assembly_type: 'Assembly'
+      assembly_dead_end_parent = Fabricate :assembly, title: 'Dead end parent', description: 'Dead End Parent Description', assembly_type: 'Assembly'
+      assembly_dead_end_includsion = Fabricate :assembly_inclusion, assembly: assembly_dead_end_parent, includable: activity1
+      assembly_inclusion_1 = Fabricate :assembly_inclusion, assembly: assembly_direct_parent, includable: activity1
+      assembly_inclusion_2 = Fabricate :assembly_inclusion, assembly: @assembly, includable: assembly_direct_parent
+
+      expect(activity1.containing_course).to eq(@assembly)
+    end
   end
 
 
