@@ -112,8 +112,34 @@ module Delve
     config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only_environments: ['production', 'staging']
     config.middleware.use Rack::Deflater
 
-    # Order matters here, Brombone must come before FreshSteps
-    config.middleware.insert_before ActionDispatch::Static, 'BromboneProxy'
+    # Override the default list of spiders from prerender.io. They specifically don't default to including
+    # googlebot, yahoo, bingbot b/c they do _escaped_fragment_ but that is now deprecated, and
+    # we have plenty of experience to show their JavaScript crawling isn't doing it for us.
+    crawler_user_agents = [
+        'googlebot',
+        'yahoo',
+        'bingbot',
+        'baiduspider',
+        'facebookexternalhit',
+        'twitterbot',
+        'rogerbot',
+        'linkedinbot',
+        'embedly',
+        'bufferbot',
+        'quora link preview',
+        'showyoubot',
+        'outbrain',
+        'pinterest',
+        'developers.google.com/+/web/snippet',
+        'slackbot',
+        'vkShare',
+        'W3C_Validator',
+        'redditbot',
+        'Applebot'
+    ]
+
+    # Order matters here, Prerender.io must come before FreshSteps
+    config.middleware.use Rack::Prerender, {prerender_token: 'GA8M8CypzoMsKSkTRgme', crawler_user_agents: crawler_user_agents}
     config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
 
     # Prefix each log line with a per-request UUID

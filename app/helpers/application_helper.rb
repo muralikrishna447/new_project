@@ -296,8 +296,8 @@ module ApplicationHelper
     request.env['HTTP_USER_AGENT'].downcase.index('googlebot/') || (http_referer_uri && http_referer_uri.host && http_referer_uri.host.index('google')) || (cs_referer_uri && cs_referer_uri.host && cs_referer_uri.host.index('google'))
   end
 
-  def is_brombone
-    request.headers["X-Crawl-Request"] == 'brombone'
+  def is_prerender
+    request.env['HTTP_USER_AGENT'].downcase.index('prerender')
   end
 
   def class_activity_path(assembly, activity)
