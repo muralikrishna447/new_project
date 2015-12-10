@@ -38,7 +38,7 @@ module Api
           if circ_params[:secret_key]
             non_hex = /[^a-fA-F0-9]/
             sk = circ_params[:secret_key]
-            if sk.length != 32 or non_hex.match sk
+            if (sk.length != 32 && sk.length != 20) or non_hex.match sk
               render_api_response 400, {message: "Invalid secret key"}
               return
             end
