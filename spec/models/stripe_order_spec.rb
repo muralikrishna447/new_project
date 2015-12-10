@@ -156,6 +156,28 @@ describe StripeOrder do
       @stripe_circulator_order.send_to_stripe
     end
 
+    it 'should send out an email on error' do
+      stripe = double('stripe', amount: 9999, status: 'created', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe.stub(:status).and_return('created')
+      stripe3 = double('stripe', amount: 9999, status: 'failed', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe3.stub(:status).and_return('failed')
+      stripe.stub(:pay).and_return(stripe3)
+      Stripe::Order.stub(:create){ raise(Stripe::CardError.new('test', 'test', 'test'))}
+      DeclinedMailer.should_receive(:joule).and_call_original
+      expect { @stripe_circulator_order.send_to_stripe }.to raise_error
+    end
+
+    it 'should send out an email on error during collection' do
+      stripe = double('stripe', amount: 9999, status: 'created', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe.stub(:status).and_return('created')
+      stripe3 = double('stripe', amount: 9999, status: 'failed', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
+      stripe3.stub(:status).and_return('failed')
+      stripe.stub(:pay){ raise(Stripe::CardError.new('test', 'test', 'test'))}
+      Stripe::Order.stub(:create).and_return(stripe)
+      DeclinedMailer.should_receive(:joule).and_call_original
+      expect { @stripe_circulator_order.send_to_stripe }.to raise_error
+    end
+
     it 'should remove premium' do
       stripe = double('stripe', amount: 9999, status: 'created', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
       stripe.stub(:status).and_return('created')
