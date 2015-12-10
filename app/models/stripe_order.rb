@@ -102,8 +102,10 @@ class StripeOrder < ActiveRecord::Base
       Rails.logger.error("Stripe Order #{id} - Error Creating order in Stripe! #{stripe_order.inspect}")
       Librato.increment("credit_card.declined")
       if data['circulator_sale']
+        Rails.logger.error("Stripe Order #{id} - Sending Joule Declined Mail")
         DeclinedMailer.joule(user).deliver rescue nil
       else
+        Rails.logger.error("Stripe Order #{id} - Sending Premium Declined Mail")
         DeclinedMailer.premium(user).deliver rescue nil
       end
       raise e
@@ -118,8 +120,10 @@ class StripeOrder < ActiveRecord::Base
         Rails.logger.error("Stripe Order #{id} - Error charging order in Stripe! #{stripe_order.inspect}")
         Librato.increment("credit_card.declined")
         if data['circulator_sale']
+          Rails.logger.error("Stripe Order #{id} - Sending Joule Declined Mail")
           DeclinedMailer.joule(user).deliver rescue nil
         else
+          Rails.logger.error("Stripe Order #{id} - Sending Premium Declined Mail")
           DeclinedMailer.premium(user).deliver rescue nil
         end
         raise e
