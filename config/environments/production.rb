@@ -99,6 +99,4 @@ Delve::Application.configure do
     :joule_group_id => '8069'
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
-
-  config.middleware.insert_before('BromboneProxy', 'PreauthEnforcer', [/.*/], [/^\/tpq/])
 end

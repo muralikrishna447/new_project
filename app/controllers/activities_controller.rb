@@ -32,7 +32,7 @@ class ActivitiesController < ApplicationController
     # (1) Googlebot so it can index the page
     # (2) Referred from google (for first click free: https://support.google.com/webmasters/answer/74536?hl=en)
     # (3) Prerender.io bot so it can make the snapshot for _escaped_segment_
-    if (! current_admin?) && (! is_google) && (! is_prerender)
+    if (! current_admin?) && (! is_google) && (! is_static_render)
       if @activity.show_only_in_course
         # redirect_to class_path(@activity.containing_course), :status => :moved_permanently
         if current_user

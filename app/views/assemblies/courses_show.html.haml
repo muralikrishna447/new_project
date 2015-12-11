@@ -35,7 +35,7 @@
                   .comments-container.section.noprint#comments(ng-if="currentIncludable.include_disqus")
                     .standard-item
                       %h3 Discussion
-                      %cscomments(comments-type="activity" comments-id="{{currentIncludable.includable_id}}" seo-bot="#{is_brombone}")
+                      %cscomments(comments-type="activity" comments-id="{{currentIncludable.includable_id}}" seo-bot="#{is_static_render}")
               %div(ng-switch-when='Assignment')
                 = render 'assembly_upload', assembly: @course
 
@@ -66,7 +66,7 @@
         /       %hr
         /       .section#comments
         /         %a(name='discussion')
-        /         %cscomments(comments-type="activity" comments-id="{{currentIncludable.includable_id}}" seo-bot="#{is_brombone}")
+        /         %cscomments(comments-type="activity" comments-id="{{currentIncludable.includable_id}}" seo-bot="#{is_static_render}")
         / - else
         /   .row-fluid.section(ng-show="currentIncludable.include_disqus" ng-class="{'hide-when-menu-showing': showCourseMenu}")
         /     .span12.course-comments

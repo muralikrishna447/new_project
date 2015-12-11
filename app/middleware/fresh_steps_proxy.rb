@@ -52,9 +52,6 @@ class FreshStepsProxy < Rack::Proxy
     # Don't proxy explicit requests for .json, those must be API type calls (like old index_as_json.json for mobile app)
     return false if request.path.end_with?('.json')
 
-    # Don't proxy if this is google asking for HTML snapshot, that gets handled
-    # in get_escaped_fragment_from_brombone
-    leave_for_brombone = request.query_string.include?('_escaped_fragment_')
     prefix_match = PREFIX.include?(request.path) || PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")}
     exact_match = EXACT.include?(request.path)
 
@@ -64,6 +61,6 @@ class FreshStepsProxy < Rack::Proxy
                           request.params['start_in_edit'].blank? &&
                           !SUFFIX.any?{|suffix| request.path.end_with?(suffix)}
 
-    !leave_for_brombone && (prefix_match || exact_match || activity_show_match)
+    prefix_match || exact_match || activity_show_match
   end
 end

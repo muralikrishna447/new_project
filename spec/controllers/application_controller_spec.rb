@@ -74,10 +74,10 @@ describe ApplicationController do
       Net::HTTP.stub!(:new).and_return @http
     end
 
-    it 'sets is_prerender when prerender header is in user agent' do
+    it 'sets is_static_render when prerender header is in user agent' do
       request.env["HTTP_USER_AGENT"] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34 Prerender (+https://github.com/prerender/prerender)'
       get :show, id: 1
-      expect is_rerender.should eq(true)
+      expect is_static_render.should eq(true)
     end
   end
 end

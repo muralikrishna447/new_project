@@ -89,7 +89,8 @@ module Delve
       config.cache_store = :dalli_store
     end
 
-    # Don't use Rack::Cache - it messes with our BromboneProxy and barely helps us on the upside
+    # Don't use Rack::Cache - it used to mess with our BromboneProxy and barely helped us on the upside
+    # Don't actually know if it will mess with Rack::Prerender, but let's assume so.
     require 'rack/cache'
     config.middleware.delete Rack::Cache
 
@@ -139,7 +140,7 @@ module Delve
     ]
 
     # Order matters here, Prerender.io must come before FreshSteps
-    config.middleware.use Rack::Prerender, {prerender_token: 'GA8M8CypzoMsKSkTRgme', crawler_user_agents: crawler_user_agents}
+    config.middleware.insert_before ActionDispatch::Static, 'Rack::Prerender', {prerender_token: 'GA8M8CypzoMsKSkTRgme', crawler_user_agents: crawler_user_agents}
     config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
 
     # Prefix each log line with a per-request UUID
@@ -148,10 +149,11 @@ module Delve
     if Rails.env.test? || Rails.env.development?
       ENV["AUTH_SECRET_KEY"] = File.read("config/rsa_test.pem")
       ENV["AES_KEY"] = 'bUg7wjYZ4ygQEyqtBesU(+R9urFB+CNv'
+      ENV["PRERENDER_SERVICE_URL"] = "http://localhost:1337"
     end
 
     if Rails.env.staging? || Rails.env.staging2?
-        config.middleware.insert_before('BromboneProxy', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/])
+        config.middleware.insert_before('Rack::Prerender', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/])
     end
 
     # In development set to staging unless explicitely overridden

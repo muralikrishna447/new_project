@@ -66,7 +66,7 @@ module Api
           end
         else
           if @activity.published
-            if is_google || is_prerender
+            if is_google || is_static_render
               render json: @activity, serializer: Api::ActivitySerializer
             else
               if @activity.show_only_in_course
