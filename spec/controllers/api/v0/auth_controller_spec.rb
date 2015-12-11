@@ -21,6 +21,11 @@ describe Api::V0::AuthController do
       response.code.should eq("403")
     end
 
+    it 'should work authenticate if email case does not match' do
+      post :authenticate, user: {email: 'JOHNdoe@chefsteps.com', password: '123456'}, client_metadata: "cooking_app"
+      response.code.should == "200"
+    end
+
     it 'should persist client metadata' do
       post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}, client_metadata: "cooking_app"
       response.code.should eq("200")
