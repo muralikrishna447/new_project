@@ -66,6 +66,6 @@ class FreshStepsProxy < Rack::Proxy
                           request.params['start_in_edit'].blank? &&
                           !SUFFIX.any?{|suffix| request.path.end_with?(suffix)}
 
-    !leave_for_brombone && !exclude_match && (prefix_match || exact_match || activity_show_match || split_match)
+    !leave_for_brombone && !exclude_match && (prefix_match || exact_match || activity_show_match)
   end
 end
