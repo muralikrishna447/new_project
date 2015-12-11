@@ -9,7 +9,7 @@ class FreshStepsProxy < Rack::Proxy
 
 
 
-  PREFIX = %w(/gallery /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule)
+  PREFIX = %w(/gallery /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-overview)
   EXACT = %w(/ /classes /sous-vide /grilling /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs)
   EXCLUDE = %w(/joule/warranty)
   SUFFIX = %w(/fork /notify_start_edit /notify_end_edit /as_json /the-egg-calculator /new)
