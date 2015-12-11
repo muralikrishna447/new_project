@@ -25,6 +25,13 @@ describe 'freshsteps_proxy' do |variable|
     assert_proxy '/gallery', true
   end
 
+  it 'should not proxy /profiles' do
+    # Staging-like config, blog everything except API
+    @freshsteps_proxy = FreshStepsProxy.new(app)
+
+    assert_proxy '/profiles/123', false
+  end
+
   def assert_proxy path, expected
     @env = {'PATH_INFO' => path}
     @freshsteps_proxy.should_proxy?(@env).should == expected
