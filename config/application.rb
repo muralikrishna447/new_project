@@ -140,7 +140,7 @@ module Delve
     ]
 
     # Order matters here, Prerender.io must come before FreshSteps
-    config.middleware.insert_before ActionDispatch::Static, 'Rack::Prerender', {prerender_token: 'GA8M8CypzoMsKSkTRgme', crawler_user_agents: crawler_user_agents}
+    config.middleware.insert_before ActionDispatch::Static, 'Rack::Prerender', {prerender_token: 'GA8M8CypzoMsKSkTRgme', crawler_user_agents: crawler_user_agents, blacklist: '^/search'}
     config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
 
     # Prefix each log line with a per-request UUID
