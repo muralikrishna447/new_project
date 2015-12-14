@@ -5,11 +5,13 @@ class Forum
     when "update_user"
       url = "#{endpoint}/users/#{user.id}/initial?apiKey=xchefsteps&ssoId=#{user.id}"
       @logger.info "User: #{user.id} Request url: #{url}"
-      begin
-        response = HTTParty.get url, timeout: 180
-        @logger.info "User: #{user.id} Response: #{response.inspect}"
-      rescue Timeout::Error
-        @logger.info "Timeout while syncing user: #{user.id}"
+      response = HTTParty.get url, timeout: 30
+      
+      if /^2/.match(response.code.to_s)
+        @logger.info "Bloom successfully synced user: #{user.id} Response: #{response.inspect}"
+      else
+        @logger.info "Bloom failed to sync user: #{user.id} Response: #{response.inspect}"
+        raise "Bloom failed to sync user: #{user.id}"
       end
     end
   end
