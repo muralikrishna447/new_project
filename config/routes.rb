@@ -11,13 +11,6 @@ Delve::Application.routes.draw do
     mount Resque::Server.new, :at => "/resque"
   end
 
-  # Redirect non www. to www.
-  if Rails.env.production? || Rails.env.staging?
-    constraints(host: /^(?!www\.)/i) do
-      match "*any", to: redirect(:subdomain => 'www', :path => "/%{any}")
-    end
-  end
-
   # Redirect old forum.chefsteps.com to new forum
   constraints :subdomain => "forum" do
     root to: redirect(:subdomain => 'www', :path => "/forum")

@@ -403,6 +403,8 @@ GEM
       rack (>= 0.9.1)
     rack-cors (0.2.7)
       rack
+    rack-host-redirect (1.2.1)
+      rack
     rack-protection (1.5.3)
       rack
     rack-proxy (0.5.17)
@@ -655,6 +657,7 @@ DEPENDENCIES
   rack-access-control-headers
   rack-contrib
   rack-cors
+  rack-host-redirect
   rack-proxy
   rack-ssl-enforcer
   rack-timeout

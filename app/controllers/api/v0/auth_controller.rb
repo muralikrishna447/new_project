@@ -7,13 +7,13 @@ module Api
 
       def authenticate
         begin
-          unless params.has_key?(:user)
+          unless params.has_key?(:user) && params[:user].has_key?(:email)
             logger.info("User not specified #{params.inspect}")
             render json: {status: 400, message: 'Bad Request'}, status: 400
             return
           end
 
-          email = params[:user][:email]
+          email = params[:user][:email].downcase
           logger.info "Looking up user for [#{email}]"
           user = User.find_by_email(email)
 

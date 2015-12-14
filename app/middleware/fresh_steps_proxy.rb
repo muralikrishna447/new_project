@@ -9,8 +9,9 @@ class FreshStepsProxy < Rack::Proxy
 
 
 
-  PREFIX = %w(/gallery /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq)
-  EXACT = %w(/ /classes /sous-vide /grilling /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs /joule /joule/ /joule/app /joule/hardware /joule/specs /joule/discussion)
+  PREFIX = %w(/gallery /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-overview)
+  EXACT = %w(/ /classes /sous-vide /grilling /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs)
+  EXCLUDE = %w(/joule/warranty)
   SUFFIX = %w(/fork /notify_start_edit /notify_end_edit /as_json /the-egg-calculator /new)
 
   def initialize(app)
@@ -54,6 +55,7 @@ class FreshStepsProxy < Rack::Proxy
 
     prefix_match = PREFIX.include?(request.path) || PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")}
     exact_match = EXACT.include?(request.path)
+    exclude_match = EXCLUDE.include?(request.path)
 
     # The logic below will only proxy GET requests with path /activities/:id
     activity_show_match = request.get? &&
@@ -61,6 +63,6 @@ class FreshStepsProxy < Rack::Proxy
                           request.params['start_in_edit'].blank? &&
                           !SUFFIX.any?{|suffix| request.path.end_with?(suffix)}
 
-    prefix_match || exact_match || activity_show_match
+    !exclude_match && (prefix_match || exact_match || activity_show_match)
   end
 end

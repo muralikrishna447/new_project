@@ -491,22 +491,9 @@ class Activity < ActiveRecord::Base
   end
 
   def containing_course
-    # This only walks up one chain of parents, but an activity or assembly can really
-    # be in more than one parent. Will have to be fixed as soon as we are reusing an activity
-    # in more than one course. This is also a very expensive way to do this, but
-    # we don't expect it to be a very common request. At least there is an index.
-    ai = AssemblyInclusion.where(includable_type: "Activity", includable_id: self.id).first
-    parent = ai.assembly
-
-    begin
-      return parent if parent.assembly_type == "Course" || parent.assembly_type == "Project" || parent.assembly_type == "Recipe Development"
-      ai = AssemblyInclusion.where(includable_type: "Assembly", includable_id: parent.id).first
-      parent = ai.assembly
-    end until ! parent
-    nil
-  rescue
-    # Rather than a lot of null checks.
-    nil
+    id = recursive_find_root("Activity", self.id)
+    return id if id == nil
+    return Assembly.find(id)
   end
 
   def disqus_id
@@ -654,4 +641,31 @@ class Activity < ActiveRecord::Base
     end
   end
 
+  private
+    # A given node (leaf or interior) in an Assemly tree can have multiple parents.
+  # This is rare, typically e.g. an Activity will be in a single class, and this
+  # will find it. But what sometimes happens is an activity gets put in one sub-assembly, which is in turn put in a class, then the sub-assembly is removed
+  # from the class and the same process is repeated, but the original is never deleted.
+  # So you end up with two paths [Class->Group->Activity] and [Defunct Group->Activity]
+  # This function is written to make sure in that case we find the class.
+  # We don't deal with the case where the same activity is in multiple real classes,
+  # in that case one arbitrary one is found.
+  def recursive_find_root(includable_type, includable_id)
+    if includable_type == "Assembly"
+      assembly = Assembly.find(includable_id)
+
+      # Winner if we hit a valid root container
+      return assembly if assembly.assembly_type == "Course" || assembly.assembly_type == "Project" || assembly.assembly_type == "Recipe Development"
+    end
+
+    AssemblyInclusion.where(includable_type: includable_type, includable_id: includable_id).each do |ai|
+
+      # Take first parent that is a winner
+      result = recursive_find_root("Assembly", ai.assembly_id)
+      return result if result.present?
+    end
+
+    # Loser
+    return nil
+  end
 end
