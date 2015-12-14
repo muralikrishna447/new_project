@@ -102,7 +102,7 @@ Delve::Application.configure do
 
   config.middleware.insert_before('BromboneProxy', 'PreauthEnforcer', [/.*/], [/^\/tpq/])
 
-  config.middleware.insert_before 'FreshStepsProxy', Rack::HostRedirect, {
+  config.middleware.insert_before 'PreauthEnforcer', Rack::HostRedirect, {
     'chefsteps.com' => 'www.chefsteps.com'
   }
 end
