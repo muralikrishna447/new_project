@@ -139,8 +139,14 @@ module Delve
         'Applebot'
     ]
 
-    # Order matters here, Prerender.io must come before FreshSteps
-    config.middleware.insert_before ActionDispatch::Static, 'Rack::Prerender', {prerender_token: 'GA8M8CypzoMsKSkTRgme', crawler_user_agents: crawler_user_agents, blacklist: '^/search'}
+    # Order matters here, Prerender.io must come before FreshSteps.
+    # PRERENDER_TOKEN is set only on prod heroku env variables. Can still test
+    # on staging servers, it just won't cache anything.
+    config.middleware.insert_before ActionDispatch::Static, 'Rack::Prerender', {
+        crawler_user_agents: crawler_user_agents,
+        blacklist: '^/api',
+        build_rack_response_from_prerender: lambda { |response, unused| response.header.delete('Status') }
+    }
     config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
 
     # Prefix each log line with a per-request UUID
@@ -149,6 +155,14 @@ module Delve
     if Rails.env.test? || Rails.env.development?
       ENV["AUTH_SECRET_KEY"] = File.read("config/rsa_test.pem")
       ENV["AES_KEY"] = 'bUg7wjYZ4ygQEyqtBesU(+R9urFB+CNv'
+    end
+
+    # If you want to play with prerender.io locally, you need to:
+    # (1) install the local server following instructions here: https://prerender.io/documentation/test-it
+    # (2) run it on port 1337 with "export PORT=1337; node server.js"
+    # (3) *Critical* run rails with "foreman start -p 3000" - otherwise you will hit https://github.com/prerender/prerender/issues/30
+    # (4) Spoof your user agent to be googlebot and load any page
+    if Rails.env.development?
       ENV["PRERENDER_SERVICE_URL"] = "http://localhost:1337"
     end
 
