@@ -4,8 +4,13 @@ class Forum
     case type
     when "update_user"
       url = "#{endpoint}/users/#{user.id}/initial?apiKey=xchefsteps&ssoId=#{user.id}"
-      response = HTTParty.get url
-      @logger.info "User: #{user.id} Response: #{response.inspect}"
+      @logger.info "User: #{user.id} Request url: #{url}"
+      begin
+        response = HTTParty.get url, timeout: 180
+        @logger.info "User: #{user.id} Response: #{response.inspect}"
+      rescue Timeout::Error
+        @logger.info "Timeout while syncing user: #{user.id}"
+      end
     end
   end
 end
