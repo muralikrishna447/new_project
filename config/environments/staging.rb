@@ -99,4 +99,8 @@ Delve::Application.configure do
     :joule_group_id => '1481'
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
+  
+  config.middleware.insert_before 'FreshStepsProxy', Rack::HostRedirect, {
+    'chocolateyshatner.com' => 'www.chocolateyshatner.com'
+  }
 end
