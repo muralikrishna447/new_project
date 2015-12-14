@@ -7,7 +7,7 @@ class Forum
       Faraday.get do |req|
         req.url "#{endpoint}/users/#{user_id}/initial?apiKey=xchefsteps&ssoId=#{user_id}"
         req.options[:timeout] = 30
-        @logger.info "User: #{user.id} Request: #{req}"
+        Rails.logger.info "User: #{user_id} Request: #{req}"
       end
 
     end
