@@ -164,7 +164,7 @@
 
   .row.section#comments
     %a(name='discussion')
-    %cscomments(comments-type="ingredient" comments-id="{{ingredient.id}}" seo-bot="#{is_brombone}")
+    %cscomments(comments-type="ingredient" comments-id="{{ingredient.id}}" seo-bot="#{is_static_render}")
 
 = content_for :footer do
   = render 'layouts/footer'

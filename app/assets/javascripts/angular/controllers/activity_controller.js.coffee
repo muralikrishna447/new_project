@@ -42,10 +42,10 @@ window.deepCopy = (obj) ->
     url = ActivityMethods.itemImageFpfile($scope.activity, 'hero').url
     url = 'https://d3awvtnmmsvyot.cloudfront.net/api/file/R0opzl5RgGlUFpr57fYx' if url.length == 0
     dims = $scope.bannerImageDimensions()
-    if ! $scope.is_brombone
+    if ! $scope.is_static_render
       url += "/convert?fit=crop&h=#{dims.h}&w=#{dims.w}&quality=#{bannerImageQuality}&cache=true"
     else
-      # For brombone, don't set a height because the arbitrarily wide aspect ratio seems like it might be
+      # For static render, don't set a height because the arbitrarily wide aspect ratio seems like it might be
       # preventing google from putting our images in SERPs. It might be afraid of taking a square crop
       # out of that wide of an image.
       url += "/convert?fit=crop&w=#{dims.w}&quality=90&cache=true"
@@ -702,10 +702,6 @@ window.deepCopy = (obj) ->
   #
   # and tested the output against:
   #   https://developers.google.com/structured-data/testing-tool/
-  #
-  # For the testing, the best way is to render the page locally and paste in the HTML;
-  # if you want to test against chefsteps.com, be sure to add ?_escaped_fragment_=
-  # to the end of the URL so you get the static render that the google spider sees via brombone.
   $scope.getJSONLD = ->
     a = $scope.activity
 

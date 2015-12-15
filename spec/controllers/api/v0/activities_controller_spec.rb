@@ -44,7 +44,7 @@ describe Api::V0::ActivitiesController do
       response.should be_success
       expect_activity_object(response, @activity1)
     end
-    
+
     it 'should not return unpublished activity with invalid token' do
       controller.request.env['HTTP_AUTHORIZATION'] = "badtoken"
       get :show, id: @activity2
@@ -133,14 +133,14 @@ describe Api::V0::ActivitiesController do
       expect_activity_object(response, @activity3)
     end
 
-    it 'should return an activity if is_brombone' do
-      controller.request.env["X-Crawl-Request"] = 'brombone'
+    it 'should return an activity if is_static_render' do
+      controller.request.env["HTTP_USER_AGENT"] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34 Prerender (+https://github.com/prerender/prerender)'
       get :show, id: @activity3
       response.should be_success
       expect_activity_object(response, @activity3)
     end
 
-    
+
     def expect_containing_assembly(response, assembly)
       parsed = JSON.parse response.body
       expect(parsed['containingAssembly']['id']).to eq(assembly.id)

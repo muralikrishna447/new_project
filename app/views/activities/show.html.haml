@@ -36,14 +36,8 @@
 
 - @body_tag_attributes = {:'ng-app' => "ChefStepsApp", :'ng-controller' => "ActivityController", :'ng-class' => '{"activity_show" : true}' }
 
--# This is how search engine crawlers know to request the _escaped_fragment_ page
--# Temporary: leave these two activities out of _escaped_fragment_ / brombone so we can experiment
--# with how Google crawls the angular DOM. Picked these two b/c romesco currently does have an image in
--# SERP for [site:chefsteps.com/activities] and mint-gelle does not.
-
-- unless @activity.slug == 'romesco' || @activity.slug == 'mint-gelee'
-  - content_for :ajax_seo do
-    %meta{name: "fragment", content: "!"}
+- content_for :ajax_seo do
+  %meta{name: "fragment", content: "!"}
 
 -if params[:scaling]
   :javascript
@@ -52,7 +46,7 @@
 
 -################################ PRIMARY CONTENT ################################
 -# Sous Vide CTA: don't show madlib sous vide content
--unless is_brombone || @activity.tag_list.include?("sous vide")
+-unless is_static_render || @activity.tag_list.include?("sous vide")
   .container-fluid.well-gradient.full-bleed.no-bottom-margin(ng-controller="LoginController" ng-show="!authentication.currentUser()" ng-cloak ng-init="registrationSource='activityMadlib'; setIntent('ftue')")
     = render "devise/sessions/new_angular"
     .row-fluid
@@ -93,7 +87,7 @@
         .span8.offset2
           %h3 Comments
           #discussion
-            %cscomments(comments-type="activity" comments-id="{{activity.id}}" seo-bot="#{is_brombone}")
+            %cscomments(comments-type="activity" comments-id="{{activity.id}}" seo-bot="#{is_static_render}")
 
 
   = content_for :footer do

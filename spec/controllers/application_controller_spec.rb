@@ -62,7 +62,7 @@ describe ApplicationController do
 
   end
 
-  describe 'brombone' do
+  describe 'prerender' do
     controller do
       def show
         render text: "Fall through to standard render"
@@ -74,10 +74,10 @@ describe ApplicationController do
       Net::HTTP.stub!(:new).and_return @http
     end
 
-    it 'sets is_brombone when brombone header is in request' do
-      request.env["X-Crawl-Request"] = 'brombone'
+    it 'sets is_static_render when prerender header is in user agent' do
+      request.env["HTTP_USER_AGENT"] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34 Prerender (+https://github.com/prerender/prerender)'
       get :show, id: 1
-      expect is_brombone.should eq(true)
+      expect is_static_render.should eq(true)
     end
   end
 end
