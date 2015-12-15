@@ -87,6 +87,8 @@ gem 'geoip2'
 
 gem 'analytics-ruby', :require => "segment"
 
+gem 'prerender_rails'
+
 group :test do
   gem 'webmock'
 end

@@ -26,7 +26,7 @@
       %hr
       .section#discussion
         %h3 Discussion
-        %cscomments(comments-type="upload" comments-id="#{@upload.id}" seo-bot="#{is_brombone}")
+        %cscomments(comments-type="upload" comments-id="#{@upload.id}" seo-bot="#{is_static_render}")
     .span3.noprint()
       /*(ng-show="(! editMode) && (activityColumns >= 3)")*/
       = render 'shared/tools'

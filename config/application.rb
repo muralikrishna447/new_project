@@ -89,7 +89,8 @@ module Delve
       config.cache_store = :dalli_store
     end
 
-    # Don't use Rack::Cache - it messes with our BromboneProxy and barely helps us on the upside
+    # Don't use Rack::Cache - it used to mess with our BromboneProxy and barely helped us on the upside
+    # Don't actually know if it will mess with Rack::Prerender, but let's assume so.
     require 'rack/cache'
     config.middleware.delete Rack::Cache
 
@@ -112,8 +113,40 @@ module Delve
     config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only_environments: ['production', 'staging']
     config.middleware.use Rack::Deflater
 
-    # Order matters here, Brombone must come before FreshSteps
-    config.middleware.insert_before ActionDispatch::Static, 'BromboneProxy'
+    # Override the default list of spiders from prerender.io. They specifically don't default to including
+    # googlebot, yahoo, bingbot b/c they do _escaped_fragment_ but that is now deprecated, and
+    # we have plenty of experience to show their JavaScript crawling isn't doing it for us.
+    crawler_user_agents = [
+        'googlebot',
+        'yahoo',
+        'bingbot',
+        'baiduspider',
+        'facebookexternalhit',
+        'twitterbot',
+        'rogerbot',
+        'linkedinbot',
+        'embedly',
+        'bufferbot',
+        'quora link preview',
+        'showyoubot',
+        'outbrain',
+        'pinterest',
+        'developers.google.com/+/web/snippet',
+        'slackbot',
+        'vkShare',
+        'W3C_Validator',
+        'redditbot',
+        'Applebot'
+    ]
+
+    # Order matters here, Prerender.io must come before FreshSteps.
+    # PRERENDER_TOKEN is set only on prod heroku env variables. Can still test
+    # on staging servers, it just won't cache anything.
+    config.middleware.insert_before ActionDispatch::Static, 'Rack::Prerender', {
+        crawler_user_agents: crawler_user_agents,
+        blacklist: '^/api',
+        build_rack_response_from_prerender: lambda { |response, unused| response.header.delete('Status') }
+    }
     config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
 
     # Prefix each log line with a per-request UUID
@@ -124,8 +157,17 @@ module Delve
       ENV["AES_KEY"] = 'bUg7wjYZ4ygQEyqtBesU(+R9urFB+CNv'
     end
 
+    # If you want to play with prerender.io locally, you need to:
+    # (1) install the local server following instructions here: https://prerender.io/documentation/test-it
+    # (2) run it on port 1337 with "export PORT=1337; node server.js"
+    # (3) *Critical* run rails with "foreman start -p 3000" - otherwise you will hit https://github.com/prerender/prerender/issues/30
+    # (4) Spoof your user agent to be googlebot and load any page
+    if Rails.env.development?
+      ENV["PRERENDER_SERVICE_URL"] = "http://localhost:1337"
+    end
+
     if Rails.env.staging? || Rails.env.staging2?
-        config.middleware.insert_before('BromboneProxy', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/])
+        config.middleware.insert_before('Rack::Prerender', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/])
     end
 
     # In development set to staging unless explicitely overridden

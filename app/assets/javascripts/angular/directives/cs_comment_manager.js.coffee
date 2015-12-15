@@ -12,7 +12,7 @@
     $scope.commentCount = -1
     $scope.commentsOpen = false
     $scope.commentsEverOpened = false
-    $scope.brombone = $scope.$eval($attrs.seoBot)
+    $scope.staticRender = $scope.$eval($attrs.seoBot)
 
     $scope.toggleShowComments = ($event) ->
       $rootScope.anyCommentsOpen = $scope.commentsOpen = ! $scope.commentsOpen

@@ -53,7 +53,7 @@
 
         %cs-comment-manager(  comments-type="step"
                               comments-id="{{step.id}}"
-                              seo-bot="#{is_brombone}"
+                              seo-bot="#{is_static_render}"
                               show-when-zero="{{hovered}}")
 
       %div(ng-if="getStepOpenForEdit() && csAuthentication.isAdmin()" )

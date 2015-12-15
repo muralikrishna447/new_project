@@ -8,12 +8,12 @@
 
     .comments-with-count.anim-basic-fade(ng-show="commentCount > 0")
       %i.icon-cs-comment-filled
-      .comment-count( ng-class="{'three-digits' : commentCount > 99}") 
+      .comment-count( ng-class="{'three-digits' : commentCount > 99}")
         {{commentCount}}
 
-  .comment-container.anim-basic-fade(ng-show="commentsOpen || brombone")
+  .comment-container.anim-basic-fade(ng-show="commentsOpen || staticRender")
     %i.icon-cs-close(ng-click='toggleShowComments($event)')
-    %cscomments(  ng-if="commentsEverOpened || brombone" 
-                  comments-type="{{commentsType}}" 
-                  comments-id="{{commentsId}}" 
-                  seo-bot="{{brombone}}")
+    %cscomments(  ng-if="commentsEverOpened || staticRender"
+                  comments-type="{{commentsType}}"
+                  comments-id="{{commentsId}}"
+                  seo-bot="{{staticRender}}")

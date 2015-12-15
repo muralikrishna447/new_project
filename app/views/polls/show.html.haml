@@ -79,7 +79,7 @@
               = render 'layouts/share_button'
             %div(collapse='!poll_item.show_details')
               %a(name='discussion')
-              %cscomments(comments-type="poll_item" comments-id="{{poll_item.id}}" seo-bot="#{is_brombone}")
+              %cscomments(comments-type="poll_item" comments-id="{{poll_item.id}}" seo-bot="#{is_static_render}")
 
       %div.voting-spinner(ng-hide="hideSpinner")
         %i.icon-spinner.icon-spin.icon-large
