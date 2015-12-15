@@ -143,9 +143,13 @@ module Delve
     # PRERENDER_TOKEN is set only on prod heroku env variables. Can still test
     # on staging servers, it just won't cache anything.
     config.middleware.insert_before ActionDispatch::Static, 'Rack::Prerender', {
-        crawler_user_agents: crawler_user_agents,
-        blacklist: '^/api',
-        build_rack_response_from_prerender: lambda { |response, unused| response.header.delete('Status') }
+      crawler_user_agents: crawler_user_agents,
+      blacklist: '^/api',
+      build_rack_response_from_prerender: lambda { |response, unused| response.header.delete('Status') },
+      before_render: lambda { |env|
+        Rails.logger.info("Proxying prerender for: #{env['REQUEST_URI']}");
+        return nil;
+      }
     }
     config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
 
