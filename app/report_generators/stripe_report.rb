@@ -213,13 +213,18 @@
           0
         end
       else
+        refund_at = (charge["refunds"].first.present? ? Time.at(charge["refunds"].first["created"]) : nil)
         charge_amount = (charge["amount"].to_i/100.00)
         refund_amount = (charge["amount_refunded"].to_i/100.00)
         if charge_amount == refund_amount
           tax_charged(stripe_order)
         else
-          tax = item_price(stripe_order)/charge_amount
-          (refund_amount/tax).round(2)
+          if item_price(stripe_order) != charge_amount
+            tax = (charge_amount/item_price(stripe_order)).round(4)-1
+            (refund_amount*tax).round(2)
+          else
+            0
+          end
         end
       end
     end
