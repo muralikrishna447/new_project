@@ -2,14 +2,15 @@ module Api
   module V0
     class ProductsController < BaseController
       def index
-        circulator, premium = Rails.cache.fetch("stripe_products", expires_in: 5.minutes){
-          StripeOrder.stripe_products
-        }
-        result = {products: {circulator[:sku] => circulator, premium[:sku] => premium}}
-        location_result = get_location_result
-        Rails.logger.info("Got location result back: #{location_result}")
-        result = result.merge(location: location_result)
-        render(json: result)
+        # circulator, premium = Rails.cache.fetch("stripe_products", expires_in: 5.minutes){
+        #   StripeOrder.stripe_products
+        # }
+        # result = {products: {circulator[:sku] => circulator, premium[:sku] => premium}}
+        # location_result = get_location_result
+        # Rails.logger.info("Got location result back: #{location_result}")
+        # result = result.merge(location: location_result)
+        # render(json: result)
+        render(json: {})
       end
 
 
