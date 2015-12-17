@@ -108,6 +108,10 @@
       csv_file = CSV.generate(col_sep: "\t") do |tsv|
         document.each{|d| tsv << d }
       end
+      a = File.new('tmp/for_ed_quickbook.tsv', 'wb')
+      a.puts csv_file
+      a.close
+
       csv_file
     end
 
@@ -209,7 +213,24 @@
           0
         end
       else
-        tax_charged(stripe_order)
+        charge_amount = (charge["amount"].to_i/100.00)
+        refund_amount = (charge["amount_refunded"].to_i/100.00)
+        if charge_amount == refund_amount
+          tax_charged(stripe_order)
+        else
+          tax = item_price(stripe_order)/charge_amount
+          (refund_amount/tax).round(2)
+        end
+      end
+    end
+
+    def item_price(stripe_order)
+      purchased = stripe_order.items.detect{|item| item.type == 'sku'}
+      discount = stripe_order.items.detect{|item| item.type == 'discount'}
+      if discount
+        ((purchased.amount-discount.amount)/100.0).round(2)
+      else
+        (purchased.amount/100.0).round(2)
       end
     end
 
