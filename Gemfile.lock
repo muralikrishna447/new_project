@@ -688,6 +688,3 @@ DEPENDENCIES
   unicorn
   webmock
   xray-rails
-
-BUNDLED WITH
-   1.10.6
