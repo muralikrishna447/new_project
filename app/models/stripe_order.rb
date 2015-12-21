@@ -214,46 +214,50 @@ class StripeOrder < ActiveRecord::Base
     tax_item = stripe_charge.items.detect{|item| item.type == 'tax'}
     discount_item = stripe_charge.items.detect{|item| item.type == 'discount'}
     purchased_item = stripe_charge.items.detect{|item| item.type == 'sku'}
-    ['Completed Order', 'Completed Order Workaround'].each do |event_name|
-      Analytics.track(user_id: user_id, event: event_name,
-        context: {
-          'GoogleAnalytics' => {
-            clientId: data['google_analytics_client_id']
-          },
-          campaign: {
-            name: data['utm_campaign'],
-            source: data['utm_source'],
-            medium: data['utm_medium'],
-            term: data['utm_term'],
-            content: data['utm_content']
-          },
-          referrer: {
-            link: data['referer']
-          }
+
+    analytics_data = {user_id: user_id,
+      context: {
+        'GoogleAnalytics' => {
+          clientId: data['google_analytics_client_id']
         },
-        properties: {
-          label: purchased_item.parent,
-          product_skus: [purchased_item.parent],
-          orderId: stripe_charge.id,
-          total: (stripe_charge.amount.to_f/100.0),
-          revenue: revenue(stripe_charge, tax_item, discount_item),
-          tax: ((tax_item.try(:amount) || 0)/100.0),
-          shipping: 0,
-          discount: ((discount_item.try(:amount) || 0)/100.0),
-          discount_type: (data['premium_discount'] ? 'circulator' : nil ),
-          gift: data['gift'],
-          currency: 'USD',
-          products: [
-            {
-              id: purchased_item.parent,
-              sku: purchased_item.parent,
-              name: purchased_item.description,
-              price: (purchased_item.amount.to_f/100.0),
-              quantity: 1
-            }
-          ]
+        campaign: {
+          name: data['utm_campaign'],
+          source: data['utm_source'],
+          medium: data['utm_medium'],
+          term: data['utm_term'],
+          content: data['utm_content']
+        },
+        referrer: {
+          link: data['referer']
         }
-      )
+      },
+      properties: {
+        label: purchased_item.parent,
+        product_skus: [purchased_item.parent],
+        orderId: stripe_charge.id,
+        total: (stripe_charge.amount.to_f/100.0),
+        revenue: revenue(stripe_charge, tax_item, discount_item),
+        tax: ((tax_item.try(:amount) || 0)/100.0),
+        shipping: 0,
+        discount: ((discount_item.try(:amount) || 0)/100.0),
+        discount_type: (data['premium_discount'] ? 'circulator' : nil ),
+        gift: data['gift'],
+        currency: 'USD',
+        products: [
+          {
+            id: purchased_item.parent,
+            sku: purchased_item.parent,
+            name: purchased_item.description,
+            price: (purchased_item.amount.to_f/100.0),
+            quantity: 1
+          }
+        ]
+      }
+    }
+
+    ['Completed Order', 'Completed Order Workaround'].each do |event_name|
+      Rails.logger.info("Stripe Order #{id} - Sending Event: #{event_name} with data:\n#{analytics_data}")
+      Analytics.track(analytics_data.merge(event: event_name))
     end
 
     # Send joule purchase count as a user property
