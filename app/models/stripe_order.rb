@@ -256,8 +256,8 @@ class StripeOrder < ActiveRecord::Base
     }
 
     ['Completed Order', 'Completed Order Workaround'].each do |event_name|
-      Rails.logger.info("Stripe Order #{id} - Sending Event: #{event_name} with data:\n#{analytics_data}")
       Analytics.track(analytics_data.merge(event: event_name))
+      Rails.logger.info("Stripe Order #{id} - Sending Event: #{event_name} with data:\n#{analytics_data.merge(event: event_name)}")
     end
 
     # Send joule purchase count as a user property
