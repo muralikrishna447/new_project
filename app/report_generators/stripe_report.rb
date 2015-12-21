@@ -167,10 +167,18 @@
       else
         charge_amount = (charge["amount"].to_i/100.00)
         if charge["description"].include?("WA state")
-          -1*(charge_amount-(charge_amount/@sales_tax)).round(2)
+          -1*(charge_amount-(charge_amount/sales_tax_from_date(charge))).round(2)
         else
           0
         end
+      end
+    end
+
+    def sales_tax_from_date(charge)
+      if Time.at(charge["created"]) < Time.parse("2015-04-01").beginning_of_day
+        1.095
+      else
+        1.096
       end
     end
 
@@ -205,7 +213,7 @@
         refund_amount = (charge["amount_refunded"].to_i/100.00)
         if refund_at
           if sales_tax_paid
-            (refund_amount-(refund_amount/@sales_tax)).round(2)
+            (refund_amount-(refund_amount/sales_tax_from_date(charge))).round(2)
           else
             0
           end
