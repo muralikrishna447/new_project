@@ -2,17 +2,17 @@ class DeclinedMailer < BaseMandrillMailer
   def joule(user)
     subject = "ChefSteps Joule Payment - Your card was declined"
     template = "joule-credit-card-declined"
-    common_mail(subject, template)
+    common_mail(subject, template, user)
   end
 
   def premium(user)
     subject = "ChefSteps Premium Payment - Your card was declined"
     template = "premium-credit-card-declined"
-    common_mail(subject, template)
+    common_mail(subject, template, user)
   end
 
 
-  def common_mail(subject, template)
+  def common_mail(subject, template, user)
     subject = subject
     merge_vars = {
       "NAME" => user.name
