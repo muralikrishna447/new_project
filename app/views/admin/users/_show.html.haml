@@ -55,3 +55,10 @@
           - user.enrollments.each do |course|
             %li
               = course.enrollable.title
+
+      %dt Premium Gift Certificates
+      %dd
+        %ol
+          - PremiumGiftCertificate.where(purchaser_id: user.id).each do |gc|
+            %li
+              = link_to  gc.token, admin_premium_gift_certificate_path(gc)
