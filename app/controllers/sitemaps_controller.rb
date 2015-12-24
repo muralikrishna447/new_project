@@ -10,7 +10,7 @@ class SitemapsController < ApplicationController
                   Assembly.projects().published() |
                   Page.published()
 
-    @other_routes = ["/", "/about", "/gallery", "/jobs", "/classes", "/joule", "/joule/specs", "/press", "/press/faq"]
+    @other_routes = ["/", "/about", "/gallery", "/jobs", "/classes", "/joule", "/joule/app", "/joule/hardware", "/joule/discussion", "/joule/specs", "/press", "/press/faq", "/premium"]
     respond_to do |format|
       format.xml {
         render
