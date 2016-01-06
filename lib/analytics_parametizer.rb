@@ -34,7 +34,7 @@ class AnalyticsParametizer
     end
 
     def set_params(url_params, referrer)
-      # If there is a referer that isn't chefsteps merge in the new referer, this will let us always know the last non-chefsteps place they came from.
+      # If there is a referrer that isn't chefsteps merge in the new referrer, this will let us always know the last non-chefsteps place they came from.
       url_params.merge!(referrer: referrer) if referrer.present? && !referrer_is_chefsteps?(referrer)
       new_params = url_params.to_json
       Rails.logger.info "Setting cookie value to [#{new_params}]"
