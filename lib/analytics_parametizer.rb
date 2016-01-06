@@ -18,8 +18,6 @@ class AnalyticsParametizer
         end
         Rails.logger.info "utm parameters being set: [#{utm_store}]"
       else
-        puts "testing here"
-        puts cookie_store.inspect
         # Load values from the cookie so we don't lose our params
         utm_store = cookie_store
         Rails.logger.info "utm parameters not present current values: [#{utm_store}]"
@@ -31,13 +29,13 @@ class AnalyticsParametizer
       utm_params.any?{|p| url_params[p.to_s].present? }
     end
 
-    def referer_is_chefsteps?(referer)
-      (referer.include?('chefsteps.com') || referer.include?('localhost'))
+    def referrer_is_chefsteps?(referrer)
+      (referrer.include?('chefsteps.com') || referrer.include?('localhost'))
     end
 
-    def set_params(url_params, referer)
+    def set_params(url_params, referrer)
       # If there is a referer that isn't chefsteps merge in the new referer, this will let us always know the last non-chefsteps place they came from.
-      url_params.merge!(referer: referer) if referer.present? && !referer_is_chefsteps?(referer)
+      url_params.merge!(referrer: referrer) if referrer.present? && !referrer_is_chefsteps?(referrer)
       new_params = url_params.to_json
       Rails.logger.info "Setting cookie value to [#{new_params}]"
       return new_params
