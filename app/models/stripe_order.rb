@@ -228,7 +228,7 @@ class StripeOrder < ActiveRecord::Base
           content: data['utm_content']
         },
         referrer: {
-          link: data['referer']
+          url: (data['referer'] || data['referrer'])
         }
       },
       properties: {

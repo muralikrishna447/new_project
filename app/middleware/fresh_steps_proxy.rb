@@ -28,7 +28,7 @@ class FreshStepsProxy < Rack::Proxy
     if should_proxy?(env)
       req = Rack::Request.new(env)
       referer = req.referer
-      params = AnalyticsParametizer.get_params(req.params)
+      params = AnalyticsParametizer.get_params(req.params, req.cookies)
       cookie_value = AnalyticsParametizer.set_params(params, referer)
 
       Rails.logger.info("FreshStepsProxy request for path [#{env['REQUEST_URI']}]")

@@ -20,7 +20,7 @@ class ApplicationController < BaseApplicationController
   before_filter :set_analytics_cookie
   def set_analytics_cookie
     referer = request.referer
-    url_params = AnalyticsParametizer.get_params(params)
+    url_params = AnalyticsParametizer.get_params(params, cookies)
     cookie_value = AnalyticsParametizer.set_params(url_params, referer)
     cookies[:utm] = cookie_value
   end
