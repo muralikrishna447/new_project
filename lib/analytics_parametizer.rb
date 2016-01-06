@@ -27,11 +27,11 @@ class AnalyticsParametizer
     end
 
     def referer_is_chefsteps?(referer)
-      referer.include?('chefsteps.com') || referer.include?('localhost')
+      (referer.include?('chefsteps.com') || referer.include?('localhost'))
     end
 
     def set_params(url_params, referer)
-      url_params.merge!(referer: referer) unless referer_is_chefsteps?(referer)
+      url_params.merge!(referer: referer) if referer.present? && !referer_is_chefsteps?(referer)
       new_params = url_params.to_json
       Rails.logger.info "Setting cookie value to [#{new_params}]"
       return new_params
