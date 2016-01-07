@@ -27,10 +27,8 @@ class FreshStepsProxy < Rack::Proxy
   def call(env)
     if should_proxy?(env)
       req = Rack::Request.new(env)
-      referer = req.referer
-      params = AnalyticsParametizer.get_params(req.params, req.cookies)
-      cookie_value = AnalyticsParametizer.set_params(params, referer)
-
+      referrer = req.referrer
+      cookie_value = AnalyticsParametizer.cookie_value(req.params, req.cookies, referrer)
       Rails.logger.info("FreshStepsProxy request for path [#{env['REQUEST_URI']}]")
       env["HTTP_HOST"] = @backend_host
       env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "/index.html"
