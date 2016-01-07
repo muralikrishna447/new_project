@@ -1,6 +1,5 @@
 describe UserSync do
   before :each do
-    WebMock.reset!
     @user_id = 100
     @user = Fabricate :user, id: @user_id, email: 'johndoe@chefsteps.com'
     @user_sync = UserSync.new(@user_id)
