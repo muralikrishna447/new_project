@@ -12,8 +12,13 @@ class AnalyticsParametizer
       Rails.logger.info "utm parameters from cookie: [#{old_cookie}]" if old_cookie.present?
       # If we have utm params present we're going to throw out all previous utm params so we don't merge differing params
       if params_present?(url_params) || new_referrer(referrer, old_cookie)
-        new_cookie = utm_values(url_params)
-        new_cookie.merge!(referrer: referrer) unless referrer_is_chefsteps?(referrer)
+        unless referrer_is_chefsteps?(referrer)
+          new_cookie = utm_values(url_params)
+          new_cookie.merge!(referrer: referrer)
+        else
+          Rails.logger.error "utm referrer coming from ChefSteps.com with new utm values: [#{new_cookie}]"
+          new_cookie = old_cookie
+        end
       else
         # Load values from the cookie so we don't lose our params
         new_cookie = old_cookie
@@ -49,7 +54,7 @@ class AnalyticsParametizer
     end
 
     def referrer_is_chefsteps?(referrer)
-      (referrer.include?('chefsteps.com') || referrer.include?('localhost'))
+      (referrer.include?('www.chefsteps.com') || referrer.include?('localhost') || referrer.include?('http://chefsteps.com') || referrer.include?('https://chefsteps.com'))
     end
   end
 end
