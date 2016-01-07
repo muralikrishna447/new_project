@@ -3,7 +3,6 @@ require 'spec_helper'
 describe AnalyticsParametizer do
   let(:utm_with_term){ {'utm_source' => 'test1', "utm_campaign" => 'campaign1', "utm_term" => 'storeme' } }
   let(:utm_with_medium){ {"utm_source" => 'test2', "utm_campaign" => 'campaign2', "utm_medium" => 'deleteme' } }
-  let(:utm_with_referrer){ {"utm_source" => 'test3', "utm_campaign" => 'campaign3', "referer" => 'http://google.com' } }
   let(:utm_json){ {'utm' => {'utm_source'=>'test4', 'utm_campaign'=>'campaign4', 'utm_medium'=>'deleteme' }.to_json} }
   let(:utm_json_referrer){ {'utm' => {'utm_source'=>'test5', 'utm_campaign'=>'campaign5', 'utm_medium'=>'deleteme', 'referrer'=>"http://google.com" }.to_json} }
 
