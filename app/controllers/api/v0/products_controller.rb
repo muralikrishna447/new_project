@@ -35,7 +35,7 @@ module Api
               ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 1)
               location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.try(:names).try(:en), state: geocode.subdivisions.try(:first).try(:iso_code), zip: geocode.try(:postal).try(:code)}
               state = geocode.subdivisions.try(:first).try(:iso_code)
-              if sales_tax_states.include?(state)
+              if state.present? && sales_tax_states.include?(state)
                 tax_percent = get_tax_estimate(location)
               else
                 tax_percent = nil
