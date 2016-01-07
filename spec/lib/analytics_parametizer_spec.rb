@@ -16,6 +16,14 @@ describe AnalyticsParametizer do
       results['referrer'].should == 'http://google.com'
     end
 
+    it "should work if referrer is not set" do
+      json_results = AnalyticsParametizer.cookie_value(utm_with_medium, {}, nil)
+      results = JSON.parse(json_results)
+      results.should include('utm_medium', 'utm_source', 'utm_campaign')
+      results.should include('referrer')
+      results['referrer'].should be_nil
+    end
+
     it 'should set params' do
       json_results = AnalyticsParametizer.cookie_value(utm_with_medium, {}, "http://google.com")
       results = JSON.parse(json_results)
@@ -134,6 +142,8 @@ describe AnalyticsParametizer do
         results['utm_campaign'].should == 'campaign2'
         results['utm_term'].should be_blank
       end
+
+
     end
   end
 end
