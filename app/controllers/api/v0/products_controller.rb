@@ -15,6 +15,10 @@ module Api
 
 
       private
+      def sales_tax_states
+        ["WA"]
+      end
+
       # Duplicated from the locations controller for short term.
       def get_location_result
         ip_address = get_ip_address
@@ -30,7 +34,12 @@ module Api
             begin
               ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 1)
               location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.try(:names).try(:en), state: geocode.subdivisions.try(:first).try(:iso_code), zip: geocode.try(:postal).try(:code)}
-              tax_percent = get_tax_estimate(location)
+              state = geocode.subdivisions.try(:first).try(:iso_code)
+              if state.present? && sales_tax_states.include?(state)
+                tax_percent = get_tax_estimate(location)
+              else
+                tax_percent = nil
+              end
             rescue => error
               Rails.logger.error("ProductsController#index - Geocode Error - #{error}")
               location = {country: nil, latitude: nil, longitude: nil, city: nil, state: nil, zip: nil}
