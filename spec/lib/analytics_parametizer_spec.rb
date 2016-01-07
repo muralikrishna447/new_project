@@ -14,6 +14,7 @@ describe AnalyticsParametizer do
       results.should include('utm_term', 'utm_source', 'utm_campaign')
       results.should_not include('utm_medium')
       results['utm_source'].should == 'test1'
+      results['referrer'].should == 'http://google.com'
     end
 
     it 'should set params' do
