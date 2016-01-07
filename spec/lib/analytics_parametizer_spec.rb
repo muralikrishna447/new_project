@@ -84,6 +84,16 @@ describe AnalyticsParametizer do
       results['utm_campaign'].should == 'campaign5'
       results['utm_medium'].should == 'deleteme'
     end
+
+    it "should keep the previous cookie values if referrer is support.chefsteps.com" do
+      json_results = AnalyticsParametizer.cookie_value({}, utm_json_referrer, "http://support.chefsteps.com")
+      results = JSON.parse(json_results)
+      results.should include("referrer", 'utm_source', 'utm_campaign', 'utm_medium')
+      results["referrer"].should == "http://google.com"
+      results['utm_source'].should == 'test5'
+      results['utm_campaign'].should == 'campaign5'
+      results['utm_medium'].should == 'deleteme'
+    end
   end
 
   describe 'scenarios' do
@@ -136,14 +146,46 @@ describe AnalyticsParametizer do
         results['utm_medium'].should_not be_blank
         results['utm_source'].should_not be_blank
         results['utm_campaign'].should_not be_blank
+        # Second page in the session is from www.chefsteps.com it should treat it like internal
         json_results = AnalyticsParametizer.cookie_value(utm_with_term, {'utm' => first_json_results}, "http://www.chefsteps.com")
+        results = JSON.parse(json_results)
         results['referrer'].should == 'http://www.google.com'
         results['utm_source'].should == 'test2'
         results['utm_campaign'].should == 'campaign2'
         results['utm_term'].should be_blank
       end
 
+      it "should not overwrite cookie values if new utm values are set but referrer is support.chefsteps.com" do
+        # Coming in for the first time from an external link
+        first_json_results = AnalyticsParametizer.cookie_value(utm_with_medium, {}, "http://www.google.com")
+        results = JSON.parse(first_json_results)
+        results['utm_medium'].should_not be_blank
+        results['utm_source'].should_not be_blank
+        results['utm_campaign'].should_not be_blank
+        # Second page in the session is from support.chefsteps.com it should treat it like internal
+        json_results = AnalyticsParametizer.cookie_value(utm_with_term, {'utm' => first_json_results}, "http://support.chefsteps.com")
+        results = JSON.parse(json_results)
+        results['referrer'].should == 'http://www.google.com'
+        results['utm_source'].should == 'test2'
+        results['utm_campaign'].should == 'campaign2'
+        results['utm_term'].should be_blank
+      end
 
+      it "should overwrite cookie values if new utm values are set and referrer is blog.chefsteps.com" do
+        # Coming in for the first time from an external link
+        first_json_results = AnalyticsParametizer.cookie_value(utm_with_medium, {}, "http://www.google.com")
+        results = JSON.parse(first_json_results)
+        results['utm_medium'].should_not be_blank
+        results['utm_source'].should_not be_blank
+        results['utm_campaign'].should_not be_blank
+        # Second page in the session is from the blog it should treat it like external
+        json_results = AnalyticsParametizer.cookie_value(utm_with_term, {'utm' => first_json_results}, "http://blog.chefsteps.com")
+        results = JSON.parse(json_results)
+        results['referrer'].should == 'http://blog.chefsteps.com'
+        results['utm_source'].should == 'test1'
+        results['utm_campaign'].should == 'campaign1'
+        results['utm_term'].should_not be_blank
+      end
     end
   end
 end
