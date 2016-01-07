@@ -40,6 +40,7 @@ Delve::Application.routes.draw do
   match 'hot', to: 'bloom#hot'
 
   get '/blog', to: redirect('http://blog.chefsteps.com/')
+  get '/presskit', to: redirect('/press')
 
   resources :featured, only: [:index] do
     collection do
