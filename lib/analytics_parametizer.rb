@@ -54,6 +54,8 @@ class AnalyticsParametizer
     end
 
     def referrer_is_chefsteps?(referrer)
+      # If they don't have a referrer they are coming from somewhere outside
+      # Locking to www so that blog and store.chefsteps.com are tracked as external to the site
       referrer.present? && (referrer.include?('www.chefsteps.com') || referrer.include?('localhost') || referrer.include?('http://chefsteps.com') || referrer.include?('https://chefsteps.com'))
     end
   end
