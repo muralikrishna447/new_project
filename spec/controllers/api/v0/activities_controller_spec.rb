@@ -50,6 +50,16 @@ describe Api::V0::ActivitiesController do
       get :show, id: @activity2
       response.should_not be_success
     end
+
+    it 'returns 404 for non-existent activity fetched by id', :focus => true do
+      get :show, id: 99999
+      response.status.should == 404
+    end
+
+    it 'returns 404 for non-existent activity fetched by slug', :focus => true do
+      get :show, id: 'doesnt-exist'
+      response.status.should == 404
+    end
   end
 
   # GET /api/v0/activities/:id
