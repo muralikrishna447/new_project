@@ -10,7 +10,11 @@ module Api
       end
 
       def show
-        @page = Page.find(params[:id])
+        begin
+          @page = Page.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+          return render_api_response 404, {message: 'Page not found'}
+        end
         render json: @page, serializer: Api::PageSerializer
       end
 
