@@ -53,32 +53,41 @@ module Api
         http_auth =  request.headers['HTTP_AUTHORIZATION']
         ensure_authorized(false) if http_auth.present?
 
+        @user = nil
         if @user_id_from_token
           @user = User.find @user_id_from_token
-          if @user && @user.role == 'admin'
-            render json: @activity, serializer: Api::ActivitySerializer
-          else
-            if @activity.show_only_in_course
-              render json: @activity, serializer: Api::ActivityAssemblySerializer
-            else
-              render json: @activity, serializer: Api::ActivitySerializer
-            end
-          end
-        else
-          if @activity.published
-            if is_google || is_static_render
-              render json: @activity, serializer: Api::ActivitySerializer
-            else
-              if @activity.show_only_in_course
-                render json: @activity, serializer: Api::ActivityAssemblySerializer
-              else
-                render json: @activity, serializer: Api::ActivitySerializer
-              end
-            end
-          else
-            render_unauthorized
-          end
         end
+        user_premium = @user && @user.premium?
+
+        # Here are the rules for activity access:
+        can_see = false
+        trimmed = false
+
+        if @activity.published
+          # Everyone can see any published recipe, but if it is a premium recipe and not
+          # a premium user, they get the trimmed version.
+          # We also allow prerender.io and google to see everything in order to implement
+          # First Click Free (https://support.google.com/news/publisher/answer/40543?topic=11707)
+
+          can_see = true
+          trimmed = @activity.premium && (! user_premium) && ! (is_google || is_static_render)
+        else
+          # Unpublished stuff can only be seen by admins or the activity's creator
+          can_see = @user && (@user.role == 'admin' || @activity.creator == @user.id)
+        end
+
+        if can_see
+          if trimmed
+            @activity.steps = []
+            @activity.ingredients = []
+            @activity.equipment = []
+          end
+          render json: @activity, serializer: Api::ActivitySerializer
+        else
+          render_unauthorized
+        end
+
+        # TODO logging
       end
 
       def likes

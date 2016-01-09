@@ -134,7 +134,7 @@ class Activity < ActiveRecord::Base
     attribute :activity_type
 
     # Filter/facet/tags
-    attribute :difficulty, :published, :include_in_gallery
+    attribute :difficulty, :published, :include_in_gallery, :premium
 
     tags do
       tags.map(&:name)

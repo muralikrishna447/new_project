@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20151202012640) do
+ActiveRecord::Schema.define(:version => 20160108005443) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(:version => 20151202012640) do
     t.integer  "currently_editing_user"
     t.boolean  "include_in_gallery",     :default => true
     t.integer  "creator",                :default => 0
-    t.boolean  "show_only_in_course",    :default => false
+    t.boolean  "premium",                :default => false
     t.string   "summary_tweet"
     t.string   "vimeo_id"
     t.text     "short_description"
