@@ -56,14 +56,14 @@ class Activity < ActiveRecord::Base
   scope :by_updated_at, -> direction { direction == 'desc' ? order('updated_at DESC') : order('updated_at ASC')}
   scope :randomize, order('random()')
   scope :include_in_gallery, where(include_in_gallery: true)
-  scope :include_in_feeds, where(include_in_gallery: true, show_only_in_course: false)
+  scope :include_in_feeds, where(include_in_gallery: true)
   scope :chefsteps_generated, where('creator = ?', 0)
   scope :any_user_generated, where('creator != ?', 0).where(source_activity_id: nil)
   scope :user_generated, -> user { where('creator = ?', user) }
   scope :popular, where('likes_count IS NOT NULL').order('likes_count DESC')
   scope :by_equipment_title, -> title { joins(:terminal_equipment).where("equipment.title iLIKE ?", '%' + title + '%') }
   scope :by_equipment_titles, -> titles { joins(:terminal_equipment).where("equipment.title iLIKE ANY (array[?])", titles.split(',').map{|a| "%#{a}%"} ) }
-  scope :not_in_course, where(show_only_in_course: false)
+  scope :not_premium, where(premium: false)
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients
 
@@ -71,7 +71,7 @@ class Activity < ActiveRecord::Base
 
   attr_accessible :activity_type, :title, :youtube_id, :vimeo_id, :yield, :timing, :difficulty, :description, :short_description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
-  attr_accessible :show_only_in_course, :summary_tweet
+  attr_accessible :premium, :summary_tweet
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -509,20 +509,7 @@ class Activity < ActiveRecord::Base
   end
 
   def gallery_path
-    # if self.containing_course && self.containing_course.published
-    #   parent = self.containing_course
-    #   assembly_activity_path(parent, self)
-    # else
-    #   activity_path(self)
-    # end
-    if show_only_in_course
-      if self.containing_course && self.containing_course.published && self.containing_course.price > 0
-        parent = self.containing_course
-        assembly_activity_path(parent, self)
-      end
-    else
-      activity_path(self)
-    end
+    activity_path(self)
   end
 
   def avatar_url

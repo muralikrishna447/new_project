@@ -37,12 +37,12 @@
             No
 
     -if can? :manage, User
-      %h6 Show Only In Paid Course
+      %h6 Premium Only?
       .btn-toolbar
         .btn-group
-          %button.btn(type="button" ng-click="activity.show_only_in_course = true" ng-class="{active: activity.show_only_in_course}")
+          %button.btn(type="button" ng-click="activity.show_only_in_course = true" ng-class="{active: activity.premium}")
             Yes
-          %button.btn(type="button" ng-click="activity.show_only_in_course = false" ng-class="{active: ! activity.show_only_in_course}")
+          %button.btn(type="button" ng-click="activity.show_only_in_course = false" ng-class="{active: ! activity.premium}")
             No
 
   %div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
