@@ -51,12 +51,12 @@ describe Api::V0::ActivitiesController do
       response.should_not be_success
     end
 
-    it 'returns 404 for non-existent activity fetched by id', :focus => true do
+    it 'returns 404 for non-existent activity fetched by id' do
       get :show, id: 99999
       response.status.should == 404
     end
 
-    it 'returns 404 for non-existent activity fetched by slug', :focus => true do
+    it 'returns 404 for non-existent activity fetched by slug' do
       get :show, id: 'doesnt-exist'
       response.status.should == 404
     end
