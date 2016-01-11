@@ -1,11 +1,15 @@
 describe Api::V0::ActivitiesController do
   algolia_stub = nil
 
-
   before :each do
     @activity_published = Fabricate :activity, title: 'Activity Published', published: true, id: 1
+    @activity_published.steps << Fabricate(:step, activity_id: @activity_published.id, title: 'hello', youtube_id: 'REk30BRVtgE')
+
     @activity_premium = Fabricate :activity, title: 'Activity Premium', published: true, premium: true, id: 2
+    @activity_premium.steps << Fabricate(:step, activity_id: @activity_premium.id, title: 'hello', youtube_id: 'REk30BRVtgE')
+
     @activity_unpublished = Fabricate :activity, title: 'Activity Unpublished', published: false, id: 3
+    @activity_unpublished.steps << Fabricate(:step, activity_id: @activity_unpublished.id, title: 'hello', youtube_id: 'REk30BRVtgE')
   end
 
   # GET /api/v0/activities
@@ -33,14 +37,14 @@ describe Api::V0::ActivitiesController do
       activities.map{|a|a['published']}.should_not include(true)
     end
 
-    xit 'should return activity even with invalid token' do
+    it 'should return activity even with invalid token' do
       controller.request.env['HTTP_AUTHORIZATION'] = "badtoken"
       get :show, id: @activity_published
       response.should be_success
       expect_activity_object(response, @activity_published)
     end
 
-    xit 'should not return unpublished activity with invalid token' do
+    it 'should not return unpublished activity with invalid token' do
       controller.request.env['HTTP_AUTHORIZATION'] = "badtoken"
       get :show, id: @activity_unpublished
       response.should_not be_success
@@ -61,7 +65,7 @@ describe Api::V0::ActivitiesController do
     activity['likesCount'].should == nil
 
     activity['ingredients'].should == []
-    activity['steps'].should == []
+    activity['steps'].count.should == 1
     activity['equipment'].should == []
   end
 
@@ -92,125 +96,161 @@ describe Api::V0::ActivitiesController do
   end
 
   context 'GET activities access rules' do
-    it 'no user' do
-      get :show, id: @activity_published
-      response.should be_success
-      expect_not_trimmed(response)
+    context 'no user' do
+      it 'published activity' do
+        get :show, id: @activity_published
+        expect_not_trimmed(response)
+      end
 
-      get :show, id: @activity_premium
-      response.should be_success
-      expect_trimmed(response)
+      it 'premium activity' do
+        get :show, id: @activity_premium
+        expect_trimmed(response)
+      end
 
-      get :show, id: @activity_unpublished
-      response.should_not be_success      
+      it 'unpublished activity' do
+        get :show, id: @activity_unpublished
+        response.should_not be_success
+      end
     end
 
-    it 'normal non-premium user' do
-      @user = Fabricate :user, name: 'User 1', email: 'yukky@food.com', password: '123456'
-      sign_in @user
+    context 'prerender.io' do
+      before :each do
+        controller.request.env['HTTP_USER_AGENT'] = 'prerender'
+      end
 
-      get :show, id: @activity_published
-      response.should be_success
-      expect_not_trimmed(response)
+      it 'published activity' do
+        get :show, id: @activity_published
+        expect_not_trimmed(response)
+      end
 
-      get :show, id: @activity_premium
-      response.should be_success
-      expect_trimmed(response)
+      # Prerender should see full text of premium activity
+      it 'premium activity' do
+        get :show, id: @activity_premium
+        expect_not_trimmed(response)
+      end
 
-      get :show, id: @activity_unpublished
-      response.should_not be_success          
+      it 'unpublished activity' do
+        get :show, id: @activity_unpublished
+        response.should_not be_success
+      end
     end
 
-    it 'premium user' do
-      @premium_user = Fabricate :user, name: 'Premium User', email: 'admin@chefsteps.com', password: '678910', premium_member: true
-      sign_in @premium_user
+    context 'normal non-premium user' do
+      before :each do
+        @user = Fabricate :user, name: 'User 1', email: 'yukky@food.com', password: '123456'
+        sign_in @user
+        controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+      end
 
-      get :show, id: @activity_published
-      response.should be_success
-      expect_not_trimmed(response)
+      it 'published activity' do
+        get :show, id: @activity_published
+        expect_not_trimmed(response)
+      end 
 
-      get :show, id: @activity_premium
-      response.should be_success
-      expect_not_trimmed(response)
+      it 'premium activity' do
+        get :show, id: @activity_premium
+        expect_trimmed(response)
+      end
 
-      get :show, id: @activity_unpublished
-      response.should_not be_success           
+      it 'unpublished activity' do
+        get :show, id: @activity_unpublished
+        response.should_not be_success
+      end
+      
+      it 'their own activity UGC' do     
+        my_activity = Fabricate :activity, title: 'My Activity', published: false, id: 4, creator: @user
+        my_activity.steps << Fabricate(:step, activity_id: my_activity.id, title: 'hello', youtube_id: 'REk30BRVtgE')
+        get :show, id: my_activity
+        expect_not_trimmed(response) 
+      end
+
+      # This is the grandfather clause case; i.e. user enrolled in Shrimp Brains class when it was
+      # free, never bought a class so they aren't premium, but now we decided to make Shrimp Brains premium.
+      # They should still have access.
+      context 'grandfather clause' do
+        before :each do
+          @assembly = Fabricate :assembly, title: 'Assembly 1', description: 'an assembly description', assembly_type: 'Course', published: true, premium: true
+          @assembly_inclusion = Fabricate :assembly_inclusion, assembly: @assembly, includable: @activity_premium
+        end
+
+        it 'user not enrolled' do
+          get :show, id: @activity_premium
+          expect_trimmed(response)
+        end
+
+        it 'enrolled' do
+          enrollment = Fabricate :enrollment, enrollable: @assembly, user: @user        
+          get :show, id: @activity_premium
+          expect_not_trimmed(response)
+        end
+      end
     end
 
-    it 'admin user' do
-      @admin_user = Fabricate :user, name: 'Admin User', email: 'admin@chefsteps.com', password: '678910', role: 'admin'
-      sign_in @admin_user
-      controller.request.env['HTTP_AUTHORIZATION'] = @admin_user.valid_website_auth_token.to_jwt
+    context 'premium user' do
+      before :each do
+        @premium_user = Fabricate :user, name: 'Premium User', email: 'prem@chefsteps.com', password: '678910', premium_member: true
+        controller.request.env['HTTP_AUTHORIZATION'] = @premium_user.valid_website_auth_token.to_jwt
+        sign_in @premium_user
+      end
 
-      get :show, id: @activity_published
-      response.should be_success
-      expect_not_trimmed(response)
+      it 'published activity' do
+        get :show, id: @activity_published
+        expect_not_trimmed(response)
+      end
 
-      get :show, id: @activity_premium
-      response.should be_success
-      expect_not_trimmed(response)
+      it 'premium activity' do
+        get :show, id: @activity_premium
+        expect_not_trimmed(response)
+      end
 
-      get :show, id: @activity_unpublished
-      response.should be_success           
-      expect_not_trimmed(response)
+      it 'unpublished activity' do
+        get :show, id: @activity_unpublished
+        response.should_not be_success
+      end           
     end
 
     context 'admin user' do
       before :each do
         @admin_user = Fabricate :user, name: 'Admin User', email: 'admin@chefsteps.com', password: '678910', role: 'admin'
-      end   
+        sign_in @admin_user
+        controller.request.env['HTTP_AUTHORIZATION'] = @admin_user.valid_website_auth_token.to_jwt
+      end
+
+      it 'published activity' do
+        get :show, id: @activity_published
+        expect_not_trimmed(response)
+      end
+
+      it 'premium activity' do
+        get :show, id: @activity_premium
+        expect_not_trimmed(response)
+      end
+
+      it 'unpublished activity' do
+        get :show, id: @activity_unpublished
+        expect_not_trimmed(response)
+      end
     end
 
-    xit 'should return the containing assembly if no user is signed in' do
-      get :show, id: @activity_premium
-      response.should be_success
-      expect_containing_assembly(response, @assembly)
-    end
+    # already enrolled but not premium
 
-    xit 'should return the containing assembly if the signed in user is not an admin' do
-      sign_in @user3
-      get :show, id: @activity_premium
-      response.should be_success
-      expect_containing_assembly(response, @assembly)
-    end
-
-    xit 'should return an activity if user is an admin' do
-      sign_in @admin_user
-      controller.request.env['HTTP_AUTHORIZATION'] = @admin_user.valid_website_auth_token.to_jwt
-      get :show, id: @activity_premium
-      response.should be_success
-      expect_activity_object(response, @activity_premium)
-    end
-
-    xit 'should return an activity if is_google' do
+    it 'should return an activity if is_google' do
       controller.request.env['HTTP_USER_AGENT'] = 'googlebot/'
       get :show, id: @activity_premium
       response.should be_success
       expect_activity_object(response, @activity_premium)
     end
 
-    xit 'should return an activity if is_static_render' do
-      controller.request.env["HTTP_USER_AGENT"] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) PhantomJS/1.9.8 Safari/534.34 Prerender (+https://github.com/prerender/prerender)'
-      get :show, id: @activity_premium
-      response.should be_success
-      expect_activity_object(response, @activity_premium)
-    end
-
-
-    def expect_containing_assembly(response, assembly)
-      parsed = JSON.parse response.body
-      expect(parsed['containingAssembly']['id']).to eq(assembly.id)
-    end
-
     def expect_trimmed(response)
+      response.should be_success
       parsed = JSON.parse response.body
       expect(parsed['steps'].count).to eq(0)
     end
 
     def expect_not_trimmed(response)
+      response.should be_success
       parsed = JSON.parse response.body
-      # couldn't get the step to fabricate
-      #expect(parsed['steps'].count).to eq(1)
+      expect(parsed['steps'].count).to eq(1)
     end
   end
 

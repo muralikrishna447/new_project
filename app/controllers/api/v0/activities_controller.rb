@@ -59,21 +59,32 @@ module Api
         end
         user_premium = @user && @user.premium?
 
-        # Here are the rules for activity access:
         can_see = false
         trimmed = false
 
         if @activity.published
           # Everyone can see any published recipe, but if it is a premium recipe and not
           # a premium user, they get the trimmed version.
-          # We also allow prerender.io and google to see everything in order to implement
+          # We also allow prerender.io to see everything in order to implement
           # First Click Free (https://support.google.com/news/publisher/answer/40543?topic=11707)
-
           can_see = true
-          trimmed = @activity.premium && (! user_premium) && ! (is_google || is_static_render)
+          trimmed = @activity.premium && (! user_premium) && (! is_static_render)
+
+          # Grandfather clause. User enrolled in Shrimp Brains class when it was
+          # free, never bought a class so they aren't premium, but now we decided to make Shrimp Brains premium.
+          # They should still have access.
+          #
+          # This is potentially a bit slow to check b/c it involved a recursive walk of
+          # the assembly tree so only check it if necessary
+          if trimmed && @user
+            assembly = @activity.containing_course
+            if assembly && @user.class_enrollment(assembly)
+              trimmed = false
+            end
+          end
         else
           # Unpublished stuff can only be seen by admins or the activity's creator
-          can_see = @user && (@user.role == 'admin' || @activity.creator == @user.id)
+          can_see = @user && (@user.role == 'admin' || @activity.read_attribute(:creator) == @user.id)
         end
 
         if can_see
