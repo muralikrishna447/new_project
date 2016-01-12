@@ -118,7 +118,7 @@ class Activity < ActiveRecord::Base
     end
 
     # Display fields
-    attribute :slug
+    attribute :slug, :premium
     add_attribute :url do
       activity_path(self)
     end
@@ -134,7 +134,7 @@ class Activity < ActiveRecord::Base
     attribute :activity_type
 
     # Filter/facet/tags
-    attribute :difficulty, :published, :include_in_gallery, :premium
+    attribute :difficulty, :published, :include_in_gallery
 
     tags do
       tags.map(&:name)
