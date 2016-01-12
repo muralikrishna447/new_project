@@ -104,6 +104,11 @@ module Api
           render_unauthorized if render_response
         end
       end
+      
+      def current_api_user
+        # @user_id_from_token is validated against actor address table
+        User.find @user_id_from_token
+      end
 
       # Still used by messaging service stuff
       def valid_token?(token, restrict_to = nil)
