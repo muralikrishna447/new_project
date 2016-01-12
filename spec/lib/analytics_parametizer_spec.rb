@@ -15,7 +15,7 @@ describe AnalyticsParametizer do
   let(:utm_params){ { 'utm_source' => 'test_source', 'utm_medium' => 'test_medium'} }
   let(:referrer){ 'http://new.co' }
 
-  describe 'cookie_value', focus: true do
+  describe 'cookie_value' do
     it "should set utm params and referrer for new sessions" do
       new_cookie = AnalyticsParametizer.cookie_value(utm_params, {}, referrer)
       new_values = JSON.parse(new_cookie)
