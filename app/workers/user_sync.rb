@@ -36,14 +36,17 @@ class UserSync
     if member_info['success_count'] == 0
       @logger.warn "User not found in MailChimp #{member_info.inspect}"
       return
+    elsif member_info['data'][0]['status'] == 'unsubscribed'
+      @logger.warn "User unsubscribed from list #{member_info.inspect}"
+      return
     end
+
     member_info = member_info['data'][0]
 
     # TODO - This is a quick fix that will still remove the user from groups
     # other than premium and joule purchase
 
     groups = []
-
     if options[:premium]
       add_to_group_param(groups, member_info, :premium_group_id, PREMIUM_GROUP_NAME, @user.premium?)
     end
