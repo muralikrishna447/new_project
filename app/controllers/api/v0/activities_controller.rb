@@ -48,7 +48,12 @@ module Api
       end
 
       def show
-        @activity = Activity.find(params[:id])
+        begin
+          @activity = Activity.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+          render_api_response 404, {message:'Activity not found'}
+          return
+        end
 
         http_auth =  request.headers['HTTP_AUTHORIZATION']
         ensure_authorized(false) if http_auth.present?

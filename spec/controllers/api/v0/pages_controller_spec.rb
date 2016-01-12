@@ -22,9 +22,23 @@ describe Api::V0::PagesController do
   it 'should get a page' do
     get :show, id: @page.id
     response.should be_success
-    page = JSON.parse(response.body)
-    puts page
-    page['title'].should eq('Test Page')
+    JSON.parse(response.body)['title'].should eq(@page.title)
+  end
+
+  it 'should get a page by slug' do
+    get :show, id: @page.slug
+    response.should be_success
+    JSON.parse(response.body)['title'].should eq(@page.title)
+  end
+
+  it 'should return 404 for pages not found by id' do
+    get :show, id: 9999
+    response.code.should == '404'
+  end
+
+  it 'should return 404 for pages not found by slug' do
+    get :show, id: 'doesnt-exist'
+    response.code.should == '404'
   end
 
   # POST /api/v0/pages
