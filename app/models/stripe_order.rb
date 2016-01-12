@@ -256,7 +256,9 @@ class StripeOrder < ActiveRecord::Base
     }
 
     ['Completed Order', 'Completed Order Workaround'].each do |event_name|
-      Analytics.track(analytics_data.merge(event: event_name))
+      if !Analytics.track(analytics_data.merge(event: event_name))
+        Rails.logger.error("Error: problem tracking #{event_name} #{analytics_data}")
+      end
       Rails.logger.info("Stripe Order #{id} - Sending Event: #{event_name} with data:\n#{analytics_data.merge(event: event_name)}")
     end
 
