@@ -186,6 +186,22 @@
       console.log data
       $scope.resetPasswordStatus = "Error: #{JSON.stringify(data)}"
 
+  $scope.externalRedirectStatus = null
+  $scope.externalRedirect = (token, path) ->
+    $http.get(
+      host + "/api/v0/auth/external_redirect",
+      params: {path: path}
+      headers: { 'Authorization': 'Bearer ' + token }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.externalRedirectStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      console.log headers
+      $scope.externalRedirectStatus = "Error: #{JSON.stringify(data)}"
+
   $scope.clear = ->
     $scope.user = {}
     $scope.circulator = {}

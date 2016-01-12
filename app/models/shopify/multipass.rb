@@ -1,32 +1,5 @@
-require "openssl"
-require "base64"
-require "time"
-require "json"
-
-if Rails.env.production? || Rails.env.staging? || Rails.env.staging2?
-  Rails.configuration.shopify = {
-    api_key: ENV["SHOPIFY_KEY"],
-    password: ENV["SHOPIFY_SECRET"],
-    multipass_secret: ENV["SHOPIFY_MULTIPASS_SECRET"]
-  }
-elsif Rails.env.test?
-  Rails.configuration.shopify = {
-    store_domain: 'chefsteps-staging.myshopify.com',
-    api_key: '123',
-    password:  '321',
-    multipass_secret: "abc"
-  }
-else
-  Rails.configuration.shopify = {
-    store_domain: 'chefsteps-staging.myshopify.com',
-    api_key: 'f3c79828c0f50b04866481389eacb2d2',
-    password:  '5553e01d45c426ced082e9846ad56eee',
-    multipass_secret: '905c5b3b3ad7804d28e8a33e6a247eca'
-  }
-end
-ShopifyAPI::Base.site = "https://#{Rails.configuration.shopify[:api_key]}:#{Rails.configuration.shopify[:password]}@delve.myshopify.com/admin"
-
-class ShopifyMultipass
+# Adapted from shopping_controller
+class Shopify::Multipass
   def initialize
     ### Use the Multipass secret to derive two cryptographic keys,
     ### one for encryption, one for signing
@@ -34,6 +7,21 @@ class ShopifyMultipass
     @encryption_key = key_material[ 0,16]
     @signature_key  = key_material[16,16]
   end
+  
+  def self.for_user(user, return_to)
+    multipass = Shopify::Multipass.new
+    # TODO - add user IP
+    user_hash = 
+      {
+        email: user.email,
+        first_name: user.name.split(' ')[0],
+        last_name: (user.name.split(' ').size > 1 ? user.name.split(' ')[1] : nil),
+        identifier: user.id,
+        return_to: return_to
+      }
+      multipass.generate_token(user_hash)
+  end
+  
 
   def generate_token(customer_data_hash)
     ### Store the current time in ISO8601 format.
@@ -47,9 +35,8 @@ class ShopifyMultipass
     ### and encode everything using URL-safe Base64 (RFC 4648)
     Base64.urlsafe_encode64(ciphertext + sign(ciphertext))
   end
-
+  
   private
-
   def encrypt(plaintext)
     cipher = OpenSSL::Cipher::Cipher.new("aes-128-cbc")
     cipher.encrypt

@@ -192,7 +192,26 @@
             clear
           %div
             {{resetPasswordStatus}}
+    %hr
 
+    .row
+      .span8.well-border
+        %h4 External redirect
+        %p
+          %i GET /api/v0/auth/external_redirect
+        %form(ng-submit='externalRedirect(user.token, user.path)')
+          .control-group
+            %input(type='text' ng-model='user.token' placeholder='token')
+            %input(type='text' ng-model='user.path' placeholder='path')
+          .control-group
+            %input.btn(type='submit' value='Get external redirect')
+        .alert(ng-if='externalRedirectStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{externalRedirectStatus}}
+
+            
     %hr
     .row
       .span8.well-border

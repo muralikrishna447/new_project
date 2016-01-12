@@ -337,4 +337,23 @@ describe Api::V0::AuthController do
     end
 
   end
+  context 'GET /external_redirect' do
+    it 'rejects unconfigured but valid path' do
+      request.env['HTTP_AUTHORIZATION'] = @aa.current_token.to_jwt
+      get :external_redirect, :path => 'https://www.example.org'
+      response.code.should == '404'
+    end
+    
+    it 'rejects invalid path' do
+      request.env['HTTP_AUTHORIZATION'] = @aa.current_token.to_jwt
+      get :external_redirect, :path => ':/sdas9sd'
+      response.code.should == '400'
+    end
+    
+    it 'handles basic shopify redirect' do
+      request.env['HTTP_AUTHORIZATION'] = @aa.current_token.to_jwt
+      get :external_redirect, :path => 'http://chefsteps-staging.myshopify.com'
+      response.code.should == '200'
+    end
+  end
 end

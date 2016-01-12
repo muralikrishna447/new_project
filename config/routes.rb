@@ -378,6 +378,7 @@ Delve::Application.routes.draw do
       end
 
       get 'firmware/latest_version', to: 'firmware#latest_version'
+      get 'auth/external_redirect', to: 'auth#external_redirect'
 
       namespace :shopping do
         resources :products do
