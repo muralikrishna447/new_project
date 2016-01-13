@@ -93,12 +93,8 @@ module Api
         end
 
         if can_see
-          if trimmed
-            @activity.steps = []
-            @activity.ingredients = []
-            @activity.equipment = []
-          end
-          render json: @activity, serializer: Api::ActivitySerializer
+          except = trimmed ? [:steps, :ingredients, :equipment] : []
+          render json: @activity, serializer: Api::ActivitySerializer, except: except
         else
           render_unauthorized
         end

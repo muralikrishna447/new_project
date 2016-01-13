@@ -254,7 +254,9 @@ describe Api::V0::ActivitiesController do
     def expect_trimmed(response)
       response.should be_success
       parsed = JSON.parse response.body
-      expect(parsed['steps'].count).to eq(0)
+      expect(parsed['steps']).to eq(nil)
+      expect(parsed['ingredients']).to eq(nil)
+      expect(parsed['equipment']).to eq(nil)
     end
 
     def expect_not_trimmed(response)
