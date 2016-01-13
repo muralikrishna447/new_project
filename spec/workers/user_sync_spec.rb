@@ -88,6 +88,12 @@ describe UserSync do
       @user_sync.sync_mailchimp({premium: true})
     end
   
+    it 'should handle unsubscribed members' do
+      setup_member_unsubscribed
+      setup_premium_user
+      @user_sync.sync_mailchimp({premium: true})
+    end
+
     def setup_member_premium(in_group)
       setup_member_info(Rails.configuration.mailchimp[:premium_group_id], UserSync::PREMIUM_GROUP_NAME, in_group)
     end
@@ -119,9 +125,20 @@ describe UserSync do
   end
 
   def setup_member_info_not_in_mailchimp
+    result = {"success_count"=>0, "error_count"=>1, "errors"=>[{"email"=>{"email"=>"a@b.com"}, "error"=>"The id passed does not exist on this list", "code"=>232}], "data"=>[]}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
        with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
-       to_return(:status => 200, :body => {:success_count => 0}.to_json, :headers => {})
+       to_return(:status => 200, :body => result.to_json, :headers => {})
+  end
+
+  def setup_member_unsubscribed
+    result = {"success_count"=>1, "error_count"=>0,
+      "errors"=>[], "data"=>[{"email"=>"first@chocolateyshatner.com",
+      "status"=>"unsubscribed"}]}
+
+    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info")
+    .with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
+    to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
   def stub_mailchimp_post(group_id, name)

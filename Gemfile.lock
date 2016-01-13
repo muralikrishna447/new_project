@@ -1,3 +1,16 @@
+GIT
+  remote: https://github.com/ChefSteps/shopify-mock
+  revision: 74132ae3a471ec29cb85547987c061e3f749fd1b
+  ref: 74132ae3a471ec29cb85547987c061e3f749fd1b
+  specs:
+    shopify-mock (0.1.2)
+      activesupport (>= 3.0.0)
+      libxml-ruby (>= 0.8.3)
+      rake (>= 0.8.7)
+      rspec (>= 2.6.0)
+      shopify_api (>= 1.2.5)
+      webmock (>= 1.7.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -318,6 +331,7 @@ GEM
       activesupport (>= 3.0)
       librato-rack (~> 0.4.2)
       railties (>= 3.0)
+    libxml-ruby (2.8.0)
     listen (0.7.3)
     lumberjack (1.0.4)
     mail (2.5.4)
@@ -674,6 +688,7 @@ DEPENDENCIES
   sanitize
   sass-rails (~> 3.2.3)
   select2-rails
+  shopify-mock!
   shopify_api
   showdown-rails
   simple-rss
