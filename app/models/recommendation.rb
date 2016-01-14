@@ -3,8 +3,7 @@ class Recommendation
     interests = get_interests(user)
     suggestion = get_suggestion(user)
 
-    # popular = Activity.chefsteps_generated.published.not_in_course.popular.first(6)
-    activities = Activity.chefsteps_generated.published.not_in_course.popular
+    activities = Activity.chefsteps_generated.published.not_premium.popular
     by_interests = interests ? activities.tagged_with(interests, any: true) : []
     by_suggestion = suggestion ? activities.tagged_with(suggestion, any: true) : []
     activities = (by_interests + by_suggestion).uniq
@@ -47,7 +46,7 @@ class Recommendation
   end
 
   def self.by_tags(tags = [])
-    activities = Activity.chefsteps_generated.published.not_in_course.popular
+    activities = Activity.chefsteps_generated.published.not_premium.popular
     activities = activities.tagged_with(tags, any: true)
     activities
   end

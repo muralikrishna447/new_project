@@ -46,6 +46,8 @@ class GalleryController < ApplicationController
       result.each do |a|
         # Yes, that is encoded nested JSON - filepicker response. Avert your eyes.
         a['featured_image_id'] = "{\"url\": \"#{a['image']}\"}"
+
+        # Backwards compat until we update the disco app... or maybe forever since old app will be in field
         a['show_only_in_course'] = 'false'
         a['id'] = a['objectID']
       end
