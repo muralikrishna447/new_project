@@ -17,7 +17,7 @@
 = semantic_form_for [:admin, @activity], validate: true do |f|
   = f.inputs name: "Activity Details" do
     = f.input :include_in_gallery, as: :boolean
-    = f.input :show_only_in_course, label: "Show only in course"
+    = f.input :premium, label: "Premium Only"
     = f.input :published
     = f.input :title
     %li

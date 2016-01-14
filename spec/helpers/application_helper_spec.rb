@@ -63,31 +63,3 @@ describe ApplicationHelper do
     helper.assembly_type_path(project).split('/')[1].should == 'projects'
   end
 end
-
-describe ApplicationHelper do
-
-  it 'returns is_google true when referer is from google' do
-    controller.request.env['HTTP_USER_AGENT'] = 'googlebot/'
-    helper.is_google.should be_true
-  end
-
-  it 'returns is_google true when referer is from google' do
-    controller.request.env['HTTP_REFERER'] = 'http://www.google.com'
-    helper.is_google.should be_true
-  end
-
-  it 'returns is_google true when cs-referer is from google' do
-    controller.request.env['HTTP_CS_REFERER'] = 'http://www.google.com'
-    helper.is_google.should be_true
-  end
-
-  it 'returns is_google false when the request is not a bot or referer is google' do
-    controller.request.env['HTTP_REFERER'] = 'http://www.chefsteps.com'
-    helper.is_google.should be_false
-  end
-
-  it 'returns is_google false when the request is not a bot or referer is nothing' do
-    controller.request.env['HTTP_REFERER'] = ''
-    helper.is_google.should be_false
-  end
-end

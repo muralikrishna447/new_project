@@ -27,24 +27,6 @@ class ActivitiesController < ApplicationController
       redirect_to activity_path(@activity, redir_params), :status => :moved_permanently
     end
 
-    # If this activity should only be shown in paid courses, and the user isn't an admin, send
-    # them to the course landing page. Also allow:
-    # (1) Googlebot so it can index the page
-    # (2) Referred from google (for first click free: https://support.google.com/webmasters/answer/74536?hl=en)
-    # (3) Prerender.io bot so it can make the snapshot for _escaped_segment_
-    if (! current_admin?) && (! is_google) && (! is_static_render)
-      if @activity.show_only_in_course
-        # redirect_to class_path(@activity.containing_course), :status => :moved_permanently
-        if current_user
-          if current_user.enrolled?(@activity.containing_course) == false
-            redirect_to landing_assembly_path(@activity.containing_course)
-          end
-        else
-          redirect_to landing_assembly_path(@activity.containing_course)
-        end
-      end
-    end
-
   rescue
     # Not a problem
   end
