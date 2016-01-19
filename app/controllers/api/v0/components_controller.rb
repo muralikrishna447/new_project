@@ -10,7 +10,11 @@ module Api
       end
 
       def show
-        @component = Component.find(params[:id])
+        begin
+          @component = Component.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+          return render_api_response 404, {message: 'Component not found'}
+        end
         render json: @component, serializer: Api::ComponentSerializer
       end
 
