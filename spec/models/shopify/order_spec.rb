@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-ShopifyAPI::Mock::Fixture.path = File.join(Rails.root, 'spec', 'shopify', 'fixtures')
-
 describe Shopify::Order do
   
   JOULE_ORDER_ID = 4507800  
