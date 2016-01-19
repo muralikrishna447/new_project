@@ -88,8 +88,8 @@ module Api
             end
           end
         else
-          # Unpublished stuff can only be seen by admins or the activity's creator
-          can_see = @user && (@user.role == 'admin' || @activity.read_attribute(:creator) == @user.id)
+          # Unpublished stuff can only be seen by privileged users or the activity's creator, as specified in ability.rb
+          can_see = can?(:manage, @activity)
         end
 
         if can_see
