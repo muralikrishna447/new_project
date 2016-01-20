@@ -95,7 +95,6 @@ Spork.prefork do
   
   # Shopify test setup
   ShopifyAPI::Mock::Fixture.path = File.join(Rails.root, 'spec', 'shopify', 'fixtures')
-
 end
 
 Spork.each_run do
