@@ -92,7 +92,9 @@ Spork.prefork do
   end
   Capybara.javascript_driver = :poltergeist
   Capybara.default_wait_time = 5
-
+  
+  # Shopify test setup
+  ShopifyAPI::Mock::Fixture.path = File.join(Rails.root, 'spec', 'shopify', 'fixtures')
 end
 
 Spork.each_run do
