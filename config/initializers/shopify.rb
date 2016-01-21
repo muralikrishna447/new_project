@@ -3,9 +3,16 @@ require "base64"
 require "time"
 require "json"
 
-if Rails.env.production? || Rails.env.staging? || Rails.env.staging2?
+if Rails.env.production?
   Rails.configuration.shopify = {
     store_domain: 'delve.myshopify.com',
+    api_key: ENV["SHOPIFY_KEY"],
+    password: ENV["SHOPIFY_SECRET"],
+    multipass_secret: ENV["SHOPIFY_MULTIPASS_SECRET"]
+  }
+elsif Rails.env.staging? || Rails.env.staging2?
+  Rails.configuration.shopify = {
+    store_domain: 'chefsteps-staging.myshopify.com',
     api_key: ENV["SHOPIFY_KEY"],
     password: ENV["SHOPIFY_SECRET"],
     multipass_secret: ENV["SHOPIFY_MULTIPASS_SECRET"]
