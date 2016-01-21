@@ -387,6 +387,7 @@ Delve::Application.routes.draw do
         resources :users do
           post :multipass, on: :collection
           get :multipass, on: :collection
+          get :add_to_cart, on: :collection
         end
       end
 

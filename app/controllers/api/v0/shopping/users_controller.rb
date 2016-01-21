@@ -14,6 +14,14 @@ module Api
           # This is for when it is coming from a sign in/up request.
           redirect_to ("https://#{Rails.configuration.shopify[:store_domain]}/account/login/multipass/#{token}").to_s
         end
+        
+        def add_to_cart
+          add_to_cart = "/cart/add?id=#{params[:variant_id]}"
+          return_to = "https://#{Rails.configuration.shopify[:store_domain]}" + add_to_cart
+          token = Shopify::Multipass.for_user(current_user, return_to)
+          # This is for when it is coming from a sign in/up request.
+          redirect_to ("https://#{Rails.configuration.shopify[:store_domain]}/account/login/multipass/#{token}").to_s
+        end
       end
     end
   end
