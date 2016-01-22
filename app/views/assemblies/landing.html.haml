@@ -30,7 +30,7 @@
           .span8.section
             = image_tag filepicker_hero_image(@course.image_id)
 
-        .span4.section.offset8.affixable-fixed(affixableoffsetbottom='600')
+        .span4.section.offset8.affixable-fixed.class-buy-container(affixableoffsetbottom='600')
           .buy-box
             -# abtest here just to record the split in mixpanel, no difference in ui
             %div(cs-abtest test-name="Madlib Signup Incentive4")
@@ -117,6 +117,3 @@
 
   = render 'layouts/footer'
   = render 'layouts/stripe'
-
-
-
