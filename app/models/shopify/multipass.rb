@@ -19,7 +19,7 @@ class Shopify::Multipass
         identifier: user.id,
         return_to: return_to
       }
-      multipass.generate_token(user_hash)
+    multipass.generate_token(user_hash)
   end
   
 
@@ -28,6 +28,7 @@ class Shopify::Multipass
     ### The token will only be valid for a small timeframe around this timestamp.
     customer_data_hash["created_at"] = Time.now.iso8601
 
+    Rails.logger.info("Generating multipass token with data [#{customer_data_hash.inspect}]")
     ### Serialize the customer data to JSON and encrypt it
     ciphertext = encrypt(customer_data_hash.to_json)
 
