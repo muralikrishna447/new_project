@@ -3,14 +3,6 @@ class ApplicationController < BaseApplicationController
   include StatusHelpers
   protect_from_forgery
 
-  def default_url_options(options={})
-    if Rails.env.production? || Rails.env.staging?
-      { protocol: 'https'}
-    else
-      {}
-    end
-  end
-
   if Rails.env.angular? || Rails.env.development?
     require 'database_cleaner'
     def start_clean

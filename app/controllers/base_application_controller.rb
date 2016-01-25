@@ -1,6 +1,14 @@
 class BaseApplicationController < ActionController::Base
   before_filter :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user
 
+  def default_url_options(options={})
+    if is_hosted_env
+      { protocol: 'https'}
+    else
+      {}
+    end
+  end
+
   def record_uuid_in_new_relic
     ::NewRelic::Agent.add_custom_parameters({ request_id: request.uuid()})
   end
@@ -119,6 +127,15 @@ class BaseApplicationController < ActionController::Base
       else
         logger.debug("[mailchimp] error, ignoring - did you set MAILCHIMP_API_KEY? Message: #{e.message}")
       end
+    end
+  end
+
+  helper_method :is_hosted_env
+  def is_hosted_env
+    if Rails.env.production? || Rails.env.staging? || Rails.env.staging2?
+      true
+    else
+      false
     end
   end
 
