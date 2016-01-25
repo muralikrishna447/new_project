@@ -4,7 +4,11 @@ class ApplicationController < BaseApplicationController
   protect_from_forgery
 
   def default_url_options(options={})
-    { secure: true }
+    if Rails.env.production? || Rails.env.staging?
+      { protocol: 'https'}
+    else
+      {}
+    end
   end
 
   if Rails.env.angular? || Rails.env.development?
