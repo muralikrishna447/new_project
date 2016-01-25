@@ -16,7 +16,7 @@ task :import_vimeo, [:url] => :environment do |t, args|
         activities.each do |activity|
           activity.update_attributes(vimeo_id: vimeo_id)
           if activity.creator.blank?
-            puts "Updated activity #{activity.title} - http://chefsteps.com/activities/#{activity.slug}"
+            puts "Updated activity #{activity.title} - https://www.chefsteps.com/activities/#{activity.slug}"
           end
         end
         puts "Updated #{activities.count} total activities including forks"

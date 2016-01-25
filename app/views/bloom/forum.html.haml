@@ -29,7 +29,7 @@
             console.log(response);
             users = response.map(function(user) {
               user._id = "" + user.id;
-              user.profileLink = "http://www.chefsteps.com/profiles/" + user.slug;
+              user.profileLink = "/profiles/" + user.slug;
               user.avatarUrl = user['avatar_url'];
               return user;
             });
