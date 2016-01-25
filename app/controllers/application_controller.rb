@@ -3,6 +3,10 @@ class ApplicationController < BaseApplicationController
   include StatusHelpers
   protect_from_forgery
 
+  def default_url_options(options={})
+    { secure: true }
+  end
+
   if Rails.env.angular? || Rails.env.development?
     require 'database_cleaner'
     def start_clean
