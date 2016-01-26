@@ -5,7 +5,7 @@ angular.module('ChefStepsApp').controller 'VotesController', ["$scope", "$resour
   )
 
   $scope.socialURL = ->
-    "http://chefsteps.com/polls/" + $scope.poll.slug
+    "https://www.chefsteps.com/polls/" + $scope.poll.slug
 
   $scope.userImageUrl = (image_id) ->
     if image_id

@@ -19,6 +19,6 @@ angular.module('ChefStepsApp').controller 'ActivityUploadsController' , ["$scope
     "Upload"
 
   $scope.socialURL = () ->
-    "http://chefsteps.com/uploads/" + $scope.upload?.slug
+    "https://www.chefsteps.com/uploads/" + $scope.upload?.slug
 
 ]
