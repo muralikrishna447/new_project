@@ -106,4 +106,5 @@ Delve::Application.configure do
     'chefsteps.com' => 'www.chefsteps.com'
   }
 
+  Rails.application.routes.default_url_options[:protocol] = 'https'
 end
