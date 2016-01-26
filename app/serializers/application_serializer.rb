@@ -6,8 +6,6 @@ class ApplicationSerializer < ActiveModel::Serializer
     host = "test.host"
   else
     host = "www.chefsteps.com"
-    protocol = 'https'
   end
-  Rails.application.routes.default_url_options[:host] = host
-  Rails.application.routes.default_url_options[:protocol] = protocol unless protocol.blank?
+  Rails.application.routes.default_url_options = {:host => host}
 end
