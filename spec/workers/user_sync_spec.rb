@@ -40,6 +40,11 @@ describe UserSync do
       @user_sync.sync_mailchimp({premium: true})
     end
     
+    it 'should not sync premium status to mailchimp when user has been cleaned from mailchimp' do
+      setup_cleaned_member_premium false
+      @user_sync.sync_mailchimp({premium: true})
+    end
+    
     it 'should sync premium members who purchased joule' do
       setup_member_joule_purchase true
       setup_joule_purchaser
@@ -95,7 +100,13 @@ describe UserSync do
     end
 
     def setup_member_premium(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:premium_group_id], UserSync::PREMIUM_GROUP_NAME, in_group)
+      setup_member_info(Rails.configuration.mailchimp[:premium_group_id], 
+        UserSync::PREMIUM_GROUP_NAME, in_group, 'subscribed')
+    end
+    
+    def setup_cleaned_member_premium(in_group)
+      setup_member_info(Rails.configuration.mailchimp[:premium_group_id], 
+        UserSync::PREMIUM_GROUP_NAME, in_group, 'cleaned')
     end
 
     def setup_premium_user
@@ -106,7 +117,8 @@ describe UserSync do
     end
 
     def setup_member_joule_purchase(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:joule_group_id], UserSync::JOULE_PURCHASE_GROUP_NAME, in_group)
+      setup_member_info(Rails.configuration.mailchimp[:joule_group_id], 
+        UserSync::JOULE_PURCHASE_GROUP_NAME, in_group, 'subscribed')
     end
 
     def setup_joule_purchaser
@@ -117,8 +129,12 @@ describe UserSync do
     end
   end
 
-  def setup_member_info(group_id, name, in_group)
-    result = {:success_count => 1, :data => [{"GROUPINGS"=>[{"id"=>group_id, "name"=>"Doesn't matter", "groups"=>[{"name"=>name, "interested"=>in_group}]}]}]}
+  def setup_member_info(group_id, name, in_group, status)
+    result = {
+      :success_count => 1, 
+      :data => [{"GROUPINGS"=>[{"id"=>group_id, "name"=>"Doesn't matter", 
+                  "groups"=>[{"name"=>name, "interested"=>in_group}]}],
+                 "status" => status }]}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
        with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
        to_return(:status => 200, :body => result.to_json, :headers => {})
