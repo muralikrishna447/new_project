@@ -45,9 +45,7 @@
         Your contributions to the ChefSteps ingredient wiki are always welcome. Just click the edit button below.
 
       %div(ng-show="! showStubTip()")
-        ChefSteps
-        %a(href="/ingredients") ingredient wiki
-        pages are community-edited. If you see incorrect information, please
+        ChefSteps ingredient wiki pages are community-edited. If you see incorrect information, please
         %a(ng-click="startEditMode()") fix it
         or
         %a(ng-click="reportProblem()") report it.
@@ -55,9 +53,7 @@
         Your contributions are always welcome, just click the edit button below.
 
     .span12.well.text-center.wiki-warning(ng-show="! csAuthentication.loggedIn()")
-      ChefSteps
-      %a(href="/ingredients") ingredient wiki
-      pages are community-edited. If you see incorrect information, please
+      ChefSteps ingredient wiki pages are community-edited. If you see incorrect information, please
       %a(ng-click="reportProblem()") report it,
       or
       %a(href="/sign_in") sign in
