@@ -6,6 +6,8 @@
 #  - Mailchimp for joule purchases
 #
 # But eventually other attributes too!
+#
+# TODO - add some sort of request id
 
 class UserSync
   PREMIUM_GROUP_NAME = "Premium Member"
@@ -32,7 +34,6 @@ class UserSync
     list_id = Rails.configuration.mailchimp[:list_id]
     member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
     @logger.info member_info.inspect
-
     if member_info['success_count'] == 0
       @logger.warn "User not found in MailChimp #{member_info.inspect}"
       return
@@ -42,6 +43,10 @@ class UserSync
     end
 
     member_info = member_info['data'][0]
+    
+    if member_info['status'] != 'subscribed'
+      @logger.warn "User not subscribed to list, actual status [#{member_info['status']}]"
+    end
 
     # TODO - This is a quick fix that will still remove the user from groups
     # other than premium and joule purchase
