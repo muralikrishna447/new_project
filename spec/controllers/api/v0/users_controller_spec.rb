@@ -131,4 +131,16 @@ describe Api::V0::UsersController do
       response.should_not be_success
     end
   end
+
+  context 'GET /log_upload_url' do
+    it 'should generate an upload url' do
+      # For reasons I don't understand, this is only needed on codeship, maybe because it's running in AWS?
+      WebMock.stub_request(:get, "http://169.254.169.254/latest/meta-data/iam/security-credentials/").
+        to_return(:status => 503, :body => "", :headers => {})
+      request.env['HTTP_AUTHORIZATION'] = @token
+      get :log_upload_url
+      response.should be_success
+      JSON.parse(response.body)['upload_url'].should_not be_nil
+    end
+  end
 end
