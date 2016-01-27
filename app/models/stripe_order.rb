@@ -213,7 +213,9 @@ class StripeOrder < ActiveRecord::Base
     discount_item = stripe_charge.items.detect{|item| item.type == 'discount'}
     purchased_item = stripe_charge.items.detect{|item| item.type == 'sku'}
 
-    analytics_data = {user_id: user_id,
+    analytics_data = {
+      event: 'Completed Order Workaround',
+      user_id: user_id,
       context: {
         'GoogleAnalytics' => {
           clientId: data['google_analytics_client_id']
@@ -253,14 +255,10 @@ class StripeOrder < ActiveRecord::Base
       }
     }
 
-    ['Completed Order', 'Completed Order Workaround'].each do |event_name|
-      if !Analytics.track(analytics_data.merge(event: event_name))
-        Rails.logger.error("Error: problem tracking #{event_name} #{analytics_data}")
-      end
-      Rails.logger.info("Stripe Order #{id} - Sending Event: #{event_name} with data:\n#{analytics_data.merge(event: event_name)}")
+    if !Analytics.track(analytics_data)
+      Rails.logger.error("Error: problem tracking #{event_name} #{analytics_data}")
     end
-
-    # Send joule purchase count as a user property
+    Rails.logger.info("Stripe Order #{id} - Sending Event to Segment: #{analytics_data[:event]} with data:\n#{analytics_data}")
     Rails.logger.info("Stripe Order #{id} - JPC #{user.joule_purchase_count} ")
     Analytics.identify(user_id: user_id, traits: {joule_purchase_count: user.joule_purchase_count})
     Analytics.flush()
