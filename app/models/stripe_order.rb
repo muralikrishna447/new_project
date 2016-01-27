@@ -166,8 +166,6 @@ class StripeOrder < ActiveRecord::Base
         # really resolve this issue.
         Rails.logger.info("Stripe Order #{id} - Sending Analytics")
         self.analytics(stripe_charge)
-        Analytics.flush()
-
       else
         # We failed to collect the money for some reason
         Rails.logger.info("Stripe Order #{id} - Failed to move into status paid")
@@ -265,6 +263,7 @@ class StripeOrder < ActiveRecord::Base
     # Send joule purchase count as a user property
     Rails.logger.info("Stripe Order #{id} - JPC #{user.joule_purchase_count} ")
     Analytics.identify(user_id: user_id, traits: {joule_purchase_count: user.joule_purchase_count})
+    Analytics.flush()
   end
 
   def revenue(stripe_charge, tax_item, discount_item)
