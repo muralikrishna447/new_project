@@ -3,11 +3,12 @@ require 'aws-sdk'
 module Api
   module V0
     class UsersController < BaseController
-
       # Required since this only this controller contains the code to actually
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
       before_filter :ensure_authorized, except: [:create]
+
+      LOG_UPLOAD_URL_EXPIRATION = 5*60 #Seconds
 
       def me
         @user = User.find @user_id_from_token
@@ -72,7 +73,7 @@ module Api
         # We use an old version of the AWS SDK
         s3 = AWS::S3.new(region:'us-west-2')
         obj = s3.buckets['remote-logs-staging'].objects[object_key]
-        url = obj.url_for(:write, :content_type => 'text/plain')
+        url = obj.url_for(:write, :content_type => 'text/plain', :expires => LOG_UPLOAD_URL_EXPIRATION)
         Rails.logger.info "Created signed url [{#{url.to_s}}]"
         render_api_response 200, {:upload_url => url.to_s}
       end
