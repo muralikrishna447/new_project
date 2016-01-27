@@ -6,8 +6,8 @@ module Api
       # Required since this only this controller contains the code to actually
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
-      before_filter :ensure_authorized, except: [:create]
-
+      before_filter :ensure_authorized, except: [:create, :log_upload_url]
+      before_filter :ensure_authorized_or_anonymous, only: [:log_upload_url]
       LOG_UPLOAD_URL_EXPIRATION = 5*60 #Seconds
 
       def me
@@ -68,7 +68,13 @@ module Api
       def log_upload_url
         # Based on the steps here:
         # http://docs.aws.amazon.com/AmazonS3/latest/dev/UploadObjectPreSignedURLRubySDK.html#UploadObjectPreSignedURLRubySDKV1
-        object_key = "user/#{@user_id_from_token}/#{Time.now.to_a.reverse[4..8].join('/')}-#{params[:tag]}"
+        if @user_id_from_token
+          user_prefix = "user/#{@user_id_from_token}"
+        else
+          user_prefix = 'anon'
+        end
+
+        object_key = "#{user_prefix}/#{Time.now.to_a.reverse[4..8].join('/')}-#{params[:tag]}"
         Rails.logger.info "Creating log upload url for key [#{object_key}]"
         # We use an old version of the AWS SDK
         s3 = AWS::S3.new(region:'us-west-2')
