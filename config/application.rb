@@ -186,5 +186,11 @@ module Delve
 
     AWS.config( :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'] )
+
+    if Rails.env.production?
+      config.remote_log_bucket = 'remote-logs-production'
+    else
+      config.remote_log_bucket = 'remote-logs-staging'
+    end
   end
 end
