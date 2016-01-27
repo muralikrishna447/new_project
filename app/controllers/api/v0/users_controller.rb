@@ -1,3 +1,5 @@
+require 'aws-sdk'
+
 module Api
   module V0
     class UsersController < BaseController
@@ -60,6 +62,19 @@ module Api
         # Something like this
         # email_list_add_to_group(@user.email, '8061', ['international_joule'])
         render json: {}, code: :ok
+      end
+
+      def log_upload_url
+        # Based on the steps here:
+        # http://docs.aws.amazon.com/AmazonS3/latest/dev/UploadObjectPreSignedURLRubySDK.html#UploadObjectPreSignedURLRubySDKV1
+        object_key = "user/#{@user_id_from_token}/#{Time.now.to_a.reverse[4..8].join('/')}-#{params[:tag]}"
+        Rails.logger.info "Creating log upload url for key [#{object_key}]"
+        # We use an old version of the AWS SDK
+        s3 = AWS::S3.new(region:'us-west-2')
+        obj = s3.buckets['remote-logs-staging'].objects[object_key]
+        url = obj.url_for(:write, :content_type => 'text/plain')
+        Rails.logger.info "Created signed url [{#{url.to_s}}]"
+        render_api_response 200, {:upload_url => url.to_s}
       end
 
       private

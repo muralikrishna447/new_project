@@ -371,6 +371,7 @@ Delve::Application.routes.draw do
         get :me, on: :collection
         get :shown_terms, on: :collection
         post :international_joule, on: :collection
+        get :log_upload_url, on: :collection
       end
 
       resources :circulators, only: [:index, :create, :destroy] do
