@@ -63,4 +63,9 @@ Delve::Application.configure do
     :joule_group_id => 'test-joule-group-id'
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
+
+  # Specifying credentials is required to keep the ruby SDK from trying to find
+  # using "other ways" such as a call to 169.254.169.254 if it's running on ec2
+  ENV['AWS_ACCESS_KEY_ID'] = 'NOTANACCESSKEYID'
+  ENV['AWS_SECRET_ACCESS_KEY'] = 'NOTASECRETKEY'
 end
