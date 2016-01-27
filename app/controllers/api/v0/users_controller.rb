@@ -78,7 +78,7 @@ module Api
         Rails.logger.info "Creating log upload url for key [#{object_key}]"
         # We use an old version of the AWS SDK
         s3 = AWS::S3.new(region:'us-west-2')
-        obj = s3.buckets['remote-logs-staging'].objects[object_key]
+        obj = s3.buckets[Rails.configuration.remote_log_bucket].objects[object_key]
         url = obj.url_for(:write, :content_type => 'text/plain', :expires => LOG_UPLOAD_URL_EXPIRATION)
         Rails.logger.info "Created signed url [{#{url.to_s}}]"
         render_api_response 200, {:upload_url => url.to_s}
