@@ -213,7 +213,7 @@ class StripeOrder < ActiveRecord::Base
     discount_item = stripe_charge.items.detect{|item| item.type == 'discount'}
     purchased_item = stripe_charge.items.detect{|item| item.type == 'sku'}
 
-    analytics_data = {
+    segment_data = {
       event: 'Completed Order Workaround',
       user_id: user_id,
       context: {
@@ -254,14 +254,55 @@ class StripeOrder < ActiveRecord::Base
         ]
       }
     }
-
-    if !Analytics.track(analytics_data)
-      Rails.logger.error("Error: problem tracking #{event_name} #{analytics_data}")
+    if !Analytics.track(segment_data)
+      Rails.logger.error("Error: problem tracking #{event_name} #{segment_data}")
     end
-    Rails.logger.info("Stripe Order #{id} - Sending Event to Segment: #{analytics_data[:event]} with data:\n#{analytics_data}")
+    Rails.logger.info("Stripe Order #{id} - Sending Event to Segment: #{segment_data[:event]} with data:\n#{segment_data}")
     Rails.logger.info("Stripe Order #{id} - JPC #{user.joule_purchase_count} ")
     Analytics.identify(user_id: user_id, traits: {joule_purchase_count: user.joule_purchase_count})
     Analytics.flush()
+
+    ga_common = {
+      'v' => 1,
+      'tid' => ENV['GA_TRACKING_ID'],
+      'cid' => data['google_analytics_client_id'],
+      'uid' => user_id,
+
+      'cu' => 'USD',
+      'ti' => stripe_charge.id
+    }
+    ga_common['cn'] = data['utm_campaign'] if data['utm_campaign']
+    ga_common['cs'] = data['utm_source'] if data['utm_source']
+    ga_common['cm'] = data['utm_medium'] if data['utm_medium']
+    ga_common['cc'] = data['utm_content'] if data['utm_content']
+    ga_common['ck'] = data['utm_term'] if data['utm_term']
+    ga_common['gclid'] = data['gclid'] if data['gclid']
+
+    ga_transaction = {
+      't' => 'transaction',
+      'ts' => 0,
+      'tr' => revenue(stripe_charge, tax_item, discount_item),
+      'tt' => ((tax_item.try(:amount) || 0)/100.0),
+    }.merge(ga_common)
+    ga_product = {
+      't' => 'item',
+      'iq' => 1,
+      'ip' => (purchased_item.amount.to_f/100.0),
+      'in' => purchased_item.description,
+      'ic' => purchased_item.parent
+    }.merge(ga_common)
+
+    [ga_transaction, ga_product].each do |payload|
+      validation_url = 'https://www.google-analytics.com/debug/collect'
+      validate_result = HTTParty.post(validation_url, { body: payload })
+      if !JSON::parse(validate_result.body)['hitParsingResult'].first['valid']
+        Rails.logger.error("Error: invalid payload sent to GA: #{payload.inspect}")
+      end
+
+      submit_url = 'http://www.google-analytics.com/collect'
+      HTTParty.post(submit_url, { body: payload })
+      Rails.logger.info("Stripe Order #{id} - Sending Event to GA: #{payload.inspect}")
+    end
   end
 
   def revenue(stripe_charge, tax_item, discount_item)
