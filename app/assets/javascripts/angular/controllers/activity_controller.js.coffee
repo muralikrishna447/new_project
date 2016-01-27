@@ -501,7 +501,7 @@ window.deepCopy = (obj) ->
 
   # Social share callbacks
   $scope.socialURL = ->
-    "http://chefsteps.com/activities/" + $scope.activity?.slug
+    "https://www.chefsteps.com/activities/" + $scope.activity?.slug
 
   $scope.socialTitle = ->
     $scope.activity.title

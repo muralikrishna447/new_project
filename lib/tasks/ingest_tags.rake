@@ -5,7 +5,7 @@ task :ingest_tags, [:url] => :environment do |t, args|
   added_any = false
   CSV.new(open("#{args[:url]}/export?format=csv"), :headers => :first_row).each do |line|
     row = line.to_hash
-    prefix = 'http://chefsteps.com/activities/' # in the spreadsheet so reviewers can click through
+    prefix = 'https://www.chefsteps.com/activities/' # in the spreadsheet so reviewers can click through
     slug = row['url'][prefix.length..-1]
     activity = Activity.find(slug)
 

@@ -479,7 +479,7 @@
                                               %center{style: "margin-top: 20px;"}
                                                 = link_to(@sender.name, user_profile_url(@sender))
                                                 invites you to join
-                                                %a{href: "http://www.chefsteps.com", style: "word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #e25f25;font-weight: normal;text-decoration: underline;", target: "_self"} ChefSteps
+                                                %a{href: "https://www.chefsteps.com", style: "word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #e25f25;font-weight: normal;text-decoration: underline;", target: "_self"} ChefSteps
                                                 and start cooking smarter.
                                               %hr
                                               -if @custom_text.present?
@@ -487,7 +487,7 @@
                                                   = @custom_text
                                               %hr
                                               %center{style: "clear: both; margin-top: 22px"}
-                                                %a(href="http://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")
+                                                %a(href="https://www.chefsteps.com/invitations/welcome?referrer_id=#{@sender.id}&referred_from=#{@from}")
                                                   %img(src="http://chefsteps.s3.amazonaws.com/static/email/acceptInvitation@2x.png" width="224" height="45")
                                                 %p{style: "margin-top: 22px;"}
                                                   If there's anything we can do to help make your experience with ChefSteps better, please respond to this email and let us know!

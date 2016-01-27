@@ -7,7 +7,7 @@ task :edit_report => :environment do
 
     msg += "\n\n--- #{k.name} (#{k.email}) ---"
     v.each do |s|
-      msg += "\nhttp://chefsteps.com/ingredients/#{s[0].slug}"
+      msg += "\nhttps://www.chefsteps.com/ingredients/#{s[0].slug}"
     end
   
   end

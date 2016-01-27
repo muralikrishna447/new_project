@@ -104,7 +104,7 @@ angular.module('ChefStepsApp').controller 'IngredientShowController', ["$scope",
 
   # Social share callbacks
   $scope.socialURL = ->
-    "http://chefsteps.com/ingredients/" + $scope.ingredient?.slug
+    "https://www.chefsteps.com/ingredients/" + $scope.ingredient?.slug
 
   $scope.socialTitle = ->
     $scope.ingredient.title

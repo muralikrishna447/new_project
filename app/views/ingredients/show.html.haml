@@ -42,26 +42,18 @@
       %div(ng-show="showStubTip()")
         %h3.section-tiny
           %i This page is a stub. You can help!
-        Your contributions to the ChefSteps ingredient wiki are always welcome. Just click the edit button below or
-        %a(href="http://www.chefsteps.com/pages/you-can-contribute-to-the-chefsteps-ingredient-wiki" target="_blank") read this article
-        for more information.
+        Your contributions to the ChefSteps ingredient wiki are always welcome. Just click the edit button below.
 
       %div(ng-show="! showStubTip()")
-        ChefSteps
-        %a(href="/ingredients") ingredient wiki
-        pages are community-edited. If you see incorrect information, please
+        ChefSteps ingredient wiki pages are community-edited. If you see incorrect information, please
         %a(ng-click="startEditMode()") fix it
         or
         %a(ng-click="reportProblem()") report it.
 
-        Your contributions are always welcome, just click the edit button below or
-        %a(href="http://www.chefsteps.com/pages/you-can-contribute-to-the-chefsteps-ingredient-wiki" target="_blank")read this article
-        for more information.
+        Your contributions are always welcome, just click the edit button below.
 
     .span12.well.text-center.wiki-warning(ng-show="! csAuthentication.loggedIn()")
-      ChefSteps
-      %a(href="/ingredients") ingredient wiki
-      pages are community-edited. If you see incorrect information, please
+      ChefSteps ingredient wiki pages are community-edited. If you see incorrect information, please
       %a(ng-click="reportProblem()") report it,
       or
       %a(href="/sign_in") sign in
