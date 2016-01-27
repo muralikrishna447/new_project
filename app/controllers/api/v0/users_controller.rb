@@ -68,8 +68,13 @@ module Api
       def log_upload_url
         # Based on the steps here:
         # http://docs.aws.amazon.com/AmazonS3/latest/dev/UploadObjectPreSignedURLRubySDK.html#UploadObjectPreSignedURLRubySDKV1
-        user_prefix = @user_id_from_token || 'anon'
-        object_key = "user/#{user_prefix}/#{Time.now.to_a.reverse[4..8].join('/')}-#{params[:tag]}"
+        if @user_id_from_token
+          user_prefix = "user/#{@user_id_from_token}"
+        else
+          user_prefix = 'anon'
+        end
+
+        object_key = "#{user_prefix}/#{Time.now.to_a.reverse[4..8].join('/')}-#{params[:tag]}"
         Rails.logger.info "Creating log upload url for key [#{object_key}]"
         # We use an old version of the AWS SDK
         s3 = AWS::S3.new(region:'us-west-2')
