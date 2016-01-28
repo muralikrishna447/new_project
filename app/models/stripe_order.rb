@@ -255,7 +255,7 @@ class StripeOrder < ActiveRecord::Base
       }
     }
     if !Analytics.track(segment_data)
-      Rails.logger.error("Error: problem tracking #{event_name} #{segment_data}")
+      Rails.logger.error("Error: problem tracking #{segment_data[:event]} #{segment_data}")
     end
     Rails.logger.info("Stripe Order #{id} - Sending Event to Segment: #{segment_data[:event]} with data:\n#{segment_data}")
     Rails.logger.info("Stripe Order #{id} - JPC #{user.joule_purchase_count} ")
