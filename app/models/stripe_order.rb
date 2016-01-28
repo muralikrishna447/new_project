@@ -297,11 +297,11 @@ class StripeOrder < ActiveRecord::Base
       validate_result = HTTParty.post(validation_url, { body: payload })
       if !JSON::parse(validate_result.body)['hitParsingResult'].first['valid']
         Rails.logger.error("Error: invalid payload sent to GA: #{payload.inspect}")
+      else
+        submit_url = 'http://www.google-analytics.com/collect'
+        HTTParty.post(submit_url, { body: payload })
+        Rails.logger.info("Stripe Order #{id} - Sending Event to GA: #{payload.inspect}")
       end
-
-      submit_url = 'http://www.google-analytics.com/collect'
-      HTTParty.post(submit_url, { body: payload })
-      Rails.logger.info("Stripe Order #{id} - Sending Event to GA: #{payload.inspect}")
     end
   end
 
