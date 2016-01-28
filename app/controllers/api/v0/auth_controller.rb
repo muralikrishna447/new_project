@@ -149,12 +149,17 @@ module Api
         begin
           path_uri = URI.parse(params[:path])
         rescue URI::InvalidURIError
-          return render_api_response 400, {message: "Path is not valid URI."}
+          return render_api_response 400, {message: "Path [#{params[:path]}] is not valid URI."}
         end
 
         if path_uri.host == Rails.configuration.shopify[:store_domain]
-          # TODO - make return_to dynamic based on path
-          return_to = "https://#{Rails.configuration.shopify[:store_domain]}"
+          params =  Rack::Utils.parse_nested_query(path_uri.query)
+          if params['checkout_url']
+            return_to = params['checkout_url']
+          else
+            return_to = path_uri.to_s
+          end
+
           token =  Shopify::Multipass.for_user(current_api_user, return_to)
           redirect_uri = "https://#{Rails.configuration.shopify[:store_domain]}/account/login/multipass/#{token}"
           render_api_response 200, {redirect: redirect_uri}
