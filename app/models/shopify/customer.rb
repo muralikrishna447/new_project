@@ -45,16 +45,21 @@ class Shopify::Customer
   end
   
   def self.sync_user(user)
-    existing_customer = find_for_user(user)
-    if existing_customer.nil?
-      return create_for_user(user)
+    Rails.logger.info "Syncing user [#{user.id}] to shopify"
+    customer = find_for_user(user)
+    if customer.nil?
+      customer = create_for_user(user)
+      Rails.logger.info "Created customer [#{customer.inspect}]"
     else
-      existing_customer.sync_tags!
+      Rails.logger.info "Found shopify customer [#{customer.inspect}]"
+      customer.sync_tags!
     end
+    Rails.logger.info "Finished syncing user [#{user.id}] to shopify"
+    return customer
   end
   
   def sync_tags!
-    current_tags = @shopify_customer.tags.split(',').sort!
+    current_tags = @shopify_customer.tags.split(',').sort!.collect {|tag| tag.strip}
     tags = Array.new(current_tags)
     tags.delete PREMIUM_MEMBER_TAG
     tags.delete JOULE_PREMIUM_DISCOUNT_TAG
