@@ -1,7 +1,7 @@
 class AnalyticsParametizer
   class << self
     def utm_params
-      ['utm_campaign', 'utm_source', 'utm_medium', 'utm_term', 'utm_content']
+      ['utm_campaign', 'utm_source', 'utm_medium', 'utm_term', 'utm_content', 'gclid']
     end
 
     def cookie_value(url_params, cookies, referrer)
