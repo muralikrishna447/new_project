@@ -1,7 +1,7 @@
 class AnalyticsParametizer
   class << self
     def utm_params
-      ['utm_campaign', 'utm_source', 'utm_medium', 'utm_term', 'utm_content']
+      ['utm_campaign', 'utm_source', 'utm_medium', 'utm_term', 'utm_content', 'gclid']
     end
 
     def cookie_value(url_params, cookies, referrer)
@@ -28,9 +28,9 @@ class AnalyticsParametizer
     def new_session?(referrer)
       unless referrer.nil?
         # blog.chefsteps and store.chefsteps are considered external sites intentionally
-        internal_refs = ['www.chefsteps.com', 'support.chefsteps.com', 'localhost']
-        internal_refs.each do |ref|
-          return false if referrer.include?(ref)
+        internal_subdomains = ['support', 'www']
+        internal_subdomains.each do |sub|
+          return false if referrer.include?("#{sub}.#{Rails.configuration.shared_config['chefsteps_endpoint']}")
         end
       end
 

@@ -35,7 +35,7 @@ describe AnalyticsParametizer do
 
     it "should persist landing page cookie values across page views" do
       entry_cookie = AnalyticsParametizer.cookie_value(utm_params, {}, referrer)
-      new_cookie = AnalyticsParametizer.cookie_value({}, { 'utm' => entry_cookie }, 'https://www.chefsteps.com')
+      new_cookie = AnalyticsParametizer.cookie_value({}, { 'utm' => entry_cookie }, 'www.chefsteps-test-endpoint.com')
       new_values = JSON.parse(new_cookie)
       new_values['utm_source'].should == utm_params['utm_source']
       new_values['utm_medium'].should == utm_params['utm_medium']
