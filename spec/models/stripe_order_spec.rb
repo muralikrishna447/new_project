@@ -225,13 +225,16 @@ describe StripeOrder do
       @stripe_charge = Hashie::Mash.new(id: '123', amount: 20000, items: [{type: 'sku', parent: 'cs10001', description: 'Circulator', amount: 170000}, {type: 'tax', description: 'Tax', amount: 3000}] )
     end
 
-    it 'should call Analytics.track' do
+    it 'should call Analytics.track and GA' do
       Analytics.should_receive(:track).once
       Analytics.should_receive(:identify).once
+      HTTParty.should_receive(:post).with('https://www.google-analytics.com/debug/collect', anything).twice
+        .and_call_original
+      HTTParty.should_receive(:post).with('http://www.google-analytics.com/collect', anything).twice
+
       @stripe_circulator_order.analytics(@stripe_charge)
     end
   end
-
 
   context "class methods" do
     before :each do
