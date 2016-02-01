@@ -157,7 +157,7 @@ module Api
           if params['checkout_url']
             return_to = params['checkout_url']
           else
-            return_to = path_uri.to_s
+            return_to = "https://#{Rails.configuration.shopify[:store_domain]}/account"
           end
 
           token =  Shopify::Multipass.for_user(current_api_user, return_to)
