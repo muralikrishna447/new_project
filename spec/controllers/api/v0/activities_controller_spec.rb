@@ -242,6 +242,29 @@ describe Api::V0::ActivitiesController do
       end
     end
 
+    context 'other cancan levels can read unpublished' do
+      def try_level(level)
+        @user = Fabricate :user, name: 'foober', email: 'foober@chefsteps.com', password: '678910', role: level
+        sign_in @user
+        controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+        get :show, id: @activity_unpublished
+        expect_not_trimmed(response)
+      end
+
+      it 'collaborator' do
+        try_level('collaborator')
+      end
+
+      it 'moderator' do
+        try_level('moderator')
+      end
+
+      # Contractor role seems really fubar, it has less ability than a generic user, so ignoring for now
+      xit 'contractor' do
+        try_level('contractor')
+      end
+    end
+
     # already enrolled but not premium
 
     it 'should return an activity if is_google' do
