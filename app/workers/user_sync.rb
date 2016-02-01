@@ -27,10 +27,10 @@ class UserSync
 
   def sync
     sync_mailchimp
+    sync_shopify
   end
 
   def sync_mailchimp(options = {premium: true, joule: true})
-
     list_id = Rails.configuration.mailchimp[:list_id]
     member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
     @logger.info member_info.inspect
@@ -63,6 +63,9 @@ class UserSync
     add_to_groups(groups)
   end
 
+  def sync_shopify
+    Shopify::Customer.sync_user @user
+  end
 
   private
 

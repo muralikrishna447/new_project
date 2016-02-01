@@ -74,6 +74,15 @@ Spork.prefork do
         with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.8.9'}).
         to_return(:status => 200, :body => "", :headers => {})
 
+      WebMock.stub_request(:post, /.*api.segment\.io.*/).
+        to_return(:status => 200, :body => "", :headers => {})
+
+      WebMock.stub_request(:post, "https://www.google-analytics.com/debug/collect").
+        to_return(:status => 200, :body => '{ "hitParsingResult": [ { "valid": true } ] }', :headers => {})
+
+      WebMock.stub_request(:post, "http://www.google-analytics.com/collect").
+        to_return(:status => 200, :body => "", :headers => {})
+
       # Adding Webmock, which delightfully alerts you to any live http calls happening during specs,
       # but we already have existing mock strategies for other services, so let them through.
       WebMock.disable_net_connect!(:allow => [/mixpanel/])
