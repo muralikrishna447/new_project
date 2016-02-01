@@ -49,22 +49,6 @@ Spork.prefork do
     config.before(:suite) do
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.clean_with(:truncation)
-
-      # Aggressively stub out all Algolia calls as they happen as side effects to activity saves
-      # not fun to have to turn them off every place in specs where that happens.
-      WebMock.stub_request(:any, /.*\.algolia\.(io|net).*/).to_return(:body => '{ "items": [] }')
-
-      WebMock.stub_request(:get, /http:\/\/\/bloomAPI\/encrypt\?apiKey=xchefsteps/).
-        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.8.9'}).
-        to_return(:status => 200, :body => "", :headers => {})
-
-      WebMock.stub_request(:get, /http:\/\/\/bloomAPI\/users.*\/initial\?apiKey=xchefsteps/).
-        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.8.9'}).
-        to_return(:status => 200, :body => "", :headers => {})
-
-      # Adding Webmock, which delightfully alerts you to any live http calls happening during specs,
-      # but we already have existing mock strategies for other services, so let them through.
-      WebMock.disable_net_connect!(:allow => [/mixpanel/])
     end
 
     config.before(:all, js: true) do
@@ -77,6 +61,31 @@ Spork.prefork do
 
     config.before(:each) do
       DatabaseCleaner.start
+      WebMock.reset!
+      # Aggressively stub out all Algolia calls as they happen as side effects to activity saves
+      # not fun to have to turn them off every place in specs where that happens.
+      WebMock.stub_request(:any, /.*\.algolia\.(io|net).*/).to_return(:body => '{ "items": [] }')
+
+      WebMock.stub_request(:get, /http:\/\/\/bloomAPI\/encrypt\?apiKey=xchefsteps/).
+        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.8.9'}).
+        to_return(:status => 200, :body => "", :headers => {})
+
+      WebMock.stub_request(:get, /http:\/\/\/bloomAPI\/users.*\/initial\?apiKey=xchefsteps/).
+        with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.8.9'}).
+        to_return(:status => 200, :body => "", :headers => {})
+
+      WebMock.stub_request(:post, /.*api.segment\.io.*/).
+        to_return(:status => 200, :body => "", :headers => {})
+
+      WebMock.stub_request(:post, "https://www.google-analytics.com/debug/collect").
+        to_return(:status => 200, :body => '{ "hitParsingResult": [ { "valid": true } ] }', :headers => {})
+
+      WebMock.stub_request(:post, "http://www.google-analytics.com/collect").
+        to_return(:status => 200, :body => "", :headers => {})
+
+      # Adding Webmock, which delightfully alerts you to any live http calls happening during specs,
+      # but we already have existing mock strategies for other services, so let them through.
+      WebMock.disable_net_connect!(:allow => [/mixpanel/])
     end
 
     config.after(:each) do
@@ -92,7 +101,9 @@ Spork.prefork do
   end
   Capybara.javascript_driver = :poltergeist
   Capybara.default_wait_time = 5
-
+  
+  # Shopify test setup
+  ShopifyAPI::Mock::Fixture.path = File.join(Rails.root, 'spec', 'shopify', 'fixtures')
 end
 
 Spork.each_run do

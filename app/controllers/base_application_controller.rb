@@ -122,6 +122,15 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
+  helper_method :is_hosted_env
+  def is_hosted_env
+    if Rails.env.production? || Rails.env.staging? || Rails.env.staging2?
+      true
+    else
+      false
+    end
+  end
+
   private
   def mixpanel
     @mixpanel ||= ChefstepsMixpanel.new

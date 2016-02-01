@@ -42,6 +42,38 @@ angular.module('ChefStepsApp').run ["$rootScope", ($rootScope) ->
     environment: null # This is the rails environment that is currently running
 ]
 
+# Workaround for https://github.com/angular/angular.js/issues/4776
+# This issue was causing errors and dysfunctional back button trying to go from classes index -> class -> back
+# Fixed in angular 1.4.8 but upgrading naively broke activity editing.
+@app.config ['$provide', ($provide) ->
+  $provide.decorator '$location', ["$delegate", "$browser", "$window", ($delegate, $browser, $window) ->
+
+    beginsWith = (begin, whole) ->
+      if whole.indexOf(begin) == 0
+        return whole.substr(begin.length)
+      return
+
+    stripHash = (url) ->
+      index = url.indexOf('#')
+      if index == -1 then url else url.substr(0, index)
+
+    stripFile = (url) ->
+      url.substr 0, stripHash(url).lastIndexOf('/') + 1
+
+    appBase = stripHash($browser.url())
+    appBaseNoFile = stripFile(appBase)
+
+    origParse = $delegate.$$parse
+    $delegate.$$parse = (url) ->
+      withoutBaseUrl = beginsWith(appBase, url) || beginsWith(appBaseNoFile, url)
+      if withoutBaseUrl
+        originalParse(url)
+      else
+        $window.location = url
+
+    return $delegate
+  ]
+]
 
 # For google plus
 angular.module('ChefStepsApp').run ["$window", "$rootScope", "csFacebook", ($window, $rootScope, csFacebook) ->

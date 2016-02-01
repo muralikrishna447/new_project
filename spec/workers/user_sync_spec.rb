@@ -1,6 +1,5 @@
 describe UserSync do
   before :each do
-    WebMock.reset!
     @user_id = 100
     @user = Fabricate :user, id: @user_id, email: 'johndoe@chefsteps.com'
     @user_sync = UserSync.new(@user_id)
@@ -38,6 +37,11 @@ describe UserSync do
 
     it 'should not sync premium status to mailchimp when user is not in mailchimp' do
       setup_member_info_not_in_mailchimp
+      @user_sync.sync_mailchimp({premium: true})
+    end
+    
+    it 'should not sync premium status to mailchimp when user has been cleaned from mailchimp' do
+      setup_cleaned_member_premium false
       @user_sync.sync_mailchimp({premium: true})
     end
     
@@ -89,8 +93,20 @@ describe UserSync do
       @user_sync.sync_mailchimp({premium: true})
     end
   
+    it 'should handle unsubscribed members' do
+      setup_member_unsubscribed
+      setup_premium_user
+      @user_sync.sync_mailchimp({premium: true})
+    end
+
     def setup_member_premium(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:premium_group_id], UserSync::PREMIUM_GROUP_NAME, in_group)
+      setup_member_info(Rails.configuration.mailchimp[:premium_group_id], 
+        UserSync::PREMIUM_GROUP_NAME, in_group, 'subscribed')
+    end
+    
+    def setup_cleaned_member_premium(in_group)
+      setup_member_info(Rails.configuration.mailchimp[:premium_group_id], 
+        UserSync::PREMIUM_GROUP_NAME, in_group, 'cleaned')
     end
 
     def setup_premium_user
@@ -101,7 +117,8 @@ describe UserSync do
     end
 
     def setup_member_joule_purchase(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:joule_group_id], UserSync::JOULE_PURCHASE_GROUP_NAME, in_group)
+      setup_member_info(Rails.configuration.mailchimp[:joule_group_id], 
+        UserSync::JOULE_PURCHASE_GROUP_NAME, in_group, 'subscribed')
     end
 
     def setup_joule_purchaser
@@ -112,17 +129,32 @@ describe UserSync do
     end
   end
 
-  def setup_member_info(group_id, name, in_group)
-    result = {:success_count => 1, :data => [{"GROUPINGS"=>[{"id"=>group_id, "name"=>"Doesn't matter", "groups"=>[{"name"=>name, "interested"=>in_group}]}]}]}
+  def setup_member_info(group_id, name, in_group, status)
+    result = {
+      :success_count => 1, 
+      :data => [{"GROUPINGS"=>[{"id"=>group_id, "name"=>"Doesn't matter", 
+                  "groups"=>[{"name"=>name, "interested"=>in_group}]}],
+                 "status" => status }]}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
        with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
        to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
   def setup_member_info_not_in_mailchimp
+    result = {"success_count"=>0, "error_count"=>1, "errors"=>[{"email"=>{"email"=>"a@b.com"}, "error"=>"The id passed does not exist on this list", "code"=>232}], "data"=>[]}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
        with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
-       to_return(:status => 200, :body => {:success_count => 0}.to_json, :headers => {})
+       to_return(:status => 200, :body => result.to_json, :headers => {})
+  end
+
+  def setup_member_unsubscribed
+    result = {"success_count"=>1, "error_count"=>0,
+      "errors"=>[], "data"=>[{"email"=>"first@chocolateyshatner.com",
+      "status"=>"unsubscribed"}]}
+
+    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info")
+    .with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
+    to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
   def stub_mailchimp_post(group_id, name)

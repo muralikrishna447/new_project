@@ -48,37 +48,58 @@ module Api
       end
 
       def show
-        @activity = Activity.find(params[:id])
+        begin
+          @activity = Activity.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+          render_api_response 404, {message:'Activity not found'}
+          return
+        end
 
         http_auth =  request.headers['HTTP_AUTHORIZATION']
         ensure_authorized(false) if http_auth.present?
 
+        @user = nil
         if @user_id_from_token
           @user = User.find @user_id_from_token
-          if @user && @user.role == 'admin'
-            render json: @activity, serializer: Api::ActivitySerializer
-          else
-            if @activity.show_only_in_course
-              render json: @activity, serializer: Api::ActivityAssemblySerializer
-            else
-              render json: @activity, serializer: Api::ActivitySerializer
+        end
+        user_premium = @user && @user.premium?
+
+        can_see = false
+        trimmed = false
+
+        if @activity.published
+          # Everyone can see any published recipe, but if it is a premium recipe and not
+          # a premium user, they get the trimmed version.
+          # We also allow prerender.io to see everything in order to implement
+          # First Click Free (https://support.google.com/news/publisher/answer/40543?topic=11707)
+          can_see = true
+          trimmed = @activity.premium && (! user_premium) && (! is_static_render)
+
+          # Grandfather clause. User enrolled in Shrimp Brains class when it was
+          # free, never bought a class so they aren't premium, but now we decided to make Shrimp Brains premium.
+          # They should still have access.
+          #
+          # This is potentially a bit slow to check b/c it involved a recursive walk of
+          # the assembly tree so only check it if necessary
+          if trimmed && @user
+            assembly = @activity.containing_course
+            if assembly && @user.class_enrollment(assembly)
+              trimmed = false
             end
           end
         else
-          if @activity.published
-            if is_google || is_static_render
-              render json: @activity, serializer: Api::ActivitySerializer
-            else
-              if @activity.show_only_in_course
-                render json: @activity, serializer: Api::ActivityAssemblySerializer
-              else
-                render json: @activity, serializer: Api::ActivitySerializer
-              end
-            end
-          else
-            render_unauthorized
-          end
+          # Unpublished stuff can only be seen by admins or the activity's creator
+          can_see = @user && (@user.role == 'admin' || @activity.read_attribute(:creator) == @user.id)
         end
+
+        if can_see
+          except = trimmed ? [:steps, :ingredients, :equipment] : []
+          render json: @activity, serializer: Api::ActivitySerializer, except: except
+        else
+          render_unauthorized
+        end
+
+        # TODO logging
       end
 
       def likes

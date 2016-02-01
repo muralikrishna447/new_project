@@ -2,7 +2,7 @@ module Api
   module V0
     class AuthController < BaseController
       before_filter :ensure_authorized_service, only: [:validate]
-      before_filter :ensure_authorized, only: [:logout]
+      before_filter :ensure_authorized, only: [:logout, :external_redirect]
       instrument_action :authenticate
 
       def authenticate
@@ -139,6 +139,33 @@ module Api
           end
         end
 
+      end
+
+      # Used for SSO with third-party services
+      def external_redirect
+        path = params[:path]
+        logger.info "[redirect] Determing external redirect for path [#{path}]"
+
+        begin
+          path_uri = URI.parse(params[:path])
+        rescue URI::InvalidURIError
+          return render_api_response 400, {message: "Path [#{params[:path]}] is not valid URI."}
+        end
+
+        if path_uri.host == Rails.configuration.shopify[:store_domain]
+          params =  Rack::Utils.parse_nested_query(path_uri.query)
+          if params['checkout_url']
+            return_to = params['checkout_url']
+          else
+            return_to = path_uri.to_s
+          end
+
+          token =  Shopify::Multipass.for_user(current_api_user, return_to)
+          redirect_uri = "https://#{Rails.configuration.shopify[:store_domain]}/account/login/multipass/#{token}"
+          render_api_response 200, {redirect: redirect_uri}
+        else
+          return render_api_response 404, {message: "No redirect configured for path [#{path}]."}
+        end
       end
 
       # To be used by the Messaging Service

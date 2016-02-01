@@ -2,7 +2,7 @@ describe Api::V0::ComponentsController do
 
   before :each do
     @admin_user = Fabricate :user, name: 'Admin User', email: 'admin@chefsteps.com', role: 'admin'
-    @component = Fabricate :component, component_type: 'matrix', meta: { size: 'standard' }
+    @component = Fabricate :component, component_type: 'matrix', meta: { size: 'standard' }, name: 'myComponent'
     sign_in @admin_user
     controller.request.env['HTTP_AUTHORIZATION'] = @admin_user.valid_website_auth_token.to_jwt
   end
@@ -14,11 +14,31 @@ describe Api::V0::ComponentsController do
   end
 
   # GET /api/v0/components/:id
-  it 'should get a component' do
+  it 'should get a component by id' do
     get :show, id: @component.id
     response.should be_success
     component = JSON.parse(response.body)
     component['componentType'].should eq('matrix')
+  end
+
+  # GET /api/v0/components/:slug
+  it 'should get a component by slug' do
+    get :show, id: @component.slug
+    response.should be_success
+    component = JSON.parse(response.body)
+    component['componentType'].should eq('matrix')
+  end
+
+  # GET /api/v0/components/:id
+  it 'should return 404 when component not found by id' do
+    get :show, id: 9999
+    response.code.should == '404'
+  end
+
+  # GET /api/v0/components/:slug
+  it 'should return 404 when component not found by slug' do
+    get :show, id: 'not-a-slug'
+    response.code.should == '404'
   end
 
   # POST /api/v0/components

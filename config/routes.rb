@@ -40,6 +40,7 @@ Delve::Application.routes.draw do
   match 'hot', to: 'bloom#hot'
 
   get '/blog', to: redirect('http://blog.chefsteps.com/')
+  get '/presskit', to: redirect('/press')
 
   resources :featured, only: [:index] do
     collection do
@@ -370,6 +371,7 @@ Delve::Application.routes.draw do
         get :me, on: :collection
         get :shown_terms, on: :collection
         post :international_joule, on: :collection
+        get :log_upload_url, on: :collection
       end
 
       resources :circulators, only: [:index, :create, :destroy] do
@@ -377,6 +379,7 @@ Delve::Application.routes.draw do
       end
 
       get 'firmware/latest_version', to: 'firmware#latest_version'
+      get 'auth/external_redirect', to: 'auth#external_redirect'
 
       namespace :shopping do
         resources :products do
@@ -385,6 +388,7 @@ Delve::Application.routes.draw do
         resources :users do
           post :multipass, on: :collection
           get :multipass, on: :collection
+          get :add_to_cart, on: :collection
         end
       end
 

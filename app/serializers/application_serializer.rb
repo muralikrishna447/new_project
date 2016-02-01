@@ -7,5 +7,5 @@ class ApplicationSerializer < ActiveModel::Serializer
   else
     host = "www.chefsteps.com"
   end
-  Rails.application.routes.default_url_options = {:host => host}
+  Rails.application.routes.default_url_options.merge!({:host => host})
 end

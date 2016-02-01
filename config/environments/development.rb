@@ -85,4 +85,6 @@ Delve::Application.configure do
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 
+  ENV['AWS_ACCESS_KEY_ID'] = 'AKIAI3LT2ZFRGC25RWQA'
+  ENV['AWS_SECRET_ACCESS_KEY'] = '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'
 end

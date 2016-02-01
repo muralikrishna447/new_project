@@ -166,8 +166,6 @@ class StripeOrder < ActiveRecord::Base
         # really resolve this issue.
         Rails.logger.info("Stripe Order #{id} - Sending Analytics")
         self.analytics(stripe_charge)
-        Analytics.flush()
-
       else
         # We failed to collect the money for some reason
         Rails.logger.info("Stripe Order #{id} - Failed to move into status paid")
@@ -215,7 +213,9 @@ class StripeOrder < ActiveRecord::Base
     discount_item = stripe_charge.items.detect{|item| item.type == 'discount'}
     purchased_item = stripe_charge.items.detect{|item| item.type == 'sku'}
 
-    analytics_data = {user_id: user_id,
+    segment_data = {
+      event: 'Completed Order Workaround',
+      user_id: user_id,
       context: {
         'GoogleAnalytics' => {
           clientId: data['google_analytics_client_id']
@@ -228,7 +228,7 @@ class StripeOrder < ActiveRecord::Base
           content: data['utm_content']
         },
         referrer: {
-          link: data['referer']
+          url: data['referrer']
         }
       },
       properties: {
@@ -254,15 +254,55 @@ class StripeOrder < ActiveRecord::Base
         ]
       }
     }
-
-    ['Completed Order', 'Completed Order Workaround'].each do |event_name|
-      Analytics.track(analytics_data.merge(event: event_name))
-      Rails.logger.info("Stripe Order #{id} - Sending Event: #{event_name} with data:\n#{analytics_data.merge(event: event_name)}")
+    if !Analytics.track(segment_data)
+      Rails.logger.error("Error: problem tracking #{segment_data[:event]} #{segment_data}")
     end
-
-    # Send joule purchase count as a user property
+    Rails.logger.info("Stripe Order #{id} - Sending Event to Segment: #{segment_data[:event]} with data:\n#{segment_data}")
     Rails.logger.info("Stripe Order #{id} - JPC #{user.joule_purchase_count} ")
     Analytics.identify(user_id: user_id, traits: {joule_purchase_count: user.joule_purchase_count})
+    Analytics.flush()
+
+    ga_common = {
+      'v' => 1,
+      'tid' => ENV['GA_TRACKING_ID'],
+      'cid' => data['google_analytics_client_id'],
+      'uid' => user_id,
+
+      'cu' => 'USD',
+      'ti' => stripe_charge.id
+    }
+    ga_common['cn'] = data['utm_campaign'] if data['utm_campaign']
+    ga_common['cs'] = data['utm_source'] if data['utm_source']
+    ga_common['cm'] = data['utm_medium'] if data['utm_medium']
+    ga_common['cc'] = data['utm_content'] if data['utm_content']
+    ga_common['ck'] = data['utm_term'] if data['utm_term']
+    ga_common['gclid'] = data['gclid'] if data['gclid']
+
+    ga_transaction = {
+      't' => 'transaction',
+      'ts' => 0,
+      'tr' => revenue(stripe_charge, tax_item, discount_item),
+      'tt' => ((tax_item.try(:amount) || 0)/100.0),
+    }.merge(ga_common)
+    ga_product = {
+      't' => 'item',
+      'iq' => 1,
+      'ip' => (purchased_item.amount.to_f/100.0),
+      'in' => purchased_item.description,
+      'ic' => purchased_item.parent
+    }.merge(ga_common)
+
+    [ga_transaction, ga_product].each do |payload|
+      validation_url = 'https://www.google-analytics.com/debug/collect'
+      validate_result = HTTParty.post(validation_url, { body: payload })
+      if !JSON::parse(validate_result.body)['hitParsingResult'].first['valid']
+        Rails.logger.error("Error: invalid payload sent to GA: #{payload.inspect}")
+      else
+        submit_url = 'http://www.google-analytics.com/collect'
+        HTTParty.post(submit_url, { body: payload })
+        Rails.logger.info("Stripe Order #{id} - Sending Event to GA: #{payload.inspect}")
+      end
+    end
   end
 
   def revenue(stripe_charge, tax_item, discount_item)

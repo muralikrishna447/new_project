@@ -100,10 +100,11 @@ Delve::Application.configure do
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 
-  config.middleware.insert_before('Rack::Prerender', 'PreauthEnforcer', [/.*/], [/^\/tpq/])
+  config.middleware.insert_before('Rack::Prerender', 'PreauthEnforcer', [/.*/], [/^\/playground/])
 
   config.middleware.insert_before 'PreauthEnforcer', Rack::HostRedirect, {
     'chefsteps.com' => 'www.chefsteps.com'
   }
 
+  Rails.application.routes.default_url_options[:protocol] = 'https'
 end
