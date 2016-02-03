@@ -337,7 +337,7 @@ describe Api::V0::AuthController do
     end
 
   end
-  context 'GET /external_redirect', :focus => true do
+  context 'GET /external_redirect' do
     before :each do
       request.env['HTTP_AUTHORIZATION'] = @aa.current_token.to_jwt
     end
