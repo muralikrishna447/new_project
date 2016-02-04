@@ -395,6 +395,10 @@ Delve::Application.routes.draw do
       resources :charges, only: [:create] do
         put :redeem, on: :member
       end
+      
+      resource :webhooks, only: [:shopify] do
+        post :shopify, on: :collection
+      end
 
       resources :products, only: [:index]
 
