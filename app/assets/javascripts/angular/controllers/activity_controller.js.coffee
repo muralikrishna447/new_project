@@ -690,7 +690,7 @@ window.deepCopy = (obj) ->
 
   # Only ChefSteps content that looks like a recipe
   $scope.shouldIncludeJSONLD = ->
-    ($scope.activity.ingredients.length > 0) && ! $scope.creator
+    ($scope.activity.ingredients?.length > 0) && ! $scope.creator
 
   renderedText = (x) ->
     return '' if ! x
@@ -711,7 +711,7 @@ window.deepCopy = (obj) ->
       .map((step) -> renderedText step.title + " " + renderedText step.directions)
       .value()
 
-    image = csFilepickerMethods.convert(ActivityMethods.itemImageFpfile(a, 'hero').url,
+    image = csFilepickerMethods.convert(ActivityMethods.itemImageFpfile(a, 'hero')?.url,
         width: 1200
     )
 
