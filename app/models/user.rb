@@ -41,14 +41,6 @@ class User < ActiveRecord::Base
 
   serialize :viewed_activities, Array
 
-  # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }
-  # scope :where_all, ->(column, key, value) { where("? = ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }
-  # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore LIKE ?)", value, '%' + key + '%') }
-  # scope :where_all, ->(column, key, value) { where("? = ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore LIKE ?)", value, '%' + key + '%') }
-
-  # scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", '%' + value + '%', key) }
-  # scope :where_all, ->(column, key, value) { where("? LIKE ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", '%' + value + '%', key) }
-
   scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
   scope :where_all, ->(column, key, value) { where("? LIKE ALL (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
 
