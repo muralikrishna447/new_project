@@ -92,10 +92,8 @@ class BaseApplicationController < ActionController::Base
     email_list_signup(user, source) unless optout
     mixpanel.alias(user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
     mixpanel.track(user.id, 'Signed Up', {source: 'api'})
-    # Temporarily disabling because the worker is broken due to problems in bloom
     Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
     Librato.increment 'user.signup', sporadic: true
-
   end
 
   def email_list_signup(user, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
