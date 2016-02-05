@@ -306,35 +306,6 @@ class User < ActiveRecord::Base
     users
   end
 
-  def self.export_top_users
-    data = []
-    users = User.with_views_greater_than(500).first(100)
-    users.each do |user|
-      unless (user.email.include? "@chefsteps.com") || (user.email.include? "desunaito@gmail.com")
-        data << user.email
-        puts "Importing user:"
-        puts user
-      end
-    end
-    open('///Users/hnguyen/Desktop/most_active_users', 'w') do |f|
-      f << data.to_json
-    end
-  end
-  def self.export_top_users_2
-    data = []
-    users = User.with_views_greater_than(500).last(500)
-    users.each do |user|
-      unless (user.email.include? "@chefsteps.com") || (user.email.include? "desunaito@gmail.com")
-        data << user.email
-        puts "Importing user:"
-        puts user
-      end
-    end
-    open('///Users/hnguyen/Desktop/most_active_users_2', 'w') do |f|
-      f << data.to_json
-    end
-  end
-
   def remember_token
     if needs_special_terms
       token = SecureRandom.base64
