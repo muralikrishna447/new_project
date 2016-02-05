@@ -66,6 +66,7 @@ class User < ActiveRecord::Base
 
   ROLES = %w[admin contractor moderator collaborator user banned]
 
+
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
   end
@@ -91,13 +92,10 @@ class User < ActiveRecord::Base
   end
 
   def viewed_activities_in_course(course)
-    # events.scoped_by('Inclusion', 'show').where(inclusions: {course_id: 8}).map(&:trackable).select{|a| a.published=true}.uniq
-    # course.inclusions.joins(:events).where('events.user_id = ?', self.id).map(&:activity).select{|a| a.published=true}.uniq
     course.activities.joins(:events).where('events.user_id = ?', self.id).select{|a| a.published=true}.uniq
   end
 
   def last_viewed_activity_in_course(course)
-    # last_viewed = events.scoped_by('Inclusion', 'show').map(&:trackable).select{|i| i.course_id == course.id}.first
     last_viewed = events.scoped_by('Activity', 'show').order('created_at asc').where(trackable_id: course.activity_ids).last
     if last_viewed
       last_viewed.trackable
@@ -110,22 +108,13 @@ class User < ActiveRecord::Base
 
   def received_stream
     events.timeline.where(action: 'received_create').group_by{|e| [e.group_type, e.group_name]}
-    # timeline.group_by{|e| e.group_name}
   end
 
   def created_stream
     events.includes(:trackable).timeline.where('action != ?', 'received_create').group_by{|e| [e.group_type, e.group_name]}
-    # timeline.group_by{|e| e.group_name}
   end
 
   def stream
-    # stream = []
-    # followings.each do |following|
-    #   following.created_stream.each do |group|
-    #     stream << group
-    #   end
-    # end
-    # stream.sort_by{|group| group[1].first.created_at}.reverse
     stream_events = []
     followings.each do |following|
       following.events.includes(:trackable).timeline.where('action != ?', 'received_create').each do |event|
