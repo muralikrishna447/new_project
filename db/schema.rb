@@ -740,7 +740,6 @@ ActiveRecord::Schema.define(:version => 20160108005443) do
     t.boolean  "used_circulator_discount",                                    :default => false
     t.boolean  "needs_special_terms",                                         :default => false
     t.datetime "deleted_at"
-    t.datetime "joule_purchased_at"
     t.datetime "first_joule_purchased_at"
     t.integer  "joule_purchase_count",                                        :default => 0
   end
