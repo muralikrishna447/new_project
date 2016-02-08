@@ -3,18 +3,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   skip_before_filter :authenticate_cors_user
 
-  # def facebook
-  #   auth = request.env["omniauth.auth"]
-  #   @user = User.facebook_connected_user(auth)
-
-  #   if @user
-  #     sign_in_and_redirect @user, event: :authentication
-  #   else
-  #     session["devise.facebook_data"] = auth
-  #     redirect_to complete_registration_url(@user)
-  #   end
-  # end
-
   def facebook
     unless request.xhr?
       standard_login
