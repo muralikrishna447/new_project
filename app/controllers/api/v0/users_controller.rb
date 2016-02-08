@@ -29,6 +29,7 @@ module Api
         # TODO - deprecate this branch completely, in the short-run we need to
         # verify that this branch is not used.
         if params[:user][:provider] && params[:user][:provider] == 'facebook'
+          Rails.logger.info "DEPRECATED: facebook branch of UsersController#create"
           render_unauthorized
         else
           @user = User.new(params[:user])
