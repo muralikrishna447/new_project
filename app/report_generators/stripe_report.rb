@@ -108,9 +108,10 @@
       csv_file = CSV.generate(col_sep: "\t") do |tsv|
         document.each{|d| tsv << d }
       end
-      a = File.new('tmp/for_ed_quickbook.tsv', 'wb')
-      a.puts csv_file
-      a.close
+      # For short circuiting and just outputting a file to be parsed later locally.
+      # a = File.new('tmp/for_ed_quickbook.tsv', 'wb')
+      # a.puts csv_file
+      # a.close
 
       csv_file
     end
