@@ -98,7 +98,7 @@ namespace :reports do
           # Amount: #{(charge.amount/100.0).to_f}"
         end
       end
-      file = File.new('tmp/stripe_data.csv', 'wb')
+      file = File.new('tmp/stripe_data_report.csv', 'wb')
       file.puts csv_data
       file.close
       ReportMailer.send_report_file('accounts@chefsteps.com', 'avalara_data', 'here is the stripe data', 'stripe_data.csv', csv_data).deliver
@@ -106,7 +106,7 @@ namespace :reports do
 
     def tax_from(charge)
       if charge.description.present? && charge.description.include?("WA state")
-        (charge.amount.to_i/100.0)
+        (charge.amount.to_i/100.0)*0.095
       else
         0.0
       end

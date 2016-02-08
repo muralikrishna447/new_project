@@ -108,6 +108,10 @@
       csv_file = CSV.generate(col_sep: "\t") do |tsv|
         document.each{|d| tsv << d }
       end
+      # For short circuiting and just outputting a file to be parsed later locally.
+      # a = File.new('tmp/for_ed_quickbook.tsv', 'wb')
+      # a.puts csv_file
+      # a.close
       csv_file
     end
 
@@ -143,35 +147,51 @@
         "SV201"
       elsif stripe_record["description"].include?("Coffee")
         "Coffee"
+      elsif stripe_record["description"].include?("Premium")
+        "Premium"
+      elsif stripe_record["description"].include?("Joule")
+        "Joule"
       else
         "Undefined"
       end
     end
 
-    def stripe_fee(charge)
+    def stripe_fee(charge, stripe_order=nil)
       charge_amount = (charge["amount"].to_i/100.00)
       (charge_amount*@per_transaction_percent+@transaction_fee).round(2)
     end
 
-    def sales_tax(charge)
-      charge_amount = (charge["amount"].to_i/100.00)
-      if charge["description"].include?("WA state")
-        -1*(charge_amount-(charge_amount/@sales_tax)).round(2)
+    def sales_tax(charge, stripe_order=nil)
+      if stripe_order
+        -1*tax_charged(stripe_order)
       else
-        0
+        charge_amount = (charge["amount"].to_i/100.00)
+        if charge["description"].include?("WA state")
+          -1*(charge_amount-(charge_amount/sales_tax_from_date(charge))).round(2)
+        else
+          0
+        end
       end
     end
 
-    def revenue(charge)
+    def sales_tax_from_date(charge)
+      if Time.at(charge["created"]) < Time.parse("2015-04-01").beginning_of_day
+        1.095
+      else
+        1.096
+      end
+    end
+
+    def revenue(charge, stripe_order=nil)
       charge_amount = (charge["amount"].to_i/100.00)
-      -1*(charge_amount + sales_tax(charge))
+      -1*(charge_amount + sales_tax(charge, stripe_order))
     end
 
-    def total_deposit(charge)
-      -1*(revenue(charge) + sales_tax(charge)) - stripe_fee(charge)
+    def total_deposit(charge, stripe_order=nil)
+      -1*(revenue(charge, stripe_order) + sales_tax(charge, stripe_order)) - stripe_fee(charge, stripe_order)
     end
 
-    def refund_fee(charge)
+    def refund_fee(charge, stripe_order=nil)
       refund_at = (charge["refunds"].first.present? ? Time.at(charge["refunds"].first["created"]) : nil)
       charge_amount = (charge["amount"].to_i/100.00)
       refund_amount = (charge["amount_refunded"].to_i/100.00)
@@ -186,28 +206,54 @@
       end
     end
 
-    def refund_tax(charge)
-      refund_at = (charge["refunds"].first.present? ? Time.at(charge["refunds"].first["created"]) : nil)
-      sales_tax_paid = charge["description"].include?("WA state")
-      refund_amount = (charge["amount_refunded"].to_i/100.00)
-      if refund_at
-        if sales_tax_paid
-          (refund_amount-(refund_amount/@sales_tax)).round(2)
+    def refund_tax(charge, stripe_order=nil)
+      if stripe_order.blank?
+        refund_at = (charge["refunds"].first.present? ? Time.at(charge["refunds"].first["created"]) : nil)
+        sales_tax_paid = charge["description"].include?("WA state")
+        refund_amount = (charge["amount_refunded"].to_i/100.00)
+        if refund_at
+          if sales_tax_paid
+            (refund_amount-(refund_amount/sales_tax_from_date(charge))).round(2)
+          else
+            0
+          end
         else
           0
         end
       else
-        0
+        refund_at = (charge["refunds"].first.present? ? Time.at(charge["refunds"].first["created"]) : nil)
+        charge_amount = (charge["amount"].to_i/100.00)
+        refund_amount = (charge["amount_refunded"].to_i/100.00)
+        if charge_amount == refund_amount
+          tax_charged(stripe_order)
+        else
+          if item_price(stripe_order) != charge_amount
+            tax = (charge_amount/item_price(stripe_order)).round(4)-1
+            (refund_amount*tax).round(2)
+          else
+            0
+          end
+        end
       end
     end
 
-    def refund_revenue(charge)
-      refund_amount = (charge["amount_refunded"].to_i/100.00)
-      refund_amount - refund_tax(charge)
+    def item_price(stripe_order)
+      purchased = stripe_order.items.detect{|item| item.type == 'sku'}
+      discount = stripe_order.items.detect{|item| item.type == 'discount'}
+      if discount
+        ((purchased.amount-discount.amount)/100.0).round(2)
+      else
+        (purchased.amount/100.0).round(2)
+      end
     end
 
-    def total_refund(charge)
-      -1*(refund_revenue(charge) + refund_tax(charge)) - refund_fee(charge)
+    def refund_revenue(charge, stripe_order=nil)
+      refund_amount = (charge["amount_refunded"].to_i/100.00)
+      refund_amount - refund_tax(charge, stripe_order)
+    end
+
+    def total_refund(charge, stripe_order=nil)
+      -1*(refund_revenue(charge, stripe_order) + refund_tax(charge, stripe_order)) - refund_fee(charge, stripe_order)
     end
 
     def generate_csv(start_time, end_time)
@@ -325,26 +371,17 @@
         gather_charges({paid:true, created: {gte: Time.parse("2013-10-01").beginning_of_month.to_i, lte: Time.now.to_i}}) do |charge|
           next if charge["description"].blank?
           value = {}
-          # Base values
           value.merge!(charge.to_hash)
-          # Overwrite
           value[:refunds] = charge["refunds"].map(&:to_hash)
-          # Convience
           value[:created_at] = Time.at(charge["created"]) # Turn created into a time object
           value[:friendly_amount] = (charge["amount"].to_f/100.00) # Turn amount into dollars and cents
-          value[:friendly_amount_refunded] = (charge["amount_refunded"].to_f/100.00) # Turn amount_refunded into dollars and cents
           value[:number_of_refunds] = charge["refunds"].count # How many refunds we did
           value[:fully_refunded] = ((charge["amount"]-charge["amount_refunded"]) == 0) # If we fully refuned the charge
-          value[:sales_tax_collected] = charge["description"].include?("WA state")
-          # Calculated
-          value[:sales_tax] = sales_tax(charge) # How much we collected in tax
-          value[:stripe_fee] = stripe_fee(charge)
-          value[:revenue] = revenue(charge)
-          value[:total_deposit] = total_deposit(charge)
-          value[:refund_fee] = refund_fee(charge)
-          value[:refund_revenue] = refund_revenue(charge)
-          value[:total_refund] = total_refund(charge)
-          value[:refund_tax] = refund_tax(charge)
+          if charge["description"].include?("Payment for order")
+            new_style_stripe(value, charge)
+          else
+            old_style_stripe(value, charge)
+          end
           # Refunds
           if charge["refunds"].present?
             value[:latest_refund_created] = charge["refunds"].last
@@ -384,62 +421,148 @@
       end
     end
 
+    def has_tax?(stripe_order)
+      tax_item = stripe_order.items.detect{|item| item.type == 'tax'}
+      (tax_item.try(:amount) && tax_item.try(:amount) > 0)
+    end
+
+    def tax_charged(stripe_order)
+      tax_item = stripe_order.items.detect{|item| item.type == 'tax'}
+      if has_tax?(stripe_order)
+        (tax_item.try(:amount)/100.0)
+      else
+        0
+      end
+    end
+
+    def item_purchased(stripe_order)
+      purchased = stripe_order.items.detect{|item| item.type == 'sku'}
+      purchased.description
+    end
+
+    def new_style_stripe(value, charge)
+      order_id = charge['description'].match('or_.*')[0]
+      stripe_order = Stripe::Order.retrieve(order_id)
+      if has_tax?(stripe_order)
+        value[:sales_tax_collected] = true
+      else
+        value[:sales_tax_collected] = false
+      end
+      value[:description] = new_style_stripe_description(charge, stripe_order)
+      value[:sales_tax] = sales_tax(charge, stripe_order) # How much we collected in tax
+      value[:stripe_fee] = stripe_fee(charge, stripe_order)
+      value[:revenue] = revenue(charge, stripe_order)
+      value[:total_deposit] = total_deposit(charge, stripe_order)
+      value[:refund_fee] = refund_fee(charge, stripe_order)
+      value[:refund_revenue] = refund_revenue(charge, stripe_order)
+      value[:total_refund] = total_refund(charge, stripe_order)
+      value[:refund_tax] = refund_tax(charge, stripe_order)
+    end
+
+    def new_style_stripe_description(charge, stripe_order)
+      desc = item_purchased(stripe_order)
+      if has_tax?(stripe_order)
+        desc += " With WA Sales Tax"
+      end
+      desc
+    end
+
+    def old_style_stripe(value, charge)
+      value[:sales_tax_collected] = charge["description"].include?("WA state")
+      # Calculated
+      value[:sales_tax] = sales_tax(charge) # How much we collected in tax
+      value[:stripe_fee] = stripe_fee(charge)
+      value[:revenue] = revenue(charge)
+      value[:total_deposit] = total_deposit(charge)
+      value[:refund_fee] = refund_fee(charge)
+      value[:refund_revenue] = refund_revenue(charge)
+      value[:total_refund] = total_refund(charge)
+      value[:refund_tax] = refund_tax(charge)
+    end
+
+    def quickbooks_description(stripe_record)
+      deposit = deposit_type(stripe_record)
+      if deposit == 'Joule'
+        "Income from Operations:Retail Sales:Product Sales:#{deposit}"
+      else
+        "Income from Operations:Retail Sales:Digital Sales:#{deposit}"
+      end
+    end
+
+    def quickbooks_return_description(stripe_record)
+      deposit = deposit_type(stripe_record)
+      if deposit == 'Joule'
+        "Income from Operations:Retail Sales:Product Sales:Product Sales Returns"
+      else
+        "Income from Operations:Retail Sales:Digital Sales:Digital Sales Returns"
+      end
+    end
+
+    def quickbooks_dispute_description(stripe_record)
+      deposit = deposit_type(stripe_record)
+      if deposit == 'Joule'
+        "Income from Operations:Retail Sales:Product Sales:Product Sales Disputes"
+      else
+        "Income from Operations:Retail Sales:Digital Sales:Digital Sales Disputes"
+      end
+    end
+
     def refund_transaction(stripe_record, refund, refunds)
-      refunds << ["TRNS", "1", "CHECK", Time.at(refund["created"]).to_s(:slashes), "Stripe Account", nil, "Admin", stripe_record["total_refund"], "Refund of charge #{stripe_record["id"]}"]
-      refunds << ["SPL", "2", "CHECK", Time.at(refund["created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Returns", "Online Sales", "Admin", stripe_record["refund_revenue"], "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_collected"] == "true"}: #{stripe_record["id"]}"]
+      refunds << ["TRNS", "1", "CHECK", Time.at(refund["created"]).to_s(:slashes), "Stripe Account", nil, "Admin", stripe_record["total_refund"].to_f.round(2), "Refund of charge #{stripe_record["id"]}"]
+      refunds << ["SPL", "2", "CHECK", Time.at(refund["created"]).to_s(:slashes), quickbooks_return_description(stripe_record), "Online Sales", "Admin", stripe_record["refund_revenue"].to_f.round(2), "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_collected"] == "true"}: #{stripe_record["id"]}"]
       line_number = 3
       if stripe_record["sales_tax_collected"] == "true"
-        refunds << ["SPL", line_number, "CHECK", Time.at(refund["created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["refund_tax"].to_f, "Sales Tax for charge ID: #{stripe_record["id"]}"]
+        refunds << ["SPL", line_number, "CHECK", Time.at(refund["created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["refund_tax"].to_f.round(2), "Sales Tax for charge ID: #{stripe_record["id"]}"]
         line_number += 1
       end
-      refunds << ["SPL", line_number, "CHECK", Time.at(refund["created"]).to_s(:slashes), "Credit Card Transaction Fees", "Stripe (Vendor)", "Admin", stripe_record["refund_fee"], "Refund of fees for #{stripe_record["id"]}"]
+      refunds << ["SPL", line_number, "CHECK", Time.at(refund["created"]).to_s(:slashes), "Credit Card Transaction Fees", "Stripe (Vendor)", "Admin", stripe_record["refund_fee"].to_f.round(2), "Refund of fees for #{stripe_record["id"]}"]
       refunds << ["ENDTRNS"]
     end
 
     def charge_transaction(stripe_record, charges)
-      charges << ["TRNS", "1", "DEPOSIT", Time.parse(stripe_record["created_at"]).to_s(:slashes), "Stripe Account", nil, "Admin", stripe_record["total_deposit"], "Net for charge ID: #{stripe_record["id"]}"]
-      charges << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["created_at"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:#{deposit_type(stripe_record)}", "Online Sales", "Admin", stripe_record["revenue"], "Charge ID#{' with WA sales tax' if stripe_record["sales_tax_collected"] == "true"}: #{stripe_record["id"]}"]
+      charges << ["TRNS", "1", "DEPOSIT", Time.parse(stripe_record["created_at"]).to_s(:slashes), "Stripe Account", nil, "Admin", stripe_record["total_deposit"].to_f.round(2), "Net for charge ID: #{stripe_record["id"]}"]
+      charges << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["created_at"]).to_s(:slashes), quickbooks_description(stripe_record), "Online Sales", "Admin", stripe_record["revenue"].to_f.round(2), "Charge ID#{' with WA sales tax' if stripe_record["sales_tax_collected"] == "true"}: #{stripe_record["id"]}"]
       line_number = 3
       if stripe_record["sales_tax_collected"] == "true"
-        charges << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["created_at"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["sales_tax"], "Sales Tax for charge ID: #{stripe_record["id"]}"]
+        charges << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["created_at"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["sales_tax"].to_f.round(2), "Sales Tax for charge ID: #{stripe_record["id"]}"]
         line_number += 1
       end
-      charges << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["created_at"]).to_s(:slashes), "Credit Card Transaction Fees", "Stripe (Vendor)", "Admin", stripe_record["stripe_fee"], "Fees for charge ID: #{stripe_record["id"]}"]
+      charges << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["created_at"]).to_s(:slashes), "Credit Card Transaction Fees", "Stripe (Vendor)", "Admin", stripe_record["stripe_fee"].to_f.round(2), "Fees for charge ID: #{stripe_record["id"]}"]
       charges << ["ENDTRNS"]
     end
 
     def dispute_transaction(stripe_record, disputes)
-      disputes << ["TRNS", "1", "CHECK", Time.parse(stripe_record["dispute_created"]).to_s(:slashes), "Stripe Account", nil, "Admin", (stripe_record["dispute_net"].to_f), "Refund/Dispute of charge #{stripe_record["id"]}"]
-      disputes << ["SPL", "2", "CHECK", Time.parse(stripe_record["dispute_created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Disputes", "Online Sales", "Admin", (-1*stripe_record["revenue"].to_f), "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_collected"] == "true"}: #{stripe_record["id"]}"]
+      disputes << ["TRNS", "1", "CHECK", Time.parse(stripe_record["dispute_created"]).to_s(:slashes), "Stripe Account", nil, "Admin", (stripe_record["dispute_net"].to_f.round(2)), "Refund/Dispute of charge #{stripe_record["id"]}"]
+      disputes << ["SPL", "2", "CHECK", Time.parse(stripe_record["dispute_created"]).to_s(:slashes), quickbooks_dispute_description(stripe_record), "Online Sales", "Admin", (-1*stripe_record["revenue"].to_f.round(2)), "Refund for charge ID#{' with WA sales tax' if stripe_record["sales_tax_collected"] == "true"}: #{stripe_record["id"]}"]
       line_number = 3
       if stripe_record["sales_tax_collected"] == "true"
-        disputes << ["SPL", line_number, "CHECK", Time.parse(stripe_record["dispute_created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", (-1*stripe_record["sales_tax"].to_f), "Sales Tax for charge ID: #{stripe_record["id"]}"]
+        disputes << ["SPL", line_number, "CHECK", Time.parse(stripe_record["dispute_created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", (-1*stripe_record["sales_tax"].to_f.round(2)), "Sales Tax for charge ID: #{stripe_record["id"]}"]
         line_number += 1
       end
-      disputes << ["SPL", line_number, "CHECK", Time.parse(stripe_record["dispute_created"]).to_s(:slashes), "Losses due to credit card fraud", nil, "Admin", (stripe_record["dispute_fee"].to_f), stripe_record["dispute_description"]]
+      disputes << ["SPL", line_number, "CHECK", Time.parse(stripe_record["dispute_created"]).to_s(:slashes), "Losses due to credit card fraud", nil, "Admin", (stripe_record["dispute_fee"].to_f.round(2)), stripe_record["dispute_description"]]
       disputes << ["ENDTRNS"]
     end
 
     def won_transaction(stripe_record, disputes)
-      disputes << ["TRNS", "1", "DEPOSIT", Time.parse(stripe_record["won_created"]).to_s(:slashes), "Stripe Account", nil, "Admin", (stripe_record["won_net"].to_f), "Net for charge ID: #{stripe_record["id"]}"]
-      disputes << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["won_created"]).to_s(:slashes), "Income from Operations:Retail Sales:Digital Sales:Digital Sales Disputes", "Online Sales", "Admin", stripe_record["revenue"], "Charge ID#{' with WA sales tax' if stripe_record["sales_tax_collected"] == "true"}: #{stripe_record["id"]}"]
+      disputes << ["TRNS", "1", "DEPOSIT", Time.parse(stripe_record["won_created"]).to_s(:slashes), "Stripe Account", nil, "Admin", (stripe_record["won_net"].to_f.round(2)), "Net for charge ID: #{stripe_record["id"]}"]
+      disputes << ["SPL", "2", "DEPOSIT", Time.parse(stripe_record["won_created"]).to_s(:slashes), quickbooks_dispute_description(stripe_record), "Online Sales", "Admin", stripe_record["revenue"].to_f.round(2), "Charge ID#{' with WA sales tax' if stripe_record["sales_tax_collected"] == "true"}: #{stripe_record["id"]}"]
       line_number = 3
       if stripe_record["sales_tax_collected"] == "true"
-        disputes << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["won_created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["sales_tax"], "Sales Tax for charge ID: #{stripe_record["id"]}"]
+        disputes << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["won_created"]).to_s(:slashes), "Sales Tax Payable", "WA State Dept of Revenue", "Admin", stripe_record["sales_tax"].to_f.round(2), "Sales Tax for charge ID: #{stripe_record["id"]}"]
         line_number += 1
       end
-      disputes << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["won_created"]).to_s(:slashes), "Losses due to credit card fraud", nil, "Admin", stripe_record["won_fee"], stripe_record["won_description"]]
+      disputes << ["SPL", line_number, "DEPOSIT", Time.parse(stripe_record["won_created"]).to_s(:slashes), "Losses due to credit card fraud", nil, "Admin", stripe_record["won_fee"].to_f.round(2), stripe_record["won_description"]]
       disputes << ["ENDTRNS"]
     end
 
     def transfer_transaction(transfer_record, transfers)
       if (transfer_record["amount"].to_i/100.00) > 0
-        transfers << ["TRNS", "1", "DEPOSIT", Time.at(transfer_record["date"]).to_s(:slashes), "Commerce BK checking 9541", nil, "Admin", (transfer_record["amount"].to_i/100.00), "Transfer from Stripe: #{transfer_record["id"]}"]
-        transfers << ["SPL", "2", "DEPOSIT", Time.at(transfer_record["date"]).to_s(:slashes), "Stripe Account", nil, "Admin", (-1*(transfer_record["amount"].to_i/100.00)), "Transfer from Stripe: #{transfer_record["id"]}"]
+        transfers << ["TRNS", "1", "DEPOSIT", Time.at(transfer_record["date"]).to_s(:slashes), "Commerce BK checking 9541", nil, "Admin", (transfer_record["amount"].to_i/100.00).to_f.round(2), "Transfer from Stripe: #{transfer_record["id"]}"]
+        transfers << ["SPL", "2", "DEPOSIT", Time.at(transfer_record["date"]).to_s(:slashes), "Stripe Account", nil, "Admin", (-1*(transfer_record["amount"].to_i/100.00).to_f.round(2)), "Transfer from Stripe: #{transfer_record["id"]}"]
         transfers << ["ENDTRNS"]
       else
-        transfers << ["TRNS", "1", "DEPOSIT", Time.at(transfer_record["date"]).to_s(:slashes), "Stripe Account", nil, "Admin", (-1*(transfer_record["amount"].to_i/100.00)), "Transfer from Stripe: #{transfer_record["id"]}"]
-        transfers << ["SPL", "2", "DEPOSIT", Time.at(transfer_record["date"]).to_s(:slashes), "Commerce BK checking 9541", nil, "Admin", (transfer_record["amount"].to_i/100.00), "Transfer from Stripe: #{transfer_record["id"]}"]
+        transfers << ["TRNS", "1", "DEPOSIT", Time.at(transfer_record["date"]).to_s(:slashes), "Stripe Account", nil, "Admin", (-1*(transfer_record["amount"].to_i/100.00).to_f.round(2)), "Transfer from Stripe: #{transfer_record["id"]}"]
+        transfers << ["SPL", "2", "DEPOSIT", Time.at(transfer_record["date"]).to_s(:slashes), "Commerce BK checking 9541", nil, "Admin", (transfer_record["amount"].to_i/100.00).to_f.round(2), "Transfer from Stripe: #{transfer_record["id"]}"]
         transfers << ["ENDTRNS"]
       end
     end
