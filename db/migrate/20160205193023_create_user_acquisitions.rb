@@ -2,6 +2,7 @@ class CreateUserAcquisitions < ActiveRecord::Migration
   def change
     create_table :user_acquisitions do |t|
       t.integer :user_id
+      t.string :signup_method
       t.string :landing_page
       t.string :referrer
       t.string :utm_source
