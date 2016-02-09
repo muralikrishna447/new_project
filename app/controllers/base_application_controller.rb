@@ -93,6 +93,24 @@ class BaseApplicationController < ActionController::Base
     mixpanel.alias(user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
     mixpanel.track(user.id, 'Signed Up', { signup_method: signup_method })
     Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
+
+    ua = UserAcquisition.new(
+      user_id: user.id, 
+      signup_method: signup_method,
+      landing_page: request.referrer
+    )
+    if cookies['utm']
+      cookie = cookies['utm']
+      ua['referrer'] = cookie['referrer']
+      AnalyticsParametizer.utm_params.each { |param| cookie[param] ? ua[param] = cookie[param] : next }
+    end
+
+    if ua.save
+      logger.info("[UserAcquisition] created an acquisition record for user #{user.id}")
+    else
+      logger.error("[UserAcquisition] failed to create an acquisition record for user #{user.id} #{ua.errors.inspect}")
+    end
+
     Librato.increment 'user.signup', sporadic: true
   end
 
