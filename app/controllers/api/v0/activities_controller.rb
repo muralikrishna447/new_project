@@ -50,8 +50,10 @@ module Api
       def show
         begin
           @activity = Activity.find(params[:id])
-          if params[:version]
-            @activity = @activity.restore_revision(params[:version])
+          @version = params[:version]
+          @last_revision = @activity.last_revision()
+          if @version && @version.to_i <= @last_revision.revision
+            @activity = @activity.restore_revision(@version)
           end
         rescue ActiveRecord::RecordNotFound
           render_api_response 404, {message:'Activity not found'}
