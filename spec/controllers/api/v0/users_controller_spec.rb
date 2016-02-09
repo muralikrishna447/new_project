@@ -100,7 +100,7 @@ describe Api::V0::UsersController do
       response.code.should == "403"
     end
 
-    it 'should create a user acquisition object', focus: true do
+    it 'should create a user acquisition object' do
       request.cookies['utm'] = { referrer: 'http://u.ca', utm_campaign: '54-40' }
       post :create, user: { name: 'Acquired User', email: 'a@u.ca', password: 'tricksy' }
 
