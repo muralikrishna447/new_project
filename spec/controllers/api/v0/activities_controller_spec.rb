@@ -155,7 +155,7 @@ describe Api::V0::ActivitiesController do
       it 'published activity' do
         get :show, id: @activity_published
         expect_not_trimmed(response)
-      end 
+      end
 
       it 'premium activity' do
         get :show, id: @activity_premium
@@ -166,12 +166,12 @@ describe Api::V0::ActivitiesController do
         get :show, id: @activity_unpublished
         response.should_not be_success
       end
-      
-      it 'their own activity UGC' do     
+
+      it 'their own activity UGC' do
         my_activity = Fabricate :activity, title: 'My Activity', published: false, id: 4, creator: @user
         my_activity.steps << Fabricate(:step, activity_id: my_activity.id, title: 'hello', youtube_id: 'REk30BRVtgE')
         get :show, id: my_activity
-        expect_not_trimmed(response) 
+        expect_not_trimmed(response)
       end
 
       # This is the grandfather clause case; i.e. user enrolled in Shrimp Brains class when it was
@@ -189,7 +189,7 @@ describe Api::V0::ActivitiesController do
         end
 
         it 'enrolled' do
-          enrollment = Fabricate :enrollment, enrollable: @assembly, user: @user        
+          enrollment = Fabricate :enrollment, enrollable: @assembly, user: @user
           get :show, id: @activity_premium
           expect_not_trimmed(response)
         end
@@ -216,7 +216,7 @@ describe Api::V0::ActivitiesController do
       it 'unpublished activity' do
         get :show, id: @activity_unpublished
         response.should_not be_success
-      end           
+      end
     end
 
     context 'admin user' do
@@ -286,6 +286,36 @@ describe Api::V0::ActivitiesController do
       response.should be_success
       parsed = JSON.parse response.body
       expect(parsed['steps'].count).to eq(1)
+    end
+  end
+
+  context 'versions' do
+
+    before :each do
+      @revisable_activity = Fabricate :activity, title: 'Revisable Activity', description: 'This is version 1', published: true, id: 4
+
+      @activity_v1 = ActsAsRevisionable::RevisionRecord.new(@revisable_activity)
+      @activity_v1.save
+
+      @revisable_activity.description = 'This is version 2'
+      @revisable_activity.save
+      
+      @activity_v2 = ActsAsRevisionable::RevisionRecord.new(@revisable_activity)
+      @activity_v2.save
+    end
+
+    it 'loads correct revision when the version parameter is 1' do
+      get :show, id: @revisable_activity.id, version: 1
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed['description']).to eq('This is version 1')
+    end
+
+    it 'loads correct revision when the version parameter is 2' do
+      get :show, id: @revisable_activity.id, version: 2
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed['description']).to eq('This is version 2')
     end
   end
 
