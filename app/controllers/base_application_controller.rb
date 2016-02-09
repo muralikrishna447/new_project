@@ -101,7 +101,7 @@ class BaseApplicationController < ActionController::Base
     )
     if cookies['utm']
       cookie = cookies['utm']
-      ua['referrer'] = cookie['referrer']
+      ua.referrer = cookie['referrer']
       AnalyticsParametizer.utm_params.each { |param| cookie[param] ? ua[param] = cookie[param] : next }
     end
 
