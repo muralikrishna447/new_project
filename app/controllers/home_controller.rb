@@ -172,9 +172,6 @@ class HomeController < ApplicationController
   def terms
   end
 
-  def privacy_policy
-  end
-
   def facebook_optout
     if request.post?
       GenericMailer.recipient_email('info@chefsteps.com', 'Facebook Audience Opt-Out', "Please opt out #{params[:email]} from our facebook custom audience").deliver
