@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160108005443) do
+ActiveRecord::Schema.define(:version => 20160205193023) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -681,6 +681,21 @@ ActiveRecord::Schema.define(:version => 20160108005443) do
     t.string   "slug"
     t.integer  "comments_count", :default => 0
     t.integer  "assembly_id"
+  end
+
+  create_table "user_acquisitions", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "signup_method"
+    t.string   "landing_page"
+    t.string   "referrer"
+    t.string   "utm_source"
+    t.string   "utm_medium"
+    t.string   "utm_campaign"
+    t.string   "utm_term"
+    t.string   "utm_content"
+    t.string   "gclid"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "user_activities", :force => true do |t|

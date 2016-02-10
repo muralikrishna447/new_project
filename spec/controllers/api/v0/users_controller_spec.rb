@@ -77,7 +77,7 @@ describe Api::V0::UsersController do
       response.should be_success
     end
 
-    it 'should not create a user if require fields are missing' do
+    it 'should not create a user if required fields are missing' do
       post :create, user: {email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should_not be_success
     end
@@ -98,6 +98,15 @@ describe Api::V0::UsersController do
       response.code.should == "403"
       post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
       response.code.should == "403"
+    end
+
+    it 'should create a user acquisition object' do
+      request.cookies['utm'] = { referrer: 'http://u.ca', utm_campaign: '54-40' }.to_json
+      post :create, user: { name: 'Acquired User', email: 'a@u.ca', password: 'tricksy' }
+
+      ua = UserAcquisition.find_all_by_utm_campaign('54-40')
+      expect(ua.count).to eq(1)
+      expect(ua.first.referrer).to eq('http://u.ca')
     end
   end
 

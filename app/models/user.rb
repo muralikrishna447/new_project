@@ -41,14 +41,6 @@ class User < ActiveRecord::Base
 
   serialize :viewed_activities, Array
 
-  # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }
-  # scope :where_all, ->(column, key, value) { where("? = ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", value, key) }
-  # scope :where_any, ->(column, key, value) { where("? = ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore LIKE ?)", value, '%' + key + '%') }
-  # scope :where_all, ->(column, key, value) { where("? = ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore LIKE ?)", value, '%' + key + '%') }
-
-  # scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", '%' + value + '%', key) }
-  # scope :where_all, ->(column, key, value) { where("? LIKE ALL (SELECT UNNEST(ARRAY[\"#{column}\"])::hstore -> ?)", '%' + value + '%', key) }
-
   scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
   scope :where_all, ->(column, key, value) { where("? LIKE ALL (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
 
@@ -73,6 +65,7 @@ class User < ActiveRecord::Base
   serialize :survey_results, ActiveRecord::Coders::NestedHstore
 
   ROLES = %w[admin contractor moderator collaborator user banned]
+
 
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
@@ -99,13 +92,10 @@ class User < ActiveRecord::Base
   end
 
   def viewed_activities_in_course(course)
-    # events.scoped_by('Inclusion', 'show').where(inclusions: {course_id: 8}).map(&:trackable).select{|a| a.published=true}.uniq
-    # course.inclusions.joins(:events).where('events.user_id = ?', self.id).map(&:activity).select{|a| a.published=true}.uniq
     course.activities.joins(:events).where('events.user_id = ?', self.id).select{|a| a.published=true}.uniq
   end
 
   def last_viewed_activity_in_course(course)
-    # last_viewed = events.scoped_by('Inclusion', 'show').map(&:trackable).select{|i| i.course_id == course.id}.first
     last_viewed = events.scoped_by('Activity', 'show').order('created_at asc').where(trackable_id: course.activity_ids).last
     if last_viewed
       last_viewed.trackable
@@ -118,22 +108,13 @@ class User < ActiveRecord::Base
 
   def received_stream
     events.timeline.where(action: 'received_create').group_by{|e| [e.group_type, e.group_name]}
-    # timeline.group_by{|e| e.group_name}
   end
 
   def created_stream
     events.includes(:trackable).timeline.where('action != ?', 'received_create').group_by{|e| [e.group_type, e.group_name]}
-    # timeline.group_by{|e| e.group_name}
   end
 
   def stream
-    # stream = []
-    # followings.each do |following|
-    #   following.created_stream.each do |group|
-    #     stream << group
-    #   end
-    # end
-    # stream.sort_by{|group| group[1].first.created_at}.reverse
     stream_events = []
     followings.each do |following|
       following.events.includes(:trackable).timeline.where('action != ?', 'received_create').each do |event|
@@ -304,35 +285,6 @@ class User < ActiveRecord::Base
     user_ids = user_count.keys
     users = User.find(user_ids)
     users
-  end
-
-  def self.export_top_users
-    data = []
-    users = User.with_views_greater_than(500).first(100)
-    users.each do |user|
-      unless (user.email.include? "@chefsteps.com") || (user.email.include? "desunaito@gmail.com")
-        data << user.email
-        puts "Importing user:"
-        puts user
-      end
-    end
-    open('///Users/hnguyen/Desktop/most_active_users', 'w') do |f|
-      f << data.to_json
-    end
-  end
-  def self.export_top_users_2
-    data = []
-    users = User.with_views_greater_than(500).last(500)
-    users.each do |user|
-      unless (user.email.include? "@chefsteps.com") || (user.email.include? "desunaito@gmail.com")
-        data << user.email
-        puts "Importing user:"
-        puts user
-      end
-    end
-    open('///Users/hnguyen/Desktop/most_active_users_2', 'w') do |f|
-      f << data.to_json
-    end
   end
 
   def remember_token

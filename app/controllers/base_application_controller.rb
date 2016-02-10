@@ -88,14 +88,30 @@ class BaseApplicationController < ActionController::Base
   # This subscribe / track logic does not belong here but since it's curently
   # found in no less than three places throughout our code base this is the
   # least invasive place to store it
-  def subscribe_and_track(user, optout, source)
-    email_list_signup(user, source) unless optout
+  def subscribe_and_track(user, optout, signup_method)
+    email_list_signup(user, signup_method) unless optout
     mixpanel.alias(user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
-    mixpanel.track(user.id, 'Signed Up', {source: 'api'})
-    # Temporarily disabling because the worker is broken due to problems in bloom
+    mixpanel.track(user.id, 'Signed Up', { signup_method: signup_method })
     Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
-    Librato.increment 'user.signup', sporadic: true
 
+    ua = UserAcquisition.new(
+      user_id: user.id, 
+      signup_method: signup_method,
+      landing_page: request.referrer
+    )
+    if cookies['utm']
+      cookie = JSON.parse(cookies['utm'])
+      ua.referrer = cookie['referrer']
+      AnalyticsParametizer.utm_params.each { |param| cookie[param] ? ua[param] = cookie[param] : next }
+    end
+
+    if ua.save
+      logger.info("[UserAcquisition] created an acquisition record for user #{user.id}")
+    else
+      logger.error("[UserAcquisition] failed to create an acquisition record for user #{user.id} #{ua.errors.inspect}")
+    end
+
+    Librato.increment 'user.signup', sporadic: true
   end
 
   def email_list_signup(user, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
