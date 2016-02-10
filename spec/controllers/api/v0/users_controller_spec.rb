@@ -101,7 +101,7 @@ describe Api::V0::UsersController do
     end
 
     it 'should create a user acquisition object' do
-      request.cookies['utm'] = { referrer: 'http://u.ca', utm_campaign: '54-40' }
+      request.cookies['utm'] = { referrer: 'http://u.ca', utm_campaign: '54-40' }.to_json
       post :create, user: { name: 'Acquired User', email: 'a@u.ca', password: 'tricksy' }
 
       ua = UserAcquisition.find_all_by_utm_campaign('54-40')

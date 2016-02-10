@@ -100,7 +100,7 @@ class BaseApplicationController < ActionController::Base
       landing_page: request.referrer
     )
     if cookies['utm']
-      cookie = cookies['utm']
+      cookie = JSON.parse(cookies['utm'])
       ua.referrer = cookie['referrer']
       AnalyticsParametizer.utm_params.each { |param| cookie[param] ? ua[param] = cookie[param] : next }
     end
