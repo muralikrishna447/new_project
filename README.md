@@ -60,15 +60,18 @@ Staging2 ChefSteps
 
 Deploying to Staging2
 ```
-One time: git remote add staging2 git@heroku.com:staging2-chefsteps.git
+via the command line:  
 
-git checkout develop2
-merge paid-courses (or whatever you are working on) into develop2
-git push staging2 develop2:master
+   One time: git remote add staging2 git@heroku.com:staging2-chefsteps.git
 
-Run migrations on Staging2
--
-heroku run rake db:migrate --app staging2-chefsteps
+   git checkout develop2
+   merge paid-courses (or whatever you are working on) into develop2
+   git push staging2 develop2:master
+
+via heroku UI:
+
+   connect your GitHub account
+   paste in your branch name and manually deploy
 
 Copy Production Database to Staging2
 -
