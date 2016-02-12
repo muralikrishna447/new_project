@@ -97,11 +97,11 @@ class BaseApplicationController < ActionController::Base
     ua = UserAcquisition.new(
       user_id: user.id, 
       signup_method: signup_method,
-      landing_page: request.referrer
+      landing_page: request.referrer[0..5000] # truncate abnormally long URLs
     )
     if cookies['utm']
       cookie = JSON.parse(cookies['utm'])
-      ua.referrer = cookie['referrer']
+      ua.referrer = cookie['referrer'][0..5000] # truncate abnormally long URLs
       AnalyticsParametizer.utm_params.each { |param| cookie[param] ? ua[param] = cookie[param] : next }
     end
 
