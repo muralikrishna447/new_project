@@ -76,7 +76,10 @@ class UsersController < ApplicationController
       end
       # Always set new cookie to keep things simple
       logger.info "Setting preauth cookie for user #{current_user.id} / #{current_user.email}"
-      cookies.permanent[:cs_preauth] = current_user.valid_website_auth_token.to_jwt
+      cookies.permanent[:cs_preauth] = {
+        :value => current_user.valid_website_auth_token.to_jwt,
+        :domain => :all
+      }
     end
 
     @preauth_cookie = cookies[:cs_preauth]
