@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160205193023) do
+ActiveRecord::Schema.define(:version => 20160211221836) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -686,8 +686,8 @@ ActiveRecord::Schema.define(:version => 20160205193023) do
   create_table "user_acquisitions", :force => true do |t|
     t.integer  "user_id"
     t.string   "signup_method"
-    t.string   "landing_page"
-    t.string   "referrer"
+    t.text     "landing_page"
+    t.text     "referrer"
     t.string   "utm_source"
     t.string   "utm_medium"
     t.string   "utm_campaign"

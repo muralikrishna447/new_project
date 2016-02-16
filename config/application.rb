@@ -184,6 +184,11 @@ module Delve
     config.shared_config = shared_config[Rails.env]
     config.shared_config[:bloom] = shared_config[bloom_env][:bloom]
 
+    config.cookie_domain = "." + Rails.application.config.shared_config[:chefsteps_endpoint].split(":").first
+    if config.cookie_domain == '.localhost'
+      config.cookie_domain = nil
+    end
+
     AWS.config( :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
       :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'] )
 
