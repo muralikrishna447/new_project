@@ -41,7 +41,7 @@ class FreshStepsProxy < Rack::Proxy
 
       utm_cookie = {
         :value => cookie_value,
-        :domain => :all
+        :domain => Rails.application.config.cookie_domain
       }
       Rack::Utils.set_cookie_header!(headers, 'utm', utm_cookie)
       [status, headers, body]
