@@ -11,13 +11,19 @@ ActiveAdmin.register User do
 
   action_item only: [:show] do
     link_to('Send Password Reset Email', reset_password_admin_user_path(user), method: :post, confirm: 'Are you sure?')
-  end
-
-  action_item only: [:show] do
+    
     if user.deleted_at.present?
       link_to('Undelete User', undelete_admin_user_path(user), method: :post, confirm: 'Are you sure?')
     else
       link_to('Soft Delete User', soft_delete_admin_user_path(user), method: :post, confirm: 'Are you sure?')
+    end
+    
+    unless user.admin?
+      if user.premium?
+        link_to('Remove premium membership', remove_premium_admin_user_path(user), method: :post)
+      else
+        link_to('Grant premium membership', make_premium_admin_user_path(user), method: :post)
+      end
     end
   end
 
@@ -27,7 +33,6 @@ ActiveAdmin.register User do
     User.send_reset_password_instructions({email: email})
     redirect_to({action: :show}, notice: "Password reset email has been sent to #{email}")
   end
-
 
   member_action :soft_delete, method: :post do
     @user = User.find(params[:id])
@@ -41,6 +46,18 @@ ActiveAdmin.register User do
     redirect_to({action: :show}, notice: "User has been un-deleted")
   end
 
+  member_action :remove_premium, method: :post do
+    @user = User.find(params[:id])
+    @user.remove_premium_membership
+    redirect_to({action: :show}, notice: "User no longer premium member")
+  end
+  
+  member_action :make_premium, method: :post do
+    @user = User.find(params[:id])
+    @user.make_premium_member(0)
+    redirect_to({action: :show}, notice: "User is now premium member")
+  end
+  
   index do
     selectable_column
     id_column
@@ -62,7 +79,6 @@ ActiveAdmin.register User do
     f.inputs "User Details" do
       f.input :email
       f.input :name
-      f.input :premium_member
       f.input :role, collection: User::ROLES, as: :select
       f.input :location
       f.input :website
@@ -92,4 +108,3 @@ ActiveAdmin.register User do
     column :email
   end
 end
-
