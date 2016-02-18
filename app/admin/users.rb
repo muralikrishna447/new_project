@@ -11,13 +11,17 @@ ActiveAdmin.register User do
 
   action_item only: [:show] do
     link_to('Send Password Reset Email', reset_password_admin_user_path(user), method: :post, confirm: 'Are you sure?')
-    
+  end
+
+  action_item only: [:show] do
     if user.deleted_at.present?
       link_to('Undelete User', undelete_admin_user_path(user), method: :post, confirm: 'Are you sure?')
     else
       link_to('Soft Delete User', soft_delete_admin_user_path(user), method: :post, confirm: 'Are you sure?')
     end
-    
+  end
+
+  action_item only: [:show] do
     unless user.admin?
       if user.premium?
         link_to('Remove premium membership', remove_premium_admin_user_path(user), method: :post)
