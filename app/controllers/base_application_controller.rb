@@ -92,10 +92,10 @@ class BaseApplicationController < ActionController::Base
     email_list_signup(user, signup_method) unless optout
     mixpanel.alias(user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
     mixpanel.track(user.id, 'Signed Up', { signup_method: signup_method })
-    Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
+    Resque.enqueue(Forum, 'initial_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
 
     ua = UserAcquisition.new(
-      user_id: user.id, 
+      user_id: user.id,
       signup_method: signup_method,
     )
     ua.landing_page = request.referrer[0..5000] if request.referrer # truncate abnormally long URLs
