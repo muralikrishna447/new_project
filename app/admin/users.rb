@@ -55,13 +55,13 @@ ActiveAdmin.register User do
     @user.remove_premium_membership
     redirect_to({action: :show}, notice: "User no longer premium member")
   end
-  
+
   member_action :make_premium, method: :post do
     @user = User.find(params[:id])
     @user.make_premium_member(0)
     redirect_to({action: :show}, notice: "User is now premium member")
   end
-  
+
   index do
     selectable_column
     id_column
@@ -110,5 +110,9 @@ ActiveAdmin.register User do
     column :id
     column :name
     column :email
+  end
+
+  after_save do |user|
+    Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
   end
 end
