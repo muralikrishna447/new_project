@@ -1,6 +1,8 @@
 class Shopify::Customer
-  PREMIUM_MEMBER_TAG = 'premium-member'
-  JOULE_PREMIUM_DISCOUNT_TAG = 'joule-premium-discount-eligible'
+  METAFIELD_NAMESPACE = 'chefsteps'
+  PREMIUM_METAFIELD_NAME = 'premium-member'
+  # Metafield key name is limited to 30 chars
+  JOULE_DISCOUNT_METAFIELD_NAME = 'jp-discount-eligible'
 
   def initialize(user, shopify_customer)
     @user = user
@@ -41,7 +43,7 @@ class Shopify::Customer
       :multipass_identifier => user.id)
     
     Rails.logger.info "Created Shopify customer [#{customer.inspect}]"
-    return customer
+    return Shopify::Customer.new(user, customer)
   end
   
   def self.sync_user(user)
@@ -52,35 +54,31 @@ class Shopify::Customer
       Rails.logger.info "Created customer [#{customer.inspect}]"
     else
       Rails.logger.info "Found shopify customer [#{customer.inspect}]"
-      customer.sync_tags!
     end
+
+    customer.sync_metafields!
     Rails.logger.info "Finished syncing user [#{user.id}] to shopify"
     return customer
   end
-  
-  def sync_tags!
-    current_tags = @shopify_customer.tags.split(',').sort!.collect {|tag| tag.strip}
-    tags = Array.new(current_tags)
-    tags.delete PREMIUM_MEMBER_TAG
-    tags.delete JOULE_PREMIUM_DISCOUNT_TAG
+
+  def sync_metafields!
+    premium = ShopifyAPI::Metafield.new({:namespace => METAFIELD_NAMESPACE,
+      :key => PREMIUM_METAFIELD_NAME,
+      :value_type => 'string',
+      :value => @user.premium?})
     
-    if @user.premium?
-      tags << PREMIUM_MEMBER_TAG
-    end
-    if @user.can_receive_circulator_discount?
-      tags << JOULE_PREMIUM_DISCOUNT_TAG
-    end
+    @shopify_customer.add_metafield(premium)
+    Rails.logger.info "Adding metafield #{premium.inspect}"
+    joule_discount = ShopifyAPI::Metafield.new({:namespace => METAFIELD_NAMESPACE,
+      :key => JOULE_DISCOUNT_METAFIELD_NAME, 
+      :value_type => 'string',
+      :value => @user.can_receive_circulator_discount?})
     
-    if current_tags != tags
-      Rails.logger.info "Current tags #{current_tags.inspect} should be #{tags.inspect}.  Syncing"
-      @shopify_customer.tags = tags
-      @shopify_customer.save!
-    else
-      Rails.logger.info "Current tags #{current_tags.inspect} is #{tags.inspect}.  Not syncing"
-    end
-  end
-  
-  def tags
-    @shopify_customer.tags
+    @shopify_customer.add_metafield(joule_discount)
+    Rails.logger.info "Adding metafield #{joule_discount.inspect}"
+  end  
+
+  def metafields
+    @shopify_customer.metafields
   end
 end
