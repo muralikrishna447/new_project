@@ -43,6 +43,7 @@ module Api
           logger.info "Updating user #{@user.inspect}"
           logger.info "Updating with: #{params[:user]}"
           if @user.update_attributes(params[:user])
+            Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], @user.id)
             render json: @user.to_json(only: [:id, :name, :slug, :email], methods: :avatar_url), status: 200
           else
             render json: {status: 400, message: "Bad Request.  Could not update user with params #{params[:user]}"}, status: 400
