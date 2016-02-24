@@ -10,7 +10,7 @@ class Shopify::Customer
   end
   
   def self.find_for_user(user)
-    shopify_customer = ShopifyAPI::Customer.search(:query => "email:#{user.email}").first
+    shopify_customer = ShopifyAPI::Customer.search(:query => "email:\"#{user.email}\"").first
     if shopify_customer.nil?
       Rails.logger.info "No shopify customer found with email [#{user.email}]"
       return nil

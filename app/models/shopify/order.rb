@@ -66,6 +66,7 @@ class Shopify::Order
       if item.sku == JOULE_SKU
         order_contains_joule = true
         user.make_premium_member(item.price)
+        user.use_premium_discount
       elsif item.sku == PREMIUM_SKU
         user.make_premium_member(item.price)
         # TODO - handle quantities correctly
@@ -84,6 +85,9 @@ class Shopify::Order
         :value => 'true'})
       @api_order.add_metafield(all_but_joule)
     end
+
+    # Sync premium / discount status
+    Shopify::Customer.sync_user(user)
   end
   
   def all_but_joule_fulfilled?
