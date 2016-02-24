@@ -2,7 +2,8 @@ class Shopify::Order
   PREMIUM_SKU = 'cs10002'
   JOULE_SKU = 'cs10001'
   
-  ALL_BUT_JOULE_FULFILLED_TAG = 'all-but-joule-fulfilled'
+  METAFIELD_NAMESPACE = 'chefsteps' # duplicate code!?
+  ALL_BUT_JOULE_FULFILLED_METAFIELD_NAME = 'all-but-joule-fulfilled'
 
   def initialize(api_order)
     @api_order = api_order
@@ -76,21 +77,19 @@ class Shopify::Order
       end
     end
 
-    if order_contains_joule && all_but_joule_fulfilled && !tags_contain?(ALL_BUT_JOULE_FULFILLED_TAG)  
-      @api_order.tags = ALL_BUT_JOULE_FULFILLED_TAG + "," + (@api_order.tags || "")
-      @api_order.save
+    if order_contains_joule && all_but_joule_fulfilled
+      all_but_joule = ShopifyAPI::Metafield.new({:namespace => METAFIELD_NAMESPACE,
+        :key => ALL_BUT_JOULE_FULFILLED_METAFIELD_NAME,
+        :value_type => 'string',
+        :value => 'true'})
+      @api_order.add_metafield(all_but_joule)
     end
   end
   
   def all_but_joule_fulfilled?
     return true if @api_order.fulfillment_status == 'fulfilled'
-    return true if tags_contain?(ALL_BUT_JOULE_FULFILLED_TAG)
+    return true if @api_order.metafields.find { |metafield|
+      metafield.key == ALL_BUT_JOULE_FULFILLED_METAFIELD_NAME && metafield.value == 'true' }
     return false
-  end
-  
-  def tags_contain?(tag)
-    return false if @api_order.tags.nil?
-    tags = @api_order.tags.split(',').sort!.collect {|tag| tag.strip}
-    !tags.index(tag).nil?
   end
 end
