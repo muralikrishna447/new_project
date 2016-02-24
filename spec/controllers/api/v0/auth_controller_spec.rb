@@ -353,12 +353,12 @@ describe Api::V0::AuthController do
     end
 
     it 'handles basic shopify redirect' do
-      get :external_redirect, :path => 'http://chefsteps-staging.myshopify.com'
+      get :external_redirect, :path => 'http://test.myshopify.com'
       response.code.should == '200'
     end
 
     it 'handles shopify checkout redirect' do
-      get :external_redirect, :path => 'http://chefsteps-staging.myshopify.com?checkout_url=http%3A%2F%2Fsomecheckout.com'
+      get :external_redirect, :path => 'http://test.myshopify.com?checkout_url=http%3A%2F%2Fsomecheckout.com'
       # Actually checking the redirect requires cracking open the encrypted multipass token
       response.code.should == '200'
     end

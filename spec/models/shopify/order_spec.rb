@@ -14,6 +14,12 @@ describe Shopify::Order do
     ShopifyAPI::Mock.enabled = true
     
     @user = Fabricate(:user, :id => 123)
+
+    # Carelessly duplicated from customer spec
+    customer_data = [JSON.parse(ShopifyAPI::Mock::Fixture.find('customers').data)['customers'][0]]
+    WebMock.stub_request(:get, /\.com\/admin\/customers\/search.json\?query=email:%22.*%22/).
+         to_return(:status => 200, :body => customer_data.to_json, :headers => {})
+
   end
 
   it 'retrieves an order' do
@@ -21,7 +27,7 @@ describe Shopify::Order do
   end
   
   it 'raises for non-existent orders' do
-    WebMock.stub_request(:get, /myshopify\.com\/admin\/orders\/9999\.json/).
+    WebMock.stub_request(:get, /\.com\/admin\/orders\/9999\.json/).
       to_return(:status => 404, :body => "", :headers => {})
     expect {
       Shopify::Order.find(9999)
@@ -29,10 +35,11 @@ describe Shopify::Order do
   end
 
   it 'fulfills a simple premium order' do
-    WebMock::stub_request(:post, /myshopify\.com\/admin\/orders\/450789469\/fulfillments.json/).
+    WebMock::stub_request(:post, /\.com\/admin\/orders\/450789469\/fulfillments.json/).
       with(:body => "{\"fulfillment\":{\"line_items\":[{\"id\":466157049,\"quantity\":1}]}}").
       to_return(:status => 200, :body => "", :headers => {})
     stub_metafield_get
+    Shopify::Customer.should_receive(:sync_user)
 
     @user.premium?.should == false
     order = Shopify::Order.find(PREMIUM_ORDER_ID)
@@ -42,9 +49,10 @@ describe Shopify::Order do
   
   it 'fulfills a simple joule order' do
     # Not stubbing fulfillment call since this is not made for joule
-    WebMock::stub_request(:put, /myshopify.com\/admin\/orders\/4507800.json/).
+    WebMock::stub_request(:put, /\.com\/admin\/orders\/4507800.json/).
       to_return(:status => 200, :body => "", :headers => {})
     stub_metafield_get
+    Shopify::Customer.should_receive(:sync_user)
     stub_metafield_post('all-but-joule-fulfilled', 'true')
     @user.premium?.should == false
     order = Shopify::Order.find(JOULE_ORDER_ID)
@@ -72,7 +80,7 @@ describe Shopify::Order do
   end
   
   def stub_metafield_post(key, value)
-    WebMock.stub_request(:post, /myshopify.com\/admin\/orders\/.*\/metafields.json/).
+    WebMock.stub_request(:post, /\.com\/admin\/orders\/.*\/metafields.json/).
       with(:body => {:metafield => {:namespace => 'chefsteps', :key => key, :value_type => 'string', :value=>value}}.to_json).
       to_return(:status => 200, :body => "", :headers => {})
   end
@@ -85,7 +93,7 @@ describe Shopify::Order do
     }
   end
   def stub_metafield_get(metafields = [])
-    WebMock.stub_request(:get, /myshopify.com\/admin\/orders\/.*\/metafields.json/).
+    WebMock.stub_request(:get, /\.com\/admin\/orders\/.*\/metafields.json/).
       to_return(:status => 200, :body => { "metafields" => metafields}.to_json, :headers => {})
   end
 end
