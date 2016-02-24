@@ -24,35 +24,40 @@ describe Shopify::Customer do
   end
 
   it 'syncs the premium tag' do
-    stub_put
+    stub_metafield_post('premium-member', true)
+    stub_metafield_post('jp-discount-eligible', false)
+
     @user.make_premium_member(10)
     @user.use_premium_discount
     shopify_customer = Shopify::Customer.find_for_user @user
-    shopify_customer.sync_tags!
-    shopify_customer.tags.sort.should eq [Shopify::Customer::PREMIUM_MEMBER_TAG]
+    shopify_customer.sync_metafields!
   end
   
   it 'syncs the joule premium discount tag' do
-    stub_put
+    stub_metafield_post('premium-member', true)
+    stub_metafield_post('jp-discount-eligible', true)
 
     @user.make_premium_member(10)
     shopify_customer = Shopify::Customer.find_for_user @user
-    shopify_customer.sync_tags!
-    shopify_customer.tags.sort.should eq [Shopify::Customer::JOULE_PREMIUM_DISCOUNT_TAG, Shopify::Customer::PREMIUM_MEMBER_TAG]
+    shopify_customer.sync_metafields!
   end
   
-  it 'does not save when no tag to sync' do
+  it 'syncs non-premium customers' do
+    stub_metafield_post('premium-member', false)
+    stub_metafield_post('jp-discount-eligible', false)
+
     shopify_customer = Shopify::Customer.find_for_user @user
-    shopify_customer.sync_tags!
-    # expect no calls since no tags to sync
+    shopify_customer.sync_metafields!
   end
-  
+
   it 'creates user when it does not exist' do
     WebMock.stub_request(:get, "https://123:321@chefsteps-staging.myshopify.com/admin/customers/search.json?query=email:me2@example.org").
       to_return(:status => 200, :body => "[]", :headers => {})
     WebMock.stub_request(:post, "https://123:321@chefsteps-staging.myshopify.com/admin/customers.json").
       with(:body => "{\"customer\":{\"email\":\"me2@example.org\",\"multipass_identifier\":456}}").
-      to_return(:status => 200, :body => "", :headers => {})
+      to_return(:status => 200, :body => '{"customer": {"id": 1073339463}}', :headers => {})
+    stub_metafield_post('premium-member', false)
+    stub_metafield_post('jp-discount-eligible', false)
 
     Shopify::Customer.sync_user(@user_not_in_shopify)
   end
@@ -60,13 +65,17 @@ describe Shopify::Customer do
   it 'syncs an existing user' do
     WebMock.stub_request(:put, "https://123:321@chefsteps-staging.myshopify.com/admin/customers/207119551.json").
       to_return(:status => 200, :body => "", :headers => {})
+    stub_metafield_post('premium-member', true)
+    stub_metafield_post('jp-discount-eligible', true)
 
     @user.make_premium_member(10)
     shopify_customer = Shopify::Customer.sync_user @user
   end
-  
-  def stub_put
-    WebMock.stub_request(:put, "https://123:321@chefsteps-staging.myshopify.com/admin/customers/207119551.json").
+
+  def stub_metafield_post(key, value)
+    WebMock.stub_request(:post, /myshopify.com\/admin\/customers\/.*\/metafields.json/).
+      with(:body => {:metafield => {:namespace => 'chefsteps', :key => key, :value_type => 'string',
+          :value=>value}}.to_json).
       to_return(:status => 200, :body => "", :headers => {})
   end
 end

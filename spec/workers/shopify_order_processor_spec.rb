@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UserSync do
+describe ShopifyOrderProcessor do
   before :each do
     # Toggle enabled to force reload of fixtures
     ShopifyAPI::Mock.enabled = false
