@@ -41,7 +41,7 @@ def create_step(step)
   s.image_description = step[:image_description]
   s.directions = step[:directions]
   s.save
-  s.update_attribute(:step_order_position, :last)
+  s.update_attribute(:step_order, 0) 
   if step[:ingredients].present?
     step[:ingredients].each do |ingredient|
       item = create_ingredient(ingredient[:title])

@@ -20,7 +20,6 @@ gem 'haml'
 gem 'activeadmin'
 gem 'meta_search'
 gem 'decent_exposure'
-gem 'ranked-model'
 gem 'newrelic_rpm'
 gem 'rdiscount'
 gem "friendly_id"

@@ -451,8 +451,6 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.13.0)
     rake (10.4.1)
-    ranked-model (0.1.1)
-      activerecord (>= 3.0.3)
     rb-fsevent (0.9.1)
     rdiscount (1.6.8)
     rdoc (3.12.2)
@@ -678,7 +676,6 @@ DEPENDENCIES
   rails (= 3.2.16)
   rails-erd
   railties (= 3.2.16)
-  ranked-model
   rb-fsevent
   rdiscount
   redcarpet
@@ -703,3 +700,6 @@ DEPENDENCIES
   unicorn
   webmock
   xray-rails
+
+BUNDLED WITH
+   1.10.6

@@ -1,20 +1,18 @@
 class Step < ActiveRecord::Base
-  include RankedModel
-  ranks :step_order, with_same: :activity_id
 
   belongs_to :activity, touch: true, inverse_of: :steps
 
   has_many :ingredients, class_name: StepIngredient, dependent: :destroy, inverse_of: :step
 
   attr_accessible :title, :youtube_id, :vimeo_id, :directions, :image_id, :image_description,
-    :ingredient_ids, :activity_id, :step_order_position, :transcript, :audio_clip, :audio_title, :subrecipe_title, :hide_number, :is_aside, :presentation_hints, :extra
+    :ingredient_ids, :activity_id, :step_order, :transcript, :audio_clip, :audio_title, :subrecipe_title, :hide_number, :is_aside, :presentation_hints, :extra
 
   serialize :presentation_hints, JSON
 
   include ActsAsSanitized
   sanitize_input :title, :directions, :image_description, :extra, :youtube_id, :vimeo_id, :image_id, :image_description, :subrecipe_title, :audio_clip, :audio_title, :presentation_hints
 
-  scope :ordered, rank(:step_order)
+  scope :ordered, order(:step_order)
   scope :activity_id_not_nil, where('activity_id IS NOT NULL')
 
   default_scope { ordered }
@@ -37,7 +35,7 @@ class Step < ActiveRecord::Base
     ingredients.destroy_all()
     ingredients.reload()
     if ingredients_attrs
-      ingredients_attrs.each do |i|
+      ingredients_attrs.each_with_index do |i, idx|
         title = i[:ingredient][:title]
         unless title.nil? || title.blank?
           title.strip!
@@ -50,7 +48,7 @@ class Step < ActiveRecord::Base
                                     note: i[:note],
                                     display_quantity: i[:display_quantity],
                                     unit: i[:unit],
-                                    ingredient_order_position: :last
+                                    ingredient_order: idx
                                 })
         end
       end
@@ -70,7 +68,7 @@ class Step < ActiveRecord::Base
   end
 
   def update_and_create_ingredients(ingredient_attrs)
-    ingredient_attrs.each do |ingredient_attr|
+    ingredient_attrs.each_with_index do |ingredient_attr, idx|
       title = ingredient_attr[:title].strip
       ingredient = Ingredient.find_or_create_by_subactivity_or_ingredient_title(title)
       step_ingredient = ingredients.find_or_create_by_ingredient_id_and_step_id(ingredient.id, self.id)
@@ -78,7 +76,7 @@ class Step < ActiveRecord::Base
         note: ingredient_attr[:note],
         display_quantity: ingredient_attr[:display_quantity],
         unit: ingredient_attr[:unit],
-        ingredient_order_position: :last
+        ingredient_order: idx
       )
       ingredient_attr[:id] = ingredient.id
     end

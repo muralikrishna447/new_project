@@ -92,23 +92,6 @@ ActiveAdmin.register Activity do
     end
   end
 
-  collection_action :activities_order, method: :get do
-    @activities = Activity.ordered.all
-  end
-
-  collection_action :update_activities_order, method: :post do
-    params[:activity_ids].each do |activity_id|
-      activity = Activity.find(activity_id)
-      if activity
-        activity.activity_order_position = :last
-        activity.save!
-      end
-    end
-
-    redirect_to({action: :index}, notice: "Activity order has been updated")
-  end
-
-
   member_action :associated_ingredients, method: :get do
     @activity = Activity.find(params[:id])
   end
