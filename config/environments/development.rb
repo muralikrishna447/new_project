@@ -87,4 +87,9 @@ Delve::Application.configure do
 
   ENV['AWS_ACCESS_KEY_ID'] = 'AKIAI3LT2ZFRGC25RWQA'
   ENV['AWS_SECRET_ACCESS_KEY'] = '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'
+  
+  Librato::Metrics.authenticate(
+    ENV['LIBRATO_USER'],
+    ENV['LIBRATO_TOKEN'],
+  )
 end

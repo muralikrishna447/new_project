@@ -67,6 +67,7 @@
         "first_name": "Bob"
       },
       "id": 450789469,
+      "tags": null,
       "cancelled_at": null,
       "order_number": 1001,
       "total_line_items_price": "199.00",
@@ -190,6 +191,7 @@
         "first_name": "Bob"
       },
       "id": 4507800,
+      "tags": "tag-one",
       "cancelled_at": null,
       "order_number": 1001,
       "total_line_items_price": "199.00",
@@ -244,6 +246,27 @@
       "total_tax": "11.94",
       "total_weight": 0,
       "email": "bob.norman@hostmail.com"
-    }    
+    },
+    {
+      "id": 100001,
+      "fulfillment_status": null,
+      "tags": "all-but-joule-fulfilled"
+    },
+    {
+      "id": 100002,
+      "fulfillment_status": "partial",
+      "tags": null
+    },
+    {
+      "id": 100003,
+      "fulfillment_status": "fulfilled",
+      "tags": null
+    },
+    {
+      "id": 100004,
+      "fulfillment_status": "unfilfilled",
+      "tags": null
+    }
+
   ]
 }

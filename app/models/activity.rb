@@ -268,7 +268,7 @@ class Activity < ActiveRecord::Base
     equipment.destroy_all()
     equipment.reload()
     if equipment_attrs
-      equipment_attrs.each do |e|
+      equipment_attrs.each_with_index do |e, idx|
         title = e[:equipment][:title]
         unless title.nil? || title.blank?
           title.strip!
@@ -277,7 +277,7 @@ class Activity < ActiveRecord::Base
               activity_id: self.id,
               equipment_id: equipment_item.id,
               optional: e[:optional] || false,
-              equipment_order_position: :last
+              equipment_order: idx
           })
          end
       end
@@ -290,7 +290,7 @@ class Activity < ActiveRecord::Base
     ingredients.destroy_all()
     ingredients.reload()
     if ingredients_attrs
-      ingredients_attrs.each do |i|
+      ingredients_attrs.each_with_index do |i, idx|
         title = i[:ingredient][:title]
         unless title.nil? || title.blank?
           title.strip!
@@ -303,8 +303,9 @@ class Activity < ActiveRecord::Base
               note: i[:note],
               display_quantity: i[:display_quantity],
               unit: i[:unit],
-              ingredient_order_position: :last
+              ingredient_order: idx
           })
+
         end
       end
     end
@@ -551,12 +552,12 @@ class Activity < ActiveRecord::Base
   end
 
   def update_and_create_equipment(equipment_attrs)
-    equipment_attrs.each do |equipment_attr|
+    equipment_attrs.each_with_index do |equipment_attr, idx|
       equipment_item = Equipment.find_or_create_by_title(equipment_attr[:title])
       activity_equipment = equipment.find_or_create_by_equipment_id_and_activity_id(equipment_item.id, self.id)
       activity_equipment.update_attributes(
         optional: equipment_attr[:optional] || false,
-        equipment_order_position: :last
+        equipment_order: idx
       )
       equipment_attr[:id] = equipment_item.id
     end
@@ -568,7 +569,7 @@ class Activity < ActiveRecord::Base
   end
 
   def update_and_create_steps(step_attrs)
-    step_attrs.each do |step_attr|
+    step_attrs.each_with_index do |step_attr, idx|
       step_id = step_attr[:id]
       if step_id && (step_id.to_i == 0)
         step_id = nil
@@ -584,7 +585,7 @@ class Activity < ActiveRecord::Base
         image_description: step_attr[:image_description],
         audio_clip: step_attr[:audio_clip],
         audio_title: step_attr[:audio_title],
-        step_order_position: :last,
+        step_order: idx,
         hide_number: step_attr[:hide_number],
         is_aside: step_attr[:is_aside],
         presentation_hints: step_attr[:presentation_hints],
@@ -606,7 +607,7 @@ class Activity < ActiveRecord::Base
   end
 
   def update_and_create_ingredients(ingredient_attrs)
-    ingredient_attrs.each do |ingredient_attr|
+    ingredient_attrs.each_with_index do |ingredient_attr, idx|
       title = ingredient_attr[:title].strip
       ingredient = Ingredient.find_or_create_by_subactivity_or_ingredient_title(title)
       activity_ingredient = ingredients.find_or_create_by_ingredient_id_and_activity_id(ingredient.id, self.id)
@@ -614,7 +615,7 @@ class Activity < ActiveRecord::Base
           note: ingredient_attr[:note],
           display_quantity: ingredient_attr[:display_quantity],
           unit: ingredient_attr[:unit],
-          ingredient_order_position: :last
+          ingredient_order: idx
       )
       ingredient_attr[:id] = ingredient.id
     end
