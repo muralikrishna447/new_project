@@ -273,7 +273,7 @@ class User < ActiveRecord::Base
       raise msg
     end
 
-    aa.current_token(exp: 1.year.from_now.to_i)
+    aa.current_token(exp: 365.days.from_now.to_i)
   end
 
   def was_shown_terms
