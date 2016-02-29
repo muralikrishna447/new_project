@@ -8,6 +8,7 @@ describe Shopify::Order do
   SIMPLE_ORDER_PARTIALLY_FULFILLED = 100002
   SIMPLE_ORDER_FULFILLED = 100003
   SIMPLE_ORDER_UNFULFILLED = 100004
+  PREMIUM_GIFT_ORDER = 100005
   before(:each) do
     # Toggle enabled to force reload of fixtures
     ShopifyAPI::Mock.enabled = false
@@ -34,10 +35,10 @@ describe Shopify::Order do
     }.to raise_error(ActiveResource::ResourceNotFound)
   end
 
+  
+
   it 'fulfills a simple premium order' do
-    WebMock::stub_request(:post, /\.com\/admin\/orders\/450789469\/fulfillments.json/).
-      with(:body => "{\"fulfillment\":{\"line_items\":[{\"id\":466157049,\"quantity\":1}]}}").
-      to_return(:status => 200, :body => "", :headers => {})
+    stub_fulfillment
     stub_metafield_get
     Shopify::Customer.should_receive(:sync_user)
 
@@ -59,6 +60,13 @@ describe Shopify::Order do
     order.process!
     @user.reload.premium?.should == true
   end  
+  
+  it 'fulfills premium gift order' do
+    stub_fulfillment
+    stub_metafield_get
+    PremiumGiftCertificateMailer.should_receive(:prepare)
+    order = Shopify::Order.find(PREMIUM_GIFT_ORDER).process!
+  end
 
   it 'it knows if all but joule has been fulfilled' do
     stub_metafield_get([metafield_response('all-but-joule-fulfilled', 'true')])
@@ -96,4 +104,9 @@ describe Shopify::Order do
     WebMock.stub_request(:get, /\.com\/admin\/orders\/.*\/metafields.json/).
       to_return(:status => 200, :body => { "metafields" => metafields}.to_json, :headers => {})
   end
+  def stub_fulfillment
+    WebMock::stub_request(:post, /\.com\/admin\/orders\/.*\/fulfillments.json/).
+      to_return(:status => 200, :body => "", :headers => {})
+  end
+
 end
