@@ -1,3 +1,4 @@
+require 'intercom'
 # Synchronizes user data from the master, usually CS database to various
 # external systems.
 
@@ -13,6 +14,10 @@ class UserSync
   PREMIUM_GROUP_NAME = "Premium Member"
   JOULE_PURCHASE_GROUP_NAME = "Joule Purchase"
 
+  # This value is carefully chosen and is the same in prod and staging.  Ideally
+  # it would be more descriptive but it was already set and existing systems
+  # rely on it.
+  COUNTRY_MERGE_VAR = 'MMERGE2'
   @queue = :user_sync
 
   def self.perform(user_id)
@@ -46,6 +51,7 @@ class UserSync
     
     if member_info['status'] != 'subscribed'
       @logger.warn "User not subscribed to list, actual status [#{member_info['status']}]"
+      return
     end
 
     # TODO - This is a quick fix that will still remove the user from groups
@@ -67,6 +73,24 @@ class UserSync
     Shopify::Customer.sync_user @user
   end
 
+  def country_from_intercom
+    Rails.logger.info "Retriving intercom user for id #{@user.id}"
+    begin
+      intercom_user = Intercom::User.find(:user_id => @user.id)
+    rescue Intercom::ResourceNotFound
+      Rails.logger.info "No intercom user found for user #{@user.id} with email #{@user.email}"
+      return nil
+    end
+
+    Rails.logger.info "Intercom user location data: #{intercom_user.location_data.inspect}"
+    begin
+      intercom_user.location_data.country_name
+    rescue Intercom::AttributeNotSetError
+      Rails.logger.info "Intercom location_data not set"
+      return nil
+    end
+  end
+  
   private
 
   def add_to_group_param(groups, member_info, group_id, group_name, db_value)
@@ -88,8 +112,6 @@ class UserSync
   end
 
   def add_to_groups (groups)
-    return if groups.empty?
-
     # Note - if more attributes are added to the group then those values will
     # need to be copied from the initial read request or else they will be
     # deleted.
@@ -99,11 +121,17 @@ class UserSync
     merge_vars = {
         groupings: groupings
     }
+    
+    country = country_from_intercom()
+    if country
+      merge_vars[COUNTRY_MERGE_VAR] = country
+    end
 
     Gibbon::API.lists.update_member(
       id: Rails.configuration.mailchimp[:list_id],
       email: { email: @user.email },
-      merge_vars: merge_vars
+      merge_vars: merge_vars,
+      replace_interests: false
     )
   end
 
@@ -125,19 +153,5 @@ class UserSync
     return true if group_inner["interested"] == true
 
     return false
-    # For an example of the gibberish returned by the mailchimp API
-    # {"email"=>"first@chocolateyshatner.com", "id"=>"7f6ce81444",
-    # "euid"=>"7f6ce81444", "email_type"=>"html", "ip_signup"=>nil,
-    # "timestamp_signup"=>nil, "ip_opt"=>"66.235.0.136",
-    # "timestamp_opt"=>"2015-11-12 04:42:41", "member_rating"=>2,
-    # "info_changed"=>"2015-11-12 05:24:59", "web_id"=>12023693,
-    # "leid"=>12023693, "language"=>nil, "list_id"=>"5f55993b84",
-    # "list_name"=>"Chefsteps Staging List",
-    # "merges"=>{"EMAIL"=>"first@chocolateyshatner.com", "FNAME"=>"",
-    # "LNAME"=>"", "GROUPINGS"=>[{"id"=>757, "name"=>"Purchases",
-    # "form_field"=>"hidden", "groups"=>[{"name"=>"Premium Member",
-    # "interested"=>false}]}]}, "status"=>"subscribed", "timestamp"=>"2015-11-12
-    # 04:42:41", "is_gmonkey"=>false, "lists"=>[], "geo"=>[], "clients"=>[],
-    # "static_segments"=>[], "notes"=>[]}
   end
 end
