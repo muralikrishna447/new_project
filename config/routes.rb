@@ -148,6 +148,7 @@ Delve::Application.routes.draw do
   get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
   get 'eula-android' => 'legal#eula_android', as: 'eula_android'
   get 'privacy' => 'legal#privacy_policy', as: 'privacy'
+  get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
   get 'terms' => 'legal#terms', as: 'terms'
   get 'terms' => 'legal#terms', as: 'terms_of_service'
 
