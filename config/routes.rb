@@ -24,8 +24,6 @@ Delve::Application.routes.draw do
   # match '/new_home', to: 'home#new_home'
   match '/home_manager', to: 'home#manager'
 
-  match '/terms', to: 'home#terms'
-  match '/privacy', to: 'home#privacy'
   match '/libraries', to: 'home#libraries'
   match '/joule/warranty', to: 'home#joule_warranty'
   match '/facebook_optout', to: 'home#facebook_optout'
@@ -128,8 +126,6 @@ Delve::Application.routes.draw do
   get 'thank-you-subscribing' => 'copy#thank_you_subscribing', as: 'thank_you_subscribing'
   get 'legal' => 'copy#legal', as: 'legal'
   get 'legal/:type' => 'copy#legal', as: 'legal_type'
-  get 'legal/terms' => 'copy#legal', as: 'terms_of_service'
-  get 'legal/privacy' => 'copy#legal', as: 'privacy'
   get 'legal/licensing' => 'copy#legal', as: 'licensing'
   get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
@@ -147,6 +143,14 @@ Delve::Application.routes.draw do
   get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
   get 'joule-crawler' => 'pages#joule_crawler', as: 'joule_crawler'
+
+  # Legal Documents
+  get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
+  get 'eula-android' => 'legal#eula_android', as: 'eula_android'
+  get 'privacy' => 'legal#privacy_policy', as: 'privacy'
+  get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
+  get 'terms' => 'legal#terms', as: 'terms'
+  get 'terms' => 'legal#terms', as: 'terms_of_service'
 
   match '/mp', to: redirect('/courses/spherification')
   match '/MP', to: redirect('/courses/spherification')
@@ -395,7 +399,7 @@ Delve::Application.routes.draw do
       resources :charges, only: [:create] do
         put :redeem, on: :member
       end
-      
+
       resource :webhooks, only: [:shopify] do
         post :shopify, on: :collection
       end

@@ -25,7 +25,7 @@ describe User do
       aa = ActorAddress.find_for_user_and_unique_key(@user, 'website')
       aa.valid_token?(token).should be true
       # TODO - use timecop to avoid time hacks like this - 5
-      token[:exp].should >= (Time.now.to_i + 1.year.to_i - 5)
+      token[:exp].should >= (Time.now.to_i + 365.days.to_i)
     end
 
     it 'should return a valid auth token when no actor address exists' do

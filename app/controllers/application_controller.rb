@@ -137,26 +137,12 @@ class ApplicationController < BaseApplicationController
 
   helper_method :intercom_app_id
   def intercom_app_id
-    case Rails.env
-    when "production"
-      'vy04t2n1'
-    else
-      'pqm08zug'
-    end
-  end
-
-  def intercom_secret
-    case Rails.env
-    when "production"
-      ENV["INTERCOM_SECRET"]
-    else
-      "TXpMDZMi8_y5HVUNzfveHtWTEVFys9iF8tSurskP"
-    end
+    Rails.configuration.intercom[:app_id]
   end
 
   helper_method :intercom_user_hash
   def intercom_user_hash(user)
-    Digest::HMAC.hexdigest(user.id.to_s, intercom_secret, Digest::SHA256)
+    Digest::HMAC.hexdigest(user.id.to_s, Rails.configuration.intercom[:secret], Digest::SHA256)
   end
 
 private

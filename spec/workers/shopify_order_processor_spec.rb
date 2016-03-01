@@ -15,7 +15,7 @@ describe ShopifyOrderProcessor do
   end
   
   it 'should throw for non-existent order' do
-    Shopify::Order.should_receive(:find).and_throw(ActiveResource::ResourceNotFound)
+    Shopify::Order.should_receive(:find).and_raise(ActiveResource::ResourceNotFound.new(''))
     expect { @op.perform(111) }.to raise_error
   end
 end
