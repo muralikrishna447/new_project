@@ -12,11 +12,16 @@ module Api
         def show
           sku = params[:id]
           product_id = product_id_by_sku(sku)
-          @product = Rails.cache.fetch("shopping/products/#{product_id}", expires_in: 1.second) do
-            result = ShopifyAPI::Product.get(product_id)
-            result
+          if product_id
+            @product = Rails.cache.fetch("shopping/products/#{product_id}", expires_in: 1.second) do
+              result = ShopifyAPI::Product.get(product_id)
+              result
+            end
+            render(json: @product)
+          else
+            render(json: {message: 'No product found for sku.'})
           end
-          render(json: @product)
+
         end
 
         private
@@ -36,7 +41,8 @@ module Api
 
         def product_id_by_sku(sku)
           get_cached_products
-          @products.select{|product| product[:sku] == sku}.first[:id]
+          product = @products.select{|product| product[:sku] == sku}
+          return product.first[:id] if product.any?
         end
       end
     end
