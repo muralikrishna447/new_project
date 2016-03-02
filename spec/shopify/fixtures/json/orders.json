@@ -266,6 +266,15 @@
       "id": 100004,
       "fulfillment_status": "unfilfilled",
       "tags": null
+    },
+    {
+      "id": 100005,
+      "customer":{"multipass_identifier":123},
+      "financial_status": "paid",
+      "fulfillment_status": "unfilfilled",
+      "note_attributes":[{"name":"gift-order", "value":"on"}],
+      "tags": null,
+      "line_items": [{"sku":"cs10002", "quantity":1, "price":5, "fulfillment_status":"unfulfilled"}]
     }
 
   ]
