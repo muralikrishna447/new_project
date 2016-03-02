@@ -58,11 +58,19 @@ describe Api::V0::Shopping::ProductsController do
   end
 
   describe 'GET /products/:sku' do
+
     it "should respond with a product when a sku is provided " do
       get :show, id: 'cs123'
       response.should be_success
       product = JSON.parse(response.body)
       product['title'].should eq('Product1')
+    end
+
+    it "should respond with the product price" do
+      get :show, id: 'cs123'
+      response.should be_success
+      product = JSON.parse(response.body)
+      expect(product.has_key?(:price)).to eq(true)
     end
 
     it "should properly handle cases where a sku cannot be found" do
