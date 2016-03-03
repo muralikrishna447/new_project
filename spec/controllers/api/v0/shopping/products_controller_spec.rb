@@ -75,33 +75,39 @@ describe Api::V0::Shopping::ProductsController do
     end
   end
 
-  describe 'product_id_by_sku' do
+  describe 'private methods' do
     before :each do
       @controller = Api::V0::Shopping::ProductsController.new
     end
 
-    it "should return an array of products" do
-      product_id_1 = @controller.instance_eval { product_id_by_sku('cs123') }
-      product_id_1.should eq(123)
-      product_id_2 = @controller.instance_eval { product_id_by_sku('cs345') }
-      product_id_2.should eq(345)
+    context 'product_id_by_sku' do
+      it "should return a product_id" do
+        product_id_1 = @controller.instance_eval { product_id_by_sku('cs123') }
+        product_id_1.should eq(123)
+        product_id_2 = @controller.instance_eval { product_id_by_sku('cs345') }
+        product_id_2.should eq(345)
+      end
+
+      it "should properly handle cases where a sku cannot be found" do
+        no_product_id = @controller.instance_eval { product_id_by_sku('csNoSku')}
+        no_product_id.should eq(nil)
+      end
     end
 
-    it "should properly handle cases where a sku cannot be found" do
-      no_product_id = @controller.instance_eval { product_id_by_sku('csNoSku')}
-      no_product_id.should eq(nil)
-    end
-  end
-
-  describe 'get_product_metafield' do
-    before :each do
-      @controller = Api::V0::Shopping::ProductsController.new
+    context 'get_product_metafield' do
+      it "should return metafields for a product" do
+        product = ShopifyAPI::Product.find(123)
+        product_metafields = @controller.instance_eval { get_product_metafield(product, 'price', 'msrp') }
+        expect(product_metafields).to eq(2000)
+      end
     end
 
-    it "should return metafields for a product" do
-      product = ShopifyAPI::Product.find(123)
-      product_metafields = @controller.instance_eval { get_product_metafield(product, 'price', 'msrp') }
-      expect(product_metafields).to eq(2000)
+    context 'get_product_discount' do
+      it "should return a discount for a product" do
+        product = ShopifyAPI::Product.find(123)
+        product_discount = @controller.instance_eval { get_product_discount(product) }
+        expect(product_discount).to eq(800)
+      end
     end
   end
 
