@@ -25,10 +25,44 @@ describe Api::V0::Shopping::ProductsController do
 
     product_1_response = {
       title: 'Product1',
-      id: 345
+      id: 345,
+      tags: 'premium-discount:800',
+      metafields: [
+
+      ],
+      variants: [
+        {
+          sku: 'cs123',
+          price: '10.00'
+        }
+      ]
     }
 
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/123.json/).to_return(status: 200, body: product_1_response.to_json)
+
+    product_1_metafields_response = {
+      metafields: [
+        {
+          namespace: 'price',
+          key: 'msrp',
+          value: '20.00'
+        }
+      ]
+    }
+
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/123\/metafields.json/).to_return(status: 200, body: product_1_metafields_response.to_json)
+
+    product_2_metafields_response = {
+      metafields: [
+        {
+          namespace: 'price',
+          key: 'msrp',
+          value: '15.00'
+        }
+      ]
+    }
+
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345\/metafields.json/).to_return(status: 200, body: product_2_metafields_response.to_json)
   end
 
   describe 'GET /products' do
@@ -70,7 +104,7 @@ describe Api::V0::Shopping::ProductsController do
       get :show, id: 'cs123'
       response.should be_success
       product = JSON.parse(response.body)
-      expect(product.has_key?(:price)).to eq(true)
+      expect(product.has_key?('price')).to eq(true)
     end
 
     it "should properly handle cases where a sku cannot be found" do
