@@ -1,5 +1,6 @@
 describe Api::V0::Shopping::ProductsController do
   before :each do
+
     products_response = [
       {
         id: 123,
@@ -45,19 +46,19 @@ describe Api::V0::Shopping::ProductsController do
         {
           namespace: 'price',
           key: 'msrp',
-          value: '20.00'
+          value: 2000
         }
       ]
     }
 
-    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/123\/metafields.json/).to_return(status: 200, body: product_1_metafields_response.to_json)
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345\/metafields.json/).to_return(status: 200, body: product_1_metafields_response.to_json)
 
     product_2_metafields_response = {
       metafields: [
         {
           namespace: 'price',
           key: 'msrp',
-          value: '15.00'
+          value: 2000
         }
       ]
     }
@@ -78,6 +79,7 @@ describe Api::V0::Shopping::ProductsController do
     before :each do
       @controller = Api::V0::Shopping::ProductsController.new
     end
+
     it "should return an array of products" do
       product_id_1 = @controller.instance_eval { product_id_by_sku('cs123') }
       product_id_1.should eq(123)
@@ -88,6 +90,18 @@ describe Api::V0::Shopping::ProductsController do
     it "should properly handle cases where a sku cannot be found" do
       no_product_id = @controller.instance_eval { product_id_by_sku('csNoSku')}
       no_product_id.should eq(nil)
+    end
+  end
+
+  describe 'get_product_metafield' do
+    before :each do
+      @controller = Api::V0::Shopping::ProductsController.new
+    end
+
+    it "should return metafields for a product" do
+      product = ShopifyAPI::Product.find(123)
+      product_metafields = @controller.instance_eval { get_product_metafield(product, 'price', 'msrp') }
+      expect(product_metafields).to eq(2000)
     end
   end
 
