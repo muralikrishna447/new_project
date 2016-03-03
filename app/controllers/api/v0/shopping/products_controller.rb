@@ -18,7 +18,7 @@ module Api
               result.metafields = result.metafields
               result.msrp = get_product_metafield(result, 'price', 'msrp')
               result.price = result.variants.first.price.to_i*100
-              result.premium_discount_price = result.variants.first.price.to_i*100 - get_product_discount(result)
+              result.premium_discount_price = get_product_discount(result)
               result
             end
             render(json: @product)
