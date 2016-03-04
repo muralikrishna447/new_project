@@ -2,7 +2,8 @@ module Api
   module V0
     module Shopping
       class ProductsController < BaseController
-
+        PREMIUM_DISCOUNT_TAG = 'premium-discount'
+        
         def index
           get_all_products
           render(json: @products)
@@ -32,11 +33,11 @@ module Api
               {
                 id: product.id,
                 title: product.title,
-                sku: product.variants.first.sku,
+                sku: get_first_variant(product).sku,
                 msrp: get_product_metafield(product, 'price', 'msrp'),
                 price: get_price(product),
                 premium_discount_price: get_product_discount(product),
-                variant_id: product.variants.first.id
+                variant_id: get_first_variant(product).id
               }
             end
             results
@@ -56,10 +57,11 @@ module Api
           end
         end
 
+        # Note: If this method is changed, we will need to update the Shopify Cart script to match.
         def get_product_discount(product)
           discount = nil
           product.tags.split(',').each do |tag|
-            if tag.start_with?('premium-discount')
+            if tag.start_with?(PREMIUM_DISCOUNT_TAG)
               discount = tag.split(":")[1].to_i
             end
           end
@@ -72,7 +74,11 @@ module Api
         end
 
         def get_price(product)
-          product.variants.first.price.to_i*100
+          get_first_variant(product).price.to_i*100
+        end
+
+        def get_first_variant(product)
+          product.variants.first
         end
       end
     end
