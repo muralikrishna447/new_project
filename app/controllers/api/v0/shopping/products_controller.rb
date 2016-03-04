@@ -4,17 +4,15 @@ module Api
       class ProductsController < BaseController
 
         def index
-          get_cached_products
+          get_all_products
           render(json: @products)
         end
 
         # Get product by sku
         def show
           sku = params[:id]
-          products = get_cached_products
-          @product = Rails.cache.fetch("shopping/products/#{sku}", expires_in: 1.second) do
-            products.select{|p| p[:sku] == sku}.first
-          end
+          products = get_all_products
+          @product = products.select{|p| p[:sku] == sku}.first
           if @product
             render(json: @product)
           else
@@ -27,7 +25,7 @@ module Api
         # Caches products with data in a more convient location (msrp, price, sku, variant_id) rather than deeply nested
         # This flattens the shopify data to make it easier to work with
         # If we later decide to use variants each having unique skus, this will need to be updated to handle that.
-        def get_cached_products
+        def get_all_products
           @products = Rails.cache.fetch("shopping/products", expires_in: 1.second) do
             results = ShopifyAPI::Product.find(:all)
             results = results.map do |product|
@@ -46,7 +44,7 @@ module Api
         end
 
         def product_id_by_sku(sku)
-          get_cached_products
+          get_all_products
           product = @products.select{|product| product[:sku] == sku}
           return product.first[:id] if product.any?
         end
