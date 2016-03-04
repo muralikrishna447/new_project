@@ -11,24 +11,22 @@ module Api
         # Get product by sku
         def show
           sku = params[:id]
-          product_id = product_id_by_sku(sku)
-          if product_id
-            @product = Rails.cache.fetch("shopping/products/#{product_id}", expires_in: 1.second) do
-              result = ShopifyAPI::Product.find(product_id)
-              result.metafields = result.metafields
-              result.msrp = get_product_metafield(result, 'price', 'msrp')
-              result.price = result.variants.first.price.to_i*100
-              result.premium_discount_price = get_product_discount(result)
-              result
-            end
+          products = get_cached_products
+          @product = Rails.cache.fetch("shopping/products/#{sku}", expires_in: 1.second) do
+            products.select{|p| p[:sku] == sku}.first
+          end
+          if @product
             render(json: @product)
           else
             render(json: {message: 'No product found for sku.'})
           end
-
         end
 
         private
+
+        # Caches products with data in a more convient location (msrp, price, sku, variant_id) rather than deeply nested
+        # This flattens the shopify data to make it easier to work with
+        # If we later decide to use variants each having unique skus, this will need to be updated to handle that.
         def get_cached_products
           @products = Rails.cache.fetch("shopping/products", expires_in: 1.second) do
             results = ShopifyAPI::Product.find(:all)
@@ -36,7 +34,11 @@ module Api
               {
                 id: product.id,
                 title: product.title,
-                sku: product.variants.first.sku
+                sku: product.variants.first.sku,
+                msrp: get_product_metafield(product, 'price', 'msrp'),
+                price: get_price(product),
+                premium_discount_price: get_product_discount(product),
+                variant_id: product.variants.first.id
               }
             end
             results
@@ -50,18 +52,29 @@ module Api
         end
 
         def get_product_metafield(product, namespace, key)
-          metafield = product.metafields.select{|metafield| metafield.namespace == namespace && metafield.key == key}.first
-          metafield.value
+          if product.metafields.any?
+            metafield = product.metafields.select{|metafield| metafield.namespace == namespace && metafield.key == key}.first
+            metafield.value
+          end
         end
 
         def get_product_discount(product)
-          discount = 0
+          discount = nil
           product.tags.split(',').each do |tag|
             if tag.start_with?('premium-discount')
               discount = tag.split(":")[1].to_i
             end
           end
           discount
+        end
+
+        def get_variant_id_for_sku(variants, sku)
+          variant = variants.select{|v| v.sku == sku }
+          return variants.first.id
+        end
+
+        def get_price(product)
+          product.variants.first.price.to_i*100
         end
       end
     end
