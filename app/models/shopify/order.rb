@@ -97,6 +97,8 @@ class Shopify::Order
 
     # Sync premium / discount status
     Shopify::Customer.sync_user(user)
+    # TODO - figure out how to try to do this only once
+    send_analytics
   end
   
   def send_gift_receipt(item)
@@ -136,5 +138,145 @@ class Shopify::Order
     else
       user.make_premium_member(item.price)
     end
+  end
+
+  def extract_analytics_data
+    # There is JS in the shopify cart that copies the utm and _ga cookies to note attributes
+    data = {}
+        
+    utm_data = @api_order.note_attributes.find {|attr| attr.name == 'utm'}
+    if utm_data
+      JSON.parse(utm_data.value).each_pair {|k,v| data[k] = v }
+    end
+    
+    ga_data = @api_order.note_attributes.find {|attr| attr.name == 'ga'}
+    data['google_analytics_client_id'] = google_analytics_client_id(ga_data.value) if ga_data
+
+    return data
+  end
+  
+  def build_segment_data
+    data = extract_analytics_data
+  
+    products = @api_order.line_items.collect do |item|
+      {
+        id: item.sku,
+        sku: item.sku,
+        name: item.title,
+        price: item.price,
+        quantity: item.quantity
+      }
+    end
+  
+    {
+      event: 'Completed Order Workaround',
+      user_id: user.id,
+      context: {
+        'GoogleAnalytics' => {
+          clientId: data['google_analytics_client_id']
+        },
+        campaign: {
+          name: data['utm_campaign'],
+          source: data['utm_source'],
+          medium: data['utm_medium'],
+          term: data['utm_term'],
+          content: data['utm_content']
+        },
+        referrer: {
+          url: data['referrer']
+        }
+      },
+    
+      
+      properties: {
+        # Pre shopify, there used to be a label attribute set to the SKU
+        product_skus: @api_order.line_items.collect{|line_item| line_item.sku},
+        orderId: @api_order.id,
+        total: @api_order.total_price,
+        revenue: @api_order.subtotal_price,
+        tax: @api_order.total_tax,
+        shipping: 0,
+        discount: @api_order.total_discounts,
+        gift: gift_order?,
+        currency: 'USD',
+        products: products,
+      }
+    }
+  
+  end
+
+  # All these gibberish abbreviations are defined here:
+  # https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters
+  def build_common_ga_data
+    data = extract_analytics_data
+
+    ga_common = {
+      'v' => 1,
+      'tid' => ENV['GA_TRACKING_ID'],
+      'cid' => data['google_analytics_client_id'],
+      'uid' => user.id,
+
+      'cu' => 'USD',
+      'ti' => @api_order.id
+    }
+    ga_common['cn'] = data['utm_campaign'] if data['utm_campaign']
+    ga_common['cs'] = data['utm_source'] if data['utm_source']
+    ga_common['cm'] = data['utm_medium'] if data['utm_medium']
+    ga_common['cc'] = data['utm_content'] if data['utm_content']
+    ga_common['ck'] = data['utm_term'] if data['utm_term']
+    ga_common['gclid'] = data['gclid'] if data['gclid']
+    return ga_common
+  end
+  
+  def build_transaction_ga_data
+    ga_transaction = {
+      't' => 'transaction',
+      'ts' => 0,
+      'tr' => @api_order.subtotal_price,
+      'tt' => @api_order.total_tax,
+    }.merge(build_common_ga_data)
+  end
+
+  def build_product_ga_data (line_item)
+    ga_product = {
+      't' => 'item',
+      'iq' => line_item.quantity,
+      'ip' => line_item.price,
+      'in' => line_item.title,
+      'ic' => line_item.sku
+    }.merge(build_common_ga_data)
+  end
+  
+  def send_to_ga payload
+    validation_url = 'https://www.google-analytics.com/debug/collect'
+    validate_result = HTTParty.post(validation_url, { body: payload })
+    Rails.logger.info("Validator result: #{validate_result.body.inspect}")
+    if !JSON::parse(validate_result.body)['hitParsingResult'].first['valid']
+      msg = "Error: invalid payload sent to GA: #{payload.inspect} #{validate_result.body.inspect}"
+      Rails.logger.error(msg)
+      raise msg
+    end
+    Rails.logger.info "GA data: #{payload}"
+    submit_url = 'http://www.google-analytics.com/collect'
+    HTTParty.post(submit_url, { body: payload })
+  end
+
+  def send_analytics()  
+    segment_data = build_segment_data
+    Rails.logger.info "Segment data: #{segment_data}"
+    if !Analytics.track(segment_data)
+      Rails.logger.error("Error: problem tracking #{segment_data[:event]} #{segment_data}")
+    end
+    Analytics.identify(user_id: user.id, traits: {joule_purchase_count: user.joule_purchase_count})
+    Analytics.flush()
+    
+    send_to_ga(build_transaction_ga_data)
+    @api_order.line_items.each do |line_item|
+      send_to_ga(build_product_ga_data(line_item))
+    end
+  end
+  
+  def google_analytics_client_id(ga_cookie)
+    ga_cookie.gsub(/^GA\d\.\d\./, '')
   end
 end

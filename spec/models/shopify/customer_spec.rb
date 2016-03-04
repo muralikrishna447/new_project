@@ -2,10 +2,6 @@ require 'spec_helper'
 
 describe Shopify::Customer do  
   before(:each) do
-    # Toggle enabled to force reload of fixtures
-    ShopifyAPI::Mock.enabled = false
-    ShopifyAPI::Mock.enabled = true
-    
     @user = Fabricate(:user, :id => 123, :email => 'me@example.org')
     @user_not_in_shopify = Fabricate(:user, :id => 456, :email => 'me2@example.org')
     

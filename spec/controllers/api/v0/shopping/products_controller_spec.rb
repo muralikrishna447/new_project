@@ -1,9 +1,5 @@
 describe Api::V0::Shopping::ProductsController do
   before :each do
-    # Toggle enabled to force reload of fixtures
-    ShopifyAPI::Mock.enabled = false
-    ShopifyAPI::Mock.enabled = true
-
     products_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products']
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/products.json/)
       .to_return(status: 200, body: products_data.to_json, headers: {})
@@ -15,7 +11,6 @@ describe Api::V0::Shopping::ProductsController do
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345.json/).to_return(status: 200, body: products_2_data.to_json)
 
     products_1_metafields_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][0]['metafields']
-    puts "HERE IS PRODUCTS 1 METAFIELDS: #{products_1_metafields_data}"
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/123\/metafields.json/).to_return(status: 200, body: products_1_metafields_data.to_json)
 
     products_2_metafields_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][1]['metafields']
