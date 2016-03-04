@@ -80,9 +80,7 @@ module Api
 
         def get_compare_at_price(product)
           first_variant = get_first_variant(product)
-          if first_variant.method_defined? :compare_at_price
-            first_variant.compare_at_price.to_i*100
-          end
+          first_variant.compare_at_price.to_i*100
         end
 
         def get_first_variant(product)

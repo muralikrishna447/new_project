@@ -15,7 +15,8 @@
       "variants": [
         {
           "sku": "cs123",
-          "price": 1000
+          "price": 1000,
+          "compare_at_price": 20.00
         }
       ]
     },
@@ -34,7 +35,8 @@
       "variants": [
         {
           "sku": "cs345",
-          "price": 1000
+          "price": 1000,
+          "compare_at_price": ""
         }
       ]
     }
