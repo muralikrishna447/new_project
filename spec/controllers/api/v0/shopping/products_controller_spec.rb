@@ -1,16 +1,94 @@
 describe Api::V0::Shopping::ProductsController do
   before :each do
-    ShopifyAPI::Base.stub(:site).and_return(URI.parse('https://test.myshopify.com/admin'))
-    ShopifyAPI::Product.stub(:get).and_return({"id"=>1538566017, "title"=>"Ribeye Special", "body_html"=>"Such tasty meat.. I can't even believe it", "vendor"=>"ChefSteps.com", "product_type"=>"", "created_at"=>"2015-07-15T16:52:12-04:00", "handle"=>"ribeye-special", "updated_at"=>"2015-07-23T12:23:28-04:00", "published_at"=>"2015-07-23T01:43:00-04:00", "template_suffix"=>nil, "published_scope"=>"global", "tags"=>"", "variants"=>[{"id"=>4652374913, "product_id"=>1538566017, "title"=>"Default Title", "price"=>"120.00", "sku"=>"", "position"=>1, "grams"=>0, "inventory_policy"=>"deny", "compare_at_price"=>nil, "fulfillment_service"=>"manual", "inventory_management"=>"shopify", "option1"=>"Default Title", "option2"=>nil, "option3"=>nil, "created_at"=>"2015-07-15T16:52:12-04:00", "updated_at"=>"2015-07-23T12:23:28-04:00", "requires_shipping"=>true, "taxable"=>true, "barcode"=>"", "inventory_quantity"=>2, "old_inventory_quantity"=>2, "image_id"=>nil, "weight"=>0.0, "weight_unit"=>"lb"}], "options"=>[{"id"=>1816004609, "product_id"=>1538566017, "name"=>"Title", "position"=>1, "values"=>["Default Title"]}], "images"=>[{"id"=>3589478849, "product_id"=>1538566017, "position"=>1, "created_at"=>"2015-07-15T16:52:13-04:00", "updated_at"=>"2015-07-15T16:52:13-04:00", "src"=>"https://cdn.shopify.com/s/files/1/0171/7850/products/ribeye.jpg?v=1436993533", "variant_ids"=>[]}], "image"=>{"id"=>3589478849, "product_id"=>1538566017, "position"=>1, "created_at"=>"2015-07-15T16:52:13-04:00", "updated_at"=>"2015-07-15T16:52:13-04:00", "src"=>"https://cdn.shopify.com/s/files/1/0171/7850/products/ribeye.jpg?v=1436993533", "variant_ids"=>[]}})
+    # Toggle enabled to force reload of fixtures
+    ShopifyAPI::Mock.enabled = false
+    ShopifyAPI::Mock.enabled = true
+
+    products_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products']
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products.json/)
+      .to_return(status: 200, body: products_data.to_json, headers: {})
+
+    products_1_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][0]
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/123.json/).to_return(status: 200, body: products_1_data.to_json)
+
+    products_2_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][1]
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345.json/).to_return(status: 200, body: products_2_data.to_json)
+
+    products_1_metafields_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][0]['metafields']
+    puts "HERE IS PRODUCTS 1 METAFIELDS: #{products_1_metafields_data}"
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/123\/metafields.json/).to_return(status: 200, body: products_1_metafields_data.to_json)
+
+    products_2_metafields_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][1]['metafields']
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345\/metafields.json/).to_return(status: 200, body: products_2_metafields_data.to_json)
+
   end
 
-  context 'GET /products/:id' do
-    it "should respond with a json object with an id and quantity" do
-      get :show
+  describe 'GET /products' do
+    it "should respond with an array of products" do
+      get :index
+      response.should be_success
+      products = JSON.parse(response.body)
+      products.length.should eq(2)
+    end
+  end
+
+  describe 'private methods' do
+    before :each do
+      @controller = Api::V0::Shopping::ProductsController.new
+    end
+
+    context 'product_id_by_sku' do
+      it "should return a product_id" do
+        product_id_1 = @controller.instance_eval { product_id_by_sku('cs123') }
+        product_id_1.should eq(123)
+        product_id_2 = @controller.instance_eval { product_id_by_sku('cs345') }
+        product_id_2.should eq(345)
+      end
+
+      it "should properly handle cases where a sku cannot be found" do
+        no_product_id = @controller.instance_eval { product_id_by_sku('csNoSku')}
+        no_product_id.should eq(nil)
+      end
+    end
+
+    context 'get_product_metafield' do
+      it "should return metafields for a product" do
+        product = ShopifyAPI::Product.find(123)
+        product_metafields = @controller.instance_eval { get_product_metafield(product, 'price', 'msrp') }
+        expect(product_metafields).to eq(2000)
+      end
+    end
+
+    context 'get_product_discount' do
+      it "should return a discount for a product" do
+        product = ShopifyAPI::Product.find(123)
+        product_discount = @controller.instance_eval { get_product_discount(product) }
+        expect(product_discount).to eq(800)
+      end
+    end
+  end
+
+  describe 'GET /products/:sku' do
+
+    it "should respond with a product when a sku is provided " do
+      get :show, id: 'cs123'
       response.should be_success
       product = JSON.parse(response.body)
-      product['quantity'].should == 2
-      product['id'].should == 1538566017
+      product['title'].should eq('Product1')
+    end
+
+    it "should respond with the product price" do
+      get :show, id: 'cs123'
+      response.should be_success
+      product = JSON.parse(response.body)
+      expect(product.has_key?('price')).to eq(true)
+    end
+
+    it "should properly handle cases where a sku cannot be found" do
+      get :show, id: 'csNoSku'
+      response.should be_success
+      responseBody = JSON.parse(response.body)
+      responseBody['message'].should eq('No product found for sku.')
     end
   end
 end
