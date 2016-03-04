@@ -3,76 +3,24 @@ describe Api::V0::Shopping::ProductsController do
     # Toggle enabled to force reload of fixtures
     ShopifyAPI::Mock.enabled = false
     ShopifyAPI::Mock.enabled = true
-    puts "PRODUCTS ARE HERE: #{ShopifyAPI::Mock::Fixture.all.inspect}"
-    # products_data = [JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products']]
-    # puts "products_data: #{products_data}"
-    # WebMock.stub_request(:get, /test.myshopify.com\/admin\/products.json/)
-    #   .to_return(status: 200, body: products_data.to_json, headers: {})
 
+    products_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products']
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products.json/)
+      .to_return(status: 200, body: products_data.to_json, headers: {})
 
-    # products_response = [
-    #   {
-    #     id: 123,
-    #     title: 'Product1',
-    #     variants: [
-    #       {
-    #         sku: 'cs123'
-    #       }
-    #     ]
-    #   },
-    #   {
-    #     id: 345,
-    #     title: 'Product2',
-    #     sku: 'cs345',
-    #     variants: [
-    #       {
-    #         sku: 'cs345'
-    #       }
-    #     ]
-    #   }
-    # ]
-    # WebMock.stub_request(:get, /test.myshopify.com\/admin\/products.json/).to_return(status: 200, body: products_response.to_json)
-    #
-    # product_1_response = {
-    #   title: 'Product1',
-    #   id: 345,
-    #   tags: 'premium-discount:800',
-    #   metafields: [
-    #
-    #   ],
-    #   variants: [
-    #     {
-    #       sku: 'cs123',
-    #       price: '10.00'
-    #     }
-    #   ]
-    # }
-    #
-    # WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/123.json/).to_return(status: 200, body: product_1_response.to_json)
-    #
-    # product_1_metafields_response = {
-    #   metafields: [
-    #     {
-    #       namespace: 'price',
-    #       key: 'msrp',
-    #       value: 2000
-    #     }
-    #   ]
-    # }
-    #
-    # WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345\/metafields.json/).to_return(status: 200, body: product_1_metafields_response.to_json)
-    #
-    # product_2_metafields_response = {
-    #   metafields: [
-    #     {
-    #       namespace: 'price',
-    #       key: 'msrp',
-    #       value: 2000
-    #     }
-    #   ]
-    # }
-    #
-    # WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345\/metafields.json/).to_return(status: 200, body: product_2_metafields_response.to_json)
+    products_1_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][0]
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/123.json/).to_return(status: 200, body: products_1_data.to_json)
+
+    products_2_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][1]
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345.json/).to_return(status: 200, body: products_2_data.to_json)
+
+    products_1_metafields_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][0]['metafields']
+    puts "HERE IS PRODUCTS 1 METAFIELDS: #{products_1_metafields_data}"
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/123\/metafields.json/).to_return(status: 200, body: products_1_metafields_data.to_json)
+
+    products_2_metafields_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][1]['metafields']
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345\/metafields.json/).to_return(status: 200, body: products_2_metafields_data.to_json)
+
   end
 
   describe 'GET /products' do
