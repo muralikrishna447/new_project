@@ -3,7 +3,7 @@ module Api
     module Shopping
       class ProductsController < BaseController
         PREMIUM_DISCOUNT_TAG = 'premium-discount'
-        
+
         def index
           get_all_products
           render(json: @products)
@@ -30,14 +30,15 @@ module Api
           @products = Rails.cache.fetch("shopping/products", expires_in: 1.second) do
             results = ShopifyAPI::Product.find(:all)
             results = results.map do |product|
+              first_variant = get_first_variant(product)
               {
                 id: product.id,
                 title: product.title,
-                sku: get_first_variant(product).sku,
-                msrp: get_product_metafield(product, 'price', 'msrp'),
+                sku: first_variant.sku,
+                compare_at_price: get_compare_at_price(product),
                 price: get_price(product),
                 premium_discount_price: get_product_discount(product),
-                variant_id: get_first_variant(product).id
+                variant_id: first_variant.id
               }
             end
             results
@@ -75,6 +76,10 @@ module Api
 
         def get_price(product)
           get_first_variant(product).price.to_i*100
+        end
+
+        def get_compare_at_price(product)
+          get_first_variant(product).compare_at_price.to_i*100
         end
 
         def get_first_variant(product)
