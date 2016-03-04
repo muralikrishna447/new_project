@@ -107,7 +107,7 @@ class Shopify::Order
 
     Rails.logger.info("Sending Gift Receipt")
     pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: item.price, redeemed: false)
-    PremiumGiftCertificateMailer.prepare(user, pgc.token) # deleted .deliver here because i'm not sure its needed
+    PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver
   end
 
   def all_but_joule_fulfilled?

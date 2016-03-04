@@ -60,9 +60,10 @@ describe Shopify::Order do
     end  
     
     it 'fulfills premium gift order' do
+      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
+        to_return(:status => 200, :body => "{}", :headers => {})
       stub_fulfillment
       stub_metafield_get
-      PremiumGiftCertificateMailer.should_receive(:prepare)
       order = Shopify::Order.find(PREMIUM_GIFT_ORDER).process!
     end
   end
