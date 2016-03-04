@@ -139,20 +139,22 @@ class Shopify::Order
       user.make_premium_member(item.price)
     end
   end
-
-  def extract_analytics_data
-    # There is JS in the shopify cart that copies the utm and _ga cookies to note attributes
-    data = {}
-        
-    utm_data = @api_order.note_attributes.find {|attr| attr.name == 'utm'}
-    if utm_data
-      JSON.parse(utm_data.value).each_pair {|k,v| data[k] = v }
+  
+  def send_analytics()  
+    segment_data = build_segment_data
+    Rails.logger.info "Segment data: #{segment_data}"
+    if !Analytics.track(segment_data)
+      msg = "Error: problem tracking #{segment_data[:event]} #{segment_data}"
+      Rails.logger.error(msg)
+      raise msg
     end
+    Analytics.identify(user_id: user.id, traits: {joule_purchase_count: user.joule_purchase_count})
+    Analytics.flush()
     
-    ga_data = @api_order.note_attributes.find {|attr| attr.name == 'ga'}
-    data['google_analytics_client_id'] = google_analytics_client_id(ga_data.value) if ga_data
-
-    return data
+    send_to_ga(build_transaction_ga_data)
+    @api_order.line_items.each do |line_item|
+      send_to_ga(build_product_ga_data(line_item))
+    end
   end
   
   def build_segment_data
@@ -186,8 +188,7 @@ class Shopify::Order
           url: data['referrer']
         }
       },
-    
-      
+
       properties: {
         # Pre shopify, there used to be a label attribute set to the SKU
         product_skus: @api_order.line_items.collect{|line_item| line_item.sku},
@@ -215,7 +216,6 @@ class Shopify::Order
       'tid' => ENV['GA_TRACKING_ID'],
       'cid' => data['google_analytics_client_id'],
       'uid' => user.id,
-
       'cu' => 'USD',
       'ti' => @api_order.id
     }
@@ -247,6 +247,10 @@ class Shopify::Order
     }.merge(build_common_ga_data)
   end
   
+  def google_analytics_client_id(ga_cookie)
+    ga_cookie.gsub(/^GA\d\.\d\./, '')
+  end
+  
   def send_to_ga payload
     validation_url = 'https://www.google-analytics.com/debug/collect'
     validate_result = HTTParty.post(validation_url, { body: payload })
@@ -261,22 +265,18 @@ class Shopify::Order
     HTTParty.post(submit_url, { body: payload })
   end
 
-  def send_analytics()  
-    segment_data = build_segment_data
-    Rails.logger.info "Segment data: #{segment_data}"
-    if !Analytics.track(segment_data)
-      Rails.logger.error("Error: problem tracking #{segment_data[:event]} #{segment_data}")
+  def extract_analytics_data
+    # There is JS in the shopify cart that copies the utm and _ga cookies to note attributes
+    data = {}
+        
+    utm_data = @api_order.note_attributes.find {|attr| attr.name == 'utm'}
+    if utm_data
+      JSON.parse(utm_data.value).each_pair {|k,v| data[k] = v }
     end
-    Analytics.identify(user_id: user.id, traits: {joule_purchase_count: user.joule_purchase_count})
-    Analytics.flush()
     
-    send_to_ga(build_transaction_ga_data)
-    @api_order.line_items.each do |line_item|
-      send_to_ga(build_product_ga_data(line_item))
-    end
-  end
-  
-  def google_analytics_client_id(ga_cookie)
-    ga_cookie.gsub(/^GA\d\.\d\./, '')
+    ga_data = @api_order.note_attributes.find {|attr| attr.name == 'ga'}
+    data['google_analytics_client_id'] = google_analytics_client_id(ga_data.value) if ga_data
+
+    return data
   end
 end
