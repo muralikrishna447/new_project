@@ -28,8 +28,17 @@ module Api
         # If we later decide to use variants each having unique skus, this will need to be updated to handle that.
         def get_all_products
           @products = Rails.cache.fetch("shopping/products", expires_in: 1.minute) do
-            results = ShopifyAPI::Product.find(:all, {limit: 250})
-            results = results.map do |product|
+            page = 1
+            products = []
+            count = ShopifyAPI::Product.count
+            if count > 0
+              page += count.divmod(250).first
+              while page > 0
+                products += ShopifyAPI::Product.all(:params => {:page => page, :limit => 250})
+                page -= 1
+              end
+            end
+            results = products.map do |product|
               first_variant = get_first_variant(product)
               {
                 id: product.id,
