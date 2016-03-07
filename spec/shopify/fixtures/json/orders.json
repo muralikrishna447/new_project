@@ -244,6 +244,7 @@
       "closed_at": null,
       "buyer_accepts_marketing": false,
       "total_tax": "11.94",
+      "subtotal_price": "199.00",
       "total_weight": 0,
       "email": "bob.norman@hostmail.com"
     },
@@ -266,6 +267,19 @@
       "id": 100004,
       "fulfillment_status": "unfilfilled",
       "tags": null
+    },
+    {
+      "id": 100005,
+      "customer":{"multipass_identifier":123},
+      "financial_status": "paid",
+      "fulfillment_status": "unfilfilled",
+      "note_attributes":[{"name":"gift-order", "value":"on"}],
+      "tags": null,
+      "line_items": [{"sku":"cs10002", "quantity":1, "price":5, "fulfillment_status":"unfulfilled", "title": "title"}],
+      "total_price": "20.00",
+      "total_discounts": "0.00",
+      "subtotal_price": "19.00",
+      "total_tax":"1"
     }
 
   ]

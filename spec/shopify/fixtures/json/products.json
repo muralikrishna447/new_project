@@ -1,0 +1,44 @@
+{
+  "products": [
+    {
+      "id": 123,
+      "title": "Product1",
+      "metafields": [
+        {
+          "namespace": "price",
+          "key": "msrp",
+          "value": 2000
+        }
+      ],
+      "tags": "premium-discount:800",
+      "sku": "cs123",
+      "variants": [
+        {
+          "sku": "cs123",
+          "price": 1000,
+          "compare_at_price": 20.00
+        }
+      ]
+    },
+    {
+      "id": 345,
+      "title": "Product2",
+      "metafields": [
+        {
+          "namespace": "price",
+          "key": "msrp",
+          "value": 2000
+        }
+      ],
+      "tags": "",
+      "sku": "cs345",
+      "variants": [
+        {
+          "sku": "cs345",
+          "price": 1000,
+          "compare_at_price": ""
+        }
+      ]
+    }
+  ]
+}

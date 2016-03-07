@@ -85,7 +85,7 @@ module Delve
     config.firmware_bucket = 'chefsteps-firmware-staging'
 
     # We *do* want Rails caching
-    unless Rails.env.development?
+    unless Rails.env.development? || Rails.env.test?
       config.cache_store = :dalli_store
     end
 

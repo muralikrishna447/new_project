@@ -61,7 +61,9 @@ Spork.prefork do
 
     config.before(:each) do
       DatabaseCleaner.start
+      
       WebMock.reset!
+      ShopifyAPI::Mock.reset
       # Aggressively stub out all Algolia calls as they happen as side effects to activity saves
       # not fun to have to turn them off every place in specs where that happens.
       WebMock.stub_request(:any, /.*\.algolia\.(io|net).*/).to_return(:body => '{ "items": [] }')
