@@ -85,17 +85,13 @@ class UsersController < ApplicationController
     @preauth_cookie = cookies[:cs_preauth]
   end
 
-
-  unless Rails.env.production?
-    def set_location
-      @ip_address = (cookies[:cs_location] || request.ip)
-      if request.post?
-        ip_address = "#{params[:ip_address_1]}.#{params[:ip_address_2]}.#{params[:ip_address_3]}.#{params[:ip_address_4]}"
-        cookies[:cs_location] = ip_address
-      elsif request.delete?
-        cookies.delete :cs_location
-      end
+  def set_location
+    @ip_address = (cookies[:cs_location] || request.ip)
+    if request.post?
+      ip_address = "#{params[:ip_address_1]}.#{params[:ip_address_2]}.#{params[:ip_address_3]}.#{params[:ip_address_4]}"
+      cookies[:cs_location] = ip_address
+    elsif request.delete?
+      cookies.delete :cs_location
     end
   end
-
 end
