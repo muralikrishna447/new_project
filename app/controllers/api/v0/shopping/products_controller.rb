@@ -5,14 +5,16 @@ module Api
         PREMIUM_DISCOUNT_TAG = 'premium-discount'
 
         def index
-          get_all_products
+          ensure_authorized(false)
+          get_all_products(current_api_user)
           render(json: @products)
         end
 
         # Get product by sku
         def show
+          ensure_authorized(false)
           sku = params[:id]
-          products = get_all_products
+          products = get_all_products(current_api_user)
           @product = products.select{|p| p[:sku] == sku}.first
           if @product
             render(json: @product)
@@ -23,11 +25,14 @@ module Api
 
         private
 
-        # Caches products with data in a more convient location (msrp, price, sku, variant_id) rather than deeply nested
+        # Caches products with data in a more convient location (price, sku, variant_id) rather than deeply nested
         # This flattens the shopify data to make it easier to work with
         # If we later decide to use variants each having unique skus, this will need to be updated to handle that.
-        def get_all_products
-          @products = Rails.cache.fetch("shopping/products", expires_in: 1.minute) do
+        def get_all_products(current_api_user)
+          premium_user = current_api_user && current_api_user.premium?
+          # Cache for premium users: shopping/products/premium=true
+          # Cache for non-premium users: shopping/products/premium=false
+          @products = Rails.cache.fetch("shopping/products/premium=#{premium_user}", expires_in: 1.minute) do
             page = 1
             products = []
             count = ShopifyAPI::Product.count
@@ -40,16 +45,14 @@ module Api
             end
             results = products.map do |product|
               first_variant = get_first_variant(product)
-              price = get_price(product)
+              price = get_price(product, current_api_user)
               discount = get_product_discount(product)
-              discounted_price = calculate_discounted_price(price, discount)
               {
                 id: product.id,
                 title: product.title,
                 sku: first_variant.sku,
                 compare_at_price: get_compare_at_price(product),
                 price: price,
-                discounted_price: discounted_price,
                 premium_discount: discount,
                 variant_id: first_variant.id
               }
@@ -57,12 +60,6 @@ module Api
             end
             results
           end
-        end
-
-        def product_id_by_sku(sku)
-          get_all_products
-          product = @products.select{|product| product[:sku] == sku}
-          return product.first[:id] if product.any?
         end
 
         def get_product_metafield(product, namespace, key)
@@ -83,13 +80,20 @@ module Api
           discount
         end
 
-        def get_variant_id_for_sku(variants, sku)
-          variant = variants.select{|v| v.sku == sku }
-          return variants.first.id
-        end
-
-        def get_price(product)
-          get_first_variant(product).price.to_i*100
+        def get_price(product, current_api_user)
+          first_variant = get_first_variant(product)
+          first_variant_price = first_variant.price.to_i*100
+          discount = get_product_discount(product)
+          if current_api_user && current_api_user.premium? && discount
+            # There should be a more general way to handle this
+            if first_variant.sku == 'cs10001' && current_api_user.used_circulator_discount
+              first_variant_price
+            else
+              first_variant_price - discount
+            end
+          else
+            first_variant_price
+          end
         end
 
         def calculate_discounted_price(price, discount)

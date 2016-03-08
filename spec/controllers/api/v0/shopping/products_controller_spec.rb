@@ -1,6 +1,10 @@
 
 describe Api::V0::Shopping::ProductsController do
   before :each do
+
+    @non_premium_user = Fabricate :user, name: 'Non Premium User', email: 'non_premium_user@chefsteps.com', role: 'user', premium_member: false
+    @premium_user = Fabricate :user, name: 'Premium User', email: 'premium_user@chefsteps.com', role: 'user', premium_member: true
+
     products_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products']
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/products.json/)
       .to_return(status: 200, body: products_data.to_json, headers: {})
@@ -29,33 +33,29 @@ describe Api::V0::Shopping::ProductsController do
       products = JSON.parse(response.body)
       products.length.should eq(2)
     end
+
+    it "should response with an array of products when a user is not premium" do
+      sign_in @non_premium_user
+      controller.request.env['HTTP_AUTHORIZATION'] = @non_premium_user.valid_website_auth_token.to_jwt
+      get :index
+      response.should be_success
+      products = JSON.parse(response.body)
+      products.length.should eq(2)
+    end
+
+    it "should response with an array of products when a user is not premium" do
+      sign_in @premium_user
+      controller.request.env['HTTP_AUTHORIZATION'] = @premium_user.valid_website_auth_token.to_jwt
+      get :index
+      response.should be_success
+      products = JSON.parse(response.body)
+      products.length.should eq(2)
+    end
   end
 
   describe 'private methods' do
     before :each do
       @controller = Api::V0::Shopping::ProductsController.new
-    end
-
-    context 'product_id_by_sku' do
-      it "should return a product_id" do
-        product_id_1 = @controller.instance_eval { product_id_by_sku('cs123') }
-        product_id_1.should eq(123)
-        product_id_2 = @controller.instance_eval { product_id_by_sku('cs345') }
-        product_id_2.should eq(345)
-      end
-
-      it "should properly handle cases where a sku cannot be found" do
-        no_product_id = @controller.instance_eval { product_id_by_sku('csNoSku')}
-        no_product_id.should eq(nil)
-      end
-    end
-
-    context 'get_product_metafield' do
-      it "should return metafields for a product" do
-        product = ShopifyAPI::Product.find(123)
-        product_metafields = @controller.instance_eval { get_product_metafield(product, 'price', 'msrp') }
-        expect(product_metafields).to eq(2000)
-      end
     end
 
     context 'get_product_discount' do
@@ -89,5 +89,32 @@ describe Api::V0::Shopping::ProductsController do
       responseBody = JSON.parse(response.body)
       responseBody['message'].should eq('No product found for sku.')
     end
+
+    it "should show the correct price when user is not logged in" do
+      get :show, id: 'cs123'
+      response.should be_success
+      product = JSON.parse(response.body)
+      expect(product['price']).to eq(1000)
+    end
+
+    it "should show the correct price when user is not premium" do
+      sign_in @non_premium_user
+      controller.request.env['HTTP_AUTHORIZATION'] = @non_premium_user.valid_website_auth_token.to_jwt
+      get :show, {id: 'cs123'}, {'HTTP_AUTHORIZATION' => @non_premium_user.valid_website_auth_token.to_jwt}
+      response.should be_success
+      product = JSON.parse(response.body)
+      expect(product['price']).to eq(1000)
+    end
+
+    it "should show the correct price when user is premium" do
+      sign_in @premium_user
+      controller.request.env['HTTP_AUTHORIZATION'] = @premium_user.valid_website_auth_token.to_jwt
+      get :show, {id: 'cs123'}, {'HTTP_AUTHORIZATION' => @premium_user.valid_website_auth_token.to_jwt}
+      response.should be_success
+      product = JSON.parse(response.body)
+      puts "product response: #{product}"
+      expect(product['price']).to eq(200)
+    end
+
   end
 end
