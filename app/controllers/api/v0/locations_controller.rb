@@ -45,11 +45,7 @@ module Api
       end
 
       def get_ip_address
-        unless Rails.env.production?
-          (cookies[:cs_location] || request.ip)
-        else
-          request.ip
-        end
+        (cookies[:cs_location] || request.ip)
       end
 
       # def cache_for_production(ip_address)
