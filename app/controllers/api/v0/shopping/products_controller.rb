@@ -46,7 +46,7 @@ module Api
                 sku: first_variant.sku,
                 compare_at_price: get_compare_at_price(product),
                 price: get_price(product),
-                premium_discount_price: get_product_discount(product),
+                premium_discount: get_product_discount(product),
                 variant_id: first_variant.id
               }
             end
