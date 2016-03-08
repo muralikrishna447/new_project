@@ -107,10 +107,7 @@ Delve::Application.routes.draw do
   get 'users/session_me' => 'users#session_me'
   get 'users/preauth' => 'users#preauth'
   get 'users/verify' => 'tokens#verify', as: 'verify'
-
-  unless Rails.env.production?
-    match 'users/set_location' => 'users#set_location'
-  end
+  match 'users/set_location' => 'users#set_location'
 
   get 'getUser' => 'users#get_user'
   resources :users, only: [:index, :show] do
