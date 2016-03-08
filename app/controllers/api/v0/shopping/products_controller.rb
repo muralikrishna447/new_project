@@ -40,15 +40,20 @@ module Api
             end
             results = products.map do |product|
               first_variant = get_first_variant(product)
+              price = get_price(product)
+              discount = get_product_discount(product)
+              discounted_price = calculate_discounted_price(price, discount)
               {
                 id: product.id,
                 title: product.title,
                 sku: first_variant.sku,
                 compare_at_price: get_compare_at_price(product),
-                price: get_price(product),
-                premium_discount: get_product_discount(product),
+                price: price,
+                discounted_price: discounted_price,
+                premium_discount: discount,
                 variant_id: first_variant.id
               }
+
             end
             results
           end
@@ -85,6 +90,12 @@ module Api
 
         def get_price(product)
           get_first_variant(product).price.to_i*100
+        end
+
+        def calculate_discounted_price(price, discount)
+          if discount
+            price - discount
+          end
         end
 
         def get_compare_at_price(product)
