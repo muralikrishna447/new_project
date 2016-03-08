@@ -4,6 +4,7 @@ describe Api::V0::Shopping::ProductsController do
 
     @non_premium_user = Fabricate :user, name: 'Non Premium User', email: 'non_premium_user@chefsteps.com', role: 'user', premium_member: false
     @premium_user = Fabricate :user, name: 'Premium User', email: 'premium_user@chefsteps.com', role: 'user', premium_member: true
+    @premium_user_used_discount = Fabricate :user, name: 'Premium User Used Discount', email: 'premium_user_used_discount@chefsteps.com', role: 'user', premium_member: true, used_circulator_discount: true
 
     products_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products']
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/products.json/)
@@ -18,6 +19,9 @@ describe Api::V0::Shopping::ProductsController do
     products_2_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][1]
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345.json/).to_return(status: 200, body: products_2_data.to_json)
 
+    products_2_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][0]
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/567.json/).to_return(status: 200, body: products_2_data.to_json)
+
     products_1_metafields_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][0]['metafields']
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/123\/metafields.json/).to_return(status: 200, body: products_1_metafields_data.to_json)
 
@@ -31,7 +35,7 @@ describe Api::V0::Shopping::ProductsController do
       get :index
       response.should be_success
       products = JSON.parse(response.body)
-      products.length.should eq(2)
+      products.length.should eq(3)
     end
 
     it "should response with an array of products when a user is not premium" do
@@ -40,7 +44,7 @@ describe Api::V0::Shopping::ProductsController do
       get :index
       response.should be_success
       products = JSON.parse(response.body)
-      products.length.should eq(2)
+      products.length.should eq(3)
     end
 
     it "should response with an array of products when a user is not premium" do
@@ -49,7 +53,7 @@ describe Api::V0::Shopping::ProductsController do
       get :index
       response.should be_success
       products = JSON.parse(response.body)
-      products.length.should eq(2)
+      products.length.should eq(3)
     end
   end
 
@@ -112,8 +116,17 @@ describe Api::V0::Shopping::ProductsController do
       get :show, {id: 'cs123'}, {'HTTP_AUTHORIZATION' => @premium_user.valid_website_auth_token.to_jwt}
       response.should be_success
       product = JSON.parse(response.body)
-      puts "product response: #{product}"
       expect(product['price']).to eq(200)
+    end
+
+    it "should show the correct price when user is premium and has already used the circulator discount" do
+      sign_in @premium_user_used_discount
+      controller.request.env['HTTP_AUTHORIZATION'] = @premium_user_used_discount.valid_website_auth_token.to_jwt
+      get :show, {id: 'cs10001'}, {'HTTP_AUTHORIZATION' => @premium_user_used_discount.valid_website_auth_token.to_jwt}
+      response.should be_success
+      product = JSON.parse(response.body)
+      expect(product['price']).to eq(22900)
+
     end
 
   end

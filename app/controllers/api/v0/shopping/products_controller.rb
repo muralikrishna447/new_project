@@ -30,9 +30,10 @@ module Api
         # If we later decide to use variants each having unique skus, this will need to be updated to handle that.
         def get_all_products(current_api_user)
           premium_user = current_api_user && current_api_user.premium?
+          used_circulator_discount = current_api_user && current_api_user.used_circulator_discount
           # Cache for premium users: shopping/products/premium=true
           # Cache for non-premium users: shopping/products/premium=false
-          @products = Rails.cache.fetch("shopping/products/premium=#{premium_user}", expires_in: 1.minute) do
+          @products = Rails.cache.fetch("shopping/products/premium=#{premium_user}/used_circulator_discount=#{used_circulator_discount}", expires_in: 1.minute) do
             page = 1
             products = []
             count = ShopifyAPI::Product.count

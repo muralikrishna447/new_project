@@ -25,6 +25,19 @@
           "compare_at_price": ""
         }
       ]
+    },
+    {
+      "id": 567,
+      "title": "Product1",
+      "tags": "premium-discount:2400",
+      "sku": "cs10001",
+      "variants": [
+        {
+          "sku": "cs10001",
+          "price": 229.00,
+          "compare_at_price": 299.00
+        }
+      ]
     }
   ]
 }
