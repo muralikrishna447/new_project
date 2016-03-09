@@ -3,18 +3,18 @@ module Api
     module Shopping
       class ProductsController < BaseController
         PREMIUM_DISCOUNT_TAG = 'premium-discount'
+        before_filter :ensure_authorized_or_anonymous
+        before_filter :load_user
 
         def index
-          ensure_authorized(false)
-          get_all_products(current_api_user)
+          get_all_products(@user)
           render(json: @products)
         end
 
         # Get product by sku
         def show
-          ensure_authorized(false)
           sku = params[:id]
-          products = get_all_products(current_api_user)
+          products = get_all_products(@user)
           @product = products.select{|p| p[:sku] == sku}.first
           if @product
             render(json: @product)
@@ -24,6 +24,14 @@ module Api
         end
 
         private
+
+        def load_user
+          if @user_id_from_token
+            @user = User.find @user_id_from_token
+          else
+            @user = nil
+          end
+        end
 
         # Caches products with data in a more convient location (price, sku, variant_id) rather than deeply nested
         # This flattens the shopify data to make it easier to work with
@@ -83,7 +91,7 @@ module Api
 
         def get_price(product, current_api_user)
           first_variant = get_first_variant(product)
-          first_variant_price = first_variant.price.to_i*100
+          first_variant_price = first_variant.price.to_f*100
           discount = get_product_discount(product)
           if current_api_user && current_api_user.premium? && discount
             # There should be a more general way to handle this
@@ -105,7 +113,7 @@ module Api
 
         def get_compare_at_price(product)
           first_variant = get_first_variant(product)
-          first_variant.compare_at_price.to_i*100
+          first_variant.compare_at_price.to_f*100
         end
 
         def get_first_variant(product)

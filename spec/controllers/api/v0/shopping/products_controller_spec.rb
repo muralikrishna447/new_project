@@ -98,7 +98,7 @@ describe Api::V0::Shopping::ProductsController do
       get :show, id: 'cs123'
       response.should be_success
       product = JSON.parse(response.body)
-      expect(product['price']).to eq(1000)
+      expect(product['price']).to eq(1099)
     end
 
     it "should show the correct price when user is not premium" do
@@ -107,7 +107,7 @@ describe Api::V0::Shopping::ProductsController do
       get :show, {id: 'cs123'}, {'HTTP_AUTHORIZATION' => @non_premium_user.valid_website_auth_token.to_jwt}
       response.should be_success
       product = JSON.parse(response.body)
-      expect(product['price']).to eq(1000)
+      expect(product['price']).to eq(1099)
     end
 
     it "should show the correct price when user is premium" do
@@ -116,7 +116,7 @@ describe Api::V0::Shopping::ProductsController do
       get :show, {id: 'cs123'}, {'HTTP_AUTHORIZATION' => @premium_user.valid_website_auth_token.to_jwt}
       response.should be_success
       product = JSON.parse(response.body)
-      expect(product['price']).to eq(200)
+      expect(product['price']).to eq(299)
     end
 
     it "should show the correct price when user is premium and has already used the circulator discount" do
