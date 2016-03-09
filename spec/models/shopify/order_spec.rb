@@ -35,7 +35,11 @@ describe Shopify::Order do
       Analytics.should_receive(:flush)
     end
 
-    it 'fulfills a simple premium order' do    
+    it 'fulfills a simple premium order' do   
+      # TODO - assert actual email contents 
+      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
+        to_return(:status => 200, :body => "{}", :headers => {})
+        
       stub_fulfillment
       stub_metafield_get
       Shopify::Customer.should_receive(:sync_user)
@@ -47,6 +51,9 @@ describe Shopify::Order do
     end
     
     it 'fulfills a simple joule order' do
+      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
+        to_return(:status => 200, :body => "{}", :headers => {})
+        
       # Not stubbing fulfillment call since this is not made for joule
       WebMock::stub_request(:put, /\.com\/admin\/orders\/4507800.json/).
         to_return(:status => 200, :body => "", :headers => {})
