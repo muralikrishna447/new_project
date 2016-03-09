@@ -35,7 +35,11 @@ describe Shopify::Order do
       Analytics.should_receive(:flush)
     end
 
-    it 'fulfills a simple premium order' do    
+    it 'fulfills a simple premium order' do   
+      # TODO - assert actual email contents 
+      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
+        to_return(:status => 200, :body => "{}", :headers => {})
+        
       stub_fulfillment
       stub_metafield_get
       Shopify::Customer.should_receive(:sync_user)
@@ -47,6 +51,9 @@ describe Shopify::Order do
     end
     
     it 'fulfills a simple joule order' do
+      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
+        to_return(:status => 200, :body => "{}", :headers => {})
+        
       # Not stubbing fulfillment call since this is not made for joule
       WebMock::stub_request(:put, /\.com\/admin\/orders\/4507800.json/).
         to_return(:status => 200, :body => "", :headers => {})
@@ -65,6 +72,18 @@ describe Shopify::Order do
       stub_fulfillment
       stub_metafield_get
       order = Shopify::Order.find(PREMIUM_GIFT_ORDER).process!
+    end
+    
+    it 'joule order for premuium customer doesnt send premium welcome email' do
+      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
+         with(:body => "{\"template_name\":\"joule-purchase-confirmation\",\"template_content\":[],\"merge_vars\":[],\"key\":\"OejVCvKIRLNbenVLLI3alw\"}").
+         to_return(:status => 200, :body => "{}", :headers => {})
+
+      @user.make_premium_member(20)
+      Shopify::Customer.should_receive(:sync_user)
+      stub_metafield_post('all-but-joule-fulfilled', 'true')
+      stub_metafield_get
+      Shopify::Order.find(JOULE_ORDER_ID).process!
     end
   end
   

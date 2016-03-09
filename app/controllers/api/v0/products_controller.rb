@@ -58,11 +58,7 @@ module Api
 
       # Duplicated from locations controller for short term
       def get_ip_address
-        unless Rails.env.production?
-          (cookies[:cs_location] || request.ip)
-        else
-          request.ip
-        end
+        (cookies[:cs_location] || request.ip)
       end
 
       def get_tax_estimate(location)
