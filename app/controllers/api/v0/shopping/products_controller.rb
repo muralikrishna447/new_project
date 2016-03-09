@@ -91,15 +91,10 @@ module Api
 
         def get_price(product, current_api_user)
           first_variant = get_first_variant(product)
-          first_variant_price = first_variant.price.to_f*100
+          first_variant_price = first_variant.price.to_f*100.to_i
           discount = get_product_discount(product)
-          if current_api_user && current_api_user.premium? && discount
-            # There should be a more general way to handle this
-            if first_variant.sku == 'cs10001' && current_api_user.used_circulator_discount
-              first_variant_price
-            else
-              first_variant_price - discount
-            end
+          if first_variant.sku == 'cs10001' && current_api_user && current_api_user.can_receive_circulator_discount?
+            first_variant_price - discount
           else
             first_variant_price
           end
@@ -113,7 +108,7 @@ module Api
 
         def get_compare_at_price(product)
           first_variant = get_first_variant(product)
-          first_variant.compare_at_price.to_f*100
+          first_variant.compare_at_price.to_f*100.to_i
         end
 
         def get_first_variant(product)

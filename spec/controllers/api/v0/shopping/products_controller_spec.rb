@@ -3,7 +3,7 @@ describe Api::V0::Shopping::ProductsController do
   before :each do
 
     @non_premium_user = Fabricate :user, name: 'Non Premium User', email: 'non_premium_user@chefsteps.com', role: 'user', premium_member: false
-    @premium_user = Fabricate :user, name: 'Premium User', email: 'premium_user@chefsteps.com', role: 'user', premium_member: true
+    @premium_user = Fabricate :user, name: 'Premium User', email: 'premium_user@chefsteps.com', role: 'user', premium_member: true, used_circulator_discount: false
     @premium_user_used_discount = Fabricate :user, name: 'Premium User Used Discount', email: 'premium_user_used_discount@chefsteps.com', role: 'user', premium_member: true, used_circulator_discount: true
 
     products_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products']
@@ -113,10 +113,10 @@ describe Api::V0::Shopping::ProductsController do
     it "should show the correct price when user is premium" do
       sign_in @premium_user
       controller.request.env['HTTP_AUTHORIZATION'] = @premium_user.valid_website_auth_token.to_jwt
-      get :show, {id: 'cs123'}, {'HTTP_AUTHORIZATION' => @premium_user.valid_website_auth_token.to_jwt}
+      get :show, {id: 'cs10001'}, {'HTTP_AUTHORIZATION' => @premium_user.valid_website_auth_token.to_jwt}
       response.should be_success
       product = JSON.parse(response.body)
-      expect(product['price']).to eq(299)
+      expect(product['price']).to eq(20500)
     end
 
     it "should show the correct price when user is premium and has already used the circulator discount" do
