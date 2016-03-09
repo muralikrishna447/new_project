@@ -59,6 +59,8 @@ class Shopify::Order
       return
     end
 
+
+    # Mark as starting fulfillment
     # TODO - handle orders in 'bad' states
     # TODO - get unfulfilled line items but for now assume all unfulfilled
     all_but_joule_fulfilled = true
@@ -87,6 +89,10 @@ class Shopify::Order
       end
     end
 
+    if order_contains_joule
+      JouleConfirmationMailer.prepare(user).deliver
+    end
+
     if order_contains_joule && all_but_joule_fulfilled
       all_but_joule = ShopifyAPI::Metafield.new({:namespace => METAFIELD_NAMESPACE,
         :key => ALL_BUT_JOULE_FULFILLED_METAFIELD_NAME,
@@ -100,7 +106,10 @@ class Shopify::Order
     # TODO - figure out how to try to do this only once
     send_analytics
   end
-  
+
+
+  # PremiumWelcomeMailer.prepare(@user, data[:circulator_sale]).deliver rescue nil
+
   def send_gift_receipt(item)
     # TODO - remove dupe
     #user = User.find(@api_order.customer.multipass_identifier)
@@ -124,19 +133,22 @@ class Shopify::Order
   end
   
   def fulfill_premium(item, should_fulfill)
-    if gift_order?
-      item.quantity.times do
+    item.quantity.times do
+      if gift_order?
         send_gift_receipt(item)
-        if should_fulfill
-          ShopifyAPI::Fulfillment.create(
-            :order_id => @api_order.id,
-            :line_items => [{:id => item.id, :quantity => 1}])
-        else
-          # TODO - create metafield for fulfilled quantity
-        end
       end
-    else
+      if should_fulfill
+        ShopifyAPI::Fulfillment.create(
+          :order_id => @api_order.id,
+          :line_items => [{:id => item.id, :quantity => 1}])
+      else
+        # TODO - create metafield for fulfilled quantity
+      end
+    end
+    if !gift_order?
       user.make_premium_member(item.price)
+      # use should_fulfill as a proxy for hackish proxy for contains joule
+      PremiumWelcomeMailer.prepare(user, !should_fulfill).deliver
     end
   end
   
