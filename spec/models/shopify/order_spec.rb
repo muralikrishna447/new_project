@@ -73,6 +73,18 @@ describe Shopify::Order do
       stub_metafield_get
       order = Shopify::Order.find(PREMIUM_GIFT_ORDER).process!
     end
+    
+    it 'joule order for premuium customer doesnt send premium welcome email' do
+      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
+         with(:body => "{\"template_name\":\"joule-purchase-confirmation\",\"template_content\":[],\"merge_vars\":[],\"key\":\"OejVCvKIRLNbenVLLI3alw\"}").
+         to_return(:status => 200, :body => "{}", :headers => {})
+
+      @user.make_premium_member(20)
+      Shopify::Customer.should_receive(:sync_user)
+      stub_metafield_post('all-but-joule-fulfilled', 'true')
+      stub_metafield_get
+      Shopify::Order.find(JOULE_ORDER_ID).process!
+    end
   end
   
   context 'fulfillment checks' do

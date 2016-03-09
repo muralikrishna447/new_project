@@ -60,7 +60,7 @@ class Shopify::Order
     end
 
 
-    # Mark as starting fulfillment
+    # TODO - Mark as starting fulfillment
     # TODO - handle orders in 'bad' states
     # TODO - get unfulfilled line items but for now assume all unfulfilled
     all_but_joule_fulfilled = true
@@ -145,10 +145,14 @@ class Shopify::Order
         # TODO - create metafield for fulfilled quantity
       end
     end
+
     if !gift_order?
+      previously_premium = user.premium?
       user.make_premium_member(item.price)
       # use should_fulfill as a proxy for hackish proxy for contains joule
-      PremiumWelcomeMailer.prepare(user, !should_fulfill).deliver
+      unless previously_premium || 
+        PremiumWelcomeMailer.prepare(user, !should_fulfill).deliver
+      end
     end
   end
   
