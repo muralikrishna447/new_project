@@ -167,12 +167,13 @@ window.deepCopy = (obj) ->
 
   $scope.postEndEditMode = ->
     $scope.editMode = false
-    $timeout (->
-      window.updateUnits(false)
-    ), 0.5
     $scope.clearLocalStorage()
     $scope.saveBaseToLocalStorage()
     $scope.activity.$endedit()
+    $timeout (->
+      # Go back to FreshSteps page
+      window.location = [location.protocol, '//', location.host, location.pathname].join('')
+    ), 0.5    
     true
 
   $scope.endEditMode = ->
@@ -183,10 +184,12 @@ window.deepCopy = (obj) ->
     $scope.normalizeModel()
     $scope.normalizeWeightUnits()
     $rootScope.loading += 1
+    $scope.activitySaving = true
     $scope.activity.$update(
       {},
       ((response) ->
         $rootScope.loading -= 1
+        $scope.activitySaving = false
         console.log "ACTIVITY SAVE WIN"
         # Hacky way of handling a slug change. History state would be better, just not ready to delve into that yet.
         window.location = response.redirect_to if response.redirect_to
@@ -195,6 +198,7 @@ window.deepCopy = (obj) ->
 
       ((error) ->
         $rootScope.loading -= 1
+        $scope.activitySaving = false
         console.log "ACTIVITY SAVE ERRORS: " + JSON.stringify(error)
         _.each(error.data.errors, (e) -> csAlertService.addAlert({message: e})))
     )

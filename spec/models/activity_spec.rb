@@ -18,6 +18,13 @@ end
 describe Activity do
   let(:activity) { Fabricate(:activity, title: 'foo') }
 
+  describe 'changes queue AlgoliaSync' do
+    it 'queues algolia on update_attributes' do
+      Resque.should_receive(:enqueue).with(AlgoliaSync, activity.id).at_least(:once)
+      activity.update_attributes(title: "dog")
+    end
+  end
+
   describe "#update_equipment" do
     let(:equipment1) { {title: 'Blender', optional: "true"}  }
     let(:equipment2) { {title: 'Spoon', optional: "false"}  }
