@@ -9,6 +9,7 @@
       .btn.btn.btn-link{type: 'button', data: {toggle: 'modal', target: '#cancel-modal'}}
         Cancel
     .btn-group
-      .btn.btn-primary(type='button' ng-click="endEditMode()" ng-show="editMode" ng-disabled="!activityForm.$valid")
-        Save
+      .btn.btn-primary.inline(type='button' ng-click="endEditMode()" ng-show="editMode" ng-disabled="(!activityForm.$valid) || activitySaving")
+        %span(ng-show="! activitySaving") Save
+        %span(ng-show="activitySaving") Saving...
 
