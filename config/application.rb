@@ -153,6 +153,9 @@ module Delve
     }
     config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
 
+    # Coverband
+    config.middleware.use Coverband::Middleware
+
     # Prefix each log line with a per-request UUID
     config.log_tags = [:uuid ]
 
