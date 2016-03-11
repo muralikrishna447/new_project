@@ -74,18 +74,8 @@ describe ActivitiesController do
           get :show, id: @user1_activity.slug, start_in_edit: true
           expect(response).to be_success
         end
-
       end
     end
-
-    context 'algolia' do
-
-      it 'pushes an update to Algolia on save' do
-        @activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
-        WebMock.assert_requested :put, "https://jgv2odt81s.algolia.net/1/indexes/ChefSteps_test/#{@activity.id}"
-      end
-    end
-
   end
 
   describe 'update' do

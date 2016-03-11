@@ -88,7 +88,16 @@ class Activity < ActiveRecord::Base
 
   include AlgoliaSearch
 
-  algoliasearch index_name: "ChefSteps", per_environment: true, if: :has_title do
+  # Turning off auto index b/c on activity save we were getting up to 40 synchronous
+  # algolia HTTP calls, taking up to 15 seconds. Queue to resque instead.
+  # Leaving auto_remove on for simplicity since it is rare. Not using their enqueue
+  # mechanism b/c it doesn't trigger reliably on a tags-only change b/c it is too clever.
+  after_save :queue_algolia_sync
+  def queue_algolia_sync
+    Resque.enqueue(AlgoliaSync, id)
+  end
+
+  algoliasearch index_name: "ChefSteps", auto_index: false, per_environment: true, if: :has_title do
 
     # Searchable fields (may be used for display too)
     attribute :title, :description
@@ -159,10 +168,6 @@ class Activity < ActiveRecord::Base
     add_slave "ChefStepsPopular", per_environment: true do
     end
   end
-
-  # https://github.com/algolia/algoliasearch-rails/issues/59
-  # https://github.com/algolia/algoliasearch-rails/issues/40
-  after_touch :index!
 
   def has_title
     title.present?
