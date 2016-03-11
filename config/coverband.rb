@@ -5,7 +5,7 @@ baseline = Coverband.parse_baseline
 Coverband.configure do |config|
   config.root              = Dir.pwd
   if defined? Redis
-    config.redis           = Redis.new(:host => 'localhost', :port => 6379, :db => 1)
+    config.redis           = Redis.new(url: ENV["REDISTOGO_URL"])
   end
   config.coverage_baseline = baseline
   config.root_paths        = ['/app/'] # /app/ is needed for heroku deployments
