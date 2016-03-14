@@ -102,6 +102,7 @@ group :development do
   gem "letter_opener"
   # Commenting out since it's not playing well with proximo
   # gem 'net-http-spy', github: "justincaldwell/net-http-spy"
+  gem 'newrelic_route_check'
 end
 
 group :development, :test do
