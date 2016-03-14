@@ -1,8 +1,8 @@
 require 'resque/server'
 
 Delve::Application.routes.draw do
-  get '/robots.txt' => RobotsTxt
 
+  # Resque
   resque_constraint = lambda do |request|
     request.env['warden'].authenticate? and request.env['warden'].user.admin?
   end
@@ -17,12 +17,10 @@ Delve::Application.routes.draw do
     match "*any", to: redirect(:subdomain => 'www', :path => "/forum")
   end
 
+  # One-off routes
   root to: 'home#new_home'
+  get '/robots.txt' => RobotsTxt
   match '/old_home', to: 'home#index'
-  # Keep the old homepage routes around until we feel we can delete them
-  # root to: "home#index"
-  # match '/new_home', to: 'home#new_home'
-  match '/home_manager', to: 'home#manager'
 
   match '/libraries', to: 'home#libraries'
   match '/joule/warranty', to: 'home#joule_warranty'
@@ -34,21 +32,19 @@ Delve::Application.routes.draw do
   match '/betainvite', to: 'bloom#betainvite'
   match '/content-discussion/:id', to: 'bloom#content_discussion'
   match '/content/:id', to: 'bloom#content'
-  match 'whats-for-dinner', to: 'bloom#whats_for_dinner'
-  match 'hot', to: 'bloom#hot'
 
   get '/blog', to: redirect('http://blog.chefsteps.com/')
   get '/presskit', to: redirect('/press')
 
-  resources :featured, only: [:index] do
-    collection do
-      get 'cover-photo' => 'featured#cover'
-    end
-  end
+  # Legal Documents
+  get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
+  get 'eula-android' => 'legal#eula_android', as: 'eula_android'
+  get 'privacy' => 'legal#privacy_policy', as: 'privacy'
+  get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
+  get 'terms' => 'legal#terms', as: 'terms'
+  get 'terms' => 'legal#terms', as: 'terms_of_service'
 
   ActiveAdmin.routes(self)
-
-  match '/become', to: 'admin#become'
 
   # Redirects
   match '/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-cooking-running-water-method',
@@ -119,35 +115,15 @@ Delve::Application.routes.draw do
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
   get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
 
-  get 'thank-you' => 'copy#thank_you', as: 'thank_you'
-  get 'thank-you-subscribing' => 'copy#thank_you_subscribing', as: 'thank_you_subscribing'
-  get 'legal' => 'copy#legal', as: 'legal'
-  get 'legal/:type' => 'copy#legal', as: 'legal_type'
-  get 'legal/licensing' => 'copy#legal', as: 'licensing'
-  get 'jobs' => 'copy#jobs', as: "jobs"
   get 'about' => 'home#about', as: 'about'
   get 'kiosk' => 'home#kiosk', as: 'kiosk'
+
   get 'embeddable_signup' => 'home#embeddable_signup', as: 'embeddable_signup'
-  get 'dashboard' => 'dashboard#index', as: 'dashboard'
-  get 'ftue' => 'dashboard#ftue', as: 'ftue'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
-  get 'egg-timer' => 'pages#egg_timer', as: 'egg_timer'
   get 'sous-vide-collection', to: redirect('/sous-vide')
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
-  get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
-  get 'password-reset-sent' => 'pages#password_reset_sent', as: 'password_reset_sent'
-  get 'sous-vide' => 'pages#sous_vide_resources', as: 'sous_vide_resources'
-  get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
   get 'joule-crawler' => 'pages#joule_crawler', as: 'joule_crawler'
-
-  # Legal Documents
-  get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
-  get 'eula-android' => 'legal#eula_android', as: 'eula_android'
-  get 'privacy' => 'legal#privacy_policy', as: 'privacy'
-  get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
-  get 'terms' => 'legal#terms', as: 'terms'
-  get 'terms' => 'legal#terms', as: 'terms_of_service'
 
   match '/mp', to: redirect('/courses/spherification')
   match '/MP', to: redirect('/courses/spherification')
@@ -176,16 +152,6 @@ Delve::Application.routes.draw do
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
   match '/feed' => 'activities#feedburner_feed', as: :feed
 
-  resources :questions, only: [] do
-    resources :answers, only: [:create]
-  end
-
-  # This is to work around a bug in ActiveAdmin 0.6.0 where the :shallow designator in questions.rb
-  # stopped working
-  namespace :admin do
-    resources :questions
-  end
-
   resources :equipment, only: [:index, :update, :destroy] do
     member do
       post 'merge' => 'equipment#merge'
@@ -196,7 +162,6 @@ Delve::Application.routes.draw do
     member do
       post 'merge' => 'ingredients#merge'
       get 'as_json' => 'ingredients#get_as_json'
-      resources :comments
     end
     collection do
       get 'all_tags' => 'ingredients#get_all_tags'
@@ -206,10 +171,6 @@ Delve::Application.routes.draw do
 
   get 'gallery/index_as_json' => 'gallery#index_as_json'
 
-  resources :user_activities, only: [:create]
-  resources :uploads do
-    resources :comments
-  end
   resources :users do
     resources :uploads
   end
@@ -221,24 +182,7 @@ Delve::Application.routes.draw do
   end
   resources :pages, only: [:show]
   resources :badges, only: [:index]
-  resources :polls do
-    member do
-      get 'show_as_json' => 'polls#show_as_json'
-    end
-  end
-  resources :poll_items do
-    resources :comments
-  end
-  resources :votes, only: [:create]
-  resources :comments, only: [:index, :create] do
-    collection do
-      get 'info' => 'comments#info'
-      get 'at' => 'comments#at'
-    end
-  end
-  resources :followerships, only: [:index, :update] do
-    post :follow_multiple,  on: :collection
-  end
+
   resources :assemblies, only: [:index, :show] do
     resources :comments
     member do
@@ -311,12 +255,6 @@ Delve::Application.routes.draw do
   resources :stripe do
     collection do
       get 'current_customer'
-    end
-  end
-
-  resources :dashboard, only: [:index] do
-    collection do
-      get 'comments', to: 'dashboard#comments'
     end
   end
 
