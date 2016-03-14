@@ -3,5 +3,8 @@
 require ::File.expand_path('../config/environment',  __FILE__)
 run Delve::Application
 
+require 'coverband'
+Coverband.configure
+
 require 'librato-rack'
 use Librato::Rack

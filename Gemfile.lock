@@ -150,6 +150,12 @@ GEM
       sass (~> 3.1)
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
+    coverband (1.0.3)
+      json
+      redis
+      simplecov
+    coverband_ext (1.0.1)
+      coverband
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
     crass (1.0.1)
@@ -608,6 +614,8 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   comma
   compass-rails
+  coverband (= 1.0.3)
+  coverband_ext (= 1.0.1)
   dalli
   database_cleaner
   decent_exposure
@@ -700,3 +708,6 @@ DEPENDENCIES
   unicorn
   webmock
   xray-rails
+
+BUNDLED WITH
+   1.10.6
