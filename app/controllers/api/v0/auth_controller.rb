@@ -177,7 +177,7 @@ module Api
             token = AuthToken.from_string(params[:token])
           rescue JSON::JWS::VerificationFailed
             logger.info ("Token verification failed")
-            render_unauthorized
+            render json: {status: 400, code: 'invalid_token', message: 'Token verification failed.'}
             return
           end
 
