@@ -100,8 +100,6 @@ class ActivitiesController < ApplicationController
           @minimal = true
         end
 
-        @user_activity = UserActivity.new
-
         if current_user && cookies[:viewed_activities]
           cookies.delete(:viewed_activities)
         else
