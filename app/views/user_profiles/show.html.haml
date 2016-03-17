@@ -27,12 +27,6 @@
       .well.profile-badges
         = render "devise/sessions/new_angular"
 
-        - if @user.badges.any?
-          %h4 Badges
-          - @user.badges.each do |badge|
-            - if badge.image
-              = link_to badges_path, anchor: "badge-#{badge.id}" do
-                = image_tag badge.image
       - if current_user
         - if current_user == @user
           = link_to 'Edit Profile', edit_user_profile_path, class: 'btn btn-secondary btn-block'
@@ -92,12 +86,8 @@
           - else
             .tab-pane-header
               %h4 Enroll into your first Class today!
-              = link_to 'Classes', courses_path, class: 'btn btn-primary'
-        .tab-pane#photos
-          - @user.uploads.each do |upload|
-            - upload_title = capture do
-              = link_to upload.title, upload_path(upload)
-            = render 'shared/media_list_item', image: upload.image_id, title: upload_title, text: upload.notes
+              = link_to 'Classes', classes_path, class: 'btn btn-primary'
+
         -if @show_recipes_tab
           .tab-pane#recipes
             - @user_pubbed_recipes.each do |activity|

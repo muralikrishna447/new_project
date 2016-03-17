@@ -11,7 +11,7 @@ Coverband.configure do |config|
   config.root_paths        = ['/app/'] # /app/ is needed for heroku deployments
   # regex paths can help if you are seeing files duplicated for each capistrano deployment release
   #config.root_paths       = ['/server/apps/my_app/releases/\d+/']
-  config.ignore            = ['vendor']
+  config.ignore            = ['vendor', 'app/views', 'app/middleware']
   # Since rails and other frameworks lazy load code. I have found it is bad to allow
   # initial requests to record with coverband. This ignores first 15 requests
   config.startup_delay     = Rails.env.production? ? 15 : 2

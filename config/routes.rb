@@ -20,7 +20,6 @@ Delve::Application.routes.draw do
   # One-off routes
   root to: 'home#new_home'
   get '/robots.txt' => RobotsTxt
-  match '/old_home', to: 'home#index'
 
   match '/libraries', to: 'home#libraries'
   match '/joule/warranty', to: 'home#joule_warranty'
@@ -46,38 +45,10 @@ Delve::Application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  # Redirects
-  match '/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-cooking-running-water-method',
-    to: redirect('/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-running-water-method')
-  match '/activities/improvised-sous-vide-cooking-running-water-method',
-    to: redirect('/activities/improvised-sous-vide-running-water-method')
-
-  match '/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-cooking-insulated-cooler-method',
-    to: redirect('/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-insulated-cooler-method')
-  match '/activities/improvised-sous-vide-cooking-insulated-cooler-method',
-    to: redirect('/activities/improvised-sous-vide-insulated-cooler-method')
-
-  match '/courses/accelerated-sous-vide-cooking-course/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
-    to: redirect('/courses/accelerated-sous-vide-cooking-course/sous-vide-pork-cheek-celery-root-pickled-apples')
-  match '/activities/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
-    to: redirect('/activities/sous-vide-pork-cheek-celery-root-pickled-apples')
-
-  # Redirect the old sous vide class to 101
-  match '/classes/sous-vide-cooking',
-    to: redirect('/classes/cooking-sous-vide-getting-started/landing')
-  match '/classes/sous-vide-cooking/landing',
-    to: redirect('/classes/cooking-sous-vide-getting-started/landing')
-
-  match '/activities/simple-sous-vide-packaging',
-    to: redirect('/activities/a-complete-guide-to-sous-vide-packaging-safety-sustainability-and-sourcing')
-
   # For convenient youtube CTAs
   match '/coffee', to: redirect { |params, request| "/classes/coffee/landing?#{request.params.to_query}" }
 
-  get "styleguide" => "styleguide#index"
-
-  # get 'users/sign_in' => redirect('/#log-in')
-  # get 'users/sign_up' => redirect('/#sign-up')
+  # Devise / auth
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions',
@@ -113,10 +84,6 @@ Delve::Application.routes.draw do
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
-  get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
-
-  get 'about' => 'home#about', as: 'about'
-  get 'kiosk' => 'home#kiosk', as: 'kiosk'
 
   get 'embeddable_signup' => 'home#embeddable_signup', as: 'embeddable_signup'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
@@ -124,11 +91,6 @@ Delve::Application.routes.draw do
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
   get 'joule-crawler' => 'pages#joule_crawler', as: 'joule_crawler'
-
-  match '/mp', to: redirect('/courses/spherification')
-  match '/MP', to: redirect('/courses/spherification')
-  match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
-  match '/PS', to: redirect('/courses/accelerated-sous-vide-cooking-course')
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
@@ -170,7 +132,9 @@ Delve::Application.routes.draw do
   end
 
   get 'gallery/index_as_json' => 'gallery#index_as_json'
-
+  resources :uploads do
+    resources :comments
+  end
   resources :users do
     resources :uploads
   end
@@ -181,7 +145,6 @@ Delve::Application.routes.draw do
     end
   end
   resources :pages, only: [:show]
-  resources :badges, only: [:index]
 
   resources :assemblies, only: [:index, :show] do
     resources :comments
@@ -195,20 +158,9 @@ Delve::Application.routes.draw do
 
   resources :sitemaps, :only => :show
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
-  match "/splitty/finished", :controller => "splitty", :action => "finish_split"
 
   resources :client_views, only: [:show]
   resources :stream_views, only: [:show]
-
-  # Legacy needed b/c the courses version of this URL was public in a few places
-  get '/courses/accelerated-sous-vide-cooking-course', to: redirect('/classes/sous-vide-cooking')
-  get '/courses/accelerated-sous-vide-cooking-course/:activity_id', to: redirect('/classes/sous-vide-cooking#/%{activity_id}')
-  get '/courses/french-macarons/landing', to: redirect('/classes/french-macarons/landing')
-  get '/courses/:id', to: redirect('/classes/%{id}/landing')
-  get '/courses/:id/:activity_id', to: redirect('/classes/%{id}#/%{activity_id}')
-
-  resources :courses, only: [:index], controller: :courses
-  match '/classes', to: 'courses#index'
 
   resources :classes, controller: :assemblies do
     member do
@@ -216,18 +168,6 @@ Delve::Application.routes.draw do
       get 'show_as_json', to: 'assemblies#show_as_json'
     end
   end
-
-  resources :projects, controller: :assemblies do
-    member do
-      get 'landing', to: 'assemblies#landing'
-    end
-  end
-
-  # Recipe Development Routes
-  get '/projects/recipe-development-doughnut-holes/landing', to: redirect('/recipe-developments/doughnut-holes')
-  get '/projects/vegetable-demi-glace-recipe-development/landing', to: redirect('/recipe-developments/vegetable-demi-glace')
-
-  resources 'recipe-development', controller: :assemblies, as: :recipe_development, only: [:index, :show]
 
   resources :kits, controller: :assemblies, only: [:index, :show] do
     member do
@@ -237,16 +177,11 @@ Delve::Application.routes.draw do
 
   resources :events, only: [:create]
 
-  resources :gift_certificates
   resources :user_surveys, only: [:create]
-  resources :recommendations, only: [:index]
-
-  get "smoker" => "smoker#index"
 
   get "/affiliates/share_a_sale" => "affiliates#share_a_sale"
 
   get "/invitations/welcome" => "home#welcome"
-
 
   match "/reports/stripe" => "reports#stripe"
   resources :reports
