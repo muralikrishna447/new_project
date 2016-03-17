@@ -669,8 +669,12 @@ window.deepCopy = (obj) ->
     if ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()
 
-      if ($scope.activity.title == "") || ($scope.url_params.start_in_edit)
+      if $scope.activity.title == ""
         $scope.startEditMode()
+        $scope.editMeta = true
+
+      else if $scope.url_params.start_in_edit
+        $scope.maybeStartEditMode()
         $scope.editMeta = true
 
   # Scroll to comment. Very hacky but it works
