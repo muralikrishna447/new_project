@@ -228,6 +228,7 @@ describe StripeOrder do
     it 'should call Analytics.track and GA' do
       Analytics.should_receive(:track).once
       Analytics.should_receive(:identify).once
+      Analytics.should_receive(:flush).once
       HTTParty.should_receive(:post).with('https://www.google-analytics.com/debug/collect', anything).twice
         .and_call_original
       HTTParty.should_receive(:post).with('http://www.google-analytics.com/collect', anything).twice
