@@ -10,9 +10,6 @@
         reviewed
 
       %div(ng-switch="stream.trackable.comment.commentable_type")
-        %div(ng-switch-when='PollItem')
-          %a(ng-href="{{stream.trackable.comment.commentable.poll.path}}" onclick='track_viewed_item_through_stream();')
-            {{stream.trackable.comment.commentable.title}}:
         %div(ng-switch-default)
           %a(ng-href="{{stream.trackable.comment.commentable.path}}" onclick='track_viewed_item_through_stream();')
             {{stream.trackable.comment.commentable.title}}
