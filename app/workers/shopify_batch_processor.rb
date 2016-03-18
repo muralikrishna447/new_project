@@ -1,5 +1,3 @@
-#puts ShopifyAPI::Base.site
-#puts ShopifyAPI::Order.inspect
 class ShopifyBatchProcessor
   DEFAULT_PERIOD = 100.hours
 
@@ -25,7 +23,9 @@ class ShopifyBatchProcessor
       page += 1
       throw "Page number suspiciously high" if page > 10000
     end while orders.length != 0
-    Librato::Metrics.submit 'shopify.batch-processor.success' => 1
+    Librato.increment 'shopify.batch-processor.success', sporadic: true
+    # Manual flush is required in background workers
+    Librato.tracker.flush
     Rails.logger.info "Batch processor complete - [#{orders_processed}] orders processed."
   end
 end
