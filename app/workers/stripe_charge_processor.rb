@@ -10,6 +10,8 @@ class StripeChargeProcessor
     stripe_order = StripeOrder.find(stripe_order_id)
     Rails.logger.info("Stripe Order #{stripe_order.id} - Found Stripe Order, Sending to stripe")
     stripe_order.send_to_stripe
+    Rails.logger.info("Stripe Order #{stripe_order.id} - Flushing librato metrics")
+    Librato.tracker.flush
     Rails.logger.info("Stripe Order #{stripe_order_id} - DONE")
   end
 
