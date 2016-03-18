@@ -37,6 +37,7 @@ To set up a new machine:
 - `:> rake db:test:prepare` will create the database that the tests will run
    against
 - `:> guard` will watch for changes in files and automatically run the tests.
+- `rspec -r /Users/athomson/dev/web/ChefSteps/spec/support/formatters/anxious_formatter.rb -f AnxiousFormatter` to see the name of each spec as it is run
 
 ## Personal / Optional
 
@@ -125,5 +126,3 @@ Paste your line followed by /stripe_webhooks
 Make sure the environment is set to test
 All events
 ```
-
-
