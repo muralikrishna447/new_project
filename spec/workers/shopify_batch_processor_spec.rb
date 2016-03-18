@@ -10,7 +10,7 @@ describe ShopifyBatchProcessor do
   end
 
   it 'should record the success metric' do
-    Librato::Metrics.should_receive(:submit).with('shopify.batch-processor.success' => 1)
+    Librato.should_receive(:increment).with('shopify.batch-processor.success', sporadic: true)
     Shopify::Order.any_instance.stub(:process!)
     @bp.run()
   end
