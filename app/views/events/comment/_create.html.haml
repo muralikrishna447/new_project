@@ -1,7 +1,7 @@
 - direction = direction || 'left'
 - user_noun = current_user == event.user ? 'You' : event.user.name
 - comment = event.trackable
-- commentable_object = comment.commentable
+- commentable_object = comment.commentable rescue nil
 
 - case commentable_object.class.to_s
 - when 'Upload'
