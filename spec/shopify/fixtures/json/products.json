@@ -9,7 +9,8 @@
         {
           "sku": "cs123",
           "price": 10.99,
-          "compare_at_price": 20.99
+          "compare_at_price": 20.99,
+          "inventory_quantity": 30
         }
       ]
     },
@@ -22,7 +23,8 @@
         {
           "sku": "cs345",
           "price": 10.00,
-          "compare_at_price": ""
+          "compare_at_price": "",
+          "inventory_quantity": 30
         }
       ]
     },
@@ -35,7 +37,8 @@
         {
           "sku": "cs10001",
           "price": 229.00,
-          "compare_at_price": 299.00
+          "compare_at_price": 299.00,
+          "inventory_quantity": 30
         }
       ]
     }
