@@ -11,7 +11,6 @@ describe SitemapsController, "#get" do
     let!(:ingredient2) { Fabricate(:ingredient, title: "mummy", text_fields: "now is the time")}
     let!(:assembly1) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 39.00, published: true ) }
     let!(:assembly3) { Fabricate(:assembly, title: "Zummy", assembly_type: "Course", price: 39.00, published: false, show_prereg_page_in_index: true ) }
-    let!(:project1) {Fabricate(:assembly, title: "Nummy", assembly_type: "Project", price: 39.00, published: true) }
     let!(:page1) { Fabricate(:page, title: "Frummy", published: true)}
 
     # Should not be included
@@ -25,12 +24,11 @@ describe SitemapsController, "#get" do
       get :show, {format: :xml}
       expect(response).to be_success
       expect(assigns(:other_routes)).to have_at_least(4).items
-      expect(assigns(:main_stuff)).to have(6).items
+      expect(assigns(:main_stuff)).to have(5).items
       expect(response.body).to include("https://www.chefsteps.com/activities/bummy")
       expect(response.body).to include("https://www.chefsteps.com/ingredients/yummy")
       expect(response.body).to include("https://www.chefsteps.com/classes/clummy")
       expect(response.body).to include("https://www.chefsteps.com/classes/zummy")
-      expect(response.body).to include("https://www.chefsteps.com/projects/nummy")
       expect(response.body).to include("https://www.chefsteps.com/frummy")
       expect(response.body).to_not include("https://chefsteps.com")
       expect(response.body).to_not include("https://www.chefsteps.com/hummy")

@@ -7,7 +7,6 @@ class SitemapsController < ApplicationController
                   Ingredient.well_edited.no_sub_activities() |
                   Assembly.pubbed_courses() |
                   Assembly.prereg_courses() |
-                  Assembly.projects().published() |
                   Page.published()
 
     @other_routes = ["/", "/about", "/gallery", "/jobs", "/classes", "/joule", "/joule/app", "/joule/hardware", "/joule/discussion", "/joule/specs", "/press", "/press/faq", "/premium"]

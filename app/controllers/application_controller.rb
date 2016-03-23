@@ -38,10 +38,6 @@ class ApplicationController < BaseApplicationController
   expose(:version) { Version.current }
   expose(:current_user_presenter) { current_user.present? ? UserPresenter.new(current_user) : nil }
 
-  def global_navigation
-    render partial: 'layouts/header', :locals => { :external => true }
-  end
-
   def options
     render :text => '', :content_type => 'text/plain'
   end

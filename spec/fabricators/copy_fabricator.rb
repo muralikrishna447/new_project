@@ -1,2 +1,0 @@
-Fabricator(:copy) do
-end

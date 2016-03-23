@@ -106,42 +106,6 @@ class User < ActiveRecord::Base
     Like.where('user_id = ? AND likeable_type = ? AND likeable_id = ?', self.id, likeable_object.class.to_s, likeable_object.id).any?
   end
 
-  def received_stream
-    events.timeline.where(action: 'received_create').group_by{|e| [e.group_type, e.group_name]}
-  end
-
-  def created_stream
-    events.includes(:trackable).timeline.where('action != ?', 'received_create').group_by{|e| [e.group_type, e.group_name]}
-  end
-
-  def stream
-    stream_events = []
-    followings.each do |following|
-      following.events.includes(:trackable).timeline.where('action != ?', 'received_create').each do |event|
-        stream_events << event
-      end
-    end
-    stream_events.group_by{|e| [e.group_type, e.group_name]}.sort_by{|group| group[1].first.created_at}.reverse
-  end
-
-  def followings_stream
-    stream_events = Event.includes(:trackable).timeline.where(user_id: self.following_ids).where('action != ?', 'received_create')
-    # stream_events.group_by{|e| [e.group_type, e.group_name]}.sort_by{|group| group[1].first.created_at}.reverse
-    stream_events.uniq!{|e| e.group_name}
-  end
-
-  def follow(user)
-    followership = Followership.find_by_user_id_and_follower_id(user.id,self.id) || Followership.create(user_id: user.id, follower_id: self.id)
-  end
-
-  def unfollow(user)
-    Followership.find_by_user_id_and_follower_id(user.id,self.id).destroy
-  end
-
-  def follows?(user)
-    followings.include?(user)
-  end
-
   def profile_image_id
     if self.image_id.blank?
       '{"url":"https://www.filepicker.io/api/file/U2RccgsARPyMmzJ5Ao0c","filename":"default-avatar@2x.png","mimetype":"image/png","size":6356,"key":"users_uploads/FhbcOZpQYKJU8nHeJg1j_default-avatar@2x.png","isWriteable":true}'
@@ -278,13 +242,6 @@ class User < ActiveRecord::Base
 
   def was_shown_terms
     self.update_attribute(:needs_special_terms, false)
-  end
-
-  def self.with_views_greater_than(view_count)
-    user_count = User.joins(:events).select('events.user_id').group('events.user_id').having("count(events.id) >=#{view_count}").count
-    user_ids = user_count.keys
-    users = User.find(user_ids)
-    users
   end
 
   def remember_token
