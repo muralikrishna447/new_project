@@ -41,7 +41,7 @@ module Api
           used_circulator_discount = current_api_user && current_api_user.used_circulator_discount
           # Cache for premium users: shopping/products/premium=true
           # Cache for non-premium users: shopping/products/premium=false
-          @products = Rails.cache.fetch("shopping/products/premium=#{premium_user}/used_circulator_discount=#{used_circulator_discount}", expires_in: 1.minute) do
+          @products = Rails.cache.fetch("shopping/products/premium=#{premium_user}/used_circulator_discount=#{used_circulator_discount}", expires_in: 1.hour) do
             page = 1
             products = []
             count = ShopifyAPI::Product.count
@@ -63,7 +63,8 @@ module Api
                 compare_at_price: get_compare_at_price(product),
                 price: price,
                 premium_discount: discount,
-                variant_id: first_variant.id
+                variant_id: first_variant.id,
+                inventory_quantity: first_variant.inventory_quantity
               }
 
             end

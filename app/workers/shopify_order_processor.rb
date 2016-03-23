@@ -11,6 +11,7 @@ class ShopifyOrderProcessor
       raise msg
     end
     shopify_order.process!
+    Librato.tracker.flush
     Rails.logger.info "Finished processing shopify order [#{order_id}]"
   end
 end

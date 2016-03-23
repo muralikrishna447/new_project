@@ -101,6 +101,10 @@ class Shopify::Order
       @api_order.add_metafield(all_but_joule)
     end
 
+    initial_fulfillment_latency = Time.now - Time.parse(@api_order.created_at)
+    Rails.logger.info "Initial fulfillment latency [#{initial_fulfillment_latency}]"
+    Librato.timing 'shopify.fulfillment.initial.latency', initial_fulfillment_latency
+
     # Sync premium / discount status
     Shopify::Customer.sync_user(user)
     # TODO - figure out how to try to do this only once
