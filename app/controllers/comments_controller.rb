@@ -53,11 +53,7 @@ private
   end
 
   def determine_url(commentable)
-    if commentable.class.to_s == 'PollItem'
-      "#{request.base_url}/polls/#{commentable.poll.slug}"
-    else
-      polymorphic_url(commentable)
-    end
+    polymorphic_url(commentable)
   end
 
 end

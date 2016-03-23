@@ -1,8 +1,8 @@
 require 'resque/server'
 
 Delve::Application.routes.draw do
-  get '/robots.txt' => RobotsTxt
 
+  # Resque
   resque_constraint = lambda do |request|
     request.env['warden'].authenticate? and request.env['warden'].user.admin?
   end
@@ -17,12 +17,9 @@ Delve::Application.routes.draw do
     match "*any", to: redirect(:subdomain => 'www', :path => "/forum")
   end
 
+  # One-off routes
   root to: 'home#new_home'
-  match '/old_home', to: 'home#index'
-  # Keep the old homepage routes around until we feel we can delete them
-  # root to: "home#index"
-  # match '/new_home', to: 'home#new_home'
-  match '/home_manager', to: 'home#manager'
+  get '/robots.txt' => RobotsTxt
 
   match '/libraries', to: 'home#libraries'
   match '/joule/warranty', to: 'home#joule_warranty'
@@ -34,54 +31,24 @@ Delve::Application.routes.draw do
   match '/betainvite', to: 'bloom#betainvite'
   match '/content-discussion/:id', to: 'bloom#content_discussion'
   match '/content/:id', to: 'bloom#content'
-  match 'whats-for-dinner', to: 'bloom#whats_for_dinner'
-  match 'hot', to: 'bloom#hot'
 
   get '/blog', to: redirect('http://blog.chefsteps.com/')
   get '/presskit', to: redirect('/press')
 
-  resources :featured, only: [:index] do
-    collection do
-      get 'cover-photo' => 'featured#cover'
-    end
-  end
+  # Legal Documents
+  get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
+  get 'eula-android' => 'legal#eula_android', as: 'eula_android'
+  get 'privacy' => 'legal#privacy_policy', as: 'privacy'
+  get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
+  get 'terms' => 'legal#terms', as: 'terms'
+  get 'terms' => 'legal#terms', as: 'terms_of_service'
 
   ActiveAdmin.routes(self)
-
-  match '/become', to: 'admin#become'
-
-  # Redirects
-  match '/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-cooking-running-water-method',
-    to: redirect('/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-running-water-method')
-  match '/activities/improvised-sous-vide-cooking-running-water-method',
-    to: redirect('/activities/improvised-sous-vide-running-water-method')
-
-  match '/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-cooking-insulated-cooler-method',
-    to: redirect('/courses/accelerated-sous-vide-cooking-course/improvised-sous-vide-insulated-cooler-method')
-  match '/activities/improvised-sous-vide-cooking-insulated-cooler-method',
-    to: redirect('/activities/improvised-sous-vide-insulated-cooler-method')
-
-  match '/courses/accelerated-sous-vide-cooking-course/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
-    to: redirect('/courses/accelerated-sous-vide-cooking-course/sous-vide-pork-cheek-celery-root-pickled-apples')
-  match '/activities/sous-vide-pork-cheek-with-celery-root-and-pickled-apples',
-    to: redirect('/activities/sous-vide-pork-cheek-celery-root-pickled-apples')
-
-  # Redirect the old sous vide class to 101
-  match '/classes/sous-vide-cooking',
-    to: redirect('/classes/cooking-sous-vide-getting-started/landing')
-  match '/classes/sous-vide-cooking/landing',
-    to: redirect('/classes/cooking-sous-vide-getting-started/landing')
-
-  match '/activities/simple-sous-vide-packaging',
-    to: redirect('/activities/a-complete-guide-to-sous-vide-packaging-safety-sustainability-and-sourcing')
 
   # For convenient youtube CTAs
   match '/coffee', to: redirect { |params, request| "/classes/coffee/landing?#{request.params.to_query}" }
 
-  get "styleguide" => "styleguide#index"
-
-  # get 'users/sign_in' => redirect('/#log-in')
-  # get 'users/sign_up' => redirect('/#sign-up')
+  # Devise / auth
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions',
@@ -117,42 +84,13 @@ Delve::Application.routes.draw do
   end
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
-  get 'global-navigation' => 'application#global_navigation', as: 'global_navigation'
 
-  get 'thank-you' => 'copy#thank_you', as: 'thank_you'
-  get 'thank-you-subscribing' => 'copy#thank_you_subscribing', as: 'thank_you_subscribing'
-  get 'legal' => 'copy#legal', as: 'legal'
-  get 'legal/:type' => 'copy#legal', as: 'legal_type'
-  get 'legal/licensing' => 'copy#legal', as: 'licensing'
-  get 'jobs' => 'copy#jobs', as: "jobs"
-  get 'about' => 'home#about', as: 'about'
-  get 'kiosk' => 'home#kiosk', as: 'kiosk'
   get 'embeddable_signup' => 'home#embeddable_signup', as: 'embeddable_signup'
-  get 'dashboard' => 'dashboard#index', as: 'dashboard'
-  get 'ftue' => 'dashboard#ftue', as: 'ftue'
   get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
-  get 'egg-timer' => 'pages#egg_timer', as: 'egg_timer'
   get 'sous-vide-collection', to: redirect('/sous-vide')
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
-  get 'test-purchaseable-course' => 'pages#test_purchaseable_course', as: 'test_purchaseable_course'
-  get 'password-reset-sent' => 'pages#password_reset_sent', as: 'password_reset_sent'
-  get 'sous-vide' => 'pages#sous_vide_resources', as: 'sous_vide_resources'
-  get 'sous-vide-jobs' => 'pages#sous_vide_jobs', as: 'sous_vide_jobs'
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
   get 'joule-crawler' => 'pages#joule_crawler', as: 'joule_crawler'
-
-  # Legal Documents
-  get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
-  get 'eula-android' => 'legal#eula_android', as: 'eula_android'
-  get 'privacy' => 'legal#privacy_policy', as: 'privacy'
-  get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
-  get 'terms' => 'legal#terms', as: 'terms'
-  get 'terms' => 'legal#terms', as: 'terms_of_service'
-
-  match '/mp', to: redirect('/courses/spherification')
-  match '/MP', to: redirect('/courses/spherification')
-  match '/ps', to: redirect('/courses/accelerated-sous-vide-cooking-course')
-  match '/PS', to: redirect('/courses/accelerated-sous-vide-cooking-course')
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
@@ -176,16 +114,6 @@ Delve::Application.routes.draw do
   match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
   match '/feed' => 'activities#feedburner_feed', as: :feed
 
-  resources :questions, only: [] do
-    resources :answers, only: [:create]
-  end
-
-  # This is to work around a bug in ActiveAdmin 0.6.0 where the :shallow designator in questions.rb
-  # stopped working
-  namespace :admin do
-    resources :questions
-  end
-
   resources :equipment, only: [:index, :update, :destroy] do
     member do
       post 'merge' => 'equipment#merge'
@@ -196,7 +124,6 @@ Delve::Application.routes.draw do
     member do
       post 'merge' => 'ingredients#merge'
       get 'as_json' => 'ingredients#get_as_json'
-      resources :comments
     end
     collection do
       get 'all_tags' => 'ingredients#get_all_tags'
@@ -205,8 +132,6 @@ Delve::Application.routes.draw do
   end
 
   get 'gallery/index_as_json' => 'gallery#index_as_json'
-
-  resources :user_activities, only: [:create]
   resources :uploads do
     resources :comments
   end
@@ -220,25 +145,7 @@ Delve::Application.routes.draw do
     end
   end
   resources :pages, only: [:show]
-  resources :badges, only: [:index]
-  resources :polls do
-    member do
-      get 'show_as_json' => 'polls#show_as_json'
-    end
-  end
-  resources :poll_items do
-    resources :comments
-  end
-  resources :votes, only: [:create]
-  resources :comments, only: [:index, :create] do
-    collection do
-      get 'info' => 'comments#info'
-      get 'at' => 'comments#at'
-    end
-  end
-  resources :followerships, only: [:index, :update] do
-    post :follow_multiple,  on: :collection
-  end
+
   resources :assemblies, only: [:index, :show] do
     resources :comments
     member do
@@ -251,20 +158,9 @@ Delve::Application.routes.draw do
 
   resources :sitemaps, :only => :show
   match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
-  match "/splitty/finished", :controller => "splitty", :action => "finish_split"
 
   resources :client_views, only: [:show]
   resources :stream_views, only: [:show]
-
-  # Legacy needed b/c the courses version of this URL was public in a few places
-  get '/courses/accelerated-sous-vide-cooking-course', to: redirect('/classes/sous-vide-cooking')
-  get '/courses/accelerated-sous-vide-cooking-course/:activity_id', to: redirect('/classes/sous-vide-cooking#/%{activity_id}')
-  get '/courses/french-macarons/landing', to: redirect('/classes/french-macarons/landing')
-  get '/courses/:id', to: redirect('/classes/%{id}/landing')
-  get '/courses/:id/:activity_id', to: redirect('/classes/%{id}#/%{activity_id}')
-
-  resources :courses, only: [:index], controller: :courses
-  match '/classes', to: 'courses#index'
 
   resources :classes, controller: :assemblies do
     member do
@@ -272,18 +168,6 @@ Delve::Application.routes.draw do
       get 'show_as_json', to: 'assemblies#show_as_json'
     end
   end
-
-  resources :projects, controller: :assemblies do
-    member do
-      get 'landing', to: 'assemblies#landing'
-    end
-  end
-
-  # Recipe Development Routes
-  get '/projects/recipe-development-doughnut-holes/landing', to: redirect('/recipe-developments/doughnut-holes')
-  get '/projects/vegetable-demi-glace-recipe-development/landing', to: redirect('/recipe-developments/vegetable-demi-glace')
-
-  resources 'recipe-development', controller: :assemblies, as: :recipe_development, only: [:index, :show]
 
   resources :kits, controller: :assemblies, only: [:index, :show] do
     member do
@@ -293,16 +177,11 @@ Delve::Application.routes.draw do
 
   resources :events, only: [:create]
 
-  resources :gift_certificates
   resources :user_surveys, only: [:create]
-  resources :recommendations, only: [:index]
-
-  get "smoker" => "smoker#index"
 
   get "/affiliates/share_a_sale" => "affiliates#share_a_sale"
 
   get "/invitations/welcome" => "home#welcome"
-
 
   match "/reports/stripe" => "reports#stripe"
   resources :reports
@@ -311,12 +190,6 @@ Delve::Application.routes.draw do
   resources :stripe do
     collection do
       get 'current_customer'
-    end
-  end
-
-  resources :dashboard, only: [:index] do
-    collection do
-      get 'comments', to: 'dashboard#comments'
     end
   end
 

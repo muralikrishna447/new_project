@@ -21,3 +21,7 @@ end
 
 resque_config = YAML.load_file(rails_root + '/config/resque.yml')
 Resque.redis = resque_config[rails_env]
+
+# Configure the Coverband Middleware
+require 'coverband'
+Coverband.configure

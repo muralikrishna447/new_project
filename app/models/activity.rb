@@ -221,20 +221,6 @@ class Activity < ActiveRecord::Base
     equipment.select { |x| ! x.optional }
   end
 
-  def next
-    activities = Activity.ordered.published.all
-    i = activities.index(self)
-    return nil if i.nil?
-    activities[i+1]
-  end
-
-  def prev
-    activities = Activity.ordered.published.all
-    i = activities.index(self)
-    return nil if i.nil? || i == 0
-    activities[i-1]
-  end
-
   def has_description?
     description.present?
   end
@@ -249,10 +235,6 @@ class Activity < ActiveRecord::Base
   def is_recipe?
     # ingredients.count > 0
     activity_type.include?('Recipe')
-  end
-
-  def step_by_step?
-    steps.count > 0
   end
 
   def published_variations
@@ -361,14 +343,6 @@ class Activity < ActiveRecord::Base
     steps.map(&:image_id).reject(&:blank?)
   end
 
-  def self.text_search(query)
-    if query.present?
-      search(query)
-    else
-      published
-    end
-  end
-
   def attached_classes_weighted(weight = 10)
     attached_classes = []
     attached_classes << self.class
@@ -397,14 +371,6 @@ class Activity < ActiveRecord::Base
     ingredients_b = activity.true_ingredient_ids
     (ingredients_a & ingredients_b).length.to_f/(ingredients_a+ingredients_b).uniq.length.to_f
     # (ingredients_a & ingredients_b).length.to_f/(ingredients_a).uniq.length.to_f
-  end
-
-  def related_by_ingredients
-    # Todo Will need to optimize this
-    # Activity.published.joins(:ingredients).where('activity_ingredients.ingredient_id IN(?) AND activities.id != ?', true_ingredient_ids, id).uniq
-    ids = Activity.published.joins(:ingredients).uniq.map{|a| [self.compare(a), a.id]}.reject{|a| a[0] == 0 || self.id == a[1]}.sort{|a,b| a[0] <=> b[0]}.reverse.map{|a| a[1]}
-    activities = Activity.find(ids).group_by(&:id)
-    ids.map { |id| activities[id].first }
   end
 
   def featured_image

@@ -5,8 +5,6 @@ class PremiumGiftCertificate < ActiveRecord::Base
   scope :free_gifts, -> { where(price: 0) }
   scope :unredeemed, -> { where(redeemed: false) }
 
-  include ActsAsChargeable
-
   after_initialize do
     if ! self.token
       loop do
