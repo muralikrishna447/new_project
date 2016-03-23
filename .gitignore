@@ -18,6 +18,7 @@ public/assets
 db/schema.rb.*
 .powrc
 .powenv
+coverage/index.html
 
 # Ignore node_modules
 # http://stackoverflow.com/questions/18128863/should-node-modules-folder-be-included-in-the-git-repository

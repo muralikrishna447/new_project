@@ -50,9 +50,10 @@
         .tab-pane.active#favorites
           - if @user.likes.count > 0
             - @user.likes.scoped_by_type('Activity').order('created_at DESC').each do |like|
-              - likeable_title = capture do
-                = link_to like.likeable.title, like.likeable
-              = render 'shared/media_list_item', image: like.likeable.featured_image, title: likeable_title, text: ''
+              -if like.likeable
+                - likeable_title = capture do
+                  = link_to like.likeable.title, like.likeable
+                = render 'shared/media_list_item', image: like.likeable.featured_image, title: likeable_title, text: ''
           - else
             .well-clear
               %h4 Looks like you haven't favorited any recipes yet.
