@@ -15,8 +15,6 @@ xml.tag! 'urlset', 'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9' do
     xml.url {
       if p.is_a?(Assembly) && p.assembly_type == "Course"
         xml.loc(base_url + landing_class_path(p))
-      elsif p.is_a?(Assembly) && p.assembly_type == "Project"
-        xml.loc(base_url + project_path(p))
       elsif p.is_a?(Page)
         # Use shorter root url for pages
         xml.loc(base_url + '/' + p.slug)

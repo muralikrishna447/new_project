@@ -76,25 +76,6 @@ class ActivitiesController < ApplicationController
     respond_to do |format|
       format.html do
 
-        # New school class
-        containing_class = @activity.containing_course
-        if containing_class && containing_class.published?
-          case containing_class.assembly_type
-          when 'Course'
-            path = view_context.link_to containing_class.title, landing_class_path(containing_class), {'no-nell-popup' => true, onclick: "mixpanel.track('Clicked Class from Activity', {'class' : '#{containing_class.title}', 'activity': '#{@activity.title}'});"}
-          when 'Project'
-            path = view_context.link_to containing_class.title, project_path(containing_class), {'no-nell-popup' => true, onclick: "mixpanel.track('Clicked Class from Activity', {'class' : '#{containing_class.title}', 'activity': '#{@activity.title}'});"}
-          when 'Recipe Development'
-            path = view_context.link_to containing_class.title, recipe_development_path(containing_class), {'no-nell-popup' => true, onclick: "mixpanel.track('Clicked Class from Activity', {'class' : '#{containing_class.title}', 'activity': '#{@activity.title}'});"}
-          end
-          container_name = containing_class.assembly_type.to_s
-          container_name = "Class" if container_name == "Course"
-          container_name = "Project" if container_name == "Project"
-          @container_name = container_name
-          @container_path = path
-          # flash.now[:notice] = "This is part of the #{path} #{container_name}."
-        end
-
         @minimal = false
         if params[:minimal]
           @minimal = true
