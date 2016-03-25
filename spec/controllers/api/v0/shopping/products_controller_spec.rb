@@ -31,14 +31,14 @@ describe Api::V0::Shopping::ProductsController do
   end
 
   describe 'GET /products' do
-    it "should respond with an array of products" do
+    it "should respond with an array of products" do 
       get :index
       response.should be_success
       products = JSON.parse(response.body)
       products.length.should eq(3)
     end
 
-    it "should response with an array of products when a user is not premium" do
+    it "should respond with an array of products when a user is not premium" do
       sign_in @non_premium_user
       controller.request.env['HTTP_AUTHORIZATION'] = @non_premium_user.valid_website_auth_token.to_jwt
       get :index
@@ -47,7 +47,7 @@ describe Api::V0::Shopping::ProductsController do
       products.length.should eq(3)
     end
 
-    it "should response with an array of products when a user is not premium" do
+    it "should respond with an array of products when a user is premium" do
       sign_in @premium_user
       controller.request.env['HTTP_AUTHORIZATION'] = @premium_user.valid_website_auth_token.to_jwt
       get :index

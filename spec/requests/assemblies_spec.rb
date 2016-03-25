@@ -22,40 +22,7 @@ describe 'AssembliesController', pending: true do
 
     end
 
-    describe 'when request path == /projects ' do
-      it 'assigns @assemblies' do
-        get '/projects'
-        expect(assigns(:assemblies)).to eq([@project])
-      end
-
-      it 'assigns @assembly_type' do
-        get '/projects'
-        expect(assigns(:assembly_type)).to eq('Project')
-      end
-
-      it 'assigns @project' do
-        get project_path(@project)
-        expect(assigns(:project)).to eq(@project)
-      end
-
-      it 'renders projects_show' do
-        get project_path(@project)
-        expect(response).to render_template("projects_show")
-      end
-    end
-
     describe 'when request path == /courses ' do
-      # TODO Currently, the course index path uses the courses_controller, not the assemblies_controller
-      # it 'assigns @assemblies' do
-      #   get '/courses'
-      #   expect(assigns(:assemblies)).to eq([@course])
-      # end
-
-      # it 'assigns @assembly_type' do
-      #   get '/courses'
-      #   expect(assigns(:assembly_type)).to eq('Course')
-      # end
-
       it 'assigns @course' do
         get class_path(@course)
         expect(assigns(:course)).to eq(@course)
