@@ -277,7 +277,7 @@
       "customer":{"multipass_identifier":123},
       "financial_status": "paid",
       "fulfillment_status": "unfilfilled",
-      "note_attributes":[{"name":"gift-order", "value":"on"}],
+      "note_attributes":[{"name":"gift-order", "value":"true"}],
       "tags": null,
       "line_items": [{"sku":"cs10002", "quantity":1, "price":5, "fulfillment_status":"unfulfilled", "title": "title"}],
       "total_price": "20.00",
