@@ -149,10 +149,11 @@ describe Api::V0::UsersController do
       JSON.parse(response.body)['upload_url'].should_not be_nil
     end
     
-    it 'should reject invalid auth token' do
+    it 'should accept invalid auth token' do
       request.env['HTTP_AUTHORIZATION'] = @token+'gibberish'
       get :log_upload_url
-      response.code.should == '403'
+      response.should be_success
+      JSON.parse(response.body)['upload_url'].should_not be_nil
     end
     
     it 'should generate an upload url without an auth token' do
