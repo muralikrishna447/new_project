@@ -7,7 +7,6 @@ module Api
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
       before_filter :ensure_authorized, except: [:create, :log_upload_url]
-      before_filter :ensure_authorized_or_anonymous, only: [:log_upload_url]
       LOG_UPLOAD_URL_EXPIRATION = 5*60 #Seconds
 
       def me
@@ -70,6 +69,10 @@ module Api
       def log_upload_url
         # Based on the steps here:
         # http://docs.aws.amazon.com/AmazonS3/latest/dev/UploadObjectPreSignedURLRubySDK.html#UploadObjectPreSignedURLRubySDKV1
+
+        # We want to be liberal in accepting logs so if someone provides a bad
+        # token they end up in the anon bucket
+        ensure_authorized(false)
         if @user_id_from_token
           user_prefix = "user/#{@user_id_from_token}"
         else
