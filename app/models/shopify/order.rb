@@ -133,7 +133,7 @@ class Shopify::Order
   def gift_order?
     gift_attribute = @api_order.note_attributes.find {|attr| attr.name == 'gift-order'}
     Rails.logger.info("Found gift-order attribute #{gift_attribute.inspect}")
-    return !gift_attribute.nil?
+    return !gift_attribute.nil? && gift_attribute.value == 'true'
   end
   
   def fulfill_premium(item, should_fulfill)

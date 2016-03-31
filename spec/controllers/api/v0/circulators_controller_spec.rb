@@ -1,4 +1,18 @@
 describe Api::V0::CirculatorsController do
+  context 'justin' do 
+    it 'lists circulators for justin' do
+      @user = Fabricate :user, id: 160059, email: 'justin@chefsteps.com', password: '123456', name: 'John Doe'
+      @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1212121212121212'
+      @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
+      request.env['HTTP_AUTHORIZATION'] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0NDk1MTkzNTUsImEiOiJhMDAwMDBlMjQ5N2FiZGE0Iiwic2VxIjowfQ.WhBeV_ywWSYg3niucaltbw2W1soIq8Ue5IH9NPP3qm4'
+      get :index
+      response.should be_success
+      circulators = JSON.parse(response.body)
+      circulators.length.should == 1
+      circulators[0]['circulatorId'].should == @circulator.circulator_id
+    end
+  end
+  
   before :each do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1212121212121212'
