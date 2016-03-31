@@ -38,7 +38,7 @@ module Api
           updates << u
         end
 
-        render_api_response 200, {'updates' => updates, 'bootModeType' => 'APPLICATION_BOOT_MODE'}
+        render_api_response 200, {updates: updates, bootModeType: 'APPLICATION_BOOT_MODE'}
       end
 
       private
@@ -47,6 +47,15 @@ module Api
       end
 
       def get_firmware_for_app_version(version)
+        # Sample manifest
+        # [
+        #  {
+        #   "versionType": "appFirmwareVersion",
+        #   "type": "APPLICATION_FIRMWARE",
+        #   "version": "latest_version"
+        #  }
+        # ]
+
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
         bucket_name = Rails.application.config.firmware_bucket
         key_name = "manifests/#{version}/manifest"
@@ -62,7 +71,7 @@ module Api
         key_name = "joule/#{type}/#{version}/application.bin"
         bucket = AWS::S3::Bucket.new(bucket_name, :client => s3_client)
         o = bucket.objects[key_name]
-        o.url_for(:get, {:secure => true, :expires => LINK_EXPIRE_SECS}).to_s
+        o.url_for(:get, {secure: true, expires: LINK_EXPIRE_SECS}).to_s
       end
     end
   end
