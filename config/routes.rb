@@ -252,7 +252,7 @@ Delve::Application.routes.draw do
         get :token, on: :member
       end
 
-      get 'firmware/latest_version', to: 'firmware#latest_version'
+      post 'firmware/updates', to: 'firmware#updates'
       get 'auth/external_redirect', to: 'auth#external_redirect'
 
       namespace :shopping do
