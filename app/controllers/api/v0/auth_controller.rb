@@ -177,18 +177,18 @@ module Api
             token = AuthToken.from_string(params[:token])
           rescue JSON::JWS::VerificationFailed
             logger.info ("Token verification failed")
-            render json: {status: 400, code: 'invalid_token', message: 'Token verification failed.'}
+            render_api_response 400, {code: 'invalid_token', message: 'Token verification failed.'}
             return
           end
 
           aa = ActorAddress.find_for_token(token)
           unless aa
-            render json: {status: 401, meessage: 'No ActorAddress for token'}
+            render_api_response 401, {message: 'No ActorAddress for token'}
             return
           end
 
           unless aa.valid_token? token
-            render json: {status: 401, meessage: 'Invalid token'}
+            render_api_response 401, {message: 'Invalid token'}
             return
           end
 
