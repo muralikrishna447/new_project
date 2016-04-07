@@ -39,7 +39,7 @@ module Api
         def get_all_products(current_api_user)
           premium_user = current_api_user && current_api_user.premium?
           used_circulator_discount = current_api_user && current_api_user.used_circulator_discount
-          
+
           # Cache for premium users: shopping/products/premium=true
           # Cache for non-premium users: shopping/products/premium=false
           @products = Rails.cache.fetch("shopping/products/premium=#{premium_user}/used_circulator_discount=#{used_circulator_discount}", expires_in: 1.hour) do
@@ -55,7 +55,7 @@ module Api
             end
             results = products.map do |product|
               first_variant = get_first_variant(product)
-              price = get_price(product, current_api_user)
+              price = get_price(product, premium_user, used_circulator_discount)
               discount = get_product_discount(product)
               {
                 id: product.id,
@@ -91,11 +91,11 @@ module Api
           discount
         end
 
-        def get_price(product, current_api_user)
+        def get_price(product, premium_user, used_circulator_discount)
           first_variant = get_first_variant(product)
           first_variant_price = first_variant.price.to_f*100.to_i
           discount = get_product_discount(product)
-          if first_variant.sku == 'cs10001' && current_api_user && current_api_user.can_receive_circulator_discount?
+          if first_variant.sku == 'cs10001' && premium_user && !used_circulator_discount
             first_variant_price - discount
           else
             first_variant_price
