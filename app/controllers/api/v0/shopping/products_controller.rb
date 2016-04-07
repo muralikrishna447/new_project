@@ -55,7 +55,7 @@ module Api
             end
             results = products.map do |product|
               first_variant = get_first_variant(product)
-              price = get_price(product, premium_user, used_circulator_discount)
+              price = get_price(product, premium_user, used_circulator_discount).to_i
               discount = get_product_discount(product)
               {
                 id: product.id,
