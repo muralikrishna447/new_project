@@ -57,11 +57,13 @@ Delve::Application.configure do
   config.action_mailer.default_url_options = { host: DOMAIN }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    port: '587',
-    address: 'smtp.mandrillapp.com',
-    user_name: ENV['MANDRILL_USERNAME'],
-    password: ENV['MANDRILL_APIKEY'],
-    authentication: :plain
+    user_name: 'chefsteps',
+    password: ENV['SENDGRID_PASSWORD'],
+    domain: 'chocolateyshatner.com',
+    address: 'smtp.sendgrid.net',
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
   }
 
   # Enable threaded mode
