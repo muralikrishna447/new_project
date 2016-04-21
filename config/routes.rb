@@ -92,6 +92,9 @@ Delve::Application.routes.draw do
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
   get 'joule-crawler' => 'pages#joule_crawler', as: 'joule_crawler'
 
+  match '/mp', to: redirect('/classes/spherification')
+  match '/MP', to: redirect('/classes/spherification')
+
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
   # Allow top level access to an activity even if it isn't in a course

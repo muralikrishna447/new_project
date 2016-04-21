@@ -19,7 +19,7 @@ describe Api::V0::Shopping::ProductsController do
     products_2_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][1]
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/345.json/).to_return(status: 200, body: products_2_data.to_json)
 
-    products_2_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][0]
+    products_2_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][2]
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/products\/567.json/).to_return(status: 200, body: products_2_data.to_json)
 
     products_1_metafields_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('products').data)['products'][0]['metafields']
@@ -31,7 +31,7 @@ describe Api::V0::Shopping::ProductsController do
   end
 
   describe 'GET /products' do
-    it "should respond with an array of products" do 
+    it "should respond with an array of products" do
       get :index
       response.should be_success
       products = JSON.parse(response.body)
@@ -67,6 +67,26 @@ describe Api::V0::Shopping::ProductsController do
         product = ShopifyAPI::Product.find(123)
         product_discount = @controller.instance_eval { get_product_discount(product) }
         expect(product_discount).to eq(800)
+      end
+    end
+
+    context 'get_price' do
+      it "should return the correct price for a none premium user" do
+        product = ShopifyAPI::Product.find(567)
+        price = @controller.instance_eval { get_price(product, false, false) }
+        expect(price).to eq(22900)
+      end
+
+      it "should return the correct price for a premium user where used_circulator_discount is false" do
+        product = ShopifyAPI::Product.find(567)
+        price = @controller.instance_eval { get_price(product, true, false) }
+        expect(price).to eq(20500)
+      end
+
+      it "should return the correct price for a premium user where used_circulator_discount is true" do
+        product = ShopifyAPI::Product.find(567)
+        price = @controller.instance_eval { get_price(product, true, true) }
+        expect(price).to eq(22900)
       end
     end
   end
@@ -126,8 +146,9 @@ describe Api::V0::Shopping::ProductsController do
       response.should be_success
       product = JSON.parse(response.body)
       expect(product['price']).to eq(22900)
-
     end
+
+
 
   end
 end
