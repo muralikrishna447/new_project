@@ -1,4 +1,5 @@
-require "mandrill"
+require 'sendgrid-ruby'
+# require "mandrill"
 
 # From https://robots.thoughtbot.com/how-to-send-transactional-emails-from-rails-with-mandrill
 
@@ -11,17 +12,25 @@ class BaseMandrillMailer < ActionMailer::Base
 
   private
 
-  def send_mail(email, subject, body)
-    mail(to: email, subject: subject, body: body, content_type: "text/html")
-  end
+  # def send_mail(email, subject, body)
+  #   mail(to: email, subject: subject, body: body, content_type: "text/html")
+  # end
 
-  def mandrill_template(template_name, attributes)
-    mandrill = Mandrill::API.new(ENV['MANDRILL_APIKEY'])
+  # def mandrill_template(template_name, attributes)
+  #   mandrill = Mandrill::API.new(ENV['MANDRILL_APIKEY'])
+  #
+  #   merge_vars = attributes.map do |key, value|
+  #     { name: key, content: value }
+  #   end
+  #
+  #   mandrill.templates.render(template_name, [], merge_vars)["html"]
+  # end
 
-    merge_vars = attributes.map do |key, value|
-      { name: key, content: value }
-    end
+  def sendgrid_mailer(template_id, recipients)
+    client = SendGrid::Client.new(api_key: ENV['SENDGRID_APIKEY'])
+    template = SendGrid::Template.new('650cb3b3-108d-4107-9084-b1392adea3da')
 
-    mandrill.templates.render(template_name, [], merge_vars)["html"]
+    mailer = SendGrid::TemplateMailer.new(client, template, recipients)
+    return mailer
   end
 end
