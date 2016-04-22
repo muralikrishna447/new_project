@@ -4,8 +4,10 @@ def format_currency(amount)
   number_to_currency(amount.to_i / 100.0)
 end
 
-class GenericReceiptMailer < BaseMandrillMailer
+class GenericReceiptMailer < ActionMailer::Base
 
+  default from: "info@chefsteps.com"
+  
   def format_address(shipping)
     addr = shipping[:address]
     <<-ADDRESS
@@ -44,21 +46,24 @@ class GenericReceiptMailer < BaseMandrillMailer
 
     card = Stripe::Charge.retrieve(stripe_charge.charge).card
 
-    merge_vars = {
-      "ITEM1_NAME" => lines[0][:description],
-      "ITEM1_PRICE" => format_currency(lines[0][:amount]),
-      "ITEM2_NAME" => lines.count > 1 ? lines[1][:description] : "",
-      "ITEM2_PRICE" => lines.count > 1 ? format_currency(lines[1][:amount]) : "",
-      "SUBTOTAL" => format_currency(subtotal),
-      "TAX" => format_currency(tax),
-      "TOTAL" => format_currency(total),
-      "PURCHASE_DATE" => DateTime.now.strftime('%B %d, %Y'),
-      "CARD_AND_LAST4" => card.brand + " " + card.last4,
-      "ORDER_ID" => stripe_charge.id,
-      "SHIPPING_ADDRESS" => format_address(stripe_charge.shipping)
+    substitutions = {
+      sub: {
+        "*|SUBJECT|*" => [subject],
+        "*|CURRENT_YEAR|*" => [Time.now.year],
+        "*|ITEM1_NAME|*" => [lines[0][:description]],
+        "*|ITEM1_PRICE|*" => [format_currency(lines[0][:amount])],
+        "*|ITEM2_NAME|*" => [lines.count > 1 ? lines[1][:description] : ""],
+        "*|ITEM2_PRICE|*" => [lines.count > 1 ? format_currency(lines[1][:amount]) : ""],
+        "*|SUBTOTAL|*" => [format_currency(subtotal)],
+        "*|TAX|*" => [format_currency(tax)],
+        "*|TOTAL|*" => [format_currency(total)],
+        "*|PURCHASE_DATE|*" => [DateTime.now.strftime('%B %d, %Y')],
+        "*|CARD_AND_LAST4|*" => [card.brand + " " + card.last4],
+        "*|ORDER_ID|*" => [stripe_charge.id],
+        "*|SHIPPING_ADDRESS|*" => [format_address(stripe_charge.shipping)]
+      }
     }
-
-    body = mandrill_template("generic-receipt", merge_vars)
-    send_mail(user.email, subject, body)
+    headers['X-SMTPAPI'] = substitutions.to_json
+    mail(to: user.email, subject: subject, content_type: "text/html")
   end
 end

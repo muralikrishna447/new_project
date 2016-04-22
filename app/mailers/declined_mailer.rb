@@ -1,4 +1,7 @@
-class DeclinedMailer < BaseMandrillMailer
+class DeclinedMailer < ActionMailer::Base
+
+  default from: "info@chefsteps.com"
+
   def joule(user)
     subject = "ChefSteps Joule Payment - Your card was declined"
     template = "joule-credit-card-declined"
@@ -14,10 +17,13 @@ class DeclinedMailer < BaseMandrillMailer
 
   def common_mail(subject, template, user)
     subject = subject
-    merge_vars = {
-      "NAME" => user.name
+    substitutions = {
+      sub: {
+        "*|SUBJECT|*" => [subject],
+        "*|NAME|*" => [user.name]
+      }
     }
-    body = mandrill_template(template, merge_vars)
-    mail(to: user.email, subject: subject, body: body, content_type: "text/html", from: 'ellenk@chefsteps.com', reply_to: 'ellenk@chefsteps.com')
+    headers['X-SMTPAPI'] = substitutions.to_json
+    mail(to: user.email, subject: subject, content_type: "text/html", from: 'ellenk@chefsteps.com', reply_to: 'ellenk@chefsteps.com')
   end
 end
