@@ -1,9 +1,18 @@
+class PremiumGiftCertificateMailer < ActionMailer::Base
 
-class PremiumGiftCertificateMailer < BaseMandrillMailer
+  default from: "info@chefsteps.com"
+
   def prepare(user, redeem_token)
     subject = "ChefSteps Premium Gift Certificate"
-    merge_vars = {"REDEEM_TOKEN" => redeem_token}
-    body = mandrill_template("premium-gift-certificate", merge_vars)
-    send_mail(user.email, subject, body)
+
+    substitutions = {
+      sub: {
+        "*|SUBJECT|*" => [subject],
+        "*|REDEEM_TOKEN|*" => [redeem_token],
+        "*|CURRENT_YEAR|*" => [Time.now.year]
+      }
+    }
+    headers['X-SMTPAPI'] = substitutions.to_json
+    mail(to: user.email, subject: subject)
   end
 end

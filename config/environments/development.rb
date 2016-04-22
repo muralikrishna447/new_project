@@ -17,18 +17,20 @@ Delve::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: DOMAIN }
-  ENV['MANDRILL_APIKEY'] = 'OejVCvKIRLNbenVLLI3alw' # test key, never sends
+  ENV['SENDGRID_PASSWORD'] = 'RzKSS9^xaS5i'
   config.action_mailer.smtp_settings = {
-    port: '587',
-    address: 'smtp.mandrillapp.com',
-    user_name: 'app11245891@heroku.com',
-    password:  ENV['MANDRILL_APIKEY'],
-    authentication: :plain
+    user_name: 'chefsteps',
+    password: ENV['SENDGRID_PASSWORD'],
+    domain: 'chefsteps.com',
+    address: 'smtp.sendgrid.net',
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
   }
 
   # Print deprecation notices to the Rails logger

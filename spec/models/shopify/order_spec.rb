@@ -1,19 +1,19 @@
 require 'spec_helper'
 
-describe Shopify::Order do  
-  JOULE_ORDER_ID = 4507800  
+describe Shopify::Order do
+  JOULE_ORDER_ID = 4507800
   PREMIUM_ORDER_ID = 450789469
   SIMPLE_ORDER_ALL_BUT_JOULE = 100001
   SIMPLE_ORDER_PARTIALLY_FULFILLED = 100002
   SIMPLE_ORDER_FULFILLED = 100003
   SIMPLE_ORDER_UNFULFILLED = 100004
   PREMIUM_GIFT_ORDER = 100005
-  
+
   context 'order retrieval' do
     it 'retrieves an order' do
       Shopify::Order.find(PREMIUM_ORDER_ID).should_not be_nil
     end
-  
+
     it 'raises for non-existent orders' do
       WebMock.stub_request(:get, /\.com\/admin\/orders\/9999\.json/).
         to_return(:status => 404, :body => "", :headers => {})
@@ -22,7 +22,7 @@ describe Shopify::Order do
       }.to raise_error(ActiveResource::ResourceNotFound)
     end
   end
-  
+
   context 'order fulfillment' do
     before(:each) do
       @user = Fabricate(:user, :id => 123)
@@ -35,11 +35,9 @@ describe Shopify::Order do
       Analytics.should_receive(:flush)
     end
 
-    it 'fulfills a simple premium order' do   
-      # TODO - assert actual email contents 
-      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
-        to_return(:status => 200, :body => "{}", :headers => {})
-        
+    it 'fulfills a simple premium order' do
+      # TODO - assert actual email contents
+
       stub_fulfillment
       stub_metafield_get
       Shopify::Customer.should_receive(:sync_user)
@@ -49,11 +47,9 @@ describe Shopify::Order do
       order.process!
       @user.reload.premium?.should == true
     end
-    
+
     it 'fulfills a simple joule order' do
-      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
-        to_return(:status => 200, :body => "{}", :headers => {})
-        
+
       # Not stubbing fulfillment call since this is not made for joule
       WebMock::stub_request(:put, /\.com\/admin\/orders\/4507800.json/).
         to_return(:status => 200, :body => "", :headers => {})
@@ -64,20 +60,16 @@ describe Shopify::Order do
       order = Shopify::Order.find(JOULE_ORDER_ID)
       order.process!
       @user.reload.premium?.should == true
-    end  
-    
+    end
+
     it 'fulfills premium gift order' do
-      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
-        to_return(:status => 200, :body => "{}", :headers => {})
+
       stub_fulfillment
       stub_metafield_get
       order = Shopify::Order.find(PREMIUM_GIFT_ORDER).process!
     end
-    
+
     it 'joule order for premuium customer doesnt send premium welcome email' do
-      WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
-         with(:body => "{\"template_name\":\"joule-purchase-confirmation\",\"template_content\":[],\"merge_vars\":[],\"key\":\"OejVCvKIRLNbenVLLI3alw\"}").
-         to_return(:status => 200, :body => "{}", :headers => {})
 
       @user.make_premium_member(20)
       Shopify::Customer.should_receive(:sync_user)
@@ -86,22 +78,22 @@ describe Shopify::Order do
       Shopify::Order.find(JOULE_ORDER_ID).process!
     end
   end
-  
+
   context 'fulfillment checks' do
     it 'it knows if all but joule has been fulfilled' do
       stub_metafield_get([metafield_response('all-but-joule-fulfilled', 'true')])
       expect(Shopify::Order.find(SIMPLE_ORDER_ALL_BUT_JOULE).all_but_joule_fulfilled?).to be_true
     end
-    
+
     it 'knows if order is fulfilled' do
       expect(Shopify::Order.find(SIMPLE_ORDER_FULFILLED).all_but_joule_fulfilled?).to be_true
     end
-    
+
     it 'knows a partially fulfilled order is not fulfilled' do
       stub_metafield_get
       expect(Shopify::Order.find(SIMPLE_ORDER_PARTIALLY_FULFILLED).all_but_joule_fulfilled?).to be_false
     end
-    
+
     it 'knows if order is unfulfilled' do
       stub_metafield_get
       expect(Shopify::Order.find(SIMPLE_ORDER_UNFULFILLED).all_but_joule_fulfilled?).to be_false
@@ -121,12 +113,12 @@ describe Shopify::Order do
       'value_type' => 'string'
     }
   end
-  
+
   def stub_metafield_get(metafields = [])
     WebMock.stub_request(:get, /\.com\/admin\/orders\/.*\/metafields.json/).
       to_return(:status => 200, :body => { "metafields" => metafields}.to_json, :headers => {})
   end
-  
+
   def stub_fulfillment
     WebMock::stub_request(:post, /\.com\/admin\/orders\/.*\/fulfillments.json/).
       to_return(:status => 200, :body => "", :headers => {})

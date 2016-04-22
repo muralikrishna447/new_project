@@ -7,9 +7,6 @@ describe DeclinedMailer do
     ActionMailer::Base.delivery_method = :test
     ActionMailer::Base.perform_deliveries = true
     ActionMailer::Base.deliveries = []
-
-    WebMock.stub_request(:post, "https://mandrillapp.com/api/1.0/templates/render.json").
-      to_return(:status => 200, :body => {html: "<p><div>content to inject merge1 content<\/div><\/p>"}.to_json, :headers => {})
   end
 
   after(:each) do

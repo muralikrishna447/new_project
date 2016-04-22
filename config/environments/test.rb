@@ -50,8 +50,6 @@ Delve::Application.configure do
   DISQUS_SHORTNAME = "chefstepstesting"
   ENV["REDISTOGO_URL"] = 'redis://localhost:6379'
 
-  ENV['MANDRILL_APIKEY'] = 'OejVCvKIRLNbenVLLI3alw' # test key, never sends
-
   config.filepicker_rails.api_key = "ANAsscmHGSKqZCHObvuK6z"
 
   AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: 'c534846f01761db79637ebedc4bde21a' }

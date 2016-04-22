@@ -140,8 +140,6 @@ describe StripeOrder do
       StripeOrder.any_instance.stub(:create_or_update_user).and_return(@stripe_user)
       StripeOrder.any_instance.stub(:get_tax).and_return({taxable_amount: '7'})
       Stripe::Order.stub(:create).and_return(stripe)
-      BaseMandrillMailer.any_instance.stub(:send_mail).and_return(double('mailer', deliver: true))
-      BaseMandrillMailer.any_instance.stub(:mandrill_template)
       StripeOrder.any_instance.stub(:analytics)
     end
 
