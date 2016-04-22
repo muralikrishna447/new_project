@@ -1,4 +1,7 @@
 class DeclinedMailer < ActionMailer::Base
+
+  default from: "info@chefsteps.com"
+
   def joule(user)
     subject = "ChefSteps Joule Payment - Your card was declined"
     template = "joule-credit-card-declined"

@@ -24,5 +24,5 @@ class BaseMandrillMailer < ActionMailer::Base
 
     mandrill.templates.render(template_name, [], merge_vars)["html"]
   end
-  
+
 end

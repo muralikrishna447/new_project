@@ -22,6 +22,7 @@ Delve::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: DOMAIN }
+  ENV['SENDGRID_PASSWORD'] = 'RzKSS9^xaS5i'
   config.action_mailer.smtp_settings = {
     user_name: 'chefsteps',
     password: ENV['SENDGRID_PASSWORD'],
