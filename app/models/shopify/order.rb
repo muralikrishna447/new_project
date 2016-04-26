@@ -85,7 +85,7 @@ class Shopify::Order
         # TODO - check premium limit for non-gift
         fulfill_premium(item, true)
       else
-        raise "Unknown product sku [#{item.sku}]"
+        Rails.logger.info "Unknown sku [#{item.sku}]."
       end
     end
 
