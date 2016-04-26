@@ -82,7 +82,7 @@ module Api
 
         # Note: If this method is changed, we will need to update the Shopify Cart script to match.
         def get_product_discount(product)
-          discount = nil
+          discount = 0
           product.tags.split(',').each do |tag|
             if tag.start_with?(PREMIUM_DISCOUNT_TAG)
               discount = tag.split(":")[1].to_i
