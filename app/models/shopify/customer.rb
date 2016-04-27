@@ -60,7 +60,11 @@ class Shopify::Customer
   end
 
   def sync_tags!
-    current_tags = @shopify_customer.tags.split(',').sort!.collect {|tag| tag.strip}
+    if @shopify_customer.respond_to?(:tags)
+      current_tags = @shopify_customer.tags.split(',').sort!.collect {|tag| tag.strip}
+    else
+      current_tags = []
+    end
     tags = Array.new(current_tags)
     tags.delete PREMIUM_MEMBER_TAG
     tags.delete JOULE_PREMIUM_DISCOUNT_TAG
