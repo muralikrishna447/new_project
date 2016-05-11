@@ -66,7 +66,10 @@ gem 'nested-hstore'
 gem 'gibbon'
 gem 'faraday'
 gem 'nori'
-gem 'aws-sdk'
+
+gem 'aws-sdk-v1'
+gem 'aws-sdk', '~> 2'
+
 gem 'json-jwt'
 gem 'intercom'
 gem "algoliasearch-rails"
