@@ -217,7 +217,8 @@ class Shopify::Order
         revenue: @api_order.subtotal_price,
         tax: @api_order.total_tax,
         shipping: 0,
-        discount: @api_order.total_discounts,
+        # Make discount negative for backwards compatability
+        discount: 0 - (@api_order.total_discounts || 0 ).to_f,
         gift: gift_order?,
         currency: 'USD',
         products: products,
