@@ -9,7 +9,6 @@ describe Api::V0::CirculatorsController do
     @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
 
     token = ActorAddress.create_for_user(@user, client_metadata: "create").current_token
-    puts "setting?"
     request.env['HTTP_AUTHORIZATION'] = token.to_jwt
   end
 

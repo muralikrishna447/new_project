@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160211221836) do
+ActiveRecord::Schema.define(:version => 20160506185009) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -509,6 +509,18 @@ ActiveRecord::Schema.define(:version => 20160211221836) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "push_notification_tokens", :force => true do |t|
+    t.integer  "actor_address_id"
+    t.string   "endpoint_arn"
+    t.string   "device_token"
+    t.string   "app_name"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "push_notification_tokens", ["actor_address_id"], :name => "index_push_notification_tokens_on_actor_address_id", :unique => true
+  add_index "push_notification_tokens", ["endpoint_arn", "actor_address_id"], :name => "aindex_endpoint_and_address", :unique => true
 
   create_table "questions", :force => true do |t|
     t.datetime "created_at",                             :null => false
