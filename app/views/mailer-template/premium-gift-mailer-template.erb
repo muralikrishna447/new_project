@@ -1,0 +1,371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width" /><!-- IMPORTANT -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>*|SUBJECT|*</title>
+
+<!-- <link rel="stylesheet" type="text/css" href="stylesheets/email.css" /> -->
+<style>
+	/* -------------------------------------
+			GLOBAL
+	------------------------------------- */
+	* {
+		margin:0;
+		padding:0;
+	}
+	* { font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+
+	img {
+		max-width: 100%;
+	}
+	.collapse {
+		margin:0;
+		padding:0;
+	}
+	body {
+		-webkit-font-smoothing:antialiased;
+		-webkit-text-size-adjust:none;
+		width: 100%!important;
+		height: 100%;
+	}
+
+
+	/* -------------------------------------
+			ELEMENTS
+	------------------------------------- */
+	a { color: #ff674d;}
+
+	.btn {
+		text-decoration:none;
+		color:#FFF;
+		background-color:#ff674d;
+		width:80%;
+		max-width: 200px;
+		padding:12px 10%;
+		border-radius: 30px;
+		font-weight:bold;
+		text-align:center;
+		cursor:pointer;
+		display:inline-block;
+	}
+
+	p.callout {
+		padding:15px;
+		text-align:center;
+		background-color:#edecea;
+		margin-bottom: 15px;
+	}
+	.callout a {
+		font-weight:bold;
+		color: #ff674d;
+	}
+
+	.highlight {
+		background-color: #edecea;
+		padding: 25px 15px;
+		margin: 5px 0 15px;
+		text-align: center;
+		border-radius: 4px;
+	}
+
+	.column table { width:100%;}
+	.column {
+		width: 300px;
+		float:left;
+	}
+	.column tr td { padding: 15px; }
+	.column-wrap {
+		padding:0!important;
+		margin:0 auto;
+		max-width:600px!important;
+	}
+	.columns .column {
+		width: 260px;
+		float:left;
+		margin: 15px 10px 0px;
+	}
+	.column img {
+		border-radius: 4px;
+		overflow: hidden;
+	}
+	table.columns, table.column, .columns .column tr, .columns .column td {
+		padding:0;
+		margin:0;
+		border:0;
+		border-collapse:collapse;
+	}
+
+	/* -------------------------------------
+			Main
+	------------------------------------- */
+	table.main-content { width: 100%; background:#edecea; padding: 10px 0;}
+	.main {background:#edecea;}
+
+	/* -------------------------------------
+			HEADER
+	------------------------------------- */
+	.head-wrap.content {
+		background:#fff;
+		border-top-right-radius: 4px;
+		border-top-left-radius: 4px;
+		border-bottom: 1px dashed #edecea;
+		padding: 15px 25px;
+	}
+	.head-wrap table td.logo { padding: 15px; }
+	.head-wrap table td.label { padding: 15px; padding-left:0px;}
+
+
+	/* -------------------------------------
+			BODY
+	------------------------------------- */
+	.body-wrap.content {
+		background:#fff;
+	}
+
+	/* -------------------------------------
+			FOOTER
+	------------------------------------- */
+	.footer-wrap.content {
+		background: #383736;
+		border-bottom-right-radius: 4px;
+		border-bottom-left-radius: 4px;
+		padding: 40px;
+	}
+	.footer-wrap.content p {
+		font-size:10px;
+		font-weight: bold;
+		margin-bottom: 0;
+	}
+	.footer-wrap p {
+		color: rgba(255,255,255,0.5);
+	}
+	.footer-wrap a {
+		color: rgba(255,255,255,0.5);
+		text-decoration: underline;
+	}
+
+
+	/* -------------------------------------
+			TYPOGRAPHY
+	------------------------------------- */
+	h1,h2,h3,h4,h5,h6 {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; line-height: 1.1; color:#43413f;
+	}
+	h1 small, h2 small, h3 small, h4 small, h5 small, h6 small { font-size: 60%; color: rgb(184,182,180); line-height: 0; text-transform: none; }
+	small {font-size: 12px; line-height: 16px;}
+
+	h1 { font-weight:700; font-size: 44px; text-align: center; margin-bottom: 25px;}
+	h2 { font-weight:700; font-size: 37px; text-align: center; margin-bottom: 25px;}
+	h3 { font-weight:700; font-size: 27px; text-align: center; margin-bottom: 25px;}
+	h4 { font-weight:700; font-size: 23px; margin-bottom:15px;}
+	h5 { font-weight:900; font-size: 17px; margin-bottom:15px;}
+	h6 { font-weight:900; font-size: 12px; margin-bottom:15px; text-transform: uppercase;}
+
+	.collapse { margin:0!important;}
+
+	p, ul {
+		margin-bottom: 20px;
+		font-weight: normal;
+		font-size:14px;
+		line-height:1.6;
+		color:#43413f;
+	}
+	p.lead { font-size:17px; }
+	p.last { margin-bottom:0px;}
+
+	ul li {
+		margin-left:5px;
+		list-style-position: inside;
+	}
+
+	hr {
+	    border: 0;
+	    height: 0;
+	    border-top: 1px dashed rgba(0, 0, 0, 0.15);
+	    border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+			margin-bottom: 30px;
+	}
+
+	.align-center {
+		text-align: center;
+	}
+	.no-margin {
+		margin-bottom: 0;
+	}
+
+
+	/* -------------------------------------
+			Social Links
+	------------------------------------- */
+
+table.social-links, .social-links table {
+	width: auto!important;
+	margin: 0 auto;
+	color: red;
+}
+
+.social-links a {
+	margin-right: 10px;
+}
+
+.social-links img {
+	width: 25px;
+	height: 25px;
+}
+
+	/* ---------------------------------------------------
+			RESPONSIVENESS
+			Nuke it from orbit. It's the only way to be sure.
+	------------------------------------------------------ */
+
+	/* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+	.container {
+		display:block!important;
+		max-width:600px!important;
+		margin:0 auto!important; /* makes it centered */
+		clear:both!important;
+	}
+
+	/* This should also be a block element, so that it will fill 100% of the .container */
+	.content {
+		padding:15px;
+		max-width:600px;
+		margin:0 auto;
+		display:block;
+	}
+
+	/* Let's make sure tables in the content area are 100% wide */
+	.content table { width: 100%; }
+
+	/* Be sure to place a .clear element after each set of columns, just to be safe */
+	.clear { display: block; clear: both; }
+
+
+	/* -------------------------------------------
+			PHONE
+			For clients that support media queries.
+			Nothing fancy.
+	-------------------------------------------- */
+	@media only screen and (max-width: 600px) {
+
+		.main {background:#fff;}
+
+		a[class="btn"] {margin-bottom:10px!important; background-image:none!important;}
+
+		div[class="column"] { width: 100%!important; float:none!important;}
+
+		table.social div[class="column"] {
+			width:auto!important;
+		}
+
+	}
+</style>
+
+</head>
+
+<body class="main">
+
+<table class="main-content">
+	<tr>
+		<td></td>
+		<td class="container">
+
+			<!-- HEADER -->
+			<div class="head-wrap content">
+				<table>
+					<tr>
+						<td>
+							<a href="http://chefsteps.com" title="ChefSteps" alt="ChefSteps" /><img src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" style="width:120px;height:auto;" /></a>
+						</td>
+						<td align="right">
+							<h6 class="collapse">Premium Gift!</h6>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<!-- You may like to include a Hero Image -->
+			<div class="header-img">
+				<img src="https://gallery.mailchimp.com/9f69331c823fb9ca452fe5184/images/ff720385-6071-4db7-b3d9-fd1e6091de26.jpg" alt="Gift Premium" />
+			</div>
+			<!-- /Hero Image -->
+
+			<!-- BODY -->
+			<div class="body-wrap content">
+			<table>
+				<tr>
+					<td>
+            <br />
+
+						<h3 class="align-center">Your ChefSteps Premium Gift Certificate</h3>
+            <p class="align-center">Thank you for giving the gift of ChefSteps Premium! When you're ready to give this gift to the recipient, simply send this link:</p>
+						<h5 class="highlight"><a alt="ChefSteps Premium Gift Certificate Link" href="https://www.chefsteps.com/gift/*|REDEEM_TOKEN|*">https://www.chefsteps.com/gift/*|REDEEM_TOKEN|*</a></h5>
+						<br />
+
+						<hr>
+						<h5 class="align-center">ChefSteps Premium gives you unlimited access to all of our Premium classes including:</h5>
+						<br />
+						<table class="columns">
+							<tr>
+								<td class="column">
+									<!-- Image -->
+									<p class="align-center"><strong>Sous Vide: Beyond the Basics</strong></p>
+									<a href="https://www.chefsteps.com/classes/cooking-sous-vide-beyond-the-basics/landing#/" target="_blank"><img src="https://gallery.mailchimp.com/9f69331c823fb9ca452fe5184/images/6f968bad-775a-49ff-889f-99470ddcc03b.jpg"></a>
+								</td>
+								<td class="column">
+									<!-- Image -->
+									<p class="align-center"><strong>Coffee</strong></p>
+									<a href="https://www.chefsteps.com/classes/coffee/landing#/" target="_blank"><img src="https://gallery.mailchimp.com/9f69331c823fb9ca452fe5184/images/7a2be66f-bab9-480a-a8fe-c63fc577b23e.jpg"></a>
+								</td>
+								<td class="column">
+									<!-- Image -->
+									<p class="align-center"><strong>Whipping Siphons</strong></p>
+									<a href="https://www.chefsteps.com/classes/whipping-siphons" target="_blank"><img src="https://gallery.mailchimp.com/9f69331c823fb9ca452fe5184/images/2bd883a8-cd96-4de8-9ec5-6ac3f701742d.jpg"></a>
+								</td>
+								<td class="column">
+									<!-- Image -->
+									<p class="align-center"><strong>Macarons</strong></p>
+									<a href="https://www.chefsteps.com/classes/french-macarons/landing" target="_blank"><img src="https://gallery.mailchimp.com/9f69331c823fb9ca452fe5184/images/8c7fe241-e19e-4d55-ad1b-51a369b17c3f.jpg"></a>
+								</td>
+							</tr>
+						</table>
+
+						<br />
+						<br />
+						<hr>
+
+						<h4 class="align-center no-margin">Have questions, comments, or feedback?</h4>
+						<p class="align-center">We're here to help!</p>
+						<p style="text-align:center;">
+							<a class="btn" href="mailto:team@chefsteps.com?subject=ChefSteps%20Premium%20Gift%20Certificate%20Comment%2FQuestion" target="_blank">Email Us</a>
+						</p>
+
+					</td>
+				</tr>
+			</table>
+			</div>
+
+			<!-- FOOTER -->
+			<div class="footer-wrap content">
+				<table>
+					<tr>
+						<td align="center">
+							<a href="http://chefsteps.com" title="ChefSteps"><img src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-white.png" style="width:120px;height:auto;" alt="{{ shop_name }}" /></a>
+							<br/><br/>
+							<p>Copyright © *|CURRENT_YEAR|* ChefSteps, All rights reserved.</p>
+							<br />
+							<p><strong>Our mailing address is:</strong></p>
+							<p>1501 Pike Place<br />Seattle, WA 98101</p>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+		</td>
+		<td></td>
+	</tr>
+</table>
+
+</body>
+</html>

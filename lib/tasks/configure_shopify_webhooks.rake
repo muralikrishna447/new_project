@@ -27,7 +27,6 @@ task :configure_shopify_webhooks, [:endpoint] => :environment do |t, args| #, :e
   end
   
   puts "=== Creating new webhooks ==="
-  create_webhook(endpoint, 'orders/create', 'order')
   create_webhook(endpoint, 'orders/paid', 'order')
   
   puts "Done."
