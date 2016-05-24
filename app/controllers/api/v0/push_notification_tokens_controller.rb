@@ -32,6 +32,10 @@ module Api
       end
     
       def destroy
+        # Deleting tokens is supported without auth because simple posssessing
+        # the token is sufficient.  Both the token provided and any token
+        # associated with this address are deleted in an effort to not send push
+        # notifications to the wrong device.
         if @actor_address_from_token
           token = PushNotificationToken.where(actor_address_id: @actor_address_from_token.id).first
           if token
