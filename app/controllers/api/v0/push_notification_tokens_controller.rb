@@ -80,6 +80,7 @@ module Api
       end
       
       def delete_token(token)
+        logger.info "Deleting token [#{token.inspect}]"
         # Delete token in DB first since orphan endpoints do not cause problems
         token.destroy
         delete_platform_endpoint(token.endpoint_arn)
@@ -88,6 +89,7 @@ module Api
       # The sns calls are separate because rspec/mock interferes with the aws
       # sdk
       def create_platform_endpoint(platform_application_arn, token, custom_user_data)
+        logger.info "Creating platform endpoint [#{platform_application_arn}] [#{token}] [#{custom_user_data}]"
         sns = Aws::SNS::Client.new(region: 'us-east-1')
         sns.create_platform_endpoint(
           platform_application_arn: platform_application_arn,
@@ -96,6 +98,7 @@ module Api
       end
       
       def delete_platform_endpoint(endpoint_arn)
+        logger.info "Deleting endpoing with arn [#{endpoint_arn}]"
         sns = Aws::SNS::Client.new(region: 'us-east-1')
         sns.delete_endpoint(endpoint_arn: endpoint_arn)
       end
