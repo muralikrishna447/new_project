@@ -166,8 +166,10 @@ module Api
         elsif path_uri.host == 'pitangui.amazon.com'
           # TODO - user restricted token if this is used for more than testing
           token = @actor_address_from_token.current_token.to_jwt
-          redirect_params = {state: params[:state], code: token}
-          redirect_uri = path_uri.to_s+"&#{redirect_params.to_query}"
+          redirect_params = {state: params[:state],
+            token_type: 'Bearer',
+            access_token: token}
+          redirect_uri = path_uri.to_s+"##{redirect_params.to_query}"
           render_api_response 200, {redirect: redirect_uri}
         else
           return render_api_response 404, {message: "No redirect configured for path [#{path}]."}
