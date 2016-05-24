@@ -13,9 +13,9 @@ module Api
             app_name: params[:app_name],
             actor_address: @actor_address_from_token.address_id,
           }.to_json
-          arn = PushNotificationToken.platform_application_arn(params['mobile_os'])
+          arn = PushNotificationToken.platform_application_arn(params['platform'])
           if arn.nil?
-            return render_api_response 400, {message: "Invalid mobile_os [#{params['mobile_os']}]"}
+            return render_api_response 400, {message: "Invalid platform [#{params['platform']}]"}
           end
           response = create_platform_endpoint(arn, params[:device_token], custom_user_data)
         rescue Aws::SNS::Errors::InvalidParameter => e

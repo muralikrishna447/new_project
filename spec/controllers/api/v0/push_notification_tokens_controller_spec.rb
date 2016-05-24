@@ -54,19 +54,19 @@ describe Api::V0::PushNotificationTokensController do
 
     it 'Registers a token' do
       post :create, {:app_name => 'joule', 
-        :mobile_os => 'ios',
+        :platform => 'ios',
         :device_token => 'mehmehmehmeh'} 
       response.should be_success
     end
     
     it 'Handles duplicate registraction' do
       post :create, {:app_name => 'joule', 
-        :mobile_os => 'ios',
+        :platform => 'ios',
         :device_token => 'mehmehmehmeh'} 
       response.should be_success
       
       post :create, {:app_name => 'joule', 
-        :mobile_os => 'ios',
+        :platform => 'ios',
         :device_token => 'mehmehmehmeh'} 
       response.should be_success
     end
@@ -74,7 +74,7 @@ describe Api::V0::PushNotificationTokensController do
     it 'Overwrites old address when token is reused' do
       mock_sns_deregister
       post :create, {:app_name => 'joule', 
-        :mobile_os => 'ios',
+        :platform => 'ios',
         :device_token => 'mehmehmehmeh'} 
       response.should be_success
       PushNotificationToken.all.first.actor_address_id.should == @aa.id
@@ -84,7 +84,7 @@ describe Api::V0::PushNotificationTokensController do
       token = aa.current_token
       request.env['HTTP_AUTHORIZATION'] = token.to_jwt
       
-      post :create, app_name: 'joule', mobile_os: 'ios', device_token: 'mehmehmehmeh'
+      post :create, app_name: 'joule', platform: 'ios', device_token: 'mehmehmehmeh'
       response.should be_success
       PushNotificationToken.all.first.actor_address_id.should == aa.id
     end
@@ -93,7 +93,7 @@ describe Api::V0::PushNotificationTokensController do
       Api::V0::PushNotificationTokensController.any_instance.stub(:create_platform_endpoint)
         .and_raise Aws::SNS::Errors::InvalidParameter.new("message", "requestId")
         post :create, {:app_name => 'joule', 
-          :mobile_os => 'ios',
+          :platform => 'ios',
           :device_token => 'mehmehmehmeh'} 
         response.code.should == "400"
     end
@@ -101,13 +101,13 @@ describe Api::V0::PushNotificationTokensController do
     it 'Returns unhelpful error when other params are bad' do
       mock_sns_register
       post :create, {:app_name => 'j', 
-        :mobile_os => 'i',
+        :platform => 'i',
         :device_token => 'm'} 
       response.code.should == "400"
       
       mock_sns_register
       post :create, {:app_name => 'j', 
-        :mobile_os => 'ios',
+        :platform => 'ios',
         :device_token => 'm'} 
       response.code.should == "400"
 

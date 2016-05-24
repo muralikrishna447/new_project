@@ -10,7 +10,7 @@ class PushNotificationToken < ActiveRecord::Base
   validates_uniqueness_of :endpoint_arn
   validates_uniqueness_of :actor_address_id
   
-  def self.platform_application_arn(mobile_os)
-    Rails.configuration.sns.platform_applications[mobile_os]
+  def self.platform_application_arn(platform)
+    Rails.configuration.sns.platform_applications[platform]
   end
 end
