@@ -153,15 +153,21 @@ module Api
         end
 
         if path_uri.host == Rails.configuration.shopify[:store_domain]
-          params =  Rack::Utils.parse_nested_query(path_uri.query)
-          if params['checkout_url']
-            return_to = params['checkout_url']
+          path_params =  Rack::Utils.parse_nested_query(path_uri.query)
+          if path_params['checkout_url']
+            return_to = path_params['checkout_url']
           else
             return_to = "https://#{Rails.configuration.shopify[:store_domain]}/account"
           end
 
           token =  Shopify::Multipass.for_user(current_api_user, return_to)
           redirect_uri = "https://#{Rails.configuration.shopify[:store_domain]}/account/login/multipass/#{token}"
+          render_api_response 200, {redirect: redirect_uri}
+        elsif path_uri.host == 'pitangui.amazon.com'
+          # TODO - user restricted token if this is used for more than testing
+          token = @actor_address_from_token.current_token.to_jwt
+          redirect_params = {state: params[:state], code: token}
+          redirect_uri = path_uri.to_s+"&#{redirect_params.to_query}"
           render_api_response 200, {redirect: redirect_uri}
         else
           return render_api_response 404, {message: "No redirect configured for path [#{path}]."}

@@ -101,6 +101,7 @@ module Api
             return
           end
           @user_id_from_token = aa.actor_id
+          @actor_address_from_token = aa
         rescue Exception => e
           logger.error e
           logger.error e.backtrace.join("\n")
