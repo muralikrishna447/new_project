@@ -230,18 +230,19 @@ Delve::Application.routes.draw do
       resources :likes, only: [:create, :destroy] do
         post :unlike, on: :collection
       end
+      resources :locations, only: [:index]
       resources :pages, only: [:index, :show, :create, :update]
       resources :passwords, only: [:update] do
         post :send_reset_email, on: :collection
         post :update_from_email, on: :collection
       end
-      resources :locations, only: [:index]
       resources :profiles, only: [:show] do
         get :classes, on: :member
         get :likes, on: :member
         get :photos, on: :member
         get :recipes, on: :member
       end
+      resources :push_notification_tokens, only: [:create, :destroy]
       resources :recommendations, only: [:index]
       resources :search, only: [:index]
       resources :users, only: [:index, :create, :update] do
