@@ -144,7 +144,8 @@ class Shopify::Order
       if should_fulfill
         ShopifyAPI::Fulfillment.create(
           :order_id => @api_order.id,
-          :line_items => [{:id => item.id, :quantity => 1}])
+          :line_items => [{:id => item.id, :quantity => 1}],
+          :notify_customer => false)
       else
         # TODO - create metafield for fulfilled quantity
       end
