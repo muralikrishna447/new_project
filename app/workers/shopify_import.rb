@@ -29,7 +29,7 @@ class ShopifyImport
     elsif import_status == 'in_progress'
       Rails.logger.info "Import already started - needs manual resolution"
       Rails.logger.info "Shopify order id (possible not set): [#{order.metadata['shopify_order_id']}]"
-      return
+      raise "Failed due to order in progress"
     elsif import_status == 'imported'
       Rails.logger.info "Order already imported"
       return
@@ -85,7 +85,7 @@ class ShopifyImport
       address2: sc['address_line2'],
       city: sc['address_city'],
       province: sc['address_state'],
-    zip: sc['address_zip'],
+      zip: sc['address_zip'],
       country: sc['address_country']
     }
     
