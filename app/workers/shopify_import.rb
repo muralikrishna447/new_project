@@ -70,6 +70,7 @@ class ShopifyImport
     elsif sku_item['parent'] == 'cs10002'
       line_item[:variant_id] = Rails.configuration.shopify[:premium_variant_id]
       shopify_order[:fulfillment_status] = "fulfilled"
+      can_skip_address = true
     else
       raise "Unknown sku #{sku_item.inspect}"
     end
@@ -77,33 +78,33 @@ class ShopifyImport
     shopify_order[:line_items] = [line_item]
 
     shopify_order[:total_tax] = tax_item['amount'].to_f / 100
-    
-    sc = stripe_card
-    shopify_order[:billing_address] = {
-      last_name: sc['name'],
-      address1: sc['address_line1'],
-      address2: sc['address_line2'],
-      city: sc['address_city'],
-      province: sc['address_state'],
-      zip: sc['address_zip'],
-      country: sc['address_country']
-    }
-    
-    ssa = stripe_order['shipping']['address']
-    # Means first name will not be filled in better than sketchy split?
-    last_name = stripe_order['shipping']['name'] 
-    phone = stripe_order['shipping']['phone']
-    shopify_order[:shipping_address] = {   
-       last_name: last_name,
-       address1: ssa['line1'],
-       address2: ssa['line2'],
-       city: ssa['city'],
-       province: ssa['state'],
-       zip: ssa['postal_code'],
-       country: ssa['country'],
-      phone: phone
-    }
-
+    unless can_skip_address
+      sc = stripe_card
+      shopify_order[:billing_address] = {
+        last_name: sc['name'],
+        address1: sc['address_line1'],
+        address2: sc['address_line2'],
+        city: sc['address_city'],
+        province: sc['address_state'],
+        zip: sc['address_zip'],
+        country: sc['address_country']
+      }
+      
+      ssa = stripe_order['shipping']['address']
+      # Means first name will not be filled in better than sketchy split?
+      last_name = stripe_order['shipping']['name'] 
+      phone = stripe_order['shipping']['phone']
+      shopify_order[:shipping_address] = {   
+         last_name: last_name,
+         address1: ssa['line1'],
+         address2: ssa['line2'],
+         city: ssa['city'],
+         province: ssa['state'],
+         zip: ssa['postal_code'],
+         country: ssa['country'],
+        phone: phone
+      }
+    end
     # Import should trigger no emails
     shopify_order[:send_receipt] = false
     shopify_order[:send_fulfillment_receipt] = false
@@ -114,6 +115,11 @@ class ShopifyImport
 
     if !shopify_order.errors.empty?
       Rails.logger.error "Shopify order contains errors #{shopify_order.inspect}"
+      
+      # Revert import status to make retries less painful
+      stripe_order.metadata['shopify_import_status'] = 'attempted'
+      stripe_order.save
+
       raise "Failed to create shopify order"
     end
 
@@ -135,7 +141,6 @@ class ShopifyImport
       :value_type => 'string',
       :value => stripe_order.id})
     shopify_order.add_metafield(metafield)
-     
     stripe_order.metadata[SHOPIFY_IMPORT_STATUS] = 'imported'
     stripe_order.save
 
@@ -143,7 +148,6 @@ class ShopifyImport
 
   def self.audit_imported_order(order_id)
     stripe_order = Stripe::Order.retrieve(order_id)
-
     if stripe_order.metadata[SHOPIFY_IMPORT_STATUS] != 'imported'
       raise "Stripe order #{order_id} not imported"
     end
