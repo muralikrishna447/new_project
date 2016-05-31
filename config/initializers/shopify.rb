@@ -9,7 +9,9 @@ if Rails.env.production?
     account_subdomain: 'delve',
     api_key: ENV["SHOPIFY_KEY"],
     password: ENV["SHOPIFY_SECRET"],
-    multipass_secret: ENV["SHOPIFY_MULTIPASS_SECRET"]
+    multipass_secret: ENV["SHOPIFY_MULTIPASS_SECRET"],
+    premium_variant_id: '20034967495',
+    joule_variant_id: '20034822983'
   }
 elsif Rails.env.staging? || Rails.env.staging2?
   Rails.configuration.shopify = {
@@ -17,7 +19,10 @@ elsif Rails.env.staging? || Rails.env.staging2?
     account_subdomain: 'chefsteps-staging',
     api_key: ENV["SHOPIFY_KEY"],
     password: ENV["SHOPIFY_SECRET"],
-    multipass_secret: ENV["SHOPIFY_MULTIPASS_SECRET"]
+    multipass_secret: ENV["SHOPIFY_MULTIPASS_SECRET"],
+    premium_variant_id: '13403946119',
+    joule_variant_id: '11152885767'
+    
   }
 elsif Rails.env.test?
   Rails.configuration.shopify = {
@@ -33,7 +38,9 @@ else
     account_subdomain: 'chefsteps-staging',
     api_key: 'f3c79828c0f50b04866481389eacb2d2',
     password:  '5553e01d45c426ced082e9846ad56eee',
-    multipass_secret: '905c5b3b3ad7804d28e8a33e6a247eca'
+    multipass_secret: '905c5b3b3ad7804d28e8a33e6a247eca',
+    premium_variant_id: '13403946119',
+    joule_variant_id: '11152885767'
   }
 end
 
