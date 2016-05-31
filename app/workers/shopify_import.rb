@@ -17,7 +17,7 @@ class ShopifyImport
       Rails.logger.warn "Stripe order not paid"
       return
     end
-    Rails.logger.debug stripe_order.inspect
+    Rails.logger.info stripe_order.inspect
 
     import_status = stripe_order.metadata['shopify_import_status']
 
@@ -50,7 +50,7 @@ class ShopifyImport
     charge = Stripe::Charge.retrieve(stripe_order.charge)
     stripe_card = charge['card']
     
-    Rails.logger.debug "Stripe card [#{stripe_card}]"
+    Rails.logger.info "Stripe card [#{stripe_card}]"
     
     shopify_order = {}
     shopify_order[:email] = user.email
@@ -110,9 +110,10 @@ class ShopifyImport
 
     shopify_order = ShopifyAPI::Order.create(shopify_order)
     Rails.logger.info "Created shopify order [#{shopify_order.id}]"
-    Rails.logger.debug "Shopify order [#{shopify_order.inspect}]"
+    Rails.logger.info "Shopify order [#{shopify_order.inspect}]"
 
     if !shopify_order.errors.empty?
+      Rails.logger.error "Shopify order contains errors #{shopify_order.inspect}"
       raise "Failed to create shopify order"
     end
 
