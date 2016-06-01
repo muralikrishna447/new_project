@@ -4,12 +4,12 @@ class ShopifyImport
   SHOPIFY_IMPORT_STATUS = 'shopify_import_status'
   SHOPIFY_ORDER_ID = 'shopify_order_id'
 
-  def self.perform(stripe_order_id)
-    import_to_shopify(stripe_order_id)
+  def self.perform(stripe_order_id, skip_address = false)
+    import_to_shopify(stripe_order_id, skip_address)
     audit_imported_order(stripe_order_id)
   end
 
-  def self.import_to_shopify(order_id)
+  def self.import_to_shopify(order_id, skip_address)
     Rails.logger.info "Processing stripe order #{order_id}"
 
     stripe_order = Stripe::Order.retrieve(order_id)
@@ -27,10 +27,16 @@ class ShopifyImport
       raise "Failed due to order in progress"
     elsif import_status == 'imported'
       Rails.logger.info "Finding and deleting shopify order for #{stripe_order.id}"
-      o = ShopifyAPI::Order.find(stripe_order.metadata['shopify_order_id'])
-      Rails.logger.info "Found shopify order #{o.id}"
-      o.cancel()
-      o.destroy()
+      begin
+        shopify_order_id = stripe_order.metadata['shopify_order_id']
+        o = ShopifyAPI::Order.find(shopify_order_id)
+        Rails.logger.info "Found shopify order #{o.id}"
+        o.cancel()
+        o.destroy()
+      rescue ActiveResource::ResourceNotFound
+        Rails.logger.info "Shopify order #{shopify_order_id} not found"
+      end
+
     elsif import_status == 'correctly_imported'
       Rails.logger.info "Order already imported"
       return
@@ -38,6 +44,9 @@ class ShopifyImport
 
     if stripe_order.status != 'paid'
       Rails.logger.warn "Stripe order not paid"
+      # I know it's strange to mark this as correctly imported but...
+      stripe_order.metadata['shopify_import_status'] = 'correctly_imported'
+      stripe_order.save
       return
     end
 
@@ -92,7 +101,10 @@ class ShopifyImport
     shopify_order[:line_items] = [line_item]
 
     shopify_order[:total_tax] = tax_item['amount'].to_f / 100
-    unless can_skip_address
+    unless can_skip_address || skip_address
+      if skip_address
+        shopify_order[:tags] = "missing-address"
+      end
       sc = stripe_card
       shopify_order[:billing_address] = {
         last_name: sc['name'],
@@ -169,6 +181,10 @@ class ShopifyImport
 
   def self.audit_imported_order(order_id)
     stripe_order = Stripe::Order.retrieve(order_id)
+    if stripe_order.status != 'paid'
+      Rails.logger.info "Skipping audit as order is not paid"
+      return
+    end
     if stripe_order.metadata[SHOPIFY_IMPORT_STATUS] != 'correctly_imported'
       raise "Stripe order #{order_id} not imported"
     end
