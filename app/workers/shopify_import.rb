@@ -28,9 +28,14 @@ class ShopifyImport
       stripe_order.save
     elsif import_status == 'in_progress'
       Rails.logger.info "Import already started - needs manual resolution"
-      Rails.logger.info "Shopify order id (possible not set): [#{order.metadata['shopify_order_id']}]"
       raise "Failed due to order in progress"
     elsif import_status == 'imported'
+      Rails.logger.info "Finding and deleting shopify order for #{stripe_order.id}"
+      o = ShopifyAPI::Order.find(stripe_order.metadata['shopify_order_id'])
+      Rails.logger.info "Found shopify order #{o.id}"
+      o.cancel()
+      o.destroy()
+    elsif import_status == 'correctly_imported'
       Rails.logger.info "Order already imported"
       return
     end
@@ -54,16 +59,24 @@ class ShopifyImport
     
     shopify_order = {}
     shopify_order[:email] = user.email
+    shopify_order[:processed_at] = Time.at(stripe_order.created).iso8601
     sku_item = stripe_order.items.select {|i| i.type == 'sku'}.first
     tax_item = stripe_order.items.select {|i| i.type == 'tax'}.first
+    discount_item = stripe_order.items.select {|i| i.type == 'discount'}.first
+
+    if discount_item
+      discount = discount_item['amount']
+    else
+      discount = 0
+    end
 
     line_item = {
       quantity: 1, 
-      price: sku_item['amount'].to_f / 100,
-      taxable: true,
+      price: (sku_item['amount'] + discount).to_f / 100,
+      taxable: true
     }
 
-    add_all_but_joule_metafield = true
+    add_all_but_joule_metafield = false
     if sku_item['parent'] == 'cs10001'
       line_item[:variant_id] = Rails.configuration.shopify[:joule_variant_id]
       add_all_but_joule_metafield = true
@@ -108,7 +121,6 @@ class ShopifyImport
     # Import should trigger no emails
     shopify_order[:send_receipt] = false
     shopify_order[:send_fulfillment_receipt] = false
-
     shopify_order = ShopifyAPI::Order.create(shopify_order)
     Rails.logger.info "Created shopify order [#{shopify_order.id}]"
     Rails.logger.info "Shopify order [#{shopify_order.inspect}]"
@@ -121,6 +133,14 @@ class ShopifyImport
       stripe_order.save
 
       raise "Failed to create shopify order"
+    end
+
+    if discount_item
+      metafield = ShopifyAPI::Metafield.new({:namespace => Shopify::Order::METAFIELD_NAMESPACE,
+        :key => 'premium-discount',
+        :value_type => 'string',
+        :value => (discount_item['amount'].to_f / 100).to_s})
+      shopify_order.add_metafield(metafield)
     end
 
     if add_all_but_joule_metafield
@@ -141,18 +161,22 @@ class ShopifyImport
       :value_type => 'string',
       :value => stripe_order.id})
     shopify_order.add_metafield(metafield)
-    stripe_order.metadata[SHOPIFY_IMPORT_STATUS] = 'imported'
+    stripe_order.metadata[SHOPIFY_IMPORT_STATUS] = 'correctly_imported'
     stripe_order.save
 
   end
 
   def self.audit_imported_order(order_id)
     stripe_order = Stripe::Order.retrieve(order_id)
-    if stripe_order.metadata[SHOPIFY_IMPORT_STATUS] != 'imported'
+    if stripe_order.metadata[SHOPIFY_IMPORT_STATUS] != 'correctly_imported'
       raise "Stripe order #{order_id} not imported"
     end
     # Barest of validations - make sure stripe order and shopify order are present / updated
     # Will prevent a million duplicates but little else
     shopify_order = ShopifyAPI::Order.find(stripe_order.metadata[SHOPIFY_ORDER_ID])
+    shopify_total = (shopify_order.total_price.to_f * 100).to_i
+    if shopify_total != stripe_order.amount
+      raise "Totals do not match for order #{order_id} #{shopify_total} versus #{stripe_order.amount}"
+    end
   end
 end
