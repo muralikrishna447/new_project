@@ -13,10 +13,6 @@ class ShopifyImport
     Rails.logger.info "Processing stripe order #{order_id}"
 
     stripe_order = Stripe::Order.retrieve(order_id)
-    if stripe_order.status != 'paid' && false
-      Rails.logger.warn "Stripe order not paid"
-      return
-    end
     Rails.logger.info stripe_order.inspect
 
     import_status = stripe_order.metadata['shopify_import_status']
@@ -37,6 +33,11 @@ class ShopifyImport
       o.destroy()
     elsif import_status == 'correctly_imported'
       Rails.logger.info "Order already imported"
+      return
+    end
+
+    if stripe_order.status != 'paid'
+      Rails.logger.warn "Stripe order not paid"
       return
     end
 
