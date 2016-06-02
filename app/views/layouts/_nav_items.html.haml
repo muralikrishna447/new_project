@@ -45,6 +45,14 @@
   %a.cs-nav-item.hide-desktop(ng-href="/profiles/{{authentication.currentUser().slug}}")
     Profile
 
+- if current_user
+  %a.cs-nav-item.hide-desktop(ng-href="https://store.chefsteps.com/cart")
+    Cart
+
+- if current_user
+  %a.cs-nav-item.hide-desktop(ng-href="https://store.chefsteps.com/account")
+    Order History
+
 %a.cs-nav-item.hide-desktop(ng-href="/logout" ng-if='authentication.currentUser()')
   Sign Out
 
