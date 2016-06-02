@@ -5,6 +5,13 @@ module Api
 
       LINK_EXPIRE_SECS = 60 * 20
 
+      # This maps the params returned by identifyCirculator, to the
+      # FileType enum.
+      VERSION_MAPPING = {
+        "appFirmwareVersion" => "APPLICATION_FIRMWARE",
+        "espFirmwareVersion" => "WIFI_FIRMWARE",
+      }
+
       def updates
         # How this currently works
         # - Static mapping of app version to firmware app version
@@ -27,14 +34,24 @@ module Api
 
         updates = []
         potential_updates.each do |u|
-          current_version = params[u['versionType']]
+          param_type = VERSION_MAPPING[u['type']]
+
+          current_version = params[param_type]
           if current_version == u['version']
             logger.info "Correct version for type [#{u['type']}]"
             break
           end
-          # TODO - store the versionType / type mapping not in JSON
+
+          if u['type'] == 'APPLICATION_FIRMWARE'
+            u = get_app_firmware_metadata(u)
+          elsif u['type'] == 'WIFI_FIRMWARE'
+            u = get_wifi_firmware_metadata(u)
+          end
+
+          # We used to store the versionType in the manifest, but now
+          # we have a static mapping defined above
           u.delete('versionType')
-          u['location'] = get_firmware_link(u['type'], u['version'])
+
           updates << u
         end
 
@@ -42,6 +59,52 @@ module Api
       end
 
       private
+
+      def get_s3_object_as_json(key)
+        s3_client = AWS::S3::Client.new(region: 'us-east-1')
+        bucket_name = Rails.application.config.firmware_bucket
+        bucket = AWS::S3::Bucket.new(bucket_name, :client => s3_client)
+        o = bucket.objects[key]
+        return nil if !o.exists?
+        JSON.parse(o.read)
+      end
+
+      def get_wifi_firmware_metadata(update)
+        type = update['type'] # should always be WIFI_FIRMWARE
+        version = update['version']
+        metadata = get_s3_object_as_json(
+          "joule/#{type}/#{version}/metadata.json"
+        )
+
+        # round-robin choose a TFTP host.  DIY load balancing!
+        tftp_host = Rails.application.config.tftp_hosts.sample
+
+        u = update.dup
+        u['transfer'] = {
+          "type"        => "tftp",
+          "host"        => tftp_host,
+          "filename"    => metadata['filename'],
+          "sha256"      => metadata['sha256']
+        }
+        u
+      end
+
+      def get_app_firmware_metadata(update)
+        u = update.dup
+        # TODO: the location key is now deprecated.  Remove this line
+        # after breaking change day!
+        link = get_firmware_link(u['type'], u['version'])
+        u['location'] = link
+
+        # This is the new style
+        u['transfer'] = {
+          "url" => link,
+          "type" => "download",
+        }
+
+        u
+      end
+
       def render_empty_response
         render_api_response 200, {:updates => []}
       end
