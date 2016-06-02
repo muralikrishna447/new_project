@@ -14,12 +14,6 @@ describe Api::V0::FirmwareController do
 
     @link = 'http://www.foo.com'
     controller.stub(:get_firmware_link).and_return(@link)
-
-    WebMock.stub_request(:head, "https://chefsteps-firmware-staging.s3.amazonaws.com/manifests/0.18.0/manifest").
-      to_return(:status => 200, :body => "[]")
-    WebMock.stub_request(:head, "https://chefsteps-firmware-staging.s3.amazonaws.com/manifests/0.19.0/manifest").
-      to_return(:status => 200, :body => "[]")
-
     manifest = [{
       "versionType" => "appFirmwareVersion",
       "type" => "APPLICATION_FIRMWARE",
@@ -43,12 +37,8 @@ describe Api::V0::FirmwareController do
     mock_s3_json(
       "joule/WIFI_FIRMWARE/#{@esp_version}/metadata.json", esp_metadata
     )
-
-    WebMock.stub_request(:get, "https://chefsteps-firmware-staging.s3.amazonaws.com/manifests/0.19.0/manifest").
-      to_return(:status => 200, :body => esp_only_manifest.to_json, :headers => {})
-    WebMock.stub_request(:get, "https://chefsteps-firmware-staging.s3.amazonaws.com/manifests/0.18.0/manifest").
-      to_return(:status => 200, :body => manifest.to_json, :headers => {})
-
+    mock_s3_json("manifests/0.19.0/manifest", esp_only_manifest)
+    mock_s3_json("manifests/0.18.0/manifest", manifest)
   end
 
   it 'should get manifests for wifi firmware' do
