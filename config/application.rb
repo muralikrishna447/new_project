@@ -83,6 +83,7 @@ module Delve
     config.assets.initialize_on_precompile = false
 
     config.firmware_bucket = 'chefsteps-firmware-staging'
+    config.tftp_hosts = ['54.88.58.152']
 
     # We *do* want Rails caching
     unless Rails.env.development? || Rails.env.test?

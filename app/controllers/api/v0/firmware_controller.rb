@@ -60,10 +60,14 @@ module Api
         metadata = get_s3_object_as_json(
           "joule/#{type}/#{version}/metadata.json"
         )
+
+        # round-robin choose a TFTP host.  DIY load balancing!
+        tftp_host = Rails.application.config.tftp_hosts.sample
+
         u = update.dup
         u['transfer'] = {
           "type"        => "tftp",
-          "host"        => "127.0.0.1",
+          "host"        => tftp_host,
           "filename"    => metadata['filename'],
           "sha256"      => metadata['sha256']
         }

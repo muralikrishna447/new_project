@@ -52,7 +52,7 @@ describe Api::V0::FirmwareController do
     update['type'].should == 'WIFI_FIRMWARE'
     transfer = update['transfer']
     transfer['type'].should == 'tftp'
-    transfer['host'].should == '127.0.0.1'
+    Rails.application.config.tftp_hosts.include?(transfer['host']).should == true
     transfer['sha256'].should == @sha256
     transfer['filename'].should == @filename
   end
