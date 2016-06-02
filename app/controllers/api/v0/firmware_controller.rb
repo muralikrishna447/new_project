@@ -32,9 +32,11 @@ module Api
             logger.info "Correct version for type [#{u['type']}]"
             break
           end
-          # TODO - store the versionType / type mapping not in JSON
-          u.delete('versionType')
-          u['location'] = get_firmware_link(u['type'], u['version'])
+          if u['versionType'] == 'appFirmwareVersion'
+            u = get_app_firmware_metadata(u)
+          elsif u['versionType'] == 'espFirmwareVersion'
+            u = get_wifi_firmware_metadata(u)
+          end
           updates << u
         end
 
@@ -42,6 +44,40 @@ module Api
       end
 
       private
+
+      def get_s3_object_as_json(key)
+        s3_client = AWS::S3::Client.new(region: 'us-east-1')
+        bucket_name = Rails.application.config.firmware_bucket
+        bucket = AWS::S3::Bucket.new(bucket_name, :client => s3_client)
+        o = bucket.objects[key]
+        return nil if !o.exists?
+        JSON.parse(o.read)
+      end
+
+      def get_wifi_firmware_metadata(update)
+        type = update['type'] # should always be WIFI_FIRMWARE
+        version = update['version']
+        metadata = get_s3_object_as_json(
+          "joule/#{type}/#{version}/metadata.json"
+        )
+        u = update.dup
+        u['transfer'] = {
+          "type"        => "tftp",
+          "host"        => "127.0.0.1",
+          "filename"    => metadata['filename'],
+          "sha256"      => metadata['sha256']
+        }
+        u
+      end
+
+      def get_app_firmware_metadata(update)
+        u = update.dup
+        # TODO - store the versionType / type mapping not in JSON
+        u.delete('versionType')
+        u['location'] = get_firmware_link(u['type'], u['version'])
+        u
+      end
+
       def render_empty_response
         render_api_response 200, {:updates => []}
       end
