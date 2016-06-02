@@ -5,6 +5,12 @@ module Api
 
       LINK_EXPIRE_SECS = 60 * 20
 
+      # This maps what's returned by identifyCircul
+      VERSION_MAPPING = {
+        "appFirmwareVersion" => "APPLICATION_FIRMWARE",
+        "espFirmwareVersion" => "WIFI_FIRMWARE",
+      }
+
       def updates
         # How this currently works
         # - Static mapping of app version to firmware app version
@@ -27,16 +33,24 @@ module Api
 
         updates = []
         potential_updates.each do |u|
-          current_version = params[u['versionType']]
+          param_type = VERSION_MAPPING[u['type']]
+
+          current_version = params[param_type]
           if current_version == u['version']
             logger.info "Correct version for type [#{u['type']}]"
             break
           end
-          if u['versionType'] == 'appFirmwareVersion'
+
+          if u['type'] == 'APPLICATION_FIRMWARE'
             u = get_app_firmware_metadata(u)
-          elsif u['versionType'] == 'espFirmwareVersion'
+          elsif u['type'] == 'WIFI_FIRMWARE'
             u = get_wifi_firmware_metadata(u)
           end
+
+          # We used to store the versionType in the manifest, but now
+          # we have a static mapping defined above
+          u.delete('versionType')
+
           updates << u
         end
 
@@ -76,9 +90,6 @@ module Api
 
       def get_app_firmware_metadata(update)
         u = update.dup
-        # TODO - store the versionType / type mapping not in JSON
-        u.delete('versionType')
-
         # TODO: the location key is now deprecated.  Remove this line
         # after breaking change day!
         link = get_firmware_link(u['type'], u['version'])
