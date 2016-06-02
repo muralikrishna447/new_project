@@ -74,7 +74,18 @@ module Api
         u = update.dup
         # TODO - store the versionType / type mapping not in JSON
         u.delete('versionType')
-        u['location'] = get_firmware_link(u['type'], u['version'])
+
+        # TODO: the location key is now deprecated.  Remove this line
+        # after breaking change day!
+        link = get_firmware_link(u['type'], u['version'])
+        u['location'] = link
+
+        # This is the new style
+        u['transfer'] = {
+          "url" => link,
+          "type" => "download",
+        }
+
         u
       end
 

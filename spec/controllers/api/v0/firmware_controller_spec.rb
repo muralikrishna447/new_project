@@ -68,7 +68,12 @@ describe Api::V0::FirmwareController do
     resp['updates'].length.should == 1
     update = resp['updates'].first
     update['type'].should == 'APPLICATION_FIRMWARE'
+
+    # TODO: remove this check after breaking-change day
     update['location'].should == @link
+
+    update['transfer']['url'].should == @link
+    update['transfer']['type'].should == 'download'
 
   end
 
