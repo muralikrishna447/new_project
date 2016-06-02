@@ -5,7 +5,8 @@ module Api
 
       LINK_EXPIRE_SECS = 60 * 20
 
-      # This maps what's returned by identifyCircul
+      # This maps the params returned by identifyCirculator, to the
+      # FileType enum.
       VERSION_MAPPING = {
         "appFirmwareVersion" => "APPLICATION_FIRMWARE",
         "espFirmwareVersion" => "WIFI_FIRMWARE",
