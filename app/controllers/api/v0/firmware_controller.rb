@@ -8,8 +8,8 @@ module Api
       # This maps the params returned by identifyCirculator, to the
       # FileType enum.
       VERSION_MAPPING = {
-        "appFirmwareVersion" => "APPLICATION_FIRMWARE",
-        "espFirmwareVersion" => "WIFI_FIRMWARE",
+        "APPLICATION_FIRMWARE" => "appFirmwareVersion",
+        "WIFI_FIRMWARE"        => "espFirmwareVersion"
       }
 
       def updates
@@ -41,6 +41,8 @@ module Api
             logger.info "Correct version for type [#{u['type']}]"
             break
           end
+          logger.debug "#{u['type']}: #{current_version} != #{u['version']}"
+
 
           if u['type'] == 'APPLICATION_FIRMWARE'
             u = get_app_firmware_metadata(u)

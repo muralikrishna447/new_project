@@ -77,6 +77,14 @@ describe Api::V0::FirmwareController do
 
   end
 
+  it 'should not return firmware version if up to date' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    post :updates, {'appVersion'=> '0.19.0', 'espFirmwareVersion' => @esp_version}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
+  end
+
   it 'should get no updates if no manifest found' do
     WebMock.stub_request(:head, "https://chefsteps-firmware-staging.s3.amazonaws.com/manifests/0.10.0/manifest").
       to_return(:status => 404, :body => "", :headers => {})
