@@ -5,11 +5,11 @@ module Api
 
       LINK_EXPIRE_SECS = 60 * 20
 
-      # This maps the params returned by identifyCirculator, to the
-      # FileType enum.
+      # This maps the FileType enum, to the params returned by
+      # identifyCirculator
       VERSION_MAPPING = {
-        "appFirmwareVersion" => "APPLICATION_FIRMWARE",
-        "espFirmwareVersion" => "WIFI_FIRMWARE",
+        "APPLICATION_FIRMWARE" => "appFirmwareVersion",
+        "WIFI_FIRMWARE"        => "espFirmwareVersion"
       }
 
       def updates
@@ -41,6 +41,8 @@ module Api
             logger.info "Correct version for type [#{u['type']}]"
             break
           end
+          logger.debug "#{u['type']}: #{current_version} != #{u['version']}"
+
 
           if u['type'] == 'APPLICATION_FIRMWARE'
             u = get_app_firmware_metadata(u)
