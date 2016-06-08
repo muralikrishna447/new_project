@@ -4,12 +4,12 @@ class ShopifyImport
   SHOPIFY_IMPORT_STATUS = 'shopify_import_status'
   SHOPIFY_ORDER_ID = 'shopify_order_id'
 
-  def self.perform(stripe_order_id, skip_address = false)
-    import_to_shopify(stripe_order_id, skip_address)
+  def self.perform(stripe_order_id, skip_address = false, skip_billing = false)
+    import_to_shopify(stripe_order_id, skip_address, skip_billing)
     audit_imported_order(stripe_order_id)
   end
 
-  def self.import_to_shopify(order_id, skip_address)
+  def self.import_to_shopify(order_id, skip_address, skip_billing)
     Rails.logger.info "Processing stripe order #{order_id}"
 
     stripe_order = Stripe::Order.retrieve(order_id)
@@ -106,16 +106,19 @@ class ShopifyImport
         shopify_order[:tags] = "missing-address"
       end
       sc = stripe_card
-      shopify_order[:billing_address] = {
-        last_name: sc['name'],
-        address1: sc['address_line1'],
-        address2: sc['address_line2'],
-        city: sc['address_city'],
-        province: sc['address_state'],
-        zip: sc['address_zip'],
-        country: sc['address_country']
-      }
       
+      unless skip_billing
+        shopify_order[:billing_address] = {
+          last_name: sc['name'],
+          address1: sc['address_line1'],
+          address2: sc['address_line2'],
+          city: sc['address_city'],
+          province: sc['address_state'],
+          zip: sc['address_zip'],
+          country: sc['address_country']
+        }
+      end
+
       ssa = stripe_order['shipping']['address']
       # Means first name will not be filled in better than sketchy split?
       last_name = stripe_order['shipping']['name'] 
@@ -176,7 +179,6 @@ class ShopifyImport
     shopify_order.add_metafield(metafield)
     stripe_order.metadata[SHOPIFY_IMPORT_STATUS] = 'correctly_imported'
     stripe_order.save
-
   end
 
   def self.audit_imported_order(order_id)
