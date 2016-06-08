@@ -107,7 +107,7 @@ class ShopifyImport
       end
       sc = stripe_card
       
-      if skip_billing
+      unless skip_billing
         shopify_order[:billing_address] = {
           last_name: sc['name'],
           address1: sc['address_line1'],
