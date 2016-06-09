@@ -35,14 +35,14 @@ module Api
         updates = []
         potential_updates.each do |u|
           param_type = VERSION_MAPPING[u['type']]
-
           current_version = params[param_type]
+
+          logger.info "#{u['type']}: current [#{current_version}] vs update [#{u['version']}]"
+
           if current_version == u['version']
             logger.info "Correct version for type [#{u['type']}]"
-            break
+            next
           end
-          logger.debug "#{u['type']}: #{current_version} != #{u['version']}"
-
 
           if u['type'] == 'APPLICATION_FIRMWARE'
             u = get_app_firmware_metadata(u)
