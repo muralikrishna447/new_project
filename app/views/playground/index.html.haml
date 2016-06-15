@@ -264,6 +264,24 @@
             clear
           %div
             {{getCirculatorTokenStatus}}
+    %hr
+    .row
+      .span8.well-border
+        %h4 Update circulator
+        %pc
+          %i PUT /api/v0/circulators
+        %form(ng-submit='updateCirculator(user.token, circulator.circulatorId, circulator.name)')
+          .control-group
+            %input(type='text' ng-model='user.token' placeholder='token')
+            %input(type='text' ng-model='circulator.circulatorId' placeholder='id')
+            %input(type='text' ng-model='circulator.name' placeholder='name')
+          .control-group
+            %input.btn(type='submit' value='Update circulator')
+        .alert(ng-if='updateCirculatorStatus')
+          .btn(ng-click='clear()')
+            clear
+          %div
+            {{updateCirculatorStatus}}
 
     %hr
     .row
