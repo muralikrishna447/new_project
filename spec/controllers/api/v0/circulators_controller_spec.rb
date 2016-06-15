@@ -31,7 +31,8 @@ describe Api::V0::CirculatorsController do
     name = 'my name is my name'
 
     now = nil
-    Timecop.freeze do
+    # https://github.com/travisjeffery/timecop/issues/176
+    Timecop.freeze(Time.zone.now.change(nsec: 0)) do
       post(:create,
            circulator: {
              :serial_number => serial_number,
@@ -118,7 +119,7 @@ describe Api::V0::CirculatorsController do
   end
 
   it 'should provide a token' do
-    Timecop.freeze do
+    Timecop.freeze(Time.zone.now.change(nsec: 0)) do
       post :token, :id => @circulator.circulator_id
 
       result = JSON.parse(response.body)
@@ -210,7 +211,7 @@ describe Api::V0::CirculatorsController do
         )
         response.code.should == '200'
         @circulator.reload
-        @circulator.last_accessed_at.should == Time.now
+        @circulator.last_accessed_at.should == Time.now.utc
       end
     end
 
