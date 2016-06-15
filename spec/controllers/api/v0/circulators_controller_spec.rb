@@ -228,5 +228,19 @@ describe Api::V0::CirculatorsController do
       @circulator.reload
       @circulator.name.should == 'new name'
     end
+
+    it 'should support updating the notes' do
+      post(:update,
+            {
+              :id => @circulator.circulator_id,
+              circulator: {
+                :notes => 'new notes'
+              }
+           }
+      )
+      response.code.should == '200'
+      @circulator.reload
+      @circulator.notes.should == 'new notes'
+    end
   end
 end

@@ -71,10 +71,11 @@ module Api
         end
 
         circulator = Circulator.where(circulator_id: params[:id]).first
-        if params[:circulator] && params[:circulator][:name]
-          circulator.name = params[:circulator][:name]
+        if params[:circulator]
+          circulator.name = params[:circulator][:name] if params[:circulator][:name]
+          circulator.notes = params[:circulator][:notes] if params[:circulator][:notes]
         end
-        circulator.last_accessed_at = Time.now
+        circulator.last_accessed_at = Time.now.utc
         circulator.save
         render_api_response 200, {}
       end
