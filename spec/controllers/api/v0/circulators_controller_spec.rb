@@ -200,14 +200,15 @@ describe Api::V0::CirculatorsController do
     response.code.should == '400'
   end
 
-  describe 'update', :focus => true do
+  describe 'update' do
     it 'should update last accessed at' do
       Timecop.freeze do
         post(:update,
-             circulator: {
+             {
                :id => @circulator.circulator_id,
              }
         )
+        response.code.should == '200'
         @circulator.reload
         @circulator.last_accessed_at.should == Time.now
       end
@@ -215,13 +216,14 @@ describe Api::V0::CirculatorsController do
 
     it 'should support updating the name' do
       post(:update,
-           circulator: {
-             :id => @circulator.circulator_id,
-             :name => 'new name'
+            {
+              :id => @circulator.circulator_id,
+              circulator: {
+                :name => 'new name'
+              }
            }
       )
       response.code.should == '200'
-
       @circulator.reload
       @circulator.name.should == 'new name'
     end
