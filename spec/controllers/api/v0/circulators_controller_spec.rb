@@ -1,7 +1,7 @@
 describe Api::V0::CirculatorsController do
   before :each do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
-    @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1212121212121212'
+    @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1212121212121212', name: 'my name'
     @admin_user = Fabricate :user, email: 'admin@chefsteps.com', password: '123456', name: 'John Doe', role: 'admin'
 
     @aa = ActorAddress.create_for_circulator @circulator
@@ -21,32 +21,44 @@ describe Api::V0::CirculatorsController do
     circulators[0]['circulatorId'].should == @circulator.circulator_id
     circulators[0]['notes'].should == 'some notes'
     circulators[0]['secretKey'].should == nil
+    circulators[0]['name'].should == 'my name'
   end
 
   it 'should create circulator' do
     secret_key = '6b714257175f73150228454466307d16'
     serial_number = 'abc123'
     notes = 'red one'
-    post(:create,
-         circulator: {
-           :serial_number => serial_number,
-           :notes => notes,
-           :id => '7878787878787878',
-           :secret_key => secret_key
-         }
-    )
+    name = 'my name is my name'
+
+    now = nil
+    # https://github.com/travisjeffery/timecop/issues/176
+    Timecop.freeze(Time.zone.now.change(nsec: 0)) do
+      post(:create,
+           circulator: {
+             :serial_number => serial_number,
+             :notes => notes,
+             :name => name,
+             :id => '7878787878787878',
+             :secret_key => secret_key
+           }
+      )
+      now = Time.now
+    end
     response.should be_success
     returnedCirculator = JSON.parse(response.body)
 
     returnedCirculator['secretKey'].should == secret_key
     returnedCirculator['serialNumber'].should == serial_number
     returnedCirculator['notes'].should == notes
-
+    returnedCirculator['name'].should == name
+    returnedCirculator['lastAccessedAt'].should == now.utc.iso8601
     circulator = Circulator.where(circulator_id: returnedCirculator['circulatorId']).first
     circulator.should_not be_nil
     circulator.notes.should == notes
+    circulator.name.should == name
     circulator.users.first.should == @user
     circulator.encrypted_secret_key.should_not == secret_key
+    circulator.last_accessed_at.should == now
 
     circulator_user = CirculatorUser.find_by_circulator_and_user(circulator, @user)
     circulator_user.owner.should be_true
@@ -107,13 +119,14 @@ describe Api::V0::CirculatorsController do
   end
 
   it 'should provide a token' do
-    post :token, :id => @circulator.circulator_id
+    Timecop.freeze(Time.zone.now.change(nsec: 0)) do
+      post :token, :id => @circulator.circulator_id
 
-    result = JSON.parse(response.body)
-    result['token'].should_not be_empty
-    token = AuthToken.from_string result['token']
-    # TODO - use timecop
-    (token['iat'] - Time.now.to_i).abs.should < 2
+      result = JSON.parse(response.body)
+      result['token'].should_not be_empty
+      token = AuthToken.from_string result['token']
+      token['iat'].should == Time.now.to_i
+    end
   end
 
   it 'should return 400 when token is called without id' do
@@ -186,5 +199,48 @@ describe Api::V0::CirculatorsController do
   it 'should return 400 if destroy called without id' do
     post :destroy
     response.code.should == '400'
+  end
+
+  describe 'update' do
+    it 'should update last accessed at' do
+      Timecop.freeze(Time.zone.now.change(nsec: 0)) do
+        post(:update,
+             {
+               :id => @circulator.circulator_id,
+             }
+        )
+        response.code.should == '200'
+        @circulator.reload
+        @circulator.last_accessed_at.should == Time.now.utc
+      end
+    end
+
+    it 'should support updating the name' do
+      post(:update,
+            {
+              :id => @circulator.circulator_id,
+              circulator: {
+                :name => 'new name'
+              }
+           }
+      )
+      response.code.should == '200'
+      @circulator.reload
+      @circulator.name.should == 'new name'
+    end
+
+    it 'should support updating the notes' do
+      post(:update,
+            {
+              :id => @circulator.circulator_id,
+              circulator: {
+                :notes => 'new notes'
+              }
+           }
+      )
+      response.code.should == '200'
+      @circulator.reload
+      @circulator.notes.should == 'new notes'
+    end
   end
 end

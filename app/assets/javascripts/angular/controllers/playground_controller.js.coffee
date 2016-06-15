@@ -276,6 +276,22 @@
       console.log headers
       $scope.createCirculatorStatus = "Error: #{JSON.stringify(data)}"
 
+  $scope.updateCirculatorStatus = null
+  $scope.updateCirculator = (token, circulatorId, name) ->
+    $http.put(
+      host + "/api/v0/circulators/#{circulatorId}",
+      {circulator: {name: name}},
+      headers: { 'Authorization': 'Bearer ' + token, "x-csrf-token":undefined }
+    ).success((data, status, headers, cfg) ->
+      console.log "success: "
+      console.log data
+      $scope.updateCirculatorStatus = "Success: #{JSON.stringify(data)}"
+    ).error (data, status, headers, cfg) ->
+      console.log "error: "
+      console.log data
+      console.log headers
+      $scope.updateCirculatorStatus = "Error: #{JSON.stringify(data)}"
+
   $scope.getCirculatorTokenStatus = null
   $scope.getCirculatorToken = (token, circulatorId) ->
     $http.get(
