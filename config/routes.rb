@@ -252,7 +252,7 @@ Delve::Application.routes.draw do
         get :log_upload_url, on: :collection
       end
 
-      resources :circulators, only: [:index, :create, :destroy] do
+      resources :circulators, only: [:index, :create, :update, :destroy] do
         get :token, on: :member
       end
 

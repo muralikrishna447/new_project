@@ -31,6 +31,8 @@ module Api
           circ_params = params[:circulator]
           circulator = Circulator.new
           circulator.notes = circ_params[:notes]
+          circulator.name = circ_params[:name]
+          circulator.last_accessed_at = Time.now.utc
           circulator.serial_number = circ_params[:serial_number]
           circulator.circulator_id = circulator_id
 
@@ -59,6 +61,23 @@ module Api
           circulatorUser.save!
           render json: circulator, serializer: Api::CirculatorSerializer
         end
+      end
+
+      def update
+        circulator_id = params[:id]
+        unless params[:id]
+          render_api_response 400, {message: "Must specify id"}
+          return
+        end
+
+        circulator = Circulator.where(circulator_id: params[:id]).first
+        if params[:circulator][:name]
+          circulator.name = params[:circulator][:name]
+        end
+        circulator.last_accessed_at = Time.now
+        circulator.save
+        puts circulator.inspect
+        render_api_response 200, {}
       end
 
       def destroy

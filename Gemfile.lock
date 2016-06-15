@@ -554,6 +554,7 @@ GEM
       rack (>= 1.0.0)
     thor (0.19.1)
     tilt (1.4.1)
+    timecop (0.8.1)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
@@ -709,11 +710,9 @@ DEPENDENCIES
   stripe
   terminal-notifier-guard
   thin
+  timecop
   turbo-sprockets-rails3
   uglifier (>= 1.0.3)
   unicorn
   webmock
   xray-rails
-
-BUNDLED WITH
-   1.10.2

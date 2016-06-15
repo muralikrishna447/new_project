@@ -8,6 +8,8 @@ class Circulator < ActiveRecord::Base
 #  has_many :actor_addresses, as: actor
 
   validates :notes, length: { maximum: 200 }
+  validates :name, length: { maximum: 200 }
+  
 
   include ActsAsSanitized
   sanitize_input :notes, :serial_number, :id
