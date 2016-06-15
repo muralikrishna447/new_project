@@ -101,6 +101,7 @@ describe Api::V0::AuthController do
                         password: '123456', name: 'A User', role: 'user')
       @circulator = Fabricate(:circulator, notes: 'some notes',
                               circulator_id: '1212121212121212')
+      CirculatorUser.create(user: @user, circulator: @circulator, owner: true)
       @other_circulator = Fabricate(:circulator, notes: 'some other notes',
                               circulator_id: '9912121212121299')
       @user.circulators = [@circulator]

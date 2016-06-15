@@ -9,7 +9,7 @@ class ActorAddress < ActiveRecord::Base
   def addressable_addresses
     if self.actor_type == 'User'
       actor_class = User
-      method = 'circulator_ids'
+      method = 'owned_circulator_ids'
       other_actor = 'Circulator'
     elsif self.actor_type == 'Circulator'
       actor_class = Circulator

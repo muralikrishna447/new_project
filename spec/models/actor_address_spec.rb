@@ -78,7 +78,7 @@ describe ActorAddress  do
   end
 
   it 'should find addressable addresses' do
-    @user.circulators = [@circulator]
+    CirculatorUser.create! user: @user, circulator: @circulator, owner: true
     @user.save
 
     a_circ = ActorAddress.create_for_circulator(@circulator)

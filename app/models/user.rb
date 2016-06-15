@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
 
   has_many :circulator_users
   has_many :circulators, through: :circulator_users
+  has_many :owned_circulators, source: :circulator, through: :circulator_users, conditions: ["circulator_users.owner = ?", true]
 
   has_many :actor_addresses, as: :actor
 
