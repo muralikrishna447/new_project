@@ -16,4 +16,14 @@ describe Circulator  do
     c = Circulator.new(notes: long_note)
     expect { c.save! }.to raise_error
   end
+
+  it 'recognized ownership properly' do
+    owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
+    shared_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
+    CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
+    CirculatorUser.create! user: @user, circulator: shared_circulator, owner: false
+    @user.circulators.length.should == 2
+    @user.owned_circulators.length.should == 1
+    @user.owned_circulators.first.id.should == owned_circulator.id
+  end
 end
