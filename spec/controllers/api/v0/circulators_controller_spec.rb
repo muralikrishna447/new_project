@@ -203,7 +203,7 @@ describe Api::V0::CirculatorsController do
 
   describe 'update' do
     it 'should update last accessed at' do
-      Timecop.freeze do
+      Timecop.freeze(Time.zone.now.change(nsec: 0)) do
         post(:update,
              {
                :id => @circulator.circulator_id,
