@@ -8,10 +8,22 @@ class Circulator < ActiveRecord::Base
 #  has_many :actor_addresses, as: actor
 
   validates :notes, length: { maximum: 200 }
+  validates :name, length: { maximum: 200 }
+  
 
   include ActsAsSanitized
   sanitize_input :notes, :serial_number, :id
 
   attr_accessible :notes, :serial_number
 
+  after_destroy :revoke_address
+
+  private
+  def revoke_address
+    addresses = ActorAddress.where(actor_type: 'Circulator', actor_id: self.id)
+    addresses.each do |aa|
+      logger.info "Revoking address #{aa.address_id} [#{aa.inspect}]"
+      aa.revoke
+    end
+  end
 end

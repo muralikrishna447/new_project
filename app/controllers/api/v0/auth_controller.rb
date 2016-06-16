@@ -53,15 +53,14 @@ module Api
                 return
               elsif aa.actor != user
                 logger.info ("Received token for wrong user.")
-                render_unauthorized
-                return
+                return render_unauthorized
               else
                 aa.double_increment
-                render json: {status: 200, message: 'Success.', token: aa.current_token.to_jwt}, status: 200
-                return
+                return render json: {status: 200, message: 'Success.', token: aa.current_token.to_jwt}, status: 200
               end
             else
               logger.info ("No ActorAddress found for token #{token}")
+              return render_unauthorized
             end
           end
 

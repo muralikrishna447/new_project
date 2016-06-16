@@ -2,6 +2,8 @@ module Api
   module V0
     class CirculatorsController < BaseController
       before_filter :ensure_authorized
+      before_filter :ensure_circulator_owner, only: [:update, :destroy]
+      before_filter :ensure_circulator_user, only: [:token]
 
       def index
         @user = User.find @user_id_from_token
@@ -31,6 +33,8 @@ module Api
           circ_params = params[:circulator]
           circulator = Circulator.new
           circulator.notes = circ_params[:notes]
+          circulator.name = circ_params[:name]
+          circulator.last_accessed_at = Time.now.utc
           circulator.serial_number = circ_params[:serial_number]
           circulator.circulator_id = circulator_id
 
@@ -61,69 +65,24 @@ module Api
         end
       end
 
+      def update
+        if params[:circulator]
+          @circulator.name = params[:circulator][:name] if params[:circulator][:name]
+          @circulator.notes = params[:circulator][:notes] if params[:circulator][:notes]
+        end
+        @circulator.last_accessed_at = Time.now.utc
+        @circulator.save
+        render_api_response 200, {}
+      end
+
       def destroy
-        user = User.find @user_id_from_token
-        unless params[:id]
-          render_api_response 400, {message: "Must specify id"}
-          return
-        end
-
-        circulator = Circulator.where(circulator_id: params[:id]).first
-
-        unless circulator
-          logger.info "Tried to delete non-existent circulator #{params[:id]}"
-          if user.admin?
-            render_api_response 404, {message: "Circulator does not exist"}
-          else
-            render_unauthorized
-          end
-          return
-        end
-
-        if user.admin?
-          logger.info("Allowing admin user #{user.email} to delete circulator")
-          circulator.destroy
-          render json: {status: 200} , status: 200
-          return
-        end
-
-        circulator_user = CirculatorUser.find_by_circulator_and_user circulator, @user_id_from_token
-        if circulator_user
-          if circulator_user.owner
-            circulator_user.circulator.destroy
-            render json: {status: 200} , status: 200
-          else
-            logger.info "Non-owner #{circulator_user.inspect} attempted to delete circulator"
-            # Including overly helpful debug message for now
-            render_api_response 403, {message: "Unauthorized: only owner can delete a circulator."}
-          end
-        else
-          render_unauthorized
-        end
+        @circulator.destroy
+        render_api_response 200
       end
 
       def token
-        circulator_id = params[:id]
-        unless params[:id]
-          render_api_response 400, {message: "Must specify id"}
-          return
-        end
-        circulator = Circulator.where(circulator_id: params[:id]).first
-
-        if circulator.nil?
-          render_api_response 403, {message: 'Circulator not found'}
-          return
-        end
-
-        circulator_user = CirculatorUser.find_by_circulator_and_user circulator, @user_id_from_token
-        if circulator_user.nil?
-          logger.error "Unauthorized access to circulator [#{circulator_id}] by user [#{@user_id_from_token}]"
-          render_unauthorized
-          return
-        end
-
         # Assume that address_id matches circulator_id
-        aa = ActorAddress.where(address_id: circulator_id).first
+        aa = ActorAddress.where(address_id: @circulator.circulator_id).first
         unless aa
           msg = "ActorAddress not found for circulator id #{circulator_id}"
           raise msg

@@ -109,6 +109,43 @@ module Api
         end
       end
 
+      def ensure_circulator_user
+        circulator_id = params[:id]
+        unless params[:id]
+          render_api_response 400, {message: "Must specify id"}
+          return false
+        end
+        @circulator = Circulator.where(circulator_id: params[:id]).first
+
+        if @circulator.nil?
+          render_api_response 403, {message: 'Circulator not found'}
+          return false
+        end
+
+        @circulator_user = CirculatorUser.find_by_circulator_and_user @circulator, @user_id_from_token
+        if @circulator_user.nil?
+          logger.error "Unauthorized access to circulator [#{circulator_id}] by user [#{@user_id_from_token}]"
+          render_unauthorized
+          return false
+        end
+        return true
+      end
+
+      def ensure_circulator_owner
+        # Dance required to prevent double-renders
+        unless ensure_circulator_user
+          unless performed?
+            return render_unauthorized
+          else
+            return
+          end
+        end
+
+        unless (@circulator_user && @circulator_user.owner)
+          return render_unauthorized
+        end
+      end
+
       def current_api_user
         # @user_id_from_token is validated against actor address table
         User.find @user_id_from_token
