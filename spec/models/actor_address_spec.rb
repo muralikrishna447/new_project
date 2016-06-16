@@ -77,6 +77,14 @@ describe ActorAddress  do
     aa.id.should == @for_user.id
   end
 
+  it 'should reject revoked addresses when finding by token' do
+    claim  ={'a' => @for_user.address_id}
+    token = AuthToken.new(claim)
+    aa = ActorAddress.find_for_token(token)
+    aa.revoke
+    ActorAddress.find_for_token(token).should be_nil
+  end
+
   it 'should find addressable addresses' do
     CirculatorUser.create! user: @user, circulator: @circulator, owner: true
     @user.save

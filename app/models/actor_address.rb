@@ -183,7 +183,11 @@ class ActorAddress < ActiveRecord::Base
     new_address_id = token.claim['a']
 
     if new_address_id
-      return ActorAddress.where(address_id: new_address_id).first
+      addresses = ActorAddress.where(address_id: new_address_id, status: 'active')
+      if addresses.length > 1
+        raise "Unexpectedly found more than one active address with id #{new_address_id} [#{addresses.inspect}]"
+      end
+      aa = addresses.first
     elsif old_address_id
       actor_type = actor_type_from_token(token)
       actor_id = token.claim[actor_type]['id']
