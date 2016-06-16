@@ -16,4 +16,14 @@ class Circulator < ActiveRecord::Base
 
   attr_accessible :notes, :serial_number
 
+  after_destroy :revoke_address
+
+  private
+  def revoke_address
+    addresses = ActorAddress.where(actor_type: 'Circulator', actor_id: self.id)
+    addresses.each do |aa|
+      logger.info "Revoking address #{aa.address_id} [#{aa.inspect}]"
+      aa.revoke
+    end
+  end
 end

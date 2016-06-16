@@ -155,6 +155,7 @@ describe Api::V0::CirculatorsController do
 
     Circulator.where(circulator_id: @circulator.circulator_id).first.should be_nil
     CirculatorUser.find_by_circulator_and_user(@circulator, @user).should be_nil
+    @aa.reload.revoked?.should be_true
   end
 
   it 'should not delete a circulator that does not exist' do
