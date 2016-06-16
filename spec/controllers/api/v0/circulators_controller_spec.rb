@@ -121,7 +121,7 @@ describe Api::V0::CirculatorsController do
   it 'should provide a token' do
     Timecop.freeze(Time.zone.now.change(nsec: 0)) do
       post :token, :id => @circulator.circulator_id
-
+      response.code.should == '200'
       result = JSON.parse(response.body)
       result['token'].should_not be_empty
       token = AuthToken.from_string result['token']
@@ -181,19 +181,19 @@ describe Api::V0::CirculatorsController do
     Circulator.find_by_id(@other_circulator.id).should_not be_nil
   end
 
-  it 'should delete a circulator if admin' do
+  it 'should not delete a circulator if admin' do
     token = ActorAddress.create_for_user(@admin_user, client_metadata: "create").current_token
     request.env['HTTP_AUTHORIZATION'] = token.to_jwt
     post :destroy, :id => @circulator.circulator_id
-    response.should be_success
-    Circulator.find_by_id(@circulator.id).should be_nil
+    response.code.should == '403'
+    Circulator.find_by_id(@circulator.id).should_not be_nil
   end
 
-  it 'should return 404 if admin deletes circulator that does not exist' do
+  it 'should return 403 if admin deletes circulator that does not exist' do
     token = ActorAddress.create_for_user(@admin_user, client_metadata: "create").current_token
     request.env['HTTP_AUTHORIZATION'] = token.to_jwt
     post :destroy, :id => 'fake id'
-    response.code.should == '404'
+    response.code.should == '403'
   end
 
   it 'should return 400 if destroy called without id' do
@@ -202,6 +202,15 @@ describe Api::V0::CirculatorsController do
   end
 
   describe 'update' do
+    it 'cannot update a circulator it does not own' do
+      post(:update,
+           {
+             :id => @other_circulator.circulator_id,
+           }
+      )
+      response.code.should == '403'
+    end
+
     it 'should update last accessed at' do
       Timecop.freeze(Time.zone.now.change(nsec: 0)) do
         post(:update,
