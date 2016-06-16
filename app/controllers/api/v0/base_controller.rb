@@ -142,7 +142,7 @@ module Api
         end
 
         unless (@circulator_user && @circulator_user.owner)
-          render_unauthorized
+          return render_unauthorized
         end
       end
 
