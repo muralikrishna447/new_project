@@ -89,6 +89,7 @@ gem 'geoip2'
 gem 'analytics-ruby', :require => "segment"
 
 gem 'prerender_rails'
+gem "paranoia", "~> 1.0"
 
 gem 'coverband', '1.0.3'
 gem 'coverband_ext', '1.0.1'
