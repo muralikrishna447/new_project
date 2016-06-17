@@ -1,4 +1,5 @@
 class Circulator < ActiveRecord::Base
+  acts_as_paranoid
   has_many :circulator_users, dependent: :destroy
   has_many :users, through: :circulator_users
 

@@ -18,12 +18,20 @@ describe Circulator  do
   end
 
   it 'recognized ownership properly' do
-    owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
-    shared_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
+    owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
+    shared_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1234'
     CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
     CirculatorUser.create! user: @user, circulator: shared_circulator, owner: false
     @user.circulators.length.should == 2
     @user.owned_circulators.length.should == 1
     @user.owned_circulators.first.id.should == owned_circulator.id
+  end
+  
+  it 'prevents duplicate circulators but allows creation after delete' do
+    expect {
+      @circulator2 = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
+    }.to raise_error(ActiveRecord::RecordNotUnique)
+    @circulator.destroy()
+    @circulator2 = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
   end
 end
