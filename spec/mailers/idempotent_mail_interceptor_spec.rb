@@ -53,4 +53,15 @@ describe IdempotentMailInterceptor do
     IdempotentMailInterceptor.stub(:log_update).with('test@example.org', message_token)
     IdempotentMailInterceptor.delivered_email(@message)
   end
+  
+  it 'throws when trying to send to multiple addresses' do
+    @message.to = ['a@b.com','c@d.com']
+    expect { 
+      IdempotentMailInterceptor.delivering_email(@message)
+     }.to raise_error
+     
+     expect { 
+       IdempotentMailInterceptor.delivered_email(@message)
+      }.to raise_error
+  end
 end

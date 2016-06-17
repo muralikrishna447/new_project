@@ -3,10 +3,12 @@ class IdempotentMailInterceptor
   SENDING = 'sending'
   @@client = Aws::DynamoDB::Client.new(region: 'us-east-1')
   def self.delivering_email(message)
+    ensure_single_address(message)
     if message.header['X-IDEMPOTENCY']
       message_token =  message.header['X-IDEMPOTENCY'].to_s
     end
     if message_token.nil?
+      # Generate a suitable key for logging purposes only
       message_token = "#{Time.now.utc.iso8601} #{message.subject}"
       message.header['X-IDEMPOTENCY'] = message_token
     end
@@ -20,6 +22,7 @@ class IdempotentMailInterceptor
   end
   
   def self.delivered_email(message)
+    ensure_single_address(message)
     message_token = message.header['X-IDEMPOTENCY'].to_s
     email = message.to.first
     unless message.perform_deliveries == false
@@ -73,5 +76,11 @@ class IdempotentMailInterceptor
       update_expression: 'SET messageStatus = :delivered',
       expression_attribute_values: {":delivered" => DELIVERED, ":sending" => SENDING}
     })
+  end
+
+  def self.ensure_single_address(message)
+    if message.to.length > 1
+      raise Exception.new("Idempotent mail sender does not support multiple to addresses [#{message.to.inspect}]")
+    end
   end
 end
