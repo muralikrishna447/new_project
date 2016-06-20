@@ -140,7 +140,7 @@ describe Api::V0::AuthController do
     it 'should not validate if valid service token provided but token to be validated is invalid' do
       request.env['HTTP_AUTHORIZATION'] = @service_token
       get :validate, token: @invalid_token
-      response.should_not be_success
+      response.code.should == "400"
       expect(JSON.parse(response.body)['tokenValid']).to be_false
     end
   end
