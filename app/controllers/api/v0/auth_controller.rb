@@ -180,10 +180,13 @@ module Api
       def validate
         begin
           begin
-            logger.info "Validating token #{params[:token]}"
             token = AuthToken.from_string(params[:token])
           rescue JSON::JWS::VerificationFailed
-            logger.info ("Token verification failed")
+            logger.info ("Token verification failed for [#{params[:token]}]")
+            render_api_response 400, {code: 'invalid_token', message: 'Token verification failed.'}
+            return
+          rescue JSON::JWT::InvalidFormat
+            logger.info ("Invalid token format [#{params[:token]}]")
             render_api_response 400, {code: 'invalid_token', message: 'Token verification failed.'}
             return
           end

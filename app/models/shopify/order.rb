@@ -190,7 +190,9 @@ class Shopify::Order
         quantity: item.quantity
       }
     end
-  
+
+    skus = @api_order.line_items.collect{|line_item| line_item.sku}
+
     {
       event: 'Completed Order Workaround',
       user_id: user.id,
@@ -211,8 +213,9 @@ class Shopify::Order
       },
 
       properties: {
-        # Pre shopify, there used to be a label attribute set to the SKU
-        product_skus: @api_order.line_items.collect{|line_item| line_item.sku},
+        # Label drives goal 19, etc so is very important
+        label: skus.join(","),
+        product_skus: skus,
         orderId: @api_order.id,
         total: @api_order.total_price,
         revenue: @api_order.subtotal_price,
