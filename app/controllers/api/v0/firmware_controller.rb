@@ -86,7 +86,8 @@ module Api
           "type"        => "tftp",
           "host"        => tftp_host,
           "filename"    => metadata['filename'],
-          "sha256"      => metadata['sha256']
+          "sha256"      => metadata['sha256'],
+          "totalBytes"  => metadata['totalBytes'], # can be nil..
         }
         u
       end
