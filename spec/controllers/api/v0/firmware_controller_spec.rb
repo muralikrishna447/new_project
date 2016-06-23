@@ -33,6 +33,7 @@ describe Api::V0::FirmwareController do
     esp_metadata = {
       "sha256" => @sha256,
       "filename" => @filename,
+      "totalBytes" => @totalBytes,
     }
     mock_s3_json(
       "joule/WIFI_FIRMWARE/#{@esp_version}/metadata.json", esp_metadata
@@ -55,6 +56,7 @@ describe Api::V0::FirmwareController do
     Rails.application.config.tftp_hosts.include?(transfer['host']).should == true
     transfer['sha256'].should == @sha256
     transfer['filename'].should == @filename
+    transfer['totalBytes'].should == @totalBytes
   end
 
   it 'should get firmware version' do
