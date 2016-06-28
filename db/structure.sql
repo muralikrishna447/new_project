@@ -128,7 +128,8 @@ CREATE TABLE activities (
     premium boolean DEFAULT false,
     summary_tweet character varying(255),
     vimeo_id character varying(255),
-    short_description text
+    short_description text,
+    first_published_at timestamp without time zone
 );
 
 
@@ -3313,7 +3314,7 @@ CREATE UNIQUE INDEX index_circulator_users_on_user_id_and_circulator_id ON circu
 -- Name: index_circulators_on_circulator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_circulators_on_circulator_id ON circulators USING btree (circulator_id, (COALESCE(deleted_at, '2099-12-12 00:00:00'::timestamp without time zone)));
+CREATE UNIQUE INDEX index_circulators_on_circulator_id ON circulators USING btree (circulator_id, (COALESCE(deleted_at, 'infinity'::timestamp without time zone)));
 
 
 --
@@ -4100,3 +4101,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160506185009');
 INSERT INTO schema_migrations (version) VALUES ('20160615221610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160617174858');
+
+INSERT INTO schema_migrations (version) VALUES ('20160628151954');
