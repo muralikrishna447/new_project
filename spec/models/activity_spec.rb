@@ -420,6 +420,7 @@ describe Activity, 'deep_copy' do
     activity.update_equipment(equipment_attrs)
     activity.update_ingredients(ingredient_attrs)
     activity.update_steps(step_attrs)
+    activity.published = true
     activity.save!
     activity.reload
     activity.ingredients.reload
@@ -431,6 +432,7 @@ describe Activity, 'deep_copy' do
     a2.source_type.should == Activity::SourceType::ADAPTED_FROM
     a2.published.should == false
     a2.published_at.should == nil
+    a2.first_published_at.should == nil
     a2.ingredients.should have(1).ingredients
     a2.equipment.should have(1).equipment
     a2.steps.should have(1).steps
@@ -439,6 +441,83 @@ describe Activity, 'deep_copy' do
     a2.equipment.first.id.should_not == activity.equipment.first.id
     a2.equipment.first.equipment_id.should == activity.equipment.first.equipment_id
     a2.steps.first.id.should_not == activity.steps.first.id
+  end
+end
+
+describe Activity, 'save' do
+  let(:activity) { Fabricate.build(:activity) }
+
+  it 'starts with no publish dates' do
+    activity.published_at.should == nil
+    activity.first_published_at.should == nil
+  end
+
+  it 'should not have published dates if saved unpublished' do
+    activity.save!
+    activity.reload
+    activity.published_at.should == nil
+    activity.first_published_at.should == nil
+  end
+
+  it 'should have published dates if saved published ' do
+    activity.published = true
+    activity.save!
+    activity.reload
+    activity.published_at.should_not == nil
+    activity.first_published_at.should_not == nil
+    # Unclear why I need to convert to to_s here. The code in check_published clearly sets them to the same
+    # value but both == and === fail when comparing the DateTimes directly.
+    activity.first_published_at.to_s.should == activity.published_at.to_s
+  end
+
+  it 'should not change publish dates when resaved after already published' do
+    activity.published = true
+    activity.save!
+    activity.reload
+    published_at = activity.published_at
+    first_published_at = activity.first_published_at
+    sleep 1
+    activity.save!
+    activity.reload
+    activity.published_at.should == published_at
+    activity.first_published_at.should == first_published_at
+  end
+
+  it 'should not change publish dates when unpublished and re-published' do
+    activity.published = true
+    activity.save!
+    activity.reload
+    published_at = activity.published_at
+    first_published_at = activity.first_published_at
+
+    sleep 1
+    activity.published = false
+    activity.save!
+    activity.reload
+
+    sleep 1
+    activity.published = true
+    activity.save!
+    activity.reload
+
+    activity.published_at.should == published_at
+    activity.first_published_at.should == first_published_at
+  end
+
+  it 'should leave first_published_at alone when manually mucking with published_at' do
+    activity.published = true
+    activity.save!
+    activity.reload
+    published_at = activity.published_at
+    first_published_at = activity.first_published_at
+
+    happy_fun_time = Time.now + 1.minute
+    activity.published_at = happy_fun_time
+    activity.save!
+    activity.reload
+
+    activity.published_at.should == happy_fun_time
+    activity.first_published_at.should == first_published_at
   end
 
 end
