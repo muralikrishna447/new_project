@@ -476,11 +476,12 @@ describe Activity, 'save' do
     activity.reload
     published_at = activity.published_at
     first_published_at = activity.first_published_at
-    sleep 1
-    activity.save!
-    activity.reload
-    activity.published_at.should == published_at
-    activity.first_published_at.should == first_published_at
+    Timecop.travel(Time.now + 1.day) do
+      activity.save!
+      activity.reload
+      activity.published_at.should == published_at
+      activity.first_published_at.should == first_published_at
+    end
   end
 
   it 'should not change publish dates when unpublished and re-published' do
@@ -490,15 +491,17 @@ describe Activity, 'save' do
     published_at = activity.published_at
     first_published_at = activity.first_published_at
 
-    sleep 1
-    activity.published = false
-    activity.save!
-    activity.reload
+    Timecop.travel(Time.now + 1.day) do
+      activity.published = false
+      activity.save!
+      activity.reload
+    end
 
-    sleep 1
-    activity.published = true
-    activity.save!
-    activity.reload
+    Timecop.travel(Time.now + 2.day) do
+      activity.published = true
+      activity.save!
+      activity.reload
+    end
 
     activity.published_at.should == published_at
     activity.first_published_at.should == first_published_at
