@@ -72,6 +72,7 @@ class Activity < ActiveRecord::Base
   attr_accessible :activity_type, :title, :youtube_id, :vimeo_id, :yield, :timing, :difficulty, :description, :short_description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
   attr_accessible :premium, :summary_tweet
+  attr_protected :first_published_at
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -431,6 +432,7 @@ class Activity < ActiveRecord::Base
     new_activity.source_type = SourceType::ADAPTED_FROM
     new_activity.published = false
     new_activity.published_at = nil
+    new_activity.first_published_at = nil
 
     self.ingredients.each do |ai|
       new_ai = ai.dup
@@ -509,8 +511,17 @@ class Activity < ActiveRecord::Base
   private
 
   def check_published
-    if self.published && self.published_at.blank?
-      self.published_at = DateTime.now
+    if self.published
+      if self.published_at.blank?
+        self.published_at = DateTime.now
+      end
+
+      # first_published_at is stored but not used for any sorting purposes, so
+      # we can manually adjust published_at when we want to muck with gallery and feeds without
+      # losing this data for measurement purposes.
+      if self.first_published_at.blank?
+        self.first_published_at = self.published_at
+      end
     end
   end
 
