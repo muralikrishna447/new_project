@@ -516,7 +516,7 @@ describe Activity, 'save' do
     activity.save!
     activity.reload
 
-    activity.published_at.should == happy_fun_time
+    activity.published_at.utc.to_s.should == happy_fun_time.utc.to_s
     activity.first_published_at.should == first_published_at
   end
 
