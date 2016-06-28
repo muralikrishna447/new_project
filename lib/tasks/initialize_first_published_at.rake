@@ -1,5 +1,3 @@
-require 'csv'
-
 task :initialize_first_published_at => :environment do
 
   # Initialize first_published_at with published_at, or an even earlier publish time if one can be found in the versions table
