@@ -37,6 +37,8 @@ class Activity < ActiveRecord::Base
   has_many :assembly_inclusions, as: :includable
   has_many :assemblies, through: :assembly_inclusions
 
+  has_one :publishing_schedule
+
   belongs_to :creator, class_name: User, foreign_key: 'creator'
   belongs_to :last_edited_by, class_name: User, foreign_key: 'last_edited_by_id'
   belongs_to :currently_editing_user, class_name: User, foreign_key: 'currently_editing_user'
@@ -59,6 +61,7 @@ class Activity < ActiveRecord::Base
   scope :include_in_feeds, where(include_in_gallery: true)
   scope :chefsteps_generated, where('creator = ?', 0)
   scope :any_user_generated, where('creator != ?', 0).where(source_activity_id: nil)
+  scope :not_a_fork, where(source_activity_id: nil)
   scope :user_generated, -> user { where('creator = ?', user) }
   scope :popular, where('likes_count IS NOT NULL').order('likes_count DESC')
   scope :by_equipment_title, -> title { joins(:terminal_equipment).where("equipment.title iLIKE ?", '%' + title + '%') }
