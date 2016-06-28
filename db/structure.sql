@@ -128,7 +128,8 @@ CREATE TABLE activities (
     premium boolean DEFAULT false,
     summary_tweet character varying(255),
     vimeo_id character varying(255),
-    short_description text
+    short_description text,
+    first_published_at timestamp without time zone
 );
 
 
@@ -4100,3 +4101,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160506185009');
 INSERT INTO schema_migrations (version) VALUES ('20160615221610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160617174858');
+
+INSERT INTO schema_migrations (version) VALUES ('20160628151954');
