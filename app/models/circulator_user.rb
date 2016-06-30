@@ -1,4 +1,5 @@
 class CirculatorUser < ActiveRecord::Base
+  acts_as_paranoid
   belongs_to :circulator
   belongs_to :user
 
