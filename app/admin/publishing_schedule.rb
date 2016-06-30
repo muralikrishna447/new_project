@@ -18,8 +18,14 @@ ActiveAdmin.register Activity, as: 'Publishing Schedule' do
 
     def update
       @activity = Activity.find(params[:id])
-      @activity.publishing_schedule.update_attributes(params[:publishing_schedule][:publishing_schedule_attributes])
-      redirect_to admin_publishing_schedules_path
+      begin
+        @activity.publishing_schedule.update_attributes!(params[:publishing_schedule][:publishing_schedule_attributes])
+        redirect_to admin_publishing_schedules_path
+        return
+      rescue Exception => e
+        flash[:error] = e.message
+        redirect_to edit_admin_publishing_schedule_path(@activity)
+      end
     end
 
     def edit
