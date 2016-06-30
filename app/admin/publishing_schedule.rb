@@ -1,8 +1,8 @@
-
-ActiveAdmin.register Activity, as: 'Content Calendar' do
+ActiveAdmin.register Activity, as: 'Publishing Schedule' do
   config.filters = false
   config.sort_order = ''
-  config.paginate = false
+  config.batch_actions = false
+  config.clear_action_items!
 
   menu priority: 2
 
@@ -17,13 +17,30 @@ ActiveAdmin.register Activity, as: 'Content Calendar' do
     end
   end
 
-  index do
+  index title: 'Publishing Schedule' do
+    column :premium do |activity|
+      activity.premium? ? status_tag( "PREMIUM", :ok ) : ""
+    end
+
+    column "Publish At" do |activity|
+      text = activity.publishing_schedule ? activity.publishing_schedule.publish_at.localtime.strftime('%a %b %d, %Y %l:%M %p %Z') : "Schedule..."
+      link_to text,
+      edit_admin_publishing_schedule_path(activity)
+    end
+
     column :title, sortable: :title do |activity|
       link_to(activity.title.html_safe, activity_path(activity))
     end
-    column :premium
-    column "Publish At", sortable: 'publishing_schedule.publish_at' do |activity|
-      activity.publishing_schedule ? activity.publishing_schedule.publish_at : "Set"
+
+    actions
+  end
+
+  form do |f|
+    f.inputs "Activity" do
+      f.input :title
+    end
+    f.inputs "Schedule", for: [:publishing_schedule, f.object.publishing_schedule] do |ps|
+      ps.input :publish_at, as: :just_datetime_picker
     end
   end
 end

@@ -32,3 +32,5 @@
 //= require ingredient_parser
 
 //= require nested_forms
+
+//= require just_datetime_picker/nested_form_workaround

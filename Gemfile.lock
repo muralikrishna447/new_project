@@ -320,6 +320,9 @@ GEM
       securecompare
       url_safe_base64
     json_pure (1.8.3)
+    just-datetime-picker (0.0.7)
+      activeadmin (>= 0.4.4)
+      formtastic (>= 2.0.0)
     jwt (0.1.5)
       multi_json (>= 1.0)
     kaminari (0.14.1)
@@ -658,6 +661,7 @@ DEPENDENCIES
   jquery-rails
   jquery-ui-rails
   json-jwt
+  just-datetime-picker
   kaminari
   koala
   launchy
@@ -721,4 +725,4 @@ DEPENDENCIES
   xray-rails
 
 BUNDLED WITH
-   1.10.2
+   1.10.6
