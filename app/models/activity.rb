@@ -68,7 +68,7 @@ class Activity < ActiveRecord::Base
   scope :by_equipment_titles, -> titles { joins(:terminal_equipment).where("equipment.title iLIKE ANY (array[?])", titles.split(',').map{|a| "%#{a}%"} ) }
   scope :not_premium, where(premium: false)
 
-  accepts_nested_attributes_for :steps, :equipment, :ingredients
+  accepts_nested_attributes_for :steps, :equipment, :ingredients, :publishing_schedule
 
   serialize :activity_type, Array
 
