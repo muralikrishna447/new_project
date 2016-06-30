@@ -35,6 +35,17 @@ ActiveAdmin.register Activity, as: 'Publishing Schedule' do
         @activity.publishing_schedule = PublishingSchedule.new(publish_at: suggested_dt)
       end
     end
+
+    def destroy
+      activity = Activity.includes(:publishing_schedule).find(params[:id])
+      activity.publishing_schedule.destroy
+      flash[:notice] = "Schedule removed for \"#{activity.title}\""
+      redirect_to admin_publishing_schedules_path
+    end
+  end
+
+  action_item only: :edit do
+    link_to 'Remove Schedule', admin_publishing_schedule_path(activity), method: :delete
   end
 
   index title: 'Publishing Schedule' do
