@@ -516,7 +516,8 @@ CREATE TABLE circulator_users (
     id integer NOT NULL,
     user_id integer,
     circulator_id integer,
-    owner boolean
+    owner boolean,
+    deleted_at timestamp without time zone
 );
 
 
@@ -3304,6 +3305,13 @@ CREATE INDEX index_box_sort_images_on_question_id ON box_sort_images USING btree
 
 
 --
+-- Name: index_circulator_users_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_circulator_users_on_deleted_at ON circulator_users USING btree (deleted_at);
+
+
+--
 -- Name: index_circulator_users_on_user_id_and_circulator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3311,10 +3319,17 @@ CREATE UNIQUE INDEX index_circulator_users_on_user_id_and_circulator_id ON circu
 
 
 --
+-- Name: index_circulator_users_unique; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_circulator_users_unique ON circulator_users USING btree (user_id, circulator_id, (COALESCE(deleted_at, 'infinity'::timestamp without time zone)));
+
+
+--
 -- Name: index_circulators_on_circulator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_circulators_on_circulator_id ON circulators USING btree (circulator_id, (COALESCE(deleted_at, 'infinity'::timestamp without time zone)));
+CREATE UNIQUE INDEX index_circulators_on_circulator_id ON circulators USING btree (circulator_id, (COALESCE(deleted_at, '2099-12-12 00:00:00'::timestamp without time zone)));
 
 
 --
@@ -4103,3 +4118,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160615221610');
 INSERT INTO schema_migrations (version) VALUES ('20160617174858');
 
 INSERT INTO schema_migrations (version) VALUES ('20160628151954');
+
+INSERT INTO schema_migrations (version) VALUES ('20160630195733');
