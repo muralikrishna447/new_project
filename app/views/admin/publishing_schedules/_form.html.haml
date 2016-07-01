@@ -1,0 +1,4 @@
+= semantic_form_for [:admin, @activity], url: admin_publishing_schedule_path(@activity) do |f|
+  = f.inputs "#{f.object.title}", for: [:publishing_schedule, f.object.publishing_schedule] do |ps|
+    = ps.input :publish_at_pacific, as: :datetime_picker, label: "Publish At (Pacific Time)"
+  = f.actions
