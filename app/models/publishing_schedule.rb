@@ -12,17 +12,18 @@ class PublishingSchedule < ActiveRecord::Base
   # Example: 1996-12-19T16:39:57 - at least in Chrome it will not work with the -7:00 zone part.
   def publish_at_pacific
     pst = self.publish_at.in_time_zone(Rails.application.config.chefsteps_timezone).iso8601()
-    puts "PST out: #{pst}"
     pst.gsub(/:\d\d[-+]\d\d:\d\d$/, '')
   end
 
-  def publish_at_pacific=(pst)
+  def publish_at_pacific=(browser_datetime)
     # Wanted to use Rails.application.config.chefsteps_timezone.formatted_offset but it
-    # doesn't account for daylight savings so doesn't roundtrip with #publish_at_pacific
-    offset = Time.now.in_time_zone(Rails.application.config.chefsteps_timezone).utc_offset
+    # doesn't account for daylight savings so doesn't roundtrip with #publish_at_pacific.
+    # Need to know what the offset is on the appointed day, not today!
+
+    offset = DateTime.parse(browser_datetime).in_time_zone(Rails.application.config.chefsteps_timezone).utc_offset
     hours = offset / 3600
-    pst = pst + format("%02d:00", hours)
-    puts "PST in: #{pst}"
-    self.publish_at = DateTime.parse(pst)
+
+    real_datetime = browser_datetime + format("%02d:00", hours)
+    self.publish_at = DateTime.parse(real_datetime)
   end
 end
