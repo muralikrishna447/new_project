@@ -2,15 +2,10 @@ class PublishingSchedule < ActiveRecord::Base
   belongs_to :activity
   attr_accessible :publish_at, :publish_at_pacific
 
+  validates :publish_at, inclusion: { in: (DateTime.now..DateTime.now+1000.years),  message: "must be in future" }
 
-  #just_define_datetime_picker :publish_at, add_to_attr_accessible: true
-
-  # Can't use normal rails validation because this needs to happen after just_define_datetime_picker
-  # copies its fields to the real publish_at. There is probably a better way.
-  before_save :validate_future
-  def validate_future
-    raise "Date must be in future" if self.publish_at < DateTime.now
-  end
+  # :publish_at is the actual database field; this pair of setters/getters for publish_at_pacific
+  # is used by the form to present the form in a way that makes the browser happy.
 
   # Convert rails DateTime to the limited ISO-8601 expected by browser, in Pacific time
   # https://www.w3.org/TR/html-markup/input.datetime-local.html
