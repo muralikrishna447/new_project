@@ -94,7 +94,7 @@ gem "paranoia", "~> 1.0"
 gem 'coverband', '1.0.3'
 gem 'coverband_ext', '1.0.1'
 
-gem 'just-datetime-picker'
+gem 'slack-notifier'
 
 group :test do
   gem 'webmock'
