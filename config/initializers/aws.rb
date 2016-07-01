@@ -8,6 +8,7 @@ Rails.configuration.dynamodb = dynamodb
 sns.platform_applications = {}
 
 Rails.configuration.dynamodb.transactional_email_log_table_name = "transactional-email-log-#{Rails.env}"
+Rails.configuration.dynamodb.beta_features_table_name = "beta-features-#{Rails.env}"
 
 if Rails.env.production?
   Rails.configuration.remote_log_bucket = 'remote-logs-production'
