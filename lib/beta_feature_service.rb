@@ -20,7 +20,6 @@ module BetaFeature
 
   class MockBetaFeatureService
     def initialize
-      @items = []
     end
 
     # We default to always returning true for tests.  To override this
