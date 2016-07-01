@@ -29,11 +29,7 @@ module Api
 
         if @user_id_from_token
           user = User.find @user_id_from_token
-          bfs = BetaFeatureService.new(
-            Aws::DynamoDB::Client.new(region: 'us-east-1'),
-            Rails.configuration.dynamodb.beta_features_table_name
-          )
-          if bfs.user_has_feature(user.email, 'dfu')
+          if BetaFeatureService.user_has_feature(user.email, 'dfu')
             logger.info("User #{user.email} has the DFU beta feature")
           else
             logger.info("User #{user.email} is not setup for DFU beta feature")
