@@ -1,3 +1,4 @@
+require 'beta_feature_service'
 module Api
   module V0
     class FirmwareController < BaseController
@@ -24,6 +25,20 @@ module Api
         app_version = params[:appVersion]
         if app_version.nil?
           return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify mobile app version'}
+        end
+
+        if @user_id_from_token
+          user = User.find @user_id_from_token
+          bfs = BetaFeatureService.new(
+            Aws::DynamoDB::Client.new(region: 'us-east-1'),
+            Rails.configuration.dynamodb.beta_features_table_name
+          )
+          if bfs.user_has_feature(user.email, 'dfu')
+            logger.info("User #{user.email} has the DFU beta feature")
+          else
+            logger.info("User #{user.email} is not setup for DFU beta feature")
+            return render_empty_response
+          end
         end
 
         potential_updates = get_firmware_for_app_version(app_version)
