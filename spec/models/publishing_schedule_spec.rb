@@ -23,8 +23,8 @@ describe PublishingSchedule do
 
   describe 'times roundtrip' do
     it "works during PST" do
-      ps = Fabricate(:publishing_schedule, publish_at_pacific: summer_browser)
-      ps.publish_at_pacific.should == summer_browser
+      ps = Fabricate(:publishing_schedule, publish_at_pacific: winter_browser)
+      ps.publish_at_pacific.should == winter_browser
     end
 
     it "works during PDT" do
