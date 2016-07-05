@@ -1449,6 +1449,38 @@ ALTER SEQUENCE private_tokens_id_seq OWNED BY private_tokens.id;
 
 
 --
+-- Name: publishing_schedules; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE publishing_schedules (
+    id integer NOT NULL,
+    activity_id integer,
+    publish_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: publishing_schedules_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE publishing_schedules_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: publishing_schedules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE publishing_schedules_id_seq OWNED BY publishing_schedules.id;
+
+
+--
 -- Name: push_notification_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2514,6 +2546,13 @@ ALTER TABLE ONLY private_tokens ALTER COLUMN id SET DEFAULT nextval('private_tok
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY publishing_schedules ALTER COLUMN id SET DEFAULT nextval('publishing_schedules_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY push_notification_tokens ALTER COLUMN id SET DEFAULT nextval('push_notification_tokens_id_seq'::regclass);
 
 
@@ -2963,6 +3002,14 @@ ALTER TABLE ONLY private_tokens
 
 
 --
+-- Name: publishing_schedules_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY publishing_schedules
+    ADD CONSTRAINT publishing_schedules_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: push_notification_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3329,7 +3376,7 @@ CREATE UNIQUE INDEX index_circulator_users_unique ON circulator_users USING btre
 -- Name: index_circulators_on_circulator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE UNIQUE INDEX index_circulators_on_circulator_id ON circulators USING btree (circulator_id, (COALESCE(deleted_at, '2099-12-12 00:00:00'::timestamp without time zone)));
+CREATE UNIQUE INDEX index_circulators_on_circulator_id ON circulators USING btree (circulator_id, (COALESCE(deleted_at, 'infinity'::timestamp without time zone)));
 
 
 --
@@ -4116,6 +4163,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160506185009');
 INSERT INTO schema_migrations (version) VALUES ('20160615221610');
 
 INSERT INTO schema_migrations (version) VALUES ('20160617174858');
+
+INSERT INTO schema_migrations (version) VALUES ('20160627175815');
 
 INSERT INTO schema_migrations (version) VALUES ('20160628151954');
 
