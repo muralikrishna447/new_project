@@ -59,6 +59,15 @@ describe Api::V0::FirmwareController do
     transfer['totalBytes'].should == @totalBytes
   end
 
+  it 'should get no updates if not beta user' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    BetaFeatureService.stub(:user_has_feature).and_return(false)
+    post :updates, {'appVersion'=> '0.19.0'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
+  end
+
   it 'should get firmware version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
 

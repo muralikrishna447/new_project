@@ -94,6 +94,8 @@ gem "paranoia", "~> 1.0"
 gem 'coverband', '1.0.3'
 gem 'coverband_ext', '1.0.1'
 
+gem 'slack-notifier'
+
 group :test do
   gem 'webmock'
   gem 'shopify-mock', :git => 'https://github.com/ChefSteps/shopify-mock', :ref => '74132ae3a471ec29cb85547987c061e3f749fd1b'
