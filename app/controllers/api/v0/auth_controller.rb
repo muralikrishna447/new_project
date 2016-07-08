@@ -140,34 +140,31 @@ module Api
 
       end
 
-      ZENDESK_SHARED_SECRET = "eGQwqBQT7MuyvLxUKm1940fSrqSMDHqnimWfxlWmkUfNccf2"
-      ZENDESK_SUBDOMAIN     = "chefsteps-staging"
-
       # Modified from https://github.com/zendesk/zendesk_jwt_sso_examples/blob/master/ruby_on_rails_jwt.rb
+      # General doc: https://support.zendesk.com/hc/en-us/articles/203663816-Setting-up-single-sign-on-with-JWT-JSON-Web-Token-
       def zendesk_sso_url(return_to)
         iat = Time.now.to_i
         jti = "#{iat}/#{SecureRandom.hex(18)}"
 
-        logger.info "SECRET: #{ZENDESK_SHARED_SECRET}"
-
         payload = JWT.encode({
-          :iat   => iat, # Seconds since epoch, determine when this token is stale
-          :jti   => jti, # Unique token id, helps prevent replay attacks
-          :name  => current_api_user.name,
-          :email => current_api_user.email,
-        }, ZENDESK_SHARED_SECRET)
+          iat: iat, # Seconds since epoch, determine when this token is stale
+          jti: jti, # Unique token id, helps prevent replay attacks
+          name: current_api_user.name,
+          email: current_api_user.email,
+          user_fields: {
+            premium: current_api_user.premium?
+          }
+        }, ENV['ZENDESK_SHARED_SECRET'])
 
-        url = "https://#{ZENDESK_SUBDOMAIN}.zendesk.com/access/jwt?jwt=#{payload}"
+        url = "https://#{ENV['ZENDESK_SUBDOMAIN']}.zendesk.com/access/jwt?jwt=#{payload}"
         url += "&return_to=#{URI.escape(return_to)}" if return_to.present?
-
-        logger.info "RESULT: #{url}"
         url
       end
 
       # Used for SSO with third-party services
       def external_redirect
-        logger.info "REDIRECT params: #{params.inspect}"
         path = params[:path]
+
         logger.info "[redirect] Determing external redirect for path [#{path}]"
 
         begin
@@ -175,8 +172,6 @@ module Api
         rescue URI::InvalidURIError
           return render_api_response 400, {message: "Path [#{params[:path]}] is not valid URI."}
         end
-
-        logger.info "Host: #{path_uri.host}"
 
         if path_uri.host == Rails.configuration.shopify[:store_domain]
           path_params =  Rack::Utils.parse_nested_query(path_uri.query)
@@ -198,7 +193,7 @@ module Api
           redirect_uri = path_uri.to_s+"##{redirect_params.to_query}"
           render_api_response 200, {redirect: redirect_uri}
 
-        elsif path_uri.host == 'chefsteps-staging.zendesk.com'
+        elsif path_uri.host == "#{ENV['ZENDESK_SUBDOMAIN']}.zendesk.com"
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
 
         else

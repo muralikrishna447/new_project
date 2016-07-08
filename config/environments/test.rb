@@ -66,4 +66,8 @@ Delve::Application.configure do
   # using "other ways" such as a call to 169.254.169.254 if it's running on ec2
   ENV['AWS_ACCESS_KEY_ID'] = 'NOTANACCESSKEYID'
   ENV['AWS_SECRET_ACCESS_KEY'] = 'NOTASECRETKEY'
+
+  ENV['ZENDESK_SUBDOMAIN']     = "imaginary-chefsteps-test"
+  ENV['ZENDESK_SHARED_SECRET'] = "NOTHINGTOSEEHERE"
+
 end
