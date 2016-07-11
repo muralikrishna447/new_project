@@ -27,8 +27,8 @@ class AnalyticsParametizer
 
     def new_session?(referrer)
       unless referrer.nil?
-        # blog.chefsteps and store.chefsteps are considered external sites intentionally
-        internal_subdomains = ['support', 'www']
+        # blog.chefsteps is considered an external site intentionally
+        internal_subdomains = ['support', 'www', 'store']
         internal_subdomains.each do |sub|
           return false if referrer.include?("#{sub}.#{Rails.configuration.shared_config['chefsteps_endpoint']}")
         end
