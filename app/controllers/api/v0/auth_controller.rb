@@ -193,7 +193,7 @@ module Api
           redirect_uri = path_uri.to_s+"##{redirect_params.to_query}"
           render_api_response 200, {redirect: redirect_uri}
 
-        elsif path_uri.host == "#{ENV['ZENDESK_DOMAIN']}"
+        elsif path_uri.host == "#{ENV['ZENDESK_DOMAIN']}" || path_uri.host == "#{ENV['ZENDESK_MAPPED_DOMAIN']}"
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
 
         else

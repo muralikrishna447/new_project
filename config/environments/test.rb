@@ -68,6 +68,7 @@ Delve::Application.configure do
   ENV['AWS_SECRET_ACCESS_KEY'] = 'NOTASECRETKEY'
 
   ENV['ZENDESK_DOMAIN']     = "imaginary-chefsteps-test.zendesk.com"
+  ENV['ZENDESK_MAPPED_DOMAIN']     = "imaginary-zendesk.chefsteps.com"
   ENV['ZENDESK_SHARED_SECRET'] = "NOTHINGTOSEEHERE"
 
 end
