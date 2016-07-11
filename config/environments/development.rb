@@ -93,6 +93,7 @@ Delve::Application.configure do
   # This staging domain and secret are only good for 30 days from 7/7/2016; if necessary you could create
   # another free account and do this again. They only provide sandboxes for enterprise plans.
   ENV['ZENDESK_DOMAIN']     = "chefsteps-staging.zendesk.com"
+  ENV['ZENDESK_MAPPED_DOMAIN'] = "chefsteps-staging.zendesk.com"
   ENV['ZENDESK_SHARED_SECRET'] = "eGQwqBQT7MuyvLxUKm1940fSrqSMDHqnimWfxlWmkUfNccf2"
 
   Librato::Metrics.authenticate(

@@ -370,5 +370,11 @@ describe Api::V0::AuthController do
       response.code.should == '200'
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
+
+    it 'handles zendesk redirect from mapped domain but still sends JWT to main domain' do
+      get :external_redirect, :path => "https://#{ENV['ZENDESK_MAPPED_DOMAIN']}"
+      response.code.should == '200'
+      JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
+    end
   end
 end
