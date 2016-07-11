@@ -156,7 +156,7 @@ module Api
           }
         }, ENV['ZENDESK_SHARED_SECRET'])
 
-        url = "https://#{ENV['ZENDESK_SUBDOMAIN']}.zendesk.com/access/jwt?jwt=#{payload}"
+        url = "https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt=#{payload}"
         url += "&return_to=#{URI.escape(return_to)}" if return_to.present?
         url
       end
@@ -193,7 +193,7 @@ module Api
           redirect_uri = path_uri.to_s+"##{redirect_params.to_query}"
           render_api_response 200, {redirect: redirect_uri}
 
-        elsif path_uri.host == "#{ENV['ZENDESK_SUBDOMAIN']}.zendesk.com"
+        elsif path_uri.host == "#{ENV['ZENDESK_DOMAIN']}"
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
 
         else

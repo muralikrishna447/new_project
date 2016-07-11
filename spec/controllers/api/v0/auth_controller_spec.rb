@@ -366,9 +366,9 @@ describe Api::V0::AuthController do
     end
 
     it 'handles zendesk redirect' do
-      get :external_redirect, :path => "https://#{ENV['ZENDESK_SUBDOMAIN']}.zendesk.com"
+      get :external_redirect, :path => "https://#{ENV['ZENDESK_DOMAIN']}"
       response.code.should == '200'
-      JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_SUBDOMAIN']}.zendesk.com/access/jwt?jwt")
+      JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
   end
 end
