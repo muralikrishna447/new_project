@@ -338,6 +338,7 @@ describe Api::V0::AuthController do
     end
 
   end
+
   context 'GET /external_redirect' do
     before :each do
       request.env['HTTP_AUTHORIZATION'] = @aa.current_token.to_jwt
@@ -362,6 +363,12 @@ describe Api::V0::AuthController do
       get :external_redirect, :path => 'http://test.myshopify.com?checkout_url=http%3A%2F%2Fsomecheckout.com'
       # Actually checking the redirect requires cracking open the encrypted multipass token
       response.code.should == '200'
+    end
+
+    it 'handles zendesk redirect' do
+      get :external_redirect, :path => "https://#{ENV['ZENDESK_SUBDOMAIN']}.zendesk.com"
+      response.code.should == '200'
+      JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_SUBDOMAIN']}.zendesk.com/access/jwt?jwt")
     end
   end
 end
