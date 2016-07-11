@@ -178,7 +178,7 @@ module Delve
     end
 
     if Rails.env.staging? || Rails.env.staging2?
-        config.middleware.insert_before('Rack::Prerender', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/])
+        config.middleware.insert_before('Rack::Prerender', 'PreauthEnforcer', [/^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/, /^\/password/])
     end
 
     # In development set to staging unless explicitely overridden
