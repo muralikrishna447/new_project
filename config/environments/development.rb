@@ -90,6 +90,11 @@ Delve::Application.configure do
   ENV['AWS_ACCESS_KEY_ID'] = 'AKIAI3LT2ZFRGC25RWQA'
   ENV['AWS_SECRET_ACCESS_KEY'] = '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'
 
+  # This staging domain and secret are only good for 30 days from 7/7/2016; if necessary you could create
+  # another free account and do this again. They only provide sandboxes for enterprise plans.
+  ENV['ZENDESK_SUBDOMAIN']     = "chefsteps-staging"
+  ENV['ZENDESK_SHARED_SECRET'] = "eGQwqBQT7MuyvLxUKm1940fSrqSMDHqnimWfxlWmkUfNccf2"
+
   Librato::Metrics.authenticate(
     ENV['LIBRATO_USER'],
     ENV['LIBRATO_TOKEN'],
