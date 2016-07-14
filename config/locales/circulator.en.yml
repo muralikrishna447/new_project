@@ -1,0 +1,7 @@
+# https://docs.google.com/spreadsheets/u/1/d/1hkzfAMiPcq_5JEfXogB5ZWL7kcnZZYL54LGQSDZ-yLY/edit?usp=drive_web
+en:
+  circulator:
+    push:
+      water_heated:
+        message: "Your water has heated! Let’s cook."
+      
