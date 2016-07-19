@@ -278,7 +278,7 @@ describe Api::V0::CirculatorsController do
       it 'should require enabled beta feature' do
         BetaFeatureService.stub(:user_has_feature).and_return(false)
         post(:notify_clients, {
-          :id => @circulator.id,
+          :id => @circulator.circulator_id,
           :notification_type => 'water_heated'})
         response.code.should == '200'        
       end
@@ -286,14 +286,14 @@ describe Api::V0::CirculatorsController do
       it 'should notify clients' do
         Api::V0::CirculatorsController.any_instance.stub(:publish_notification)
         post(:notify_clients, {
-          :id => @circulator.id,
+          :id => @circulator.circulator_id,
           :notification_type => 'water_heated'})
         response.code.should == '200'
       end
       
       it 'should reject unknown notification types' do
         post(:notify_clients, {
-          :id => @circulator.id,
+          :id => @circulator.circulator_id,
           :notification_type => 'gibberish'})
         response.code.should == '400'
       end
@@ -304,12 +304,12 @@ describe Api::V0::CirculatorsController do
           :notification_type => 'gibberish'})
         response.code.should == '404'
       end        
-      
+
       it 'should not notify revoked addresses'do
         # not stubbed reply for publish since it shouldn't be called
         @user_aa.revoke
         post(:notify_clients, {
-          :id => @circulator.id,
+          :id => @circulator.circulator_id,
           :notification_type => 'water_heated'})
         response.code.should == '200'
       end

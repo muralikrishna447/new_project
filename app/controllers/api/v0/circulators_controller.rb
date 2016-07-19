@@ -93,9 +93,8 @@ module Api
       end
       
       def notify_clients
-        begin
-          circulator = Circulator.find(params[:id])
-        rescue ActiveRecord::RecordNotFound
+        circulator = Circulator.where(circulator_id: params[:id]).first
+        if circulator.nil?
           return render_api_response 404, {message: "Circulator not found"}
         end
         owners = circulator.circulator_users.select {|cu| cu.owner}
