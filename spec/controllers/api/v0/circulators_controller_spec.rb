@@ -8,7 +8,8 @@ describe Api::V0::CirculatorsController do
     @other_circulator = Fabricate :circulator, notes: 'some other notes', circulator_id: '4545454545454545'
     @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
 
-    token = ActorAddress.create_for_user(@user, client_metadata: "create").current_token
+    @user_aa = ActorAddress.create_for_user(@user, client_metadata: "create")
+    token = @user_aa.current_token
     request.env['HTTP_AUTHORIZATION'] = token.to_jwt
   end
 
@@ -251,6 +252,67 @@ describe Api::V0::CirculatorsController do
       response.code.should == '200'
       @circulator.reload
       @circulator.notes.should == 'new notes'
+    end
+  end
+  context 'notify_clients' do
+    before :each do
+      issued_at = (Time.now.to_f * 1000).to_i
+
+      service_claim = {
+        iat: issued_at,
+        service: 'Messaging'
+      }
+      @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+      @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      
+      p = PushNotificationToken.new
+      p.actor_address = @user_aa
+      p.endpoint_arn = "arn:aws:sns:us-east-1:0217963864089:endpoint/APNS_SANDBOX/joule-ios-dev/f56b2215-2121-3b21-b172-5d519ab0d123"
+      p.app_name ='joule'
+      p.device_token = 'not-a-device-token'
+      p.save!
+    end
+
+    describe 'notify_clients' do
+      it 'should require enabled beta feature' do
+        BetaFeatureService.stub(:user_has_feature).and_return(false)
+        post(:notify_clients, {
+          :id => @circulator.id,
+          :notification_type => 'water_heated'})
+        response.code.should == '200'        
+      end
+
+      it 'should notify clients' do
+        Api::V0::CirculatorsController.any_instance.stub(:publish_notification)
+        post(:notify_clients, {
+          :id => @circulator.id,
+          :notification_type => 'water_heated'})
+        response.code.should == '200'
+      end
+      
+      it 'should reject unknown notification types' do
+        post(:notify_clients, {
+          :id => @circulator.id,
+          :notification_type => 'gibberish'})
+        response.code.should == '400'
+      end
+      
+      it 'should return 404 when circulator not found' do
+        post(:notify_clients, {
+          :id => 1232132123,
+          :notification_type => 'gibberish'})
+        response.code.should == '404'
+      end        
+      
+      it 'should not notify revoked addresses'do
+        # not stubbed reply for publish since it shouldn't be called
+        @user_aa.revoke
+        post(:notify_clients, {
+          :id => @circulator.id,
+          :notification_type => 'water_heated'})
+        response.code.should == '200'
+      end
     end
   end
 end

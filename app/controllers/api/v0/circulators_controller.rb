@@ -1,9 +1,10 @@
 module Api
   module V0
     class CirculatorsController < BaseController
-      before_filter :ensure_authorized
+      before_filter :ensure_authorized, except: [:notify_clients]
       before_filter :ensure_circulator_owner, only: [:update, :destroy]
       before_filter :ensure_circulator_user, only: [:token]
+      before_filter :ensure_authorized_service, only: [:notify_clients]
 
       def index
         @user = User.find @user_id_from_token
@@ -89,6 +90,47 @@ module Api
         end
 
         render_api_response 200, {token: aa.current_token.to_jwt}
+      end
+      
+      def notify_clients
+        begin
+          circulator = Circulator.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+          return render_api_response 404, {message: "Circulator not found"}
+        end
+        owners = circulator.circulator_users.select {|cu| cu.owner}
+        logger.info "Found circulator owners #{owners.inspect}"
+
+        begin
+          message = I18n.t("circulator.push.#{params[:notification_type]}.message", raise: true)
+        rescue I18n::MissingTranslationData 
+          return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
+        end
+        
+        owners.each do |owner|
+          unless BetaFeatureService.user_has_feature(owner.user.email, 'push')
+            logger.info "Skipping owner #{owner.user.email} because beta feature 'push' is not enabled"
+            next
+          end
+          owner.user.actor_addresses.each do |aa|
+            logger.info "Found actor address #{aa.inspect}"
+            next if aa.revoked?
+            token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
+            next if token.nil?
+            logger.info "Publishing to token #{token.inspect}"
+            publish_notification(token.endpoint_arn, message)
+          end
+        end
+
+        render_api_response 200
+      end
+      
+      def publish_notification(endpoint_arn, message)
+        sns = Aws::SNS::Client.new(region: 'us-east-1')
+        sns.publish(
+          target_arn: endpoint_arn,
+          message: message
+        )
       end
     end
   end
