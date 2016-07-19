@@ -114,6 +114,7 @@ module Api
           end
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
+            next if aa.revoked?
             token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
             next if token.nil?
             logger.info "Publishing to token #{token.inspect}"

@@ -304,6 +304,15 @@ describe Api::V0::CirculatorsController do
           :notification_type => 'gibberish'})
         response.code.should == '404'
       end        
+      
+      it 'should not notify revoked addresses'do
+        # not stubbed reply for publish since it shouldn't be called
+        @user_aa.revoke
+        post(:notify_clients, {
+          :id => @circulator.id,
+          :notification_type => 'water_heated'})
+        response.code.should == '200'
+      end
     end
   end
 end
