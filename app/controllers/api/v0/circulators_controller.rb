@@ -128,8 +128,9 @@ module Api
         sns = Aws::SNS::Client.new(region: 'us-east-1')
         begin
           # TODO - add APNS once we have a testable endpoint
+          title = I18n.t("circulator.app_name", raise: true)
           message = {
-            GCM: {data: {message: message}}.to_json,
+            GCM: {data: {message: message, title: title}}.to_json,
             APNS_SANDBOX: {aps: {alert: message}}.to_json}
           logger.info "Publishing #{message.inspect}"
           sns.publish(
