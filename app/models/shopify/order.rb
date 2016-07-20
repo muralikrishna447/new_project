@@ -78,6 +78,7 @@ class Shopify::Order
         fulfill_premium(item, false)
         # TODO: actually check that premium discount was used
         user.use_premium_discount
+        user.joule_purchased
       elsif item.sku == PREMIUM_SKU
         if !gift_order? && item.quantity > 1
           raise "Order contains more than one non-gift premium."
