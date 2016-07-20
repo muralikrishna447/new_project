@@ -261,30 +261,6 @@ module Api
           render_unauthorized
         end
       end
-
-      private
-      def ensure_authorized_service
-        allowed_services = ['Messaging']
-        request_auth = request.authorization()
-        if request_auth
-          begin
-            token = AuthToken.from_string(request_auth.split(' ').last)
-          rescue JSON::JWS::VerificationFailed => e
-            logger.info ("Service token verification failed")
-            render_unauthorized
-            return
-          end
-          if allowed_services.include? token.claim['service']
-            return true
-          else
-            logger.info "Unauthorized claim: #{token.claim.inspect}"
-            render_unauthorized
-          end
-        else
-          logger.info "No request authorization provided"
-          render_unauthorized
-        end
-      end
     end
   end
 end
