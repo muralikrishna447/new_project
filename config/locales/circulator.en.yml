@@ -4,4 +4,4 @@ en:
     push:
       water_heated:
         message: "Your water has heated! Let’s cook."
-      
+    app_name: "Joule"
