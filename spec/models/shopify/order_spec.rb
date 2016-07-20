@@ -57,9 +57,12 @@ describe Shopify::Order do
       Shopify::Customer.should_receive(:sync_user)
       stub_metafield_post('all-but-joule-fulfilled', 'true')
       @user.premium?.should == false
+      @user.joule_purchase_count.should == 0
       order = Shopify::Order.find(JOULE_ORDER_ID)
       order.process!
-      @user.reload.premium?.should == true
+      @user.reload
+      @user.joule_purchase_count.should == 1
+      @user.premium?.should == true
     end
 
     it 'fulfills premium gift order' do
@@ -69,8 +72,7 @@ describe Shopify::Order do
       order = Shopify::Order.find(PREMIUM_GIFT_ORDER).process!
     end
 
-    it 'joule order for premuium customer doesnt send premium welcome email' do
-
+    it 'joule order for premium customer doesnt send premium welcome email' do
       @user.make_premium_member(20)
       Shopify::Customer.should_receive(:sync_user)
       stub_metafield_post('all-but-joule-fulfilled', 'true')
