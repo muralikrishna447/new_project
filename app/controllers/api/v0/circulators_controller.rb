@@ -126,10 +126,20 @@ module Api
       
       def publish_notification(endpoint_arn, message)
         sns = Aws::SNS::Client.new(region: 'us-east-1')
-        sns.publish(
-          target_arn: endpoint_arn,
-          message: message
-        )
+        begin
+          # TODO - add APNS once we have a testable endpoint
+          message = {
+            GCM: {data: {message: message}}.to_json,
+            APNS_SANDBOX: {aps: {alert: message}}.to_json}
+          logger.info "Publishing #{message.inspect}"
+          sns.publish(
+            target_arn: endpoint_arn,
+            message_structure: 'json',
+            message: message.to_json
+          )
+        rescue Aws::SNS::Errors::EndpointDisabled
+          logger.info "Failed to publish to #{endpoint_arn}. Endpoint disabled."
+        end
       end
     end
   end
