@@ -16,7 +16,6 @@ class ApplicationController < BaseApplicationController
     end
   end
 
-
   before_filter :set_analytics_cookie
   def set_analytics_cookie
     referrer = request.referrer
