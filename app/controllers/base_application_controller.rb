@@ -85,6 +85,15 @@ class BaseApplicationController < ActionController::Base
     logger.info("current_user id: #{current_user.nil? ? "anon" : current_user.id}")
   end
 
+  before_filter :log_ga_client
+  def log_ga_client
+    if cookies[:_ga]
+      logger.info "GA cookie value [#{cookies[:_ga]}] User [#{current_user ? current_user.id : nil}]"
+    else
+      logger.info "GA cookie not found"
+    end
+  end
+
   # This subscribe / track logic does not belong here but since it's curently
   # found in no less than three places throughout our code base this is the
   # least invasive place to store it

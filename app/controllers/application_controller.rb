@@ -16,15 +16,6 @@ class ApplicationController < BaseApplicationController
     end
   end
 
-  before_filter :log_ga_client
-  def log_ga_client
-    if cookies[:_ga]
-      logger.info "GA cookie value [#{cookies[:_ga]}] User [#{current_user ? current_user.id : nil}]"
-    else
-      logger.info "GA cookie not found"
-    end
-  end
-
   before_filter :set_analytics_cookie
   def set_analytics_cookie
     referrer = request.referrer
