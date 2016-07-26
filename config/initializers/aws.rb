@@ -12,13 +12,10 @@ Rails.configuration.dynamodb.beta_features_table_name = "beta-features-#{Rails.e
 
 if Rails.env.production?
   Rails.configuration.remote_log_bucket = 'remote-logs-production'
-  # TODO - update to prod sns applications - not worried about forgetting since
-  # we'll be forced to do this when app is released.
   sns.platform_applications['android'] = 'arn:aws:sns:us-east-1:021963864089:app/GCM/joule-android'
-  sns.platform_applications['ios'] = 'arn:aws:sns:us-east-1:021963864089:app/APNS_SANDBOX/joule-ios-dev'
+  sns.platform_applications['ios'] = 'arn:aws:sns:us-east-1:021963864089:app/APNS/joule-ios-prod'
 else
   Rails.configuration.remote_log_bucket = 'remote-logs-staging'
-
   sns.platform_applications['android'] = 'arn:aws:sns:us-east-1:021963864089:app/GCM/joule-android'
   sns.platform_applications['ios'] = 'arn:aws:sns:us-east-1:021963864089:app/APNS_SANDBOX/joule-ios-dev'
 end
