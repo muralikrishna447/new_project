@@ -517,6 +517,7 @@ class Activity < ActiveRecord::Base
     if self.published
       if self.published_at.blank?
         self.published_at = DateTime.now
+        SlackInProdOnly::send "#just-published", "Just published #{chefsteps_generated ? "" : "[UGC]"} \'#{self.title}\' at https://www.chefsteps.com#{activity_path(self)}"
       end
 
       # first_published_at is stored but not used for any sorting purposes, so
