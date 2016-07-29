@@ -218,11 +218,7 @@ Delve::Application.routes.draw do
 
   namespace :api do
     namespace :admin do
-      resources :circulators, only: [:index, :show] do
-
-      end
-
-      resources :users do
+      resources :users, only: [:show, :index] do
         get :actor_addresses, on: :member
         get :circulators, on: :member
       end
