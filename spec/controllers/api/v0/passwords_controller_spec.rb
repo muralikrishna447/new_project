@@ -1,8 +1,8 @@
 describe Api::V0::PasswordsController do
 
   before :each do
-    Api::V0::BaseController.send(:public, *Api::V0::BaseController.protected_instance_methods)
-    @base_controller = Api::V0::BaseController.new
+    Api::BaseController.send(:public, *Api::BaseController.protected_instance_methods)
+    @base_controller = Api::BaseController.new
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     @aa = ActorAddress.create_for_user @user, client_metadata: "web"
   end

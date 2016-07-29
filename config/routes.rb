@@ -217,6 +217,16 @@ Delve::Application.routes.draw do
   match '/components/*path', to: 'components#index'
 
   namespace :api do
+    namespace :admin do
+      resources :circulators, only: [:index, :show] do
+
+      end
+
+      resources :users, only: [:index, :show] do
+        get :circulators, on: :member
+      end
+    end
+
     namespace :v0 do
       match '/authenticate', to: 'auth#authenticate', via: [:post, :options]
       match '/authenticate_facebook', to: 'auth#authenticate_facebook', via: [:post, :options]
