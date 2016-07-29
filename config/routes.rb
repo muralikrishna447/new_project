@@ -222,7 +222,8 @@ Delve::Application.routes.draw do
 
       end
 
-      resources :users, only: [:index, :show] do
+      resources :users do
+        get :actor_addresses, on: :member
         get :circulators, on: :member
       end
     end

@@ -2,10 +2,10 @@ module Api
   module Admin
     class UsersController < ApiAdminController
 
-      before_filter :load_user, only: [:show, :circulators]
+      before_filter :load_user, only: [:actor_addresses, :circulators]
 
-      def show
-        render json: @user
+      def actor_addresses
+        render json: @user.actor_addresses
       end
 
       def circulators
