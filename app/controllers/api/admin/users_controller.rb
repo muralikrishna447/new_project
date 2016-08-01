@@ -6,7 +6,7 @@ module Api
 
       # /api/admin/users/:id
       def show
-        render json: @user
+        render_api_response 200, @user
       end
 
       # /api/admin/users?email=user@email.com
