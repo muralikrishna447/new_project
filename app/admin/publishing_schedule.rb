@@ -34,7 +34,7 @@ ActiveAdmin.register Activity, as: 'Publishing Schedule' do
     def edit
       @activity = Activity.includes(:publishing_schedule).find(params[:id])
       if ! @activity.publishing_schedule
-        suggested_dt = (PublishingSchedule.maximum(:publish_at) || DateTime.now) + 1.day
+        suggested_dt = DateTime.now + 1.day
         @activity.publishing_schedule = PublishingSchedule.new(publish_at: suggested_dt)
       end
     end
