@@ -66,13 +66,13 @@ describe Api::V0::UsersController do
     end
 
     it 'should call email signup' do
-      Api::V0::BaseController.any_instance.should_receive(:email_list_signup)
+      Api::BaseController.any_instance.should_receive(:email_list_signup)
       post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should be_success
     end
 
     it 'should not call email signup if the user opts out' do
-      Api::V0::BaseController.any_instance.should_not_receive(:email_list_signup)
+      Api::BaseController.any_instance.should_not_receive(:email_list_signup)
       post :create, optout: "true", user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should be_success
     end
@@ -148,14 +148,14 @@ describe Api::V0::UsersController do
       response.should be_success
       JSON.parse(response.body)['upload_url'].should_not be_nil
     end
-    
+
     it 'should accept invalid auth token' do
       request.env['HTTP_AUTHORIZATION'] = @token+'gibberish'
       get :log_upload_url
       response.should be_success
       JSON.parse(response.body)['upload_url'].should_not be_nil
     end
-    
+
     it 'should generate an upload url without an auth token' do
       get :log_upload_url
       response.should be_success
