@@ -131,7 +131,9 @@ module Api
           title = I18n.t("circulator.app_name", raise: true)
           message = {
             GCM: {data: {message: message, title: title}}.to_json,
-            APNS_SANDBOX: {aps: {alert: message}}.to_json}
+            APNS_SANDBOX: {aps: {alert: message}}.to_json,
+            APNS: {aps: {alert: message}}.to_json
+          }
           logger.info "Publishing #{message.inspect}"
           sns.publish(
             target_arn: endpoint_arn,
