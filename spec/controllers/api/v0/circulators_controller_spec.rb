@@ -275,15 +275,6 @@ describe Api::V0::CirculatorsController do
     end
 
     describe 'notify_clients' do
-      it 'should not require enabled beta feature' do
-        BetaFeatureService.stub(:user_has_feature).and_return(true)
-        Api::V0::CirculatorsController.any_instance.stub(:publish_notification)
-        post(:notify_clients, {
-          :id => @circulator.circulator_id,
-          :notification_type => 'water_heated'})
-        response.code.should == '200'        
-      end
-
       it 'should notify clients' do
         Api::V0::CirculatorsController.any_instance.stub(:publish_notification)
         post(:notify_clients, {
