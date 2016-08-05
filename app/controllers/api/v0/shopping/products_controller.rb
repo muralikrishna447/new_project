@@ -1,3 +1,5 @@
+require 'cache_extensions'
+
 module Api
   module V0
     module Shopping
@@ -42,7 +44,7 @@ module Api
 
           # Cache for premium users: shopping/products/premium=true
           # Cache for non-premium users: shopping/products/premium=false
-          @products = Rails.cache.fetch("shopping/products/premium=#{premium_user}/used_circulator_discount=#{used_circulator_discount}", expires_in: 1.minute) do
+          @products = CacheExtensions::fetch_with_rescue("shopping/products/premium=#{premium_user}/used_circulator_discount=#{used_circulator_discount}", 1.minute, 1.minute) do
             page = 1
             products = []
             count = ShopifyAPI::Product.count
