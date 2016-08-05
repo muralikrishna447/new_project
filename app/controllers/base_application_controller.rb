@@ -37,7 +37,6 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
-
   def catch_and_retry(retry_count)
     begin
       yield
