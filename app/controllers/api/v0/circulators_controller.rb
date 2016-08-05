@@ -107,10 +107,6 @@ module Api
         end
         
         owners.each do |owner|
-          unless BetaFeatureService.user_has_feature(owner.user.email, 'push')
-            logger.info "Skipping owner #{owner.user.email} because beta feature 'push' is not enabled"
-            next
-          end
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
             next if aa.revoked?
