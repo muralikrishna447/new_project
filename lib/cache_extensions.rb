@@ -22,7 +22,7 @@
           result = yield
           Rails.cache.write(key, result)
           Rails.cache.write(freshness_key, 'fresh', expires_in: expiration)
-        rescue => error
+        rescue StandardError => error
           Rails.cache.write(freshness_key, 'retrying', expires_in: retry_expiration)
           Rails.logger.error("Got error #{error} attempting to update cache #{key}. Using saved value for #{retry_expiration} additional time.")
           Librato.increment 'fetch_with_rescue.block_raised.#{key}', sporadic: true
