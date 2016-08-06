@@ -1,10 +1,10 @@
-class JouleShipDateMailer < ActionMailer::Base
+class JouleRefundMailer < ActionMailer::Base
   default from: "Team ChefSteps <info@chefsteps.com>"
   default reply_to: "info@chefsteps.com"
 
   def prepare(user)
-    logger.info("Preparing joule ship date mail for user [#{user.email}]")
-    subject = "Your Joule Will Ship in September!"
+    logger.info("Preparing joule refund mail for user [#{user.email}]")
+    subject = "With Gratitude, and Joule for All!"
     substitutions = {
       sub: {
         "*|SUBJECT|*" => [subject],
@@ -13,7 +13,7 @@ class JouleShipDateMailer < ActionMailer::Base
       }
     }
     headers['X-SMTPAPI'] = substitutions.to_json
-    headers['X-IDEMPOTENCY'] = "2016-06-20 Your Joule Will Ship in September!"
+    headers['X-IDEMPOTENCY'] = "2016-08-08 With Gratitude, and Joule for All!"
     mail(to: user.email, subject: subject)
   end
 end
