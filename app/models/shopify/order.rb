@@ -74,10 +74,6 @@ class Shopify::Order
       # Hard code the SKUs for now, we can talk when we have more than two
       if item.sku == JOULE_SKU
         order_contains_joule = true
-        # TODO - add synchronization since we're not creating fulfilment objects here
-        fulfill_premium(item, false)
-        # TODO: actually check that premium discount was used
-        user.use_premium_discount
         user.joule_purchased
       elsif item.sku == PREMIUM_SKU
         if !gift_order? && item.quantity > 1

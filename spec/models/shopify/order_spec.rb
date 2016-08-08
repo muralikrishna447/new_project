@@ -62,7 +62,8 @@ describe Shopify::Order do
       order.process!
       @user.reload
       @user.joule_purchase_count.should == 1
-      @user.premium?.should == true
+      # No premium with joule!
+      @user.premium?.should == false
     end
 
     it 'fulfills premium gift order' do
