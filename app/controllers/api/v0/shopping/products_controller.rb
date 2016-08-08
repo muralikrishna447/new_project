@@ -98,7 +98,7 @@ module Api
           first_variant_price = first_variant.price.to_f*100.to_i
           discount = get_product_discount(product)
           if first_variant.sku == 'cs10001' && premium_user && !used_circulator_discount
-            first_variant_price - discount
+            first_variant_price
           else
             first_variant_price
           end
