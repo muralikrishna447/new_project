@@ -80,7 +80,7 @@ describe Api::V0::Shopping::ProductsController do
       it "should return the correct price for a premium user where used_circulator_discount is false" do
         product = ShopifyAPI::Product.find(567)
         price = @controller.instance_eval { get_price(product, true, false) }
-        expect(price).to eq(20500)
+        expect(price).to eq(22900)
       end
 
       it "should return the correct price for a premium user where used_circulator_discount is true" do
@@ -136,7 +136,7 @@ describe Api::V0::Shopping::ProductsController do
       get :show, {id: 'cs10001'}, {'HTTP_AUTHORIZATION' => @premium_user.valid_website_auth_token.to_jwt}
       response.should be_success
       product = JSON.parse(response.body)
-      expect(product['price']).to eq(20500)
+      expect(product['price']).to eq(22900)
     end
 
     it "should show the correct price when user is premium and has already used the circulator discount" do
