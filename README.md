@@ -18,11 +18,11 @@ To set up a new machine:
    - it'll be something like, `launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist`
 - `echo 'location' > ~/.curlc`
 - install [rvm](https://rvm.io/)
+- `rvm install ruby 1.9.3` (the version our Gemfile calls for, --with-gcc=clang may be required)
 - close your shell and reopen it
 - restart your machine if postgres is not running (eg: first install)
 - `git clone https://github.com/ChefSteps/ChefSteps.git`
 - `cd ChefSteps`
-- `rvm install ruby 1.9.3` (the version our Gemfile calls for, --with-gcc=clang may be required)
 - `gem install bundle` (if this seg faults, try ```rvm reinstall ruby-1.9.3 --with-gcc=clang```
 - `bundle`
 - `createuser -l -s -r delve`
