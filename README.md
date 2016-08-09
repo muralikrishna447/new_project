@@ -7,6 +7,9 @@ To set up a new machine:
 
 ## Required
 
+- install/update to the latest Xcode
+- launch Xcode once
+- `xcode-select --install`
 - install homebrew (brew.sh)
 - `brew doctor`
 - `brew install phantomjs`
@@ -14,16 +17,12 @@ To set up a new machine:
    - set postgres to open at login per output of previous cmd
    - it'll be something like, `launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist`
 - `echo 'location' > ~/.curlc`
-- rails ready install (github.com/joshfng/railsready)
-   -  `curl -O https://raw.githubusercontent.com/joshfng/railsready/master/railsready.sh && bash railsready.sh`
+- install [rvm](https://rvm.io/)
+- `rvm install ruby 1.9.3` (the version our Gemfile calls for, --with-gcc=clang may be required)
 - close your shell and reopen it
 - restart your machine if postgres is not running (eg: first install)
 - `git clone https://github.com/ChefSteps/ChefSteps.git`
 - `cd ChefSteps`
-- install latest Xcode
-- launch Xcode once
-- `xcode-select --install`
-- `rvm install ruby 1.9.3` (the version our Gemfile calls for, --with-gcc=clang may be required)
 - `gem install bundle` (if this seg faults, try ```rvm reinstall ruby-1.9.3 --with-gcc=clang```
 - `bundle`
 - `createuser -l -s -r delve`
