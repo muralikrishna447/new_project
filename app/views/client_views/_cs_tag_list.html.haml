@@ -1,4 +1,4 @@
 .tag-group
-  %a.tag(ng-repeat="tag in ngModel" ng-href="{{searchPath}}={{tag.name}}")
+  %ng-repeat.tag(ng-repeat="tag in ngModel")
     %i.icon-tag
     {{tag.name}}
