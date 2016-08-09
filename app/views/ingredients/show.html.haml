@@ -111,7 +111,7 @@
         .row.section(ng-show="(! editMode) && ingredient.tags.length")
           .span6
             %h3 Tags
-            %csTagList(ng-model="ingredient.tags" search-path="'/ingredients#/?search_all'")
+            %csTagList(ng-model="ingredient.tags")
 
         .row.section(ng-show="ingredient.product_url")
           .span6
