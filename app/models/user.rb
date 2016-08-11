@@ -289,6 +289,7 @@ class User < ActiveRecord::Base
   end
 
   def merge(user_to_merge)
+    # TODO wrap this all in a transaction
     merge_properties(user_to_merge)
     merge_premium(user_to_merge)
     merge_relations(user_to_merge)
@@ -322,5 +323,20 @@ class User < ActiveRecord::Base
   end
 
   def merge_relations(user_to_merge)
+    Upload.where(user_id: user_to_merge.id).update_all(user_id: id)
+    Event.where(user_id: user_to_merge.id).update_all(user_id: id)
+    Activity.where(creator: user_to_merge.id).update_all(creator: id)
+    merge_likes(user_to_merge)
+  end
+
+  def merge_likes(user_to_merge)
+    likeable_ids = likes.map(&:likeable_id)
+    if likeable_ids.empty?
+      likes_to_merge = Like.where(user_id: user_to_merge.id)
+    else
+      # Only merge likes on things not already liked by self
+      likes_to_merge = Like.where('user_id = ? AND likeable_id NOT IN (?)', user_to_merge.id, likeable_ids)
+    end
+    likes_to_merge.update_all(user_id: id)
   end
 end

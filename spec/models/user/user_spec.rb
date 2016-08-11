@@ -424,5 +424,105 @@ describe User do
         end
       end
     end
+
+    context 'merged user has relations' do
+      context 'merged user has uploads' do
+        let(:master_user) { Fabricate(:user) }
+        let(:user_to_merge) do
+          user = Fabricate(:user)
+          user.uploads = [
+            Fabricate(:upload, user_id: user.id),
+            Fabricate(:upload, user_id: user.id)
+          ]
+          user
+        end
+
+        it 'merges uploads to master user' do
+          master_user.merge(user_to_merge)
+          expect(master_user.uploads).to match_array(user_to_merge.uploads)
+        end
+      end
+
+      context 'merged user has events' do
+        let(:master_user) { Fabricate(:user) }
+        let(:user_to_merge) do
+          user = Fabricate(:user)
+          user.events = [
+            Fabricate(:event, user_id: user.id),
+            Fabricate(:event, user_id: user.id)
+          ]
+          user
+        end
+
+        it 'merges events to master user' do
+          master_user.merge(user_to_merge)
+          expect(master_user.events).to match_array(user_to_merge.events)
+        end
+      end
+
+      context 'merged user has likes not in master user' do
+        let(:master_user) { Fabricate(:user) }
+        let(:user_to_merge) do
+          user = Fabricate(:user)
+          user.likes = [
+            Fabricate(:like, user_id: user.id, likeable_id: 1),
+            Fabricate(:like, user_id: user.id, likeable_id: 2)
+          ]
+          user
+        end
+
+        it 'merges likes to the master user' do
+          master_user.merge(user_to_merge)
+          master_user.likes.reload
+          expect(master_user.likes).to match_array(user_to_merge.likes)
+        end
+      end
+
+      context 'merged user has likes also in master user' do
+        let(:likeable_id_1) { 1 }
+        let(:likeable_id_2) { 2 }
+        let(:master_user) do
+          user = Fabricate(:user)
+          user.likes = [
+            Fabricate(:like, user_id: user.id, likeable_id: likeable_id_1)
+          ]
+          user
+        end
+        let(:user_to_merge) do
+          user = Fabricate(:user)
+          user.likes = [
+            Fabricate(:like, user_id: user.id, likeable_id: likeable_id_1),
+            Fabricate(:like, user_id: user.id, likeable_id: likeable_id_2)
+          ]
+          user
+        end
+
+        it 'dedupes common likes' do
+          master_user.merge(user_to_merge)
+          master_user.likes.reload
+          master_user.likes.sort_by!(&:likeable_id)
+          expect(master_user.likes.first.likeable_id).to eq likeable_id_1
+          expect(master_user.likes.second.likeable_id).to eq likeable_id_2
+          expect(master_user.likes.size).to eq 2
+        end
+      end
+
+      context 'merged user has created activities' do
+        let(:master_user) { Fabricate(:user) }
+        let(:user_to_merge) do
+          user = Fabricate(:user)
+          user.created_activities = [
+            Fabricate(:activity, creator: user),
+            Fabricate(:activity, creator: user)
+          ]
+          user
+        end
+
+        it 'merges activities to master user' do
+          master_user.merge(user_to_merge)
+          expect(master_user.created_activities).to match_array(user_to_merge.created_activities)
+        end
+      end
+    end
   end
 end
