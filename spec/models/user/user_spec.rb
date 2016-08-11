@@ -103,62 +103,64 @@ describe User do
     let(:master_user_location) { 'Master Location' }
     let(:master_user_quote) { 'Master Quote' }
     let(:master_user_website) { 'Master Website' }
-    let(:master_user_chef_type) { 'Master Chef Type' }
+    let(:master_user_chef_type) { 'other' }
     let(:master_user_from_aweber) { true }
     let(:master_user_signed_up_from) { 'Master Signed Up From' }
     let(:master_user_bio) { 'Master Bio' }
     let(:master_user_image_id) { 'Master Image Id' }
     let(:master_user_referred_from) { 'Master Referred From' }
     let(:master_user_referrer_id) { 1 }
-    let(:master_user_survey_results) { { master: true } }
+    let(:master_user_survey_results) { { 'master' => true } }
     let(:master_user_skip_name_validation) { true }
     let(:master_user) do
-      user = Fabricate(:user)
-      user.name = master_user_name
-      user.location = master_user_location
-      user.quote = master_user_quote
-      user.website = master_user_website
-      user.chef_type = master_user_chef_type
-      user.from_aweber = master_user_from_aweber
-      user.signed_up_from = master_user_signed_up_from
-      user.bio = master_user_bio
-      user.image_id = master_user_image_id
-      user.referred_from = master_user_referred_from
-      user.referrer_id = master_user_referrer_id
-      user.survey_results = master_user_survey_results
-      user.skip_name_validation = master_user_skip_name_validation
-      user
+      Fabricate(
+        :user,
+        name: master_user_name,
+        location: master_user_location,
+        quote: master_user_quote,
+        website: master_user_website,
+        chef_type: master_user_chef_type,
+        from_aweber: master_user_from_aweber,
+        signed_up_from: master_user_signed_up_from,
+        bio: master_user_bio,
+        image_id: master_user_image_id,
+        referred_from: master_user_referred_from,
+        referrer_id: master_user_referrer_id,
+        survey_results: master_user_survey_results,
+        skip_name_validation: master_user_skip_name_validation
+      )
     end
 
     let(:merged_user_name) { 'Merged Name' }
     let(:merged_user_location) { 'Merged Location' }
     let(:merged_user_quote) { 'Merged Quote' }
     let(:merged_user_website) { 'Merged Website' }
-    let(:merged_user_chef_type) { 'Merged Chef Type' }
+    let(:merged_user_chef_type) { 'home_cook' }
     let(:merged_user_from_aweber) { true }
     let(:merged_user_signed_up_from) { 'Merged Signed Up From' }
     let(:merged_user_bio) { 'Merged User Bio' }
     let(:merged_user_image_id) { 'Merged Image Id' }
     let(:merged_user_referred_from) { 'Merged Referred From' }
     let(:merged_user_referrer_id) { 2 }
-    let(:merged_user_survey_results) { { merged: true } }
+    let(:merged_user_survey_results) { { 'merged' => true } }
     let(:merged_user_skip_name_validation) { true }
     let(:user_to_merge) do
-      user = Fabricate(:user)
-      user.name = merged_user_name
-      user.location = merged_user_location
-      user.quote = merged_user_quote
-      user.website = merged_user_website
-      user.chef_type = merged_user_chef_type
-      user.from_aweber = merged_user_from_aweber
-      user.signed_up_from = merged_user_signed_up_from
-      user.bio = merged_user_bio
-      user.image_id = merged_user_image_id
-      user.referred_from = merged_user_referred_from
-      user.referrer_id = merged_user_referrer_id
-      user.survey_results = merged_user_survey_results
-      user.skip_name_validation = merged_user_skip_name_validation
-      user
+      Fabricate(
+        :user,
+        name: merged_user_name,
+        location: merged_user_location,
+        quote: merged_user_quote,
+        website: merged_user_website,
+        chef_type: merged_user_chef_type,
+        from_aweber: merged_user_from_aweber,
+        signed_up_from: merged_user_signed_up_from,
+        bio: merged_user_bio,
+        image_id: merged_user_image_id,
+        referred_from: merged_user_referred_from,
+        referrer_id: merged_user_referrer_id,
+        survey_results: merged_user_survey_results,
+        skip_name_validation: merged_user_skip_name_validation
+      )
     end
 
     context 'merged and master properties are not blank' do
@@ -274,16 +276,10 @@ describe User do
 
     context 'merged and master booleans are true' do
       let(:master_user) do
-        user = Fabricate(:user)
-        user.from_aweber = true
-        user.skip_name_validation = true
-        user
+        Fabricate(:user, from_aweber: true, skip_name_validation: true)
       end
       let(:user_to_merge) do
-        user = Fabricate(:user)
-        user.from_aweber = true
-        user.skip_name_validation = true
-        user
+        Fabricate(:user, from_aweber: true, skip_name_validation: true)
       end
 
       it 'preserves from_aweber' do
@@ -299,16 +295,10 @@ describe User do
 
     context 'merged booleans are true and master booleans are false' do
       let(:master_user) do
-        user = Fabricate(:user)
-        user.from_aweber = false
-        user.skip_name_validation = false
-        user
+        Fabricate(:user, from_aweber: false, skip_name_validation: false)
       end
       let(:user_to_merge) do
-        user = Fabricate(:user)
-        user.from_aweber = true
-        user.skip_name_validation = true
-        user
+        Fabricate(:user, from_aweber: true, skip_name_validation: true)
       end
 
       it 'sets from_aweber to true' do
@@ -323,16 +313,8 @@ describe User do
     end
 
     context 'master does not have merged role' do
-      let(:master_user) do
-        user = Fabricate(:user)
-        user.role = user_role
-        user
-      end
-      let(:user_to_merge) do
-        user = Fabricate(:user)
-        user.role = admin_role
-        user
-      end
+      let(:master_user) { Fabricate(:user, role: user_role) }
+      let(:user_to_merge) { Fabricate(:user, role: admin_role) }
 
       it 'sets the role to the merged value' do
         master_user.merge(user_to_merge)
@@ -341,16 +323,8 @@ describe User do
     end
 
     context 'master already has merged role' do
-      let(:master_user) do
-        user = Fabricate(:user)
-        user.role = admin_role
-        user
-      end
-      let(:user_to_merge) do
-        user = Fabricate(:user)
-        user.role = user_role
-        user
-      end
+      let(:master_user) { Fabricate(:user, role: admin_role) }
+      let(:user_to_merge) { Fabricate(:user, role: user_role) }
 
       it 'preserves the master role' do
         master_user.merge(user_to_merge)
@@ -364,17 +338,14 @@ describe User do
 
       context 'master is premium and merged is not premium' do
         let(:master_user) do
-          user = Fabricate(:user)
-          user.premium_member = true
-          user.premium_membership_price = premium_membership_price
-          user.premium_membership_created_at = premium_membership_created_at
-          user
+          Fabricate(
+            :user,
+            premium_member: true,
+            premium_membership_price: premium_membership_price,
+            premium_membership_created_at: premium_membership_created_at
+          )
         end
-        let(:user_to_merge) do
-          user = Fabricate(:user)
-          user.premium_member = false
-          user
-        end
+        let(:user_to_merge) { Fabricate(:user, premium_member: false) }
 
         it 'preserves premium in master' do
           master_user.merge(user_to_merge)
@@ -385,17 +356,14 @@ describe User do
       end
 
       context 'master is not premium and merged is premium' do
-        let(:master_user) do
-          user = Fabricate(:user)
-          user.premium_member = false
-          user
-        end
+        let(:master_user) { Fabricate(:user, premium_member: false) }
         let(:user_to_merge) do
-          user = Fabricate(:user)
-          user.premium_member = true
-          user.premium_membership_price = premium_membership_price
-          user.premium_membership_created_at = premium_membership_created_at
-          user
+          Fabricate(
+            :user,
+            premium_member: true,
+            premium_membership_price: premium_membership_price,
+            premium_membership_created_at: premium_membership_created_at
+          )
         end
 
         it 'sets premium on master' do
@@ -407,16 +375,8 @@ describe User do
       end
 
       context 'master and merged are not premium' do
-        let(:master_user) do
-          user = Fabricate(:user)
-          user.premium_member = false
-          user
-        end
-        let(:user_to_merge) do
-          user = Fabricate(:user)
-          user.premium_member = false
-          user
-        end
+        let(:master_user) { Fabricate(:user, premium_member: false) }
+        let(:user_to_merge) { Fabricate(:user, premium_member: false) }
 
         it 'preserves no premium on master' do
           master_user.merge(user_to_merge)
