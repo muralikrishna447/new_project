@@ -161,52 +161,59 @@ describe User do
       user
     end
 
-    before do
-      master_user.merge(user_to_merge)
-    end
-
     context 'merged and master properties are not blank' do
       it 'preserves master name' do
+        master_user.merge(user_to_merge)
         master_user.name.should eq master_user_name
       end
 
       it 'preserves master location' do
+        master_user.merge(user_to_merge)
         master_user.location.should eq master_user_location
       end
 
       it 'preserves master quote' do
+        master_user.merge(user_to_merge)
         master_user.quote.should eq master_user_quote
       end
 
       it 'preserves master website' do
+        master_user.merge(user_to_merge)
         master_user.website.should eq master_user_website
       end
 
       it 'preserves master chef_type' do
+        master_user.merge(user_to_merge)
         master_user.chef_type.should eq master_user_chef_type
       end
 
       it 'preserves signed_up_from' do
+        master_user.merge(user_to_merge)
         master_user.signed_up_from.should eq master_user_signed_up_from
       end
 
       it 'preserves bio' do
+        master_user.merge(user_to_merge)
         master_user.bio.should eq master_user_bio
       end
 
       it 'preserves image_id' do
+        master_user.merge(user_to_merge)
         master_user.image_id.should eq master_user_image_id
       end
 
       it 'preserves reffered_from' do
+        master_user.merge(user_to_merge)
         master_user.referred_from.should eq master_user_referred_from
       end
 
       it 'preserves referrer_id' do
+        master_user.merge(user_to_merge)
         master_user.referrer_id.should eq master_user_referrer_id
       end
 
       it 'preserves survey_results' do
+        master_user.merge(user_to_merge)
         master_user.survey_results.should eq master_user_survey_results
       end
     end
@@ -215,42 +222,52 @@ describe User do
       let(:master_user) { User.new }
 
       it 'sets the master name to the merged value' do
+        master_user.merge(user_to_merge)
         master_user.name.should eq merged_user_name
       end
 
       it 'sets the master location to the merged value' do
+        master_user.merge(user_to_merge)
         master_user.location.should eq merged_user_location
       end
 
       it 'sets the master quote to the merged value' do
+        master_user.merge(user_to_merge)
         master_user.quote.should eq merged_user_quote
       end
 
       it 'sets the master website to the merged website' do
+        master_user.merge(user_to_merge)
         master_user.website.should eq merged_user_website
       end
 
       it 'sets the master signed_up_from to the merged value' do
+        master_user.merge(user_to_merge)
         master_user.signed_up_from.should eq merged_user_signed_up_from
       end
 
       it 'sets the master bio to the merged value' do
+        master_user.merge(user_to_merge)
         master_user.bio.should eq merged_user_bio
       end
 
       it 'sets the image_id to the merged value' do
+        master_user.merge(user_to_merge)
         master_user.image_id.should eq merged_user_image_id
       end
 
       it 'sets the referred_from to the merged value' do
+        master_user.merge(user_to_merge)
         master_user.referred_from.should eq merged_user_referred_from
       end
 
       it 'sets the referrer_id to the merged value' do
+        master_user.merge(user_to_merge)
         master_user.referrer_id.should eq merged_user_referrer_id
       end
 
       it 'sets survey_results to the merged value' do
+        master_user.merge(user_to_merge)
         master_user.survey_results.should eq merged_user_survey_results
       end
     end
@@ -270,10 +287,12 @@ describe User do
       end
 
       it 'preserves from_aweber' do
+        master_user.merge(user_to_merge)
         master_user.from_aweber.should eq true
       end
 
       it 'preserves skip_name_validation' do
+        master_user.merge(user_to_merge)
         master_user.skip_name_validation.should eq true
       end
     end
@@ -293,10 +312,12 @@ describe User do
       end
 
       it 'sets from_aweber to true' do
+        master_user.merge(user_to_merge)
         master_user.from_aweber.should eq true
       end
 
       it 'sets skip_name_validation to true' do
+        master_user.merge(user_to_merge)
         master_user.skip_name_validation.should eq true
       end
     end
@@ -314,6 +335,7 @@ describe User do
       end
 
       it 'sets the role to the merged value' do
+        master_user.merge(user_to_merge)
         master_user.role.should eq admin_role
       end
     end
@@ -331,7 +353,75 @@ describe User do
       end
 
       it 'preserves the master role' do
+        master_user.merge(user_to_merge)
         master_user.role.should eq admin_role
+      end
+    end
+
+    context 'premium' do
+      let(:premium_membership_price) { 10 }
+      let(:premium_membership_created_at) { DateTime.new(2016, 8, 10) }
+
+      context 'master is premium and merged is not premium' do
+        let(:master_user) do
+          user = Fabricate(:user)
+          user.premium_member = true
+          user.premium_membership_price = premium_membership_price
+          user.premium_membership_created_at = premium_membership_created_at
+          user
+        end
+        let(:user_to_merge) do
+          user = Fabricate(:user)
+          user.premium_member = false
+          user
+        end
+
+        it 'preserves premium in master' do
+          master_user.merge(user_to_merge)
+          master_user.premium_member.should eq true
+          master_user.premium_membership_price.should eq premium_membership_price
+          master_user.premium_membership_created_at.should eq premium_membership_created_at
+        end
+      end
+
+      context 'master is not premium and merged is premium' do
+        let(:master_user) do
+          user = Fabricate(:user)
+          user.premium_member = false
+          user
+        end
+        let(:user_to_merge) do
+          user = Fabricate(:user)
+          user.premium_member = true
+          user.premium_membership_price = premium_membership_price
+          user.premium_membership_created_at = premium_membership_created_at
+          user
+        end
+
+        it 'sets premium on master' do
+          master_user.merge(user_to_merge)
+          master_user.premium_member.should eq true
+          master_user.premium_membership_price.should eq premium_membership_price
+          master_user.premium_membership_created_at.should be > DateTime.now - 1.hour
+        end
+      end
+
+      context 'master and merged are not premium' do
+        let(:master_user) do
+          user = Fabricate(:user)
+          user.premium_member = false
+          user
+        end
+        let(:user_to_merge) do
+          user = Fabricate(:user)
+          user.premium_member = false
+          user
+        end
+
+        it 'preserves no premium on master' do
+          master_user.merge(user_to_merge)
+          master_user.premium_member.should eq false
+        end
       end
     end
   end
