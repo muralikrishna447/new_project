@@ -243,6 +243,11 @@ describe User do
         master_user.website.should eq merged_user_website
       end
 
+      it 'sets the master chef_type to the merged chef_type' do
+        master_user.merge(user_to_merge)
+        master_user.chef_type.should eq merged_user_chef_type
+      end
+
       it 'sets the master signed_up_from to the merged value' do
         master_user.merge(user_to_merge)
         master_user.signed_up_from.should eq merged_user_signed_up_from

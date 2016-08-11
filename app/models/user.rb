@@ -303,6 +303,7 @@ class User < ActiveRecord::Base
     self.location = user_to_merge.location if location.blank?
     self.quote = user_to_merge.quote if quote.blank?
     self.website = user_to_merge.website if website.blank?
+    self.chef_type = user_to_merge.chef_type if chef_type.blank?
     self.from_aweber = user_to_merge.from_aweber if from_aweber.blank?
     self.signed_up_from = user_to_merge.signed_up_from if signed_up_from.blank?
     self.bio = user_to_merge.bio if bio.blank?
