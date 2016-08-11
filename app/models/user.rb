@@ -289,11 +289,14 @@ class User < ActiveRecord::Base
   end
 
   def merge(user_to_merge)
-    # TODO wrap this all in a transaction
-    merge_properties(user_to_merge)
-    merge_premium(user_to_merge)
-    merge_relations(user_to_merge)
-    # TODO do soft delete and save
+    User.transaction do
+      merge_properties(user_to_merge)
+      merge_premium(user_to_merge)
+      merge_relations(user_to_merge)
+      save
+      # TODO handle validation failures
+      # TODO soft delete
+    end
   end
 
   private
