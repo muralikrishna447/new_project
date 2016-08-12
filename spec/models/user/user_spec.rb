@@ -400,6 +400,25 @@ describe User do
           expect(master_user.created_activities).to match_array(user_to_merge.created_activities)
         end
       end
+
+      context 'merged user has purchased premium gift certificates' do
+        let(:master_user) { Fabricate(:user) }
+        let(:user_to_merge) { Fabricate(:user) }
+        let(:premium_gift_certificates) do
+          [
+            Fabricate(:premium_gift_certificate, purchaser_id: user_to_merge.id),
+            Fabricate(:premium_gift_certificate, purchaser_id: user_to_merge.id)
+          ]
+        end
+
+        before { premium_gift_certificates.each(&:save) }
+
+        it 'merges premium gift certificates to master user' do
+          master_user.merge(user_to_merge)
+          expect(PremiumGiftCertificate.where(purchaser_id: user_to_merge.id)).to be_empty
+          expect(PremiumGiftCertificate.where(purchaser_id: master_user.id)).to match_array premium_gift_certificates
+        end
+      end
     end
   end
 end

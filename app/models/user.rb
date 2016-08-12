@@ -334,6 +334,7 @@ class User < ActiveRecord::Base
     Upload.where(user_id: user_to_merge.id).update_all(user_id: id)
     Event.where(user_id: user_to_merge.id).update_all(user_id: id)
     Activity.where(creator: user_to_merge.id).update_all(creator: id)
+    PremiumGiftCertificate.where(purchaser_id: user_to_merge.id).update_all(purchaser_id: id)
     merge_likes(user_to_merge)
   end
 
