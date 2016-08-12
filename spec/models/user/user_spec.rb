@@ -375,7 +375,7 @@ describe User do
           master_user.merge(user_to_merge)
           master_user.premium_member.should eq true
           master_user.premium_membership_price.should eq premium_membership_price
-          master_user.premium_membership_created_at.should be > DateTime.now - 1.hour
+          master_user.premium_membership_created_at.should eq premium_membership_created_at
         end
       end
 

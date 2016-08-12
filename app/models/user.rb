@@ -326,7 +326,7 @@ class User < ActiveRecord::Base
     if !premium_member && user_to_merge.premium_member
       self.premium_member = true
       self.premium_membership_price = user_to_merge.premium_membership_price
-      self.premium_membership_created_at = DateTime.now
+      self.premium_membership_created_at = user_to_merge.premium_membership_created_at
     end
   end
 
