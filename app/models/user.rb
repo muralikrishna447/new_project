@@ -336,6 +336,7 @@ class User < ActiveRecord::Base
     Activity.where(creator: user_to_merge.id).update_all(creator: id)
     PremiumGiftCertificate.where(purchaser_id: user_to_merge.id).update_all(purchaser_id: id)
     merge_likes(user_to_merge)
+    merge_circulator_users(user_to_merge)
   end
 
   def merge_likes(user_to_merge)
@@ -347,5 +348,16 @@ class User < ActiveRecord::Base
       likes_to_merge = Like.where('user_id = ? AND likeable_id NOT IN (?)', user_to_merge.id, likeable_ids)
     end
     likes_to_merge.update_all(user_id: id)
+  end
+
+  def merge_circulator_users(user_to_merge)
+    circulator_ids = circulator_users.map(&:circulator_id)
+    if circulator_ids.empty?
+      circulator_users_to_merge = CirculatorUser.where(user_id: user_to_merge.id)
+    else
+      # Only merge circulator_user entries that aren't already on self
+      circulator_users_to_merge = CirculatorUser.where('user_id = ? AND circulator_id NOT IN (?)', user_to_merge.id, circulator_ids)
+    end
+    circulator_users_to_merge.update_all(user_id: id)
   end
 end

@@ -419,6 +419,53 @@ describe User do
           expect(PremiumGiftCertificate.where(purchaser_id: master_user.id)).to match_array premium_gift_certificates
         end
       end
+
+      context 'merged user has circulator_users not in master user' do
+        let(:master_user) { Fabricate(:user) }
+        let(:user_to_merge) do
+          user = Fabricate(:user)
+          user.circulator_users = [
+            Fabricate(:circulator_user, user_id: user.id, circulator_id: 1),
+            Fabricate(:circulator_user, user_id: user.id, circulator_id: 2)
+          ]
+          user
+        end
+
+        it 'merges circulator_users to the master user' do
+          master_user.merge(user_to_merge)
+          master_user.circulator_users.reload
+          expect(master_user.circulator_users).to match_array(user_to_merge.circulator_users)
+        end
+      end
+
+      context 'merged user has circulator_users also in master user' do
+        let(:circulator_id_1) { 1 }
+        let(:circulator_id_2) { 2 }
+        let(:master_user) do
+          user = Fabricate(:user)
+          user.circulator_users = [
+            Fabricate(:circulator_user, user_id: user.id, circulator_id: circulator_id_1)
+          ]
+          user
+        end
+        let(:user_to_merge) do
+          user = Fabricate(:user)
+          user.circulator_users = [
+            Fabricate(:circulator_user, user_id: user.id, circulator_id: circulator_id_1),
+            Fabricate(:circulator_user, user_id: user.id, circulator_id: circulator_id_2)
+          ]
+          user
+        end
+
+        it 'dedupes common circulator_users' do
+          master_user.merge(user_to_merge)
+          master_user.circulator_users.reload
+          master_user.circulator_users.sort_by!(&:circulator_id)
+          expect(master_user.circulator_users.first.circulator_id).to eq circulator_id_1
+          expect(master_user.circulator_users.second.circulator_id).to eq circulator_id_2
+          expect(master_user.circulator_users.size).to eq 2
+        end
+      end
     end
   end
 end
