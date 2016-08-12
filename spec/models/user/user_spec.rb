@@ -203,7 +203,12 @@ describe User do
     end
 
     context 'master properties are blank' do
-      let(:master_user) { User.new }
+      let(:master_user) do
+        user = User.new
+        user.email = 'a@b.com'
+        user.password = 'secret'
+        user
+      end
 
       it 'sets the master property to the merged value' do
         master_user.merge(user_to_merge)

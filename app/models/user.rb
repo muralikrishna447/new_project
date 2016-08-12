@@ -296,8 +296,7 @@ class User < ActiveRecord::Base
       merge_properties(user_to_merge)
       merge_premium(user_to_merge)
       merge_relations(user_to_merge)
-      save
-      # TODO handle validation failures
+      save!
       user_to_merge.soft_delete
     end
   end
