@@ -302,20 +302,24 @@ class User < ActiveRecord::Base
   private
 
   def merge_properties(user_to_merge)
-    self.name = user_to_merge.name if name.blank?
-    self.location = user_to_merge.location if location.blank?
-    self.quote = user_to_merge.quote if quote.blank?
-    self.website = user_to_merge.website if website.blank?
-    self.chef_type = user_to_merge.chef_type if chef_type.blank?
-    self.from_aweber = user_to_merge.from_aweber if from_aweber.blank?
-    self.signed_up_from = user_to_merge.signed_up_from if signed_up_from.blank?
-    self.bio = user_to_merge.bio if bio.blank?
-    self.image_id = user_to_merge.image_id if image_id.blank?
-    self.referred_from = user_to_merge.referred_from if referred_from.blank?
+    merge_if_blank(
+      user_to_merge,
+      [
+        :name, :location, :quote, :website, :chef_type, :from_aweber,
+        :signed_up_from, :bio, :image_id, :referred_from, :skip_name_validation
+      ]
+    )
     self.role = user_to_merge.role unless role?(user_to_merge.role)
     self.referrer_id = user_to_merge.referrer_id unless referrer_id
     self.survey_results = user_to_merge.survey_results if survey_results.empty?
-    self.skip_name_validation = user_to_merge.skip_name_validation if skip_name_validation.blank?
+  end
+
+  def merge_if_blank(user_to_merge, props)
+    props.each do |prop|
+      self_value = send(prop)
+      user_to_merge_value = user_to_merge.send(prop)
+      send("#{prop}=", user_to_merge_value) if self_value.blank?
+    end
   end
 
   def merge_premium(user_to_merge)
