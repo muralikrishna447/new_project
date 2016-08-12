@@ -164,118 +164,38 @@ describe User do
     end
 
     context 'merged and master properties are not blank' do
-      it 'preserves master name' do
+      it 'preserves all properties' do
         master_user.merge(user_to_merge)
-        master_user.name.should eq master_user_name
-      end
-
-      it 'preserves master location' do
-        master_user.merge(user_to_merge)
-        master_user.location.should eq master_user_location
-      end
-
-      it 'preserves master quote' do
-        master_user.merge(user_to_merge)
-        master_user.quote.should eq master_user_quote
-      end
-
-      it 'preserves master website' do
-        master_user.merge(user_to_merge)
-        master_user.website.should eq master_user_website
-      end
-
-      it 'preserves master chef_type' do
-        master_user.merge(user_to_merge)
-        master_user.chef_type.should eq master_user_chef_type
-      end
-
-      it 'preserves signed_up_from' do
-        master_user.merge(user_to_merge)
-        master_user.signed_up_from.should eq master_user_signed_up_from
-      end
-
-      it 'preserves bio' do
-        master_user.merge(user_to_merge)
-        master_user.bio.should eq master_user_bio
-      end
-
-      it 'preserves image_id' do
-        master_user.merge(user_to_merge)
-        master_user.image_id.should eq master_user_image_id
-      end
-
-      it 'preserves reffered_from' do
-        master_user.merge(user_to_merge)
-        master_user.referred_from.should eq master_user_referred_from
-      end
-
-      it 'preserves referrer_id' do
-        master_user.merge(user_to_merge)
-        master_user.referrer_id.should eq master_user_referrer_id
-      end
-
-      it 'preserves survey_results' do
-        master_user.merge(user_to_merge)
-        master_user.survey_results.should eq master_user_survey_results
+        expect(master_user.name).to eq(master_user_name), 'name'
+        expect(master_user.location).to eq(master_user_location), 'location'
+        expect(master_user.quote).to eq(master_user_quote), 'quote'
+        expect(master_user.website).to eq(master_user_website), 'website'
+        expect(master_user.chef_type).to eq(master_user_chef_type), 'chef_type'
+        expect(master_user.signed_up_from).to eq(master_user_signed_up_from), 'signed_up_from'
+        expect(master_user.bio).to eq(master_user_bio), 'bio'
+        expect(master_user.image_id).to eq(master_user_image_id), 'image_id'
+        expect(master_user.referred_from).to eq(master_user_referred_from), 'referred_from'
+        expect(master_user.referrer_id).to eq(master_user_referrer_id), 'referrer_id'
+        expect(master_user.survey_results).to eq(master_user_survey_results), 'survey_results'
       end
     end
 
     context 'master properties are blank' do
       let(:master_user) { User.new }
 
-      it 'sets the master name to the merged value' do
+      it 'sets the master property to the merged value' do
         master_user.merge(user_to_merge)
-        master_user.name.should eq merged_user_name
-      end
-
-      it 'sets the master location to the merged value' do
-        master_user.merge(user_to_merge)
-        master_user.location.should eq merged_user_location
-      end
-
-      it 'sets the master quote to the merged value' do
-        master_user.merge(user_to_merge)
-        master_user.quote.should eq merged_user_quote
-      end
-
-      it 'sets the master website to the merged website' do
-        master_user.merge(user_to_merge)
-        master_user.website.should eq merged_user_website
-      end
-
-      it 'sets the master chef_type to the merged chef_type' do
-        master_user.merge(user_to_merge)
-        master_user.chef_type.should eq merged_user_chef_type
-      end
-
-      it 'sets the master signed_up_from to the merged value' do
-        master_user.merge(user_to_merge)
-        master_user.signed_up_from.should eq merged_user_signed_up_from
-      end
-
-      it 'sets the master bio to the merged value' do
-        master_user.merge(user_to_merge)
-        master_user.bio.should eq merged_user_bio
-      end
-
-      it 'sets the image_id to the merged value' do
-        master_user.merge(user_to_merge)
-        master_user.image_id.should eq merged_user_image_id
-      end
-
-      it 'sets the referred_from to the merged value' do
-        master_user.merge(user_to_merge)
-        master_user.referred_from.should eq merged_user_referred_from
-      end
-
-      it 'sets the referrer_id to the merged value' do
-        master_user.merge(user_to_merge)
-        master_user.referrer_id.should eq merged_user_referrer_id
-      end
-
-      it 'sets survey_results to the merged value' do
-        master_user.merge(user_to_merge)
-        master_user.survey_results.should eq merged_user_survey_results
+        expect(master_user.name).to eq(merged_user_name), 'name'
+        expect(master_user.location).to eq(merged_user_location), 'location'
+        expect(master_user.quote).to eq(merged_user_quote), 'quote'
+        expect(master_user.website).to eq(merged_user_website), 'website'
+        expect(master_user.chef_type).to eq(merged_user_chef_type), 'chef_type'
+        expect(master_user.signed_up_from).to eq(merged_user_signed_up_from), 'signed_up_from'
+        expect(master_user.bio).to eq(merged_user_bio), 'bio'
+        expect(master_user.image_id).to eq(merged_user_image_id), 'image_id'
+        expect(master_user.referred_from).to eq(merged_user_referred_from), 'referred_from'
+        expect(master_user.referrer_id).to eq(merged_user_referrer_id), 'referrer_id'
+        expect(master_user.survey_results).to eq(merged_user_survey_results), 'survey_results'
       end
     end
 
@@ -287,14 +207,10 @@ describe User do
         Fabricate(:user, from_aweber: true, skip_name_validation: true)
       end
 
-      it 'preserves from_aweber' do
+      it 'preserves booleans' do
         master_user.merge(user_to_merge)
-        master_user.from_aweber.should eq true
-      end
-
-      it 'preserves skip_name_validation' do
-        master_user.merge(user_to_merge)
-        master_user.skip_name_validation.should eq true
+        expect(master_user.from_aweber).to be_true, 'from_aweber'
+        expect(master_user.skip_name_validation).to be_true, 'skip_name_validation'
       end
     end
 
@@ -306,14 +222,10 @@ describe User do
         Fabricate(:user, from_aweber: true, skip_name_validation: true)
       end
 
-      it 'sets from_aweber to true' do
+      it 'sets booleans to true' do
         master_user.merge(user_to_merge)
-        master_user.from_aweber.should eq true
-      end
-
-      it 'sets skip_name_validation to true' do
-        master_user.merge(user_to_merge)
-        master_user.skip_name_validation.should eq true
+        expect(master_user.from_aweber).to be_true, 'from_aweber'
+        expect(master_user.skip_name_validation).to be_true, 'skip_name_validation'
       end
     end
 
