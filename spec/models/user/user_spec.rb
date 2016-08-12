@@ -95,6 +95,23 @@ describe User do
     end
   end
 
+  context 'soft delete' do
+    let(:user) { Fabricate(:user) }
+
+    it 'sets deleted_at' do
+      user.soft_delete
+      expect(user.deleted_at).not_to be_nil
+    end
+
+    it 'revokes actor addresses' do
+      actor_address = double('actor_address')
+      stub_const('ActorAddress', actor_address)
+      actor_address.stub(:revoke_all_for_user)
+      actor_address.should_receive(:revoke_all_for_user) { user }
+      user.soft_delete
+    end
+  end
+
   context 'merge user' do
     let(:user_role) { 'user' }
     let(:admin_role) { 'admin' }
@@ -472,6 +489,11 @@ describe User do
           expect(master_user.circulator_users.size).to eq 2
         end
       end
+    end
+
+    it 'soft deletes merged user' do
+      master_user.merge(user_to_merge)
+      expect(user_to_merge.active_for_authentication?).to be_false
     end
   end
 end

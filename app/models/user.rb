@@ -270,7 +270,10 @@ class User < ActiveRecord::Base
   # instead of deleting, indicate the user requested a delete & timestamp it
   def soft_delete
     logger.info "Setting User #{id} as soft deleted at #{Time.current}"
-    update_attribute(:deleted_at, Time.current)
+    User.transaction do
+      update_attribute(:deleted_at, Time.current)
+      ActorAddress.revoke_all_for_user(self)
+    end
   end
 
   def undelete
@@ -295,7 +298,7 @@ class User < ActiveRecord::Base
       merge_relations(user_to_merge)
       save
       # TODO handle validation failures
-      # TODO soft delete
+      user_to_merge.soft_delete
     end
   end
 
