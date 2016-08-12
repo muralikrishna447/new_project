@@ -312,6 +312,7 @@ class User < ActiveRecord::Base
     self.role = user_to_merge.role unless role?(user_to_merge.role)
     self.referrer_id = user_to_merge.referrer_id unless referrer_id
     self.survey_results = user_to_merge.survey_results if survey_results.empty?
+    self.viewed_activities = user_to_merge.viewed_activities if viewed_activities.empty?
   end
 
   def merge_if_blank(user_to_merge, props)

@@ -112,6 +112,7 @@ describe User do
     let(:master_user_referrer_id) { 1 }
     let(:master_user_survey_results) { { 'master' => true } }
     let(:master_user_skip_name_validation) { true }
+    let(:master_user_viewed_activities) { [[1, 'Master Viewed Activity']] }
     let(:master_user) do
       Fabricate(
         :user,
@@ -127,7 +128,8 @@ describe User do
         referred_from: master_user_referred_from,
         referrer_id: master_user_referrer_id,
         survey_results: master_user_survey_results,
-        skip_name_validation: master_user_skip_name_validation
+        skip_name_validation: master_user_skip_name_validation,
+        viewed_activities: master_user_viewed_activities
       )
     end
 
@@ -144,6 +146,7 @@ describe User do
     let(:merged_user_referrer_id) { 2 }
     let(:merged_user_survey_results) { { 'merged' => true } }
     let(:merged_user_skip_name_validation) { true }
+    let(:merged_user_viewed_activities) { [[2, 'Merged Viewed Activity']] }
     let(:user_to_merge) do
       Fabricate(
         :user,
@@ -159,7 +162,8 @@ describe User do
         referred_from: merged_user_referred_from,
         referrer_id: merged_user_referrer_id,
         survey_results: merged_user_survey_results,
-        skip_name_validation: merged_user_skip_name_validation
+        skip_name_validation: merged_user_skip_name_validation,
+        viewed_activities: merged_user_viewed_activities
       )
     end
 
@@ -177,6 +181,7 @@ describe User do
         expect(master_user.referred_from).to eq(master_user_referred_from), 'referred_from'
         expect(master_user.referrer_id).to eq(master_user_referrer_id), 'referrer_id'
         expect(master_user.survey_results).to eq(master_user_survey_results), 'survey_results'
+        expect(master_user.viewed_activities).to eq(master_user_viewed_activities), 'viewed_activities'
       end
     end
 
@@ -196,6 +201,7 @@ describe User do
         expect(master_user.referred_from).to eq(merged_user_referred_from), 'referred_from'
         expect(master_user.referrer_id).to eq(merged_user_referrer_id), 'referrer_id'
         expect(master_user.survey_results).to eq(merged_user_survey_results), 'survey_results'
+        expect(master_user.viewed_activities).to eq(merged_user_viewed_activities), 'viewed_activities'
       end
     end
 
