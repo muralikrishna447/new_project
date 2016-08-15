@@ -308,13 +308,12 @@ class User < ActiveRecord::Base
       user_to_merge,
       [
         :name, :location, :quote, :website, :chef_type, :from_aweber,
-        :signed_up_from, :bio, :image_id, :referred_from, :skip_name_validation
+        :signed_up_from, :bio, :image_id, :referred_from, :skip_name_validation,
+        :survey_results, :viewed_activities
       ]
     )
     self.role = user_to_merge.role unless role?(user_to_merge.role)
     self.referrer_id = user_to_merge.referrer_id unless referrer_id
-    self.survey_results = user_to_merge.survey_results if survey_results.empty?
-    self.viewed_activities = user_to_merge.viewed_activities if viewed_activities.empty?
   end
 
   def merge_if_blank(user_to_merge, props)
