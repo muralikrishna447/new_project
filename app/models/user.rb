@@ -344,7 +344,7 @@ class User < ActiveRecord::Base
   def merge_likes(user_to_merge)
     likeable_ids = likes.map(&:likeable_id)
     if likeable_ids.empty?
-      likes_to_merge = Like.where(user_id: user_to_merge.id)
+      likes_to_merge = user_to_merge.likes
     else
       # Only merge likes on things not already liked by self
       likes_to_merge = Like.where('user_id = ? AND likeable_id NOT IN (?)', user_to_merge.id, likeable_ids)
@@ -355,7 +355,7 @@ class User < ActiveRecord::Base
   def merge_circulator_users(user_to_merge)
     circulator_ids = circulator_users.map(&:circulator_id)
     if circulator_ids.empty?
-      circulator_users_to_merge = CirculatorUser.where(user_id: user_to_merge.id)
+      circulator_users_to_merge = user_to_merge.circulator_users
     else
       # Only merge circulator_user entries that aren't already on self
       circulator_users_to_merge = CirculatorUser.where('user_id = ? AND circulator_id NOT IN (?)', user_to_merge.id, circulator_ids)
