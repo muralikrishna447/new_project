@@ -270,7 +270,10 @@ class User < ActiveRecord::Base
   # instead of deleting, indicate the user requested a delete & timestamp it
   def soft_delete
     logger.info "Setting User #{id} as soft deleted at #{Time.current}"
-    update_attribute(:deleted_at, Time.current)
+    User.transaction do
+      update_attribute(:deleted_at, Time.current)
+      ActorAddress.revoke_all_for_user(self)
+    end
   end
 
   def undelete
@@ -286,5 +289,81 @@ class User < ActiveRecord::Base
   # provide a custom message for a deleted account
   def inactive_message
     !deleted_at ? super : "Your account has been deleted."
+  end
+
+  def merge(user_to_merge)
+    logger.info("Merging user with id #{user_to_merge.id} into user with id #{id}: merging #{user_to_merge.inspect} to #{inspect}")
+    User.transaction do
+      merge_properties(user_to_merge)
+      merge_premium(user_to_merge)
+      merge_relations(user_to_merge)
+      save!
+      user_to_merge.soft_delete
+    end
+    logger.info("Merge completed for user with id #{id}: #{inspect}")
+  end
+
+  private
+
+  def merge_properties(user_to_merge)
+    merge_if_blank(
+      user_to_merge,
+      [
+        :name, :location, :quote, :website, :chef_type, :from_aweber,
+        :signed_up_from, :bio, :image_id, :referred_from, :skip_name_validation,
+        :survey_results, :viewed_activities
+      ]
+    )
+    self.role = user_to_merge.role unless role?(user_to_merge.role)
+    self.referrer_id = user_to_merge.referrer_id unless referrer_id
+  end
+
+  def merge_if_blank(user_to_merge, props)
+    props.each do |prop|
+      self_value = send(prop)
+      user_to_merge_value = user_to_merge.send(prop)
+      send("#{prop}=", user_to_merge_value) if self_value.blank?
+    end
+  end
+
+  def merge_premium(user_to_merge)
+    if !premium_member && user_to_merge.premium_member
+      logger.info("Merged user with id #{user_to_merge.id} is premium, adding premium to user with id #{id}")
+      self.premium_member = true
+      self.premium_membership_price = user_to_merge.premium_membership_price
+      self.premium_membership_created_at = user_to_merge.premium_membership_created_at
+    end
+  end
+
+  def merge_relations(user_to_merge)
+    Upload.where(user_id: user_to_merge.id).update_all(user_id: id)
+    Event.where(user_id: user_to_merge.id).update_all(user_id: id)
+    Activity.where(creator: user_to_merge.id).update_all(creator: id)
+    PremiumGiftCertificate.where(purchaser_id: user_to_merge.id).update_all(purchaser_id: id)
+    merge_likes(user_to_merge)
+    merge_circulator_users(user_to_merge)
+  end
+
+  def merge_likes(user_to_merge)
+    likeable_ids = likes.map(&:likeable_id)
+    if likeable_ids.empty?
+      likes_to_merge = user_to_merge.likes
+    else
+      # Only merge likes on things not already liked by self
+      likes_to_merge = Like.where('user_id = ? AND likeable_id NOT IN (?)', user_to_merge.id, likeable_ids)
+    end
+    likes_to_merge.update_all(user_id: id)
+  end
+
+  def merge_circulator_users(user_to_merge)
+    circulator_ids = circulator_users.map(&:circulator_id)
+    if circulator_ids.empty?
+      circulator_users_to_merge = user_to_merge.circulator_users
+    else
+      # Only merge circulator_user entries that aren't already on self
+      circulator_users_to_merge = CirculatorUser.where('user_id = ? AND circulator_id NOT IN (?)', user_to_merge.id, circulator_ids)
+    end
+    logger.info("Merging circulator users into user with id #{id}: #{circulator_users_to_merge.inspect}")
+    circulator_users_to_merge.update_all(user_id: id)
   end
 end
