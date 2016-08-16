@@ -177,6 +177,7 @@ class ActorAddress < ActiveRecord::Base
   end
 
   def self.revoke_all_for_user(user)
+    logger.info("Setting all actor address statuses to revoked for user with id #{user.id}")
     ActorAddress.where(actor_id: user.id).update_all(status: 'revoked')
   end
 

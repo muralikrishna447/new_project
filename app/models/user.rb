@@ -292,6 +292,7 @@ class User < ActiveRecord::Base
   end
 
   def merge(user_to_merge)
+    logger.info("Merging user with id #{user_to_merge.id} into user with id #{id}: merging #{user_to_merge.inspect} to #{inspect}")
     User.transaction do
       merge_properties(user_to_merge)
       merge_premium(user_to_merge)
@@ -299,6 +300,7 @@ class User < ActiveRecord::Base
       save!
       user_to_merge.soft_delete
     end
+    logger.info("Merge completed for user with id #{id}: #{inspect}")
   end
 
   private
@@ -326,6 +328,7 @@ class User < ActiveRecord::Base
 
   def merge_premium(user_to_merge)
     if !premium_member && user_to_merge.premium_member
+      logger.info("Merged user with id #{user_to_merge.id} is premium, adding premium to user with id #{id}")
       self.premium_member = true
       self.premium_membership_price = user_to_merge.premium_membership_price
       self.premium_membership_created_at = user_to_merge.premium_membership_created_at
@@ -360,6 +363,7 @@ class User < ActiveRecord::Base
       # Only merge circulator_user entries that aren't already on self
       circulator_users_to_merge = CirculatorUser.where('user_id = ? AND circulator_id NOT IN (?)', user_to_merge.id, circulator_ids)
     end
+    logger.info("Merging circulator users into user with id #{id}: #{circulator_users_to_merge.inspect}")
     circulator_users_to_merge.update_all(user_id: id)
   end
 end
