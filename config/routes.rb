@@ -268,6 +268,7 @@ Delve::Application.routes.draw do
       get 'auth/external_redirect', to: 'auth#external_redirect'
 
       namespace :shopping do
+        resources :discounts, only: [:show]
         resources :products do
           # match '/product/:product_id', to: 'shopping#product'
         end
