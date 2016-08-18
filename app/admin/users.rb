@@ -31,6 +31,10 @@ ActiveAdmin.register User do
     end
   end
 
+  action_item only: [:show] do
+    link_to('Merge User', merge_admin_user_path(user))
+  end
+
   member_action :reset_password, method: :post do
     @user = User.find(params[:id])
     email = @user.email
@@ -60,6 +64,30 @@ ActiveAdmin.register User do
     @user = User.find(params[:id])
     @user.make_premium_member(0)
     redirect_to({action: :show}, notice: "User is now premium member")
+  end
+
+  member_action :merge do
+    @page_title = 'Merge User'
+  end
+
+  member_action :merge_do, method: :post do
+    email = params[:email]
+    if email.empty?
+      redirect_to({ action: :merge }, alert: 'Oops! Please enter an email address to merge.')
+      return
+    end
+
+    user_list = User.where(email: email)
+    if user_list.empty?
+      redirect_to({ action: :merge }, alert: "Sorry! There is no account with the email address #{email}. Try again.")
+    else
+      begin
+        resource.merge(user_list.first)
+        redirect_to({ action: :show }, notice: "Success! Account data from #{email} was merged into this account. The account #{email} was soft deleted.")
+      rescue ActiveRecord::RecordInvalid => invalid
+        redirect_to({ action: :merge }, alert: "Sorry! The user account data is invalid and could not be saved. #{invalid.record.errors.full_messages}")
+      end
+    end
   end
 
   index do

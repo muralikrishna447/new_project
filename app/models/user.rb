@@ -301,6 +301,9 @@ class User < ActiveRecord::Base
       user_to_merge.soft_delete
     end
     logger.info("Merge completed for user with id #{id}: #{inspect}")
+    rescue Exception => e
+      logger.error("Merge failed for user with id #{id}, transaction was rolled back: #{e.message}")
+      raise e
   end
 
   private

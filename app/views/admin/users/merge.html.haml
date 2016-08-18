@@ -1,0 +1,13 @@
+.row
+  .span12
+    %p
+      All data from the account you enter below will be merged into the account
+      = "#{resource.email}, "
+      excluding orders and any other external account data. The account you enter
+      below will be "soft deleted" and the user must log in using only
+      = "#{resource.email}"
+      going forward. Merging accounts cannot be undone.
+      = form_tag("merge_do", method: "post") do
+        = label_tag(:email, "Enter the email address for the account that you want to merge into #{resource.email}:")
+        = text_field_tag(:email)
+        = submit_tag("Merge", data: { confirm: "Are you sure? You can't undo this." })
