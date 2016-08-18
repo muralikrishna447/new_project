@@ -176,6 +176,11 @@ class ActorAddress < ActiveRecord::Base
     self.status == "revoked"
   end
 
+  def self.revoke_all_for_user(user)
+    logger.info("Setting all actor address statuses to revoked for user with id #{user.id}")
+    ActorAddress.where(actor_id: user.id).update_all(status: 'revoked')
+  end
+
   # fork here
   def self.find_for_token(token)
     logger.info "Finding actor address for token [#{token.inspect}]"
