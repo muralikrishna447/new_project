@@ -285,6 +285,42 @@ ALTER SEQUENCE admin_users_id_seq OWNED BY admin_users.id;
 
 
 --
+-- Name: advertisements; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE advertisements (
+    id integer NOT NULL,
+    image text,
+    title text,
+    description text,
+    button_title text,
+    url text,
+    campaign text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: advertisements_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE advertisements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: advertisements_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE advertisements_id_seq OWNED BY advertisements.id;
+
+
+--
 -- Name: answers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2315,6 +2351,13 @@ ALTER TABLE ONLY admin_users ALTER COLUMN id SET DEFAULT nextval('admin_users_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY advertisements ALTER COLUMN id SET DEFAULT nextval('advertisements_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY answers ALTER COLUMN id SET DEFAULT nextval('answers_id_seq'::regclass);
 
 
@@ -2735,6 +2778,14 @@ ALTER TABLE ONLY active_admin_comments
 
 ALTER TABLE ONLY admin_users
     ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: advertisements_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY advertisements
+    ADD CONSTRAINT advertisements_pkey PRIMARY KEY (id);
 
 
 --
@@ -4169,3 +4220,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160627175815');
 INSERT INTO schema_migrations (version) VALUES ('20160628151954');
 
 INSERT INTO schema_migrations (version) VALUES ('20160630195733');
+
+INSERT INTO schema_migrations (version) VALUES ('20160818162532');
