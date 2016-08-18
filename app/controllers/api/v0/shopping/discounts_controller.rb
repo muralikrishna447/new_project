@@ -11,9 +11,9 @@ module Api
           discount_code = params[:id]
           @discount = @discounts.find_all{ |d| d.code == discount_code  }.first
           if @discount
-            render(json: @discount)
+            render_api_response 200, @discount
           else
-            render(json: {message: 'No discount found.'})
+            render_api_response(404, {message: 'Discount not found.'})
           end
         end
 

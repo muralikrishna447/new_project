@@ -64,5 +64,11 @@ describe Api::V0::Shopping::DiscountsController do
       discount['valid'].should be_true
     end
 
+    it "should return 404" do
+      get :show, id: 'random01'
+      response.should_not be_success
+      response.status.should eq(404)
+    end
+
   end
 end
