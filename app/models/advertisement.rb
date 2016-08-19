@@ -1,3 +1,4 @@
 class Advertisement < ActiveRecord::Base
-  attr_accessible :image, :title, :description, :button_title, :url, :campaign
+  include PublishableModel
+  attr_accessible :published, :image, :title, :description, :button_title, :url, :campaign
 end

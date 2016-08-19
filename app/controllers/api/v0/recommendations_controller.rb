@@ -30,28 +30,26 @@ module Api
       #            should also be added by the client
 
       def index
-        tags = params.delete(:tags)
         platform = params.delete(:platform)
 
         # Legacy recsys for activities only if platform isn't specified
         if platform.blank?
+          tags = params.delete(:tags)
           @results = Activity.chefsteps_generated.include_in_gallery.published.tagged_with(tags, any: true).order('published_at desc').page(params[:page]).per(8)
           render json: @results, each_serializer: Api::ActivityIndexSerializer
 
         # Super-fancy modern recsys - not so much
         else
           ensure_authorized_or_anonymous()
-          page = params.delete(:page)
-          slot = params.delete(:slot)
-          aspect = params.delete(:aspect)
-          limit = params.delete(:limit) || 1
-          metadata = params
+          metadata = params.dup
+          page = metadata.delete(:page)
+          slot = metadata.delete(:slot)
+          aspect = metadata.delete(:aspect)
+          limit = metadata.delete(:limit) || 1
 
-          ads = Advertisement.limit(limit)
+          ads = Advertisement.published.limit(limit).to_a
 
-          Rails.logger.info "Recommendation request #{params.inspect}, returning #{ads.count} results"
-
-          render json: ads, each_serializer: Api::AdvertisementSerializer
+          render_api_response 200, ads, Api::AdvertisementSerializer
         end
       end
     end

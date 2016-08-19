@@ -7,6 +7,7 @@ class CreateAdvertisement < ActiveRecord::Migration
       t.text :button_title
       t.text :url
       t.text :campaign
+      t.boolean :published, :default => false
       t.timestamps
     end
   end

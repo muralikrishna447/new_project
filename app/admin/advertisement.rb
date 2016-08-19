@@ -1,7 +1,8 @@
 ActiveAdmin.register Advertisement do
-   form partial: 'form'
+  form partial: 'form'
 
   index do
+    column :published
     column :title
     column :description
     column :campaign

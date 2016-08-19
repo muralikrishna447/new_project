@@ -296,6 +296,7 @@ CREATE TABLE advertisements (
     button_title text,
     url text,
     campaign text,
+    published boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
