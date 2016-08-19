@@ -97,25 +97,21 @@ module Api
         if circulator.nil?
           return render_api_response 404, {message: "Circulator not found"}
         end
-        owners = circulator.circulator_users.select {|cu| cu.owner}
-        logger.info "Found circulator owners #{owners.inspect}"
+
+        if notified?(circulator, params[:idempotency_key])
+          return render_api_response 200, { message: 'A notification has already '\
+                                                     'been sent for circulator with '\
+                                                     "id #{circulator.id} and idempotency "\
+                                                     "key #{params[:idempotency_key]}." }
+        end
 
         begin
           message = I18n.t("circulator.push.#{params[:notification_type]}.message", raise: true)
         rescue I18n::MissingTranslationData 
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
         end
-        
-        owners.each do |owner|
-          owner.user.actor_addresses.each do |aa|
-            logger.info "Found actor address #{aa.inspect}"
-            next if aa.revoked?
-            token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
-            next if token.nil?
-            logger.info "Publishing to token #{token.inspect}"
-            publish_notification(token.endpoint_arn, message)
-          end
-        end
+
+        notify_owners(circulator, message)
 
         render_api_response 200
       end
@@ -138,6 +134,41 @@ module Api
           )
         rescue Aws::SNS::Errors::EndpointDisabled
           logger.info "Failed to publish to #{endpoint_arn}. Endpoint disabled."
+        end
+      end
+
+      private
+
+      def notified?(circulator, idempotency_key)
+        if idempotency_key.blank?
+          logger.info "No idempotency_key was specified, will send notification for circulator with id #{circulator.id}"
+          return false
+        end
+
+        cache_key = "notifications.#{circulator.id}.#{idempotency_key}"
+        if Rails.cache.exist?(cache_key)
+          logger.info "Notification cache entry for #{cache_key} found, notification already sent for circulator with id #{circulator.id}"
+          return true
+        end
+
+        logger.info "No notification cache entry for #{cache_key}, will send notification for circulator with id #{circulator.id}"
+        Rails.cache.write(cache_key, true, expires_in: 72.hours)
+        false
+      end
+
+      def notify_owners(circulator, message)
+        owners = circulator.circulator_users.select {|cu| cu.owner}
+        logger.info "Found circulator owners #{owners.inspect}"
+
+        owners.each do |owner|
+          owner.user.actor_addresses.each do |aa|
+            logger.info "Found actor address #{aa.inspect}"
+            next if aa.revoked?
+            token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
+            next if token.nil?
+            logger.info "Publishing to token #{token.inspect}"
+            publish_notification(token.endpoint_arn, message)
+          end
         end
       end
     end

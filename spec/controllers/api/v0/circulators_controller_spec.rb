@@ -13,6 +13,10 @@ describe Api::V0::CirculatorsController do
     request.env['HTTP_AUTHORIZATION'] = token.to_jwt
   end
 
+  after :each do
+    Timecop.return
+  end
+
   it 'should list circulators' do
     get :index
 
@@ -275,14 +279,100 @@ describe Api::V0::CirculatorsController do
     end
 
     describe 'notify_clients' do
-      it 'should notify clients' do
-        Api::V0::CirculatorsController.any_instance.stub(:publish_notification)
-        post(:notify_clients, {
-          :id => @circulator.circulator_id,
-          :notification_type => 'water_heated'})
-        response.code.should == '200'
+      let(:notification_type) { 'water_heated' }
+
+      context 'no idempotency key is specified' do
+        it 'should notify clients' do
+          expect_publish_notification(true)
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: notification_type
+          )
+          expect(response.code).to eq '200'
+        end
       end
-      
+
+      context 'idempotency key is specified' do
+        let(:idempotency_key) { '123' }
+        let(:cache_key) { "notifications.#{@circulator.id}.#{idempotency_key}" }
+        after :each do
+          Rails.cache.delete(cache_key)
+        end
+
+        context 'notification cache contains key' do
+          before { Rails.cache.write(cache_key, true) }
+
+          it 'does not send notification' do
+            expect_publish_notification(false)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+          end
+        end
+
+        context 'notification cache does not contain key' do
+          it 'sends notification' do
+            expect_publish_notification(true)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+          end
+        end
+
+        context 'notification was sent more than 72 hours ago' do
+          it 'sends a new notification' do
+            # We should see two notifications in total
+            expect_publish_notification(true, 2)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+            Timecop.freeze(73.hours)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+          end
+        end
+
+        context 'notification was sent less than 72 hours ago' do
+          it 'does not send a new notification' do
+            # We should only see one notification
+            expect_publish_notification(true, 1)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+            Timecop.freeze(71.hours)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+          end
+        end
+      end
+
       it 'should reject unknown notification types' do
         post(:notify_clients, {
           :id => @circulator.circulator_id,
@@ -305,6 +395,16 @@ describe Api::V0::CirculatorsController do
           :notification_type => 'water_heated'})
         response.code.should == '200'
       end
+    end
+  end
+
+  private
+
+  def expect_publish_notification(should_receive, times = 1)
+    if should_receive
+      Api::V0::CirculatorsController.any_instance.should_receive(:publish_notification).exactly(times).times
+    else
+      Api::V0::CirculatorsController.any_instance.should_not_receive(:publish_notification)
     end
   end
 end
