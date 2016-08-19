@@ -32,6 +32,7 @@ module Api
           end
         end
 
+        # Adding a :valid attribute because Shopify::Discount can be expired but still enabled
         def valid?(discount)
           expired = (discount.ends_at && DateTime.parse(discount.ends_at) < Date.today) ? true : false
           discount.status == 'enabled' && !expired

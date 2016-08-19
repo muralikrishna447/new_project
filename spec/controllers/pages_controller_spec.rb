@@ -11,6 +11,24 @@ describe PagesController do
       get :show, id: @page.slug
       expect(response).to render_template(:show)
     end
+
+    it 'redirects a page promotion' do
+      @page = Fabricate :page, title: 'Test Promotion', published: true, is_promotion: true, redirect_path: '/joule', discount_code: 'test_discount'
+      get :show, id: @page.slug
+      expect(response).to redirect_to('/joule?discount=test_discount')
+    end
+
+    it 'does not redirect promotion if redirect_path is not set' do
+      @page = Fabricate :page, title: 'Test Promotion', published: true, is_promotion: true, redirect_path: nil, discount_code: 'test_discount'
+      get :show, id: @page.slug
+      expect(response).to render_template(:show)
+    end
+
+    it 'redirects promotion if redirect_path is set but code is not set' do
+      @page = Fabricate :page, title: 'Test Promotion', published: true, is_promotion: true, redirect_path: '/joule', discount_code: nil
+      get :show, id: @page.slug
+      expect(response).to redirect_to('/joule')
+    end
   end
 
   describe 'market' do

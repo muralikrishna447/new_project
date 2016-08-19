@@ -1254,7 +1254,10 @@ CREATE TABLE pages (
     primary_path character varying(255),
     short_description text,
     show_footer boolean DEFAULT false,
-    published boolean DEFAULT false
+    published boolean DEFAULT false,
+    is_promotion boolean,
+    discount_code character varying(255),
+    redirect_path character varying(255)
 );
 
 
@@ -4169,3 +4172,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160627175815');
 INSERT INTO schema_migrations (version) VALUES ('20160628151954');
 
 INSERT INTO schema_migrations (version) VALUES ('20160630195733');
+
+INSERT INTO schema_migrations (version) VALUES ('20160818231947');

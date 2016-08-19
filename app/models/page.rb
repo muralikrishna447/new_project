@@ -1,7 +1,7 @@
 class Page < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
-  attr_accessible :title, :content, :image_id, :primary_path, :short_description, :show_footer, :components_attributes
+  attr_accessible :title, :content, :image_id, :primary_path, :short_description, :show_footer, :components_attributes, :is_promotion, :redirect_path, :discount_code
 
   friendly_id :title, use: [:slugged, :history]
 
