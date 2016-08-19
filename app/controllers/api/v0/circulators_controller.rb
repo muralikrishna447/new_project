@@ -111,7 +111,7 @@ module Api
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
         end
 
-        notify_owners(circulator, message)
+        notify_owners(circulator, params[:idempotency_key], message)
 
         render_api_response 200
       end
@@ -145,18 +145,17 @@ module Api
           return false
         end
 
-        cache_key = "notifications.#{circulator.id}.#{idempotency_key}"
+        cache_key = notification_cache_key(circulator, idempotency_key)
         if Rails.cache.exist?(cache_key)
           logger.info "Notification cache entry for #{cache_key} found, notification already sent for circulator with id #{circulator.id}"
           return true
         end
 
         logger.info "No notification cache entry for #{cache_key}, will send notification for circulator with id #{circulator.id}"
-        Rails.cache.write(cache_key, true, expires_in: 72.hours)
         false
       end
 
-      def notify_owners(circulator, message)
+      def notify_owners(circulator, idempotency_key, message)
         owners = circulator.circulator_users.select {|cu| cu.owner}
         logger.info "Found circulator owners #{owners.inspect}"
 
@@ -170,6 +169,22 @@ module Api
             publish_notification(token.endpoint_arn, message)
           end
         end
+
+        set_notified(circulator, idempotency_key)
+      end
+
+      def set_notified(circulator, idempotency_key)
+        unless idempotency_key.blank?
+          Rails.cache.write(
+            notification_cache_key(circulator, idempotency_key),
+            true,
+            expires_in: 72.hours
+          )
+        end
+      end
+
+      def notification_cache_key(circulator, idempotency_key)
+        "notifications.#{circulator.id}.#{idempotency_key}"
       end
     end
   end
