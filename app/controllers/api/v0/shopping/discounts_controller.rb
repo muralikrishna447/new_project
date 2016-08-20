@@ -5,14 +5,12 @@ module Api
     module Shopping
       class DiscountsController < BaseController
 
-        before_filter :get_all_discounts
-
         def show
-          discount_code = params[:id]
-          @discount = @discounts.find_all{ |d| d.code == discount_code  }.first
-          if @discount
+          begin
+            @discount = ShopifyAPI::Discount.find(params[:id])
+            @discount.valid = valid?(@discount)
             render_api_response 200, @discount
-          else
+          rescue
             render_api_response(404, {message: 'Discount not found.'})
           end
         end

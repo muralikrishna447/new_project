@@ -3,6 +3,8 @@ describe Api::V0::Shopping::DiscountsController do
     discounts_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('discounts').data)['discounts']
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/discounts.json/)
       .to_return(status: 200, body: discounts_data.to_json, headers: {})
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/discounts\/random01.json/)
+      .to_return(status: 404, body: {message: 'discount not found'}.to_json, headers: {})
   end
 
   describe 'private methods' do
@@ -56,9 +58,10 @@ describe Api::V0::Shopping::DiscountsController do
   describe 'GET /discounts/:code' do
 
     it "should return a discount" do
-      get :show, id: 'valid01'
+      get :show, id: '101'
       response.should be_success
       discount = JSON.parse(response.body)
+      discount['code'].should eq('valid01')
       discount['status'].should eq('enabled')
       discount['value'].should eq('10.00')
       discount['valid'].should be_true
