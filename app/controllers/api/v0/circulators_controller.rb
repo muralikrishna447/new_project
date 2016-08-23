@@ -1,7 +1,7 @@
 module Api
   module V0
     class CirculatorsController < BaseController
-      before_filter :ensure_authorized, except: [:notify_clients]
+      before_filter :ensure_authorized, except: [:notify_clients,:coefficients]
       before_filter :ensure_circulator_owner, only: [:update, :destroy]
       before_filter :ensure_circulator_user, only: [:token]
       before_filter :ensure_authorized_service, only: [:notify_clients]
@@ -91,7 +91,7 @@ module Api
 
         render_api_response 200, {token: aa.current_token.to_jwt}
       end
-      
+
       def notify_clients
         circulator = Circulator.where(circulator_id: params[:id]).first
         if circulator.nil?
@@ -107,7 +107,7 @@ module Api
 
         begin
           message = I18n.t("circulator.push.#{params[:notification_type]}.message", raise: true)
-        rescue I18n::MissingTranslationData 
+        rescue I18n::MissingTranslationData
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
         end
 
@@ -115,7 +115,7 @@ module Api
 
         render_api_response 200
       end
-      
+
       def publish_notification(endpoint_arn, message)
         sns = Aws::SNS::Client.new(region: 'us-east-1')
         begin
@@ -134,6 +134,22 @@ module Api
           )
         rescue Aws::SNS::Errors::EndpointDisabled
           logger.info "Failed to publish to #{endpoint_arn}. Endpoint disabled."
+        end
+      end
+
+      # ex: GET api/v0/circulator/coefficients/1.1.1
+      def coefficients
+        # Example
+        coefficients = {
+          '1.1.1' => '0.1',
+          '2.2.2' => '0.2'
+        }
+        version = params[:version]
+        coefficient = coefficients[version]
+        if coefficient
+          render_api_response 200, {version: version, coefficient: coefficient}
+        else
+          render_api_response 404, {message: 'Coefficient does not exist for version provided.'}
         end
       end
 
