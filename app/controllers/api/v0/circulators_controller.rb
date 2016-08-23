@@ -161,7 +161,7 @@ module Api
         if coefficients
           render_api_response 200, coefficients
         else
-          render_api_response 404, {message: 'Coefficient does not exist for version provided.'}
+          render_api_response 200, {hardwareVersion: identify['hardwareVersion'], firmwareVersion: identify['firmwareVersion'], coefficients: {}}
         end
 
       end
