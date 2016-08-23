@@ -137,20 +137,33 @@ module Api
         end
       end
 
-      # ex: GET api/v0/circulator/coefficients/1.1.1
+      # Ex: GET /api/v0/circulators/coefficients?identify={ "hardwareVersion": "1.1", "firmwareVersion": "1.1" }
       def coefficients
-        # Example
-        coefficients = {
-          '1.1.1' => '0.1',
-          '2.2.2' => '0.2'
-        }
-        version = params[:version]
-        coefficient = coefficients[version]
-        if coefficient
-          render_api_response 200, {version: version, coefficient: coefficient}
+
+        # Example data
+        coefficientsData = [
+          {
+            hardwareVersion: '1.1',
+            firmwareVersion: '1.1',
+            coefficients: {
+              tempAdcBias: 1,
+              tempAdcScale: 2,
+              tempRef: 3,
+              tempCoeffA: 4,
+              tempCoeffB: 5,
+              tempCoeffC: 6
+            }
+          }
+        ]
+
+        identify = JSON.parse params[:identify]
+        coefficients = coefficientsData.select{|c| c[:hardwareVersion] == identify['hardwareVersion'] && c[:firmwareVersion] == identify['firmwareVersion']}.first
+        if coefficients
+          render_api_response 200, coefficients
         else
           render_api_response 404, {message: 'Coefficient does not exist for version provided.'}
         end
+
       end
 
       private

@@ -262,7 +262,8 @@ Delve::Application.routes.draw do
       resources :circulators, only: [:index, :create, :update, :destroy] do
         get :token, on: :member
         post :notify_clients, on: :member
-        get 'coefficients/:version', version: /[A-Za-z0-9\.]+?/, format: /json|csv|xml|yaml/, to: 'circulators#coefficients', on: :collection
+        # get 'coefficients/:version', version: /[A-Za-z0-9\.]+?/, format: /json|csv|xml|yaml/, to: 'circulators#coefficients', on: :collection
+        get :coefficients, on: :collection
       end
 
       post 'firmware/updates', to: 'firmware#updates'
