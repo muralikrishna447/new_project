@@ -137,7 +137,7 @@ module Api
         end
       end
 
-      # Ex: GET /api/v0/circulators/coefficients?identify={ "hardwareVersion": "1.1", "firmwareVersion": "1.1" }
+      # Ex: GET /api/v0/circulators/coefficients?identify={"hardwareVersion":"1.1","firmwareVersion":"1.1"}
       def coefficients
 
         # Example data
