@@ -424,6 +424,12 @@ describe Api::V0::CirculatorsController do
       coefficientsResponse['appFirmwareVersion'].should eq('2.1')
       coefficientsResponse['coefficients'].should eq({})
     end
+
+    it 'should return error' do
+      identifyObject = {}
+      post :coefficients, identify: identifyObject
+      response.should_not be_success
+    end
   end
 
   private
