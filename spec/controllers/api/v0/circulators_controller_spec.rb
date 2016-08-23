@@ -402,26 +402,26 @@ describe Api::V0::CirculatorsController do
     it 'should return coefficients' do
       identifyObject = {
         hardwareVersion: "1.1",
-        firmwareVersion: "1.1"
+        appFirmwareVersion: "1.1"
       }
       post :coefficients, identify: identifyObject
       response.should be_success
       coefficientsResponse = JSON.parse(response.body)
       coefficientsResponse['hardwareVersion'].should eq('1.1')
-      coefficientsResponse['firmwareVersion'].should eq('1.1')
+      coefficientsResponse['appFirmwareVersion'].should eq('1.1')
       coefficientsResponse['coefficients'].keys.should eq(['tempAdcBias','tempAdcScale','tempRef','tempCoeffA','tempCoeffB','tempCoeffC'])
     end
 
     it 'should return empty object' do
       identifyObject = {
         hardwareVersion: "2.1",
-        firmwareVersion: "2.1"
+        appFirmwareVersion: "2.1"
       }
       post :coefficients, identify: identifyObject
       response.should be_success
       coefficientsResponse = JSON.parse(response.body)
       coefficientsResponse['hardwareVersion'].should eq('2.1')
-      coefficientsResponse['firmwareVersion'].should eq('2.1')
+      coefficientsResponse['appFirmwareVersion'].should eq('2.1')
       coefficientsResponse['coefficients'].should eq({})
     end
   end

@@ -137,14 +137,15 @@ module Api
         end
       end
 
-      # Ex: GET /api/v0/circulators/coefficients?identify={"hardwareVersion":"1.1","firmwareVersion":"1.1"}
+      # Ex: POST /api/v0/circulators/coefficients
+      # POST params :identify
       def coefficients
 
         # Example data
         coefficientsData = [
           {
             hardwareVersion: '1.1',
-            firmwareVersion: '1.1',
+            appFirmwareVersion: '1.1',
             coefficients: {
               tempAdcBias: 1,
               tempAdcScale: 2,
@@ -157,11 +158,11 @@ module Api
         ]
 
         identify = params[:identify]
-        coefficients = coefficientsData.select{|c| c[:hardwareVersion] == identify['hardwareVersion'] && c[:firmwareVersion] == identify['firmwareVersion']}.first
+        coefficients = coefficientsData.select{|c| c[:hardwareVersion] == identify['hardwareVersion'] && c[:appFirmwareVersion] == identify['appFirmwareVersion']}.first
         if coefficients
           render_api_response 200, coefficients
         else
-          render_api_response 200, {hardwareVersion: identify['hardwareVersion'], firmwareVersion: identify['firmwareVersion'], coefficients: {}}
+          render_api_response 200, {hardwareVersion: identify['hardwareVersion'], appFirmwareVersion: identify['appFirmwareVersion'], coefficients: {}}
         end
 
       end
