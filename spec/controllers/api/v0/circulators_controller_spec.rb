@@ -269,7 +269,7 @@ describe Api::V0::CirculatorsController do
       @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
       @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      
+
       p = PushNotificationToken.new
       p.actor_address = @user_aa
       p.endpoint_arn = "arn:aws:sns:us-east-1:0217963864089:endpoint/APNS_SANDBOX/joule-ios-dev/f56b2215-2121-3b21-b172-5d519ab0d123"
@@ -379,13 +379,13 @@ describe Api::V0::CirculatorsController do
           :notification_type => 'gibberish'})
         response.code.should == '400'
       end
-      
+
       it 'should return 404 when circulator not found' do
         post(:notify_clients, {
           :id => 1232132123,
           :notification_type => 'gibberish'})
         response.code.should == '404'
-      end        
+      end
 
       it 'should not notify revoked addresses'do
         # not stubbed reply for publish since it shouldn't be called
@@ -395,6 +395,27 @@ describe Api::V0::CirculatorsController do
           :notification_type => 'water_heated'})
         response.code.should == '200'
       end
+    end
+  end
+
+  context 'coefficients' do
+    it 'should return coefficients' do
+      identifyObject = {
+        hardwareVersion: "1.1",
+        firmwareVersion: "1.1"
+      }
+      post :coefficients, identify: identifyObject
+      response.should be_success
+      coefficientsResponse = JSON.parse(response.body)
+      coefficientsResponse['coefficients'].keys.should eq(['tempAdcBias','tempAdcScale','tempRef','tempCoeffA','tempCoeffB','tempCoeffC'])
+    end
+
+    it 'should return error' do
+      identifyObject = {
+        hardwareVersion: "1.1"
+      }
+      post :coefficients, identify: identifyObject
+      response.should_not be_success
     end
   end
 

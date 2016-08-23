@@ -262,7 +262,7 @@ Delve::Application.routes.draw do
       resources :circulators, only: [:index, :create, :update, :destroy] do
         get :token, on: :member
         post :notify_clients, on: :member
-        get :coefficients, on: :collection
+        post :coefficients, on: :collection
       end
 
       post 'firmware/updates', to: 'firmware#updates'

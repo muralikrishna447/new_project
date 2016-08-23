@@ -156,7 +156,7 @@ module Api
           }
         ]
 
-        identify = JSON.parse params[:identify]
+        identify = params[:identify]
         coefficients = coefficientsData.select{|c| c[:hardwareVersion] == identify['hardwareVersion'] && c[:firmwareVersion] == identify['firmwareVersion']}.first
         if coefficients
           render_api_response 200, coefficients
