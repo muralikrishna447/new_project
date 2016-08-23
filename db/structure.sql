@@ -1256,7 +1256,7 @@ CREATE TABLE pages (
     show_footer boolean DEFAULT false,
     published boolean DEFAULT false,
     is_promotion boolean,
-    discount_code character varying(255),
+    discount_id character varying(255),
     redirect_path character varying(255)
 );
 

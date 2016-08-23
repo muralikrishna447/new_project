@@ -5,14 +5,20 @@ class PagesController < ApplicationController
     if @page.is_promotion && @page.redirect_path
 
       # Keep any url params (utm parameters for example)
-      redirect_params = params.dup
-      redirect_params.delete(:action)
-      redirect_params.delete(:controller)
-      redirect_params.delete(:id)
-      redirect_params[:discount] = @page.discount_code if @page.discount_code
+      page_params = params.dup
+      page_params.delete(:action)
+      page_params.delete(:controller)
+      page_params.delete(:id)
+      page_params[:discount_id] = @page.discount_id if @page.discount_id
 
-      redirect_path = @page.redirect_path
-      redirect_path = redirect_path + '?' + redirect_params.to_query if redirect_params.keys.any?
+      uri = URI(@page.redirect_path)
+      uri_path = uri.path
+      uri_params = uri.query ? Rack::Utils.parse_query(uri.query) : {}
+
+      redirect_params = uri.query ? uri_params.merge(page_params) : page_params
+
+      redirect_path = uri_path
+      redirect_path = uri_path + '?' + redirect_params.to_query if redirect_params.keys.any?
 
       redirect_to redirect_path
     else
