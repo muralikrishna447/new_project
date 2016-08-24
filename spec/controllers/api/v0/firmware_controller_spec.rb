@@ -12,6 +12,11 @@ describe Api::V0::FirmwareController do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     @token = ActorAddress.create_for_user(@user, client_metadata: "create").current_token
 
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu')
+      .and_return(true)
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'esp_http_dfu')
+      .and_return(false)
+
     @link = 'http://www.foo.com'
     controller.stub(:get_firmware_link).and_return(@link)
     manifest = [{
@@ -110,5 +115,24 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
     post :updates
     response.should_not be_success
+  end
+
+  it 'should get HTTP transfer type for wifi firmware if enabled' do
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'esp_http_dfu')
+      .and_return(true)
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    post :updates, {'appVersion'=> '0.19.0'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 1
+    update = resp['updates'].first
+
+    update['type'].should == 'WIFI_FIRMWARE'
+    transfer = update['transfer']
+    transfer['type'].should == 'http'
+    transfer['host'].should == Rails.application.config.firmware_download_host
+    transfer['sha256'].should == @sha256
+    transfer['filename'].should == @filename
+    transfer['totalBytes'].should == @totalBytes
   end
 end

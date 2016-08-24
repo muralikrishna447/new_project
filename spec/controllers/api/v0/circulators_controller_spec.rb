@@ -425,10 +425,17 @@ describe Api::V0::CirculatorsController do
       coefficientsResponse['coefficients'].should eq({})
     end
 
+    it 'should return 404 error when identifyObject not provided' do
+      post :coefficients
+      response.should_not be_success
+      response.code.should eq('404')
+    end
+
     it 'should return error' do
       identifyObject = {}
       post :coefficients, identify: identifyObject
       response.should_not be_success
+      response.code.should eq('404')
     end
   end
 
