@@ -158,15 +158,16 @@ module Api
         ]
 
         identify = params[:identify]
-        coefficients = coefficientsData.select{|c| c[:hardwareVersion] == identify['hardwareVersion'] && c[:appFirmwareVersion] == identify['appFirmwareVersion']}.first
-        if identify['hardwareVersion'] && identify['appFirmwareVersion']
+
+        if identify && identify['hardwareVersion'] && identify['appFirmwareVersion']
+          coefficients = coefficientsData.select{|c| c[:hardwareVersion] == identify['hardwareVersion'] && c[:appFirmwareVersion] == identify['appFirmwareVersion']}.first
           if coefficients
             render_api_response 200, coefficients
           else
             render_api_response 200, {hardwareVersion: identify['hardwareVersion'], appFirmwareVersion: identify['appFirmwareVersion'], coefficients: {}}
           end
         else
-          render_api_response 404, {message: 'Not found. Please provide hardwareVersion and appFirmwareVersion'}
+          render_api_response 404, {message: 'Not found. Please provide {identify} with hardwareVersion and appFirmwareVersion params.'}
         end
 
       end
