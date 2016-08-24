@@ -130,7 +130,7 @@ describe Api::V0::FirmwareController do
     update['type'].should == 'WIFI_FIRMWARE'
     transfer = update['transfer']
     transfer['type'].should == 'http'
-    transfer['host'].should == 'dl.chefsteps.com'
+    transfer['host'].should == Rails.application.config.firmware_download_host
     transfer['sha256'].should == @sha256
     transfer['sha256'].should == @sha256
     transfer['filename'].should == @filename
