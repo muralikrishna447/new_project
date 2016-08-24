@@ -132,7 +132,6 @@ describe Api::V0::FirmwareController do
     transfer['type'].should == 'http'
     transfer['host'].should == Rails.application.config.firmware_download_host
     transfer['sha256'].should == @sha256
-    transfer['sha256'].should == @sha256
     transfer['filename'].should == @filename
     transfer['totalBytes'].should == @totalBytes
   end
