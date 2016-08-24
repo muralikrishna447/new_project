@@ -22,7 +22,9 @@ module Api
 
         # Adding a :valid attribute because Shopify::Discount can be expired but still enabled
         def valid?(discount)
-          expired = (discount.ends_at && DateTime.parse(discount.ends_at) < Date.today) ? true : false
+          # Setting it to PDT -0700 to match Shopify timezone
+          end_of_day = Time.now.end_of_day().in_time_zone('Pacific Time (US & Canada)')
+          expired = (discount.ends_at && Time.parse(discount.ends_at) < end_of_day) ? true : false
           discount.status == 'enabled' && !expired
         end
 
