@@ -14,7 +14,7 @@ class JouleRefundMailer < ActionMailer::Base
       }
     }
     headers['X-SMTPAPI'] = substitutions.to_json
-    headers['X-IDEMPOTENCY'] = "Refund for Joule."
+    headers['X-IDEMPOTENCY'] = "Here comes your refund!"
     mail(to: user.email, subject: subject)
   end
 end
