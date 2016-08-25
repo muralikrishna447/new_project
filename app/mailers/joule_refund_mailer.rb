@@ -4,7 +4,7 @@ class JouleRefundMailer < ActionMailer::Base
 
   def prepare(user, refund_amount)
     logger.info("Preparing joule refund mail for user [#{user.email}]")
-    subject = "Refund for Joule."
+    subject = "Here comes your refund!"
     substitutions = {
       sub: {
         "*|SUBJECT|*" => [subject],
@@ -14,7 +14,7 @@ class JouleRefundMailer < ActionMailer::Base
       }
     }
     headers['X-SMTPAPI'] = substitutions.to_json
-    headers['X-IDEMPOTENCY'] = "Refund for Joule."
+    headers['X-IDEMPOTENCY'] = "Here comes your refund!"
     mail(to: user.email, subject: subject)
   end
 end
