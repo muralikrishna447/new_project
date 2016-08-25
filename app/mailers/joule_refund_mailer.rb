@@ -4,7 +4,7 @@ class JouleRefundMailer < ActionMailer::Base
 
   def prepare(user, refund_amount)
     logger.info("Preparing joule refund mail for user [#{user.email}]")
-    subject = "Refund for Joule."
+    subject = "Here Comes Your Refund!"
     substitutions = {
       sub: {
         "*|SUBJECT|*" => [subject],
