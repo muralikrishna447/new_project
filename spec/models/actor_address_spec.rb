@@ -96,4 +96,20 @@ describe ActorAddress  do
     a_circ.addressable_addresses.map{|a| a.address_id}.should == [a_user.address_id]
   end
 
+  context 'user has active addresses' do
+    let(:user) { Fabricate(:user) }
+    let(:actor_addresses) do
+      [
+        ActorAddress.create_for_user(user),
+        ActorAddress.create_for_user(user)
+      ]
+    end
+    before { actor_addresses.each(&:save) }
+
+    it 'should revoke all active addresses for user' do
+      ActorAddress.revoke_all_for_user(user)
+      expect(ActorAddress.where(actor_id: user.id, status: 'revoked').size).to eq 2
+    end
+  end
+
 end

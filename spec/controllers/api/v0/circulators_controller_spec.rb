@@ -13,6 +13,10 @@ describe Api::V0::CirculatorsController do
     request.env['HTTP_AUTHORIZATION'] = token.to_jwt
   end
 
+  after :each do
+    Timecop.return
+  end
+
   it 'should list circulators' do
     get :index
 
@@ -265,7 +269,7 @@ describe Api::V0::CirculatorsController do
       @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
       @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      
+
       p = PushNotificationToken.new
       p.actor_address = @user_aa
       p.endpoint_arn = "arn:aws:sns:us-east-1:0217963864089:endpoint/APNS_SANDBOX/joule-ios-dev/f56b2215-2121-3b21-b172-5d519ab0d123"
@@ -275,27 +279,113 @@ describe Api::V0::CirculatorsController do
     end
 
     describe 'notify_clients' do
-      it 'should notify clients' do
-        Api::V0::CirculatorsController.any_instance.stub(:publish_notification)
-        post(:notify_clients, {
-          :id => @circulator.circulator_id,
-          :notification_type => 'water_heated'})
-        response.code.should == '200'
+      let(:notification_type) { 'water_heated' }
+
+      context 'no idempotency key is specified' do
+        it 'should notify clients' do
+          expect_publish_notification(true)
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: notification_type
+          )
+          expect(response.code).to eq '200'
+        end
       end
-      
+
+      context 'idempotency key is specified' do
+        let(:idempotency_key) { '123' }
+        let(:cache_key) { "notifications.#{@circulator.id}.#{idempotency_key}" }
+        after :each do
+          Rails.cache.delete(cache_key)
+        end
+
+        context 'notification cache contains key' do
+          before { Rails.cache.write(cache_key, true) }
+
+          it 'does not send notification' do
+            expect_publish_notification(false)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+          end
+        end
+
+        context 'notification cache does not contain key' do
+          it 'sends notification' do
+            expect_publish_notification(true)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+          end
+        end
+
+        context 'notification was sent more than 72 hours ago' do
+          it 'sends a new notification' do
+            # We should see two notifications in total
+            expect_publish_notification(true, 2)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+            Timecop.freeze(73.hours)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+          end
+        end
+
+        context 'notification was sent less than 72 hours ago' do
+          it 'does not send a new notification' do
+            # We should only see one notification
+            expect_publish_notification(true, 1)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+            Timecop.freeze(71.hours)
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: notification_type,
+              idempotency_key: idempotency_key
+            )
+            expect(response.code).to eq '200'
+          end
+        end
+      end
+
       it 'should reject unknown notification types' do
         post(:notify_clients, {
           :id => @circulator.circulator_id,
           :notification_type => 'gibberish'})
         response.code.should == '400'
       end
-      
+
       it 'should return 404 when circulator not found' do
         post(:notify_clients, {
           :id => 1232132123,
           :notification_type => 'gibberish'})
         response.code.should == '404'
-      end        
+      end
 
       it 'should not notify revoked addresses'do
         # not stubbed reply for publish since it shouldn't be called
@@ -305,6 +395,57 @@ describe Api::V0::CirculatorsController do
           :notification_type => 'water_heated'})
         response.code.should == '200'
       end
+    end
+  end
+
+  context 'coefficients' do
+    it 'should return coefficients' do
+      identifyObject = {
+        hardwareVersion: "1.1",
+        appFirmwareVersion: "1.1"
+      }
+      post :coefficients, identify: identifyObject
+      response.should be_success
+      coefficientsResponse = JSON.parse(response.body)
+      coefficientsResponse['hardwareVersion'].should eq('1.1')
+      coefficientsResponse['appFirmwareVersion'].should eq('1.1')
+      coefficientsResponse['coefficients'].keys.should eq(['tempAdcBias','tempAdcScale','tempRef','tempCoeffA','tempCoeffB','tempCoeffC'])
+    end
+
+    it 'should return empty object' do
+      identifyObject = {
+        hardwareVersion: "2.1",
+        appFirmwareVersion: "2.1"
+      }
+      post :coefficients, identify: identifyObject
+      response.should be_success
+      coefficientsResponse = JSON.parse(response.body)
+      coefficientsResponse['hardwareVersion'].should eq('2.1')
+      coefficientsResponse['appFirmwareVersion'].should eq('2.1')
+      coefficientsResponse['coefficients'].should eq({})
+    end
+
+    it 'should return 404 error when identifyObject not provided' do
+      post :coefficients
+      response.should_not be_success
+      response.code.should eq('404')
+    end
+
+    it 'should return error' do
+      identifyObject = {}
+      post :coefficients, identify: identifyObject
+      response.should_not be_success
+      response.code.should eq('404')
+    end
+  end
+
+  private
+
+  def expect_publish_notification(should_receive, times = 1)
+    if should_receive
+      Api::V0::CirculatorsController.any_instance.should_receive(:publish_notification).exactly(times).times
+    else
+      Api::V0::CirculatorsController.any_instance.should_not_receive(:publish_notification)
     end
   end
 end

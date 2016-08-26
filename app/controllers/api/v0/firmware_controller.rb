@@ -43,6 +43,8 @@ module Api
           return render_empty_response
         end
 
+        dfu_over_http = BetaFeatureService.user_has_feature(user.email, 'esp_http_dfu')
+
         updates = []
         potential_updates.each do |u|
           param_type = VERSION_MAPPING[u['type']]
@@ -58,7 +60,7 @@ module Api
           if u['type'] == 'APPLICATION_FIRMWARE'
             u = get_app_firmware_metadata(u)
           elsif u['type'] == 'WIFI_FIRMWARE'
-            u = get_wifi_firmware_metadata(u)
+            u = get_wifi_firmware_metadata(u, dfu_over_http)
           end
 
           # We used to store the versionType in the manifest, but now
@@ -82,24 +84,34 @@ module Api
         JSON.parse(o.read)
       end
 
-      def get_wifi_firmware_metadata(update)
+      def get_wifi_firmware_metadata(update, over_http = false)
         type = update['type'] # should always be WIFI_FIRMWARE
         version = update['version']
         metadata = get_s3_object_as_json(
           "joule/#{type}/#{version}/metadata.json"
         )
 
-        # round-robin choose a TFTP host.  DIY load balancing!
-        tftp_host = Rails.application.config.tftp_hosts.sample
-
         u = update.dup
         u['transfer'] = {
-          "type"        => "tftp",
-          "host"        => tftp_host,
           "filename"    => metadata['filename'],
           "sha256"      => metadata['sha256'],
           "totalBytes"  => metadata['totalBytes'], # can be nil..
         }
+
+        if over_http
+          u['transfer'].update({
+            "type"        => "http",
+            "host"        => Rails.application.config.firmware_download_host
+          })
+        else
+          # round-robin choose a TFTP host.  DIY load balancing!
+          tftp_host = Rails.application.config.tftp_hosts.sample
+          u['transfer'].update({
+            "type"        => "tftp",
+            "host"        => tftp_host,
+          })
+        end
+
         u
       end
 
