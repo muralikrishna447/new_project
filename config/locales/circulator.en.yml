@@ -5,15 +5,17 @@ en:
       water_heated:
         message: "Your water has heated! Let’s cook."
       circulator_error_hardware_failure:
-        message: "Your hardware failed!"
+        message: "Whoops! Something has gone seriously wrong, and we were forced to stop Joule. Please contact us for help."
       circulator_error_button_pressed:
-        message: "You pressed the button!"
+        message: "You stopped your cook!"
       circulator_error_low_water_level:
-        message: "Your water is low!"
+        message: "Uh oh, the water level is too low. To operate properly, Joule needs H20. Please add more."
       circulator_error_tipped_over:
-        message: "Your joule tipped over!"
+        message: "Help! Joule has fallen, and she can’t get up! We've detected that Joule has tipped over. Please stand it up to resume normal functioning."
       circulator_error_overheating:
-        message: "Joule is overheating!"
+        message: "Joule is too hot. Try uncovering the pot or removing Joule from the water for 10 min. Or do nothing. She’ll start working again when she’s ready."
       circulator_error_power_loss:
         message: "Joule lost power!"
     app_name: "Joule"
+
+# "Something has gone seriously wrong, please contact us for help."
