@@ -1,0 +1,2 @@
+Fabricator(:advertisement) do
+end
