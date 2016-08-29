@@ -189,9 +189,19 @@ module Api
       end
     end
 
-    def render_api_response status, contents = {}
+
+    def render_api_response status, contents = {}, each_serializer = nil
+
+      if contents.kind_of?(Array)
+        # This gets the JSON structure but doesn't convert to string yet
+        contents = ActiveModel::ArraySerializer.new(contents, each_serializer: each_serializer).as_json
+        # Wrap array in an object so we can add the request_id and status
+        contents = {results: contents}
+      end
+
       contents[:request_id] = request.uuid()
       contents[:status] = status
+
       logger.info("API Response: #{contents.inspect}")
       render json: contents, status: status
     end

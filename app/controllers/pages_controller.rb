@@ -2,10 +2,31 @@ class PagesController < ApplicationController
 
   def show
     @page = Page.find_published(params[:id])
-    respond_to do |format|
-      format.html
-      format.json do
-        render json: @page.content
+    if @page.is_promotion && @page.redirect_path
+
+      # Keep any url params (utm parameters for example)
+      page_params = params.dup
+      page_params.delete(:action)
+      page_params.delete(:controller)
+      page_params.delete(:id)
+      page_params[:discount_id] = @page.discount_id if @page.discount_id
+
+      uri = URI(@page.redirect_path)
+      uri_path = uri.path
+      uri_params = uri.query ? Rack::Utils.parse_query(uri.query) : {}
+
+      redirect_params = uri.query ? uri_params.merge(page_params) : page_params
+
+      redirect_path = uri_path
+      redirect_path = uri_path + '?' + redirect_params.to_query if redirect_params.keys.any?
+
+      redirect_to redirect_path
+    else
+      respond_to do |format|
+        format.html
+        format.json do
+          render json: @page.content
+        end
       end
     end
   end
