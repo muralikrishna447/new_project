@@ -6,6 +6,9 @@
     = f.input :short_description, input_html: { rows: 3}
     = f.input :show_footer
     = f.input :primary_path
+    = f.input :is_promotion
+    = f.input :redirect_path
+    = f.input :discount_id, label: 'discount', as: :select, collection: ShopifyAPI::Discount.all.map{|discount| [discount.code, discount.id]}
     = render '/shared/filepicker_group', label_text: "Image", param: "page[image_id]", value: @page.image_id
 
   = f.actions
