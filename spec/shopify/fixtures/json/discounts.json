@@ -1,0 +1,68 @@
+{
+  "discounts": [
+    {
+      "applies_once": false,
+      "applies_once_per_customer": false,
+      "applies_to_id": null,
+      "applies_to_resource": null,
+      "code": "valid01",
+      "discount_type": "fixed_amount",
+      "ends_at": null,
+      "id": 101,
+      "minimum_order_amount": "0.00",
+      "starts_at": "2016-06-02T00:00:00-07:00",
+      "status": "enabled",
+      "times_used": 0,
+      "usage_limit": 1,
+      "value": "10.00"
+    },
+    {
+      "applies_once": false,
+      "applies_once_per_customer": false,
+      "applies_to_id": null,
+      "applies_to_resource": null,
+      "code": "disabled01",
+      "discount_type": "fixed_amount",
+      "ends_at": null,
+      "id": 102,
+      "minimum_order_amount": "0.00",
+      "starts_at": "2016-06-02T00:00:00-07:00",
+      "status": "disabled",
+      "times_used": 0,
+      "usage_limit": 1,
+      "value": "15.00"
+    },
+    {
+      "applies_once": false,
+      "applies_once_per_customer": false,
+      "applies_to_id": null,
+      "applies_to_resource": null,
+      "code": "expired01",
+      "discount_type": "fixed_amount",
+      "ends_at": "2016-07-02T00:00:00-07:00",
+      "id": 103,
+      "minimum_order_amount": "0.00",
+      "starts_at": "2016-06-02T00:00:00-07:00",
+      "status": "enabled",
+      "times_used": 0,
+      "usage_limit": 1,
+      "value": "20.00"
+    },
+    {
+      "applies_once": false,
+      "applies_once_per_customer": false,
+      "applies_to_id": null,
+      "applies_to_resource": null,
+      "code": "valid02",
+      "discount_type": "fixed_amount",
+      "ends_at": "9999-07-02T00:00:00-07:00",
+      "id": 104,
+      "minimum_order_amount": "0.00",
+      "starts_at": "2016-06-02T00:00:00-07:00",
+      "status": "enabled",
+      "times_used": 0,
+      "usage_limit": 1,
+      "value": "25.00"
+    }
+  ]
+}
