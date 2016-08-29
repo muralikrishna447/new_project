@@ -16,6 +16,6 @@ en:
         message: "Joule is too hot. Try uncovering the pot or removing Joule from the water for 10 min. Or do nothing. She’ll start working again when she’s ready."
       circulator_error_power_loss:
         message: "Joule lost power!"
+      circulator_error_unknown_reason:
+        message: "We’ve got a problem — Joule has stopped cooking."
     app_name: "Joule"
-
-# "Something has gone seriously wrong, please contact us for help."
