@@ -85,9 +85,8 @@ module Api
           (params[:appFirmwareVersion] or '0').to_i >= 47 and
           (params[:espFirmwareVersion] or '0').to_i >= 10
         )
-        unless is_capable
-          logger.debug("App or firmware not HTTP DFU capable #{params}")
-        end
+
+        logger.debug("HTTP DFU capable: #{is_capable} params: #{params}")
 
         return is_capable
       end
