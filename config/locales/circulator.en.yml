@@ -13,7 +13,7 @@ en:
       circulator_error_tipped_over:
         message: "Help! Joule has fallen, and she can’t get up! We've detected that Joule has tipped over. Please stand it up to resume normal functioning."
       circulator_error_overheating:
-        message: "Joule is too hot. Try uncovering the pot or removing Joule from the water for 10 min. Or do nothing. She’ll start working again when she’s ready."
+        message: "Yowza, Joule is too hot. Make sure she's not covered above the power cord. Your little sous viding buddy may need to be cleaned."
       circulator_error_power_loss:
         message: "Joule lost power!"
       circulator_error_unknown_reason:
