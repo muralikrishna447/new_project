@@ -80,11 +80,16 @@ module Api
       private
       def http_dfu_capable?(params)
         app_version = Semverse::Version.new(params[:appVersion])
-        return (
+        is_capable = (
           app_version >= Semverse::Version.new("2.33.1") and
           (params[:appFirmwareVersion] or '0').to_i >= 47 and
           (params[:espFirmwareVersion] or '0').to_i >= 10
         )
+        unless is_capable
+          logger.debug("App or firmware not HTTP DFU capable #{params}")
+        end
+
+        return is_capable
       end
 
       def get_s3_object_as_json(key)
