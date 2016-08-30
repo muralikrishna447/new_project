@@ -73,6 +73,7 @@ gem 'aws-sdk', '~> 2'
 gem 'json-jwt'
 gem 'intercom'
 gem "algoliasearch-rails"
+gem 'semverse', '1.2.1'
 
 gem 'shopify_api'
 gem 'attr_encrypted', '1.3.4'

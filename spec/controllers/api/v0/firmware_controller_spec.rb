@@ -44,6 +44,7 @@ describe Api::V0::FirmwareController do
       "joule/WIFI_FIRMWARE/#{@esp_version}/metadata.json", esp_metadata
     )
     mock_s3_json("manifests/0.19.0/manifest", esp_only_manifest)
+    mock_s3_json("manifests/2.33.1/manifest", esp_only_manifest)
     mock_s3_json("manifests/0.18.0/manifest", manifest)
   end
 
@@ -117,11 +118,11 @@ describe Api::V0::FirmwareController do
     response.should_not be_success
   end
 
-  it 'should get HTTP transfer type for wifi firmware if enabled' do
+  it 'should get HTTP transfer type for wifi firmware if enabled and capable' do
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'esp_http_dfu')
       .and_return(true)
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '0.19.0'}
+    post :updates, {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 1
@@ -134,5 +135,26 @@ describe Api::V0::FirmwareController do
     transfer['sha256'].should == @sha256
     transfer['filename'].should == @filename
     transfer['totalBytes'].should == @totalBytes
+  end
+
+  it 'should not get HTTP transfer type for wifi firmware if not capable' do
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'esp_http_dfu')
+      .and_return(true)
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    versions = [
+      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '9'},
+      {'appVersion'=> '0.19.0', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10'},
+      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '46', 'espFirmwareVersion' => '10'},
+    ]
+    for v in versions
+      post :updates, v
+      response.should be_success
+      resp = JSON.parse(response.body)
+      resp['updates'].length.should == 1
+      update = resp['updates'].first
+      update['type'].should == 'WIFI_FIRMWARE'
+      transfer = update['transfer']
+      transfer['type'].should == 'tftp'
+    end
   end
 end

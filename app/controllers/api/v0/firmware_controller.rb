@@ -1,4 +1,5 @@
 require 'beta_feature_service'
+require 'semverse'
 module Api
   module V0
     class FirmwareController < BaseController
@@ -43,7 +44,10 @@ module Api
           return render_empty_response
         end
 
-        dfu_over_http = BetaFeatureService.user_has_feature(user.email, 'esp_http_dfu')
+        dfu_over_http = (
+          BetaFeatureService.user_has_feature(user.email, 'esp_http_dfu') and
+          http_dfu_capable?(params)
+        )
 
         updates = []
         potential_updates.each do |u|
@@ -74,6 +78,14 @@ module Api
       end
 
       private
+      def http_dfu_capable?(params)
+        app_version = Semverse::Version.new(params[:appVersion])
+        return (
+          app_version >= Semverse::Version.new("2.33.1") and
+          (params[:appFirmwareVersion] or '0').to_i >= 47 and
+          (params[:espFirmwareVersion] or '0').to_i >= 10
+        )
+      end
 
       def get_s3_object_as_json(key)
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
