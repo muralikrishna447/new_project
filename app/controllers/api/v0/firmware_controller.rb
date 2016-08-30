@@ -80,11 +80,24 @@ module Api
       private
       def http_dfu_capable?(params)
         app_version = Semverse::Version.new(params[:appVersion])
-        is_capable = (
-          app_version >= Semverse::Version.new("2.33.1") and
-          (params[:appFirmwareVersion] or '0').to_i >= 47 and
-          (params[:espFirmwareVersion] or '0').to_i >= 10
-        )
+        esp_version_str = params[:espFirmwareVersion] or ''
+        is_staging = esp_version_str.start_with?('s')
+        esp_version_str = esp_version_str.sub('s', '')
+
+        # Sigh...
+        if is_staging
+          is_capable = (
+            app_version >= Semverse::Version.new("2.33.1") and
+            (params[:appFirmwareVersion] or '0').to_i >= 900 and
+            (esp_version_str).to_i >= 360
+          )
+        else
+          is_capable = (
+            app_version >= Semverse::Version.new("2.33.1") and
+            (params[:appFirmwareVersion] or '0').to_i >= 47 and
+            (esp_version_str).to_i >= 10
+          )
+        end
 
         logger.debug("HTTP DFU capable: #{is_capable} params: #{params}")
 

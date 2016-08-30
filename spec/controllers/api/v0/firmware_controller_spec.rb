@@ -122,19 +122,25 @@ describe Api::V0::FirmwareController do
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'esp_http_dfu')
       .and_return(true)
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 1
-    update = resp['updates'].first
+    versions = [
+      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10'},
+      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '900', 'espFirmwareVersion' => 's360'},
+    ]
+    for v in versions
+      post :updates, v
+      response.should be_success
+      resp = JSON.parse(response.body)
+      resp['updates'].length.should == 1
+      update = resp['updates'].first
 
-    update['type'].should == 'WIFI_FIRMWARE'
-    transfer = update['transfer']
-    transfer['type'].should == 'http'
-    transfer['host'].should == Rails.application.config.firmware_download_host
-    transfer['sha256'].should == @sha256
-    transfer['filename'].should == @filename
-    transfer['totalBytes'].should == @totalBytes
+      update['type'].should == 'WIFI_FIRMWARE'
+      transfer = update['transfer']
+      transfer['type'].should == 'http'
+      transfer['host'].should == Rails.application.config.firmware_download_host
+      transfer['sha256'].should == @sha256
+      transfer['filename'].should == @filename
+      transfer['totalBytes'].should == @totalBytes
+    end
   end
 
   it 'should not get HTTP transfer type for wifi firmware if not capable' do
@@ -145,6 +151,7 @@ describe Api::V0::FirmwareController do
       {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '9'},
       {'appVersion'=> '0.19.0', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10'},
       {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '46', 'espFirmwareVersion' => '10'},
+      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '800', 'espFirmwareVersion' => 's350'},
     ]
     for v in versions
       post :updates, v
