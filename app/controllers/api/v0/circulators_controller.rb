@@ -149,7 +149,7 @@ module Api
             coefficients: {
               tempAdcBias: -65536,
               tempAdcScale: 7.629452739355006e-06, # (1.0f / (65535 - -65536))
-              tempRef: 2.49e-04, #2.49e4f
+              tempRef: 2.49e4, #2.49e4f
               tempCoeffA: 0.0012978594740199803, # cs_config_mgmt.c - Line 61
               tempCoeffB: 0.00020601808214437865, # cs_config_mgmt.c - Line 62
               tempCoeffC: 2.0092461335894591e-07 # cs_config_mgmt.c - Line 63
@@ -161,7 +161,7 @@ module Api
             coefficients: {
               tempAdcBias: -65536,
               tempAdcScale: 7.629452739355006e-06, # (1.0f / (65535 - -65536))
-              tempRef: 2.49e-04, #2.49e4f
+              tempRef: 2.49e4, #2.49e4f
               tempCoeffA: 0.0012978594740199803, # cs_config_mgmt.c - Line 61
               tempCoeffB: 0.00020601808214437865, # cs_config_mgmt.c - Line 62
               tempCoeffC: 2.0092461335894591e-07 # cs_config_mgmt.c - Line 63
