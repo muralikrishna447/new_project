@@ -144,18 +144,6 @@ module Api
         # Example data
         coefficientsData = [
           {
-            hardwareVersion: '1.1',
-            appFirmwareVersion: '1.1',
-            coefficients: {
-              tempAdcBias: 1,
-              tempAdcScale: 2,
-              tempRef: 3,
-              tempCoeffA: 4,
-              tempCoeffB: 5,
-              tempCoeffC: 6
-            }
-          },
-          {
             hardwareVersion: 'JL.p4',
             appFirmwareVersion: '48',
             coefficients: {
