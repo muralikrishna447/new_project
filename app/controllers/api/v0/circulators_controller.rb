@@ -157,7 +157,7 @@ module Api
           },
           {
             hardwareVersion: 'JL.p5',
-            appFirmwareVersion: '1.1', # Will be 47
+            appFirmwareVersion: '47',
             coefficients: {
               tempAdcBias: -65536,
               tempAdcScale: 7.629452739355006e-06, # (1.0f / (65535 - -65536))
