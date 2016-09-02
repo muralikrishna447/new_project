@@ -150,9 +150,9 @@ module Api
               tempAdcBias: -65536,
               tempAdcScale: 7.629452739355006e-06, # (1.0f / (65535 - -65536))
               tempRef: 2.49e4, #2.49e4f
-              tempCoeffA: 0.0012978594740199803, # cs_config_mgmt.c - Line 61
-              tempCoeffB: 0.00020601808214437865, # cs_config_mgmt.c - Line 62
-              tempCoeffC: 2.0092461335894591e-07 # cs_config_mgmt.c - Line 63
+              tempCoeffA: 0.0012978594740199803, # cs_config_mgmt.c - Line 62
+              tempCoeffB: 0.00020601808214437865, # cs_config_mgmt.c - Line 63
+              tempCoeffC: 2.0092461335894591e-07 # cs_config_mgmt.c - Line 64
             }
           },
           {
@@ -162,9 +162,9 @@ module Api
               tempAdcBias: -65536,
               tempAdcScale: 7.629452739355006e-06, # (1.0f / (65535 - -65536))
               tempRef: 2.49e4, #2.49e4f
-              tempCoeffA: 0.0012978594740199803, # cs_config_mgmt.c - Line 61
-              tempCoeffB: 0.00020601808214437865, # cs_config_mgmt.c - Line 62
-              tempCoeffC: 2.0092461335894591e-07 # cs_config_mgmt.c - Line 63
+              tempCoeffA: 0.0011796801475685386, # cs_config_mgmt.c - Line 67
+              tempCoeffB: 0.00022517119372778328, # cs_config_mgmt.c - Line 68
+              tempCoeffC: 1.269031122320061e-07 # cs_config_mgmt.c - Line 69
             }
           }
         ]
