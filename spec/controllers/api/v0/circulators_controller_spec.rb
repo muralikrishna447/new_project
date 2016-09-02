@@ -401,14 +401,14 @@ describe Api::V0::CirculatorsController do
   context 'coefficients' do
     it 'should return coefficients' do
       identifyObject = {
-        hardwareVersion: "1.1",
-        appFirmwareVersion: "1.1"
+        hardwareVersion: "JL.p4",
+        appFirmwareVersion: "48"
       }
       post :coefficients, identify: identifyObject
       response.should be_success
       coefficientsResponse = JSON.parse(response.body)
-      coefficientsResponse['hardwareVersion'].should eq('1.1')
-      coefficientsResponse['appFirmwareVersion'].should eq('1.1')
+      coefficientsResponse['hardwareVersion'].should eq('JL.p4')
+      coefficientsResponse['appFirmwareVersion'].should eq('48')
       coefficientsResponse['coefficients'].keys.should eq(['tempAdcBias','tempAdcScale','tempRef','tempCoeffA','tempCoeffB','tempCoeffC'])
     end
 
