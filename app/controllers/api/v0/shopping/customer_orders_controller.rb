@@ -23,6 +23,15 @@ module Api
           end
         end
 
+        def create
+          order_id = params[:order_id]
+          shipping_address = params[:order][:shipping_address]
+          puts "CUSTOMER ORDER: #{order_id}"
+          puts "CUSTOMER ORDER shipping_address: #{shipping_address}"
+          # TODO Actually create the record
+          render_api_response 200, {message: "Successfully created shipping address for Order Id #{order_id}", order_id: order_id, shipping_address: shipping_address}
+        end
+
         private
 
         def load_user
