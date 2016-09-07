@@ -270,6 +270,7 @@ Delve::Application.routes.draw do
 
       namespace :shopping do
         resources :discounts, only: [:show]
+        resources :customer_orders, only: [:show]
         resources :products do
           # match '/product/:product_id', to: 'shopping#product'
         end
