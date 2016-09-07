@@ -41,13 +41,18 @@
 		color:#FFF;
 		background-color:#ff674d;
 		width:80%;
-		max-width: 200px;
+		max-width: 150px;
 		padding:12px 10%;
+		margin-bottom: 10px;
 		border-radius: 30px;
 		font-weight:bold;
 		text-align:center;
 		cursor:pointer;
 		display:inline-block;
+	}
+
+	.btn.btn-green {
+		background-color:#28b897;
 	}
 
 	p.callout {
@@ -156,8 +161,8 @@
 	h2 { font-weight:700; font-size: 37px; text-align: center; margin-bottom: 25px;}
 	h3 { font-weight:700; font-size: 27px; text-align: center; margin-bottom: 25px;}
 	h4 { font-weight:700; font-size: 23px; margin-bottom:15px;}
-	h5 { font-weight:900; font-size: 17px; margin-bottom:15px;}
-	h6 { font-weight:900; font-size: 12px; margin-bottom:15px; text-transform: uppercase;}
+	h5 { font-weight:700; font-size: 17px; margin-bottom:15px;}
+	h6 { font-weight:900; font-size: 12px; margin-bottom:15px; text-transform: uppercase; color: rgb(184,182,180); letter-spacing: 0.5px;}
 
 	.collapse { margin:0!important;}
 
@@ -285,25 +290,29 @@ table.social-links, .social-links table {
 					<td>
             <br />
 
-						<h3 style="text-align:left;"> Joule will be shipping to this address:</h3>
-						<p> Joule will start shipping really soon! But before we send it your way, please verify that this is the correct shipping address. </p>
-						<br />
+						<h3 style="text-align:center;">Verify Your Shipping Address.</h3>
+						<p style="text-align:center;">Your Joule will ship very soon! Please verify that the shipping address below is correct and up to date. If you find any mistakes at all, please update your address by clicking the orange "No" button and entering in your new address into the web form.</p>
 
+						<br />
 						<hr>
+
 						<h6 style="text-align:center;">Your shipping address is:</h6>
 						<h5 style="text-align:center;">John Doe<br />
 						123 Sesame Street<br />
 						Los Angeles, CA, 88888</h5>
-						<p style="text-align:center;">
-							<a class="btn" href="https://store.chefsteps.com/account/addresses" target="_blank">Update your address</a>
-						</p>
 
 						<br />
 						<hr>
 						<br />
 
-						<h5>Not the correct address?</h5>
-						<p>If you find any mistakes at all, please update your address by clicking the orange button above and entering in your new address into the web form.</p>
+						<h5 style="text-align:center;">Is this the correct address?</h4>
+						<div style="text-align:center; margin-top: 20px;">
+							<a class="btn btn-green" href="{{URL}}" target="_blank">Yes</a>
+						</div>
+						<div style="text-align:center;">
+							<a class="btn" href="{{URL}}" target="_blank">No</a>
+						</div>
+
 						<br />
 
 					</td>
