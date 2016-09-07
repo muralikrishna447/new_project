@@ -111,20 +111,20 @@ module Api
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
         end
 
-        notify_owners(circulator, params[:idempotency_key], message)
+        notify_owners(circulator, params[:idempotency_key], message, params[:notification_type])
 
         render_api_response 200
       end
 
-      def publish_notification(endpoint_arn, message)
+      def publish_notification(endpoint_arn, message, notification_type)
         sns = Aws::SNS::Client.new(region: 'us-east-1')
         begin
           # TODO - add APNS once we have a testable endpoint
           title = I18n.t("circulator.app_name", raise: true)
           message = {
-            GCM: {data: {message: message, title: title}}.to_json,
-            APNS_SANDBOX: {aps: {alert: message}}.to_json,
-            APNS: {aps: {alert: message}}.to_json
+            GCM: {data: {message: message, title: title, notification_type: notification_type}}.to_json,
+            APNS_SANDBOX: {aps: {alert: message, notification_type: notification_type}}.to_json,
+            APNS: {aps: {alert: message, notification_type: notification_type}}.to_json
           }
           logger.info "Publishing #{message.inspect}"
           sns.publish(
@@ -202,7 +202,7 @@ module Api
         false
       end
 
-      def notify_owners(circulator, idempotency_key, message)
+      def notify_owners(circulator, idempotency_key, message, notification_type)
         owners = circulator.circulator_users.select {|cu| cu.owner}
         logger.info "Found circulator owners #{owners.inspect}"
 
@@ -213,7 +213,7 @@ module Api
             token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
             next if token.nil?
             logger.info "Publishing to token #{token.inspect}"
-            publish_notification(token.endpoint_arn, message)
+            publish_notification(token.endpoint_arn, message, notification_type)
           end
         end
 
