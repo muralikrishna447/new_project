@@ -9,14 +9,14 @@ module Api
         def show
           begin
             @order = ShopifyAPI::Order.find(params[:id])
-            if @order.email == @user.email
+            if @order.email == @user.email || @user.role == 'admin'
               response = {
                 id: @order.id,
                 shipping_address: @order.shipping_address
               }
               render_api_response 200, response
             else
-              raise 'Unauthorized'
+              render_api_response(403, {message: 'Unauthorized'})
             end
           rescue
             render_api_response(404, {message: 'Order not found'})
