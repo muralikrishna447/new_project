@@ -23,13 +23,20 @@ module Api
           end
         end
 
-        def create
-          order_id = params[:order_id]
+        def update_address
+          order_id = params[:id]
           shipping_address = params[:order][:shipping_address]
           puts "CUSTOMER ORDER: #{order_id}"
           puts "CUSTOMER ORDER shipping_address: #{shipping_address}"
           # TODO Actually create the record
           render_api_response 200, {message: "Successfully created shipping address for Order Id #{order_id}", order_id: order_id, shipping_address: shipping_address}
+        end
+
+        def confirm_address
+          order_id = params[:id]
+          puts "CUSTOMER ORDER: #{order_id}"
+          # TODO Actually create the record
+          render_api_response 200, {message: "Successfully confirmed address for Order Id #{order_id}", order_id: order_id}
         end
 
       end
