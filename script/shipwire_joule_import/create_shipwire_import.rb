@@ -3,7 +3,7 @@ require 'optparse'
 require 'date'
 
 #
-# Takes a CSV from the output of the 'validate_shopify_orders' script and
+# Takes a CSV from the output of the 'sort_shopify_orders' script and
 # sorts it (in FIFO order of placement).
 #
 # The output of this script is the sorted CSV input.
