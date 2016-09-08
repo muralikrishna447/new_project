@@ -29,8 +29,8 @@ CSV.foreach(options[:file], headers: true) do |shopify_order|
   # We aren't currently capturing this from customers.
   shipping_phone = shopify_order['shipping_phone']
   if shipping_phone.nil? || shipping_phone.empty?
-    # FIXME what to put here? Should be a ChefSteps phone number.
-    shipping_phone = '555-555-5555'
+    # This is our catch-all Google voice number that no one answers but can leave a message.
+    shipping_phone = '206-905-1099'
   end
 
   shipwire_orders << [
