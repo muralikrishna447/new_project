@@ -22,48 +22,53 @@ require 'pry'
 #
 
 # Options parsing
-options = {}
+@options = {}
 option_parser = OptionParser.new do |option|
   option.on('-k', '--key API_KEY', 'Shopify API key') do |api_key|
-    options[:api_key] = api_key
+    @options[:api_key] = api_key
   end
 
   option.on('-p', '--password PASSWORD', 'Shopify password') do |password|
-    options[:password] = password
+    @options[:password] = password
   end
 
   option.on('-s', '--store STORE', 'Shopify store name') do |store|
-    options[:store] = store
+    @options[:store] = store
   end
 
   option.on('-f', '--file FILE', 'CSV export file of Shopify orders') do |file|
-    options[:file] = file
+    @options[:file] = file
   end
 
   option.on('-l', '--lob-key LOB_API_KEY', 'Lob API key to use when verifying addresses') do |lob_key|
-    options[:lob_key] = lob_key
+    @options[:lob_key] = lob_key
   end
 
   option.on('-a', '--verify-addresses', 'Whether to verify addresses') do
-    options[:verify_addresses] = true
+    @options[:verify_addresses] = true
+  end
+
+  option.on('-d', '--dry-run', 'Do a dry run and do not update the Shopify order tags') do
+    STDERR.puts 'NOTE: Dry run option enabled, not really updating Shopify tags'
+    @options[:dry_run] = true
   end
 end
 
 option_parser.parse!
-raise '--key is required' unless options[:api_key]
-raise '--password is required' unless options[:password]
-raise '--store is required' unless options[:store]
-raise '--file is required' unless options[:file]
-if options[:verify_addresses] && !options[:lob_key]
+raise '--key is required' unless @options[:api_key]
+raise '--password is required' unless @options[:password]
+raise '--store is required' unless @options[:store]
+raise '--file is required' unless @options[:file]
+if @options[:verify_addresses] && !@options[:lob_key]
   raise '--lob_key is required when specifying --verify_addresses'
 end
 
 # Configure shopify client
-ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
+ShopifyAPI::Base.site = "https://#{@options[:api_key]}:#{@options[:password]}@#{@options[:store]}.myshopify.com/admin"
 
 # Configure Lob address verification client
-if options[:verify_addresses]
-  Lob.api_key = options[:lob_key]
+if @options[:verify_addresses]
+  Lob.api_key = @options[:lob_key]
   @lob = Lob.load
 end
 
@@ -79,7 +84,7 @@ def apply_tags(order_id, tags)
     tags_to_apply.each { |tag| order_tags << tag }
     order.tags = order_tags.join(',')
     STDERR.puts "Adding tags to order with id #{order_id}: #{tags_to_apply.inspect}"
-    #order.save
+    order.save unless @options[:dry_run]
   end
 end
 
@@ -104,7 +109,7 @@ end
 filtered_order_rows = []
 valid_order_count = 0
 invalid_order_count = 0
-CSV.foreach(options[:file], headers: true) do |input_row|
+CSV.foreach(@options[:file], headers: true) do |input_row|
   order_validation_tags = []
 
   shipping_address_1 = input_row['shipping_address_1']
@@ -126,7 +131,7 @@ CSV.foreach(options[:file], headers: true) do |input_row|
   end
 
   # Verify the address using Lob API
-  if options[:verify_addresses] && !shipping_address_missing
+  if @options[:verify_addresses] && !shipping_address_missing
     unless address_verifies?(input_row)
       order_validation_tags << 'shipping-validation-address-unverifiable'
     end
