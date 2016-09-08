@@ -2,6 +2,7 @@ require 'csv'
 require 'optparse'
 require 'shopify_api'
 require 'pry'
+require './shipwire_import'
 
 #
 # Exports Shopify Joule orders using the API to a CSV on standard output.
@@ -60,22 +61,7 @@ PAGE_SIZE = 100
 order_count = 0
 output_str = CSV.generate(force_quotes: true) do |output_rows|
   # CSV header
-  output_rows << [
-    'id',
-    'name',
-    'processed_at',
-    'shipping_name',
-    'shipping_address_1',
-    'shipping_address_2',
-    'shipping_city',
-    'shipping_province',
-    'shipping_zip',
-    'shipping_country',
-    'email',
-    'shipping_phone',
-    'sku',
-    'quantity'
-  ]
+  output_rows << ShipwireImport::SHOPIFY_EXPORT_SCHEMA
 
   page = 1
   loop do
