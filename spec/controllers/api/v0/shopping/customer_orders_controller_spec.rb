@@ -54,4 +54,44 @@ describe Api::V0::Shopping::CustomerOrdersController do
     end
 
   end
+
+  describe 'POST /customer_orders/:id/update_address' do
+    it "should update an address" do
+      sign_in @user
+      controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+      order_params = {
+        shipping_address: {
+          address1: '123 random street',
+          address2: '',
+          city: 'Seattle',
+          province: 'WA',
+          zip: '12345'
+        }
+      }
+      post :update_address, id: '101', order: order_params
+      response.should be_success
+    end
+
+    it "should not update an address if the user is not signed in" do
+      order_params = {
+        shipping_address: {
+          address1: '123 random street',
+          address2: '',
+          city: 'Seattle',
+          province: 'WA',
+          zip: '12345'
+        }
+      }
+      post :update_address, id: '101', order: order_params
+      response.should_not be_success
+      response.status.should eq(403)
+    end
+  end
+
+  describe 'POST /customer_orders/:id/confirm_address' do
+    it "should confirm an address" do
+      post :confirm_address, id: '101'
+      response.should be_success
+    end
+  end
 end
