@@ -34,16 +34,22 @@ module Api
             current_api_user_role = current_api_user.role
             if customer_multipass_identifier == current_api_user_id || current_api_user_role == 'admin'
 
-              shipping_address = params[:order][:shipping_address]
+              @shipping_address = MailingAddress.new(params[:order][:shipping_address])
               puts "CUSTOMER ORDER: #{order_id}"
-              puts "CUSTOMER ORDER shipping_address: #{shipping_address}"
+              puts "CUSTOMER ORDER shipping_address: #{@shipping_address}"
+              puts "CUSTOMER ORDER shipping_address is VALID?: #{@shipping_address.valid?}"
               # TODO Actually create the record
-              render_api_response 200, {message: "Successfully created shipping address for Order Id #{order_id}", order_id: order_id, shipping_address: shipping_address}
+              if @shipping_address.valid?
+                render_api_response 200, {message: "Successfully created shipping address for Order Id #{order_id}", order_id: order_id, shipping_address: @shipping_address}
+              else
+                error_messages = @shipping_address.errors.map{|attribute,message| "#{attribute} #{message}"}
+                render_api_response(400, {message: 'Invalid Address', errors: error_messages})
+              end
             else
               render_api_response(403, {message: 'Unauthorized'})
             end
           rescue => e
-
+            puts "Error Updating Address: #{e}"
             if e.message == "Couldn't find User without an ID"
               render_api_response(403, {message: 'Unauthorized'})
             else

@@ -86,6 +86,25 @@ describe Api::V0::Shopping::CustomerOrdersController do
       response.should_not be_success
       response.status.should eq(403)
     end
+
+    it "should not update an address if the address is invalid" do
+      sign_in @user
+      controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+      order_params = {
+        shipping_address: {
+          address1: '',
+          address2: '',
+          city: 'Seattle',
+          province: 'WA',
+          zip: '12345'
+        }
+      }
+      post :update_address, id: '101', order: order_params
+      response.should_not be_success
+      response.status.should eq(400)
+      address = JSON.parse(response.body)
+      address['errors'][0].should eq("address1 can't be blank")
+    end
   end
 
   describe 'POST /customer_orders/:id/confirm_address' do
