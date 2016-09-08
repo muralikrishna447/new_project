@@ -1,6 +1,8 @@
 require 'csv'
 require 'optparse'
 require 'shopify_api'
+require 'lob'
+require 'json'
 require 'pry'
 
 #
@@ -37,6 +39,14 @@ option_parser = OptionParser.new do |option|
   option.on('-f', '--file FILE', 'CSV export file of Shopify orders') do |file|
     options[:file] = file
   end
+
+  option.on('-l', '--lob-key LOB_API_KEY', 'Lob API key to use when verifying addresses') do |lob_key|
+    options[:lob_key] = lob_key
+  end
+
+  option.on('-a', '--verify-addresses', 'Whether to verify addresses') do
+    options[:verify_addresses] = true
+  end
 end
 
 option_parser.parse!
@@ -44,9 +54,18 @@ raise '--key is required' unless options[:api_key]
 raise '--password is required' unless options[:password]
 raise '--store is required' unless options[:store]
 raise '--file is required' unless options[:file]
+if options[:verify_addresses] && !options[:lob_key]
+  raise '--lob_key is required when specifying --verify_addresses'
+end
 
 # Configure shopify client
 ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
+
+# Configure Lob address verification client
+if options[:verify_addresses]
+  Lob.api_key = options[:lob_key]
+  @lob = Lob.load
+end
 
 def apply_tags(order_id, tags)
   order = ShopifyAPI::Order.find(order_id)
@@ -64,38 +83,62 @@ def apply_tags(order_id, tags)
   end
 end
 
+def address_verifies?(input_row)
+  begin
+    @lob.addresses.verify(
+      address_line1: input_row['shipping_address_1'],
+      address_line2: input_row['shipping_address_2'],
+      address_city: input_row['shipping_city'],
+      address_state: input_row['shipping_province'],
+      address_zip: input_row['shipping_zip'],
+      address_country: input_row['shipping_country']
+    )
+  rescue Lob::InvalidRequestError => e
+    error = JSON.parse(e.json_body)
+    return false if error.fetch('error').fetch('message') == 'address not found'
+    raise "Unexpected error from address verification API: #{e.inspect}"
+  end
+  true
+end
+
 filtered_order_rows = []
 valid_order_count = 0
 invalid_order_count = 0
 CSV.foreach(options[:file], headers: true) do |input_row|
-  order_errors = []
   order_validation_tags = []
 
   shipping_address_1 = input_row['shipping_address_1']
   # Some orders have no shipping address
+  shipping_address_missing = false
   if shipping_address_1.nil? || shipping_address_1.empty?
-    order_errors << 'No shipping address 1 line'
-    order_validation_tags << 'validation-shipping-address-1-missing'
+    shipping_address_missing = true
+    order_validation_tags << 'shipping-validation-address-1-missing'
   end
   # Shipwire limits address lines to 50 chars
   if shipping_address_1 && shipping_address_1.length > 50
-    order_errors << "Shipping address 1 line is too long: #{shipping_address_1}"
-    order_validation_tags << 'validation-shipping-address-1-too-long'
+    order_validation_tags << 'shipping-validation-address-1-too-long'
   end
 
   # Shipwire limits address lines to 50 chars
   shipping_address_2 = input_row['shipping_address_2']
   if shipping_address_2 && shipping_address_2.length > 50
-    order_errors << "Shipping address 2 line is too long: #{shipping_address_2}"
-    order_validation_tags << 'validation-shipping-address-2-too-long'
+    order_validation_tags << 'shipping-validation-address-2-too-long'
+  end
+
+  # Verify the address using Lob API
+  if options[:verify_addresses] && !shipping_address_missing
+    unless address_verifies?(input_row)
+      order_validation_tags << 'shipping-validation-address-unverifiable'
+    end
   end
 
   if order_validation_tags.empty?
+    STDERR.puts "Order with id #{input_row['id']} is valid"
     filtered_order_rows << input_row
     valid_order_count += 1
   else
     STDERR.puts "Filtering order with id #{input_row['id']} with validation errors: #{order_validation_tags}"
-    order_validation_tags << 'validation-error'
+    order_validation_tags << 'shipping-validation-error'
     apply_tags(input_row['id'], order_validation_tags)
     invalid_order_count += 1
   end
