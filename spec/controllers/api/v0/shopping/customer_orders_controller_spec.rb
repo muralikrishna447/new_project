@@ -1,8 +1,9 @@
 describe Api::V0::Shopping::CustomerOrdersController do
   before :each do
 
-    @user = Fabricate :user, name: 'customer_1', email: 'customer_1@chefsteps.com', role: 'user'
-    @admin = Fabricate :user, name: 'admin_1', email: 'admin@chefsteps.com', role: 'admin'
+    @user = Fabricate :user, id: 10001, name: 'customer_1', email: 'customer_1@chefsteps.com', role: 'user'
+    @admin = Fabricate :user, id: 10002, name: 'admin_1', email: 'admin@chefsteps.com', role: 'admin'
+
 
     customer_order_101_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_101').data)['order']
     customer_order_202_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_202').data)['order']

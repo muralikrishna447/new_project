@@ -6,10 +6,12 @@ module Api
         before_filter :ensure_authorized_or_anonymous
 
         def show
-          puts "CURRENT API USER DUDE: #{current_api_user.inspect}"
           begin
             @order = ShopifyAPI::Order.find(params[:id])
-            if current_api_user && (@order.email == current_api_user.email || current_api_user.role == 'admin')
+            customer_multipass_identifier = @order.customer.multipass_identifier
+            current_api_user_id = current_api_user.id.to_s
+            current_api_user_role = current_api_user.role
+            if current_api_user && (customer_multipass_identifier == current_api_user_id || current_api_user_role == 'admin')
               response = {
                 id: @order.id,
                 shipping_address: @order.shipping_address
