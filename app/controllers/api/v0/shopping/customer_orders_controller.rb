@@ -47,7 +47,7 @@ module Api
               render_api_response(403, {message: 'Unauthorized'})
             end
           rescue => e
-            Rails.logger.error "Update Address failed with error : #{e}, order_id: #{order_id}, shipping_address: #{@shipping_address}"
+            logger.error "Update Address failed with error : #{e}, order_id: #{order_id}, shipping_address: #{@shipping_address}"
             if e.message == "Couldn't find User without an ID"
               render_api_response(403, {message: 'Unauthorized'})
             elsif e.message == "Error saving ShippingAddress"
@@ -66,7 +66,7 @@ module Api
             @order = ShopifyAPI::Order.find(order_id)
             ShippingAddress.confirm(order_id)
           rescue => e
-            Rails.logger.error "Confirm Address failed with error : #{e}, order_id: #{order_id}"
+            logger.error "Confirm Address failed with error : #{e}, order_id: #{order_id}"
             render_api_response(500, {message: 'Error confirming ShippingAddress'})
           end
           render_api_response 200, {message: "Successfully confirmed address for Order Id #{order_id}", order_id: order_id}
