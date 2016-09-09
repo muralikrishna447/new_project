@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Shipwire::Order do
   describe 'array_from_json' do
-    let(:orders_json) { File.read(Rails.root.join('spec', 'api_responses', 'shipwire_orders_response.json')) }
+    let(:orders_json) { File.read(Rails.root.join('spec', 'api_responses', 'shipwire_orders_response_multiple.json')) }
 
     it 'returns order array' do
       array = Shipwire::Order.array_from_json(orders_json)

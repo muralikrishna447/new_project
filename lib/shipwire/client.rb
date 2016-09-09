@@ -1,5 +1,5 @@
 module Shipwire
-  class << self
+  class Client
     def self.configure(options)
       raise 'Shipwire username is required' unless options[:username]
       raise 'Shipwire password is required' unless options[:password]
@@ -8,7 +8,7 @@ module Shipwire
         username: options[:username],
         password: options[:password]
       }
-      @url = options[:base_uri]
+      @base_uri = options[:base_uri]
     end
 
     def self.unique_order_by_number(order_number)
@@ -20,13 +20,17 @@ module Shipwire
       end
     end
 
-    private
-
-    def orders_page(order_number, offset, limit)
-      url = "#{@base_uri}/orders?orderNo=#{order_number}&offset=#{offset}&limit=#{limit}"
-      response = HTTParty.get(url, basic_auth: @auth, headers: {
-        'Accept' => 'application/json'
-      })
+    private_class_method
+    def self.orders_page(order_number, offset, limit)
+      url = "#{@base_uri}/orders?orderNo=#{URI.encode(order_number)}&expand=trackings&offset=#{offset}&limit=#{limit}"
+      response = HTTParty.get(
+        url,
+        basic_auth: @auth,
+        headers: {
+          'Accept' => 'application/json',
+          'Content-Type' => 'application/json'
+        }
+      )
       if response.code != 200
         raise "Request to Shipwire at URL #{url} failed with response code #{response.code} and body #{response.body}"
       end
