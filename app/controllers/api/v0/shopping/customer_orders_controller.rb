@@ -47,7 +47,7 @@ module Api
               render_api_response(403, {message: 'Unauthorized'})
             end
           rescue => e
-            Rails.logger.info "Update Address failed with error : #{e}, order_id: #{order_id}, shipping_address: #{@shipping_address}"
+            Rails.logger.error "Update Address failed with error : #{e}, order_id: #{order_id}, shipping_address: #{@shipping_address}"
             if e.message == "Couldn't find User without an ID"
               render_api_response(403, {message: 'Unauthorized'})
             elsif e.message == "Error saving ShippingAddress"
