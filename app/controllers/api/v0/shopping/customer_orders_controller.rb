@@ -66,7 +66,7 @@ module Api
             @order = ShopifyAPI::Order.find(order_id)
             ShippingAddress.confirm(order_id)
           rescue => e
-            Rails.logger.info "Confirm Address failed with error : #{e}, order_id: #{order_id}"
+            Rails.logger.error "Confirm Address failed with error : #{e}, order_id: #{order_id}"
             render_api_response(500, {message: 'Error confirming ShippingAddress'})
           end
           render_api_response 200, {message: "Successfully confirmed address for Order Id #{order_id}", order_id: order_id}
