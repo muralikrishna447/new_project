@@ -3,7 +3,7 @@ module Api
     module Shopping
       class CustomerOrdersController < BaseController
 
-        before_filter :ensure_authorized_or_anonymous, only: [:show, :update_address]
+        before_filter :ensure_authorized, only: [:show, :update_address]
 
         def show
           begin
@@ -18,7 +18,7 @@ module Api
               }
               render_api_response 200, response
             else
-              render_api_response(403, {message: 'Unauthorized'})
+              render_api_response(401, {message: 'Unauthorized'})
             end
           rescue
             render_api_response(404, {message: 'Order not found'})

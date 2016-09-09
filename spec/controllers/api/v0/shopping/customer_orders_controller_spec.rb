@@ -41,7 +41,7 @@ describe Api::V0::Shopping::CustomerOrdersController do
       controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
       get :show, id: '202'
       response.should_not be_success
-      response.status.should eq(403)
+      response.status.should eq(401)
     end
 
     it "should return a customer_order if user is admin" do
@@ -84,7 +84,7 @@ describe Api::V0::Shopping::CustomerOrdersController do
       }
       post :update_address, id: '101', order: order_params
       response.should_not be_success
-      response.status.should eq(403)
+      response.status.should eq(401)
     end
 
     it "should not update an address if the address is invalid" do
