@@ -9,7 +9,8 @@ sns.platform_applications = {}
 
 Rails.configuration.dynamodb.transactional_email_log_table_name = "transactional-email-log-#{Rails.env}"
 Rails.configuration.dynamodb.beta_features_table_name = "beta-features-#{Rails.env}"
-Rails.configuration.dynamodb.shipping_address_table_name = "shipping-address-#{Rails.env}"
+Rails.configuration.dynamodb.shipping_address_update_table_name = "shipping-address-updates-#{Rails.env}"
+Rails.configuration.dynamodb.shipping_address_confirmation_table_name = "shipping-address-confirmations-#{Rails.env}"
 
 if Rails.env.production?
   Rails.configuration.remote_log_bucket = 'remote-logs-production'

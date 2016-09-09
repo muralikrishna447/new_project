@@ -17,13 +17,32 @@ class ShippingAddress < MailingAddress
       if !Rails.env.test?
         @@client.put_item(
         {
-          table_name: Rails.configuration.dynamodb.shipping_address_table_name,
+          table_name: Rails.configuration.dynamodb.shipping_address_update_table_name,
           item: item
         })
       end
     rescue => e
       raise Exception.new("Error saving ShippingAddress")
-      Rails.logger.info "ShippingAddress Error: #{e} while trying to save item: #{item}"
+      Rails.logger.info "ShippingAddress update error: #{e} while trying to save item: #{item}"
+    end
+  end
+
+  def self.confirm(order_id)
+    item = {
+      'orderId' => order_id,
+      'createdAt' => DateTime.now.to_i
+    }
+    begin
+      if !Rails.env.test?
+        @@client.put_item(
+        {
+          table_name: Rails.configuration.dynamodb.shipping_address_confirmation_table_name,
+          item: item
+        })
+      end
+    rescue => e
+      raise Exception.new("Error confirming ShippingAddress")
+      Rails.logger.info "ShippingAddress confirmation error: #{e} while trying to save item: #{item}"
     end
   end
 

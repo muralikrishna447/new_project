@@ -42,7 +42,7 @@ module Api
                 error_messages = @shipping_address.errors.map{|attribute,message| "#{attribute} #{message}"}
                 render_api_response(400, {message: 'Invalid Address', errors: error_messages})
               end
-              
+
             else
               render_api_response(403, {message: 'Unauthorized'})
             end
@@ -51,7 +51,7 @@ module Api
             if e.message == "Couldn't find User without an ID"
               render_api_response(403, {message: 'Unauthorized'})
             elsif e.message == "Error saving ShippingAddress"
-              render_api_response(500, {message: 'Unauthorized'})
+              render_api_response(500, {message: e.message})
             else
               render_api_response(404, {message: 'Order not found'})
             end
@@ -61,8 +61,14 @@ module Api
 
         def confirm_address
           order_id = params[:id]
-          puts "CUSTOMER ORDER: #{order_id}"
-          # TODO Actually create the record
+          begin
+            order_id = params[:id]
+            @order = ShopifyAPI::Order.find(order_id)
+            ShippingAddress.confirm(order_id)
+          rescue => e
+            Rails.logger.info "Confirm Address failed with error : #{e}, order_id: #{order_id}"
+            render_api_response(500, {message: 'Error confirming ShippingAddress'})
+          end
           render_api_response 200, {message: "Successfully confirmed address for Order Id #{order_id}", order_id: order_id}
         end
 
