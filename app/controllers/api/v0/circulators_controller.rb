@@ -123,8 +123,8 @@ module Api
           title = I18n.t("circulator.app_name", raise: true)
           message = {
             GCM: {data: {message: message, title: title, notification_type: notification_type}}.to_json,
-            APNS_SANDBOX: {aps: {alert: message, notification_type: notification_type}}.to_json,
-            APNS: {aps: {alert: message, notification_type: notification_type}}.to_json
+            APNS_SANDBOX: {aps: {alert: message, sound: 'default', notification_type: notification_type}}.to_json,
+            APNS: {aps: {alert: message, sound: 'default', notification_type: notification_type}}.to_json
           }
           logger.info "Publishing #{message.inspect}"
           sns.publish(
