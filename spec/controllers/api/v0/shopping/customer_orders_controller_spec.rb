@@ -70,6 +70,10 @@ describe Api::V0::Shopping::CustomerOrdersController do
       }
       post :update_address, id: '101', order: order_params
       response.should be_success
+      customer_order = JSON.parse(response.body)
+      puts "HERE HERE: #{customer_order}"
+      customer_order['order_id'].should eq("101")
+      customer_order['shipping_address']['address1'].should eq("123 random street")
     end
 
     it "should not update an address if the user is not signed in" do
