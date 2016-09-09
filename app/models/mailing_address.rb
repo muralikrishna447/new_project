@@ -1,4 +1,5 @@
 class MailingAddress
+
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
@@ -19,4 +20,5 @@ class MailingAddress
   def persisted?
     false
   end
+  
 end
