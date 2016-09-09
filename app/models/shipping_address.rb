@@ -22,8 +22,8 @@ class ShippingAddress < MailingAddress
         })
       end
     rescue => e
+      Rails.logger.error "ShippingAddress update error: #{e} while trying to save item: #{item}"
       raise Exception.new("Error saving ShippingAddress")
-      logger.error "ShippingAddress update error: #{e} while trying to save item: #{item}"
     end
   end
 
@@ -41,8 +41,8 @@ class ShippingAddress < MailingAddress
         })
       end
     rescue => e
+      Rails.logger.error "ShippingAddress confirmation error: #{e} while trying to save item: #{item}"
       raise Exception.new("Error confirming ShippingAddress")
-      logger.error "ShippingAddress confirmation error: #{e} while trying to save item: #{item}"
     end
   end
 
