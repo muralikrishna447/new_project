@@ -26,7 +26,28 @@
           "transactionId": "1471468802-828946-1",
           "needsReview": 0,
           "holds": {
-            "resourceLocation": "https://api.shipwire.com/api/v3/orders/198651672/holds?offset=0&limit=20&expand=trackings"
+            "resourceLocation": "https://api.beta.shipwire.com/api/v3/orders/92041438/holds?offset=0&limit=20&id=92046055&expand=holds",
+            "resource": {
+              "offset": 0,
+              "total": 2,
+              "previous": null,
+              "next": null,
+              "items": [
+                {
+                  "resourceLocation": "https://api.beta.shipwire.com/api/v3/orders/92041438/holds/724752",
+                  "resource": {
+                    "id": 724752,
+                    "orderId": 92041438,
+                    "externalOrderId": "4187662407",
+                    "type": "customer",
+                    "subType": "nomethod",
+                    "description": "Shipping method must be selected",
+                    "appliedDate": "2016-09-06T16:56:28-07:00",
+                    "clearedDate": null
+                  }
+                }
+              ]
+            }
           },
           "items": {
             "resourceLocation": "https://api.shipwire.com/api/v3/orders/198651672/items?offset=0&limit=20&expand=trackings"
@@ -210,7 +231,28 @@
           "transactionId": "1471536814-788350-1",
           "needsReview": 0,
           "holds": {
-            "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/holds?offset=0&limit=20&expand=trackings"
+            "resourceLocation": "https://api.beta.shipwire.com/api/v3/orders/92041438/holds?offset=0&limit=20&id=92046055&expand=holds",
+            "resource": {
+              "offset": 0,
+              "total": 2,
+              "previous": null,
+              "next": null,
+              "items": [
+                {
+                  "resourceLocation": "https://api.beta.shipwire.com/api/v3/orders/92041438/holds/724752",
+                  "resource": {
+                    "id": 724752,
+                    "orderId": 92041438,
+                    "externalOrderId": "4187662407",
+                    "type": "customer",
+                    "subType": "nomethod",
+                    "description": "Shipping method must be selected",
+                    "appliedDate": "2016-09-06T16:56:28-07:00",
+                    "clearedDate": null
+                  }
+                }
+              ]
+            }
           },
           "items": {
             "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/items?offset=0&limit=20&expand=trackings"

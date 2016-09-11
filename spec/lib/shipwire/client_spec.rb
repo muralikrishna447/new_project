@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe Shipwire::Client, focus: true do
+describe Shipwire::Client do
   let(:username) { 'test_shipwire_username' }
   let(:password) { 'test_shipwire_password' }
   let(:base_uri) { 'testshipwire/api/v3' }
   let(:order_number) { '#1288.1' }
   let(:request_uri) do
-    "https://#{username}:#{password}@#{base_uri}/orders?expand=trackings&limit=2&offset=0&orderNo=#{URI.encode(order_number)}"
+    "https://#{username}:#{password}@#{base_uri}/orders?expand=trackings,holds&limit=2&offset=0&orderNo=#{URI.encode(order_number)}"
   end
 
   before do
@@ -32,14 +32,10 @@ describe Shipwire::Client, focus: true do
         order = Shipwire::Client.unique_order_by_number(order_number)
         expect(order).to eq Shipwire::Order.new(
           id: 198794572,
+          number: '#1292.1',
           status: 'delivered',
-          trackings: [
-            Shipwire::Tracking.new(
-              number: '9400110200793110752978',
-              carrier: 'USPS',
-              url: 'https://tools.usps.com/go/TrackConfirmAction.action?tLabels=9400110200793110752978'
-            )
-          ]
+          trackings: [],
+          holds: []
         )
       end
     end

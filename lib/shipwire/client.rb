@@ -22,7 +22,7 @@ module Shipwire
 
     private_class_method
     def self.orders_page(order_number, offset, limit)
-      url = "#{@base_uri}/orders?orderNo=#{URI.encode(order_number)}&expand=trackings&offset=#{offset}&limit=#{limit}"
+      url = "#{@base_uri}/orders?orderNo=#{URI.encode(order_number)}&expand=trackings,holds&offset=#{offset}&limit=#{limit}"
       response = HTTParty.get(
         url,
         basic_auth: @auth,

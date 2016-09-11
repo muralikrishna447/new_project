@@ -26,7 +26,15 @@
           "transactionId": "1471536814-788350-1",
           "needsReview": 0,
           "holds": {
-            "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/holds?offset=0&limit=20&expand=trackings"
+            "resourceLocation": "https://api.beta.shipwire.com/api/v3/orders/92041438/holds?offset=0&limit=20&id=92046055&expand=holds",
+            "resource": {
+              "offset": 0,
+              "total": 0,
+              "previous": null,
+              "next": null,
+              "items": [
+              ]
+            }
           },
           "items": {
             "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/items?offset=0&limit=20&expand=trackings"
@@ -35,38 +43,10 @@
             "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/trackings?offset=0&limit=20&expand=trackings",
             "resource": {
               "offset": 0,
-              "total": 1,
+              "total": 0,
               "previous": null,
               "next": null,
               "items": [
-                {
-                  "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/trackings/150441652",
-                  "resource": {
-                    "id": 150441652,
-                    "orderId": 198794572,
-                    "orderExternalId": "51552|4053596039|3341891527",
-                    "pieceId": null,
-                    "tracking": "9400110200793110752978",
-                    "carrier": "USPS",
-                    "scacCode": null,
-                    "url": "https://tools.usps.com/go/TrackConfirmAction.action?tLabels=9400110200793110752978",
-                    "summary": "Your item was delivered in or at the mailbox at 3:46 pm on August 29, 2016 in SEATTLE, WA 98101.",
-                    "summaryDate": "2016-08-29T18:23:10-07:00",
-                    "labelCreatedDate": "2016-08-26T05:42:00-07:00",
-                    "trackedDate": "2016-08-29T18:23:10-07:00",
-                    "firstScanDate": "2016-08-28T16:48:00-07:00",
-                    "firstScanCity": "FEDERAL WAY",
-                    "firstScanRegion": "WA",
-                    "firstScanPostalCode": "98003",
-                    "firstScanCountry": "98003",
-                    "deliveredDate": "2016-08-29T15:46:00-07:00",
-                    "deliveryCity": "SEATTLE",
-                    "deliveryRegion": "WA",
-                    "deliveryPostalCode": "98101",
-                    "deliveryCountry": "",
-                    "createdDate": "2016-08-26T10:13:34-07:00"
-                  }
-                }
               ]
             }
           },
