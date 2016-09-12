@@ -83,7 +83,7 @@ describe Shipwire::Order do
       )
     end
 
-    shared_examples 'sync' do
+    shared_examples 'sync_to_shopify' do
       it 'syncs shipwire order to shopify' do
         # We expect the Shopify order to be saved with tags if there are holds in Shipwire
         unless shipwire_holds.empty?
@@ -112,7 +112,7 @@ describe Shipwire::Order do
       end
     end
 
-    shared_examples 'all' do
+    shared_examples 'all sync_to_shopify' do
       context 'shipwire order has trackings' do
         let(:carrier) { 'my carrier' }
         let(:shopify_fulfillment_carrier) { carrier }
@@ -141,7 +141,7 @@ describe Shipwire::Order do
           [tracking_url_1, tracking_url_2]
         end
 
-        include_examples 'sync'
+        include_examples 'sync_to_shopify'
       end
 
       context 'shipwire order has holds' do
@@ -161,10 +161,11 @@ describe Shipwire::Order do
           "shipwire-held,shipwire-held-#{hold_type_1}-#{hold_sub_type_1},shipwire-held-#{hold_type_2}-#{hold_sub_type_2}"
         end
 
-        include_examples 'sync'
+        include_examples 'sync_to_shopify'
       end
+
       context 'shipwire order has no trackings or holds' do
-        include_examples 'sync'
+        include_examples 'sync_to_shopify'
       end
     end
 
@@ -203,25 +204,25 @@ describe Shipwire::Order do
       context 'shipwire fulfillment status is complete' do
         let(:shipwire_fulfillment_status) { 'complete' }
         let(:shopify_fulfillment_status) { 'success' }
-        include_examples 'all'
+        include_examples 'all sync_to_shopify'
       end
 
       context 'shipwire fulfillment status is delivered' do
         let(:shipwire_fulfillment_status) { 'delivered' }
         let(:shopify_fulfillment_status) { 'success' }
-        include_examples 'all'
+        include_examples 'all sync_to_shopify'
       end
 
       context 'shipwire fulfillment status is submitted' do
         let(:shipwire_fulfillment_status) { 'submitted' }
         let(:shopify_fulfillment_status) { 'open' }
-        include_examples 'all'
+        include_examples 'all sync_to_shopify'
       end
 
       context 'shipwire fulfillment status is processed' do
         let(:shipwire_fulfillment_status) { 'processed' }
         let(:shopify_fulfillment_status) { 'open' }
-        include_examples 'all'
+        include_examples 'all sync_to_shopify'
       end
     end
 
@@ -274,13 +275,13 @@ describe Shipwire::Order do
         context 'shipwire fulfillment state is complete' do
           let(:shipwire_fulfillment_status) { 'complete' }
           let(:shopify_fulfillment_status) { 'success' }
-          include_examples 'all'
+          include_examples 'all sync_to_shopify'
         end
 
         context 'shipwire fulfillment state is delivered' do
           let(:shipwire_fulfillment_status) { 'delivered' }
           let(:shopify_fulfillment_status) { 'success' }
-          include_examples 'all'
+          include_examples 'all sync_to_shopify'
         end
       end
 
@@ -288,13 +289,13 @@ describe Shipwire::Order do
         context 'shipwire fulfillment state is submitted' do
           let(:shipwire_fulfillment_status) { 'submitted' }
           let(:shopify_fulfillment_status) { 'open' }
-          include_examples 'all'
+          include_examples 'all sync_to_shopify'
         end
 
         context 'shipwire fulfillment state is pending' do
           let(:shipwire_fulfillment_status) { 'pending' }
           let(:shopify_fulfillment_status) { 'open' }
-          include_examples 'all'
+          include_examples 'all sync_to_shopify'
         end
       end
     end
