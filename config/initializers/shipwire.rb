@@ -2,12 +2,12 @@ if Rails.env.development?
   Shipwire::Client.configure(
     username: 'accounts+developer@chefsteps.com',
     password: '5Yn4H0!PW47!',
-    base_uri: 'https://api.shipwire.com/api/v3'
+    base_uri: 'https://api.beta.shipwire.com/api/v3'
   )
 elsif Rails.env.staging?
   Shipwire::Client.configure(
-    username: 'accounts+developer@chefsteps.com',
-    password: '5Yn4H0!PW47!',
+    username: 'accounts+staging@chefsteps.com',
+    password: '@4cKqv!1kHa0',
     base_uri: 'https://api.shipwire.com/api/v3'
   )
 elsif Rails.env.production?
