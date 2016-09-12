@@ -71,53 +71,6 @@ module Shipwire
       sync_held_state_to_shopify(shopify_order) if fulfillment_held?
     end
 
-    # TODO write tests for this
-    def sync_trackings_to_shopify(fulfillment)
-      return if trackings.empty?
-
-      if fulfillment.respond_to?(:tracking_numbers)
-        fulfillment.tracking_numbers.clear
-      else
-        fulfillment.attributes[:tracking_numbers] = []
-      end
-      if fulfillment.respond_to?(:tracking_urls)
-        fulfillment.tracking_urls.clear
-      else
-        fulfillment.attributes[:tracking_urls] = []
-      end
-      shopify_carrier = nil
-      trackings.each do |tracking|
-        # Shopify assumes all shipments in a fulfillment are done with the
-        # same carrier, though Shipwire allows different carriers for each.
-        # We set the Shopify carrier name to the first one here. Hard to imagine
-        # we'd use different carriers for the same address, but the most
-        # important thing is that we maintain a list of carrier-specific
-        # tracking numbers and URLs.
-        shopify_carrier = tracking.carrier unless shopify_carrier
-        fulfillment.tracking_numbers << tracking.number
-        fulfillment.tracking_urls << tracking.url
-      end
-      fulfillment.attributes[:carrier] = shopify_carrier
-    end
-
-    # TODO write tests for this
-    def sync_held_state_to_shopify(shopify_order)
-      hold_tags = ['shipwire-held']
-      holds.each do |hold|
-        hold_tags << "shipwire-held-#{hold.type}-#{hold.sub_type}"
-      end
-      shopify_order.save if Shopify::Utils.add_to_tags(shopify_order, hold_tags)
-    end
-
-    def self.array_from_json(json_str)
-      hash = JSON.parse(json_str)
-      orders = []
-      hash.fetch('resource').fetch('items').each do |order_hash|
-        orders << from_hash(order_hash.fetch('resource'))
-      end
-      orders
-    end
-
     private_class_method
     def self.from_hash(order_hash)
       Shipwire::Order.new(
@@ -152,6 +105,51 @@ module Shipwire
         return line_item if line_item.sku == 'cs10001'
       end
       raise "Order with id #{shopify_order.id} contains no Joule line item"
+    end
+
+    def sync_trackings_to_shopify(fulfillment)
+      return if trackings.empty?
+
+      if fulfillment.respond_to?(:tracking_numbers)
+        fulfillment.tracking_numbers.clear
+      else
+        fulfillment.attributes[:tracking_numbers] = []
+      end
+      if fulfillment.respond_to?(:tracking_urls)
+        fulfillment.tracking_urls.clear
+      else
+        fulfillment.attributes[:tracking_urls] = []
+      end
+      shopify_carrier = nil
+      trackings.each do |tracking|
+        # Shopify assumes all shipments in a fulfillment are done with the
+        # same carrier, though Shipwire allows different carriers for each.
+        # We set the Shopify carrier name to the first one here. Hard to imagine
+        # we'd use different carriers for the same address, but the most
+        # important thing is that we maintain a list of carrier-specific
+        # tracking numbers and URLs.
+        shopify_carrier = tracking.carrier unless shopify_carrier
+        fulfillment.tracking_numbers << tracking.number
+        fulfillment.tracking_urls << tracking.url
+      end
+      fulfillment.attributes[:carrier] = shopify_carrier
+    end
+
+    def sync_held_state_to_shopify(shopify_order)
+      hold_tags = ['shipwire-held']
+      holds.each do |hold|
+        hold_tags << "shipwire-held-#{hold.type}-#{hold.sub_type}"
+      end
+      shopify_order.save if Shopify::Utils.add_to_tags(shopify_order, hold_tags)
+    end
+
+    def self.array_from_json(json_str)
+      hash = JSON.parse(json_str)
+      orders = []
+      hash.fetch('resource').fetch('items').each do |order_hash|
+        orders << from_hash(order_hash.fetch('resource'))
+      end
+      orders
     end
   end
 end

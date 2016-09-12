@@ -76,6 +76,7 @@ describe Shipwire::Order do
     end
     let(:shipwire_trackings) { [] }
     let(:shipwire_holds) { [] }
+    let(:shipwire_order_number) { "#{shopify_order_name}.1" }
     let(:shipwire_order) do
       Shipwire::Order.new(
         id: 333,
@@ -309,6 +310,14 @@ describe Shipwire::Order do
           let(:shopify_fulfillment_status) { 'open' }
           include_examples 'all sync_to_shopify'
         end
+      end
+    end
+
+    context 'shipwire order number does not match shopify order name' do
+      let(:shipwire_order_number) { '#1234.2' }
+      let(:shopify_order_name) { '#1234' }
+      it 'raises exception' do
+        expect { shipwire_order.sync_to_shopify(shopify_order) }.to raise_error
       end
     end
   end
