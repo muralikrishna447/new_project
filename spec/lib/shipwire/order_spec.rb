@@ -205,8 +205,8 @@ describe Shipwire::Order do
           .to_return(status: 200, body: '', headers: {})
       end
 
-      context 'shipwire fulfillment status is complete' do
-        let(:shipwire_fulfillment_status) { 'complete' }
+      context 'shipwire fulfillment status is completed' do
+        let(:shipwire_fulfillment_status) { 'completed' }
         let(:shopify_fulfillment_status) { 'success' }
         include_examples 'all sync_to_shopify'
       end
@@ -219,6 +219,12 @@ describe Shipwire::Order do
 
       context 'shipwire fulfillment status is submitted' do
         let(:shipwire_fulfillment_status) { 'submitted' }
+        let(:shopify_fulfillment_status) { 'open' }
+        include_examples 'all sync_to_shopify'
+      end
+
+      context 'shipwire fulfillment status is unprocessed' do
+        let(:shipwire_fulfillment_status) { 'unprocessed' }
         let(:shopify_fulfillment_status) { 'open' }
         include_examples 'all sync_to_shopify'
       end
@@ -285,8 +291,8 @@ describe Shipwire::Order do
             .to_return(status: 200, body: '', headers: {})
         end
 
-        context 'shipwire fulfillment state is complete' do
-          let(:shipwire_fulfillment_status) { 'complete' }
+        context 'shipwire fulfillment state is completed' do
+          let(:shipwire_fulfillment_status) { 'completed' }
           let(:shopify_fulfillment_status) { 'success' }
           include_examples 'all sync_to_shopify'
         end
@@ -305,8 +311,14 @@ describe Shipwire::Order do
           include_examples 'all sync_to_shopify'
         end
 
-        context 'shipwire fulfillment state is pending' do
-          let(:shipwire_fulfillment_status) { 'pending' }
+        context 'shipwire fulfillment state is unprocessed' do
+          let(:shipwire_fulfillment_status) { 'unprocessed' }
+          let(:shopify_fulfillment_status) { 'open' }
+          include_examples 'all sync_to_shopify'
+        end
+
+        context 'shipwire fulfillment state is processed' do
+          let(:shipwire_fulfillment_status) { 'processed' }
           let(:shopify_fulfillment_status) { 'open' }
           include_examples 'all sync_to_shopify'
         end
