@@ -140,7 +140,7 @@ module Shipwire
       holds.each do |hold|
         hold_tags << "shipwire-held-#{hold.type}-#{hold.sub_type}"
       end
-      shopify_order.save if Shopify::Utils.add_to_tags(shopify_order, hold_tags)
+      shopify_order.save if Shopify::Utils.add_to_order_tags(shopify_order, hold_tags)
     end
 
     def self.array_from_json(json_str)
