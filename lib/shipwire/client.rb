@@ -4,11 +4,11 @@ module Shipwire
       raise 'Shipwire username is required' unless options[:username]
       raise 'Shipwire password is required' unless options[:password]
       raise 'Shipwire base URI is required' unless options[:base_uri]
-      @auth = {
+      @@auth = {
         username: options[:username],
         password: options[:password]
       }
-      @base_uri = options[:base_uri]
+      @@base_uri = options[:base_uri]
     end
 
     def self.unique_order_by_number(order_number)
@@ -22,10 +22,10 @@ module Shipwire
 
     private_class_method
     def self.orders_page(order_number, offset, limit)
-      url = "#{@base_uri}/orders?orderNo=#{URI.encode(order_number)}&expand=trackings,holds&offset=#{offset}&limit=#{limit}"
+      url = "#{@@base_uri}/orders?orderNo=#{URI.encode(order_number)}&expand=trackings,holds&offset=#{offset}&limit=#{limit}"
       response = HTTParty.get(
         url,
-        basic_auth: @auth,
+        basic_auth: @@auth,
         headers: {
           'Accept' => 'application/json',
           'Content-Type' => 'application/json'
