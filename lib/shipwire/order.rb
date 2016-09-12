@@ -56,6 +56,10 @@ module Shipwire
         Rails.logger.info "Found existing Joule fulfillment with id #{shopify_fulfillment.id} for Shopify order with id #{shopify_order.id}, will update it"
         sync_trackings_to_shopify(shopify_fulfillment)
         shopify_fulfillment.save
+
+        # If Shopify fulfillment status is already completed, we can skip the rest.
+        return if shopify_fulfillment.status == 'success'
+
         if fulfillment_complete?
           Rails.logger.info "Completing fulfillment for Shopify order with id #{shopify_order.id}, Shipwire status for order with id #{id} is #{status}"
           shopify_fulfillment.complete
@@ -70,6 +74,7 @@ module Shipwire
         shopify_fulfillment.prefix_options[:order_id] = shopify_order.id
         shopify_fulfillment.attributes[:line_items] = [{ id: line_item.id }]
         sync_trackings_to_shopify(shopify_fulfillment)
+
         if fulfillment_complete?
           Rails.logger.info "Setting new fulfillment status to success for Shopify order with id #{shopify_order.id}, Shipwire status for order with id #{id} is #{status}"
           shopify_fulfillment.attributes[:status] = 'success'
@@ -123,6 +128,8 @@ module Shipwire
       raise "Order with id #{shopify_order.id} contains no Joule line item with sku #{JOULE_SKU}"
     end
 
+    # FIXME this sends an email every time we update the fulfillment, so we
+    # have to detect whether anything has changed instead of saving every time.
     def sync_trackings_to_shopify(fulfillment)
       return if trackings.empty?
 

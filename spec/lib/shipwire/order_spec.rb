@@ -284,23 +284,38 @@ describe Shipwire::Order do
       end
 
       context 'shipwire has shipped the order' do
-        # Stub out the request to Shopify to complete the fulfillment.
-        before :each do
-          WebMock
-            .stub_request(:post, /myshopify.com\/admin\/orders\/#{shopify_order_id}\/fulfillments\/#{shopify_fulfillment_id}\/complete.json/)
-            .to_return(status: 200, body: '', headers: {})
+        context 'shopify fulfillment status is open' do
+          let(:shopify_fulfillment_status) { 'open' }
+          # Stub out the request to Shopify to complete the fulfillment.
+          before :each do
+            WebMock
+              .stub_request(:post, /myshopify.com\/admin\/orders\/#{shopify_order_id}\/fulfillments\/#{shopify_fulfillment_id}\/complete.json/)
+              .to_return(status: 200, body: '', headers: {})
+          end
+
+          context 'shipwire fulfillment state is completed' do
+            let(:shipwire_fulfillment_status) { 'completed' }
+            include_examples 'all sync_to_shopify'
+          end
+
+          context 'shipwire fulfillment state is delivered' do
+            let(:shipwire_fulfillment_status) { 'delivered' }
+            include_examples 'all sync_to_shopify'
+          end
         end
 
-        context 'shipwire fulfillment state is completed' do
-          let(:shipwire_fulfillment_status) { 'completed' }
+        context 'shopify fulfillment status is success' do
           let(:shopify_fulfillment_status) { 'success' }
-          include_examples 'all sync_to_shopify'
-        end
+          # In this case there should be no request to complete the fulfillment.
+          context 'shipwire fulfillment state is completed' do
+            let(:shipwire_fulfillment_status) { 'completed' }
+            include_examples 'all sync_to_shopify'
+          end
 
-        context 'shipwire fulfillment state is delivered' do
-          let(:shipwire_fulfillment_status) { 'delivered' }
-          let(:shopify_fulfillment_status) { 'success' }
-          include_examples 'all sync_to_shopify'
+          context 'shipwire fulfillment state is delivered' do
+            let(:shipwire_fulfillment_status) { 'delivered' }
+            include_examples 'all sync_to_shopify'
+          end
         end
       end
 
