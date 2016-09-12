@@ -57,14 +57,17 @@ describe Shipwire::Order do
     let(:shopify_order_id) { 2222 }
     let(:shopify_order_name) { '#1234' }
     let(:shopify_order_tags) { '' }
+    let(:line_items) do
+      line_item = double('line_item')
+      line_item.stub(:id) { line_item_id }
+      line_item.stub(:sku) { 'cs10001' }
+      [line_item]
+    end
     let(:shopify_order) do
       shopify_order = double('shopify_order')
       shopify_order.stub(:id) { shopify_order_id }
       shopify_order.stub(:name) { shopify_order_name }
-      line_item = double('line_item')
-      line_item.stub(:id) { line_item_id }
-      line_item.stub(:sku) { 'cs10001' }
-      shopify_order.stub(:line_items) { [line_item] }
+      shopify_order.stub(:line_items) { line_items }
       shopify_order.stub(:fulfillments) { shopify_fulfillments }
       shopify_order.stub(:tags) { shopify_order_tags }
       shopify_order.stub(:tags=)
@@ -224,6 +227,15 @@ describe Shipwire::Order do
         let(:shopify_fulfillment_status) { 'open' }
         include_examples 'all sync_to_shopify'
       end
+
+      context 'shopify order has no joule line item' do
+        let(:shipwire_fulfillment_status) { 'processed' }
+        let(:shopify_fulfillment_status) { 'open' }
+        let(:line_items) { [] }
+        it 'raises exception' do
+          expect { shipwire_order.sync_to_shopify(shopify_order) }.to raise_error
+        end
+      end
     end
 
     context 'shopify order has existing joule fulfillment' do
@@ -299,11 +311,5 @@ describe Shipwire::Order do
         end
       end
     end
-
-    # TODO
-    # context 'shopify order has no joule line item' do
-    #   it 'raises exception' do
-    #   end
-    # end
   end
 end
