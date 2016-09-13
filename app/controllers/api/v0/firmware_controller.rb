@@ -28,6 +28,12 @@ module Api
           return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify mobile app version'}
         end
 
+        hardware_version = params[:hardwareVersion]
+        if hardware_version != 'JL.p5'
+          logger.info("Hardware version does not support DFU: #{hardware_version}")
+          return render_empty_response
+        end
+
         if @user_id_from_token
           user = User.find @user_id_from_token
           if BetaFeatureService.user_has_feature(user.email, 'dfu')
