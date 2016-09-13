@@ -86,15 +86,15 @@ module Shipwire
         # important thing is that we maintain a list of carrier-specific
         # tracking numbers and URLs.
         shopify_carrier = tracking.carrier unless shopify_carrier
-        shipwire_tracking_numbers << tracking.number
-        shipwire_tracking_urls << tracking.url
+        shipwire_tracking_numbers << tracking.number if tracking.number
+        shipwire_tracking_urls << tracking.url if tracking.url
       end
 
-      if fulfillment.tracking_numbers.sort != shipwire_tracking_numbers.sort
+      if fulfillment.tracking_numbers.sort != shipwire_tracking_numbers.sort && !shipwire_tracking_numbers.empty?
         modified = true
         fulfillment.tracking_numbers = shipwire_tracking_numbers
       end
-      if fulfillment.tracking_urls.sort != shipwire_tracking_urls.sort
+      if fulfillment.tracking_urls.sort != shipwire_tracking_urls.sort && !shipwire_tracking_urls.empty?
         modified = true
         fulfillment.tracking_urls = shipwire_tracking_urls
       end
