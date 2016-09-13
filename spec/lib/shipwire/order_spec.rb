@@ -104,11 +104,11 @@ describe Shipwire::Order do
           expect(shopify_fulfillment.respond_to?(:tracking_numbers)).to be_false
           expect(shopify_fulfillment.respond_to?(:tracking_urls)).to be_false
         else
-          expect(shopify_fulfillment.carrier.nil?).to be_false
+          expect(shopify_fulfillment.tracking_company.nil?).to be_false
           expect(shopify_fulfillment.tracking_numbers.length).to eq shipwire_trackings.length
           expect(shopify_fulfillment.tracking_urls.length).to eq shipwire_trackings.length
           shipwire_trackings.each_index do |i|
-            expect(shopify_fulfillment.carrier).to eq(shipwire_trackings[i].carrier)
+            expect(shopify_fulfillment.tracking_company).to eq(shipwire_trackings[i].carrier)
             expect(shopify_fulfillment.tracking_numbers[i]).to eq(shipwire_trackings[i].number)
             expect(shopify_fulfillment.tracking_urls[i]).to eq(shipwire_trackings[i].url)
           end
@@ -180,7 +180,7 @@ describe Shipwire::Order do
         fulfillment.attributes[:line_items] = [{ id: line_item_id }]
         fulfillment.attributes[:status] = shopify_fulfillment_status
         if shopify_fulfillment_carrier
-          fulfillment.attributes[:carrier] = shopify_fulfillment_carrier
+          fulfillment.attributes[:tracking_company] = shopify_fulfillment_carrier
         end
         unless shopify_tracking_numbers.empty?
           fulfillment.attributes[:tracking_numbers] = shopify_tracking_numbers
@@ -258,7 +258,7 @@ describe Shipwire::Order do
         fulfillment.attributes[:line_items] = [line_item]
         fulfillment.attributes[:status] = shopify_fulfillment_status
         if shopify_fulfillment_carrier
-          fulfillment.attributes[:carrier] = shopify_fulfillment_carrier
+          fulfillment.attributes[:tracking_company] = shopify_fulfillment_carrier
         end
         unless shopify_tracking_numbers.empty?
           fulfillment.attributes[:tracking_numbers] = shopify_tracking_numbers
@@ -376,7 +376,7 @@ describe Shipwire::Order do
       context 'shopify fulfillment has different trackings' do
         let(:fulfillment) do
           fulfillment = ShopifyAPI::Fulfillment.new
-          fulfillment.attributes[:carrier] = 'shopify carrier'
+          fulfillment.attributes[:tracking_company] = 'shopify carrier'
           fulfillment.attributes[:tracking_numbers] = ['shopify number']
           fulfillment.attributes[:tracking_urls] = ['shopify url']
           fulfillment
@@ -385,7 +385,7 @@ describe Shipwire::Order do
         it 'sets shopify fulfillment to shipwire trackings' do
           modified = shipwire_order.update_shopify_trackings(fulfillment)
           expect(modified).to be_true
-          expect(fulfillment.carrier).to eq shipwire_order.trackings.first.carrier
+          expect(fulfillment.tracking_company).to eq shipwire_order.trackings.first.carrier
           expect(fulfillment.tracking_numbers).to eq [shipwire_order.trackings.first.number]
           expect(fulfillment.tracking_urls).to eq [shipwire_order.trackings.first.url]
         end
@@ -394,7 +394,7 @@ describe Shipwire::Order do
       context 'shopify fulfillment has same trackings' do
         let(:fulfillment) do
           fulfillment = ShopifyAPI::Fulfillment.new
-          fulfillment.attributes[:carrier] = shipwire_order.trackings.first.carrier
+          fulfillment.attributes[:tracking_company] = shipwire_order.trackings.first.carrier
           fulfillment.attributes[:tracking_numbers] = [shipwire_order.trackings.first.number]
           fulfillment.attributes[:tracking_urls] = [shipwire_order.trackings.first.url]
           fulfillment
@@ -403,7 +403,7 @@ describe Shipwire::Order do
         it 'does not update shopify fulfillment trackings' do
           modified = shipwire_order.update_shopify_trackings(fulfillment)
           expect(modified).to be_false
-          expect(fulfillment.carrier).to eq shipwire_order.trackings.first.carrier
+          expect(fulfillment.tracking_company).to eq shipwire_order.trackings.first.carrier
           expect(fulfillment.tracking_numbers).to match_array [shipwire_order.trackings.first.number]
           expect(fulfillment.tracking_urls).to match_array [shipwire_order.trackings.first.url]
         end
@@ -415,7 +415,7 @@ describe Shipwire::Order do
         it 'sets shopify fulfillment to shipwire trackings' do
           modified = shipwire_order.update_shopify_trackings(fulfillment)
           expect(modified).to be_true
-          expect(fulfillment.carrier).to eq shipwire_order.trackings.first.carrier
+          expect(fulfillment.tracking_company).to eq shipwire_order.trackings.first.carrier
           expect(fulfillment.tracking_numbers).to eq [shipwire_order.trackings.first.number]
           expect(fulfillment.tracking_urls).to eq [shipwire_order.trackings.first.url]
         end

@@ -99,9 +99,9 @@ module Shipwire
         fulfillment.tracking_urls = shipwire_tracking_urls
       end
 
-      if fulfillment.attributes[:carrier] != shopify_carrier
+      if fulfillment.attributes[:tracking_company] != shopify_carrier
         modified = true
-        fulfillment.attributes[:carrier] = shopify_carrier
+        fulfillment.attributes[:tracking_company] = shopify_carrier
       end
 
       if modified
