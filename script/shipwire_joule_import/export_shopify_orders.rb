@@ -59,47 +59,57 @@ end
 # Retrieve orders from shopify API and export to CSV
 PAGE_SIZE = 100
 order_count = 0
+page = 1
+all_orders = []
+loop do
+  STDERR.puts "Fetching order page #{page}"
+  path = ShopifyAPI::Order.collection_path(
+    status: 'open',
+    fulfillment_status: 'unshipped',
+    limit: PAGE_SIZE,
+    page: page
+  )
+  orders = ShopifyAPI::Order.find(:all, from: path)
+  orders.each do |order|
+    # We only care about Joules
+    joule_line_item = joule_line_item(order)
+    next unless joule_line_item
+
+    all_orders << [
+      order.id,
+      order.name,
+      DateTime.parse(order.processed_at),
+      shipping_name(order),
+      shipping_address_prop(order, :address1),
+      shipping_address_prop(order, :address2),
+      shipping_address_prop(order, :city),
+      shipping_address_prop(order, :province_code),
+      shipping_address_prop(order, :zip),
+      shipping_address_prop(order, :country_code),
+      order.email,
+      shipping_address_prop(order, :phone),
+      joule_line_item.sku,
+      joule_line_item.quantity
+    ]
+
+    order_count += 1
+  end
+  break if orders.length < PAGE_SIZE
+  page += 1
+end
+
+all_orders.sort! do |x, y|
+  x[ShipwireImport::SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_COLUMN] <=> y[ShipwireImport::SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_COLUMN]
+end
+all_orders.each_index do |i|
+  all_orders[i][ShipwireImport::SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_INDEX_COMLUMN] = i + 1
+end
+
 output_str = CSV.generate(force_quotes: true) do |output_rows|
   # CSV header
   output_rows << ShipwireImport::SHOPIFY_EXPORT_SCHEMA
 
-  page = 1
-  loop do
-    STDERR.puts "Fetching order page #{page}"
-    path = ShopifyAPI::Order.collection_path(
-      status: 'open',
-      fulfillment_status: 'unshipped',
-      limit: PAGE_SIZE,
-      page: page
-    )
-    orders = ShopifyAPI::Order.find(:all, from: path)
-    orders.each do |order|
-      # We only care about Joules
-      joule_line_item = joule_line_item(order)
-      next unless joule_line_item
-
-      output_rows << [
-        order.id,
-        order.name,
-        order.processed_at,
-        shipping_name(order),
-        shipping_address_prop(order, :address1),
-        shipping_address_prop(order, :address2),
-        shipping_address_prop(order, :city),
-        shipping_address_prop(order, :province_code),
-        shipping_address_prop(order, :zip),
-        shipping_address_prop(order, :country_code),
-        order.email,
-        shipping_address_prop(order, :phone),
-        joule_line_item.sku,
-        joule_line_item.quantity
-      ]
-
-      order_count += 1
-    end
-    break if orders.length < PAGE_SIZE
-    page += 1
-  end
+  all_orders.each { |order| output_rows << order }
 end
 
 STDERR.puts "Exported #{order_count} orders"

@@ -79,12 +79,13 @@ end
 
 order_count = 0
 output_str = CSV.generate(force_quotes: true) do |output_rows|
-  output_rows << ShipwireImport::SHOPIFY_EXPORT_SCHEMA
+  output_rows << ShipwireImport::SHOPIFY_EXPORT_SCHEMA_WITH_PRIORITY
   order_rows.each do |row|
     if blacklist_order_ids[row['id']]
       STDERR.puts "Order with id #{row['id']} was blacklisted, filterting it out"
     else
       order_count += 1
+      row['priority_index'] = order_count
       output_rows << row
     end
   end
