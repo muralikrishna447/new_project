@@ -12,7 +12,7 @@ class JouleAddressMailer < ActionMailer::Base
     subject = "Important: Verify Your Shipping Address For Joule"
     base_url = Rails.application.config.shared_config[:chefsteps_endpoint]
 
-    if shipping_address.address2.length > 0
+    if shipping_address.address2 && shipping_address.address2.length > 0
       @shipping_address_2 = shipping_address.address2 + '<br />'
     end
 
