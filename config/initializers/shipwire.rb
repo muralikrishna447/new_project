@@ -6,14 +6,14 @@ if Rails.env.development?
   )
 elsif Rails.env.staging?
   Shipwire::Client.configure(
-    username: 'accounts+staging@chefsteps.com',
-    password: '@4cKqv!1kHa0',
+    username: ENV['SHIPWIRE_USERNAME'],
+    password: ENV['SHIPWIRE_PASSWORD'],
     base_uri: 'https://api.shipwire.com/api/v3'
   )
 elsif Rails.env.production?
   Shipwire::Client.configure(
-    username: 'accounts+apiuser@chefsteps.com',
-    password: 'a69bbac30f7efe0614c2a8a092d406f7',
+    username: ENV['SHIPWIRE_USERNAME'],
+    password: ENV['SHIPWIRE_PASSWORD'],
     base_uri: 'https://api.shipwire.com/api/v3'
   )
 end
