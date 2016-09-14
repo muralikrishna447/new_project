@@ -63,14 +63,14 @@ module Shipwire
       end
     end
 
-    def update_shopify_trackings(fulfillment)
+    def merge_trackings(shopify_fulfillment)
       return false if trackings.empty?
 
-      unless fulfillment.respond_to?(:tracking_numbers)
-        fulfillment.attributes[:tracking_numbers] = []
+      unless shopify_fulfillment.respond_to?(:tracking_numbers)
+        shopify_fulfillment.attributes[:tracking_numbers] = []
       end
-      unless fulfillment.respond_to?(:tracking_urls)
-        fulfillment.attributes[:tracking_urls] = []
+      unless shopify_fulfillment.respond_to?(:tracking_urls)
+        shopify_fulfillment.attributes[:tracking_urls] = []
       end
       shopify_carrier = nil
       modified = false
@@ -88,24 +88,24 @@ module Shipwire
         shipwire_tracking_urls << tracking.url if tracking.url
       end
 
-      if fulfillment.tracking_numbers.sort != shipwire_tracking_numbers.sort && !shipwire_tracking_numbers.empty?
+      if shopify_fulfillment.tracking_numbers.sort != shipwire_tracking_numbers.sort && !shipwire_tracking_numbers.empty?
         modified = true
-        fulfillment.tracking_numbers = shipwire_tracking_numbers
+        shopify_fulfillment.tracking_numbers = shipwire_tracking_numbers
       end
-      if fulfillment.tracking_urls.sort != shipwire_tracking_urls.sort && !shipwire_tracking_urls.empty?
+      if shopify_fulfillment.tracking_urls.sort != shipwire_tracking_urls.sort && !shipwire_tracking_urls.empty?
         modified = true
-        fulfillment.tracking_urls = shipwire_tracking_urls
+        shopify_fulfillment.tracking_urls = shipwire_tracking_urls
       end
 
-      if fulfillment.attributes[:tracking_company] != shopify_carrier
+      if shopify_fulfillment.attributes[:tracking_company] != shopify_carrier
         modified = true
-        fulfillment.attributes[:tracking_company] = shopify_carrier
+        shopify_fulfillment.attributes[:tracking_company] = shopify_carrier
       end
 
       if modified
-        Rails.logger.info "Updating tracking for Shopify fulfillment with id #{fulfillment.id} with carrier #{shopify_carrier}, tracking numbers #{fulfillment.tracking_numbers.inspect}, tracking URLs #{fulfillment.tracking_urls.inspect}"
+        Rails.logger.info "Updating tracking for Shopify fulfillment with id #{shopify_fulfillment.id} with carrier #{shopify_carrier}, tracking numbers #{shopify_fulfillment.tracking_numbers.inspect}, tracking URLs #{shopify_fulfillment.tracking_urls.inspect}"
       else
-        Rails.logger.info "No changes in tracking for Shopify fulfillment with id #{fulfillment.id}, not updating"
+        Rails.logger.info "No changes in tracking for Shopify fulfillment with id #{shopify_fulfillment.id}, not updating"
       end
       modified
     end
@@ -140,7 +140,7 @@ module Shipwire
     end
 
     def handle_existing_fulfillment(fulfillment)
-      fulfillment.save if update_shopify_trackings(fulfillment)
+      fulfillment.save if merge_trackings(fulfillment)
 
       # Don't complete the fulfillment if it has already been completed.
       return if fulfillment.status == 'success'
@@ -157,7 +157,7 @@ module Shipwire
       shopify_fulfillment = ShopifyAPI::Fulfillment.new
       shopify_fulfillment.prefix_options[:order_id] = shopify_order.id
       shopify_fulfillment.attributes[:line_items] = [{ id: joule_line_item(shopify_order).id }]
-      update_shopify_trackings(shopify_fulfillment)
+      merge_trackings(shopify_fulfillment)
 
       if fulfillment_complete?
         Rails.logger.info "Setting new fulfillment status to success for Shopify order with id #{shopify_order.id}, Shipwire status for order with id #{id} is #{status}"

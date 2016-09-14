@@ -349,13 +349,13 @@ describe Shipwire::Order do
     end
   end
 
-  describe 'update_shopify_trackings' do
+  describe 'merge_trackings' do
     context 'shipwire order has no trackings' do
       let(:shipwire_order) { Shipwire::Order.new(trackings: []) }
       let(:fulfillment) { ShopifyAPI::Fulfillment.new }
 
       it 'returns false' do
-        modified = shipwire_order.update_shopify_trackings(fulfillment)
+        modified = shipwire_order.merge_trackings(fulfillment)
         expect(modified).to be_false
       end
     end
@@ -383,7 +383,7 @@ describe Shipwire::Order do
         end
 
         it 'sets shopify fulfillment to shipwire trackings' do
-          modified = shipwire_order.update_shopify_trackings(fulfillment)
+          modified = shipwire_order.merge_trackings(fulfillment)
           expect(modified).to be_true
           expect(fulfillment.tracking_company).to eq shipwire_order.trackings.first.carrier
           expect(fulfillment.tracking_numbers).to eq [shipwire_order.trackings.first.number]
@@ -401,7 +401,7 @@ describe Shipwire::Order do
         end
 
         it 'does not update shopify fulfillment trackings' do
-          modified = shipwire_order.update_shopify_trackings(fulfillment)
+          modified = shipwire_order.merge_trackings(fulfillment)
           expect(modified).to be_false
           expect(fulfillment.tracking_company).to eq shipwire_order.trackings.first.carrier
           expect(fulfillment.tracking_numbers).to match_array [shipwire_order.trackings.first.number]
@@ -413,7 +413,7 @@ describe Shipwire::Order do
         let(:fulfillment) { ShopifyAPI::Fulfillment.new }
 
         it 'sets shopify fulfillment to shipwire trackings' do
-          modified = shipwire_order.update_shopify_trackings(fulfillment)
+          modified = shipwire_order.merge_trackings(fulfillment)
           expect(modified).to be_true
           expect(fulfillment.tracking_company).to eq shipwire_order.trackings.first.carrier
           expect(fulfillment.tracking_numbers).to eq [shipwire_order.trackings.first.number]
