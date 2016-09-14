@@ -12,6 +12,7 @@ module Api
       end
 
       def create
+        Librato.increment("api.circulator_create_requests")
         unless params[:circulator] && params[:circulator][:id]
           # TODO - once we settle on circulator_id format validation should be added
           render_api_response 400, {message: "Must specify circulator.id"}
@@ -67,6 +68,7 @@ module Api
       end
 
       def update
+        Librato.increment("api.circulator_update_requests")
         if params[:circulator]
           @circulator.name = params[:circulator][:name] if params[:circulator][:name]
           @circulator.notes = params[:circulator][:notes] if params[:circulator][:notes]
@@ -77,11 +79,13 @@ module Api
       end
 
       def destroy
+        Librato.increment("api.circulator_destroy_requests")
         @circulator.destroy
         render_api_response 200
       end
 
       def token
+        Librato.increment("api.circulator_token_requests")
         # Assume that address_id matches circulator_id
         aa = ActorAddress.where(address_id: @circulator.circulator_id).first
         unless aa
@@ -93,6 +97,7 @@ module Api
       end
 
       def notify_clients
+        Librato.increment("api.circulator_notify_clients_requests")
         circulator = Circulator.where(circulator_id: params[:id]).first
         if circulator.nil?
           return render_api_response 404, {message: "Circulator not found"}
@@ -117,6 +122,7 @@ module Api
       end
 
       def publish_notification(endpoint_arn, message, notification_type)
+        Librato.increment("api.publish_notification_requests")
         sns = Aws::SNS::Client.new(region: 'us-east-1')
         begin
           # TODO - add APNS once we have a testable endpoint
@@ -140,6 +146,7 @@ module Api
       # Ex: POST /api/v0/circulators/coefficients
       # POST params :identify
       def coefficients
+        Librato.increment("api.coefficients_requests")
 
         # Example data
         coefficientsData = [

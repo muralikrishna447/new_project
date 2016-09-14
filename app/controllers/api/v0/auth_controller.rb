@@ -7,6 +7,7 @@ module Api
 
       def authenticate
         begin
+          Librato.increment("api.authenticate_requests")
           unless params.has_key?(:user) && params[:user].has_key?(:email)
             logger.info("User not specified #{params.inspect}")
             render json: {status: 400, message: 'Bad Request'}, status: 400
@@ -76,6 +77,7 @@ module Api
       end
 
       def authenticate_facebook
+        Librato.increment("api.authenticate_facebook_requests")
         access_token = params[:user][:access_token]
         facebook_user_id = params[:user][:user_id]
 
@@ -143,6 +145,7 @@ module Api
       # Modified from https://github.com/zendesk/zendesk_jwt_sso_examples/blob/master/ruby_on_rails_jwt.rb
       # General doc: https://support.zendesk.com/hc/en-us/articles/203663816-Setting-up-single-sign-on-with-JWT-JSON-Web-Token-
       def zendesk_sso_url(return_to)
+        Librato.increment("api.authenticate_zendesk_sso_url_requests")
         iat = Time.now.to_i
         jti = "#{iat}/#{SecureRandom.hex(18)}"
 

@@ -11,6 +11,7 @@ require 'rails/all'
 
 require 'hashids'
 
+
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups(assets: %w(development test)))
@@ -162,6 +163,12 @@ module Delve
 
     # Coverband
     config.middleware.use Coverband::Middleware
+
+    # Rate Limiting
+    #  TODO: enable this!!
+    # config.middleware.use Rack::Throttle::Interval, :min => 3.0
+    config.middleware.use Rack::Attack
+
 
     # Prefix each log line with a per-request UUID
     config.log_tags = [:uuid ]
