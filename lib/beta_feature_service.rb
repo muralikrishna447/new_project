@@ -1,3 +1,4 @@
+require 'set'
 module BetaFeature
   class DynamoBetaFeatureService
     def initialize(dynamo_client, table_config)
@@ -6,8 +7,12 @@ module BetaFeature
     end
 
     def user_has_feature(user, feature_name)
-      groups = get_groups_for_user(user)
+      groups = Set.new(get_groups_for_user(user))
+
       feature_groups = get_feature_group_info(feature_name)
+      feature_groups = feature_groups.select {|fg|
+        groups.include? fg['group_name']
+      }
 
       is_enabled = false
       if feature_groups.length > 0
