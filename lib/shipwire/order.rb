@@ -173,7 +173,7 @@ module Shipwire
       shopify_order.line_items.each do |line_item|
         return line_item if line_item.sku == Shopify::Order::JOULE_SKU
       end
-      raise "Order with id #{shopify_order.id} contains no Joule line item with sku #{JOULE_SKU}"
+      raise "Order with id #{shopify_order.id} contains no Joule line item with sku #{Shopify::Order::JOULE_SKU}"
     end
 
     def save_held_state_to_shopify(shopify_order)
