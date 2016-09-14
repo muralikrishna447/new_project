@@ -1,4 +1,4 @@
-require 'beta_feature_service'
+require_dependency 'beta_feature_service'
 require 'semverse'
 module Api
   module V0
@@ -36,7 +36,7 @@ module Api
 
         if @user_id_from_token
           user = User.find @user_id_from_token
-          if BetaFeatureService.user_has_feature(user.email, 'dfu')
+          if BetaFeatureService.user_has_feature(user, 'dfu')
             logger.info("User #{user.email} has the DFU beta feature")
           else
             logger.info("User #{user.email} is not setup for DFU beta feature")
@@ -51,7 +51,7 @@ module Api
         end
 
         dfu_over_http = (
-          BetaFeatureService.user_has_feature(user.email, 'esp_http_dfu') and
+          BetaFeatureService.user_has_feature(user, 'esp_http_dfu') and
           http_dfu_capable?(params)
         )
 
@@ -86,7 +86,7 @@ module Api
       private
       def http_dfu_capable?(params)
         app_version = Semverse::Version.new(params[:appVersion])
-        esp_version_str = params[:espFirmwareVersion] or ''
+        esp_version_str = params[:espFirmwareVersion] || ''
         is_staging = esp_version_str.start_with?('s')
         esp_version = esp_version_str.sub('s', '').to_i
 
@@ -94,13 +94,13 @@ module Api
         if is_staging
           is_capable = (
             app_version >= Semverse::Version.new("2.33.1") and
-            (params[:appFirmwareVersion] or '0').to_i >= 900 and
+            (params[:appFirmwareVersion] || '0').to_i >= 900 and
             esp_version >= 360
           )
         else
           is_capable = (
             app_version >= Semverse::Version.new("2.33.1") and
-            (params[:appFirmwareVersion] or '0').to_i >= 47 and
+            (params[:appFirmwareVersion] || '0').to_i >= 47 and
             esp_version >= 10
           )
         end
