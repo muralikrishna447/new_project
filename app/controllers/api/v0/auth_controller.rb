@@ -185,8 +185,8 @@ module Api
           redirect_uri = "https://#{Rails.configuration.shopify[:store_domain]}/account/login/multipass/#{token}"
           render_api_response 200, {redirect: redirect_uri}
         elsif path_uri.host == 'pitangui.amazon.com'
-          # TODO - user restricted token if this is used for more than testing
-          token = @actor_address_from_token.current_token.to_jwt
+          aa = ActorAddress.create_for_user(current_api_user, {client_metadata: 'amazon'})
+          token = aa.current_token.to_jwt
           redirect_params = {state: params[:state],
             token_type: 'Bearer',
             access_token: token}
