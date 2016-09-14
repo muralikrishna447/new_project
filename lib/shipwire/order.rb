@@ -1,7 +1,5 @@
 module Shipwire
   class Order
-    JOULE_SKU = 'cs10001'
-
     # Shipwire's unique order ID
     attr_reader :id
 
@@ -135,7 +133,7 @@ module Shipwire
     def joule_fulfillment(shopify_order)
       shopify_order.fulfillments.each do |fulfillment|
         fulfillment.line_items.each do |line_item|
-          return fulfillment if line_item.sku == JOULE_SKU
+          return fulfillment if line_item.sku == Shopify::Order::JOULE_SKU
         end
       end
       nil
@@ -173,7 +171,7 @@ module Shipwire
 
     def joule_line_item(shopify_order)
       shopify_order.line_items.each do |line_item|
-        return line_item if line_item.sku == JOULE_SKU
+        return line_item if line_item.sku == Shopify::Order::JOULE_SKU
       end
       raise "Order with id #{shopify_order.id} contains no Joule line item with sku #{JOULE_SKU}"
     end
