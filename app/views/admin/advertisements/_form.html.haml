@@ -1,11 +1,12 @@
 %h1(style="color: red;") READ ME!!!
-%h2 As of now, there should be exactly one advertisement and it is used for the hero on the home page of the Joule app when there is no Joule paired. Do not mess with this if you aren't sure you know what you are doing!
+%h2 Be careful with the matchname field for the ads; they have specific names that have to exactly match to be served in the correct circumstances. Do not mess with this if you aren't sure you know what you are doing!
 
 = semantic_form_for [:admin, @advertisement] do |f|
   = f.semantic_errors *f.object.errors.keys
   = f.inputs do
     = render '/shared/filepicker_group', label_text: "Image", param: "advertisement[image]", value: @advertisement.image
     = f.input :published
+    = f.input :matchname, input_html: { rows: 1}, label: "Identifier used by RecSys. Careful!"
     = f.input :title, input_html: { rows: 1}, label: "Title (large text on ad, optional)"
     = f.input :description, input_html: { rows: 2}, label: "Description (smaller text on ad, optional)"
     = f.input :button_title, input_html: { rows: 1}, label: "Text shown on button (optional)"

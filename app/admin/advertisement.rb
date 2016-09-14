@@ -2,6 +2,7 @@ ActiveAdmin.register Advertisement do
   form partial: 'form'
 
   index do
+    column :matchname
     column :published
     column :title
     column :description
