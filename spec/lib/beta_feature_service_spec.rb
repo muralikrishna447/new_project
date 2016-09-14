@@ -1,5 +1,4 @@
 require 'spec_helper'
-require_dependency 'beta_feature_service'
 
 describe BetaFeatureService do
 
