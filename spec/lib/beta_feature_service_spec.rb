@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_dependency 'beta_feature_service'
 
 describe BetaFeatureService do
 
@@ -16,6 +17,13 @@ describe BetaFeatureService do
     end
     BetaFeature::DynamoBetaFeatureService.any_instance.stub(:get_feature_group_info) \
       .and_return(feature_groups)
+  end
+
+  def set_feature_default(feature_name, is_enabled)
+    BetaFeature::DynamoBetaFeatureService.any_instance \
+      .stub(:get_feature_info) \
+      .with(feature_name) \
+      .and_return({'feature_name' => feature_name, 'default_enabled' => is_enabled})
   end
 
   before :each do
@@ -47,6 +55,64 @@ describe BetaFeatureService do
     )
     is_enabled = BetaFeatureService.user_has_feature(@user1, 'dfu')
     expect(is_enabled).to eq(true)
+  end
+
+  it 'returns false if no rules' do
+    is_enabled = BetaFeatureService.user_has_feature(@user1, 'dfu')
+    expect(is_enabled).to eq(false)
+  end
+
+  it 'returns false if default rule is false' do
+    set_feature_default('dfu', false)
+    is_enabled = BetaFeatureService.user_has_feature(@user1, 'dfu')
+    expect(is_enabled).to eq(false)
+  end
+
+  it 'returns true if default rule is true' do
+    set_feature_default('dfu', true)
+    is_enabled = BetaFeatureService.user_has_feature(@user1, 'dfu')
+    expect(is_enabled).to eq(true)
+  end
+
+
+  it 'group rule overrides default rule' do
+    set_feature_default('dfu', true)
+    set_user_groups(@user1, ['dev'])
+    set_feature_groups(
+      'dfu',
+      [{'group_name' => 'dev', 'feature_name' => 'dfu', 'is_enabled' => false}]
+    )
+    is_enabled = BetaFeatureService.user_has_feature(@user1, 'dfu')
+    expect(is_enabled).to eq(false)
+  end
+
+  it 'any group that enables a feature takes precedence' do
+    set_user_groups(@user1, ['dev', 'reviewer'])
+    set_feature_groups(
+      'dfu',
+      [
+        {'group_name' => 'dev', 'feature_name' => 'dfu', 'is_enabled' => true},
+        {'group_name' => 'reviewers', 'feature_name' => 'dfu', 'is_enabled' => false},
+      ]
+    )
+    is_enabled = BetaFeatureService.user_has_feature(@user1, 'dfu')
+    expect(is_enabled).to eq(true)
+  end
+
+  it 'handles multiple users in different groups' do
+    set_user_groups(@user1, ['dev'])
+    set_user_groups(@user2, ['reviewer'])
+    set_feature_groups(
+      'dfu',
+      [
+        {'group_name' => 'dev', 'feature_name' => 'dfu', 'is_enabled' => true},
+        {'group_name' => 'reviewers', 'feature_name' => 'dfu', 'is_enabled' => false},
+      ]
+    )
+    is_enabled = BetaFeatureService.user_has_feature(@user1, 'dfu')
+    expect(is_enabled).to eq(true)
+    is_enabled = BetaFeatureService.user_has_feature(@user2, 'dfu')
+    expect(is_enabled).to eq(false)
   end
 
 end
