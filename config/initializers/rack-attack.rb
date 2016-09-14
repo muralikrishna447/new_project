@@ -13,7 +13,7 @@ class Rack::Attack
 
   ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
     Rails.logger.info("rack.attack throttled request #{request_id}")
-    Librato.increment("api.throttled_requests")
+    Librato.increment "api.throttled_requests", sporadic: true
   end
 
   ### Throttle Spammy Clients ###
