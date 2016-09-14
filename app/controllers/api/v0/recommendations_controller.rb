@@ -1,6 +1,7 @@
 module Api
   module V0
     class RecommendationsController < BaseController
+      before_filter :ensure_authorized_or_anonymous
 
       # Recommend one or more pieces of content, potentially including ads, that should be
       # shown to a user. The inputs are:
@@ -14,8 +15,7 @@ module Api
       # user - this comes from the normal auth headers; anonymous is always allowed
       #
       # Other parameters may be passed in and they will be gathered as a generic hash of metadata
-      # and passed to the recsys, which may or may not use them. An example would be
-      # 'joulePaired' indicating whether the Joule app is paired with a circulator.
+      # and passed to the recsys, which may or may not use them.
       #
       # Output is an array of recommendation items as JSON with the following fields, all of which
       # may be blank.
@@ -40,14 +40,24 @@ module Api
 
         # Super-fancy modern recsys - not so much
         else
-          ensure_authorized_or_anonymous()
           metadata = params.dup
           page = metadata.delete(:page)
           slot = metadata.delete(:slot)
           aspect = metadata.delete(:aspect)
           limit = metadata.delete(:limit) || 1
+          circulator_owner = @user_id_from_token && current_api_user.owned_circulators.count > 0
 
-          ads = Advertisement.published.limit(limit).to_a
+          ads = []
+
+          # These are the only two known uses right now. Anything else, we got no recommendations.
+          # Which isn't considered an error.
+          if platform == 'jouleApp' && slot == 'homeHero'
+            if circulator_owner
+              ads = Advertisement.where(matchname: 'homeHeroOwner').published.limit(limit).to_a
+            else
+              ads = Advertisement.where(matchname: 'homeHeroNonOwner').published.limit(limit).to_a
+            end
+          end
 
           render_api_response 200, ads, Api::AdvertisementSerializer
         end
