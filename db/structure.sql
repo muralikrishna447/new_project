@@ -298,7 +298,8 @@ CREATE TABLE advertisements (
     campaign text,
     published boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    matchname character varying(255)
 );
 
 
@@ -4228,3 +4229,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160630195733');
 INSERT INTO schema_migrations (version) VALUES ('20160818162532');
 
 INSERT INTO schema_migrations (version) VALUES ('20160818231947');
+
+INSERT INTO schema_migrations (version) VALUES ('20160913212211');
