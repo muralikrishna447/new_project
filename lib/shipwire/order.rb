@@ -131,12 +131,17 @@ module Shipwire
     end
 
     def joule_fulfillment(shopify_order)
+      joule_fulfillments = []
       shopify_order.fulfillments.each do |fulfillment|
         fulfillment.line_items.each do |line_item|
-          return fulfillment if line_item.sku == Shopify::Order::JOULE_SKU
+          joule_fulfillments << fulfillment if line_item.sku == Shopify::Order::JOULE_SKU
         end
       end
-      nil
+      if joule_fulfillments.length > 1
+        raise "Multiple Joule fulfillments exist for Shopify order with id #{shopify_order.id}, expected only one: #{joule_fulfillments.inspect}"
+      end
+      # Return the fulfillment, or nil of none exist
+      joule_fulfillments.first
     end
 
     def handle_existing_fulfillment(fulfillment)

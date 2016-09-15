@@ -340,6 +340,26 @@ describe Shipwire::Order do
       end
     end
 
+    context 'shopify order has multiple joule fulfillments' do
+      let(:shipwire_fulfillment_status) { 'processed' }
+      let(:shopify_fulfillment_status) { 'open' }
+      let(:shopify_fulfillment) do
+        fulfillment = ShopifyAPI::Fulfillment.new
+        fulfillment.attributes[:id] = 5555
+        fulfillment.prefix_options[:order_id] = shopify_order_id
+        line_item = ShopifyAPI::LineItem.new
+        line_item.attributes[:id] = line_item_id
+        line_item.attributes[:sku] = 'cs10001'
+        fulfillment.attributes[:line_items] = [line_item]
+        fulfillment
+      end
+      let(:shopify_fulfillments) { [shopify_fulfillment, shopify_fulfillment] }
+
+      it 'raises exception' do
+        expect { shipwire_order.sync_to_shopify(shopify_order) }.to raise_error
+      end
+    end
+
     context 'shipwire order number does not match shopify order name' do
       let(:shipwire_order_number) { '#1234.2' }
       let(:shopify_order_name) { '#1234' }
