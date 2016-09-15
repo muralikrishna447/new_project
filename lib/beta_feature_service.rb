@@ -8,8 +8,9 @@ module BetaFeature
 
     def user_has_feature(user, feature_name)
       groups = Set.new(get_groups_for_user(user))
+      feature_groups = get_feature_groups_by_feature_name(feature_name)
 
-      feature_groups = get_feature_group_info(feature_name)
+      # Filter out any groups that the user is not associated with
       feature_groups = feature_groups.select {|fg|
         groups.include? fg['group_name']
       }
@@ -17,7 +18,7 @@ module BetaFeature
       is_enabled = false
       if feature_groups.length > 0
         # Group rules take precedence.  If any group says the feature
-        # is enabled, then we enabled it.
+        # is enabled, then enable it.
         for fg in feature_groups
           if fg['is_enabled'] == true
             Rails.logger.debug "Feature #{feature_name} is enabled through group #{fg['group_name']}"
@@ -39,6 +40,15 @@ module BetaFeature
       return is_enabled
     end
 
+    # Mocking out DynamoDB is kind of a pain.  Instead, abstract the
+    # data accessors behind functions, and stub them as necessary.
+    # Kinda gross... but.
+
+
+    # Fetches information about a given feature.  Format:
+    #  {'feature_name' => <name>, 'default_enabled' => <true|false>}
+    #
+    #
     def get_feature_info(feature_name)
       response = @client.get_item(
         table_name: @table_config[:features_table],
@@ -49,7 +59,9 @@ module BetaFeature
       return response.item
     end
 
-    def get_feature_group_info(feature_name)
+    # Fetches all the feature/group info objects for a given
+    # feature_name.
+    def get_feature_groups_by_feature_name(feature_name)
       response = @client.query(
         table_name: @table_config[:group_features_table],
         select: "ALL_ATTRIBUTES",
@@ -68,6 +80,8 @@ module BetaFeature
       return items
     end
 
+    # Fetches and returns a list of groups for a given user.  Returns
+    # an empty list if a user is not associated to any groups
     def get_groups_for_user(user)
       response = @client.query(
         table_name: @table_config[:group_associations_table],

@@ -14,7 +14,7 @@ describe BetaFeatureService do
     for fg in feature_groups
       throw Error.new("bad feature name") if fg['feature_name'] != feature_name
     end
-    BetaFeature::DynamoBetaFeatureService.any_instance.stub(:get_feature_group_info) \
+    BetaFeature::DynamoBetaFeatureService.any_instance.stub(:get_feature_groups_by_feature_name) \
       .and_return(feature_groups)
   end
 
@@ -31,7 +31,7 @@ describe BetaFeatureService do
       .stub(:get_groups_for_user) \
       .and_return([])
     BetaFeature::DynamoBetaFeatureService.any_instance \
-      .stub(:get_feature_group_info) \
+      .stub(:get_feature_groups_by_feature_name) \
       .and_return([])
     BetaFeature::DynamoBetaFeatureService.any_instance \
       .stub(:get_feature_info) \
