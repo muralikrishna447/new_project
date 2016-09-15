@@ -1,0 +1,177 @@
+{
+  "status": 200,
+  "message": "Successful",
+  "resourceLocation": "https://api.shipwire.com/api/v3/orders?offset=0&limit=2&expand=trackings",
+  "resource": {
+    "offset": 0,
+    "total": 17,
+    "previous": null,
+    "next": "https://api.shipwire.com/api/v3/orders?offset=2&limit=2&expand=trackings",
+    "items": [
+      {
+        "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572",
+        "resource": {
+          "externalId": "51552|4053596039|3341891527",
+          "orderNo": "#1292.1",
+          "commerceName": "shopify",
+          "processAfterDate": "2016-08-26T01:30:00-07:00",
+          "lastUpdatedDate": "2016-08-26T10:13:34-07:00",
+          "status": "delivered",
+          "vendorId": null,
+          "vendorExternalId": null,
+          "purchaseOrderId": null,
+          "purchaseOrderExternalId": null,
+          "purchaseOrderNo": null,
+          "id": 198794572,
+          "transactionId": "1471536814-788350-1",
+          "needsReview": 0,
+          "holds": {
+            "resourceLocation": "https://api.beta.shipwire.com/api/v3/orders/92041438/holds?offset=0&limit=20&id=92046055&expand=holds",
+            "resource": {
+              "offset": 0,
+              "total": 0,
+              "previous": null,
+              "next": null,
+              "items": [
+              ]
+            }
+          },
+          "items": {
+            "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/items?offset=0&limit=20&expand=trackings"
+          },
+          "trackings": {
+            "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/trackings?offset=0&limit=20&expand=trackings",
+            "resource": {
+              "offset": 0,
+              "total": 0,
+              "previous": null,
+              "next": null,
+              "items": [
+              ]
+            }
+          },
+          "returns": {
+            "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/returns?offset=0&limit=20&expand=trackings"
+          },
+          "options": {
+            "resourceLocation": null,
+            "resource": {
+              "warehouseId": null,
+              "warehouseExternalId": null,
+              "warehouseRegion": null,
+              "warehouseArea": null,
+              "serviceLevelCode": null,
+              "carrierCode": "USPS FC",
+              "sameDay": "NOT REQUESTED",
+              "forceDuplicate": 0,
+              "forceAddress": 0,
+              "testOrder": 0,
+              "channelName": null,
+              "referrer": ""
+            }
+          },
+          "shipFrom": {
+            "resourceLocation": null,
+            "resource": {
+              "company": "Fulfillment Center"
+            }
+          },
+          "shipTo": {
+            "resourceLocation": null,
+            "resource": {
+              "email": "jshaffer+chefsteps@chefsteps.com",
+              "name": "Jeremy Shaffer",
+              "company": "ChefSteps",
+              "address1": "1501 PIKE PL STE 300",
+              "address2": "",
+              "address3": "",
+              "city": "SEATTLE",
+              "state": "WA",
+              "postalCode": "98101",
+              "country": "US",
+              "phone": "650-561-4800",
+              "isCommercial": 1,
+              "isPoBox": 0
+            }
+          },
+          "commercialInvoice": {
+            "resourceLocation": null
+          },
+          "packingList": {
+            "resourceLocation": null
+          },
+          "shippingLabel": {
+            "resourceLocation": null
+          },
+          "routing": {
+            "resourceLocation": null,
+            "resource": {
+              "warehouseId": 19,
+              "warehouseExternalId": null,
+              "warehouseName": "Mira Loma",
+              "physicalWarehouseId": null,
+              "originLongitude": 34.0081,
+              "originLatitude": -117.557,
+              "destinationLongitude": "-122.3305",
+              "destinationLatitude": "47.6114"
+            }
+          },
+          "events": {
+            "resourceLocation": null,
+            "resource": {
+              "createdDate": "2016-08-18T09:13:34-07:00",
+              "pickedUpDate": null,
+              "submittedDate": "2016-08-26T01:46:03-07:00",
+              "processedDate": "2016-08-26T01:39:21-07:00",
+              "completedDate": "2016-08-26T10:13:34-07:00",
+              "expectedDate": "2016-09-02T00:00:00-07:00",
+              "cancelledDate": null,
+              "returnedDate": null,
+              "lastManualUpdateDate": null
+            }
+          },
+          "pricing": {
+            "resourceLocation": null,
+            "resource": {
+              "shipping": 4.35,
+              "packaging": 0,
+              "insurance": 0.75,
+              "handling": 2.85,
+              "total": 7.95
+            }
+          },
+          "shipwireAnywhere": {
+            "resourceLocation": null,
+            "resource": {
+              "status": null
+            }
+          },
+          "pricingEstimate": {
+            "resourceLocation": null,
+            "resource": {
+              "total": 5.1,
+              "insurance": 0.75,
+              "shipping": 4.35,
+              "packaging": 0,
+              "handling": 0
+            }
+          },
+          "freightSummary": {
+            "resourceLocation": null,
+            "resource": {
+              "totalWeight": "0.00",
+              "weightUnit": null,
+              "measurementType": null
+            }
+          },
+          "splitOrders": {
+            "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/splitOrders?offset=0&limit=20&expand=trackings"
+          },
+          "pieces": {
+            "resourceLocation": "https://api.shipwire.com/api/v3/orders/198794572/pieces?offset=0&limit=20&expand=trackings"
+          }
+        }
+      }
+    ]
+  }
+}
