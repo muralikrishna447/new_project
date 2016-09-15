@@ -1,6 +1,7 @@
 require 'csv'
 require 'optparse'
 require 'date'
+require 'pry'
 
 #
 # Takes a CSV from the output of the 'sort_shopify_orders' script and
@@ -18,12 +19,17 @@ option_parser = OptionParser.new do |option|
   option.on('-i', '--input FILE', 'CSV export file of Shopify orders') do |file|
     options[:file] = file
   end
+  option.on('-q', '--quantity QUANTITY', 'Max quantity of Joules to include in order output') do |quantity|
+    options[:quantity] = quantity
+  end
 end
 
 option_parser.parse!
 raise '--input is required' unless options[:file]
+STDERR.puts "NOTE: --quantity was specified, limiting output to max quantity of #{options[:quantity]}"
 
 shipwire_orders = []
+quantity_processed = 0
 CSV.foreach(options[:file], headers: true) do |shopify_order|
   # Shipwire requires a shipping phone number, as all carriers require this.
   # We aren't currently capturing this from customers.
@@ -33,28 +39,32 @@ CSV.foreach(options[:file], headers: true) do |shopify_order|
     shipping_phone = '206-905-1099'
   end
 
-  shipwire_orders << [
-    "#{shopify_order['name']}.1", # Order number, in the same (strange) format that the Shipwire/Shopify app sends it
-    shopify_order['id'], # External order ID
-    DateTime.parse(shopify_order['processed_at']).to_date.to_s,
-    shopify_order['shipping_name'],
-    shopify_order['shipping_address_1'],
-    shopify_order['shipping_address_2'],
-    nil, # Address line 3, which we don't have
-    shopify_order['shipping_city'],
-    shopify_order['shipping_province'],
-    shopify_order['shipping_zip'],
-    shopify_order['shipping_country'],
-    shopify_order['email'],
-    shipping_phone,
-    nil, # Shipping method, leave blank for cheapest option
-    nil, # Commercial address boolean, which we don't know but Shipwire will guess for us
-    shopify_order['sku'],
-    shopify_order['quantity'],
-    nil, # Company name, leave blank to use value set on the ShipWire account
-    nil, # Order hold boolean
-    nil, # Order hold reason
-  ]
+  # Only add orders until we hit max quantity
+  unless options[:quantity] && (quantity_processed + shopify_order['quantity'].to_i) > options[:quantity].to_i
+    shipwire_orders << [
+      "#{shopify_order['name']}.1", # Order number, in the same (strange) format that the Shipwire/Shopify app sends it
+      shopify_order['id'], # External order ID
+      DateTime.parse(shopify_order['processed_at']).to_date.to_s,
+      shopify_order['shipping_name'],
+      shopify_order['shipping_address_1'],
+      shopify_order['shipping_address_2'],
+      nil, # Address line 3, which we don't have
+      shopify_order['shipping_city'],
+      shopify_order['shipping_province'],
+      shopify_order['shipping_zip'],
+      shopify_order['shipping_country'],
+      shopify_order['email'],
+      shipping_phone,
+      nil, # Shipping method, leave blank for cheapest option
+      nil, # Commercial address boolean, which we don't know but Shipwire will guess for us
+      shopify_order['sku'],
+      shopify_order['quantity'],
+      nil, # Company name, leave blank to use value set on the ShipWire account
+      nil, # Order hold boolean
+      nil, # Order hold reason
+    ]
+    quantity_processed += shopify_order['quantity'].to_i
+  end
 end
 
 output_str = CSV.generate(force_quotes: true) do |output|
@@ -85,4 +95,4 @@ end
 
 puts output_str
 
-STDERR.puts "Created Shipwire CSV import with #{shipwire_orders.length} orders"
+STDERR.puts "Created Shipwire CSV import with #{shipwire_orders.length} orders, total quantity #{quantity_processed}"
