@@ -50,7 +50,7 @@ describe Api::V0::FirmwareController do
 
   it 'should get manifests for wifi firmware' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '0.19.0'}
+    post :updates, {'appVersion'=> '0.19.0', 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 1
@@ -68,7 +68,7 @@ describe Api::V0::FirmwareController do
   it 'should get no updates if not beta user' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     BetaFeatureService.stub(:user_has_feature).and_return(false)
-    post :updates, {'appVersion'=> '0.19.0'}
+    post :updates, {'appVersion'=> '0.19.0', 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -77,7 +77,7 @@ describe Api::V0::FirmwareController do
   it 'should get firmware version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
 
-    post :updates, {'appVersion'=> '0.18.0'}
+    post :updates, {'appVersion'=> '0.18.0', 'hardwareVersion' => 'JL.p5'}
 
     response.should be_success
     resp = JSON.parse(response.body)
@@ -94,9 +94,18 @@ describe Api::V0::FirmwareController do
 
   end
 
+  it 'should not get any updates if proto4 hardware' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    post :updates, {'appVersion'=> '0.18.0', 'hardwareVersion' => 'JL.p4'}
+
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
+  end
+
   it 'should not return firmware version if up to date' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '0.19.0', 'espFirmwareVersion' => @esp_version}
+    post :updates, {'appVersion'=> '0.19.0', 'espFirmwareVersion' => @esp_version, 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -105,7 +114,7 @@ describe Api::V0::FirmwareController do
   it 'should get no updates if no manifest found' do
     WebMock.stub_request(:head, "https://chefsteps-firmware-staging.s3.amazonaws.com/manifests/0.10.0/manifest").
       to_return(:status => 404, :body => "", :headers => {})
-    post :updates, {'appVersion'=> '0.10.0'}
+    post :updates, {'appVersion'=> '0.10.0', 'hardwareVersion' => 'JL.p5'}
     puts response.code
     response.should be_success
     resp = JSON.parse(response.body)
@@ -123,8 +132,8 @@ describe Api::V0::FirmwareController do
       .and_return(true)
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     versions = [
-      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10'},
-      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '900', 'espFirmwareVersion' => 's360'},
+      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10', 'hardwareVersion' => 'JL.p5'},
+      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '900', 'espFirmwareVersion' => 's360', 'hardwareVersion' => 'JL.p5'},
     ]
     for v in versions
       post :updates, v
@@ -148,10 +157,10 @@ describe Api::V0::FirmwareController do
       .and_return(true)
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     versions = [
-      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '9'},
-      {'appVersion'=> '0.19.0', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10'},
-      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '46', 'espFirmwareVersion' => '10'},
-      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '800', 'espFirmwareVersion' => 's350'},
+      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '9', 'hardwareVersion' => 'JL.p5'},
+      {'appVersion'=> '0.19.0', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10', 'hardwareVersion' => 'JL.p5'},
+      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '46', 'espFirmwareVersion' => '10', 'hardwareVersion' => 'JL.p5'},
+      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '800', 'espFirmwareVersion' => 's350', 'hardwareVersion' => 'JL.p5'},
     ]
     for v in versions
       post :updates, v

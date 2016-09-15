@@ -8,7 +8,11 @@ Rails.configuration.dynamodb = dynamodb
 sns.platform_applications = {}
 
 Rails.configuration.dynamodb.transactional_email_log_table_name = "transactional-email-log-#{Rails.env}"
-Rails.configuration.dynamodb.beta_features_table_name = "beta-features-#{Rails.env}"
+Rails.configuration.dynamodb.beta_features_table_config = {
+  :features_table => "beta-feature-info-#{Rails.env}",
+  :group_features_table => "beta-feature-group-features-#{Rails.env}",
+  :group_associations_table => "beta-feature-group-associations-#{Rails.env}",
+}
 Rails.configuration.dynamodb.shipping_address_update_table_name = "shipping-address-updates-#{Rails.env}"
 Rails.configuration.dynamodb.shipping_address_confirmation_table_name = "shipping-address-confirmations-#{Rails.env}"
 
