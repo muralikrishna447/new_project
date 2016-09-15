@@ -5,6 +5,7 @@ module Api
       before_filter :ensure_password_token, only: [:update_from_email]
 
       def update
+        Librato.increment("api.password_update_requests")
         @user = User.find params[:id]
         if @user.valid_password?(params[:current_password]) && @user.update_attribute(:password, params[:new_password])
           render json: { status: 200, message: 'Success'}, status: 200
@@ -14,6 +15,7 @@ module Api
       end
 
       def update_from_email
+        Librato.increment("api.password_update_from_email_requests")
         @user = User.find_by_email @user_email
         @user.password = params[:password]
         if @user.save!
@@ -24,6 +26,7 @@ module Api
       end
 
       def send_reset_email
+        Librato.increment("api.password_send_reset_email_requests")
         @user = User.find_by_email params[:email]
         if @user
           aa = ActorAddress.create_for_user @user, client_metadata: "password_reset"
