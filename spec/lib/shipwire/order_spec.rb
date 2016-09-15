@@ -243,6 +243,20 @@ describe Shipwire::Order do
           expect { shipwire_order.sync_to_shopify(shopify_order) }.to raise_error
         end
       end
+
+      context 'shopify order has multiple joule line items' do
+        let(:shipwire_fulfillment_status) { 'processed' }
+        let(:shopify_fulfillment_status) { 'open' }
+        let(:line_items) do
+          line_item = double('line_item')
+          line_item.stub(:id) { line_item_id }
+          line_item.stub(:sku) { 'cs10001' }
+          [line_item, line_item]
+        end
+        it 'raises exception' do
+          expect { shipwire_order.sync_to_shopify(shopify_order) }.to raise_error
+        end
+      end
     end
 
     context 'shopify order has existing joule fulfillment' do
