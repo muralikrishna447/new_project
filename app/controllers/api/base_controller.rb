@@ -175,6 +175,7 @@ module Api
         return true
       else
         render_unauthorized
+      end
     end
 
     def render_api_response status, contents = {}, each_serializer = nil
