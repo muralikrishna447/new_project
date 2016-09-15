@@ -93,14 +93,14 @@ module Api
         # Sigh...
         if is_staging
           is_capable = (
-            app_version >= Semverse::Version.new("2.33.1") and
-            (params[:appFirmwareVersion] || '0').to_i >= 900 and
+            app_version >= Semverse::Version.new("2.33.1") &&
+            (params[:appFirmwareVersion] || '0').to_i >= 900 &&
             esp_version >= 360
           )
         else
           is_capable = (
-            app_version >= Semverse::Version.new("2.33.1") and
-            (params[:appFirmwareVersion] || '0').to_i >= 47 and
+            app_version >= Semverse::Version.new("2.33.1") &&
+            (params[:appFirmwareVersion] || '0').to_i >= 47 &&
             esp_version >= 10
           )
         end
