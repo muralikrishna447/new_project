@@ -56,9 +56,9 @@ option_parser = OptionParser.new do |option|
 end
 
 option_parser.parse!
-raise '--key is required' unless @options[:api_key]
-raise '--password is required' unless @options[:password]
-raise '--store is required' unless @options[:store]
+raise '--key is required' if !@options[:api_key] && !@options[:dry_run]
+raise '--password is required' if !@options[:password] && !@options[:dry_run]
+raise '--store is required' if !@options[:store] && !@options[:dry_run]
 raise '--input is required' unless @options[:file]
 if @options[:verify_addresses] && !@options[:lob_key]
   raise '--lob_key is required when specifying --verify_addresses'
@@ -129,6 +129,10 @@ CSV.foreach(@options[:file], headers: true) do |input_row|
   shipping_address_2 = input_row['shipping_address_2']
   if shipping_address_2 && shipping_address_2.length > 50
     order_validation_tags << 'shipping-validation-address-2-too-long'
+  end
+
+  if input_row['shipping_name'].empty?
+    order_validation_tags << 'shipping-validation-name-missing'
   end
 
   # Verify the address using Lob API
