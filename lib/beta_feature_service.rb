@@ -86,7 +86,6 @@ module BetaFeature
       response = @client.query(
         table_name: @table_config[:group_associations_table],
         select: "ALL_ATTRIBUTES",
-        limit: 100,
         key_condition_expression: 'user_id = :user_id',
         expression_attribute_values: {
           ':user_id' => user.id
