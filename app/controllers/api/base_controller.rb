@@ -1,3 +1,5 @@
+require 'external_service_token_checker'
+
 module Api
   class BaseController < BaseApplicationController
     skip_before_filter :verify_authenticity_token
@@ -167,28 +169,13 @@ module Api
     end
 
     def ensure_authorized_service
-      allowed_services = ['Messaging']
       request_auth = request.authorization()
-      if request_auth
-        begin
-          token = AuthToken.from_string(request_auth.split(' ').last)
-        rescue JSON::JWS::VerificationFailed => e
-          logger.info ("Service token verification failed")
-          render_unauthorized
-          return
-        end
-        if allowed_services.include? token.claim['service']
-          return true
-        else
-          logger.info "Unauthorized claim: #{token.claim.inspect}"
-          render_unauthorized
-        end
+      is_authorized = ExternalServiceTokenChecker.is_authorized(request_auth)
+      if is_authorized
+        return true
       else
-        logger.info "No request authorization provided"
         render_unauthorized
-      end
     end
-
 
     def render_api_response status, contents = {}, each_serializer = nil
 

@@ -1,3 +1,4 @@
+require 'external_service_token_checker'
 class Rack::Attack
 
   ### Configure Cache ###
@@ -14,6 +15,16 @@ class Rack::Attack
   ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
     Rails.logger.info("rack.attack throttled request #{request_id}")
     Librato.increment "api.throttled_requests", sporadic: true
+  end
+
+
+  Rack::Attack.whitelist('allow authorized external services and madore requests to go unthrottled') do |req|
+    request_auth = req.env["Authorization"]
+    is_authorized_external_service = ExternalServiceTokenChecker.is_authorized(request_auth)
+    madore_ip = '66.171.190.210'
+    myVal = is_authorized_external_service || req.ip == madore_ip
+    # Requests are allowed if the return value is truthy
+    is_authorized_external_service || req.ip == madore_ip
   end
 
   ### Throttle Spammy Clients ###
