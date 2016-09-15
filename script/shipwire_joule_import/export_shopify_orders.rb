@@ -51,8 +51,10 @@ def shipping_name(order)
   last_name = shipping_address_prop(order, :last_name)
   if first_name && last_name
     "#{first_name} #{last_name}"
-  else
-    ''
+  elsif first_name
+    first_name
+  elsif last_name
+    last_name
   end
 end
 
