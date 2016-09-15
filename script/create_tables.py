@@ -1,99 +1,10 @@
-"""
-Just an example script of how to programatically create a set of
-tables for all our environments.
-
-TODO: use argparse to read in table definitions from JSON
-
-"""
-
+import argparse
 import boto3
 import botocore
+import json
 
-envs = [
-    'development',
-    'staging',
-    'staging2',
-    'production',
-]
-
-# http://boto3.readthedocs.io/en/latest/guide/dynamodb.html
-tables = [
-    {
-        'table_name_prefix' : 'beta-feature-info',
-        'KeySchema' : [
-            {
-                'AttributeName' : 'feature_name',
-                'KeyType' : 'HASH'
-            },
-        ],
-        'AttributeDefinitions' : [
-            {
-                'AttributeName' : 'feature_name',
-                'AttributeType' : 'S'
-            },
-        ],
-        'ProvisionedThroughput' : {
-            'ReadCapacityUnits': 5,
-            'WriteCapacityUnits': 1,
-        }
-    },
-    {
-        'table_name_prefix' : 'beta-feature-group-features',
-        'KeySchema' : [
-            {
-                'AttributeName' : 'feature_name',
-                'KeyType' : 'HASH'
-            },
-            {
-                'AttributeName' : 'group_name',
-                'KeyType' : 'RANGE'
-            },
-        ],
-        'AttributeDefinitions' : [
-            {
-                'AttributeName' : 'group_name',
-                'AttributeType' : 'S'
-            },
-            {
-                'AttributeName' : 'feature_name',
-                'AttributeType' : 'S'
-            },
-        ],
-        'ProvisionedThroughput' : {
-            'ReadCapacityUnits': 5,
-            'WriteCapacityUnits': 1,
-        }
-    },
-    {
-        'table_name_prefix' : 'beta-feature-group-associations',
-        'KeySchema' : [
-            {
-                'AttributeName' : 'user_id',
-                'KeyType' : 'HASH'
-            },
-            {
-                'AttributeName' : 'group_name',
-                'KeyType' : 'RANGE'
-            },
-        ],
-        'AttributeDefinitions' : [
-            {
-                'AttributeName' : 'user_id',
-                'AttributeType' : 'N'
-            },
-            {
-                'AttributeName' : 'group_name',
-                'AttributeType' : 'S'
-            },
-        ],
-        'ProvisionedThroughput' : {
-            'ReadCapacityUnits': 5,
-            'WriteCapacityUnits': 1,
-        }
-    }
-]
-
-def create_tables_for_env(client, env):
+def create_tables_for_env(client, tables, env):
+    # http://boto3.readthedocs.io/en/latest/guide/dynamodb.html
     for table_def in tables:
         table_name = '%s-%s' % (table_def['table_name_prefix'], env)
         print("Creating %s" % table_name)
@@ -110,6 +21,15 @@ def create_tables_for_env(client, env):
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Utility for creating DynamoDB tables'
+    )
+    parser.add_argument('table_definition')
+    parser.add_argument('--env', dest='env', default='development')
+    args = parser.parse_args()
+
+    with open(args.table_definition) as f:
+        tables = json.load(f)
+
     client = boto3.resource('dynamodb')
-    for env in envs:
-        create_tables_for_env(client, env)
+    create_tables_for_env(client, tables, args.env)

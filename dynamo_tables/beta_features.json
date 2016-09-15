@@ -1,0 +1,75 @@
+[
+  {
+    "table_name_prefix": "beta-feature-info", 
+    "KeySchema": [
+      {
+        "KeyType": "HASH", 
+        "AttributeName": "feature_name"
+      }
+    ], 
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "feature_name", 
+        "AttributeType": "S"
+      }
+    ], 
+    "ProvisionedThroughput": {
+      "WriteCapacityUnits": 1, 
+      "ReadCapacityUnits": 5
+    }
+  }, 
+  {
+    "table_name_prefix": "beta-feature-group-features", 
+    "KeySchema": [
+      {
+        "KeyType": "HASH", 
+        "AttributeName": "feature_name"
+      }, 
+      {
+        "KeyType": "RANGE", 
+        "AttributeName": "group_name"
+      }
+    ], 
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "group_name", 
+        "AttributeType": "S"
+      }, 
+      {
+        "AttributeName": "feature_name", 
+        "AttributeType": "S"
+      }
+    ], 
+    "ProvisionedThroughput": {
+      "WriteCapacityUnits": 1, 
+      "ReadCapacityUnits": 5
+    }
+  }, 
+  {
+    "table_name_prefix": "beta-feature-group-associations", 
+    "KeySchema": [
+      {
+        "KeyType": "HASH", 
+        "AttributeName": "user_id"
+      }, 
+      {
+        "KeyType": "RANGE", 
+        "AttributeName": "group_name"
+      }
+    ], 
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "user_id", 
+        "AttributeType": "N"
+      }, 
+      {
+        "AttributeName": "group_name", 
+        "AttributeType": "S"
+      }
+    ], 
+    "ProvisionedThroughput": {
+      "WriteCapacityUnits": 1, 
+      "ReadCapacityUnits": 5
+    }
+  }
+]
