@@ -1,0 +1,28 @@
+# https://github.com/librato/librato-rails/wiki/Configuration
+production:
+  user: <%= ENV['LIBRATO_USER'] %>
+  token: <%= ENV['LIBRATO_TOKEN'] %>
+  prefix: 'prod'
+  source: 'production-chefsteps'
+development:
+# Uncomment and set environment variables to test
+#
+  # user: <%= ENV['LIBRATO_USER'] %>
+  # token: <%= ENV['LIBRATO_TOKEN'] %>
+  # prefix: 'develop'
+  # source: 'kenshi'
+  # flush_interval: 10
+  # log_level: 'trace'
+staging:
+  user: <%= ENV['LIBRATO_USER'] %>
+  token: <%= ENV['LIBRATO_TOKEN'] %>
+  prefix: 'staging'
+  source: 'staging-chefsteps'
+staging2:
+  user: <%= ENV['LIBRATO_USER'] %>
+  token: <%= ENV['LIBRATO_TOKEN'] %>
+  prefix: 'staging2'
+  source: 'staging2-chefsteps'
+  # Can use this to disable a bunch of metrics on staging2
+  #   only show rack middleware for staging2
+  suites: "rack"
