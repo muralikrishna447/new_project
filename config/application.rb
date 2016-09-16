@@ -163,6 +163,10 @@ module Delve
     # Coverband
     config.middleware.use Coverband::Middleware
 
+    # Rate Limiting
+    config.middleware.use Rack::Attack
+
+
     # Prefix each log line with a per-request UUID
     config.log_tags = [:uuid ]
 
