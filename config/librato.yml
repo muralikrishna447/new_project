@@ -25,4 +25,4 @@ staging2:
   source: 'staging2-chefsteps'
   # Can use this to disable a bunch of metrics on staging2
   #   only show rack middleware for staging2
-  suites: "rack"
+  suites: "rack,rails_action"
