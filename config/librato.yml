@@ -10,7 +10,7 @@ development:
   # user: <%= ENV['LIBRATO_USER'] %>
   # token: <%= ENV['LIBRATO_TOKEN'] %>
   # prefix: 'develop'
-  # source: 'kenshi'
+  # source: 'develop'
   # flush_interval: 10
   # log_level: 'trace'
 staging:
