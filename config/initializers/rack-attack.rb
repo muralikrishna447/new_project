@@ -11,20 +11,24 @@ class Rack::Attack
   # ActiveSupport::Cache::Store
 
   # Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
+  def self.isWhitelisted(req)
+    request_auth = req.env["Authorization"]
+    is_authorized_external_service = ExternalServiceTokenChecker.is_authorized(request_auth)
+    madore_ip = '66.171.190.210'
+    # Requests are allowed if the return value is truthy
+    is_authorized_external_service || req.ip == madore_ip
+  end
 
   ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
-    Rails.logger.info("rack.attack throttled request #{request_id}")
-    Librato.increment "api.throttled_requests", sporadic: true
+    unless isWhitelisted(req)
+      Rails.logger.info("rack.attack throttled request #{request_id}")
+      Librato.increment "api.throttled_requests", sporadic: true
+    end
   end
 
 
   Rack::Attack.whitelist('allow authorized external services and madore requests to go unthrottled') do |req|
-    request_auth = req.env["Authorization"]
-    is_authorized_external_service = ExternalServiceTokenChecker.is_authorized(request_auth)
-    madore_ip = '66.171.190.210'
-    myVal = is_authorized_external_service || req.ip == madore_ip
-    # Requests are allowed if the return value is truthy
-    is_authorized_external_service || req.ip == madore_ip
+    isWhitelisted(req)
   end
 
   ### Throttle Spammy Clients ###
