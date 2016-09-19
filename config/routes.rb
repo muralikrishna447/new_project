@@ -34,6 +34,7 @@ Delve::Application.routes.draw do
 
   get '/blog', to: redirect('http://blog.chefsteps.com/')
   get '/presskit', to: redirect('/press')
+  get '/jouleapp', to: redirect('/getting-started-with-joule')
 
   # Legal Documents
   get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
