@@ -119,7 +119,7 @@ CSV.foreach(@options[:file], headers: true) do |input_row|
   else
     STDERR.puts "Filtering order with id #{input_row['id']} with validation errors: #{order_validation_tags}"
     input_row << order_validation_tags.join(',')
-    input_row << "https://chefsteps-staging.myshopify.com/admin/orders/#{input_row['id']}"
+    input_row << "https://delve.myshopify.com/admin/orders/#{input_row['id']}"
     error_output << input_row if @options[:error_output]
     invalid_order_count += 1
   end
