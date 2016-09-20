@@ -3,7 +3,7 @@ require 'semverse'
 module Api
   module V0
     class FirmwareController < BaseController
-      before_filter :ensure_authorized_or_anonymous
+      before_filter :ensure_authorized
 
       instrument_action :updates
 
@@ -36,14 +36,20 @@ module Api
           return render_empty_response
         end
 
-        if @user_id_from_token
-          user = User.find @user_id_from_token
-          if BetaFeatureService.user_has_feature(user, 'dfu')
-            logger.info("User #{user.email} has the DFU beta feature")
-          else
-            logger.info("User #{user.email} is not setup for DFU beta feature")
-            return render_empty_response
-          end
+        user = User.find @user_id_from_token
+
+        # Can explicitly blacklist all DFU updates with this 'feature'
+        if BetaFeatureService.user_has_feature(user, 'dfu_blacklist')
+          logger.info("User #{user.email} is blacklisted from doing DFU")
+          return render_empty_response
+        end
+
+        # For the time being, each app version needs to be enabled.
+        # This allows for rolling updates to groups of users.
+        manifest_feature = "dfu_#{app_version}"
+        unless BetaFeatureService.user_has_feature(user, manifest_feature)
+          logger.info("User #{user.email} is not setup to DFU #{manifest_feature}")
+          return render_empty_response
         end
 
         potential_updates = get_firmware_for_app_version(app_version)
