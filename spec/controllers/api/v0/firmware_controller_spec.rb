@@ -8,6 +8,12 @@ describe Api::V0::FirmwareController do
       :status => 200, :body => data.to_json, :headers => {})
   end
 
+  def set_version_enabled(version, is_enabled)
+    BetaFeatureService.stub(:user_has_feature).with(anything(), "dfu_#{version}")
+      .and_return(is_enabled)
+  end
+
+
   before :each do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     @token = ActorAddress.create_for_user(@user, client_metadata: "create").current_token
@@ -16,6 +22,12 @@ describe Api::V0::FirmwareController do
       .and_return(true)
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'esp_http_dfu')
       .and_return(false)
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu_blacklist')
+      .and_return(false)
+    enabled_app_versions = ['2.33.1', '0.19.0', '0.18.0']
+    for v in enabled_app_versions
+      set_version_enabled(v, true)
+    end
 
     @link = 'http://www.foo.com'
     controller.stub(:get_firmware_link).and_return(@link)
@@ -65,9 +77,24 @@ describe Api::V0::FirmwareController do
     transfer['totalBytes'].should == @totalBytes
   end
 
-  it 'should get no updates if not beta user' do
+  it 'should return unauthorized if not logged in' do
+    post :updates, {'appVersion'=> '0.19.0', 'hardwareVersion' => 'JL.p5'}
+    response.code.should == '401'
+  end
+
+  it 'should get no updates if manifest version not enabled' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    BetaFeatureService.stub(:user_has_feature).and_return(false)
+    set_version_enabled('0.19.0', false)
+    post :updates, {'appVersion'=> '0.19.0', 'hardwareVersion' => 'JL.p5'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
+  end
+
+  it 'should get no updates if dfu blacklisted' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu_blacklist')
+      .and_return(true)
     post :updates, {'appVersion'=> '0.19.0', 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -114,6 +141,8 @@ describe Api::V0::FirmwareController do
   it 'should get no updates if no manifest found' do
     WebMock.stub_request(:head, "https://chefsteps-firmware-staging.s3.amazonaws.com/manifests/0.10.0/manifest").
       to_return(:status => 404, :body => "", :headers => {})
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    set_version_enabled('0.10.0', true)
     post :updates, {'appVersion'=> '0.10.0', 'hardwareVersion' => 'JL.p5'}
     puts response.code
     response.should be_success
