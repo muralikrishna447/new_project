@@ -5,6 +5,3 @@ run Delve::Application
 
 require 'coverband'
 Coverband.configure
-
-require 'librato-rack'
-use Librato::Rack
