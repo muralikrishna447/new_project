@@ -2,7 +2,7 @@
 production:
   user: <%= ENV['LIBRATO_USER'] %>
   token: <%= ENV['LIBRATO_TOKEN'] %>
-  prefix: 'prod'
+  prefix: 'production'
   source: 'production-chefsteps'
 development:
 # Uncomment and set environment variables to test
