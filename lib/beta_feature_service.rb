@@ -7,12 +7,15 @@ module BetaFeature
     end
 
     def user_has_feature(user, feature_name)
-      groups = Set.new(get_groups_for_user(user))
+      groups = get_groups_for_user(user)
+      Rails.logger.info "User #{user.id} belongs to these groups: #{groups}"
+
+      group_set = Set.new(groups)
       feature_groups = get_feature_groups_by_feature_name(feature_name)
 
       # Filter out any groups that the user is not associated with
       feature_groups = feature_groups.select {|fg|
-        groups.include? fg['group_name']
+        group_set.include? fg['group_name']
       }
 
       is_enabled = false
