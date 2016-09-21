@@ -2,7 +2,7 @@ require 'csv'
 require 'optparse'
 require 'date'
 require 'pry'
-require './shipwire_import'
+require './shipping'
 
 #
 # Takes a CSV from the output of the 'validate_shopify_orders' script and
@@ -79,7 +79,7 @@ end
 
 order_count = 0
 output_str = CSV.generate(force_quotes: true) do |output_rows|
-  output_rows << ShipwireImport::SHOPIFY_EXPORT_SCHEMA_WITH_PRIORITY
+  output_rows << Shipping::SHOPIFY_EXPORT_SCHEMA_WITH_PRIORITY
   order_rows.each do |row|
     if blacklist_order_ids[row['id']]
       STDERR.puts "Order with id #{row['id']} was blacklisted, filterting it out"

@@ -1,4 +1,4 @@
-module ShipwireImport
+module Shipping
   SHOPIFY_EXPORT_SCHEMA = [
     'id',
     'name',

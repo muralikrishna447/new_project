@@ -2,7 +2,7 @@ require 'csv'
 require 'optparse'
 require 'shopify_api'
 require 'pry'
-require './shipwire_import'
+require './shipping'
 
 #
 # Exports Shopify Joule orders using the API to a CSV on standard output.
@@ -101,15 +101,15 @@ loop do
 end
 
 all_orders.sort! do |x, y|
-  x[ShipwireImport::SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_COLUMN] <=> y[ShipwireImport::SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_COLUMN]
+  x[Shipping::SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_COLUMN] <=> y[Shipping::SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_COLUMN]
 end
 all_orders.each_index do |i|
-  all_orders[i][ShipwireImport::SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_INDEX_COMLUMN] = i + 1
+  all_orders[i][Shipping::SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_INDEX_COMLUMN] = i + 1
 end
 
 output_str = CSV.generate(force_quotes: true) do |output_rows|
   # CSV header
-  output_rows << ShipwireImport::SHOPIFY_EXPORT_SCHEMA
+  output_rows << Shipping::SHOPIFY_EXPORT_SCHEMA
 
   all_orders.each { |order| output_rows << order }
 end
