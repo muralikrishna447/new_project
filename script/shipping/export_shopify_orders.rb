@@ -82,6 +82,7 @@ loop do
       order.name,
       DateTime.parse(order.processed_at),
       shipping_name(order),
+      shipping_address_prop(order, :company),
       shipping_address_prop(order, :address1),
       shipping_address_prop(order, :address2),
       shipping_address_prop(order, :city),

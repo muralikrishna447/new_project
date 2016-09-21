@@ -4,6 +4,7 @@ module Shipping
     'name',
     'processed_at',
     'shipping_name',
+    'shipping_company',
     'shipping_address_1',
     'shipping_address_2',
     'shipping_city',
@@ -23,6 +24,7 @@ module Shipping
     'name',
     'processed_at',
     'shipping_name',
+    'shipping_company',
     'shipping_address_1',
     'shipping_address_2',
     'shipping_city',
@@ -40,5 +42,5 @@ module Shipping
 
   SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_COLUMN = 2
 
-  SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_INDEX_COMLUMN = 15
+  SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_INDEX_COMLUMN = 16
 end
