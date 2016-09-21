@@ -1,4 +1,5 @@
 require 'aws-sdk'
+require_dependency 'beta_feature_service'
 
 module Api
   module V0
@@ -90,7 +91,20 @@ module Api
       end
 
       def capabilities
-        render_api_response 200, {:capabilities => []}
+        user = User.find @user_id_from_token
+
+        unless user
+          return render_api_response 501, {:message => "User not found"}
+        end
+
+        # Hardcoding the list of possible capabilities for now.
+        capability_list = [
+          'beta_guides'
+        ]
+        user_capabilities = capability_list.select {|c|
+          BetaFeatureService.user_has_feature(user, c)
+        }
+        render_api_response 200, {:capabilities => user_capabilities}
       end
 
       private
