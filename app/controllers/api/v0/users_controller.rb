@@ -89,6 +89,10 @@ module Api
         render_api_response 200, {:upload_url => url.to_s}
       end
 
+      def capabilities
+        render_api_response 200, {:capabilities => []}
+      end
+
       private
 
       # Why is this code duplicated here?
