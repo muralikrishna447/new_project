@@ -162,4 +162,12 @@ describe Api::V0::UsersController do
       JSON.parse(response.body)['upload_url'].should_not be_nil
     end
   end
+
+  context 'GET /capabilities' do
+    it 'get empty list if no capabilities' do
+      request.env['HTTP_AUTHORIZATION'] = @token
+      get :capabilities
+      response.should be_success
+    end
+  end
 end
