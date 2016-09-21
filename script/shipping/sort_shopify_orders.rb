@@ -14,7 +14,7 @@ require './shipping'
 #   --input: A CSV input file in the Shopify export schema.
 #   --priority: Optional file of priority order IDs to bump to the top.
 #   --blacklist: Optional file of blacklisted order IDs to filter out.
-#   --limit: Optional limit on the number of orders included in the output.
+#   --quantity: Optional limit on the quantity of items included in the output.
 #
 
 # Options parsing
@@ -32,15 +32,15 @@ option_parser = OptionParser.new do |option|
     options[:blacklist_file] = file
   end
 
-  option.on('-l', '--limit LIMIT', 'Optional limit on the number of orders included in the output') do |limit|
-    options[:limit] = limit
+  option.on('-l', '--quantity QUANTITY', 'Optional limit on the quantity of items included in the output') do |quantity|
+    options[:quantity] = quantity
   end
 end
 
 option_parser.parse!
 raise '--input is required' unless options[:input_file]
-if options[:limit]
-  STDERR.puts "NOTE: --limit was specified, limiting output to #{options[:limit]} orders"
+if options[:quantity]
+  STDERR.puts "NOTE: --quantity was specified, limiting output to max quantity of #{options[:quantity]}"
 end
 
 order_rows = []
@@ -86,15 +86,18 @@ order_rows.sort! do |x, y|
 end
 
 order_count = 0
-limit = options[:limit].to_i if options[:limit]
+quantity_processed = 0
+max_quantity = options[:quantity].to_i if options[:quantity]
 output_str = CSV.generate(force_quotes: true) do |output_rows|
   output_rows << Shipping::SHOPIFY_EXPORT_SCHEMA_WITH_PRIORITY
   order_rows.each do |row|
-    break if limit && order_count >= limit
+    current_quantity = row['quantity'].to_i
+    break if max_quantity && (quantity_processed + current_quantity) > max_quantity
     if blacklist_order_ids[row['id']]
       STDERR.puts "Order with id #{row['id']} was blacklisted, filterting it out"
     else
       order_count += 1
+      quantity_processed += current_quantity
       row['priority_index'] = order_count
       output_rows << row
     end
