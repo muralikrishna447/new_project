@@ -14,6 +14,7 @@ module Shipping
     'shipping_phone',
     'sku',
     'quantity',
+    'tags',
     'processed_at_index'
   ]
 
@@ -32,11 +33,12 @@ module Shipping
     'shipping_phone',
     'sku',
     'quantity',
+    'tags',
     'processed_at_index',
     'priority_index'
   ]
 
   SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_COLUMN = 2
 
-  SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_INDEX_COMLUMN = 14
+  SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_INDEX_COMLUMN = 15
 end

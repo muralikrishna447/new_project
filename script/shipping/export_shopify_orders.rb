@@ -91,7 +91,8 @@ loop do
       order.email,
       shipping_address_prop(order, :phone),
       joule_line_item.sku,
-      joule_line_item.quantity
+      joule_line_item.quantity,
+      order.tags
     ]
 
     order_count += 1
