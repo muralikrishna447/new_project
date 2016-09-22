@@ -91,8 +91,14 @@ max_quantity = options[:quantity].to_i if options[:quantity]
 output_str = CSV.generate(force_quotes: true) do |output_rows|
   output_rows << Shipping::SHOPIFY_EXPORT_SCHEMA_WITH_PRIORITY
   order_rows.each do |row|
+    break if quantity_processed == max_quantity
+
+    # We want to ship all the inventory we have available at any given time,
+    # so we'll skip an order if it has quantity > 1 and we don't have enough
+    # inventory to ship it today.
     current_quantity = row['quantity'].to_i
-    break if max_quantity && (quantity_processed + current_quantity) > max_quantity
+    next if (quantity_processed + current_quantity) > max_quantity
+
     if blacklist_order_ids[row['id']]
       STDERR.puts "Order with id #{row['id']} was blacklisted, filterting it out"
     else
@@ -106,4 +112,4 @@ end
 
 puts output_str
 
-STDERR.puts "Sorted #{order_rows.length} orders, output includes #{order_count} orders"
+STDERR.puts "Sorted #{order_rows.length} orders, output includes #{order_count} orders with total quantity #{quantity_processed}"
