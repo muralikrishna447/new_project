@@ -1,3 +1,4 @@
+require_dependency 'beta_feature_service'
 module Api
   module V0
     class CirculatorsController < BaseController
@@ -114,6 +115,14 @@ module Api
           message = I18n.t("circulator.push.#{params[:notification_type]}.message", raise: true)
         rescue I18n::MissingTranslationData
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
+        end
+
+
+        if params[:notification_type] == 'disconnect_while_cooking'
+          user = User.find @user_id_from_token
+          unless BetaFeatureService.user_has_feature(user, 'disconnect_while_cooking_notification')
+            return render_api_response 200
+          end
         end
 
         notify_owners(circulator, params[:idempotency_key], message, params[:notification_type])
