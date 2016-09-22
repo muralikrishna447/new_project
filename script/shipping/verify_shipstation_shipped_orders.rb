@@ -3,10 +3,10 @@ require 'optparse'
 require 'pry'
 
 #
-# Takes a CSV from the output of the 'validate_shopify_orders' script and
-# sorts it (in FIFO order of placement).
+# Takes barcodes scanned before shipment and a shipment CSV export from
+# ShipStation and verifies that we didn't miss any orders.
 #
-# The output of this script is the sorted CSV input.
+# The output is CSV file containing the verification status for each order.
 #
 # Options:
 #   --barcodes: A text file containing scanned tracking numbers, one per line
