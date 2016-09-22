@@ -2,6 +2,7 @@ require 'csv'
 require 'optparse'
 require 'shopify_api'
 require 'pry'
+require '../../lib/shopify/utils'
 
 #
 # Takes a shipment CSV export from ShipStation and updates Shopify's
@@ -71,7 +72,7 @@ def joule_fulfillment(shopify_order)
   if joule_fulfillments.length > 1
     raise "Multiple Joule fulfillments exist for Shopify order with id #{shopify_order.id}, expected only one: #{joule_fulfillments.inspect}"
   end
-  # Return the fulfillment, or nil of none exist
+  # Return the fulfillment, or nil if none exists
   joule_fulfillments.first
 end
 
@@ -102,6 +103,10 @@ CSV.foreach(options[:input], headers: true) do |shipment|
     fulfillment.save unless options[:dry_run]
     fulfilled_count += 1
   end
+
+  Shopify::Utils.remove_from_order_tags(order, ['shipping-started'])
+  order.save unless options[:dry_run]
+  STDERR.puts "Removed 'shipping-started' tag for order with id #{order.id} and number #{order_number}"
 
   order_count += 1
 end
