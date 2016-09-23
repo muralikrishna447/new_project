@@ -82,6 +82,7 @@ loop do
       order.name,
       DateTime.parse(order.processed_at),
       shipping_name(order),
+      shipping_address_prop(order, :company),
       shipping_address_prop(order, :address1),
       shipping_address_prop(order, :address2),
       shipping_address_prop(order, :city),
@@ -91,7 +92,8 @@ loop do
       order.email,
       shipping_address_prop(order, :phone),
       joule_line_item.sku,
-      joule_line_item.quantity
+      joule_line_item.quantity,
+      order.tags
     ]
 
     order_count += 1

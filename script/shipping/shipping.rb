@@ -4,6 +4,7 @@ module Shipping
     'name',
     'processed_at',
     'shipping_name',
+    'shipping_company',
     'shipping_address_1',
     'shipping_address_2',
     'shipping_city',
@@ -14,6 +15,7 @@ module Shipping
     'shipping_phone',
     'sku',
     'quantity',
+    'tags',
     'processed_at_index'
   ]
 
@@ -22,6 +24,7 @@ module Shipping
     'name',
     'processed_at',
     'shipping_name',
+    'shipping_company',
     'shipping_address_1',
     'shipping_address_2',
     'shipping_city',
@@ -32,11 +35,12 @@ module Shipping
     'shipping_phone',
     'sku',
     'quantity',
+    'tags',
     'processed_at_index',
     'priority_index'
   ]
 
   SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_COLUMN = 2
 
-  SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_INDEX_COMLUMN = 14
+  SHOPIFY_EXPORT_SCHEMA_PROCESSED_AT_INDEX_COMLUMN = 16
 end

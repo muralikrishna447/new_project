@@ -86,4 +86,36 @@ describe Shopify::Utils do
       end
     end
   end
+
+  describe 'remove_from_order_tags' do
+    context 'no matching tags exist on order' do
+      let(:tags) { 'A,B,C' }
+      let(:order) do
+        order = double('order')
+        order.stub(:tags) { tags }
+        order.stub(:tags=)
+        order
+      end
+
+      it 'sets order tags to same' do
+        order.should_receive(:tags=).with(tags)
+        Shopify::Utils.remove_from_order_tags(order, ['D'])
+      end
+    end
+
+    context 'matching tags exist on order' do
+      let(:tags) { 'A,B,C,D' }
+      let(:order) do
+        order = double('order')
+        order.stub(:tags) { tags }
+        order.stub(:tags=)
+        order
+      end
+
+      it 'removes tags from order' do
+        order.should_receive(:tags=).with('B,D')
+        Shopify::Utils.remove_from_order_tags(order, ['A', 'C'])
+      end
+    end
+  end
 end
