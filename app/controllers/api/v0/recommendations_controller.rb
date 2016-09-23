@@ -45,7 +45,7 @@ module Api
           slot = metadata.delete(:slot)
           aspect = metadata.delete(:aspect)
           limit = metadata.delete(:limit) || 1
-          paired = (metadata.delete(:paired) == 'true')
+          connected = (metadata.delete(:connected) == 'true')
 
           circulator_owner = @user_id_from_token && (current_api_user.owned_circulators.count > 0 || current_api_user.joule_purchase_count > 0)
 
@@ -54,7 +54,7 @@ module Api
           # These are the only two known uses right now. Anything else, we got no recommendations.
           # Which isn't considered an error.
           if platform == 'jouleApp' && slot == 'homeHero'
-            if circulator_owner || paired
+            if circulator_owner || connected
               ads = Advertisement.where(matchname: 'homeHeroOwner').published.limit(limit).to_a
             else
               ads = Advertisement.where(matchname: 'homeHeroNonOwner').published.limit(limit).to_a
