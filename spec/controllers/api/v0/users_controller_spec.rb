@@ -4,6 +4,8 @@ describe Api::V0::UsersController do
     @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
     @aa = ActorAddress.create_for_user @user, client_metadata: "test"
     @token = 'Bearer ' + @aa.current_token.to_jwt
+    BetaFeatureService.stub(:user_has_feature).with(@user, anything()) \
+      .and_return(false)
   end
 
   context 'GET /me' do
@@ -160,6 +162,28 @@ describe Api::V0::UsersController do
       get :log_upload_url
       response.should be_success
       JSON.parse(response.body)['upload_url'].should_not be_nil
+    end
+  end
+
+  context 'GET /capabilities' do
+    it 'get empty list if no capabilities' do
+      request.env['HTTP_AUTHORIZATION'] = @token
+      get :capabilities
+      response.should be_success
+    end
+
+    it 'get beta_guides capability' do
+      request.env['HTTP_AUTHORIZATION'] = @token
+      BetaFeatureService.stub(:user_has_feature).with(@user, 'beta_guides')
+        .and_return(true)
+      get :capabilities
+      response.should be_success
+      JSON.parse(response.body)['capabilities'].should == ['beta_guides']
+    end
+
+    it 'get return error if not logged in' do
+      get :capabilities
+      response.code.should == '401'
     end
   end
 end
