@@ -94,7 +94,7 @@ module Api
         user = User.find @user_id_from_token
 
         unless user
-          return render_api_response 501, {:message => "User not found"}
+          return render_api_response 404, {:message => "User not found"}
         end
 
         # Hardcoding the list of possible capabilities for now.
