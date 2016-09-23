@@ -256,6 +256,7 @@ Delve::Application.routes.draw do
       resources :search, only: [:index]
       resources :users, only: [:index, :create, :update] do
         get :me, on: :collection
+        get :capabilities, on: :collection
         get :shown_terms, on: :collection
         post :international_joule, on: :collection
         get :log_upload_url, on: :collection
