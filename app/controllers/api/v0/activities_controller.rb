@@ -2,8 +2,6 @@ module Api
   module V0
     class ActivitiesController < BaseController
 
-      instrument_action :index, :show
-
       has_scope :sort, default: 'newest' do |controller, scope, value|
         case value
           when "oldest"
