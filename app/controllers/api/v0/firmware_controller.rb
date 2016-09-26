@@ -5,8 +5,6 @@ module Api
     class FirmwareController < BaseController
       before_filter :ensure_authorized
 
-      instrument_action :updates
-
       LINK_EXPIRE_SECS = 60 * 20
 
       # This maps the FileType enum, to the params returned by

@@ -2,6 +2,8 @@ require 'external_service_token_checker'
 
 module Api
   class BaseController < BaseApplicationController
+    instrument_action :all
+
     skip_before_filter :verify_authenticity_token
     # before_filter :cors_set_access_control_headers
 
