@@ -10,9 +10,14 @@ module BetaFeature
       groups = get_groups_for_user(user)
       Rails.logger.info "User #{user.id} belongs to these groups: #{groups}"
 
-      group_set = Set.new(groups)
-      feature_groups = get_feature_groups_by_feature_name(feature_name)
+      if groups.length ==  0
+        # Saves a DynamoDB call if user doesn't belong to any groups
+        feature_groups = []
+      else
+        feature_groups = get_feature_groups_by_feature_name(feature_name)
+      end
 
+      group_set = Set.new(groups)
       # Filter out any groups that the user is not associated with
       feature_groups = feature_groups.select {|fg|
         group_set.include? fg['group_name']
@@ -40,6 +45,7 @@ module BetaFeature
         end
       end
 
+      Rails.logger.info "User #{user.id} has #{feature_name} enabled=#{is_enabled}"
       return is_enabled
     end
 

@@ -28,7 +28,7 @@ describe Api::V0::RecommendationsController do
     parsed['results'][0]['image'].should eq 'http://foo/bar'
   end
 
-  it 'should respond new-skool style if known platform set, known slot, and signed in as circ owner' do
+  it 'should respond new-skool style with owner ad if known platform set, known slot, and signed in as circ owner' do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
 
@@ -40,6 +40,42 @@ describe Api::V0::RecommendationsController do
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
     parsed['results'][0]['title'].should eq 'Owner All The Things'
+  end
+
+  it 'should respond new-skool style with owner ad if known platform set, known slot, and signed in as joule purchaser' do
+    @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', joule_purchase_count: 1
+    controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+
+    sign_in @user
+    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed['results'].count.should eq 1
+    parsed['results'][0]['title'].should eq 'Owner All The Things'
+  end
+
+  it 'should respond new-skool style with owner ad if known platform set, known slot, and connected param is true' do
+    @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
+    controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+
+    sign_in @user
+    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3, connected: 'true'}
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed['results'].count.should eq 1
+    parsed['results'][0]['title'].should eq 'Owner All The Things'
+  end
+
+  it 'should respond new-skool style with non owner ad if known platform set, known slot, and not owner, purchaser, or connected' do
+    @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
+    controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+
+    sign_in @user
+    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3, connected: "false"}
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed['results'].count.should eq 1
+    parsed['results'][0]['title'].should eq 'All The Things'
   end
 
   it 'should respond new-skool but empty if not known platform' do

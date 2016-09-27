@@ -20,5 +20,12 @@ module Shopify
       order.tags = order_tags.join(',')
       true
     end
+
+    # Removes an array of tags from the order.
+    def self.remove_from_order_tags(order, tags)
+      order_tags = order_tags(order)
+      tags.each { |tag| order_tags.delete(tag) }
+      order.tags = order_tags.join(',')
+    end
   end
 end

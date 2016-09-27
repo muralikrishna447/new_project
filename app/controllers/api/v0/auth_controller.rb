@@ -3,7 +3,6 @@ module Api
     class AuthController < BaseController
       before_filter :ensure_authorized_service, only: [:validate]
       before_filter :ensure_authorized, only: [:logout, :external_redirect]
-      instrument_action :authenticate
 
       def authenticate
         begin

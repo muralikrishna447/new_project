@@ -2,8 +2,6 @@ module Api
   module V0
     class ActivitiesController < BaseController
 
-      instrument_action :index, :show
-
       has_scope :sort, default: 'newest' do |controller, scope, value|
         case value
           when "oldest"
@@ -108,7 +106,7 @@ module Api
       end
 
       def likes
-        @activity = Activity.find(params[:id])
+        @activity = Activity.eager_load(:likes).find(params[:id])
         render json: @activity.likes, each_serializer: Api::ActivityLikeSerializer
       end
     end
