@@ -33,6 +33,17 @@ Delve::Application.configure do
     enable_starttls_auto: true
   }
 
+  # Heroku provides this for us in staging/prod, but timestamps are
+  # useful in development
+  logger = Logger.new(STDOUT)
+  logger.formatter = proc do |severity, datetime, progname, msg|
+    "#{datetime.strftime("%Y-%m-%dT%H:%M:%S.%L")} #{severity} - #{msg}\n"
+  end
+  config.logger = logger
+
+  # Uncomment the following line to get request IDs in the log message
+  #config.logger = ActiveSupport::TaggedLogging.new(logger)
+
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 
