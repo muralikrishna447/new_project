@@ -106,7 +106,7 @@ module Api
       end
 
       def likes
-        @activity = Activity.find(params[:id])
+        @activity = Activity.eager_load(:likes).find(params[:id])
         render json: @activity.likes, each_serializer: Api::ActivityLikeSerializer
       end
     end
