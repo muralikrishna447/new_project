@@ -8,7 +8,7 @@ module Api
         result = cache_for_production("location_lookup_#{ip_address}", 1.week) do
           geocode = nil
           catch_and_retry(5) do
-            geocode = ((ip_address == '127.0.0.1') ? nil : Geoip2.city(ip_address))
+            geocode = ((ip_address == '127.0.0.1') ? nil : Geoip2.city(ip_address, {request: {timeout: 3}}))
             Rails.logger.info("Geolocation returned for #{geocode}")
           end
 
