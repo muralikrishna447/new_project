@@ -51,7 +51,7 @@ module Api
           @activity = Activity.find(params[:id])
           @version = params[:version]
           @last_revision = @activity.last_revision()
-          cache_revision = @last_revision.revision
+          cache_revision = @last_revision ? @last_revision.revision : '0'
           if @version && @version.to_i <= @last_revision.revision
             @activity = @activity.restore_revision(@version)
             cache_revision = @version
