@@ -97,7 +97,13 @@ module Api
 
         if can_see
           except = trimmed ? [:steps, :ingredients, :equipment] : []
-          render json: @activity, serializer: Api::ActivitySerializer, except: except
+          cache_key = "activity-#{@activity.id}-trim-#{trimmed}"
+          logger.info "fetching activity from #{cache_key}"
+          serialized = Rails.cache.fetch(cache_key, expires_in: 2.minutes) do
+            logger.info "cache miss for #{cache_key}"
+            Api::ActivitySerializer.new(@activity, except: except).to_json
+          end
+          render json: serialized
         else
           render_unauthorized
         end
