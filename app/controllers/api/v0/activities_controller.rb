@@ -104,17 +104,14 @@ module Api
           serialized = Rails.cache.fetch(cache_key, expires_in: 2.minutes) do
             logger.info "cache miss for #{cache_key}"
             metric_suffix = 'miss'
-            Api::ActivitySerializer.new(@activity, except: except).to_json
+            Api::ActivitySerializer.new(@activity, except: except) \
+              .serializable_object.to_json
           end
 
-          # TODO: avoid having to serialize/deserialize/serialize.
-          # Can we just pass a string to render() with the correct
-          # content-type?
-          obj = JSON.parse(serialized)['activity']
-          render json: obj
+          render text: serialized, content_type: 'application/json'
           delta = Time.now - t1
           metric_name = "activity.show.time.#{metric_suffix}"
-          logger.debug "#{metric_name} took #{delta}s"
+          logger.info "#{metric_name} took #{delta}s"
           Librato.timing metric_name, delta * 1000
           Librato.increment "activity.show.count.#{metric_suffix}"
         else
