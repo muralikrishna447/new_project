@@ -101,7 +101,7 @@ module Api
           cache_key = "activity-#{@activity.id}-trim-#{trimmed}"
           logger.info "fetching activity from #{cache_key}"
           metric_suffix = 'hit'
-          serialized = Rails.cache.fetch(cache_key, expires_in: 2.minutes) do
+          serialized = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
             logger.info "cache miss for #{cache_key}"
             metric_suffix = 'miss'
             Api::ActivitySerializer.new(@activity, except: except) \
