@@ -103,7 +103,12 @@ module Api
             logger.info "cache miss for #{cache_key}"
             Api::ActivitySerializer.new(@activity, except: except).to_json
           end
-          render json: serialized
+
+          # TODO: avoid having to serialize/deserialize/serialize.
+          # Can we just pass a string to render() with the correct
+          # content-type?
+          obj = JSON.parse(serialized)['activity']
+          render json: obj
         else
           render_unauthorized
         end
