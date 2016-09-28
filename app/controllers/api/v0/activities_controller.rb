@@ -51,8 +51,10 @@ module Api
           @activity = Activity.find(params[:id])
           @version = params[:version]
           @last_revision = @activity.last_revision()
+          cache_revision = @last_revision.revision
           if @version && @version.to_i <= @last_revision.revision
             @activity = @activity.restore_revision(@version)
+            cache_revision = @version
           end
         rescue ActiveRecord::RecordNotFound
           render_api_response 404, {message:'Activity not found'}
@@ -98,7 +100,7 @@ module Api
 
         if can_see
           except = trimmed ? [:steps, :ingredients, :equipment] : []
-          cache_key = "activity-#{@activity.id}-trim-#{trimmed}"
+          cache_key = "activity-#{@activity.id}-v#{cache_revision}-t#{trimmed}"
           logger.info "fetching activity from #{cache_key}"
           metric_suffix = 'hit'
           serialized = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
