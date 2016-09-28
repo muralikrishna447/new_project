@@ -110,6 +110,9 @@ module Api
               .serializable_object.to_json
           end
 
+          # Because we are fetching objects through the cache, the
+          # return type will always be a string.  Need to manually set
+          # content-type
           render text: serialized, content_type: 'application/json'
           delta = Time.now - t1
           metric_name = "activity.show.time.#{metric_suffix}"
