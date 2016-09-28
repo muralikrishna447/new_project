@@ -46,6 +46,7 @@ module Api
       end
 
       def show
+        t1 = Time.now
         begin
           @activity = Activity.find(params[:id])
           @version = params[:version]
@@ -99,8 +100,10 @@ module Api
           except = trimmed ? [:steps, :ingredients, :equipment] : []
           cache_key = "activity-#{@activity.id}-trim-#{trimmed}"
           logger.info "fetching activity from #{cache_key}"
+          metric_suffix = 'hit'
           serialized = Rails.cache.fetch(cache_key, expires_in: 2.minutes) do
             logger.info "cache miss for #{cache_key}"
+            metric_suffix = 'miss'
             Api::ActivitySerializer.new(@activity, except: except).to_json
           end
 
@@ -109,6 +112,11 @@ module Api
           # content-type?
           obj = JSON.parse(serialized)['activity']
           render json: obj
+          delta = Time.now - t1
+          metric_name = "activity.show.time.#{metric_suffix}"
+          logger.debug "#{metric_name} took #{delta}s"
+          Librato.timing metric_name, delta * 1000
+          Librato.increment "activity.show.count.#{metric_suffix}"
         else
           render_unauthorized
         end
