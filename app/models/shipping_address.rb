@@ -6,12 +6,14 @@ class ShippingAddress < MailingAddress
     begin
       if !Rails.env.test?
         order = ShopifyAPI::Order.find(order_id)
+        Rails.logger.info("ShippingAddress save_record BEFORE: #{order.shipping_address.inspect}")
         order.shipping_address.address1 = address1
-        order.shipping_address.address2 = address2
+        order.shipping_address.address2 = (address2 == true || address2 == 'true') ? '' : address2
         order.shipping_address.city = city
         order.shipping_address.province_code = province
         order.shipping_address.zip = zip
         order.save
+        Rails.logger.info("ShippingAddress save_record AFTER: #{order.shipping_address.inspect}")
       end
     rescue => e
       Rails.logger.error "ShippingAddress update error: #{e} while trying to save item: #{item}"
