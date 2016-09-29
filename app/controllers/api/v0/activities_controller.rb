@@ -114,6 +114,10 @@ module Api
           # return type will always be a string.  Need to manually set
           # content-type
           render text: serialized, content_type: 'application/json'
+
+          # TODO: look into breaking this into separate methods and
+          # using a filter, or hooking into ActiveSupport for timing
+          # metrics
           delta = Time.now - t1
           metric_name = "activity.show.time.#{metric_suffix}"
           logger.info "#{metric_name} took #{delta}s"
