@@ -117,14 +117,6 @@ module Api
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
         end
 
-
-        if params[:notification_type] == 'disconnect_while_cooking'
-          user = User.find @user_id_from_token
-          unless BetaFeatureService.user_has_feature(user, 'disconnect_while_cooking_notification')
-            return render_api_response 200
-          end
-        end
-
         notify_owners(circulator, params[:idempotency_key], message, params[:notification_type])
 
         render_api_response 200
@@ -223,6 +215,15 @@ module Api
         logger.info "Found circulator owners #{owners.inspect}"
 
         owners.each do |owner|
+          # check feature flags
+          if notification_type == 'disconnect_while_cooking'
+            user = User.find owner.user.id
+            hasFeature = BetaFeatureService.user_has_feature(user, 'disconnect_while_cooking_notification')
+            unless BetaFeatureService.user_has_feature(user, 'disconnect_while_cooking_notification')
+              return
+            end
+          end
+
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
             next if aa.revoked?
