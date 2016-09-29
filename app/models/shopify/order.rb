@@ -86,7 +86,8 @@ class Shopify::Order
       end
     end
 
-    if order_contains_joule
+    # Exchange orders are, for the time being, identified by their total price
+    if order_contains_joule && @api_order.total_price.to_f != 0
       JouleConfirmationMailer.prepare(user).deliver
     end
 
