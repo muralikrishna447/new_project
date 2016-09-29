@@ -37,6 +37,8 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
+  # Todo come back here and add a list of acceptable errors to catch.  Take array and use the splat operator to get them in to the rescue.
+  # This will also require finding every place this is used and coming up with a list of acceptable error catches.
   def catch_and_retry(retry_count)
     begin
       yield
