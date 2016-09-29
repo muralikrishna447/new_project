@@ -79,6 +79,18 @@ describe Api::V0::ActivitiesController do
     activity['equipment'].should == []
   end
 
+  it 'should cache activity JSON' do
+    # first one to prime cache
+    get :show, id: @activity_published.id
+
+    @activity_published.title = 'bleh'
+    @activity_published.save
+
+    get :show, id: @activity_published.id
+    activity = JSON.parse(response.body)
+    activity['title'].should_not == 'bleh'
+  end
+
   context 'GET /activities/:id/likes' do
     before :each do
       @user1 = Fabricate :user, name: 'User 1', email: 'user1@user1.com', password: '123456'
@@ -292,14 +304,14 @@ describe Api::V0::ActivitiesController do
   context 'versions' do
 
     before :each do
-      @revisable_activity = Fabricate :activity, title: 'Revisable Activity', description: 'This is version 1', published: true, id: 4
+      @revisable_activity = Fabricate :activity, title: 'Revisable Activity', description: 'This is version 1', published: true, id: 5
 
       @activity_v1 = ActsAsRevisionable::RevisionRecord.new(@revisable_activity)
       @activity_v1.save
 
       @revisable_activity.description = 'This is version 2'
       @revisable_activity.save
-      
+
       @activity_v2 = ActsAsRevisionable::RevisionRecord.new(@revisable_activity)
       @activity_v2.save
     end
@@ -309,6 +321,23 @@ describe Api::V0::ActivitiesController do
       response.should be_success
       parsed = JSON.parse response.body
       expect(parsed['description']).to eq('This is version 1')
+    end
+
+    it 'loads latest version after a revision' do
+      get :show, id: @revisable_activity.id, version: 1
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed['description']).to eq('This is version 1')
+
+      @revisable_activity.description = 'foobar'
+      @revisable_activity.save
+      activity_v3 = ActsAsRevisionable::RevisionRecord.new(@revisable_activity)
+      activity_v3.save
+
+      get :show, id: @revisable_activity.id
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed['description']).to eq('foobar')
     end
 
     it 'loads correct revision when the version parameter is 2' do
