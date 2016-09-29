@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Shopify::Order do
   JOULE_ORDER_ID = 4507800
+  FREE_JOULE_ORDER_ID = 4507801
   PREMIUM_ORDER_ID = 450789469
   SIMPLE_ORDER_ALL_BUT_JOULE = 100001
   SIMPLE_ORDER_PARTIALLY_FULFILLED = 100002
@@ -53,6 +54,7 @@ describe Shopify::Order do
       # Not stubbing fulfillment call since this is not made for joule
       WebMock::stub_request(:put, /\.com\/admin\/orders\/4507800.json/).
         to_return(:status => 200, :body => "", :headers => {})
+      JouleConfirmationMailer.should_receive(:prepare).and_call_original
       stub_metafield_get
       Shopify::Customer.should_receive(:sync_user)
       stub_metafield_post('all-but-joule-fulfilled', 'true')
@@ -64,8 +66,26 @@ describe Shopify::Order do
       @user.joule_purchase_count.should == 1
       # No premium with joule!
       @user.premium?.should == false
+      
     end
-
+    it 'fulfills a zero-dollar joule order' do
+      # Not stubbing fulfillment call since this is not made for joule
+      WebMock::stub_request(:put, /\.com\/admin\/orders\/4507800.json/).
+        to_return(:status => 200, :body => "", :headers => {})
+      JouleConfirmationMailer.should_not_receive(:prepare)
+      stub_metafield_get
+      Shopify::Customer.should_receive(:sync_user)
+      stub_metafield_post('all-but-joule-fulfilled', 'true')
+      @user.premium?.should == false
+      @user.joule_purchase_count.should == 0
+      order = Shopify::Order.find(FREE_JOULE_ORDER_ID)
+      order.process!
+      @user.reload
+      @user.joule_purchase_count.should == 1
+      # No premium with joule!
+      @user.premium?.should == false
+      
+    end
     it 'fulfills premium gift order' do
 
       stub_fulfillment
