@@ -21,6 +21,9 @@ require './shipping'
 #   --error-output: CSV file to output validation errors to, if you want.
 #
 
+# FedEx address lines are limited to 35 characters
+MAX_ADDRESS_LENGTH = 35
+
 # Options parsing
 @options = {}
 option_parser = OptionParser.new do |option|
@@ -55,6 +58,8 @@ end
 
 def address_verifies?(input_row)
   begin
+    retries ||= 0
+
     @lob.addresses.verify(
       address_line1: input_row['shipping_address_1'],
       address_line2: input_row['shipping_address_2'],
@@ -67,6 +72,10 @@ def address_verifies?(input_row)
     error = JSON.parse(e.json_body)
     return false if error.fetch('error').fetch('message') == 'address not found'
     raise "Unexpected error from address verification API: #{e.inspect}"
+  rescue Lob::LobError => e
+    sleep(1)
+    retry if (retries += 1) < 5
+    raise e
   end
   true
 end
@@ -93,13 +102,13 @@ CSV.foreach(@options[:file], headers: true) do |input_row|
     order_validation_tags << 'address-1-missing'
   end
   # Shipwire limits address lines to 50 chars
-  if shipping_address_1 && shipping_address_1.length > 50
+  if shipping_address_1 && shipping_address_1.length > MAX_ADDRESS_LENGTH
     order_validation_tags << 'address-1-too-long'
   end
 
   # Shipwire limits address lines to 50 chars
   shipping_address_2 = input_row['shipping_address_2']
-  if shipping_address_2 && shipping_address_2.length > 50
+  if shipping_address_2 && shipping_address_2.length > MAX_ADDRESS_LENGTH
     order_validation_tags << 'address-2-too-long'
   end
 
