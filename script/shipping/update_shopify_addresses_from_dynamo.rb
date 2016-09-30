@@ -15,9 +15,6 @@ require 'pry'
 #   --key: Your Shopify API key
 #   --password: Your Shopify API key password
 #   --store: The name of the Shopify store ('delve' for prod, or 'chefsteps-staging')
-#   --verify-addresses: Specify if you want to verify addresses.
-#   --lob-key: The Lob.com API key to use if using --verify-addresses.
-#   --error-output: CSV file to output validation errors to, if you want.
 #   --dry-run: Do a dry run and don't actually update the Shopify order.
 #   --input: Input CSV file that was exported from Dynamo.
 #
@@ -47,13 +44,25 @@ option_parser = OptionParser.new do |option|
 end
 option_parser.parse!
 
-raise '--lob-key is required with --verify-addresses' if options[:verify_addresses] && !options[:lob_key]
-
 unless options[:dry_run]
-  raise '--key is required' unless options[:key]
+  raise '--key is required' unless options[:api_key]
   raise '--password is required' unless options[:password]
   raise '--store is required' unless options[:store]
   STDERR.puts 'NOTE: --dry-run was specified, not really updating Shopify'
+end
+
+def joule_fulfillment(shopify_order)
+  joule_fulfillments = []
+  shopify_order.fulfillments.each do |fulfillment|
+    fulfillment.line_items.each do |line_item|
+      joule_fulfillments << fulfillment if line_item.sku == 'cs10001'
+    end
+  end
+  if joule_fulfillments.length > 1
+    raise "Multiple Joule fulfillments exist for Shopify order with id #{shopify_order.id}, expected only one: #{joule_fulfillments.inspect}"
+  end
+  # Return the fulfillment, or nil if none exists
+  joule_fulfillments.first
 end
 
 # Configure shopify client
@@ -62,17 +71,18 @@ ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{op
 CSV.foreach(options[:input_file], headers: true) do |input_row|
   order_id = input_row['orderId (S)']
   address_1 = input_row['address1 (S)']
-  address_2 = input_row['address2 (NULL)']
+  address_2 = input_row['address2 (S)']
   city = input_row['city (S)']
   province = input_row['province (S)']
   zip = input_row['zip (S)']
 
-  STDERR.puts "Updading order with id #{order_id} with data #{input_row}"
+  order = ShopifyAPI::Order.find(order_id)
+  raise "Unknown order #{order_id}" unless order
 
-  unless options[:dry_run]
-    order = ShopifyAPI::Order.find(order_id)
-    raise "Unknown order #{order_id}" unless order
-
+  joule_fulfillment = joule_fulfillment(order)
+  if joule_fulfillment && joule_fulfillment.status == 'success'
+    STDERR.puts "Order with id #{order.id} has already been fulfilled, not updating address"
+  else
     order.shipping_address.attributes[:address1] = address_1
     if address_2 && address_2 != 'true' # Column has value true if not specified
       order.shipping_address.attributes[:address2] = address_2
@@ -83,6 +93,15 @@ CSV.foreach(options[:input_file], headers: true) do |input_row|
     order.shipping_address.attributes[:province_code] = province
     order.shipping_address.attributes[:zip] = zip
 
-    order.save
+    if address_1.length > 35
+      STDERR.puts "WARNING: Address1 line is too long for order with id #{order.id}"
+    end
+    if address_2.length > 35
+      STDERR.puts "WARNING: Address2 line is too long for order with id #{order.id}"
+    end
+
+    STDERR.puts "Updading order with id #{order_id} with data #{order.shipping_address.inspect}"
+
+    order.save unless options[:dry_run]
   end
 end
