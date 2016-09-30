@@ -43,12 +43,6 @@ if options[:quantity]
   STDERR.puts "NOTE: --quantity was specified, limiting output to max quantity of #{options[:quantity]}"
 end
 
-order_rows = []
-CSV.foreach(options[:input_file], headers: true) do |input_row|
-  input_row['processed_at'] = DateTime.parse(input_row['processed_at'])
-  order_rows << input_row
-end
-
 priority_order_ids = {}
 if options[:priority_file]
   priority_index = 1
@@ -57,6 +51,17 @@ if options[:priority_file]
     STDERR.puts "Prioritizing order with id #{order_id} with index #{priority_index}"
     priority_order_ids[priority_row[0]] = priority_index
     priority_index += 1
+  end
+end
+
+order_rows = []
+CSV.foreach(options[:input_file], headers: true) do |input_row|
+  input_row['processed_at'] = DateTime.parse(input_row['processed_at'])
+  order_rows << input_row
+  if input_row['tags'].split(',').include?('shipping-priority')
+    priority_index = priority_order_ids.length + 1
+    STDERR.puts "Prioritizing order with id #{input_row['id']} with index #{priority_index}"
+    priority_order_ids[input_row['id']] = priority_index
   end
 end
 
