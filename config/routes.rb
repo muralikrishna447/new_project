@@ -36,6 +36,7 @@ Delve::Application.routes.draw do
   get '/presskit', to: redirect('/press')
   get '/jouleapp', to: redirect('/getting-started-with-joule')
   get '/jewel', to: redirect('/joule')
+  get '/Joule', to: redirect('/joule')
 
   # Legal Documents
   get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
