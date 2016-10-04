@@ -1,3 +1,4 @@
+require_dependency 'beta_feature_service'
 module Api
   module V0
     class CirculatorsController < BaseController
@@ -214,6 +215,15 @@ module Api
         logger.info "Found circulator owners #{owners.inspect}"
 
         owners.each do |owner|
+          # check feature flags
+          if notification_type == 'disconnect_while_cooking'
+            user = User.find owner.user.id
+            hasFeature = BetaFeatureService.user_has_feature(user, 'disconnect_while_cooking_notification')
+            unless BetaFeatureService.user_has_feature(user, 'disconnect_while_cooking_notification')
+              return
+            end
+          end
+
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
             next if aa.revoked?
