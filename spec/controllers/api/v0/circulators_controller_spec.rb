@@ -1,6 +1,6 @@
 describe Api::V0::CirculatorsController do
   before :each do
-    @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
+    @user = Fabricate :user, id: 12345, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
     @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1212121212121212', name: 'my name'
     @admin_user = Fabricate :user, email: 'admin@chefsteps.com', password: '123456', name: 'John Doe', role: 'admin'
 
@@ -279,6 +279,19 @@ describe Api::V0::CirculatorsController do
     end
 
     describe 'notify_clients' do
+      context 'disconnect while cooking' do
+        it 'sends a notification' do
+          BetaFeatureService.stub(:user_has_feature).with(anything(), 'disconnect_while_cooking_notification').and_return(true)
+          expect_publish_notification(true)
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'disconnect_while_cooking'
+          )
+          expect(response.code).to eq '200'
+        end
+      end
+
       let(:notification_type) { 'water_heated' }
 
       context 'no idempotency key is specified' do
