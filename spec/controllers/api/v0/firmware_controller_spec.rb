@@ -30,8 +30,10 @@ describe Api::V0::FirmwareController do
     end
 
     @link = 'http://www.foo.com'
+    @release_notes_url_1 = "https://www.chefsteps.com/releases/46.11"
     controller.stub(:get_firmware_link).and_return(@link)
     manifest =  {
+      "releaseNotesUrl" => @release_notes_url_1,
       "updates" => [
         {
           "versionType" => "appFirmwareVersion",
@@ -116,6 +118,8 @@ describe Api::V0::FirmwareController do
     response.should be_success
     resp = JSON.parse(response.body)
     puts resp.inspect
+
+    resp['releaseNotesUrl'].should == @release_notes_url_1
     resp['updates'].length.should == 1
     update = resp['updates'].first
     update['type'].should == 'APPLICATION_FIRMWARE'

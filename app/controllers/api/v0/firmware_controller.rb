@@ -86,7 +86,16 @@ module Api
           updates << u
         end
 
-        render_api_response 200, {updates: updates, bootModeType: 'APPLICATION_BOOT_MODE'}
+        resp = {
+          updates: updates,
+          bootModeType: 'APPLICATION_BOOT_MODE'
+        }
+
+        if manifest['releaseNotesUrl']
+          resp['releaseNotesUrl'] = manifest['releaseNotesUrl']
+        end
+
+        render_api_response 200, resp
       end
 
       private
