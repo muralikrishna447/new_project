@@ -130,8 +130,9 @@ module Api
         begin
           # TODO - add APNS once we have a testable endpoint
           title = I18n.t("circulator.app_name", raise: true)
+          gcm_content_available = if content_available == 0 then false else true end
           message = {
-            GCM: {data: {message: message, title: title, notification_type: notification_type, "content-available" => content_available}}.to_json,
+            GCM: {data: {message: message, title: title, notification_type: notification_type, "content_available" => gcm_content_available}}.to_json,
             APNS_SANDBOX: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json,
             APNS: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json
           }
