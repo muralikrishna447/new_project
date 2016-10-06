@@ -50,8 +50,8 @@ module Api
           return render_empty_response
         end
 
-        potential_updates = get_firmware_for_app_version(app_version)
-        if potential_updates.nil?
+        manifest = get_firmware_for_app_version(app_version)
+        if manifest.nil?
           logger.info "No manifest found for app version #{app_version}"
           return render_empty_response
         end
@@ -62,7 +62,7 @@ module Api
         )
 
         updates = []
-        potential_updates.each do |u|
+        manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
           current_version = params[param_type]
 

@@ -31,19 +31,26 @@ describe Api::V0::FirmwareController do
 
     @link = 'http://www.foo.com'
     controller.stub(:get_firmware_link).and_return(@link)
-    manifest = [{
-      "versionType" => "appFirmwareVersion",
-      "type" => "APPLICATION_FIRMWARE",
-      "version" => "alex_latest" }]
+    manifest =  {
+      "updates" => [
+        {
+          "versionType" => "appFirmwareVersion",
+          "type" => "APPLICATION_FIRMWARE",
+          "version" => "alex_latest"
+        }
+      ]
+    }
 
     @esp_version = "706"
-    esp_only_manifest = [
-      {
-        "versionType" => "espFirmwareVersion",
-        "type" => "WIFI_FIRMWARE",
-        "version" => @esp_version
-      }
-    ]
+    esp_only_manifest = {
+      "updates" =>[
+        {
+          "versionType" => "espFirmwareVersion",
+          "type" => "WIFI_FIRMWARE",
+          "version" => @esp_version
+        }
+      ]
+    }
 
     @sha256 = "4a241f2e5bade1cceaa082acb5249497d23ff1b1882badc6cfdb82d6d1c0bcac"
     @filename = "#{@esp_version}.bin"
