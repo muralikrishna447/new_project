@@ -217,10 +217,16 @@ module Api
         logger.info "Found circulator owners #{owners.inspect}"
 
         owners.each do |owner|
-          # check feature flags
+          # TODO: remove these flags on Oct 10, 2016 if no bugs reported by internal users
+          if notification_type == 'circulator_error_button_pressed'
+            user = User.find owner.user.id
+            unless BetaFeatureService.user_has_feature(user, 'content_available_notification')
+              content_available = 0
+            end
+          end
+
           if notification_type == 'disconnect_while_cooking'
             user = User.find owner.user.id
-            hasFeature = BetaFeatureService.user_has_feature(user, 'disconnect_while_cooking_notification')
             unless BetaFeatureService.user_has_feature(user, 'disconnect_while_cooking_notification')
               return
             end
