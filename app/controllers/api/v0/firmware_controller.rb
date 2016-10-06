@@ -188,6 +188,7 @@ module Api
       def get_firmware_for_app_version(version)
         # Sample manifest
         # {
+        #  "releaseNotesUrl" : "http://foo.com/release",
         #  "updates" : [{
         #   "versionType": "appFirmwareVersion",
         #   "type": "APPLICATION_FIRMWARE",
