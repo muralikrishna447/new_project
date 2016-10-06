@@ -187,13 +187,13 @@ module Api
 
       def get_firmware_for_app_version(version)
         # Sample manifest
-        # [
-        #  {
+        # {
+        #  "updates" : [{
         #   "versionType": "appFirmwareVersion",
         #   "type": "APPLICATION_FIRMWARE",
         #   "version": "latest_version"
-        #  }
-        # ]
+        #  }]
+        # }
 
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
         bucket_name = Rails.application.config.firmware_bucket
