@@ -19,7 +19,6 @@ module Api
         ["WA"]
       end
 
-      # Duplicated from the locations controller for short term.
       def get_location_result
         tax_percent = nil
         location = geolocate_ip
