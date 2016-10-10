@@ -64,9 +64,9 @@ module Api
       }
     end
 
-    def geolocate_ip
+    def geolocate_ip(ip_address = nil)
       location = null_location()
-      ip_address = get_ip_address
+      ip_address = ip_address || get_ip_address
       logger.info("Geolocating IP: #{ip_address}")
 
       return location if ip_address == '127.0.0.1'
@@ -88,18 +88,27 @@ module Api
     end
 
     def get_location_from_api(ip_address)
-      geocode = Geoip2.city(ip_address, {request: {timeout: 3}})
-      unless geocode && geocode.present? && geocode.error.blank? && geocode.location.present?
+      conn = Faraday.new(
+        :url => "https://geoip.maxmind.com", request: { timeout: 3 }
+      ) do |faraday|
+        faraday.request  :url_encoded             # form-encode POST params
+        faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+      end
+      conn.basic_auth('106517', 'v6DjqPqzPsNL')
+      resp = conn.get "/geoip/v2.1/city/#{ip_address}"
+      geocode = JSON.parse resp.body
+
+      if geocode["error"] || !geocode["location"]
         raise GeocodeError("Geocoding failed for #{ip_address}")
       end
 
       location = {
-        country: geocode.country.iso_code,
-        latitude: geocode.location.latitude,
-        longitude: geocode.location.longitude,
-        city: geocode.city.try(:names).try(:en),
-        state: geocode.subdivisions.try(:first).try(:iso_code),
-        zip: geocode.try(:postal).try(:code)
+        country: geocode["country"]["iso_code"],
+        latitude: geocode["location"]["latitude"],
+        longitude: geocode["location"]["longitude"],
+        city: geocode["city"]["names"]["en"],
+        state: geocode["subdivisions"].first()["iso_code"],
+        zip: geocode["postal"]["code"],
       }
       return location
     end
