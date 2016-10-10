@@ -89,7 +89,7 @@ module Api
 
     def get_location_from_api(ip_address)
       conn = Faraday.new(
-        :url => "https://geoip.maxmind.com", request: { timeout: 3 }
+        :url => "https://geoip.maxmind.com", request: { timeout: 2, open_timeout: 1}
       ) do |faraday|
         faraday.request  :url_encoded             # form-encode POST params
         faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
