@@ -83,7 +83,7 @@ module Api
       # TODO: we should narrow the scope of this rescue block, but not
       # sure all the ways in which Geoip2 can fail
       rescue Exception => e
-        logger.error e
+        logger.error "Geocode failed: #{e}"
         logger.error e.backtrace.join("\n")
       end
 
