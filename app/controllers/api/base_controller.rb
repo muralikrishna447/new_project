@@ -53,7 +53,60 @@ module Api
       end
     end
 
+    def null_location
+      return {
+        country: nil,
+        latitude: nil,
+        longitude: nil,
+        city: nil,
+        state: nil,
+        zip: nil
+      }
+    end
+
+    def geolocate_ip
+      location = null_location()
+      ip_address = get_ip_address
+      logger.info("Geolocating IP: #{ip_address}")
+
+      return location if ip_address == '127.0.0.1'
+
+      begin
+        location = get_location_from_api(ip_address)
+      # TODO: we should narrow the scope of this rescue block, but not
+      # sure all the ways in which Geoip2 can fail
+      rescue Exception => e
+        logger.error e
+        logger.error e.backtrace.join("\n")
+      end
+      return location
+    end
+
     protected
+
+    class GeocodeError < StandardError
+    end
+
+    def get_location_from_api(ip_address)
+      geocode = Geoip2.city(ip_address, {request: {timeout: 3}})
+      unless geocode && geocode.present? && geocode.error.blank? && geocode.location.present?
+        raise GeocodeError("Geocoding failed for #{ip_address}")
+      end
+
+      location = {
+        country: geocode.country.iso_code,
+        latitude: geocode.location.latitude,
+        longitude: geocode.location.longitude,
+        city: geocode.city.try(:names).try(:en),
+        state: geocode.subdivisions.try(:first).try(:iso_code),
+        zip: geocode.try(:postal).try(:code)
+      }
+      return location
+    end
+
+    def get_ip_address
+      (cookies[:cs_location] || request.ip)
+    end
 
     class AuthorizationError < StandardError
     end
