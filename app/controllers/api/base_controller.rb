@@ -68,11 +68,16 @@ module Api
       location = null_location()
       ip_address = ip_address || get_ip_address
       logger.info("Geolocating IP: #{ip_address}")
+      conf = Rails.configuration.geoip
 
       return location if ip_address == '127.0.0.1'
 
       begin
-        location = get_location_from_api(ip_address)
+        key = "geocode-cache-#{ip_address}"
+        location = Rails.cache.fetch(key, expires_in: conf.cache_expiry) do
+          logger.debug "cache miss"
+          get_location_from_api(ip_address)
+        end
       # TODO: we should narrow the scope of this rescue block, but not
       # sure all the ways in which Geoip2 can fail
       rescue Exception => e
@@ -94,7 +99,8 @@ module Api
         faraday.request  :url_encoded             # form-encode POST params
         faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
       end
-      conn.basic_auth(ENV['GEOIP_USER'], ENV['GEOIP_LICENSE'])
+      conf = Rails.configuration.geoip
+      conn.basic_auth(conf.user, conf.license)
       resp = conn.get "/geoip/v2.1/city/#{ip_address}"
       geocode = JSON.parse resp.body
 
