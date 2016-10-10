@@ -2,7 +2,7 @@ module Api
   module V0
     class AuthController < BaseController
       before_filter :ensure_authorized_service, only: [:validate]
-      before_filter :ensure_authorized, only: [:logout, :external_redirect, :external_redirect_by_key]
+      before_filter :ensure_authorized, only: [:logout, :external_redirect]
 
       def authenticate
         begin
@@ -216,8 +216,12 @@ module Api
           return render_api_response 400, {message: "No redirect for key #{params[:key]}"}
         end
 
-        params[:path] = url
+        if not request.authorization()
+          return render_api_response 200, {redirect: url}
+        end
 
+        params[:path] = url
+        ensure_authorized()
         return external_redirect()
       end
 
