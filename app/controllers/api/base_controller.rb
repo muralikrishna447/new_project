@@ -94,12 +94,12 @@ module Api
         faraday.request  :url_encoded             # form-encode POST params
         faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
       end
-      conn.basic_auth('106517', 'v6DjqPqzPsNL')
+      conn.basic_auth(ENV['GEOIP_USER'], ENV['GEOIP_LICENSE'])
       resp = conn.get "/geoip/v2.1/city/#{ip_address}"
       geocode = JSON.parse resp.body
 
       if geocode["error"] || !geocode["location"]
-        raise GeocodeError("Geocoding failed for #{ip_address}")
+        raise GeocodeError.new("Geocoding failed for #{ip_address}")
       end
 
       location = {
