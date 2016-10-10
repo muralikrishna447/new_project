@@ -65,6 +65,8 @@ module Api
     end
 
     def geolocate_ip(ip_address = nil)
+      t1 = Time.now
+      metric_suffix = 'hit'
       location = null_location()
       ip_address = ip_address || get_ip_address
       logger.info("Geolocating IP: #{ip_address}")
@@ -75,7 +77,7 @@ module Api
       begin
         key = "geocode-cache-#{ip_address}"
         location = Rails.cache.fetch(key, expires_in: conf.cache_expiry) do
-          logger.debug "cache miss"
+          metric_suffix = 'miss'
           get_location_from_api(ip_address)
         end
       # TODO: we should narrow the scope of this rescue block, but not
@@ -84,6 +86,12 @@ module Api
         logger.error e
         logger.error e.backtrace.join("\n")
       end
+
+      delta = Time.now - t1
+      metric_name = "geocode.time.#{metric_suffix}"
+      logger.info "#{metric_name} took #{delta}s"
+      Librato.timing metric_name, delta * 1000
+
       return location
     end
 
