@@ -2,7 +2,7 @@ module Api
   module V0
     class AuthController < BaseController
       before_filter :ensure_authorized_service, only: [:validate]
-      before_filter :ensure_authorized, only: [:logout, :external_redirect]
+      before_filter :ensure_authorized, only: [:logout, :external_redirect, :external_redirect_by_key]
 
       def authenticate
         begin
@@ -195,12 +195,30 @@ module Api
           redirect_uri = path_uri.to_s+"##{redirect_params.to_query}"
           render_api_response 200, {redirect: redirect_uri}
 
+
+
         elsif path_uri.host == "#{ENV['ZENDESK_DOMAIN']}" || path_uri.host == "#{ENV['ZENDESK_MAPPED_DOMAIN']}"
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
 
         else
           return render_api_response 404, {message: "No redirect configured for path [#{path}]."}
         end
+      end
+
+      def external_redirect_by_key
+        key = params[:key]
+        unless key
+          return render_api_response 400, {message: "No key provided"}
+        end
+
+        url = Rails.configuration.redirect_by_key[params[:key]]
+        unless url
+          return render_api_response 400, {message: "No redirect for key #{params[:key]}"}
+        end
+
+        params[:path] = url
+
+        return external_redirect()
       end
 
       # To be used by the Messaging Service
