@@ -92,6 +92,7 @@ module Api
       metric_name = "geocode.time.#{metric_suffix}"
       logger.info "#{metric_name} took #{delta}s"
       Librato.timing metric_name, delta * 1000
+      Librato.increment "geocode.count.#{metric_suffix}"
 
       return location
     end
