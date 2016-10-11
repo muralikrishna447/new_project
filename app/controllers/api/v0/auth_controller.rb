@@ -213,7 +213,8 @@ module Api
 
         url = Rails.configuration.redirect_by_key[params[:key]]
         unless url
-          return render_api_response 400, {message: "No redirect for key #{params[:key]}"}
+          logger.error("unrecognized key provided to redirect_by_key")
+          return render_api_response 200, {redirect: Rails.configuration.redirect_by_key['fallback']}
         end
 
         if not request.authorization()
