@@ -1,25 +1,14 @@
-require 'geoip2'
+
+geoip_config = OpenStruct.new
+
+Rails.configuration.geoip = geoip_config
 
 if Rails.env.development? || Rails.env.test?
-  Geoip2.configure do |conf|
-    # Mandatory
-    conf.license_key = 'v6DjqPqzPsNL'
-    conf.user_id = '106517'
-
-    # Optional
-    conf.host = 'geoip.maxmind.com' # Or any host that you would like to work with
-    conf.base_path = '/geoip/v2.0' # Or any other version of this API
-    conf.parallel_requests = 5 # Or any other amount of parallel requests that you would like to use
-  end
+  geoip_config.license = 'v6DjqPqzPsNL'
+  geoip_config.user = '106517'
+  geoip_config.cache_expiry = 10.seconds
 else
-  Geoip2.configure do |conf|
-    # Mandatory
-    conf.license_key = ENV["GEOIP_LICENSE"]
-    conf.user_id = ENV["GEOIP_USER"]
-
-    # Optional
-    conf.host = 'geoip.maxmind.com' # Or any host that you would like to work with
-    conf.base_path = '/geoip/v2.0' # Or any other version of this API
-    conf.parallel_requests = 5 # Or any other amount of parallel requests that you would like to use
-  end
+  geoip_config.license = ENV["GEOIP_LICENSE"]
+  geoip_config.user = ENV["GEOIP_USER"]
+  geoip_config.cache_expiry = 7.days
 end
