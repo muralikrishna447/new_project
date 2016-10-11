@@ -271,6 +271,7 @@ Delve::Application.routes.draw do
 
       post 'firmware/updates', to: 'firmware#updates'
       get 'auth/external_redirect', to: 'auth#external_redirect'
+      get 'auth/external_redirect_by_key', to: 'auth#external_redirect_by_key'
 
       namespace :shopping do
         resources :discounts, only: [:show]

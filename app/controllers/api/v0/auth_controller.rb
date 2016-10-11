@@ -203,6 +203,27 @@ module Api
         end
       end
 
+      def external_redirect_by_key
+        key = params[:key]
+        unless key
+          return render_api_response 400, {message: "No key provided"}
+        end
+
+        url = Rails.configuration.redirect_by_key[params[:key]]
+        unless url
+          logger.error("unrecognized key provided to redirect_by_key")
+          return render_api_response 200, {redirect: Rails.configuration.redirect_by_key['fallback']}
+        end
+
+        if not request.authorization()
+          return render_api_response 200, {redirect: url}
+        end
+
+        params[:path] = url
+        ensure_authorized()
+        return external_redirect()
+      end
+
       # To be used by the Messaging Service
       # To generate the token, run rake api:generate_service_token[SERVICE_NAME]
       def validate
