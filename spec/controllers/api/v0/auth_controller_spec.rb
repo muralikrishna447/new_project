@@ -377,6 +377,13 @@ describe Api::V0::AuthController do
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
 
+    it 'handles redirect by key', :focus => true do
+      Rails.configuration.redirect_by_key['made_up_test_key'] = "https://#{ENV['ZENDESK_DOMAIN']}"
+      get :external_redirect_by_key, :key => "made_up_test_key"
+      response.code.should == '200'
+      JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
+    end
+
     it 'returns a proper token for amazon' do
       sign_in @user
       get :external_redirect, :path => "https://pitangui.amazon.com?vendorId=12345"
@@ -385,7 +392,7 @@ describe Api::V0::AuthController do
       redirect = JSON.parse(response.body)['redirect']
       uri = URI(redirect)
       uri.host.should eq("pitangui.amazon.com")
-      
+
       amazon_params = redirect.split('#')[1]
       parsed_amazon_params = CGI::parse(amazon_params)
       token_string = parsed_amazon_params['access_token'][0]

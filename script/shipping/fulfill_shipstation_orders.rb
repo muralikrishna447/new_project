@@ -83,7 +83,7 @@ CSV.foreach(options[:input], headers: true) do |shipment|
   tracking_number = shipment['Shipment - Tracking Number']
   carrier = shipment['Shipment - Carrier']
 
-  path = ShopifyAPI::Order.collection_path(name: order_number)
+  path = ShopifyAPI::Order.collection_path(name: order_number, status: 'any')
   orders = ShopifyAPI::Order.find(:all, from: path)
   raise "Order with number #{order_number} does not exist" if orders.empty?
   raise "More than one order with number #{order_number}, expected only one" if orders.length > 1
@@ -100,6 +100,7 @@ CSV.foreach(options[:input], headers: true) do |shipment|
     fulfillment.attributes[:line_items] = [{ id: joule_line_item(order).id }]
     fulfillment.attributes[:tracking_company] = carrier
     fulfillment.attributes[:tracking_number] = tracking_number
+    fulfillment.attributes[:notify_customer] = true
     fulfillment.save unless options[:dry_run]
     fulfilled_count += 1
   end

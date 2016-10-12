@@ -8,6 +8,7 @@ en:
         message: "Whoops! Something has gone seriously wrong, and we were forced to stop Joule. Please contact us for help."
       circulator_error_button_pressed:
         message: "You stopped your cook!"
+        content_available: 1
       circulator_error_low_water_level:
         message: "Uh oh, the water level is too low. To operate properly, Joule needs H20. Please add more."
       circulator_error_tipped_over:

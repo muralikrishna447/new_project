@@ -411,7 +411,7 @@ describe Api::V0::CirculatorsController do
 
       it 'should call notify_owners with a notification_type' do
 
-        Api::V0::CirculatorsController.any_instance.should_receive(:notify_owners).with(anything, anything, anything, notification_type)
+        Api::V0::CirculatorsController.any_instance.should_receive(:notify_owners).with(anything, anything, anything, notification_type, anything)
 
         post(
           :notify_clients,
