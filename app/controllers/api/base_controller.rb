@@ -102,6 +102,18 @@ module Api
     class GeocodeError < StandardError
     end
 
+    def spelunk(obj, keys)
+      value = obj
+      keys.each_with_index{|k, i|
+        value = value[k]
+        if value.class != Hash and value.class != Array and i != (keys.length - 1)
+          value = nil
+          break
+        end
+      }
+      return value
+    end
+
     def get_location_from_api(ip_address)
       conn = Faraday.new(
         :url => "https://geoip.maxmind.com", request: { timeout: 2, open_timeout: 1}
@@ -118,13 +130,18 @@ module Api
         raise GeocodeError.new("Geocoding failed for #{ip_address}")
       end
 
+      country = (
+        spelunk(geocode, ['country', 'iso_code']) ||
+        spelunk(geocode, ['registered_country', 'iso_code'])
+      )
+
       location = {
-        country: geocode["country"]["iso_code"],
+        country: country,
         latitude: geocode["location"]["latitude"],
         longitude: geocode["location"]["longitude"],
-        city: geocode["city"]["names"]["en"],
-        state: geocode["subdivisions"].first()["iso_code"],
-        zip: geocode["postal"]["code"],
+        city: spelunk(geocode, ["city", "names", "en"]),
+        state: spelunk(geocode, ["subdivisions", 0, "iso_code"]),
+        zip: spelunk(geocode, ["postal", "code"]),
       }
       return location
     end
