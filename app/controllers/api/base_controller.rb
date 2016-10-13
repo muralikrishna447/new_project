@@ -1,4 +1,5 @@
 require 'external_service_token_checker'
+require_dependency 'utils'
 
 module Api
   class BaseController < BaseApplicationController
@@ -102,18 +103,6 @@ module Api
     class GeocodeError < StandardError
     end
 
-    def spelunk(obj, keys)
-      value = obj
-      keys.each_with_index{|k, i|
-        value = value[k]
-        if value.class != Hash and value.class != Array and i != (keys.length - 1)
-          value = nil
-          break
-        end
-      }
-      return value
-    end
-
     def get_location_from_api(ip_address)
       conn = Faraday.new(
         :url => "https://geoip.maxmind.com", request: { timeout: 2, open_timeout: 1}
@@ -131,17 +120,17 @@ module Api
       end
 
       country = (
-        spelunk(geocode, ['country', 'iso_code']) ||
-        spelunk(geocode, ['registered_country', 'iso_code'])
+        Utils.spelunk(geocode, ['country', 'iso_code']) ||
+        Utils.spelunk(geocode, ['registered_country', 'iso_code'])
       )
 
       location = {
         country: country,
         latitude: geocode["location"]["latitude"],
         longitude: geocode["location"]["longitude"],
-        city: spelunk(geocode, ["city", "names", "en"]),
-        state: spelunk(geocode, ["subdivisions", 0, "iso_code"]),
-        zip: spelunk(geocode, ["postal", "code"]),
+        city: Utils.spelunk(geocode, ["city", "names", "en"]),
+        state: Utils.spelunk(geocode, ["subdivisions", 0, "iso_code"]),
+        zip: Utils.spelunk(geocode, ["postal", "code"]),
       }
       return location
     end
