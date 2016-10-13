@@ -124,6 +124,10 @@ module Api
         Utils.spelunk(geocode, ['registered_country', 'iso_code'])
       )
 
+      if country == nil
+        raise GeocodeError.new("No country info for #{ip_address}")
+      end
+
       location = {
         country: country,
         latitude: geocode["location"]["latitude"],
