@@ -4,10 +4,16 @@ describe Shopify::Customer do
   before(:each) do
     @user = Fabricate(:user, :id => 123, :email => 'me@example.org')
     @user_not_in_shopify = Fabricate(:user, :id => 456, :email => 'me2@example.org')
-    
+
+    @user_in_shopify_without_multipass = Fabricate(:user, :id => 789, :email => 'specialme@example.org')
     customer_data = [JSON.parse(ShopifyAPI::Mock::Fixture.find('customers').data)['customers'][0]]
     WebMock.stub_request(:get, /\.com\/admin\/customers\/search.json\?query=email:%22me@example.org%22/).
          to_return(:status => 200, :body => customer_data.to_json, :headers => {})
+
+    customer_data = [JSON.parse(ShopifyAPI::Mock::Fixture.find('customers').data)['customers'][1]]
+    WebMock.stub_request(:get, /\.com\/admin\/customers\/search.json\?query=email:%22specialme@example.org%22/).
+         to_return(:status => 200, :body => customer_data.to_json, :headers => {})
+
   end
 
   it 'retrieves a customer' do
@@ -35,11 +41,21 @@ describe Shopify::Customer do
     shopify_customer.sync_tags!
     shopify_customer.tags.sort.should eq [Shopify::Customer::JOULE_PREMIUM_DISCOUNT_TAG, Shopify::Customer::PREMIUM_MEMBER_TAG]
   end
-  
+
   it 'syncs non-premium customers' do
     shopify_customer = Shopify::Customer.find_for_user @user
     shopify_customer.sync_tags!
     # expect no calls since no tags to sync
+  end
+
+  it 'sets multipass_identifier when not already set' do
+    WebMock.stub_request(:put, "https://123:321@test.myshopify.com/admin/customers/207119552.json").
+        to_return(:status => 200, :body => "", :headers => {})
+    shopify_customer = Shopify::Customer.find_for_user @user_in_shopify_without_multipass
+    
+    # Questionable inspection of private variable to see that multipass identifier was set
+    internal_api_customer = shopify_customer.instance_variable_get("@shopify_customer")
+    internal_api_customer.multipass_identifier.should == @user_in_shopify_without_multipass.id
   end
 
   it 'creates user when it does not exist' do
