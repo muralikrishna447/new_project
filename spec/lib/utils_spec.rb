@@ -24,5 +24,11 @@ describe Utils do
       expect(Utils.spelunk(@obj1, ['people', 0, 'name'])).to eq('Alice')
       expect(Utils.spelunk(@obj1, ['people', 1, 'pets', 0])).to eq('Snookums')
     end
+
+    it 'returns nil if not able to spelunk further' do
+      expect(Utils.spelunk(@obj1, ['bar', 'baz', 'biz'])).to eq(nil)
+      expect(Utils.spelunk(@obj1, ['bar', 'baz', 0])).to eq(nil)
+      expect(Utils.spelunk(@obj1, ['people', 7, 'name'])).to eq(nil)
+    end
   end
 end
