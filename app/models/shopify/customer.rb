@@ -21,17 +21,21 @@ class Shopify::Customer
       raise "Unable to find shopify customer with id [#{shopify_customer_id}] and email [#{user.email}]"
     end
 
-    # This will occur when a shopify customer is created with one email
-    # address but that email is now attached to a different ChefSteps account.
-    # Ideally we would handle email address changes better but at least his
-    # closes the potential security hole.
-    if shopify_customer.multipass_identifier.to_i != user.id
+    # Mutating the object in a "find" method is not ideal
+    if shopify_customer.multipass_identifier.nil?
+      Rails.logger.info "No multipass identifier set for customer [#{shopify_customer_id}] setting now."
+      shopify_customer.multipass_identifier = user.id
+      shopify_customer.save!
+    elsif shopify_customer.multipass_identifier.to_i != user.id
+      # This will occur when a shopify customer is created with one email
+      # address but that email is now attached to a different ChefSteps account.
+      # Ideally we would handle email address changes better but at least his
+      # closes the potential security hole.
       msg = "[shopify] customer mulitpass_identifier [#{shopify_customer.multipass_identifier.inspect}] does not match user id [#{user.id.inspect}]"
       Rails.logger.error msg
       raise msg
     end
     return Shopify::Customer.new(user, shopify_customer)
-
   end
   
   def self.create_for_user(user)
