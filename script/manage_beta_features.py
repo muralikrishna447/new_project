@@ -2,7 +2,7 @@ import boto3
 from boto3.dynamodb.conditions import Key, Attr
 import csv
 import sys
-from argparse import ArgumentParser
+import argparse
 
 def add_users_to_groups(table, args):
 
@@ -55,8 +55,25 @@ def delete_group(table, args):
         )
 
 if __name__ == '__main__':
-    parser = ArgumentParser(description="Update beta user groups")
-    parser.add_argument('env', choices=['production', 'staging', 'staging2'])
+    description='Update beta user groups'
+    epilog = '''
+
+Example: deleting all users from the group 'foo' on staging
+
+    $ python manage_beta_features.py staging del foo
+
+Example: adding a bunch of users to groups on production from
+         the CSV file, my_users.csv
+
+    $ python manage_beta_features.py production add my_users.csv
+
+    csv file format:
+        user_id, group_name, <other_metadata>...
+    '''
+    parser = argparse.ArgumentParser(description=description, epilog=epilog,
+                                     formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('env', help='The environment',
+                        choices=['production', 'staging', 'staging2'])
 
     subparsers = parser.add_subparsers(dest='cmd')
 
