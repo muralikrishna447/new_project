@@ -56,6 +56,8 @@ def delete_group(table, args):
 
 if __name__ == '__main__':
     parser = ArgumentParser(description="Update beta user groups")
+    parser.add_argument('env', choices=['production', 'staging', 'staging2'])
+
     subparsers = parser.add_subparsers(dest='cmd')
 
     add_cmd = subparsers.add_parser('add', help='Add users to groups from csv')
@@ -70,7 +72,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table('beta-feature-group-associations-staging')
+    table = dynamodb.Table('beta-feature-group-associations-%s' % args.env)
 
     if args.cmd == 'del':
         delete_group(table, args)
