@@ -80,10 +80,7 @@ Example: adding a bunch of users to groups on production from
     add_cmd = subparsers.add_parser('add', help='Add users to groups from csv')
     del_cmd = subparsers.add_parser('del', help='Delete a user group')
 
-    # Add command
     add_cmd.add_argument('group_csv', help='csv file with user info')
-
-    # Delete command
     del_cmd.add_argument('group_name', help='Group name to delete')
 
     args = parser.parse_args()
