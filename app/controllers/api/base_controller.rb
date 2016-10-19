@@ -1,4 +1,5 @@
 require 'external_service_token_checker'
+require_dependency 'utils'
 
 module Api
   class BaseController < BaseApplicationController
@@ -118,13 +119,22 @@ module Api
         raise GeocodeError.new("Geocoding failed for #{ip_address}")
       end
 
+      country = (
+        Utils.spelunk(geocode, ['country', 'iso_code']) ||
+        Utils.spelunk(geocode, ['registered_country', 'iso_code'])
+      )
+
+      if country == nil
+        raise GeocodeError.new("No country info for #{ip_address}")
+      end
+
       location = {
-        country: geocode["country"]["iso_code"],
+        country: country,
         latitude: geocode["location"]["latitude"],
         longitude: geocode["location"]["longitude"],
-        city: geocode["city"]["names"]["en"],
-        state: geocode["subdivisions"].first()["iso_code"],
-        zip: geocode["postal"]["code"],
+        city: Utils.spelunk(geocode, ["city", "names", "en"]),
+        state: Utils.spelunk(geocode, ["subdivisions", 0, "iso_code"]),
+        zip: Utils.spelunk(geocode, ["postal", "code"]),
       }
       return location
     end

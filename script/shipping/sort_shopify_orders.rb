@@ -58,7 +58,7 @@ order_rows = []
 CSV.foreach(options[:input_file], headers: true) do |input_row|
   input_row['processed_at'] = DateTime.parse(input_row['processed_at'])
   order_rows << input_row
-  if input_row['tags'].split(',').include?('shipping-priority')
+  if input_row['tags'].split(',').each(&:strip!).include?('shipping-priority')
     priority_index = priority_order_ids.length + 1
     STDERR.puts "Prioritizing order with id #{input_row['id']} with index #{priority_index}"
     priority_order_ids[input_row['id']] = priority_index

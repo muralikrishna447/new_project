@@ -1,5 +1,10 @@
 describe Api::V0::LocationsController do
   context 'GET /locations' do
+    before :each do
+      # We cache location data by IP, so clear this out between invocations
+      Rails.cache.clear
+    end
+
     def mock_geo(resp)
       WebMock.stub_request(:get, /.*geoip.maxmind.com\/geoip\/v2.1\/city.*/) \
         .to_return(:status => 200, :body => JSON.generate(resp), :headers => {})
@@ -29,6 +34,15 @@ describe Api::V0::LocationsController do
       response.should be_success
       location = JSON.parse(response.body)
       location.should include('country' => 'US', 'latitude' => 47.5943, 'longitude' => -122.6265, 'city' => 'Bremerton', 'state' => 'WA', 'zip' => '98310', 'taxPercent' => '0.084')
+    end
+
+    it "should respond with location data when geocode only returns registered_country" do
+      @request.env['REMOTE_ADDR'] = '1.2.3.4'
+      mock_geo(Hashie::Mash.new(registered_country: {iso_code: 'PT'}, location: {latitude: 47.5943, longitude: -122.6265}))
+      get :index
+      response.should be_success
+      location = JSON.parse(response.body)
+      location.should include('country' => 'PT', 'latitude' => 47.5943, 'longitude' => -122.6265, 'taxPercent' => nil)
     end
   end
 end
