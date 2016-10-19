@@ -377,7 +377,7 @@ describe Api::V0::AuthController do
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
 
-    it 'handles redirect by key', :focus => true do
+    it 'handles redirect by key' do
       Rails.configuration.redirect_by_key['made_up_test_key'] = "https://#{ENV['ZENDESK_DOMAIN']}"
       get :external_redirect_by_key, :key => "made_up_test_key"
       response.code.should == '200'
