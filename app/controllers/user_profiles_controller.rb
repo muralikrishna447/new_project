@@ -41,7 +41,7 @@ class UserProfilesController < ApplicationController
       Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], @user.id)
       if email_after_update != email_before_update
         Rails.logger.info "Email change detected - enqueuing EmailUpdate job"
-        Resque.enqueue(EmailUpdate, @user, email_before_update, email_after_update)
+        Resque.enqueue(EmailUpdate, @user.id, email_before_update, email_after_update)
       end
       redirect_to user_profile_path(@user), notice: 'User profile updated!'
     else
