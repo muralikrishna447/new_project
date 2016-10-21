@@ -371,6 +371,15 @@ describe Api::V0::AuthController do
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
 
+    it 'handles chefsteps redirect' do
+      redirect_base = Rails.application.config.shared_config[:chefsteps_endpoint]
+      token = request.env['HTTP_AUTHORIZATION']
+      path = "https://#{redirect_base}/some-random-path"
+      get :external_redirect, :path => path
+      response.code.should == '200'
+      JSON.parse(response.body)['redirect'].should eq("https://#{redirect_base}/sso?token=#{token}&path=#{path}")
+    end
+
     it 'handles zendesk redirect from mapped domain but still sends JWT to main domain' do
       get :external_redirect, :path => "https://#{ENV['ZENDESK_MAPPED_DOMAIN']}"
       response.code.should == '200'

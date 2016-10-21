@@ -164,6 +164,8 @@ module Api
       end
 
       # Used for SSO with third-party services
+      # DOES NOT ACTUALLY REDIRECT
+      # Returns a json object with a redirect url
       def external_redirect
         path = params[:path]
 
@@ -197,6 +199,12 @@ module Api
 
         elsif path_uri.host == "#{ENV['ZENDESK_DOMAIN']}" || path_uri.host == "#{ENV['ZENDESK_MAPPED_DOMAIN']}"
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
+
+        elsif path_uri.host == Rails.application.config.shared_config[:chefsteps_endpoint]
+          token = request.headers['HTTP_AUTHORIZATION']
+          redirect_uri = "https://#{Rails.application.config.shared_config[:chefsteps_endpoint]}/sso?token=#{token}"
+          redirect_uri += "&path=#{path}" if path.present?
+          render_api_response 200, {redirect: redirect_uri}
 
         else
           return render_api_response 404, {message: "No redirect configured for path [#{path}]."}
@@ -284,6 +292,17 @@ module Api
           render_unauthorized
         end
       end
+
+      def authenticate_token
+        ensure_authorized(true)
+        if @user_id_from_token
+          @user = User.find @user_id_from_token
+          return render json: {status: 200, message: 'Success.'}, status: 200
+        else
+          return render_unauthorized
+        end
+      end
+
     end
   end
 end
