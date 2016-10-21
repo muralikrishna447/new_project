@@ -298,11 +298,12 @@ module Api
         end
       end
 
-      def authenticate_token
+      def upgrade_token
         ensure_authorized(true)
-        if @user_id_from_token
-          @user = User.find @user_id_from_token
-          return render json: {status: 200, message: 'Success.'}, status: 200
+        token = request.headers['HTTP_AUTHORIZATION']
+        upgraded_token = AuthToken.upgrade_token(token)
+        if upgrade_token
+          return render json: {status: 200, message: 'Success.', token: upgraded_token.to_jwt}, status: 200
         else
           return render_unauthorized
         end

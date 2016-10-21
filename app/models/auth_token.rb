@@ -51,4 +51,21 @@ class AuthToken
       raise e
     end
   end
+
+  def self.upgrade_token(token_string)
+    begin
+      key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+      claim = JSON::JWT.decode(token_string, key.to_s)
+      exp = (Time.now + 10.minutes).to_i
+      claim['iat'] = Time.now.to_i # Keep everything the except use a new issued_at because its a different token
+      claim.delete('exp')
+      AuthToken.new claim
+    rescue JSON::JWT::InvalidFormat => e
+      Rails.logger.warn "[auth] invalid token format for token [#{token}]"
+      raise e
+    rescue JSON::JWS::VerificationFailed => e
+      Rails.logger.warn "[auth] token verification failed for token [#{token}]"
+      raise e
+    end
+  end
 end
