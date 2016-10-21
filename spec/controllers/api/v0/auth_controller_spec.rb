@@ -377,7 +377,13 @@ describe Api::V0::AuthController do
       path = "https://#{redirect_base}/some-random-path"
       get :external_redirect, :path => path
       response.code.should == '200'
-      JSON.parse(response.body)['redirect'].should eq("https://#{redirect_base}/sso?token=#{token}&path=#{path}")
+      redirect_url = JSON.parse(response.body)['redirect']
+      redirect_url.should start_with("https://#{redirect_base}/sso?token=")
+      uri = URI.parse(redirect_url)
+
+      query_params = CGI.parse(uri.query)
+      short_lived_token = query_params['token'][0]
+      short_lived_token.should_not eq(token)
     end
 
     it 'handles zendesk redirect from mapped domain but still sends JWT to main domain' do

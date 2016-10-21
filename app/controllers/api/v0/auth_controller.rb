@@ -163,6 +163,14 @@ module Api
         url
       end
 
+      def chefsteps_sso_url(path)
+        token = request.headers['HTTP_AUTHORIZATION']
+        short_lived_token = AuthToken.provide_short_lived(token).to_jwt
+        url = "https://#{Rails.application.config.shared_config[:chefsteps_endpoint]}/sso?token=#{short_lived_token}"
+        url += "&path=#{path}" if path.present?
+        url
+      end
+
       # Used for SSO with third-party services
       # DOES NOT ACTUALLY REDIRECT
       # Returns a json object with a redirect url
@@ -201,10 +209,7 @@ module Api
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
 
         elsif path_uri.host == Rails.application.config.shared_config[:chefsteps_endpoint]
-          token = request.headers['HTTP_AUTHORIZATION']
-          redirect_uri = "https://#{Rails.application.config.shared_config[:chefsteps_endpoint]}/sso?token=#{token}"
-          redirect_uri += "&path=#{path}" if path.present?
-          render_api_response 200, {redirect: redirect_uri}
+          render_api_response 200, {redirect: chefsteps_sso_url(params[:path])}
 
         else
           return render_api_response 404, {message: "No redirect configured for path [#{path}]."}
