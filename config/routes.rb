@@ -229,7 +229,7 @@ Delve::Application.routes.draw do
 
     namespace :v0 do
       match '/authenticate', to: 'auth#authenticate', via: [:post, :options]
-      match '/authenticate_token', to: 'auth#authenticate_token', via: [:post, :options]
+      match '/upgrade_token', to: 'auth#upgrade_token', via: [:post, :options]
       match '/authenticate_facebook', to: 'auth#authenticate_facebook', via: [:post, :options]
       match '/logout', to: 'auth#logout', via: [:post, :options]
       match '/validate', to: 'auth#validate', via: [:get, :options]

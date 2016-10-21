@@ -300,13 +300,15 @@ module Api
 
       def upgrade_token
         ensure_authorized(true)
-        token = request.headers['HTTP_AUTHORIZATION']
+        token = request.headers['HTTP_AUTHORIZATION'].split(' ')[1]
         upgraded_token = AuthToken.upgrade_token(token)
-        if upgrade_token
+
+        if upgraded_token
           return render json: {status: 200, message: 'Success.', token: upgraded_token.to_jwt}, status: 200
         else
           return render_unauthorized
         end
+
       end
 
     end

@@ -417,13 +417,13 @@ describe Api::V0::AuthController do
     end
   end
 
-  context 'GET /upgrade_token' do
+  context 'POST /upgrade_token' do
     before :each do
       @short_lived_token = AuthToken.provide_short_lived(@aa.current_token.to_jwt).to_jwt
     end
 
     it 'upgrades a token' do
-      controller.request.env['HTTP_AUTHORIZATION'] = @short_lived_token
+      controller.request.env['HTTP_AUTHORIZATION'] = "Bearer #{@short_lived_token}"
       post :upgrade_token
       response.code.should eq("200")
 

@@ -44,10 +44,10 @@ class AuthToken
       claim['exp'] = exp
       AuthToken.new claim
     rescue JSON::JWT::InvalidFormat => e
-      Rails.logger.warn "[auth] invalid token format for token [#{token}]"
+      Rails.logger.warn "[auth] invalid token format for token [#{token_string}]"
       raise e
     rescue JSON::JWS::VerificationFailed => e
-      Rails.logger.warn "[auth] token verification failed for token [#{token}]"
+      Rails.logger.warn "[auth] token verification failed for token [#{token_string}]"
       raise e
     end
   end
@@ -61,10 +61,10 @@ class AuthToken
       claim.delete('exp')
       AuthToken.new claim
     rescue JSON::JWT::InvalidFormat => e
-      Rails.logger.warn "[auth] invalid token format for token [#{token}]"
+      Rails.logger.warn "[auth] invalid token format for token [#{token_string}]"
       raise e
     rescue JSON::JWS::VerificationFailed => e
-      Rails.logger.warn "[auth] token verification failed for token [#{token}]"
+      Rails.logger.warn "[auth] token verification failed for token [#{token_string}]"
       raise e
     end
   end
