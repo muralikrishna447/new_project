@@ -371,6 +371,21 @@ describe Api::V0::AuthController do
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
 
+    it 'handles chefsteps redirect' do
+      redirect_base = Rails.application.config.shared_config[:chefsteps_endpoint]
+      token = request.env['HTTP_AUTHORIZATION']
+      path = "https://#{redirect_base}/some-random-path"
+      get :external_redirect, :path => path
+      response.code.should == '200'
+      redirect_url = JSON.parse(response.body)['redirect']
+      redirect_url.should start_with("https://#{redirect_base}/sso?token=")
+      uri = URI.parse(redirect_url)
+
+      query_params = CGI.parse(uri.query)
+      short_lived_token = query_params['token'][0]
+      short_lived_token.should_not eq(token)
+    end
+
     it 'handles zendesk redirect from mapped domain but still sends JWT to main domain' do
       get :external_redirect, :path => "https://#{ENV['ZENDESK_MAPPED_DOMAIN']}"
       response.code.should == '200'
@@ -400,5 +415,35 @@ describe Api::V0::AuthController do
       address_id = token['a']
       ActorAddress.where(address_id: address_id).first.client_metadata.should == 'amazon'
     end
+  end
+
+  context 'POST /upgrade_token' do
+    before :each do
+      @short_lived_token = AuthToken.provide_short_lived(@aa.current_token.to_jwt).to_jwt
+    end
+
+    it 'upgrades a token' do
+      controller.request.env['HTTP_AUTHORIZATION'] = "Bearer #{@short_lived_token}"
+      post :upgrade_token
+      response.code.should eq("200")
+
+      upgraded_token = JSON.parse(response.body)['token']
+      upgraded_token.should_not eq(@short_lived_token)
+
+      token = AuthToken.from_string upgraded_token
+      token['exp'].should be_nil
+      token['jti'].should be_nil
+    end
+
+    it 'can only upgrade a token once' do
+      controller.request.env['HTTP_AUTHORIZATION'] = "Bearer #{@short_lived_token}"
+      post :upgrade_token
+      response.code.should eq("200")
+
+      controller.request.env['HTTP_AUTHORIZATION'] = "Bearer #{@short_lived_token}"
+      post :upgrade_token
+      response.code.should eq("403")
+    end
+
   end
 end
