@@ -232,7 +232,7 @@ Delve::Application.routes.draw do
       match '/upgrade_token', to: 'auth#upgrade_token', via: [:post, :options]
       match '/authenticate_facebook', to: 'auth#authenticate_facebook', via: [:post, :options]
       match '/logout', to: 'auth#logout', via: [:post, :options]
-      match '/validate', to: 'auth#validate', via: [:get, :options]
+      match '/validate', to: 'auth#validate', via: [:get, :post, :options]
       resources :activities, only: [:index, :show] do
         get :likes, on: :member
       end
