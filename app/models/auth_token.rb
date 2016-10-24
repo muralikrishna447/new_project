@@ -40,7 +40,10 @@ class AuthToken
       key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
       claim = JSON::JWT.decode(token_string, key.to_s)
       exp = (Time.now + 10.minutes).to_i
-      claim['iat'] = Time.now.to_i # Keep everything the except use a new issued_at because its a different token
+      iat = Time.now.to_i # Keep everything the except use a new issued_at because its a different token
+      jti = "#{iat}/#{SecureRandom.hex(18)}"
+      claim['jti'] = jti # One-time use token
+      claim['iat'] = iat
       claim['exp'] = exp
       AuthToken.new claim
     rescue JSON::JWT::InvalidFormat => e
@@ -59,6 +62,7 @@ class AuthToken
       exp = (Time.now + 10.minutes).to_i
       claim['iat'] = Time.now.to_i # Keep everything the except use a new issued_at because its a different token
       claim.delete('exp')
+      claim.delete('jti')
       AuthToken.new claim
     rescue JSON::JWT::InvalidFormat => e
       Rails.logger.warn "[auth] invalid token format for token [#{token_string}]"

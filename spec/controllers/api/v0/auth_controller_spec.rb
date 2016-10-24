@@ -432,6 +432,7 @@ describe Api::V0::AuthController do
 
       token = AuthToken.from_string upgraded_token
       token['exp'].should be_nil
+      token['jti'].should be_nil
     end
 
     it 'can only upgrade a token once' do

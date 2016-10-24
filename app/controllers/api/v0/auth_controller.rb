@@ -300,10 +300,19 @@ module Api
 
       def upgrade_token
         ensure_authorized(true)
-        token = request.headers['HTTP_AUTHORIZATION'].split(' ')[1]
-        upgraded_token = AuthToken.upgrade_token(token)
+        token_string = request.headers['HTTP_AUTHORIZATION'].split(' ')[1]
+        token = AuthToken.from_string(token_string)
+        logger.info "Trying to upgrade token: #{token.claim.inspect}"
+        jti = token.claim["jti"]
+        cache_key = "jwt-#{jti}"
+        was_used = Rails.cache.fetch(cache_key)
+        if was_used
+          return render_api_response 403, {message: 'Token has been used'}
+        end
 
+        upgraded_token = AuthToken.upgrade_token(token_string)
         if upgraded_token
+          Rails.cache.write cache_key, 1, expires_in: 1.days
           return render json: {status: 200, message: 'Success.', token: upgraded_token.to_jwt}, status: 200
         else
           return render_unauthorized
