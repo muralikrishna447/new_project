@@ -59,7 +59,6 @@ class AuthToken
     begin
       key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
       claim = JSON::JWT.decode(token_string, key.to_s)
-      exp = (Time.now + 10.minutes).to_i
       claim['iat'] = Time.now.to_i # Keep everything the except use a new issued_at because its a different token
       claim.delete('exp')
       claim.delete('jti')
