@@ -434,5 +434,15 @@ describe Api::V0::AuthController do
       token['exp'].should be_nil
     end
 
+    it 'can only upgrade a token once' do
+      controller.request.env['HTTP_AUTHORIZATION'] = "Bearer #{@short_lived_token}"
+      post :upgrade_token
+      response.code.should eq("200")
+
+      controller.request.env['HTTP_AUTHORIZATION'] = "Bearer #{@short_lived_token}"
+      post :upgrade_token
+      response.code.should eq("403")
+    end
+
   end
 end
