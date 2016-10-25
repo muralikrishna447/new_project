@@ -5,7 +5,7 @@ en:
       water_heated:
         message: "Your water has heated! Let’s cook."
       circulator_error_hardware_failure:
-        message: "Whoops! Something has gone seriously wrong, and we were forced to stop Joule. Please contact us for help."
+        message: "Unfortunately, we’ve detected a critical issue with your Joule, and it can no longer be used. Please contact us, and we’ll make this right."
       circulator_error_button_pressed:
         message: "You stopped your cook!"
         content_available: 1
