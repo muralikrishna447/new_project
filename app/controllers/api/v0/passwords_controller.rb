@@ -17,11 +17,22 @@ module Api
       def update_from_email
         Librato.increment("api.password_update_from_email_requests")
         @user = User.find_by_email @user_email
+        logger.info "Attempting to update password for email: #{@user_email}"
+
         @user.password = params[:password]
-        if @user.save!
+
+        was_saved = false
+        begin
+          @user.save!
+          was_saved = true
+        rescue ActiveRecord::RecordInvalid => e
+          logger.error "Could not save user password: #{e}"
+        end
+
+        if was_saved
           render json: { status: 200, message: 'Success'}, status: 200
         else
-          render_unauthorized
+          render json: { status: 400, message: 'Could not save password'}, status: 400
         end
       end
 
