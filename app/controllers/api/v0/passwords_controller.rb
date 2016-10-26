@@ -7,6 +7,7 @@ module Api
       def update
         Librato.increment("api.password_update_requests")
         @user = User.find params[:id]
+        logger.info "Attempting to update password: #{@user.email}"
         if @user.valid_password?(params[:current_password]) && @user.update_attribute(:password, params[:new_password])
           render json: { status: 200, message: 'Success'}, status: 200
         else
@@ -17,7 +18,7 @@ module Api
       def update_from_email
         Librato.increment("api.password_update_from_email_requests")
         @user = User.find_by_email @user_email
-        logger.info "Attempting to update password for email: #{@user_email}"
+        logger.info "Attempting to update password from email: #{@user_email}"
 
         @user.password = params[:password]
 
@@ -40,6 +41,7 @@ module Api
         Librato.increment("api.password_send_reset_email_requests")
         @user = User.find_by_email params[:email]
         if @user
+          logger.info "Sending password reset email for: #{@user.email}"
           aa = ActorAddress.create_for_user @user, client_metadata: "password_reset"
 
           exp = ((Time.now + 1.day).to_f * 1000).to_i
