@@ -22,17 +22,11 @@ module Api
 
         @user.password = params[:password]
 
-        was_saved = false
         begin
           @user.save!
-          was_saved = true
+          render json: { status: 200, message: 'Success'}, status: 200
         rescue ActiveRecord::RecordInvalid => e
           logger.error "Could not save user password: #{e}"
-        end
-
-        if was_saved
-          render json: { status: 200, message: 'Success'}, status: 200
-        else
           render json: { status: 400, message: 'Could not save password'}, status: 400
         end
       end
