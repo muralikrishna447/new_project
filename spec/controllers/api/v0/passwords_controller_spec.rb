@@ -49,6 +49,11 @@ describe Api::V0::PasswordsController do
       response.should be_success
     end
 
+    it 'should not update if password is too short' do
+      post :update_from_email, {id: @user.id, password: 'a', token: @password_token}
+      response.code.should eq("400")
+    end
+
     it 'should not update a user password if valid token has expired' do
       post :update_from_email, {id: @user.id, password: 'SomeNewPassword', token: @expired_password_token}
       response.should_not be_success
