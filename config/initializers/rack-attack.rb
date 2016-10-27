@@ -22,7 +22,7 @@ class Rack::Attack
 
   ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
     unless isWhitelisted(req)
-      Rails.logger.info("rack.attack throttled request #{request_id}")
+      Rails.logger.info("rack.attack throttled request path: #{req.path} ip: #{req.ip}")
       Librato.increment "api.throttled_requests", sporadic: true
     end
   end
