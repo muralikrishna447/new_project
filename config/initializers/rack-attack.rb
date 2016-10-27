@@ -12,7 +12,7 @@ class Rack::Attack
 
   # Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
   def self.isWhitelisted(req)
-    request_auth = req.env["Authorization"]
+    request_auth = req.env["HTTP_AUTHORIZATION"]
     is_authorized_external_service = ExternalServiceTokenChecker.is_authorized(request_auth)
     madore_ip = '66.171.190.210'
     market_ip = '199.231.242.34'
