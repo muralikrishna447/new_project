@@ -42,10 +42,10 @@ class Rack::Attack
   # counted by rack-attack and this throttle may be activated too
   # quickly. If so, enable the condition to exclude them from tracking.
 
-  # Throttle all requests by IP (60rpm)
+  # Throttle all requests by IP (180rpm)
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-  throttle('req/ip', :limit => 300, :period => 5.minutes) do |req|
+  throttle('req/ip', :limit => 900, :period => 5.minutes) do |req|
     req.ip unless req.path.start_with?('/assets')
   end
 
