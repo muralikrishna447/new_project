@@ -16,10 +16,12 @@ module Api
         # Get product by sku
         def show
           sku = params[:id]
+          product_sku = get_product_sku(sku)
           products = get_all_products(@user)
-          @product = products.select{|p| p[:sku] == sku}.first
+          @product = products.select{|p| p[:product_sku] == product_sku}.first
           if @product
-            render(json: @product)
+            @variant = @product[:variants].select{|variant| variant[:sku] == params[:id]}[0]
+            render(json: @variant)
           else
             render(json: {message: 'No product found for sku.'})
           end
@@ -44,7 +46,7 @@ module Api
 
           # Cache for premium users: shopping/products/premium=true
           # Cache for non-premium users: shopping/products/premium=false
-          @products = CacheExtensions::fetch_with_rescue("shopping/products/premium=#{premium_user}/used_circulator_discount=#{used_circulator_discount}", 1.minute, 1.minute) do
+          @products = CacheExtensions::fetch_with_rescue("shopping/products/premium=#{premium_user}/used_circulator_discount=#{used_circulator_discount}", 1.second, 1.second) do
             page = 1
             products = []
             count = ShopifyAPI::Product.count
@@ -62,14 +64,14 @@ module Api
               {
                 id: product.id,
                 title: product.title,
-                sku: first_variant.sku,
+                sku: get_product_sku(first_variant.sku),
                 compare_at_price: get_compare_at_price(product),
                 price: price,
                 premium_discount: discount,
                 variant_id: first_variant.id,
-                inventory_quantity: first_variant.inventory_quantity
+                inventory_quantity: first_variant.inventory_quantity,
+                variants: get_variants(product)
               }
-
             end
             results
           end
@@ -117,6 +119,19 @@ module Api
 
         def get_first_variant(product)
           product.variants.first
+        end
+
+        # Product sku is defined as the first segment of a sku
+        # Example: a sku of cs10001-blk would have a product sku of cs10001
+        def get_product_sku(sku)
+          sku.split('-')[0]
+        end
+
+        def get_variants(product)
+          product.variants.map do |variant|
+            variant.attributes
+
+          end
         end
       end
     end
