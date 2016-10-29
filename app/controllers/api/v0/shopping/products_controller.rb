@@ -32,7 +32,7 @@ module Api
         # This flattens the shopify data to make it easier to work with
         # If we later decide to use variants each having unique skus, this will need to be updated to handle that.
         def get_all_products
-          @products = CacheExtensions::fetch_with_rescue("shopping/products", 1.second, 1.second) do
+          @products = CacheExtensions::fetch_with_rescue("shopping/products", 1.minute, 1.minute) do
             page = 1
             products = []
             count = ShopifyAPI::Product.count
