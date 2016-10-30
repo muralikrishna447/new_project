@@ -1,18 +1,18 @@
 module Fulfillment
   module CSVOrderExporter
+    PRIORITY_TAG = 'shipping-priority'
+
+    FILTERED_TAGS = %w(
+      shipping-started
+      shipping-hold
+      shipping-validation-error
+    )
+
     def self.included(base)
       base.extend(ClassMethods)
     end
 
     module ClassMethods
-      PRIORITY_TAG = 'shipping-priority'
-
-      FILTERED_TAGS = %w(
-        shipping-started
-        shipping-hold
-        shipping-validation-error
-      )
-
       def type
         raise 'type not implemented'
       end
@@ -33,6 +33,8 @@ module Fulfillment
         raise 'skus param is required' unless params[:skus]
         raise 'skus param must not be empty' if params[:skus].empty?
         raise 'quantity param is required' unless params[:quantity]
+        raise 'quantity param must be greater than zero' unless params[:quantity] > 0
+        raise 'storage param must be specified' unless params[:storage]
 
         # This query returns all open orders, including those that have been
         # partially fulfilled. Orders that have been completely fulfilled
@@ -43,9 +45,7 @@ module Fulfillment
         sort!(fulfillables)
         to_fulfill = truncate(fulfillables, params[:quantity])
 
-        unless params[:dry_run]
-          to_fulfill.each { |fulfillable| open_fulfillment(fulfillable) }
-        end
+        open_fulfillments(to_fulfill) unless params[:dry_run]
 
         storage = Fulfillment::CSVStorageProvider.provider(params[:storage])
         storage.save(generate_output(to_fulfill), type: type)
@@ -79,9 +79,9 @@ module Fulfillment
 
       def sort!(fulfillables)
         priority_order_ids = {}
-        fulfillables.each do |fulfillable|
-          tags = Shopify::Utils.order_tags(fulfillable.order)
-          priority_order_ids[fulfillable.order.id] = true if tags.include?(PRIORITY_TAG)
+        fulfillables.each_index do |i|
+          tags = Shopify::Utils.order_tags(fulfillables[i].order)
+          priority_order_ids[fulfillables[i].order.id] = i if tags.include?(PRIORITY_TAG)
         end
 
         fulfillables.sort! do |x, y|
@@ -93,7 +93,6 @@ module Fulfillment
           y_has_priority = !priority_order_ids[y.order.id].nil?
           if x_has_priority && y_has_priority
             # When comparing two priority orders, the one with the lower index wins
-            # FIXME this seems broken
             val = priority_order_ids[x.order.id] <=> priority_order_ids[y.order.id]
           elsif x_has_priority && !y_has_priority
             val = -1
@@ -127,16 +126,18 @@ module Fulfillment
 
       # We open a fulfillment for each line item separately because
       # we are currently shipping line items separately.
-      def open_fulfillment(fulfillable)
-        fulfillable.line_items.each do |line_item|
-          open_fulfillment_for_line_item(fulfillable.order, line_item)
+      def open_fulfillments(fulfillables)
+        fulfillables.each do |fulfillable|
+          fulfillable.line_items.each do |line_item|
+            open_fulfillment_for_line_item(fulfillable.order, line_item)
+          end
         end
       end
 
       private
 
       def open_fulfillment_for_line_item(order, line_item)
-        # TODO add retries, also is this idempotent?
+        # TODO add retries
         fulfillment = ShopifyAPI::Fulfillment.new
         fulfillment.prefix_options[:order_id] = order.id
         fulfillment.attributes[:line_items] = [{ id: line_item.id }]

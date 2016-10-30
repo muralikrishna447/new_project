@@ -8,5 +8,9 @@ module Fulfillment
       @order = params[:order]
       @line_items = params[:line_items]
     end
+
+    def ==(other)
+      order == other.order && line_items == other.line_items
+    end
   end
 end
