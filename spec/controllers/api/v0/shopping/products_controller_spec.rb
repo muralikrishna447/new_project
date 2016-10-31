@@ -60,7 +60,6 @@ describe Api::V0::Shopping::ProductsController do
         product = ShopifyAPI::Product.find(789)
         variants = @controller.instance_eval { get_variants(product) }
         expect(variants.length).to eq(3)
-        puts "HERE VARIANTS: #{variants.inspect}"
       end
     end
 
