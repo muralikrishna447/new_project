@@ -2,6 +2,8 @@
 en:
   circulator:
     push:
+      guided_water_heated:
+        message: "Your water has heated! Start the timer and let’s cook."
       water_heated:
         message: "Your water has heated! Let’s cook."
       circulator_error_hardware_failure:
