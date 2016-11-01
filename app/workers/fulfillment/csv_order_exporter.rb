@@ -48,7 +48,7 @@ module Fulfillment
         open_fulfillments(to_fulfill) unless params[:dry_run]
 
         storage = Fulfillment::CSVStorageProvider.provider(params[:storage])
-        storage.save(generate_output(to_fulfill), type: type)
+        storage.save(generate_output(to_fulfill), params.merge(type: type))
       end
 
       def fulfillables(orders, skus)

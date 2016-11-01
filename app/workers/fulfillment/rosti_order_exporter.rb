@@ -6,13 +6,24 @@ module Fulfillment
 
     @queue = :RostiOrderExporter
 
+    def self.configure(params)
+      raise 's3_bucket is a required param' unless params[:s3_bucket]
+      raise 's3_region is a required param' unless params[:s3_region]
+      @@s3_bucket = params[:s3_bucket]
+      @@s3_region = params[:s3_region]
+    end
+
     def self.type
-      'ipd-export-test'
+      'orders'
     end
 
     def self.perform(params)
       job_params = params.merge(skus: ['cs10001'])
       job_params[:storage] ||= 's3'
+      if job_params[:storage] == 's3'
+        job_params[:storage_s3_bucket] = @@s3_bucket
+        job_params[:storage_s3_region] = @@s3_region
+      end
       inner_perform(job_params)
     end
 

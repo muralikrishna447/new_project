@@ -22,8 +22,13 @@ module Fulfillment
     include Fulfillment::CSVStorageProvider
 
     def save(output, params)
-      s3 = Aws::S3::Resource.new(region: 'us-east-1')
-      obj = s3.bucket('chefsteps-jeremy').object("#{params[:type]}/orders-#{Time.now.utc.iso8601}.csv")
+      raise 'storage_s3_bucket is a required param' unless params[:storage_s3_bucket]
+      raise 'storage_s3_region is a required param' unless params[:storage_s3_region]
+      s3 = Aws::S3::Resource.new(region: params[:storage_s3_region])
+      obj =
+        s3
+        .bucket(params[:storage_s3_bucket])
+        .object("#{params[:type]}/#{params[:type]}-#{Time.now.utc.iso8601}.csv")
       obj.put(body: output)
     end
   end
