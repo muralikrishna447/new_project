@@ -99,6 +99,9 @@ Spork.prefork do
     Capybara::Poltergeist::Driver.new(app, {js_errors: false})
     # Set debug: true to debug poltergeist
   end
+  Capybara.register_driver :rack_test do |app|
+    Capybara::RackTest::Driver.new(app, headers: { 'HTTP_USER_AGENT' => 'Capybara', 'HTTP_AUTHORIZATION' => '' })
+  end
   Capybara.javascript_driver = :poltergeist
   Capybara.default_wait_time = 5
 

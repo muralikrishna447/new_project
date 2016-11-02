@@ -12,3 +12,28 @@ feature 'activities', :js => true, pending: true do
   end
 
 end
+
+
+describe "Activities" do
+  before :each do
+    # use the in-app rack driver, don't care about Javascript
+    Capybara.current_driver = :rack_test
+    @activity_published = Fabricate :activity, title: 'Activity Published', published: true, id: 1
+    @activity_published.steps << Fabricate(:step, activity_id: @activity_published.id, title: 'hello', youtube_id: 'REk30BRVtgE')
+  end
+
+  it "can anonymously list all activities" do
+    visit('/api/v0/activities')
+    activities = JSON.parse page.html
+    puts activities
+    expect(activities.length).to eq 1
+  end
+
+  it "can anonymously fetch a published activity" do
+    visit('/api/v0/activities/activity-published')
+    activity = JSON.parse page.html
+    expect(activity['title']).to eq 'Activity Published'
+    puts activity
+  end
+
+end
