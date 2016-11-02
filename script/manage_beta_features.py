@@ -13,7 +13,7 @@ def add_users_to_groups(table, args):
             user_id = int(row[0])
             row[0] = user_id
             user_groups.append(row)
-        print(row)
+            print(row)
 
     answer = input('\nAdd the above groups [yes/no]? ')
     if answer != 'yes':
