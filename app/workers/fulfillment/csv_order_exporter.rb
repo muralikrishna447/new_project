@@ -1,7 +1,12 @@
 module Fulfillment
+  # Mixin for implementing a CSV export of Shopify orders for fulfillment.
+  # This is meant to be used in offline batch jobs as it has to crawl through
+  # all open Shopify orders.
   module CSVOrderExporter
+    # Orders with this tag are bumped to the top of the output.
     PRIORITY_TAG = 'shipping-priority'
 
+    # Orders with these tags are not included in the output.
     FILTERED_TAGS = %w(
       shipping-started
       shipping-hold
@@ -13,18 +18,28 @@ module Fulfillment
     end
 
     module ClassMethods
+      # Returns a string representing a type for your export.
+      # This could be used for versioning export schemas or
+      # in your file naming conventions.
       def type
         raise 'type not implemented'
       end
 
+      # Implements the logic of your export. You should call
+      # inner_perform from within this method when using the mixin.
       def perform
         raise 'perform not implemented'
       end
 
+      # Returns an array of columns that will be used as the header for the
+      # CSV export.
       def schema
         raise 'schema not implemented'
       end
 
+      # Transforms the fulfillable an returns an array of arrays
+      # (rows and columns) that will be included in the export CSV
+      # for the fulfillable.
       def transform(_fulfillable)
         raise 'transform not implemented'
       end
