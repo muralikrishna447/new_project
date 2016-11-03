@@ -25,6 +25,17 @@ module Fulfillment
       # Address2 line is optional and max length is 35 chars
       return false if exceeds_max_length?(order.shipping_address.address2)
 
+      # City is required
+      return false if nil_or_empty?(order.shipping_address.city)
+
+      # State code is required and must be two characters in length
+      return false if nil_or_empty?(order.shipping_address.province_code)
+      return false if order.shipping_address.province_code.length != 2
+
+      # Country code is required and must be two characters in length
+      return false if nil_or_empty?(order.shipping_address.country_code)
+      return false if order.shipping_address.country_code.length != 2
+
       # No PO boxes
       return false if order.shipping_address.address1 =~ POBOX_REGEX
       return false if order.shipping_address.address2 =~ POBOX_REGEX
