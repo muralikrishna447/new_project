@@ -2,6 +2,7 @@ require 'aws-sdk'
 
 module Fulfillment
   module CSVStorageProvider
+    # Factory method to obtain a storage provider instance
     def self.provider(name)
       case name
       when 's3'
@@ -18,6 +19,7 @@ module Fulfillment
     end
   end
 
+  # Stores CSV files in S3
   class S3StorageProvider
     include Fulfillment::CSVStorageProvider
 
@@ -36,6 +38,7 @@ module Fulfillment
     end
   end
 
+  # Stores CSV files to local filesystem
   class FileStorageProvider
     include Fulfillment::CSVStorageProvider
 
