@@ -19,7 +19,7 @@ module Fulfillment
 
     def self.perform(params)
       job_params = params.merge(
-        skus: ['cs10001'],
+        skus: [Shopify::Order::JOULE_SKU],
         storage_filename: "#{type}-#{Time.now.utc.iso8601}.csv"
       )
       job_params[:storage] ||= 's3'
@@ -56,6 +56,22 @@ module Fulfillment
       ]
     end
 
+    RETURN_NAME = 'Shipping Department'
+
+    RETURN_COMPANY = 'ChefSteps, Inc.'
+
+    RETURN_ADDRESS_1 = '1501 Western Ave STE 600'
+
+    RETURN_ADDRESS_2 = ''
+
+    RETURN_CITY = 'Seattle'
+
+    RETURN_STATE = 'WA',
+
+    RETURN_ZIP = '98101'
+
+    RETURN_COUNTRY = 'US'
+
     def self.transform(fulfillable)
       line_items = []
       fulfillable.line_items.each do |line_item|
@@ -74,14 +90,14 @@ module Fulfillment
             fulfillable.order.shipping_address.phone,
             line_item.sku,
             line_item.quantity,
-            'Shipping Department',        # Return address contact name
-            'ChefSteps, Inc.',            # Return address company
-            '1501 Western Ave STE 600',   # Return address line 1
-            '',                           # Return address line 2
-            'Seattle',                    # Return address city
-            'WA',                         # Return address state
-            '98101',                      # Return address ZIP
-            'US'                          # Return address country
+            RETURN_NAME,        # Return address contact name
+            RETURN_COMPANY,     # Return address company
+            RETURN_ADDRESS_1,   # Return address line 1
+            RETURN_ADDRESS_2,   # Return address line 2
+            RETURN_CITY,        # Return address city
+            RETURN_STATE,       # Return address state
+            RETURN_ZIP,         # Return address ZIP
+            RETURN_COUNTRY      # Return address country
           ]
       end
       line_items
