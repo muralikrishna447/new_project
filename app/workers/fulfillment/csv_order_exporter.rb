@@ -60,7 +60,7 @@ module Fulfillment
         sort!(fulfillables)
         to_fulfill = truncate(fulfillables, params[:quantity])
 
-        open_fulfillments(to_fulfill) unless params[:dry_run]
+        open_fulfillments(to_fulfill) if params[:open_fulfillment]
 
         storage = Fulfillment::CSVStorageProvider.provider(params[:storage])
         storage.save(generate_output(to_fulfill), params.merge(type: type))
