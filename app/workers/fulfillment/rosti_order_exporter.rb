@@ -18,7 +18,10 @@ module Fulfillment
     end
 
     def self.perform(params)
-      job_params = params.merge(skus: ['cs10001'])
+      job_params = params.merge(
+        skus: ['cs10001'],
+        storage_filename: "#{type}-#{Time.now.utc.iso8601}.csv"
+      )
       job_params[:storage] ||= 's3'
       if job_params[:storage] == 's3'
         job_params[:storage_s3_bucket] = @@s3_bucket
