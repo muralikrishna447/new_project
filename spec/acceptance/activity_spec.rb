@@ -27,7 +27,6 @@ describe "Activities" do
   it "can anonymously list all activities" do
     visit('/api/v0/activities')
     activities = JSON.parse page.html
-    puts activities
     expect(activities.length).to eq 1
   end
 
@@ -35,7 +34,6 @@ describe "Activities" do
     visit('/api/v0/activities/activity-published')
     activity = JSON.parse page.html
     expect(activity['title']).to eq 'Activity Published'
-    puts activity
   end
 
 end
