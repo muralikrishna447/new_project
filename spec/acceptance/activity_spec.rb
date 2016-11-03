@@ -13,11 +13,13 @@ feature 'activities', :js => true, pending: true do
 
 end
 
+# NOTE: these tests were added in order to test the full Rails app,
+# including middleware
 
 describe "Activities" do
   before :each do
     # use the in-app rack driver, don't care about Javascript
-    Capybara.current_driver = :rack_test
+    Capybara.current_driver = :anonymous_rack_test
     @activity_published = Fabricate :activity, title: 'Activity Published', published: true, id: 1
     @activity_published.steps << Fabricate(:step, activity_id: @activity_published.id, title: 'hello', youtube_id: 'REk30BRVtgE')
   end
