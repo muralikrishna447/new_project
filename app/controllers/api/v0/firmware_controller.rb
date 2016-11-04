@@ -5,7 +5,7 @@ module Api
     class FirmwareController < BaseController
       before_filter :ensure_authorized
 
-      LINK_EXPIRE_SECS = 60 * 20
+      LINK_EXPIRE_SECS = 60 * 60
 
       # This maps the FileType enum, to the params returned by
       # identifyCirculator
