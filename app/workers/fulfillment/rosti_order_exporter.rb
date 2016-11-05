@@ -17,7 +17,7 @@ module Fulfillment
       'orders'
     end
 
-    def self.perform(params)
+    def self.job_params(params)
       job_params = params.merge(
         skus: [Shopify::Order::JOULE_SKU],
         storage_filename: "#{type}-#{Time.now.utc.iso8601}.csv"
@@ -27,7 +27,7 @@ module Fulfillment
         job_params[:storage_s3_bucket] = @@s3_bucket
         job_params[:storage_s3_region] = @@s3_region
       end
-      inner_perform(job_params)
+      job_params
     end
 
     def self.schema

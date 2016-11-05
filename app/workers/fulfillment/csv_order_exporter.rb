@@ -25,10 +25,11 @@ module Fulfillment
         raise 'type not implemented'
       end
 
-      # Implements the logic of your export. You should call
-      # inner_perform from within this method when using the mixin.
-      def perform
-        raise 'perform not implemented'
+      # Returns parameters for running the export. By default this
+      # just returns the same params that are passed in, but implementations
+      # can override this method to provide custom params to the export.
+      def job_params(params)
+        params
       end
 
       # Returns an array of columns that will be used as the header for the
@@ -44,26 +45,27 @@ module Fulfillment
         raise 'transform not implemented'
       end
 
-      def inner_perform(params)
-        raise 'skus param is required' unless params[:skus]
-        raise 'skus param must not be empty' if params[:skus].empty?
-        raise 'quantity param is required' unless params[:quantity]
-        raise 'quantity param must be greater than zero' unless params[:quantity] > 0
-        raise 'storage param must be specified' unless params[:storage]
+      def perform(params)
+        job_params = job_params(params)
+        raise 'skus param is required' unless job_params[:skus]
+        raise 'skus param must not be empty' if job_params[:skus].empty?
+        raise 'quantity param is required' unless job_params[:quantity]
+        raise 'quantity param must be greater than zero' unless job_params[:quantity] > 0
+        raise 'storage param must be specified' unless job_params[:storage]
 
         # This query returns all open orders, including those that have been
         # partially fulfilled. Orders that have been completely fulfilled
         # or cancelled are excluded.
         orders = Shopify::Utils.search_orders(status: 'open')
-        fulfillables = fulfillables(orders, params[:skus])
+        fulfillables = fulfillables(orders, job_params[:skus])
         fulfillables.select! { |fulfillable| include_order?(fulfillable.order) }
         sort!(fulfillables)
-        to_fulfill = truncate(fulfillables, params[:quantity])
+        to_fulfill = truncate(fulfillables, job_params[:quantity])
 
-        open_fulfillments(to_fulfill) if params[:open_fulfillment]
+        open_fulfillments(to_fulfill) if job_params[:open_fulfillment]
 
-        storage = Fulfillment::CSVStorageProvider.provider(params[:storage])
-        storage.save(generate_output(to_fulfill), params.merge(type: type))
+        storage = Fulfillment::CSVStorageProvider.provider(job_params[:storage])
+        storage.save(generate_output(to_fulfill), job_params.merge(type: type))
       end
 
       def fulfillables(orders, skus)

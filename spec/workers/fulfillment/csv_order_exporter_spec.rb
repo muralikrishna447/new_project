@@ -382,10 +382,10 @@ describe Fulfillment::CSVOrderExporter do
     end
   end
 
-  describe 'inner_perform' do
+  describe 'perform' do
     shared_examples 'invalid params' do
       it 'raises exception' do
-        expect { exporter.inner_perform(params) }.to raise_error
+        expect { exporter.perform(params) }.to raise_error
       end
     end
 
@@ -437,7 +437,7 @@ describe Fulfillment::CSVOrderExporter do
       let(:csv_header) { 'my header' }
       let(:csv_body) { 'my order line items' }
 
-      shared_examples 'inner_perform' do
+      shared_examples 'perform' do
         it 'saves fulfillables' do
           Shopify::Utils.should_receive(:search_orders).with(status: 'open').and_return([order])
           Fulfillment::FedexShippingAddressValidator.should_receive(:valid?).with(order).and_return(true)
@@ -456,18 +456,18 @@ describe Fulfillment::CSVOrderExporter do
           storage_provider.should_receive(:save).with("\"#{csv_header}\"\n\"#{csv_body}\"\n", params.merge(type: export_type))
           Fulfillment::CSVStorageProvider.should_receive(:provider).with(storage_provider_name).and_return(storage_provider)
 
-          exporter.inner_perform(params)
+          exporter.perform(params)
         end
       end
 
       context 'open_fulfillment param is false' do
         let(:open_fulfillment) { false }
-        include_examples 'inner_perform'
+        include_examples 'perform'
       end
 
       context 'open_fulfillment param is nil' do
         let(:open_fulfillment) { nil }
-        include_examples 'inner_perform'
+        include_examples 'perform'
       end
 
       context 'open_fulfillment param is true' do
@@ -475,7 +475,7 @@ describe Fulfillment::CSVOrderExporter do
         before :each do
           stub_open_fulfillment(order.id, line_item.id)
         end
-        include_examples 'inner_perform'
+        include_examples 'perform'
       end
     end
   end

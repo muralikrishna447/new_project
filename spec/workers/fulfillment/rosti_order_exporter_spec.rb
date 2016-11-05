@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Fulfillment::RostiOrderExporter do
-  describe 'perform' do
+  describe 'job_params' do
     before do
       Timecop.freeze(Time.now)
     end
@@ -13,13 +13,13 @@ describe Fulfillment::RostiOrderExporter do
       let(:s3_bucket) { 'my s3 bucket' }
       let(:s3_region) { 'my s3 region' }
 
-      it 'calls inner_perform' do
+      it 'returns s3 storage params' do
         Fulfillment::RostiOrderExporter.configure(
           s3_bucket: s3_bucket,
           s3_region: s3_region
         )
         params = { storage: 's3' }
-        Fulfillment::RostiOrderExporter.should_receive(:inner_perform).with(
+        expect(Fulfillment::RostiOrderExporter.job_params(params)).to eq(
           params.merge(
             storage: 's3',
             storage_s3_bucket: s3_bucket,
@@ -28,20 +28,18 @@ describe Fulfillment::RostiOrderExporter do
             skus: [Shopify::Order::JOULE_SKU]
           )
         )
-        Fulfillment::RostiOrderExporter.perform(params)
       end
     end
 
     context 'storage is file' do
-      it 'calls inner_perform' do
+      it 'returns file storage params' do
         params = { storage: 'file' }
-        Fulfillment::RostiOrderExporter.should_receive(:inner_perform).with(
+        expect(Fulfillment::RostiOrderExporter.job_params(params)).to eq(
           params.merge(
             storage_filename: "#{Fulfillment::RostiOrderExporter.type}-#{Time.now.utc.iso8601}.csv",
             skus: [Shopify::Order::JOULE_SKU]
           )
         )
-        Fulfillment::RostiOrderExporter.perform(params)
       end
     end
   end
