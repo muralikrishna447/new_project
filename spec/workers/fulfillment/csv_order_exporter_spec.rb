@@ -304,8 +304,18 @@ describe Fulfillment::CSVOrderExporter do
       line_item.quantity = line_item_2_quantity
       line_item
     end
-    let(:fulfillable_1) { Fulfillment::Fulfillable.new(line_items: [line_item_1]) }
-    let(:fulfillable_2) { Fulfillment::Fulfillable.new(line_items: [line_item_2]) }
+    let(:fulfillable_1) do
+      Fulfillment::Fulfillable.new(
+        order: ShopifyAPI::Order.new(id: 11),
+        line_items: [line_item_1]
+      )
+    end
+    let(:fulfillable_2) do
+      Fulfillment::Fulfillable.new(
+        order: ShopifyAPI::Order.new(id: 22),
+        line_items: [line_item_2]
+      )
+    end
     let(:fulfillables) { [fulfillable_1, fulfillable_2] }
 
     context 'quantity requested is greater than total line item quantity' do

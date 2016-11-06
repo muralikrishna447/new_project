@@ -75,9 +75,11 @@ module Fulfillment
     def self.transform(fulfillable)
       line_items = []
       fulfillable.line_items.each do |line_item|
+        rosti_order_number = "#{fulfillable.order.name}-#{line_item.id}"
+        Rails.logger.info("Rosti order export adding order with id #{fulfillable.order.id} and line item with id #{line_item.id} and quantity #{line_item.quantity} as Rosti order number #{rosti_order_number}")
         line_items <<
           [
-            "#{fulfillable.order.name}-#{line_item.id}",
+            rosti_order_number,
             fulfillable.order.processed_at,
             fulfillable.order.shipping_address.company,
             fulfillable.order.shipping_address.name,
