@@ -1,4 +1,5 @@
 require 'shopify_api'
+require 'set'
 
 module Fulfillment
   module RostiShipmentImporter
@@ -6,7 +7,7 @@ module Fulfillment
 
     @queue = :RostiShipmentImporter
 
-    SHIPMENT_ID_COLUMN = 'order_number'
+    ROSTI_ORDER_NUMBER_COLUMN = 'order_number'
 
     SERIAL_NUMBER_COLUMN = 'TRAN'
 
@@ -29,30 +30,50 @@ module Fulfillment
       job_params
     end
 
-    def self.to_shipment(csv_row)
-      validate(csv_row)
+    def self.to_shipments(csv_rows)
+      # With orders that have quantity > 1, Rosti sends back multiple
+      # lines in the shipment import file for each order/line item b/c
+      # they ship each individual unit under a separate tracking number.
+      # So first we iterate through the import file and build an array
+      # of tracking numbers and serial numbers for each order/line item.
+      rosti_order_numbers = Set.new
+      fulfillment_tracking_numbers = {}
+      fulfillment_serial_numbers = {}
+      csv_rows.each do |csv_row|
+        validate(csv_row)
+        rosti_order_number = csv_row[ROSTI_ORDER_NUMBER_COLUMN]
+        rosti_order_numbers.add(rosti_order_number)
+        fulfillment_tracking_numbers[rosti_order_number] ||= []
+        fulfillment_tracking_numbers[rosti_order_number] << csv_row[TRACKING_NUMBER_COLUMN]
+        fulfillment_serial_numbers[rosti_order_number] ||= []
+        fulfillment_serial_numbers[rosti_order_number] << csv_row[SERIAL_NUMBER_COLUMN]
+      end
 
-      shipment_id_parts = csv_row[SHIPMENT_ID_COLUMN].split('-')
-      order_number = shipment_id_parts[0]
-      line_item_id = shipment_id_parts[1]
-      tracking_number = csv_row[TRACKING_NUMBER_COLUMN]
-      serial_number = csv_row[SERIAL_NUMBER_COLUMN]
+      shipments = []
+      rosti_order_numbers.each do |rosti_order_number|
+        order_number_parts = rosti_order_number.split('-')
+        order_number = order_number_parts[0]
+        line_item_id = order_number_parts[1]
+        tracking_numbers = fulfillment_tracking_numbers[rosti_order_number]
+        serial_numbers = fulfillment_serial_numbers[rosti_order_number]
 
-      order = Shopify::Utils.order_by_name(order_number.delete('#'))
-      raise "Order with number #{order_number} not found" unless order
+        order = Shopify::Utils.order_by_name(order_number.delete('#'))
+        raise "Order with number #{order_number} not found" unless order
 
-      Fulfillment::Shipment.new(
-        order: order,
-        fulfillments: fulfillments(order, [line_item_id]),
-        tracking_company: 'FedEx',
-        tracking_numbers: [tracking_number],
-        serial_numbers: [serial_number]
-      )
+        shipments << Fulfillment::Shipment.new(
+          order: order,
+          fulfillments: fulfillments(order, [line_item_id]),
+          tracking_company: 'FedEx',
+          tracking_numbers: tracking_numbers,
+          serial_numbers: serial_numbers
+        )
+      end
+      shipments
     end
 
     def self.validate(row)
-      unless row[SHIPMENT_ID_COLUMN] =~ /^#[0-9]+-[0-9]+$/
-        raise "Order number column is invalid: #{row[SHIPMENT_ID_COLUMN]}"
+      unless row[ROSTI_ORDER_NUMBER_COLUMN] =~ /^#[0-9]+-[0-9]+$/
+        raise "Rosti order number column is invalid: #{row[ROSTI_ORDER_NUMBER_COLUMN]}"
       end
 
       unless row[SERIAL_NUMBER_COLUMN] && !row[SERIAL_NUMBER_COLUMN].empty?

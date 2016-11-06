@@ -46,31 +46,32 @@ describe Fulfillment::RostiShipmentImporter do
   describe 'to_shipment' do
     let(:order_name) { '123' }
     let(:line_item_id) { '456' }
-    let(:order_number) { "##{order_name}-#{line_item_id}" }
-    let(:serial_number) { '9999999' }
-    let(:tracking_number) { '7777777' }
-    let(:csv_row) do
+    let(:rosti_order_number) { "##{order_name}-#{line_item_id}" }
+    let(:serial_number_1) { 'serial_number_1' }
+    let(:tracking_number_1) { 'tracking_number_1' }
+    let(:csv_row_1) do
       {
-        'order_number' => order_number,
-        'TRAN' => serial_number,
-        'CRN' => tracking_number
+        'order_number' => rosti_order_number,
+        'TRAN' => serial_number_1,
+        'CRN' => tracking_number_1
       }
     end
+    let(:csv_rows) { [csv_row_1] }
 
     shared_examples 'exception' do
       it 'raises exception' do
-        expect { Fulfillment::RostiShipmentImporter.to_shipment(csv_row) }.to raise_error
+        expect { Fulfillment::RostiShipmentImporter.to_shipments(csv_rows) }.to raise_error
       end
     end
 
     context 'csv row is not valid' do
       context 'order number column is empty' do
-        let(:order_number) { '' }
+        let(:rosti_order_number) { '' }
         include_examples 'exception'
       end
 
       context 'order number column has invalid format' do
-        let(:order_number) { '123-456' }
+        let(:rosti_order_number) { '123-456' }
         include_examples 'exception'
       end
 
@@ -98,17 +99,50 @@ describe Fulfillment::RostiShipmentImporter do
             ShopifyAPI::Fulfillment.new(id: 22)
           ]
         end
-        it 'returns shipment' do
-          Fulfillment::RostiShipmentImporter.should_receive(:fulfillments).with(order, [line_item_id]).and_return(fulfillments)
-          expect(Fulfillment::RostiShipmentImporter.to_shipment(csv_row)).to eq(
-            Fulfillment::Shipment.new(
-              order: order,
-              fulfillments: fulfillments,
-              tracking_company: 'FedEx',
-              tracking_numbers: [tracking_number],
-              serial_numbers: [serial_number]
+
+        context 'csv has single row for line item' do
+          it 'returns shipment with single tracking number and serial number' do
+            Fulfillment::RostiShipmentImporter.should_receive(:fulfillments).with(order, [line_item_id]).and_return(fulfillments)
+            expect(Fulfillment::RostiShipmentImporter.to_shipments(csv_rows)).to match_array(
+              [
+                Fulfillment::Shipment.new(
+                  order: order,
+                  fulfillments: fulfillments,
+                  tracking_company: 'FedEx',
+                  tracking_numbers: [tracking_number_1],
+                  serial_numbers: [serial_number_1]
+                )
+              ]
             )
-          )
+          end
+        end
+
+        context 'csv has multiple rows for line item' do
+          let(:serial_number_2) { 'serial_number_2' }
+          let(:tracking_number_2) { 'tracking_number_2' }
+          let(:csv_row_2) do
+            {
+              'order_number' => rosti_order_number,
+              'TRAN' => serial_number_2,
+              'CRN' => tracking_number_2
+            }
+          end
+          let(:csv_rows) { [csv_row_1, csv_row_2] }
+
+          it 'returns shipment with multiple tracking numbers and serial numbers' do
+            Fulfillment::RostiShipmentImporter.should_receive(:fulfillments).with(order, [line_item_id]).and_return(fulfillments)
+            expect(Fulfillment::RostiShipmentImporter.to_shipments(csv_rows)).to match_array(
+              [
+                Fulfillment::Shipment.new(
+                  order: order,
+                  fulfillments: fulfillments,
+                  tracking_company: 'FedEx',
+                  tracking_numbers: [tracking_number_1, tracking_number_2],
+                  serial_numbers: [serial_number_1, serial_number_2]
+                )
+              ]
+            )
+          end
         end
       end
     end

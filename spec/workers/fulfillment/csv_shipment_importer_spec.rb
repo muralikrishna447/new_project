@@ -141,7 +141,7 @@ describe Fulfillment::CSVShipmentImporter do
         storage_provider = double('storage_provider')
         Fulfillment::CSVStorageProvider.should_receive(:provider).with(storage_provider_name).and_return(storage_provider)
         storage_provider.should_receive(:read).with(params).and_return(csv_str)
-        importer.should_receive(:to_shipment).with([csv_str]).and_return(shipment)
+        importer.should_receive(:to_shipments).with([[csv_str]]).and_return([shipment])
 
         importer.perform(params)
       end

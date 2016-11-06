@@ -16,10 +16,10 @@ module Fulfillment
         params
       end
 
-      # Converts a row in the CSV import file into a Fulfillment::Shipment.
-      # Implement this according to your CSV schema.
-      def to_shipment(_csv_row)
-        raise 'to_shipment not implemented'
+      # Converts rows in the CSV import file into array of
+      # Fulfillment::Shipment. Implement this according to your CSV schema.
+      def to_shipments(_csv_rows)
+        raise 'to_shipments not implemented'
       end
 
       # Returns an array of ShopifyAPI::Fulfillment objects in the order
@@ -68,10 +68,8 @@ module Fulfillment
         storage = Fulfillment::CSVStorageProvider.provider(job_params[:storage])
         csv_str = storage.read(job_params)
 
-        shipments = []
-        CSV.parse(csv_str, headers: job_params[:headers]) do |row|
-          shipments << to_shipment(row)
-        end
+        rows = CSV.parse(csv_str, headers: job_params[:headers])
+        shipments = to_shipments(rows)
 
         if job_params[:complete_fulfillment]
           shipments.each { |shipment| complete_shipment(shipment) }
