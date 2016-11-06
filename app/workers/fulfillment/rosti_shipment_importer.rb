@@ -7,11 +7,11 @@ module Fulfillment
 
     @queue = :RostiShipmentImporter
 
-    ROSTI_ORDER_NUMBER_COLUMN = 'order_number'
+    ROSTI_ORDER_NUMBER_COLUMN = '[order_number]'
 
-    SERIAL_NUMBER_COLUMN = 'TRAN'
+    SERIAL_NUMBER_COLUMN = '[TRAN]'
 
-    TRACKING_NUMBER_COLUMN = 'CRN'
+    TRACKING_NUMBER_COLUMN = '[CRN]'
 
     def self.configure(params)
       raise 's3_bucket is a required param' unless params[:s3_bucket]
@@ -53,7 +53,7 @@ module Fulfillment
       rosti_order_numbers.each do |rosti_order_number|
         order_number_parts = rosti_order_number.split('-')
         order_number = order_number_parts[0]
-        line_item_id = order_number_parts[1]
+        line_item_id = order_number_parts[1].to_i
         tracking_numbers = fulfillment_tracking_numbers[rosti_order_number]
         serial_numbers = fulfillment_serial_numbers[rosti_order_number]
 

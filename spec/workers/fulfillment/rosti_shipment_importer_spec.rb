@@ -43,17 +43,18 @@ describe Fulfillment::RostiShipmentImporter do
     end
   end
 
-  describe 'to_shipment' do
+  describe 'to_shipments' do
     let(:order_name) { '123' }
     let(:line_item_id) { '456' }
+    let(:line_item_id_int) { 456 }
     let(:rosti_order_number) { "##{order_name}-#{line_item_id}" }
     let(:serial_number_1) { 'serial_number_1' }
     let(:tracking_number_1) { 'tracking_number_1' }
     let(:csv_row_1) do
       {
-        'order_number' => rosti_order_number,
-        'TRAN' => serial_number_1,
-        'CRN' => tracking_number_1
+        Fulfillment::RostiShipmentImporter::ROSTI_ORDER_NUMBER_COLUMN => rosti_order_number,
+        Fulfillment::RostiShipmentImporter::SERIAL_NUMBER_COLUMN => serial_number_1,
+        Fulfillment::RostiShipmentImporter::TRACKING_NUMBER_COLUMN => tracking_number_1
       }
     end
     let(:csv_rows) { [csv_row_1] }
@@ -102,7 +103,7 @@ describe Fulfillment::RostiShipmentImporter do
 
         context 'csv has single row for line item' do
           it 'returns shipment with single tracking number and serial number' do
-            Fulfillment::RostiShipmentImporter.should_receive(:fulfillments).with(order, [line_item_id]).and_return(fulfillments)
+            Fulfillment::RostiShipmentImporter.should_receive(:fulfillments).with(order, [line_item_id_int]).and_return(fulfillments)
             expect(Fulfillment::RostiShipmentImporter.to_shipments(csv_rows)).to match_array(
               [
                 Fulfillment::Shipment.new(
@@ -122,15 +123,15 @@ describe Fulfillment::RostiShipmentImporter do
           let(:tracking_number_2) { 'tracking_number_2' }
           let(:csv_row_2) do
             {
-              'order_number' => rosti_order_number,
-              'TRAN' => serial_number_2,
-              'CRN' => tracking_number_2
+              Fulfillment::RostiShipmentImporter::ROSTI_ORDER_NUMBER_COLUMN => rosti_order_number,
+              Fulfillment::RostiShipmentImporter::SERIAL_NUMBER_COLUMN => serial_number_2,
+              Fulfillment::RostiShipmentImporter::TRACKING_NUMBER_COLUMN => tracking_number_2
             }
           end
           let(:csv_rows) { [csv_row_1, csv_row_2] }
 
           it 'returns shipment with multiple tracking numbers and serial numbers' do
-            Fulfillment::RostiShipmentImporter.should_receive(:fulfillments).with(order, [line_item_id]).and_return(fulfillments)
+            Fulfillment::RostiShipmentImporter.should_receive(:fulfillments).with(order, [line_item_id_int]).and_return(fulfillments)
             expect(Fulfillment::RostiShipmentImporter.to_shipments(csv_rows)).to match_array(
               [
                 Fulfillment::Shipment.new(
