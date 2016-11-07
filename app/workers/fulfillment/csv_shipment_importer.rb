@@ -37,7 +37,7 @@ module Fulfillment
               Rails.logger.info("CSV shipment import found open fulfillment with id #{fulfillment.id} for order with id #{order.id}, name #{order.name} and line item with id #{line_item.id}")
               fulfillments[fulfillment.id] = fulfillment
             else
-              Rails.logger.info("CSV shipment import found fulfillment with id #{fulfillment.id} and status #{fulfillment.status} for order with id #{order.id}, name #{order.name} and line item with id #{line_item.id}")
+              Rails.logger.info("CSV shipment import not including fulfillment with id #{fulfillment.id} because status is #{fulfillment.status} for order with id #{order.id}, name #{order.name} and line item with id #{line_item.id}")
             end
           end
         end
