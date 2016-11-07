@@ -12,7 +12,7 @@ en:
         message: "You stopped your cook!"
         content_available: 1
       circulator_error_low_water_level:
-        message: "Uh oh, the water level is too low. To operate properly, Joule needs H20. Please add more."
+        message: "Uh oh, the water level is too low. To operate properly, Joule needs H2O. Please add more."
       circulator_error_tipped_over:
         message: "Help! Joule has fallen, and she can’t get up! We've detected that Joule has tipped over. Please stand it up to resume normal functioning."
       circulator_error_overheating:
