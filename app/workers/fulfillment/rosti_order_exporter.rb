@@ -66,7 +66,7 @@ module Fulfillment
 
     RETURN_CITY = 'Seattle'
 
-    RETURN_STATE = 'WA',
+    RETURN_STATE = 'WA'
 
     RETURN_ZIP = '98101'
 
