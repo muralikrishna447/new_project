@@ -56,9 +56,11 @@ module Fulfillment
         line_item_id = order_number_parts[1].to_i
         tracking_numbers = fulfillment_tracking_numbers[rosti_order_number]
         serial_numbers = fulfillment_serial_numbers[rosti_order_number]
+        Rails.logger.info("Rosti shipment import processing order number #{order_number}, line item id #{line_item_id}, tracking numbers #{tracking_numbers}, serial numbers #{serial_numbers}")
 
         order = Shopify::Utils.order_by_name(order_number.delete('#'))
         raise "Order with number #{order_number} not found" unless order
+        Rails.logger.info("Rosti shipment import found order with id #{order.id} for order number #{order_number}")
 
         shipments << Fulfillment::Shipment.new(
           order: order,
@@ -77,7 +79,7 @@ module Fulfillment
       end
 
       unless row[SERIAL_NUMBER_COLUMN] && !row[SERIAL_NUMBER_COLUMN].empty?
-        # TODO add log message. Shouldn't raise an exception here.
+        Rails.logger.warn("Rosti shipment import found empty serial number for row #{row.inspect}")
       end
 
       unless row[TRACKING_NUMBER_COLUMN] && !row[TRACKING_NUMBER_COLUMN].empty?
