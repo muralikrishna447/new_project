@@ -27,5 +27,22 @@ module Shopify
       tags.each { |tag| order_tags.delete(tag) }
       order.tags = order_tags.join(',')
     end
+
+    PAGE_SIZE = 100
+
+    # Careful! This pages through all orders matching the query.
+    def self.search_orders(params, page_size = PAGE_SIZE)
+      page = 1
+      all_orders = []
+      loop do
+        path = ShopifyAPI::Order.collection_path(params.merge(limit: page_size, page: page))
+        # TODO add retries
+        orders = ShopifyAPI::Order.find(:all, from: path)
+        all_orders.concat(orders)
+        break if orders.length < page_size
+        page += 1
+      end
+      all_orders
+    end
   end
 end

@@ -118,4 +118,33 @@ describe Shopify::Utils do
       end
     end
   end
+
+  describe 'search_orders' do
+    let(:page_size) { 2 }
+    let(:order_1) { ShopifyAPI::Order.new(id: 1) }
+    let(:order_2) { ShopifyAPI::Order.new(id: 2) }
+    let(:order_3) { ShopifyAPI::Order.new(id: 3) }
+    let(:param_key) { 'my_key'.to_sym }
+    let(:param_value) { 'my_value' }
+
+    context 'response has order count equal to page size' do
+      it 'returns results from all pages' do
+        path_1 = ShopifyAPI::Order.collection_path(limit: page_size, page: 1, param_key => param_value)
+        ShopifyAPI::Order.should_receive(:find).once.with(:all, from: path_1).and_return([order_1, order_2])
+        path_2 = ShopifyAPI::Order.collection_path(limit: page_size, page: 2, param_key => param_value)
+        ShopifyAPI::Order.should_receive(:find).once.with(:all, from: path_2).and_return([order_3])
+
+        expect(Shopify::Utils.search_orders({ param_key => param_value }, page_size)).to match_array([order_1, order_2, order_3])
+      end
+    end
+
+    context 'response has order count less than page size' do
+      it 'does not request another page' do
+        path_1 = ShopifyAPI::Order.collection_path(limit: page_size, page: 1, param_key => param_value)
+        ShopifyAPI::Order.should_receive(:find).once.with(:all, from: path_1).and_return([order_1])
+
+        expect(Shopify::Utils.search_orders({ param_key => param_value }, page_size)).to match_array([order_1])
+      end
+    end
+  end
 end
