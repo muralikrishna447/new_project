@@ -298,6 +298,23 @@ describe Api::V0::CirculatorsController do
         end
       end
 
+      context 'button pressed' do
+        it 'sends a notification' do
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'circulator_error_button_pressed'
+          )
+          expect(response.code).to eq '200'
+          expect(@published_messages.length).to eq 1
+          msg = JSON.parse(@published_messages[0][:msg])
+          apns = JSON.parse msg['APNS']
+          expect(apns['aps']['content-available']).to eq 1
+        end
+      end
+
+
+
       let(:notification_type) { 'water_heated' }
 
       context 'no idempotency key is specified' do
@@ -308,6 +325,9 @@ describe Api::V0::CirculatorsController do
             notification_type: notification_type
           )
           expect(@published_messages.length).to eq 1
+          msg = JSON.parse(@published_messages[0][:msg])
+          apns = JSON.parse msg['APNS']
+          expect(apns['aps']['content-available']).to eq 0
         end
       end
 
