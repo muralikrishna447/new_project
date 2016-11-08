@@ -126,25 +126,32 @@ module Api
 
       def publish_notification(endpoint_arn, message, notification_type, content_available)
         Librato.increment("api.publish_notification_requests")
-        sns = Aws::SNS::Client.new(region: 'us-east-1')
+        # TODO - add APNS once we have a testable endpoint
+        title = I18n.t("circulator.app_name", raise: true)
+        gcm_content_available = if content_available == 0 then false else true end
+        message = {
+          GCM: {data: {message: message, title: title, notification_type: notification_type, "content_available" => gcm_content_available}}.to_json,
+          APNS_SANDBOX: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json,
+          APNS: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json
+        }
+        logger.info "Publishing #{message.inspect}"
         begin
-          # TODO - add APNS once we have a testable endpoint
-          title = I18n.t("circulator.app_name", raise: true)
-          gcm_content_available = if content_available == 0 then false else true end
-          message = {
-            GCM: {data: {message: message, title: title, notification_type: notification_type, "content_available" => gcm_content_available}}.to_json,
-            APNS_SANDBOX: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json,
-            APNS: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json
-          }
-          logger.info "Publishing #{message.inspect}"
-          sns.publish(
-            target_arn: endpoint_arn,
-            message_structure: 'json',
-            message: message.to_json
-          )
+          publish_json_message(endpoint_arn, message.to_json)
         rescue Aws::SNS::Errors::EndpointDisabled
           logger.info "Failed to publish to #{endpoint_arn}. Endpoint disabled."
         end
+      end
+
+      # NOTE: Do not add logic to this method!! Want to keep this as
+      # thin as possible for testing purposes (because we have to mock
+      # it out due to weird interactions between Rspec and AWS)
+      def publish_json_message(endpoint_arn, json_str)
+        sns = Aws::SNS::Client.new(region: 'us-east-1')
+        sns.publish(
+          target_arn: endpoint_arn,
+          message_structure: 'json',
+          message: json_str
+        )
       end
 
       # Ex: POST /api/v0/circulators/coefficients
