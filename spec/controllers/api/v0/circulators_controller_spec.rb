@@ -292,6 +292,9 @@ describe Api::V0::CirculatorsController do
           )
           expect(response.code).to eq '200'
           expect(@published_messages.length).to eq 1
+          msg = JSON.parse(@published_messages[0][:msg])
+          apns = JSON.parse msg['APNS']
+          expect(apns['aps']['content-available']).to eq 0
         end
       end
 
