@@ -12,7 +12,7 @@ class Rack::Attack
 
   # Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
   def self.isWhitelisted(req)
-    request_auth = req.env["Authorization"]
+    request_auth = req.env["HTTP_AUTHORIZATION"]
     is_authorized_external_service = ExternalServiceTokenChecker.is_authorized(request_auth)
     madore_ip = '66.171.190.210'
     market_ip = '199.231.242.34'
@@ -22,7 +22,7 @@ class Rack::Attack
 
   ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
     unless isWhitelisted(req)
-      Rails.logger.info("rack.attack throttled request #{request_id}")
+      Rails.logger.info("rack.attack throttled request path: #{req.path} ip: #{req.ip}")
       Librato.increment "api.throttled_requests", sporadic: true
     end
   end
@@ -42,10 +42,10 @@ class Rack::Attack
   # counted by rack-attack and this throttle may be activated too
   # quickly. If so, enable the condition to exclude them from tracking.
 
-  # Throttle all requests by IP (60rpm)
+  # Throttle all requests by IP (180rpm)
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
-  throttle('req/ip', :limit => 300, :period => 5.minutes) do |req|
+  throttle('req/ip', :limit => 900, :period => 5.minutes) do |req|
     req.ip unless req.path.start_with?('/assets')
   end
 

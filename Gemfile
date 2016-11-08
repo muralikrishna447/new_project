@@ -85,8 +85,6 @@ gem 'sanitize'
 
 gem 'avatax'
 
-gem 'geoip2'
-
 gem 'analytics-ruby', :require => "segment"
 
 gem 'prerender_rails'

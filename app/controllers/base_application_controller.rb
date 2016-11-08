@@ -37,32 +37,6 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
-  def catch_and_retry(retry_count)
-    begin
-      yield
-    rescue => error
-      retry_count -= 1
-      if retry_count > 0
-        Rails.logger.error("Got error #{error} Retrying #{retry_count} more times")
-        retry
-      else
-        Rails.logger.error("Received Error #{error}")
-      end
-    end
-  end
-
-  def cache_for_production(cache_name, expiration)
-    result = nil
-    if Rails.env.production?
-      result = Rails.cache.fetch(cache_name, expires_in: expiration) do
-        yield
-      end
-    else
-      result = yield
-    end
-    return result
-  end
-
   helper_method :facebook_app_id
   def facebook_app_id
     Rails.application.config.shared_config[:facebook][:app_id]

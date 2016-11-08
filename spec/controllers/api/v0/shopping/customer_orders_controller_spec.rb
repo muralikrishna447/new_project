@@ -7,11 +7,14 @@ describe Api::V0::Shopping::CustomerOrdersController do
 
     customer_order_101_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_101').data)['order']
     customer_order_202_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_202').data)['order']
+    customer_order_303_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_303').data)['order']
 
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/orders\/101.json/)
       .to_return(status: 200, body: customer_order_101_data.to_json, headers: {})
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/orders\/202.json/)
       .to_return(status: 200, body: customer_order_202_data.to_json, headers: {})
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/orders\/303.json/)
+      .to_return(status: 200, body: customer_order_303_data.to_json, headers: {})
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/orders\/random01.json/)
       .to_return(status: 404, body: {message: 'customer_order not found'}.to_json, headers: {})
   end
@@ -108,6 +111,24 @@ describe Api::V0::Shopping::CustomerOrdersController do
       response.status.should eq(400)
       address = JSON.parse(response.body)
       address['errors'][0].should eq("address1 can't be blank")
+    end
+
+    it "should not update an address if the order is fulfilled" do
+      sign_in @user
+      controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+      order_params = {
+        shipping_address: {
+          address1: '123 random street',
+          address2: '',
+          city: 'Seattle',
+          province: 'WA',
+          zip: '12345'
+        }
+      }
+      post :update_address, id: '303', order: order_params
+      response.should_not be_success
+      response.status.should eq(500)
+
     end
   end
 

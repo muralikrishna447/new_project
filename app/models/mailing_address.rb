@@ -7,7 +7,7 @@ class MailingAddress
   attr_accessor :address1, :address2, :city, :province, :zip
 
   validates :address1, :city, :province, :zip, presence: true
-  validates :address1, :address2, length: {maximum: 50}
+  validates :address1, :address2, length: {maximum: 35}
   validates :zip, numericality: { only_integer: true }
   validates :province, length: { is: 2 }
 
@@ -20,5 +20,5 @@ class MailingAddress
   def persisted?
     false
   end
-  
+
 end

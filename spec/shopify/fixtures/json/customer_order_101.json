@@ -58,7 +58,7 @@
       "processing_method":"free",
       "checkout_id":10295635783,
       "source_name":"web",
-      "fulfillment_status":"fulfilled",
+      "fulfillment_status":null,
       "tax_lines":[
 
       ],

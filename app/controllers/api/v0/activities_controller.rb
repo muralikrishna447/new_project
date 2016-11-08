@@ -46,12 +46,15 @@ module Api
       end
 
       def show
+        t1 = Time.now
         begin
           @activity = Activity.find(params[:id])
           @version = params[:version]
           @last_revision = @activity.last_revision()
+          cache_revision = @last_revision ? @last_revision.revision : '0'
           if @version && @version.to_i <= @last_revision.revision
             @activity = @activity.restore_revision(@version)
+            cache_revision = @version
           end
         rescue ActiveRecord::RecordNotFound
           render_api_response 404, {message:'Activity not found'}
@@ -97,7 +100,29 @@ module Api
 
         if can_see
           except = trimmed ? [:steps, :ingredients, :equipment] : []
-          render json: @activity, serializer: Api::ActivitySerializer, except: except
+          cache_key = "activity-#{@activity.id}-v#{cache_revision}-t#{trimmed}"
+          logger.info "fetching activity from #{cache_key}"
+          metric_suffix = 'hit'
+          serialized = Rails.cache.fetch(cache_key, expires_in: 20.minutes) do
+            logger.info "cache miss for #{cache_key}"
+            metric_suffix = 'miss'
+            Api::ActivitySerializer.new(@activity, except: except) \
+              .serializable_object.to_json
+          end
+
+          # Because we are fetching objects through the cache, the
+          # return type will always be a string.  Need to manually set
+          # content-type
+          render text: serialized, content_type: 'application/json'
+
+          # TODO: look into breaking this into separate methods and
+          # using a filter, or hooking into ActiveSupport for timing
+          # metrics
+          delta = Time.now - t1
+          metric_name = "activity.show.time.#{metric_suffix}"
+          logger.info "#{metric_name} took #{delta}s"
+          Librato.timing metric_name, delta * 1000
+          Librato.increment "activity.show.count.#{metric_suffix}"
         else
           render_unauthorized
         end
@@ -106,7 +131,7 @@ module Api
       end
 
       def likes
-        @activity = Activity.find(params[:id])
+        @activity = Activity.eager_load(:likes).find(params[:id])
         render json: @activity.likes, each_serializer: Api::ActivityLikeSerializer
       end
     end

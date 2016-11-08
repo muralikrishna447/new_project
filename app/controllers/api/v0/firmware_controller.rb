@@ -5,7 +5,7 @@ module Api
     class FirmwareController < BaseController
       before_filter :ensure_authorized
 
-      LINK_EXPIRE_SECS = 60 * 20
+      LINK_EXPIRE_SECS = 60 * 60
 
       # This maps the FileType enum, to the params returned by
       # identifyCirculator
@@ -50,8 +50,8 @@ module Api
           return render_empty_response
         end
 
-        potential_updates = get_firmware_for_app_version(app_version)
-        if potential_updates.nil?
+        manifest = get_firmware_for_app_version(app_version)
+        if manifest.nil?
           logger.info "No manifest found for app version #{app_version}"
           return render_empty_response
         end
@@ -62,7 +62,7 @@ module Api
         )
 
         updates = []
-        potential_updates.each do |u|
+        manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
           current_version = params[param_type]
 
@@ -86,7 +86,16 @@ module Api
           updates << u
         end
 
-        render_api_response 200, {updates: updates, bootModeType: 'APPLICATION_BOOT_MODE'}
+        resp = {
+          updates: updates,
+          bootModeType: 'APPLICATION_BOOT_MODE'
+        }
+
+        if manifest['releaseNotesUrl']
+          resp['releaseNotesUrl'] = manifest['releaseNotesUrl']
+        end
+
+        render_api_response 200, resp
       end
 
       private
@@ -178,13 +187,14 @@ module Api
 
       def get_firmware_for_app_version(version)
         # Sample manifest
-        # [
-        #  {
+        # {
+        #  "releaseNotesUrl" : "http://foo.com/release",
+        #  "updates" : [{
         #   "versionType": "appFirmwareVersion",
         #   "type": "APPLICATION_FIRMWARE",
         #   "version": "latest_version"
-        #  }
-        # ]
+        #  }]
+        # }
 
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
         bucket_name = Rails.application.config.firmware_bucket

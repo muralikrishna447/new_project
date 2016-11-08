@@ -14,6 +14,7 @@ module Api
             if current_api_user && (customer_multipass_identifier == current_api_user_id || current_api_user_role == 'admin')
               response = {
                 id: @order.id,
+                fulfillment_status: @order.fulfillment_status,
                 shipping_address: @order.shipping_address
               }
               render_api_response 200, response

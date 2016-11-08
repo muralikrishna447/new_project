@@ -18,6 +18,10 @@ class Shopify::Order
   def user
     return @user unless @user.nil?
 
+    if @api_order.customer.multipass_identifier.nil?
+      Shopify::Customer.sync_user(user)
+    end
+
     # TODO - add test coverage for user not found scenarios
     user_id = @api_order.customer.multipass_identifier
     if user_id.nil?
@@ -86,7 +90,8 @@ class Shopify::Order
       end
     end
 
-    if order_contains_joule
+    # Exchange orders are, for the time being, identified by their total price
+    if order_contains_joule && @api_order.total_price.to_f != 0
       JouleConfirmationMailer.prepare(user).deliver
     end
 
