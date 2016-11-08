@@ -117,7 +117,14 @@ module Api
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
         end
 
-        content_available = I18n.t("circulator.push.#{params[:notification_type]}.content_available") || 0
+        begin
+          content_available = I18n.t(
+            "circulator.push.#{params[:notification_type]}.content_available",
+            raise: true
+          )
+        rescue I18n::MissingTranslationData
+          content_available = 0
+        end
 
         notify_owners(circulator, params[:idempotency_key], message, params[:notification_type], content_available)
 
