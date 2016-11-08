@@ -5,7 +5,12 @@ describe Fulfillment::CSVShipmentImporter do
   let(:importer) { Class.new { include Fulfillment::CSVShipmentImporter } }
 
   describe 'fulfillments' do
-    let(:order) { ShopifyAPI::Order.new(id: 1, fulfillments: order_fulfillments) }
+    let(:order) do
+      ShopifyAPI::Order.new(
+        id: 1,
+        fulfillments: order_fulfillments,
+        name: '#myordername')
+    end
 
     context 'no fulfillment exists for line item' do
       let(:order_fulfillments) { [] }
@@ -108,6 +113,7 @@ describe Fulfillment::CSVShipmentImporter do
     let(:tracking_numbers) { ['123', '456'] }
     let(:shipment) do
       Fulfillment::Shipment.new(
+        order: ShopifyAPI::Order.new(id: order_id, name: '#myordername'),
         fulfillments: [fulfillment_1, fulfillment_2],
         tracking_company: tracking_company,
         tracking_numbers: tracking_numbers
@@ -132,7 +138,7 @@ describe Fulfillment::CSVShipmentImporter do
     let(:csv_str) { 'foo' }
     let(:shipment) { Fulfillment::Shipment.new }
 
-    shared_examples 'perform' do
+    shared_examples 'importer_perform' do
       it 'reads shipments' do
         params = {
           storage: storage_provider_name,
@@ -149,7 +155,7 @@ describe Fulfillment::CSVShipmentImporter do
 
     context 'complete_fulfillment is false' do
       let(:complete_fulfillment) { false }
-      include_examples 'perform'
+      include_examples 'importer_perform'
     end
 
     context 'complete_fulfillment is true' do
@@ -157,7 +163,7 @@ describe Fulfillment::CSVShipmentImporter do
       before :each do
         importer.should_receive(:complete_shipment).with(shipment)
       end
-      include_examples 'perform'
+      include_examples 'importer_perform'
     end
   end
 
