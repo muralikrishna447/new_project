@@ -1,3 +1,5 @@
+require_relative '../../../lib/shopify/utils'
+
 module Fulfillment
   # Mixin for implementing a CSV export of Shopify orders for fulfillment.
   # This is meant to be used in offline batch jobs as it has to crawl through
