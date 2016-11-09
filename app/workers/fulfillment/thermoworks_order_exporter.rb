@@ -5,8 +5,6 @@ module Fulfillment
   class ThermoworksOrderExporter
     include Fulfillment::CSVOrderExporter
 
-    @queue = :ThermoworksOrderExporter
-
     THERMOWORKS_SKUS = [
       'THS-231-207',
       'THS-231-227',
@@ -25,13 +23,6 @@ module Fulfillment
       'TX-3100-YL',
     ]
 
-    def self.configure(params)
-      raise 's3_bucket is a required param' unless params[:s3_bucket]
-      raise 's3_region is a required param' unless params[:s3_region]
-      @@s3_bucket = params[:s3_bucket]
-      @@s3_region = params[:s3_region]
-    end
-
     def self.type
       'orders'
     end
@@ -41,11 +32,6 @@ module Fulfillment
         skus: THERMOWORKS_SKUS,
         storage_filename: "#{type}-#{Time.now.utc.iso8601}.csv"
       )
-      job_params[:storage] ||= 's3'
-      if job_params[:storage] == 's3'
-        job_params[:storage_s3_bucket] = @@s3_bucket
-        job_params[:storage_s3_region] = @@s3_region
-      end
       job_params
     end
 
