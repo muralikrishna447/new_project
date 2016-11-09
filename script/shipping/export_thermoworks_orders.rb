@@ -31,7 +31,7 @@ ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{op
 params = {
   open_fulfillment: false,
   storage: 'file',
-  quantity: 10
+  quantity: 512
 }
 
 Fulfillment::ThermoworksOrderExporter.perform(params)

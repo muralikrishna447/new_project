@@ -34,41 +34,46 @@ module Fulfillment
     def self.schema
       [
         '[order_number]',
-        '[processed_at]',
-        '[recipient_company]',
         '[recipient_name]',
+        '[recipient_company]',
         '[recipient_address_line_1]',
         '[recipient_address_line_2]',
         '[recipient_city]',
         '[recipient_state]',
         '[recipient_zip]',
-        '[recipient_country]',
         '[recipient_phone]',
+        '[recipient_email]',
         '[sku]',
         '[quantity]',
+
+        # To be filled in by Thermoworks
+        '[ship_date]',
+        '[tracking_number]',
       ]
     end
 
     def self.transform(fulfillable)
       line_items = []
       fulfillable.line_items.each do |line_item|
-        rosti_order_number = "#{fulfillable.order.name}-#{line_item.id}"
-        Rails.logger.info("Rosti order export adding order with id #{fulfillable.order.id} and line item with id #{line_item.id} and quantity #{line_item.quantity} as Rosti order number #{rosti_order_number}")
+        order_number = fulfillable.order.id
         line_items <<
           [
-            rosti_order_number,
-            fulfillable.order.processed_at,
-            fulfillable.order.shipping_address.company,
+            order_number,
             fulfillable.order.shipping_address.name,
+            fulfillable.order.shipping_address.company,
             fulfillable.order.shipping_address.address1,
             fulfillable.order.shipping_address.address2,
             fulfillable.order.shipping_address.city,
             fulfillable.order.shipping_address.province_code,
             fulfillable.order.shipping_address.zip,
-            fulfillable.order.shipping_address.country_code,
             fulfillable.order.shipping_address.phone,
+            fulfillable.order.customer.email,
             line_item.sku,
             line_item.quantity,
+
+            # To be filled in by Thermoworks
+            '',
+            '',
           ]
       end
       line_items
