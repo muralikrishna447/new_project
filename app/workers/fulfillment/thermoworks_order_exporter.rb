@@ -37,24 +37,24 @@ module Fulfillment
 
     def self.schema
       [
-        '[cs_order_number]',
-        '[cs_line_item_number]',
-        '[created_at]',
-        '[recipient_name]',
-        '[recipient_company]',
-        '[recipient_address_line_1]',
-        '[recipient_address_line_2]',
-        '[recipient_city]',
-        '[recipient_state]',
-        '[recipient_zip]',
-        '[recipient_phone]',
-        '[recipient_email]',
-        '[sku]',
-        '[quantity]',
+        'ChefSteps Order ID',
+        'ChefSteps Line Item ID',
+        'Order Creation Date',
+        'Recipient Name',
+        'Recipient Company',
+        'Address Line 1',
+        'Address Line 2',
+        'City',
+        'State',
+        'Zip',
+        'Phone',
+        'Email',
+        'SKU',
+        'Quantity',
 
         # To be filled in by Thermoworks
-        '[ship_date]',
-        '[tracking_number]',
+        'Ship Date',
+        'Tracking Number',
       ]
     end
 
