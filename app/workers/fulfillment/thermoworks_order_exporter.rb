@@ -7,6 +7,24 @@ module Fulfillment
 
     @queue = :ThermoworksOrderExporter
 
+    THERMOWORKS_SKUS = [
+      'THS-231-207',
+      'THS-231-227',
+      'THS-231-237',
+      'THS-231-247',
+      'THS-231-277',
+      'THS-231-357',
+      'TX-3100-BL',
+      'TX-3100-BK',
+      'TX-3100-GR',
+      'TX-3100-OR',
+      'TX-3100-PK',
+      'TX-3100-PR',
+      'TX-3100-RD',
+      'TX-3100-WH',
+      'TX-3100-YL',
+    ]
+
     def self.configure(params)
       raise 's3_bucket is a required param' unless params[:s3_bucket]
       raise 's3_region is a required param' unless params[:s3_region]
@@ -20,7 +38,7 @@ module Fulfillment
 
     def self.job_params(params)
       job_params = params.merge(
-        skus: ["THS-231-207"],
+        skus: THERMOWORKS_SKUS,
         storage_filename: "#{type}-#{Time.now.utc.iso8601}.csv"
       )
       job_params[:storage] ||= 's3'
