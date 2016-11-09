@@ -14,14 +14,15 @@ option_parser = OptionParser.new do |option|
     options[:password] = password
   end
 
-  option.on('-s', '--store STORE', 'Shopify store name') do |store|
-    options[:store] = store
+  option.on('-d', '--date STORE', 'date, YYYY-MM-DD') do |date_str|
+    options[:date] = Date.parse(date_str)
   end
 end
 option_parser.parse!
 options[:api_key] ||= 'f3c79828c0f50b04866481389eacb2d2'
 options[:password] ||= '5553e01d45c426ced082e9846ad56eee'
 options[:store] ||= 'chefsteps-staging'
+options[:date] ||= Date.today
 
 raise '--key is required' unless options[:api_key]
 raise '--password is required' unless options[:password]
@@ -29,9 +30,9 @@ raise '--store is required' unless options[:store]
 ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
 
 pst_offset = '-8'
-start_date = DateTime.new(2016, 11, 9, 0, 0, 0, pst_offset)
-end_date = DateTime.new(2016, 11, 10, 0, 0, 0, pst_offset)
-puts start_date, end_date
+d = options[:date]
+start_date = DateTime.new(d.year, d.month, d.day, 0, 0, 0, pst_offset)
+end_date = start_date + 1.day
 
 params = {
   open_fulfillment: false,
