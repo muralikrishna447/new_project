@@ -39,6 +39,7 @@ d = options[:date]
 start_date = DateTime.new(d.year, d.month, d.day, 0, 0, 0, pst_offset)
 end_date = start_date + 1.day
 
+Rails.logger.info "Running Thermoworks export for #{d}"
 params = {
   open_fulfillment: false,
   storage: 'file',
