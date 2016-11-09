@@ -38,6 +38,7 @@ module Fulfillment
     def self.schema
       [
         '[order_number]',
+        '[line_item_number]',
         '[recipient_name]',
         '[recipient_company]',
         '[recipient_address_line_1]',
@@ -63,6 +64,7 @@ module Fulfillment
         line_items <<
           [
             order_number,
+            line_item.id,
             fulfillable.order.shipping_address.name,
             fulfillable.order.shipping_address.company,
             fulfillable.order.shipping_address.address1,
