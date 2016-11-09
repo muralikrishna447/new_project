@@ -44,6 +44,7 @@ params = {
   open_fulfillment: false,
   storage: 'file',
   quantity: 512,
+  date: d,
   search_params: {
     created_at_min: "#{start_date}",
     created_at_max: "#{end_date}",

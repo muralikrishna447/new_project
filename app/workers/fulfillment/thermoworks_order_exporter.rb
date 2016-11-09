@@ -30,7 +30,7 @@ module Fulfillment
     def self.job_params(params)
       job_params = params.merge(
         skus: THERMOWORKS_SKUS,
-        storage_filename: "#{type}-#{Time.now.utc.iso8601}.csv"
+        storage_filename: "thermoworks-#{params[:date]}.csv"
       )
       job_params
     end
