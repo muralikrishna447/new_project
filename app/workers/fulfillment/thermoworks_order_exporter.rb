@@ -39,6 +39,7 @@ module Fulfillment
       [
         '[cs_order_number]',
         '[cs_line_item_number]',
+        '[created_at]',
         '[recipient_name]',
         '[recipient_company]',
         '[recipient_address_line_1]',
@@ -60,11 +61,12 @@ module Fulfillment
     def self.transform(fulfillable)
       line_items = []
       fulfillable.line_items.each do |line_item|
-        order_number = fulfillable.order.id
+        order = fulfillable.order
         line_items <<
           [
-            order_number,
+            order.id,
             line_item.id,
+            order.created_at,
             fulfillable.order.shipping_address.name,
             fulfillable.order.shipping_address.company,
             fulfillable.order.shipping_address.address1,
