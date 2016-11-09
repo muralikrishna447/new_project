@@ -18,7 +18,7 @@ end
 
 # Stub out, so Rails.logger works
 module Rails
-  LOG = Logger.new(STDOUT)
+  LOG = Logger.new(STDERR)
   def self.logger
     LOG
   end
