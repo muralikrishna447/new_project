@@ -37,8 +37,8 @@ module Fulfillment
 
     def self.schema
       [
-        '[order_number]',
-        '[line_item_number]',
+        '[cs_order_number]',
+        '[cs_line_item_number]',
         '[recipient_name]',
         '[recipient_company]',
         '[recipient_address_line_1]',
