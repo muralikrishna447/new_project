@@ -28,10 +28,19 @@ raise '--password is required' unless options[:password]
 raise '--store is required' unless options[:store]
 ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
 
+pst_offset = '-8'
+start_date = DateTime.new(2016, 11, 9, 0, 0, 0, pst_offset)
+end_date = DateTime.new(2016, 11, 10, 0, 0, 0, pst_offset)
+puts start_date, end_date
+
 params = {
   open_fulfillment: false,
   storage: 'file',
-  quantity: 512
+  quantity: 512,
+  search_params: {
+    created_at_min: "#{start_date}",
+    created_at_max: "#{end_date}",
+  }
 }
 
 Fulfillment::ThermoworksOrderExporter.perform(params)

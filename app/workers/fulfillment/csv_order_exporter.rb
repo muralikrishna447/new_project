@@ -57,7 +57,8 @@ module Fulfillment
         # This query returns all open orders, including those that have been
         # partially fulfilled. Orders that have been completely fulfilled
         # or cancelled are excluded.
-        orders = Shopify::Utils.search_orders(status: 'open')
+        search_params = (job_params[:search_params] || {}).merge(status: 'open')
+        orders = Shopify::Utils.search_orders(search_params)
         all_fulfillables = fulfillables(orders, job_params[:skus])
         all_fulfillables.select! { |fulfillable| include_order?(fulfillable.order) }
         sort!(all_fulfillables)
