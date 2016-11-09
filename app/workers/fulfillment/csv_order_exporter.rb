@@ -59,6 +59,7 @@ module Fulfillment
         # or cancelled are excluded.
         search_params = (job_params[:search_params] || {}).merge(status: 'open')
         orders = Shopify::Utils.search_orders(search_params)
+        Rails.logger.debug("Got #{orders.length} orders from Shopify API")
         all_fulfillables = fulfillables(orders, job_params[:skus])
         all_fulfillables.select! { |fulfillable| include_order?(fulfillable.order) }
         sort!(all_fulfillables)
