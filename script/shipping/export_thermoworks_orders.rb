@@ -29,7 +29,12 @@ raise '--password is required' unless options[:password]
 raise '--store is required' unless options[:store]
 ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
 
+# NOTE: would normally use UTC to avoid daylight savings time issues.
+# However, this Thermoworks deal is only valid for a few weeks and
+# won't overlap any daylight savings.  In terms of our workflow with
+# Thermoworks, I think it's better to deal in local Seattle time
 pst_offset = '-8'
+
 d = options[:date]
 start_date = DateTime.new(d.year, d.month, d.day, 0, 0, 0, pst_offset)
 end_date = start_date + 1.day
