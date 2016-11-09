@@ -27,7 +27,6 @@ raise '--key is required' unless options[:api_key]
 raise '--password is required' unless options[:password]
 raise '--store is required' unless options[:store]
 ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
-puts ShopifyAPI::Base.site
 
 params = {
   open_fulfillment: false,
