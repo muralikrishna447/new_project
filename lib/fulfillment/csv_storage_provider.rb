@@ -9,6 +9,8 @@ module Fulfillment
         Fulfillment::S3StorageProvider.new
       when 'file'
         Fulfillment::FileStorageProvider.new
+      when 'stdout'
+        Fulfillment::StandardOutputStorageProvider.new
       else
         raise "Unknown storage provider: #{name}"
       end
@@ -72,6 +74,15 @@ module Fulfillment
 
     def validate_params(params)
       raise 'storage_filename is a required param' unless params[:storage_filename]
+    end
+  end
+
+  # Prints to standard output.
+  class StandardOutputStorageProvider
+    include Fulfillment::CSVStorageProvider
+
+    def save(output, _params)
+      puts output
     end
   end
 end
