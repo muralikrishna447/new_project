@@ -42,6 +42,7 @@ module Shopify
       page = 1
       all_orders = []
       loop do
+        Rails.logger.debug("Shopify search_orders fetching page #{page}")
         path = ShopifyAPI::Order.collection_path(params.merge(limit: page_size, page: page))
         # TODO add retries
         orders = ShopifyAPI::Order.find(:all, from: path)
