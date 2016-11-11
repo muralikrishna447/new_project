@@ -126,6 +126,8 @@ module Api
           content_available = 0
         end
 
+        logger.info "Attempting to send notification for #{circulator.circulator_id}" \
+                    " of type #{params[:notification_type]}"
         notify_owners(circulator, params[:idempotency_key], message, params[:notification_type], content_available)
 
         render_api_response 200
@@ -238,7 +240,7 @@ module Api
             next if aa.revoked?
             token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
             next if token.nil?
-            logger.info "Publishing notification for #{circulator.circulator_id}" \
+            logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
                         " of type #{notification_type} token #{token.inspect}"
             publish_notification(token.endpoint_arn, message, notification_type, content_available)
           end
