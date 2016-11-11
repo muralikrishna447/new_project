@@ -231,10 +231,9 @@ module Api
 
       def notify_owners(circulator, idempotency_key, message, notification_type, content_available)
         owners = circulator.circulator_users.select {|cu| cu.owner}
-        logger.info "Found circulator owners #{owners.inspect}"
 
         owners.each do |owner|
-
+          logger.info "Found circulator owner #{owner.user.id}"
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
             next if aa.revoked?
