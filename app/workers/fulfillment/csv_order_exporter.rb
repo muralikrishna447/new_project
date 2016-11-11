@@ -121,7 +121,7 @@ module Fulfillment
           if tags.include?(PRIORITY_TAG)
             Rails.logger.info("CSV order export prioritizing order with id " \
                               "#{fulfillables[i].order.id} because it has priority tag")
-            priority_order_ids[fulfillables[i].order.id] = i
+            priority_order_ids[fulfillables[i].order.id] = true
           end
         end
 
@@ -132,14 +132,12 @@ module Fulfillment
           # Special handling for priority orders
           x_has_priority = !priority_order_ids[x.order.id].nil?
           y_has_priority = !priority_order_ids[y.order.id].nil?
-          if x_has_priority && y_has_priority
-            # When comparing two priority orders, the one with the lower index wins
-            val = priority_order_ids[x.order.id] <=> priority_order_ids[y.order.id]
-          elsif x_has_priority && !y_has_priority
+          if x_has_priority && !y_has_priority
             val = -1
           elsif !x_has_priority && y_has_priority
             val = 1
           end
+          # If both orders have priority, take the default sort order.
           val
         end
       end
