@@ -145,7 +145,7 @@ module Api
         begin
           publish_json_message(endpoint_arn, message.to_json)
         rescue Aws::SNS::Errors::EndpointDisabled
-          logger.info "Failed to publish to #{endpoint_arn}. Endpoint disabled."
+          logger.error "Failed to publish to #{endpoint_arn}. Endpoint disabled."
         end
       end
 
@@ -238,7 +238,8 @@ module Api
             next if aa.revoked?
             token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
             next if token.nil?
-            logger.info "Publishing to token #{token.inspect}"
+            logger.info "Publishing notification for #{circulator.circulator_id}" \
+                        " of type #{notification_type} token #{token.inspect}"
             publish_notification(token.endpoint_arn, message, notification_type, content_available)
           end
         end
