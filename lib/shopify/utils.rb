@@ -28,6 +28,13 @@ module Shopify
       order.tags = order_tags.join(',')
     end
 
+    def self.order_by_name(order_name)
+      raise 'Order name must not be empty' if order_name.empty?
+      orders = search_orders(name: order_name, status: 'any')
+      raise "More than one order with number #{order_number}, expected only one" if orders.length > 1
+      orders.first
+    end
+
     PAGE_SIZE = 100
 
     # Careful! This pages through all orders matching the query.
