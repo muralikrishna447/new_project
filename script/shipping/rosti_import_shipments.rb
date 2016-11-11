@@ -23,8 +23,8 @@ option_parser = OptionParser.new do |option|
     options[:store] = store
   end
 
-  option.on('-o', '--open-fulfillment', 'Open fulfillment') do
-    options[:open_fulfillment] = true
+  option.on('-c', '--complete-fulfillment', 'Complete fulfillment') do
+    options[:complete_fulfillment] = true
   end
 
   option.on('-i', '--input INPUT', 'Input file') do |input|
@@ -40,14 +40,8 @@ raise '--input is required' unless options[:input]
 # Configure shopify client
 ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
 
-orders = []
-CSV.foreach(options[:input], headers: true) do |input_row|
-  order = ShopifyAPI::Order.find(input_row['id'])
-  raise "No order for id input_row['id']" unless order
-  orders << order
-end
-
-fulfillables = Fulfillment::ShipstationOrderExporter.fulfillables(orders, ['cs10001'])
-if options[:open_fulfillment]
-  Fulfillment::ShipstationOrderExporter.open_fulfillments(fulfillables)
-end
+Fulfillment::RostiShipmentImporter.perform(
+  complete_fulfillment: options[:complete_fulfillment],
+  storage: 'file',
+  storage_filename: options[:input]
+)

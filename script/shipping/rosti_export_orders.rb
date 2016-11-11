@@ -1,4 +1,5 @@
 require './rails_shim'
+require '../../app/models/shopify/order'
 
 #
 # Exports Shopify Joule orders using the API to a CSV on standard output.
@@ -23,31 +24,21 @@ option_parser = OptionParser.new do |option|
     options[:store] = store
   end
 
-  option.on('-o', '--open-fulfillment', 'Open fulfillment') do
-    options[:open_fulfillment] = true
-  end
-
-  option.on('-i', '--input INPUT', 'Input file') do |input|
-    options[:input] = input
+  option.on('-q', '--quantity QUANTITY', 'Quantity to export') do |store|
+    options[:quantity] = store
   end
 end
 option_parser.parse!
 raise '--key is required' unless options[:api_key]
 raise '--password is required' unless options[:password]
 raise '--store is required' unless options[:store]
-raise '--input is required' unless options[:input]
+raise '--quantity is required' unless options[:quantity]
 
 # Configure shopify client
 ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
 
-orders = []
-CSV.foreach(options[:input], headers: true) do |input_row|
-  order = ShopifyAPI::Order.find(input_row['id'])
-  raise "No order for id input_row['id']" unless order
-  orders << order
-end
-
-fulfillables = Fulfillment::ShipstationOrderExporter.fulfillables(orders, ['cs10001'])
-if options[:open_fulfillment]
-  Fulfillment::ShipstationOrderExporter.open_fulfillments(fulfillables)
-end
+Fulfillment::RostiOrderExporter.perform(
+  storage: 'stdout',
+  open_fulfillment: false,
+  quantity: options[:quantity].to_i
+)
