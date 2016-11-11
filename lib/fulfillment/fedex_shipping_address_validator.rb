@@ -9,9 +9,9 @@ module Fulfillment
     US_TERRITORY_STATES = %w(AS FM GU MH MP PW PR VI)
 
     def self.valid?(order)
-      return false unless log_validation(
+      return false if log_validation(
         order_id: order.id,
-        condition: order.respond_to?(:shipping_address),
+        condition: !order.respond_to?(:shipping_address),
         reason: "order has no shipping address"
       )
 
