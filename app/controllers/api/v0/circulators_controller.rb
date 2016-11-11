@@ -147,7 +147,9 @@ module Api
         begin
           publish_json_message(endpoint_arn, message.to_json)
         rescue Aws::SNS::Errors::EndpointDisabled
-          logger.error "Failed to publish to #{endpoint_arn}. Endpoint disabled."
+          # TODO: I'm seeing a lot of these in the logs.  Is this to
+          # be expected?
+          logger.info "Failed to publish to #{endpoint_arn}. Endpoint disabled."
         end
       end
 
