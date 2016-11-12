@@ -126,6 +126,8 @@ module Api
           content_available = 0
         end
 
+        logger.info "Attempting to send notification for #{circulator.circulator_id}" \
+                    " of type #{params[:notification_type]}"
         notify_owners(circulator, params[:idempotency_key], message, params[:notification_type], content_available)
 
         render_api_response 200
@@ -145,6 +147,8 @@ module Api
         begin
           publish_json_message(endpoint_arn, message.to_json)
         rescue Aws::SNS::Errors::EndpointDisabled
+          # TODO: I'm seeing a lot of these in the logs.  Is this to
+          # be expected?
           logger.info "Failed to publish to #{endpoint_arn}. Endpoint disabled."
         end
       end
@@ -229,16 +233,16 @@ module Api
 
       def notify_owners(circulator, idempotency_key, message, notification_type, content_available)
         owners = circulator.circulator_users.select {|cu| cu.owner}
-        logger.info "Found circulator owners #{owners.inspect}"
 
         owners.each do |owner|
-
+          logger.info "Found circulator owner #{owner.user.id}"
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
             next if aa.revoked?
             token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
             next if token.nil?
-            logger.info "Publishing to token #{token.inspect}"
+            logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
+                        " of type #{notification_type} token #{token.inspect}"
             publish_notification(token.endpoint_arn, message, notification_type, content_available)
           end
         end
