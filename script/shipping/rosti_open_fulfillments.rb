@@ -49,5 +49,5 @@ end
 
 fulfillables = Fulfillment::RostiOrderExporter.fulfillables(orders, ['cs10001'])
 if options[:open_fulfillment]
-  Fulfillment::ShipstationOrderExporter.open_fulfillments(fulfillables)
+  Fulfillment::RostiOrderExporter.open_fulfillments(fulfillables)
 end
