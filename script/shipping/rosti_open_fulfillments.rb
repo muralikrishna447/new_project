@@ -47,7 +47,7 @@ CSV.foreach(options[:input], headers: true) do |input_row|
   orders << order
 end
 
-fulfillables = Fulfillment::ShipstationOrderExporter.fulfillables(orders, ['cs10001'])
+fulfillables = Fulfillment::RostiOrderExporter.fulfillables(orders, ['cs10001'])
 if options[:open_fulfillment]
   Fulfillment::ShipstationOrderExporter.open_fulfillments(fulfillables)
 end
