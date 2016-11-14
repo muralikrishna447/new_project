@@ -117,8 +117,17 @@ module Api
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
         end
 
-        content_available = I18n.t("circulator.push.#{params[:notification_type]}.content_available") || 0
+        begin
+          content_available = I18n.t(
+            "circulator.push.#{params[:notification_type]}.content_available",
+            raise: true
+          )
+        rescue I18n::MissingTranslationData
+          content_available = 0
+        end
 
+        logger.info "Attempting to send notification for #{circulator.circulator_id}" \
+                    " of type #{params[:notification_type]}"
         notify_owners(circulator, params[:idempotency_key], message, params[:notification_type], content_available)
 
         render_api_response 200
@@ -126,25 +135,34 @@ module Api
 
       def publish_notification(endpoint_arn, message, notification_type, content_available)
         Librato.increment("api.publish_notification_requests")
-        sns = Aws::SNS::Client.new(region: 'us-east-1')
+        # TODO - add APNS once we have a testable endpoint
+        title = I18n.t("circulator.app_name", raise: true)
+        gcm_content_available = if content_available == 0 then false else true end
+        message = {
+          GCM: {data: {message: message, title: title, notification_type: notification_type, "content_available" => gcm_content_available}}.to_json,
+          APNS_SANDBOX: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json,
+          APNS: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json
+        }
+        logger.info "Publishing #{message.inspect}"
         begin
-          # TODO - add APNS once we have a testable endpoint
-          title = I18n.t("circulator.app_name", raise: true)
-          gcm_content_available = if content_available == 0 then false else true end
-          message = {
-            GCM: {data: {message: message, title: title, notification_type: notification_type, "content_available" => gcm_content_available}}.to_json,
-            APNS_SANDBOX: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json,
-            APNS: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json
-          }
-          logger.info "Publishing #{message.inspect}"
-          sns.publish(
-            target_arn: endpoint_arn,
-            message_structure: 'json',
-            message: message.to_json
-          )
+          publish_json_message(endpoint_arn, message.to_json)
         rescue Aws::SNS::Errors::EndpointDisabled
+          # TODO: I'm seeing a lot of these in the logs.  Is this to
+          # be expected?
           logger.info "Failed to publish to #{endpoint_arn}. Endpoint disabled."
         end
+      end
+
+      # NOTE: Do not add logic to this method!! Want to keep this as
+      # thin as possible for testing purposes (because we have to mock
+      # it out due to weird interactions between Rspec and AWS)
+      def publish_json_message(endpoint_arn, json_str)
+        sns = Aws::SNS::Client.new(region: 'us-east-1')
+        sns.publish(
+          target_arn: endpoint_arn,
+          message_structure: 'json',
+          message: json_str
+        )
       end
 
       # Ex: POST /api/v0/circulators/coefficients
@@ -215,16 +233,16 @@ module Api
 
       def notify_owners(circulator, idempotency_key, message, notification_type, content_available)
         owners = circulator.circulator_users.select {|cu| cu.owner}
-        logger.info "Found circulator owners #{owners.inspect}"
 
         owners.each do |owner|
-
+          logger.info "Found circulator owner #{owner.user.id}"
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
             next if aa.revoked?
             token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
             next if token.nil?
-            logger.info "Publishing to token #{token.inspect}"
+            logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
+                        " of type #{notification_type} token #{token.inspect}"
             publish_notification(token.endpoint_arn, message, notification_type, content_available)
           end
         end
