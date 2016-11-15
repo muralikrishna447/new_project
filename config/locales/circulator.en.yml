@@ -2,14 +2,17 @@
 en:
   circulator:
     push:
+      guided_water_heated:
+        message: "Your water has heated! Start the timer and let’s cook."
       water_heated:
         message: "Your water has heated! Let’s cook."
       circulator_error_hardware_failure:
-        message: "Whoops! Something has gone seriously wrong, and we were forced to stop Joule. Please contact us for help."
+        message: "Unfortunately, we’ve detected a critical issue with your Joule, and it can no longer be used. Please contact us, and we’ll make this right."
       circulator_error_button_pressed:
         message: "You stopped your cook!"
+        content_available: 1
       circulator_error_low_water_level:
-        message: "Uh oh, the water level is too low. To operate properly, Joule needs H20. Please add more."
+        message: "Uh oh, the water level is too low. To operate properly, Joule needs H2O. Please add more."
       circulator_error_tipped_over:
         message: "Help! Joule has fallen, and she can’t get up! We've detected that Joule has tipped over. Please stand it up to resume normal functioning."
       circulator_error_overheating:
@@ -18,4 +21,6 @@ en:
         message: "Joule lost power!"
       circulator_error_unknown_reason:
         message: "We’ve got a problem — Joule has stopped cooking."
+      disconnect_while_cooking:
+        message: "Hmm, it looks like Joule got disconnected during a cook. To resume cooking, please make sure it’s plugged in and power’s on."
     app_name: "Joule"

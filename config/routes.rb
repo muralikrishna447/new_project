@@ -36,6 +36,7 @@ Delve::Application.routes.draw do
   get '/presskit', to: redirect('/press')
   get '/jouleapp', to: redirect('/getting-started-with-joule')
   get '/jewel', to: redirect('/joule')
+  get '/Joule', to: redirect('/joule')
 
   # Legal Documents
   get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
@@ -228,9 +229,10 @@ Delve::Application.routes.draw do
 
     namespace :v0 do
       match '/authenticate', to: 'auth#authenticate', via: [:post, :options]
+      match '/upgrade_token', to: 'auth#upgrade_token', via: [:post, :options]
       match '/authenticate_facebook', to: 'auth#authenticate_facebook', via: [:post, :options]
       match '/logout', to: 'auth#logout', via: [:post, :options]
-      match '/validate', to: 'auth#validate', via: [:get, :options]
+      match '/validate', to: 'auth#validate', via: [:get, :post, :options]
       resources :activities, only: [:index, :show] do
         get :likes, on: :member
       end
@@ -270,6 +272,7 @@ Delve::Application.routes.draw do
 
       post 'firmware/updates', to: 'firmware#updates'
       get 'auth/external_redirect', to: 'auth#external_redirect'
+      get 'auth/external_redirect_by_key', to: 'auth#external_redirect_by_key'
 
       namespace :shopping do
         resources :discounts, only: [:show]

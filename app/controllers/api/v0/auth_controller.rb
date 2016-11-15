@@ -163,7 +163,17 @@ module Api
         url
       end
 
+      def chefsteps_sso_url(path)
+        token = request.headers['HTTP_AUTHORIZATION']
+        short_lived_token = AuthToken.provide_short_lived(token).to_jwt
+        url = "https://#{Rails.application.config.shared_config[:chefsteps_endpoint]}/sso?token=#{short_lived_token}"
+        url += "&path=#{path}" if path.present?
+        url
+      end
+
       # Used for SSO with third-party services
+      # DOES NOT ACTUALLY REDIRECT
+      # Returns a json object with a redirect url
       def external_redirect
         path = params[:path]
 
@@ -198,9 +208,33 @@ module Api
         elsif path_uri.host == "#{ENV['ZENDESK_DOMAIN']}" || path_uri.host == "#{ENV['ZENDESK_MAPPED_DOMAIN']}"
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
 
+        elsif path_uri.host == Rails.application.config.shared_config[:chefsteps_endpoint]
+          render_api_response 200, {redirect: chefsteps_sso_url(params[:path])}
+
         else
           return render_api_response 404, {message: "No redirect configured for path [#{path}]."}
         end
+      end
+
+      def external_redirect_by_key
+        key = params[:key]
+        unless key
+          return render_api_response 400, {message: "No key provided"}
+        end
+
+        url = Rails.configuration.redirect_by_key[params[:key]]
+        unless url
+          logger.error("unrecognized key provided to redirect_by_key")
+          return render_api_response 200, {redirect: Rails.configuration.redirect_by_key['fallback']}
+        end
+
+        if not request.authorization()
+          return render_api_response 200, {redirect: url}
+        end
+
+        params[:path] = url
+        ensure_authorized()
+        return external_redirect()
       end
 
       # To be used by the Messaging Service
@@ -263,6 +297,29 @@ module Api
           render_unauthorized
         end
       end
+
+      def upgrade_token
+        ensure_authorized(true)
+        token_string = request.headers['HTTP_AUTHORIZATION'].split(' ')[1]
+        token = AuthToken.from_string(token_string)
+        logger.info "Trying to upgrade token: #{token.claim.inspect}"
+        jti = token.claim["jti"]
+        cache_key = "jwt-#{jti}"
+        was_used = Rails.cache.fetch(cache_key)
+        if was_used
+          return render_api_response 403, {message: 'Token has been used'}
+        end
+
+        upgraded_token = AuthToken.upgrade_token(token_string)
+        if upgraded_token
+          Rails.cache.write cache_key, 1, expires_in: 1.days
+          return render json: {status: 200, message: 'Success.', token: upgraded_token.to_jwt}, status: 200
+        else
+          return render_unauthorized
+        end
+
+      end
+
     end
   end
 end

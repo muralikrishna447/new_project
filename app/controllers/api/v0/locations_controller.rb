@@ -1,65 +1,16 @@
 module Api
   module V0
     class LocationsController < BaseController
-      # For doing geolocation lookup
       def index
-        ip_address = get_ip_address
-        Rails.logger.info("Geolocation for #{ip_address}")
-        result = cache_for_production("location_lookup_#{ip_address}", 1.week) do
-          geocode = nil
-          catch_and_retry(5) do
-            geocode = ((ip_address == '127.0.0.1') ? nil : Geoip2.city(ip_address, {request: {timeout: 3}}))
-            Rails.logger.info("Geolocation returned for #{geocode}")
-          end
-
-          if geocode.present? && geocode.error.blank? && geocode.location.present?
-            ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 1)
-            begin
-              @location = {country: geocode.country.iso_code, latitude: geocode.location.latitude, longitude: geocode.location.longitude, city: geocode.city.try(:names).try(:en), state: geocode.subdivisions.try(:first).try(:iso_code), zip: geocode.try(:postal).try(:code)}
-              state = geocode.subdivisions.try(:first).try(:iso_code)
-              if sales_tax_states.include?(state)
-                @tax_percent = get_tax_estimate(@location)
-              else
-                @tax_percent = nil
-              end
-            rescue => error
-              Rails.logger.error("LocationsController#index - Geocode Error - #{error}")
-              @location = {country: nil, latitude: nil, longitude: nil, city: nil, state: nil, zip: nil}
-              @tax_percent = nil
-            end
-          else
-            Rails.logger.info("Failed to geo-locate #{ip_address}")
-            ::NewRelic::Agent.record_metric('Custom/Errors/GeocodingForPurchase', 0)
-            @location = {country: nil, latitude: nil, longitude: nil, city: nil, state: nil, zip: nil}
-            @tax_percent = nil
-          end
-          result = @location.merge('taxPercent' => @tax_percent)
+        location = geolocate_ip()
+        if sales_tax_states.include?(location[:state])
+          tax_percent = get_tax_estimate(location)
         end
+        result = location.merge('taxPercent' => tax_percent)
         render(json: result)
       end
 
-
-      private
-      def sales_tax_states
-        ["WA"]
-      end
-
-      def get_ip_address
-        (cookies[:cs_location] || request.ip)
-      end
-
-      # def cache_for_production(ip_address)
-      #   result = nil
-      #   if Rails.env.production?
-      #     result = Rails.cache.fetch("location_lookup_#{ip_address}", expires_in: 1.week) do
-      #       yield
-      #     end
-      #   else
-      #     result = yield
-      #   end
-      #   return result
-      # end
-
+      protected
       def get_tax_estimate(location)
         #Null for no geocode and 0 for no tax
         tax_service = AvaTax::TaxService.new
@@ -75,6 +26,11 @@ module Api
           nil
         end
       end
+
+      def sales_tax_states
+        ["WA"]
+      end
+
     end
   end
 end

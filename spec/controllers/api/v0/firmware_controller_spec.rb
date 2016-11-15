@@ -30,20 +30,29 @@ describe Api::V0::FirmwareController do
     end
 
     @link = 'http://www.foo.com'
+    @release_notes_url_1 = "https://www.chefsteps.com/releases/46.11"
     controller.stub(:get_firmware_link).and_return(@link)
-    manifest = [{
-      "versionType" => "appFirmwareVersion",
-      "type" => "APPLICATION_FIRMWARE",
-      "version" => "alex_latest" }]
+    manifest =  {
+      "releaseNotesUrl" => @release_notes_url_1,
+      "updates" => [
+        {
+          "versionType" => "appFirmwareVersion",
+          "type" => "APPLICATION_FIRMWARE",
+          "version" => "alex_latest"
+        }
+      ]
+    }
 
     @esp_version = "706"
-    esp_only_manifest = [
-      {
-        "versionType" => "espFirmwareVersion",
-        "type" => "WIFI_FIRMWARE",
-        "version" => @esp_version
-      }
-    ]
+    esp_only_manifest = {
+      "updates" =>[
+        {
+          "versionType" => "espFirmwareVersion",
+          "type" => "WIFI_FIRMWARE",
+          "version" => @esp_version
+        }
+      ]
+    }
 
     @sha256 = "4a241f2e5bade1cceaa082acb5249497d23ff1b1882badc6cfdb82d6d1c0bcac"
     @filename = "#{@esp_version}.bin"
@@ -109,6 +118,8 @@ describe Api::V0::FirmwareController do
     response.should be_success
     resp = JSON.parse(response.body)
     puts resp.inspect
+
+    resp['releaseNotesUrl'].should == @release_notes_url_1
     resp['updates'].length.should == 1
     update = resp['updates'].first
     update['type'].should == 'APPLICATION_FIRMWARE'

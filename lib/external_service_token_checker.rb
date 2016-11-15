@@ -3,8 +3,10 @@ module ExternalServiceTokenChecker
     allowed_services = ['Messaging']
     if request_auth
       begin
-        token = AuthToken.from_string(request_auth.split(' ').last)
-      rescue JSON::JWS::VerificationFailed => e
+        token_string = request_auth.split(' ').last
+        return false unless token_string
+        token = AuthToken.from_string(token_string)
+      rescue JSON::JWS::VerificationFailed, JSON::JWT::InvalidFormat => e
         Rails.logger.info ("Service token verification failed")
         return false
       end

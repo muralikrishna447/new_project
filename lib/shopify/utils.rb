@@ -27,5 +27,29 @@ module Shopify
       tags.each { |tag| order_tags.delete(tag) }
       order.tags = order_tags.join(',')
     end
+
+    def self.order_by_name(order_name)
+      raise 'Order name must not be empty' if order_name.empty?
+      orders = search_orders(name: order_name, status: 'any')
+      raise "More than one order with number #{order_number}, expected only one" if orders.length > 1
+      orders.first
+    end
+
+    PAGE_SIZE = 100
+
+    # Careful! This pages through all orders matching the query.
+    def self.search_orders(params, page_size = PAGE_SIZE)
+      page = 1
+      all_orders = []
+      loop do
+        path = ShopifyAPI::Order.collection_path(params.merge(limit: page_size, page: page))
+        # TODO add retries
+        orders = ShopifyAPI::Order.find(:all, from: path)
+        all_orders.concat(orders)
+        break if orders.length < page_size
+        page += 1
+      end
+      all_orders
+    end
   end
 end

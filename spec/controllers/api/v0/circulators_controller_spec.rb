@@ -1,6 +1,6 @@
 describe Api::V0::CirculatorsController do
   before :each do
-    @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
+    @user = Fabricate :user, id: 12345, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
     @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1212121212121212', name: 'my name'
     @admin_user = Fabricate :user, email: 'admin@chefsteps.com', password: '123456', name: 'John Doe', role: 'admin'
 
@@ -270,6 +270,9 @@ describe Api::V0::CirculatorsController do
       @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
       request.env['HTTP_AUTHORIZATION'] = @service_token
 
+      stub_sns_publish()
+      @published_messages = []
+
       p = PushNotificationToken.new
       p.actor_address = @user_aa
       p.endpoint_arn = "arn:aws:sns:us-east-1:0217963864089:endpoint/APNS_SANDBOX/joule-ios-dev/f56b2215-2121-3b21-b172-5d519ab0d123"
@@ -279,17 +282,56 @@ describe Api::V0::CirculatorsController do
     end
 
     describe 'notify_clients' do
+      context 'disconnect while cooking' do
+        it 'sends a notification' do
+          BetaFeatureService.stub(:user_has_feature).with(anything(), 'disconnect_while_cooking_notification').and_return(true)
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'disconnect_while_cooking'
+          )
+          expect(response.code).to eq '200'
+          expect(@published_messages.length).to eq 1
+          msg = JSON.parse(@published_messages[0][:msg])
+          apns = JSON.parse msg['APNS']
+          gcm = JSON.parse msg['GCM']
+          expect(apns['aps']['content-available']).to eq 0
+          expect(gcm['data']['content_available']).to eq false
+        end
+      end
+
+      context 'button pressed' do
+        it 'sends a notification' do
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'circulator_error_button_pressed'
+          )
+          expect(response.code).to eq '200'
+          expect(@published_messages.length).to eq 1
+          msg = JSON.parse(@published_messages[0][:msg])
+          apns = JSON.parse msg['APNS']
+          gcm = JSON.parse msg['GCM']
+          expect(apns['aps']['content-available']).to eq 1
+          expect(gcm['data']['content_available']).to eq true
+        end
+      end
+
+
+
       let(:notification_type) { 'water_heated' }
 
       context 'no idempotency key is specified' do
         it 'should notify clients' do
-          expect_publish_notification(true)
           post(
             :notify_clients,
             id: @circulator.circulator_id,
             notification_type: notification_type
           )
-          expect(response.code).to eq '200'
+          expect(@published_messages.length).to eq 1
+          msg = JSON.parse(@published_messages[0][:msg])
+          apns = JSON.parse msg['APNS']
+          expect(apns['aps']['content-available']).to eq 0
         end
       end
 
@@ -304,7 +346,6 @@ describe Api::V0::CirculatorsController do
           before { Rails.cache.write(cache_key, true) }
 
           it 'does not send notification' do
-            expect_publish_notification(false)
             post(
               :notify_clients,
               id: @circulator.circulator_id,
@@ -312,12 +353,12 @@ describe Api::V0::CirculatorsController do
               idempotency_key: idempotency_key
             )
             expect(response.code).to eq '200'
+            expect(@published_messages.length).to eq 0
           end
         end
 
         context 'notification cache does not contain key' do
           it 'sends notification' do
-            expect_publish_notification(true)
             post(
               :notify_clients,
               id: @circulator.circulator_id,
@@ -325,13 +366,13 @@ describe Api::V0::CirculatorsController do
               idempotency_key: idempotency_key
             )
             expect(response.code).to eq '200'
+            expect(@published_messages.length).to eq 1
           end
         end
 
         context 'notification was sent more than 72 hours ago' do
           it 'sends a new notification' do
             # We should see two notifications in total
-            expect_publish_notification(true, 2)
             post(
               :notify_clients,
               id: @circulator.circulator_id,
@@ -347,13 +388,12 @@ describe Api::V0::CirculatorsController do
               idempotency_key: idempotency_key
             )
             expect(response.code).to eq '200'
+            expect(@published_messages.length).to eq 2
           end
         end
 
         context 'notification was sent less than 72 hours ago' do
           it 'does not send a new notification' do
-            # We should only see one notification
-            expect_publish_notification(true, 1)
             post(
               :notify_clients,
               id: @circulator.circulator_id,
@@ -369,6 +409,7 @@ describe Api::V0::CirculatorsController do
               idempotency_key: idempotency_key
             )
             expect(response.code).to eq '200'
+            expect(@published_messages.length).to eq 1
           end
         end
       end
@@ -398,7 +439,7 @@ describe Api::V0::CirculatorsController do
 
       it 'should call notify_owners with a notification_type' do
 
-        Api::V0::CirculatorsController.any_instance.should_receive(:notify_owners).with(anything, anything, anything, notification_type)
+        Api::V0::CirculatorsController.any_instance.should_receive(:notify_owners).with(anything, anything, anything, notification_type, anything)
 
         post(
           :notify_clients,
@@ -453,11 +494,9 @@ describe Api::V0::CirculatorsController do
 
   private
 
-  def expect_publish_notification(should_receive, times = 1)
-    if should_receive
-      Api::V0::CirculatorsController.any_instance.should_receive(:publish_notification).exactly(times).times
-    else
-      Api::V0::CirculatorsController.any_instance.should_not_receive(:publish_notification)
+  def stub_sns_publish
+    Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |arn, msg|
+      @published_messages << {arn: arn, msg: msg}
     end
   end
 end
