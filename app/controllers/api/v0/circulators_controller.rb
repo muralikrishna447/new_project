@@ -148,8 +148,14 @@ module Api
         begin
           publish_json_message(endpoint_arn, message.to_json)
         rescue Aws::SNS::Errors::EndpointDisabled
-          # TODO: I'm seeing a lot of these in the logs.  Is this to
-          # be expected?
+          # NOTE: Clean up any disabled endpoints, since they're
+          # likely not useful anymore.  There is a chance that Apple
+          # tokens can get 'disabled' even though they are still
+          # valid.  But the app should re-register the token the next
+          # time it boots up.
+          #
+          # See: https://forums.aws.amazon.com/thread.jspa?threadID=152300
+
           logger.info "Failed to publish to #{endpoint_arn} because endpoint disabled. Deleting token and endpoint."
           token.destroy
           delete_endpoint(endpoint_arn)
