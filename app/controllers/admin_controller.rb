@@ -25,7 +25,6 @@ class AdminController < ApplicationController
         text: "I couldn't find that user :poop:!"
       }
     else
-      circulators_users = user.circulators
       render 'slack_display', json: {
         response_type: "in_channel",
         text: render_to_string(formats: [:text], template: 'admin/slack_display', layout: false, locals: {user: user, circulator_users: user.circulator_users, tz: "Pacific Time (US & Canada)"})
