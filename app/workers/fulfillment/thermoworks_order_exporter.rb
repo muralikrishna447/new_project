@@ -38,7 +38,6 @@ module Fulfillment
     def self.schema
       [
         'ChefSteps Order ID',
-        'ChefSteps Line Item ID',
         'Order Creation Date',
         'Recipient First Name',
         'Recipient Last Name',
@@ -63,10 +62,10 @@ module Fulfillment
       line_items = []
       fulfillable.line_items.each do |line_item|
         order = fulfillable.order
+        order_id = "#{order.id}-#{line_item.id}"
         line_items <<
           [
-            order.id,
-            line_item.id,
+            order_id,
             order.created_at,
             fulfillable.order.shipping_address.first_name,
             fulfillable.order.shipping_address.last_name,
