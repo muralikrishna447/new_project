@@ -171,7 +171,6 @@ group :development, :test, :angular do
   gem 'bullet'
   gem 'launchy'
   gem 'childprocess', '0.3.6'
-  gem 'xray-rails'
 end
 
 group :development, :angular do
