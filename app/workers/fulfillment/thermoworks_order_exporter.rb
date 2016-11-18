@@ -38,6 +38,7 @@ module Fulfillment
     def self.schema
       [
         'ChefSteps Order ID',
+        'ChefSteps Line Item ID',
         'Order Creation Date',
         'Recipient First Name',
         'Recipient Last Name',
@@ -73,10 +74,12 @@ module Fulfillment
       line_items = []
       fulfillable.line_items.each do |line_item|
         order = fulfillable.order
+        # Thermoworks *loses* the line item, apparently, so add it to the order_id
         order_id = "#{order.id}-#{line_item.id}"
         line_items <<
           [
             order_id,
+            line_item.id,
             order.created_at,
             fulfillable.order.shipping_address.first_name,
             fulfillable.order.shipping_address.last_name,
