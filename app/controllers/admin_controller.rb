@@ -14,7 +14,7 @@ class AdminController < ApplicationController
 
     user = nil
     if params[:text].to_i != 0
-      user = User.find(params[:text].to_i) rescue nil
+      user = User.where(id: params[:text]).first
     else
       user = User.where(email: params[:text]).first
     end
@@ -28,7 +28,7 @@ class AdminController < ApplicationController
       circulators_users = user.circulators
       render 'slack_display', json: {
         response_type: "in_channel",
-        text: render_to_string(partial: 'slack_display', layout: false, locals: {user: user, circulator_users: user.circulator_users})
+        text: render_to_string(formats: [:text], template: 'admin/slack_display', layout: false, locals: {user: user, circulator_users: user.circulator_users, tz: "Pacific Time (US & Canada)"})
       }
     end
   end
