@@ -119,6 +119,52 @@ describe Shopify::Utils do
     end
   end
 
+  describe 'order_by_name' do
+    context 'order name is empty' do
+      it 'raises exception' do
+        expect { Shopify::Utils.order_by_name('') }.to raise_error
+      end
+    end
+
+    context 'order name is not empty' do
+      let(:order_name) { 'my_order_name' }
+
+      before :each do
+        Shopify::Utils.should_receive(:search_orders).with(
+          name: order_name,
+          status: 'any'
+        ).and_return(orders)
+      end
+
+      context 'no orders are found' do
+        let(:orders) { [] }
+        it 'returns nil' do
+          expect(Shopify::Utils.order_by_name(order_name)).to be_nil
+        end
+      end
+
+      context 'one order is found' do
+        let(:order) { ShopifyAPI::Order.new(id: 1) }
+        let(:orders) { [order] }
+        it 'returns the order' do
+          expect(Shopify::Utils.order_by_name(order_name)).to eq order
+        end
+      end
+
+      context 'more than one order is found' do
+        let(:orders) do
+          [
+            ShopifyAPI::Order.new(id: 1),
+            ShopifyAPI::Order.new(id: 2)
+          ]
+        end
+        it 'raises exception' do
+          expect { Shopify::Utils.order_by_name(order_name) }.to raise_error
+        end
+      end
+    end
+  end
+
   describe 'search_orders' do
     let(:page_size) { 2 }
     let(:order_1) { ShopifyAPI::Order.new(id: 1) }

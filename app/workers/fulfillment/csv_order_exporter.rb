@@ -57,7 +57,9 @@ module Fulfillment
         # This query returns all open orders, including those that have been
         # partially fulfilled. Orders that have been completely fulfilled
         # or cancelled are excluded.
-        orders = Shopify::Utils.search_orders(status: 'open')
+        search_params = (job_params[:search_params] || {}).merge(status: 'open')
+        orders = Shopify::Utils.search_orders(search_params)
+        Rails.logger.debug("Got #{orders.length} orders from Shopify API")
         all_fulfillables = fulfillables(orders, job_params[:skus])
         all_fulfillables.select! { |fulfillable| include_order?(fulfillable.order) }
         sort!(all_fulfillables)
@@ -81,7 +83,8 @@ module Fulfillment
           order.line_items.each do |line_item|
             skus.each do |sku|
               if fulfillable_line_item?(order, line_item, sku)
-                Rails.logger.info("CSV order export found fulfillable line item for order with id #{order.id}, line item id #{line_item.id}, and sku #{sku}")
+                Rails.logger.info("CSV order export found fulfillable line item for order " \
+                                  "with id #{order.id}, line item id #{line_item.id}, and sku #{sku}")
                 fulfillable_line_items << line_item
               end
             end
@@ -98,12 +101,14 @@ module Fulfillment
       def include_order?(order)
         # Filter out any order that has filtered tags
         unless (Shopify::Utils.order_tags(order) & FILTERED_TAGS).empty?
-          Rails.logger.info("CSV order export filtering order with id #{order.id} because it has one or more filtered tags: #{order.tags}")
+          Rails.logger.info("CSV order export filtering order with id #{order.id} " \
+                            "because it has one or more filtered tags: #{order.tags}")
           return false
         end
         # Filter out orders with invalid addresses
         unless Fulfillment::FedexShippingAddressValidator.valid?(order)
-          Rails.logger.info("CSV order export filtering order with id #{order.id} because shipping address validation failed: #{order.attributes[:shipping_address]}")
+          Rails.logger.info("CSV order export filtering order with id #{order.id} because " \
+                            "shipping address validation failed: #{order.attributes[:shipping_address]}")
           return false
         end
         true
@@ -114,7 +119,8 @@ module Fulfillment
         fulfillables.each_index do |i|
           tags = Shopify::Utils.order_tags(fulfillables[i].order)
           if tags.include?(PRIORITY_TAG)
-            Rails.logger.info("CSV order export prioritizing order with id #{fulfillables[i].order.id} because it has priority tag")
+            Rails.logger.info("CSV order export prioritizing order with id " \
+                              "#{fulfillables[i].order.id} because it has priority tag")
             priority_order_ids[fulfillables[i].order.id] = i
           end
         end
@@ -152,7 +158,8 @@ module Fulfillment
           # so we'll skip an order if it has quantity > 1 and we don't have enough
           # inventory to ship it right now.
           if (quantity_processed + fulfillable_quantity) > quantity
-            Rails.logger.info("CSV order export skipping order with id #{fulfillable.order.id} because there is not enough quantity to fulfill it in this export")
+            Rails.logger.info("CSV order export skipping order with id #{fulfillable.order.id} " \
+                              "because there is not enough quantity to fulfill it in this export")
             next
           end
 
@@ -175,7 +182,8 @@ module Fulfillment
       private
 
       def open_fulfillment_for_line_item(order, line_item)
-        Rails.logger.info("CSV order export opening fulfillment for order with id #{order.id} and line item with id #{line_item.id}")
+        Rails.logger.info("CSV order export opening fulfillment for order with id #{order.id} and " \
+                          "line item with id #{line_item.id}")
         # TODO add retries
         fulfillment = ShopifyAPI::Fulfillment.new
         fulfillment.prefix_options[:order_id] = order.id
@@ -191,23 +199,28 @@ module Fulfillment
         # line_item.fulfillment_status doesn't seem to always have the
         # most recent status, probably due to Shopify's caching. Always examine
         # the status of order.fulfillment.
-        Rails.logger.info("CSV order export checking if order with id #{order.id} and line item id #{line_item.id} is fulfillable for sku #{line_item.sku}")
+        Rails.logger.info("CSV order export checking if order with id #{order.id} and line " \
+                          "item id #{line_item.id} is fulfillable for sku #{line_item.sku}")
         order.fulfillments.each do |fulfillment|
           fulfillment.line_items.each do |fulfillment_line_item|
             next unless fulfillment_line_item.id == line_item.id
             if fulfillment.status == 'success' || fulfillment.status == 'open'
-              Rails.logger.info("CSV order export skipping order with id #{order.id} and fulfillment with id #{fulfillment.id} because fulfillment status is #{fulfillment.status}")
+              Rails.logger.info("CSV order export skipping order with id #{order.id} and " \
+                                "fulfillment with id #{fulfillment.id} because fulfillment " \
+                                "status is #{fulfillment.status}")
               return false
             end
             # If fulfillment for this line item was previously cancelled,
             # we want to open a new fulfillment.
-            Rails.logger.info("CSV order export order with id #{order.id} and fulfillment with id #{fulfillment.id} is fulfillable fulfillment status is #{fulfillment.status}")
+            Rails.logger.info("CSV order export order with id #{order.id} and fulfillment with " \
+                              "id #{fulfillment.id} is fulfillable fulfillment status is #{fulfillment.status}")
             return true
           end
         end
         # No fulfillment for the line item currently exists,
         # so we want to open a new fulfillment.
-        Rails.logger.info("CSV order export order with id #{order.id} and line item with id #{line_item.id} is fulfillable because no fulfillment exists")
+        Rails.logger.info("CSV order export order with id #{order.id} and line " \
+                          "item with id #{line_item.id} is fulfillable because no fulfillment exists")
         true
       end
 

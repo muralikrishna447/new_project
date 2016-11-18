@@ -23,10 +23,14 @@ module Fulfillment
   class S3StorageProvider
     include Fulfillment::CSVStorageProvider
 
+    def read(params)
+      validate_params(params)
+      s3 = Aws::S3::Resource.new(region: params[:storage_s3_region])
+      s3.bucket(params[:storage_s3_bucket]).object(params[:storage_filename]).get.body.read
+    end
+
     def save(output, params)
-      raise 'storage_s3_bucket is a required param' unless params[:storage_s3_bucket]
-      raise 'storage_s3_region is a required param' unless params[:storage_s3_region]
-      raise 'storage_filename is a required param' unless params[:storage_filename]
+      validate_params(params)
       raise 'type is a required param' unless params[:type]
 
       Rails.logger.info("S3 storage provider saving object with params #{params}")
@@ -37,18 +41,37 @@ module Fulfillment
         .object("#{params[:type]}/#{params[:storage_filename]}")
       obj.put(body: output)
     end
+
+    private
+
+    def validate_params(params)
+      raise 'storage_s3_bucket is a required param' unless params[:storage_s3_bucket]
+      raise 'storage_s3_region is a required param' unless params[:storage_s3_region]
+      raise 'storage_filename is a required param' unless params[:storage_filename]
+    end
   end
 
   # Stores CSV files to local filesystem
   class FileStorageProvider
     include Fulfillment::CSVStorageProvider
 
+    def read(params)
+      validate_params(params)
+      File.open(params[:storage_filename], 'r').read
+    end
+
     def save(output, params)
+      validate_params(params)
       raise 'type is a required param' unless params[:type]
-      raise 'storage_filename is a required param' unless params[:storage_filename]
 
       Rails.logger.info("File storage provider saving object with params #{params}")
       File.write(params[:storage_filename], output)
+    end
+
+    private
+
+    def validate_params(params)
+      raise 'storage_filename is a required param' unless params[:storage_filename]
     end
   end
 end
