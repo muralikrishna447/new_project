@@ -58,6 +58,17 @@ module Fulfillment
       ]
     end
 
+    def self.transform_sku(sku)
+
+      if sku.start_with?('TX')
+        return "ThermoPop : #{sku}"
+      elsif sku.start_with?('THS')
+        return "Classic Thermapen : #{sku}"
+      end
+
+      raise "Unexpected SKU #{sku}"
+    end
+
     def self.transform(fulfillable)
       line_items = []
       fulfillable.line_items.each do |line_item|
@@ -77,7 +88,7 @@ module Fulfillment
             fulfillable.order.shipping_address.zip,
             fulfillable.order.shipping_address.phone,
             fulfillable.order.customer.email,
-            line_item.sku,
+            transform_sku(line_item.sku),
             line_item.quantity,
 
             # To be filled in by Thermoworks
