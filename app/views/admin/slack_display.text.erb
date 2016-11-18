@@ -12,15 +12,17 @@ Admin link: https://www.chefsteps.com/admin/users/<%= user.id %>
 Circulators: <%= circulator_users.count > 0 ? "" : "(none)" %>
 <% circulator_users.each_with_index do |cu, idx| %>
   <% circ = cu.circulator %>
-  Serial: <%= circ.serial_number %>
-  ID: <%= circ.id %>
-  Name: <%= circ.name %>
-  Notes: <%= circ.notes %>
-  Owned by user?: <%= cu.owner %>
-  Circulator address: <%= circ.circulator_id %>
-  Last accessed: <%= circ.last_accessed_at ? circ.last_accessed_at.in_time_zone(tz).to_s : "none" %>
-  <% if idx != circulator_users.count - 1 %>
-    ***************
+  <% if circ %>
+    Serial: <%= circ.serial_number %>
+    ID: <%= circ.id %>
+    Name: <%= circ.name %>
+    Notes: <%= circ.notes %>
+    Owned by user?: <%= cu.owner %>
+    Circulator address: <%= circ.circulator_id %>
+    Last accessed: <%= circ.last_accessed_at ? circ.last_accessed_at.in_time_zone(tz).to_s : "none" %>
+    <% if idx != circulator_users.count - 1 %>
+      ***************
+    <% end %>
   <% end %>
 <% end %>
 ```
