@@ -32,6 +32,8 @@ Delve::Application.routes.draw do
   match '/content-discussion/:id', to: 'bloom#content_discussion'
   match '/content/:id', to: 'bloom#content'
 
+  get '/admin/slack_display', to:'admin#slack_display'
+
   get '/blog', to: redirect('http://blog.chefsteps.com/')
   get '/presskit', to: redirect('/press')
   get '/jouleapp', to: redirect('/getting-started-with-joule')
