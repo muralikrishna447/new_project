@@ -15,7 +15,8 @@ module Api
               response = {
                 id: @order.id,
                 fulfillment_status: @order.fulfillment_status,
-                shipping_address: @order.shipping_address
+                shipping_address: @order.shipping_address,
+                shipping_address_updatable: shipping_address_updatable(@order)
               }
               render_api_response 200, response
             else
@@ -71,6 +72,22 @@ module Api
             render_api_response(500, {message: 'Error confirming ShippingAddress'})
           end
           render_api_response 200, {message: "Successfully confirmed address for Order Id #{order_id}", order_id: order_id}
+        end
+
+        private
+
+        def shipping_address_updatable(order)
+          fulfillment_statuses = order.fulfillments.map{|f| f.status}
+          success_fulfillment_status = fulfillment_statuses.select { |status| status == 'success' }
+
+          if fulfillment_statuses.include?('open') || fulfillment_statuses.include?('pending') # Not updatable if any fulfillments are open or pending
+            return false
+          elsif fulfillment_statuses.length == success_fulfillment_status.length # Not updatable if all status equal success
+            return false
+          else
+            return true
+          end
+
         end
 
       end
