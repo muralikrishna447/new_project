@@ -1,7 +1,7 @@
 {
    "order":{
-      "id":101,
-      "email":"customer_1@chefsteps.com",
+      "id":404,
+      "email":"customer_4@chefsteps.com",
       "closed_at":null,
       "created_at":"2016-09-01T12:51:09-07:00",
       "updated_at":"2016-09-01T14:30:03-07:00",
@@ -63,7 +63,7 @@
 
       ],
       "tags":"",
-      "contact_email":"customer_1@chefsteps.com",
+      "contact_email":"customer_4@chefsteps.com",
       "order_status_url":"https:\/\/store.chocolateyshatner.com\/10875762\/checkouts\/90492e5109287802e95dda6db0a4a153\/thank_you_token?key=ce4de079136a354ac81852a8d2af887a",
       "line_items":[
          {
@@ -90,7 +90,7 @@
             "product_exists":true,
             "fulfillable_quantity":0,
             "total_discount":"0.00",
-            "fulfillment_status":"fulfilled",
+            "fulfillment_status":"open",
             "tax_lines":[
                {
                   "title":"WA State Tax",
@@ -178,8 +178,8 @@
       "fulfillments":[
          {
             "id":3463384007,
-            "order_id":101,
-            "status":null,
+            "order_id":404,
+            "status":"open",
             "created_at":"2016-09-01T14:30:03-07:00",
             "service":"manual",
             "updated_at":"2016-09-01T14:30:03-07:00",
@@ -259,7 +259,7 @@
          },
          {
             "id":3462883207,
-            "order_id":101,
+            "order_id":404,
             "status":"cancelled",
             "created_at":"2016-09-01T13:03:46-07:00",
             "service":"manual",
@@ -340,7 +340,7 @@
          },
          {
             "id":3462864775,
-            "order_id":101,
+            "order_id":404,
             "status":"cancelled",
             "created_at":"2016-09-01T13:00:43-07:00",
             "service":"manual",
@@ -421,7 +421,7 @@
          },
          {
             "id":3462825223,
-            "order_id":101,
+            "order_id":404,
             "status":"cancelled",
             "created_at":"2016-09-01T12:55:06-07:00",
             "service":"manual",
@@ -523,7 +523,7 @@
          "orders_count":22,
          "state":"enabled",
          "total_spent":"0.00",
-         "last_order_id":101,
+         "last_order_id":404,
          "note":null,
          "verified_email":true,
          "multipass_identifier":"10001",
