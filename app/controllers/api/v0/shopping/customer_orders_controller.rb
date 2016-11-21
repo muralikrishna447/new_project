@@ -8,7 +8,6 @@ module Api
         def show
           begin
             @order = ShopifyAPI::Order.find(params[:id])
-            puts "ORDER FOUND: #{@order}"
             customer_multipass_identifier = @order.customer.multipass_identifier
             current_api_user_id = current_api_user.id.to_s
             current_api_user_role = current_api_user.role
