@@ -156,25 +156,25 @@ describe Api::V0::Shopping::CustomerOrdersController do
     context 'shipping_address_updatable(order)' do
       it "should return true for an unfulfilled order" do
         order = ShopifyAPI::Order.find(101)
-        updatable = @controller.instance_eval { shipping_address_updatable(order) }
+        updatable = @controller.instance_eval { shipping_address_updatable(order)[:updatable] }
         expect(updatable).to be_true
       end
 
       it "should return false for an order with any open fulfillments" do
         order = ShopifyAPI::Order.find(404)
-        updatable = @controller.instance_eval { shipping_address_updatable(order) }
+        updatable = @controller.instance_eval { shipping_address_updatable(order)[:updatable] }
         expect(updatable).to be_false
       end
 
       it "should return false for an order with any pending fulfillments" do
         order = ShopifyAPI::Order.find(505)
-        updatable = @controller.instance_eval { shipping_address_updatable(order) }
+        updatable = @controller.instance_eval { shipping_address_updatable(order)[:updatable] }
         expect(updatable).to be_false
       end
 
       it "should return false for an order with any pending fulfillments" do
         order = ShopifyAPI::Order.find(606)
-        updatable = @controller.instance_eval { shipping_address_updatable(order) }
+        updatable = @controller.instance_eval { shipping_address_updatable(order)[:updatable] }
         expect(updatable).to be_false
       end
 

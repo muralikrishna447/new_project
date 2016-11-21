@@ -11,12 +11,14 @@ module Api
             customer_multipass_identifier = @order.customer.multipass_identifier
             current_api_user_id = current_api_user.id.to_s
             current_api_user_role = current_api_user.role
+            shipping_address_updatable = shipping_address_updatable(@order)
             if current_api_user && (customer_multipass_identifier == current_api_user_id || current_api_user_role == 'admin')
               response = {
                 id: @order.id,
                 fulfillment_status: @order.fulfillment_status,
                 shipping_address: @order.shipping_address,
-                shipping_address_updatable: shipping_address_updatable(@order)
+                shipping_address_updatable: shipping_address_updatable[:updatable],
+                update_message: shipping_address_updatable[:update_message]
               }
               render_api_response 200, response
             else
@@ -81,13 +83,19 @@ module Api
           success_fulfillment_status = fulfillment_statuses.select { |status| status == 'success' }
 
           if fulfillment_statuses.include?('open') || fulfillment_statuses.include?('pending') # Not updatable if any fulfillments are open or pending
-            return false
+            updatable = false
+            update_message = 'One or more items in your order are being prepared for shipping.'
           elsif fulfillment_statuses.length == success_fulfillment_status.length # Not updatable if all status equal success
-            return false
+            updatable = false
+            update_message = 'All of the items in this order have been shipped.'
           else
-            return true
+            updatable = true
           end
 
+          {
+            updatable: updatable,
+            update_message: update_message
+          }
         end
 
       end
