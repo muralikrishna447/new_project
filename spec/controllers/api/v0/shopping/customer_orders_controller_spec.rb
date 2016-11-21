@@ -159,6 +159,7 @@ describe Api::V0::Shopping::CustomerOrdersController do
         updatable = @controller.instance_eval { shipping_address_updatable(order)[:updatable] }
         expect(updatable).to be_true
       end
+      
 
       it "should return false for an order with any open fulfillments" do
         order = ShopifyAPI::Order.find(404)

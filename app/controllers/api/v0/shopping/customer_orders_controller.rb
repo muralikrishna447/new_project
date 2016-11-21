@@ -80,14 +80,13 @@ module Api
 
         def shipping_address_updatable(order)
           fulfillment_statuses = order.fulfillments.map{|f| f.status}
-          success_fulfillment_status = fulfillment_statuses.select { |status| status == 'success' }
 
           if fulfillment_statuses.include?('open') || fulfillment_statuses.include?('pending') # Not updatable if any fulfillments are open or pending
             updatable = false
             update_message = 'One or more items in your order are being prepared for shipping.'
-          elsif fulfillment_statuses.length == success_fulfillment_status.length # Not updatable if all status equal success
+          elsif fulfillment_statuses.include?('success') # Not updatable if all status equal success
             updatable = false
-            update_message = 'All of the items in this order have been shipped.'
+            update_message = 'One or more items in this order have been shipped.'
           else
             updatable = true
           end

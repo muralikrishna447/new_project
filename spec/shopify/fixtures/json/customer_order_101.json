@@ -179,7 +179,7 @@
          {
             "id":3463384007,
             "order_id":101,
-            "status":"success",
+            "status":null,
             "created_at":"2016-09-01T14:30:03-07:00",
             "service":"manual",
             "updated_at":"2016-09-01T14:30:03-07:00",
