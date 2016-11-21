@@ -75,11 +75,9 @@ module Fulfillment
       line_items = []
       fulfillable.line_items.each do |line_item|
         order = fulfillable.order
-        # Thermoworks *loses* the line item, apparently, so add it to the order_id
-        order_id = "#{order.id}-#{line_item.id}"
         line_items <<
           [
-            order_id,
+            order.id,
             line_item.id,
             order.created_at,
             fulfillable.order.shipping_address.name,
