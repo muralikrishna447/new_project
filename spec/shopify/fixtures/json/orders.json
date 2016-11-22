@@ -399,7 +399,7 @@
     },
     {
       "id": 100005,
-      "customer":{"multipass_identifier":123},
+      "customer":{"multipass_identifier":123, "email": "test@chefsteps.com"},
       "financial_status": "paid",
       "fulfillment_status": "unfilfilled",
       "note_attributes":[{"name":"gift-order", "value":"true"}],
