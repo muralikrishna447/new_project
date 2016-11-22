@@ -1,0 +1,44 @@
+require './rails_shim'
+require '../../app/models/shopify/order'
+
+#
+# Exports Shopify Joule orders using the API to a CSV on standard output.
+# Options:
+#   --key: Your Shopify API key
+#   --password: Your Shopify API key password
+#   --store: The name of the Shopify store ('delve' for prod, or 'chefsteps-staging')
+#
+
+# Options parsing
+options = {}
+option_parser = OptionParser.new do |option|
+  option.on('-k', '--key API_KEY', 'Shopify API key') do |api_key|
+    options[:api_key] = api_key
+  end
+
+  option.on('-p', '--password PASSWORD', 'Shopify password') do |password|
+    options[:password] = password
+  end
+
+  option.on('-s', '--store STORE', 'Shopify store name') do |store|
+    options[:store] = store
+  end
+
+  option.on('-q', '--quantity QUANTITY', 'Quantity to export') do |store|
+    options[:quantity] = store
+  end
+end
+option_parser.parse!
+raise '--key is required' unless options[:api_key]
+raise '--password is required' unless options[:password]
+raise '--store is required' unless options[:store]
+raise '--quantity is required' unless options[:quantity]
+
+# Configure shopify client
+ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
+
+Fulfillment::RostiOrderExporter.perform(
+  storage: 'stdout',
+  open_fulfillment: false,
+  quantity: options[:quantity].to_i
+)

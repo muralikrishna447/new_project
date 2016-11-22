@@ -95,7 +95,7 @@ describe Fulfillment::RostiOrderExporter do
     end
 
     it 'transforms fulfillable line items into columns' do
-      expect(Fulfillment::RostiOrderExporter.transform(fulfillable)).to match_array(
+      expect(Fulfillment::RostiOrderExporter.transform(fulfillable)).to eq(
         [
           [
             "#{order_name}-#{line_item_id_1}",
