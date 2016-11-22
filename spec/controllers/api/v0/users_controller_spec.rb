@@ -61,8 +61,8 @@ describe Api::V0::UsersController do
 
   context 'POST /create' do
     it 'should create a user' do
-      # Disabled until we fix the resque job
-      #Resque.should_receive(:enqueue)
+      Resque.should_receive(:enqueue).with(Forum, "initial_user", "bloomAPI", kind_of(Numeric))
+      Resque.should_receive(:enqueue).with(UserSync, kind_of(Numeric))
       post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should be_success
     end

@@ -16,7 +16,7 @@ module Api
               response = {
                 id: @order.id,
                 fulfillment_status: @order.fulfillment_status,
-                shipping_address: @order.shipping_address,
+                shipping_address: @order.method_defined?(:shipping_address) ? @order.shipping_address : nil,
                 shipping_address_updatable: shipping_address_updatable[:updatable],
                 update_message: shipping_address_updatable[:update_message]
               }
@@ -24,7 +24,8 @@ module Api
             else
               render_api_response(401, {message: 'Unauthorized'})
             end
-          rescue
+          rescue Exception => e
+            puts "EXCEPTION: #{e}"
             render_api_response(404, {message: 'Order not found'})
           end
         end
