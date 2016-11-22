@@ -9,7 +9,7 @@ Rails.configuration.redirect_by_key = {
   'jouleTroubleshooting' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/categories/203258268",
   'newSupportRequest' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/requests/new",
   'mySupportRequests' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/requests",
-  'ledTrouble' => "https://#{ENV['ZENDESK_DOMAIN']}hc/en-us/articles/223021708-The-LED-cute-little-light-thingy-on-my-Joule-is-blinking-Why-",
+  'ledTrouble' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/223021708-The-LED-cute-little-light-thingy-on-my-Joule-is-blinking-Why-",
   'voiceControl' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/231824567-Can-I-use-voice-control-with-Joule-How-do-I-connect-it-to-an-Amazon-Echo-or-Dot-",
   'hardwareTroubleshooting' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/sections/203206487-Hardware-Specs",
   # if an unrecognized key is provided, we return this fallback url
