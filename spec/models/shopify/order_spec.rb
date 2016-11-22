@@ -54,7 +54,6 @@ describe Shopify::Order do
       # Not stubbing fulfillment call since this is not made for joule
       WebMock::stub_request(:put, /\.com\/admin\/orders\/4507800.json/).
         to_return(:status => 200, :body => "", :headers => {})
-      JouleConfirmationMailer.should_receive(:prepare).and_call_original
       stub_metafield_get
       Shopify::Customer.should_receive(:sync_user)
       stub_metafield_post('all-but-joule-fulfilled', 'true')
@@ -66,7 +65,7 @@ describe Shopify::Order do
       @user.joule_purchase_count.should == 1
       # No premium with joule!
       @user.premium?.should == false
-      
+
     end
     it 'fulfills a zero-dollar joule order' do
       # Not stubbing fulfillment call since this is not made for joule
@@ -84,7 +83,7 @@ describe Shopify::Order do
       @user.joule_purchase_count.should == 1
       # No premium with joule!
       @user.premium?.should == false
-      
+
     end
     it 'fulfills premium gift order' do
 

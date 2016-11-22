@@ -1,7 +1,7 @@
 class Shopify::Order
   PREMIUM_SKU = 'cs10002'
   JOULE_SKU = 'cs10001'
-  
+
   METAFIELD_NAMESPACE = 'chefsteps' # duplicate code!?
   ALL_BUT_JOULE_FULFILLED_METAFIELD_NAME = 'all-but-joule-fulfilled'
   GIFT_ATTRIBUTE_NAME = "gift-order"
@@ -9,7 +9,7 @@ class Shopify::Order
   def initialize(api_order)
     @api_order = api_order
   end
-  
+
   def self.find(order_id)
     api_order = ShopifyAPI::Order.find(order_id)
     Shopify::Order.new(api_order)
@@ -40,9 +40,9 @@ class Shopify::Order
 
     @user
   end
-  
+
   # Processes a shopify order.
-  #  
+  #
   # For now, this means:
   #  * Making a customer premium when a customer purchases Premium or Joule
   #  * Creating fulfillment in Shopify for Premium orders
@@ -54,7 +54,7 @@ class Shopify::Order
   # A note on shopify fulfillment object:  Since there is a 1:1 mapping between
   # fulfillments in Shopify and line item units, premium membership associated
   # with Joule will not have an associated fulfillment object.
-  
+
   def process!
     # TODO - fix order processing race condition - probably optimistic locking on user
     Rails.logger.info "Processing order [#{@api_order.id}] with financial_status [#{@api_order.financial_status}] and fulfillment_status [#{@api_order.fulfillment_status}]"
@@ -88,11 +88,6 @@ class Shopify::Order
       else
         Rails.logger.info "Unknown sku [#{item.sku}]."
       end
-    end
-
-    # Exchange orders are, for the time being, identified by their total price
-    if order_contains_joule && @api_order.total_price.to_f != 0
-      JouleConfirmationMailer.prepare(user).deliver
     end
 
     if order_contains_joule && all_but_joule_fulfilled
@@ -137,7 +132,7 @@ class Shopify::Order
     Rails.logger.info("Found gift-order attribute #{gift_attribute.inspect}")
     return !gift_attribute.nil? && gift_attribute.value == 'true'
   end
-  
+
   def fulfill_premium(item, should_fulfill)
     item.quantity.times do
       if gift_order?
@@ -157,13 +152,13 @@ class Shopify::Order
       previously_premium = user.premium?
       user.make_premium_member(item.price)
       # use should_fulfill as a proxy for hackish proxy for contains joule
-      unless previously_premium || 
+      unless previously_premium ||
         PremiumWelcomeMailer.prepare(user, !should_fulfill).deliver
       end
     end
   end
-  
-  def send_analytics()  
+
+  def send_analytics()
     segment_data = build_segment_data
     Rails.logger.info "Segment data: #{segment_data}"
     if !Analytics.track(segment_data)
@@ -173,16 +168,16 @@ class Shopify::Order
     end
     Analytics.identify(user_id: user.id, traits: {joule_purchase_count: user.joule_purchase_count})
     Analytics.flush()
-    
+
     send_to_ga(build_transaction_ga_data)
     @api_order.line_items.each do |line_item|
       send_to_ga(build_product_ga_data(line_item))
     end
   end
-  
+
   def build_segment_data
     data = extract_analytics_data
-  
+
     products = @api_order.line_items.collect do |item|
       {
         id: item.sku,
@@ -230,7 +225,7 @@ class Shopify::Order
         products: products,
       }
     }
-  
+
   end
 
   # All these gibberish abbreviations are defined here:
@@ -254,7 +249,7 @@ class Shopify::Order
     ga_common['gclid'] = data['gclid'] if data['gclid']
     return ga_common
   end
-  
+
   def build_transaction_ga_data
     ga_transaction = {
       't' => 'transaction',
@@ -273,11 +268,11 @@ class Shopify::Order
       'ic' => line_item.sku
     }.merge(build_common_ga_data)
   end
-  
+
   def google_analytics_client_id(ga_cookie)
     ga_cookie.gsub(/^GA\d\.\d\./, '')
   end
-  
+
   def send_to_ga payload
     validation_url = 'https://www.google-analytics.com/debug/collect'
     validate_result = HTTParty.post(validation_url, { body: payload })
@@ -295,12 +290,12 @@ class Shopify::Order
   def extract_analytics_data
     # There is JS in the shopify cart that copies the utm and _ga cookies to note attributes
     data = {}
-        
+
     utm_data = @api_order.note_attributes.find {|attr| attr.name == 'utm'}
     if utm_data
       JSON.parse(utm_data.value).each_pair {|k,v| data[k] = v }
     end
-    
+
     ga_data = @api_order.note_attributes.find {|attr| attr.name == 'ga'}
     data['google_analytics_client_id'] = google_analytics_client_id(ga_data.value) if ga_data
 
