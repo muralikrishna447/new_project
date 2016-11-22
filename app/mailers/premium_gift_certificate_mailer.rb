@@ -2,7 +2,7 @@ class PremiumGiftCertificateMailer < ActionMailer::Base
 
   default from: "info@chefsteps.com"
 
-  def prepare(user, redeem_token)
+  def prepare(user_email, redeem_token)
     subject = "ChefSteps Premium Gift Certificate"
 
     substitutions = {
@@ -13,6 +13,6 @@ class PremiumGiftCertificateMailer < ActionMailer::Base
       }
     }
     headers['X-SMTPAPI'] = substitutions.to_json
-    mail(to: user.email, subject: subject)
+    mail(to: user_email, subject: subject)
   end
 end

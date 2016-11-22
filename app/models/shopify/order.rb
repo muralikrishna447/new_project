@@ -27,8 +27,8 @@ class Shopify::Order
     if user_id.nil?
       # TODO - emit metrics
       msg = "No multipass identifier set for Shopify customer email [#{@api_order.customer.email}]"
-      Rails.logger.error(msg)
-      raise msg
+      Rails.logger.info(msg)
+      return nil
     end
 
     @user = User.find(user_id)
@@ -39,6 +39,10 @@ class Shopify::Order
     end
 
     @user
+  end
+
+  def user_id
+    user ? user.id : nil
   end
 
   # Processes a shopify order.
@@ -78,7 +82,8 @@ class Shopify::Order
       # Hard code the SKUs for now, we can talk when we have more than two
       if item.sku == JOULE_SKU
         order_contains_joule = true
-        user.joule_purchased
+        # TODO - fix joule_purchase to be idempotent
+        user.joule_purchased if user
       elsif item.sku == PREMIUM_SKU
         if !gift_order? && item.quantity > 1
           raise "Order contains more than one non-gift premium."
@@ -103,21 +108,18 @@ class Shopify::Order
     Librato.timing 'shopify.fulfillment.initial.latency', initial_fulfillment_latency
 
     # Sync premium / discount status
-    Shopify::Customer.sync_user(user)
+    Shopify::Customer.sync_user(user) if user
     # TODO - figure out how to try to do this only once
     send_analytics
   end
 
 
   # PremiumWelcomeMailer.prepare(@user, data[:circulator_sale]).deliver rescue nil
-
   def send_gift_receipt(item)
-    # TODO - remove dupe
-    #user = User.find(@api_order.customer.multipass_identifier)
-
     Rails.logger.info("Sending Gift Receipt")
-    pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: item.price, redeemed: false)
-    PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver
+    pgc = PremiumGiftCertificate.create!(purchaser_id: user_id, price: item.price, redeemed: false)
+    puts @api_order.customer.inspect
+    PremiumGiftCertificateMailer.prepare(@api_order.customer.email, pgc.token).deliver
   end
 
   def all_but_joule_fulfilled?
@@ -166,7 +168,7 @@ class Shopify::Order
       Rails.logger.error(msg)
       raise msg
     end
-    Analytics.identify(user_id: user.id, traits: {joule_purchase_count: user.joule_purchase_count})
+    Analytics.identify(user_id: user_id, traits: {joule_purchase_count: user.joule_purchase_count})
     Analytics.flush()
 
     send_to_ga(build_transaction_ga_data)
@@ -192,7 +194,7 @@ class Shopify::Order
 
     {
       event: 'Completed Order Workaround',
-      user_id: user.id,
+      user_id: user_id,
       context: {
         'GoogleAnalytics' => {
           clientId: data['google_analytics_client_id']
@@ -237,7 +239,7 @@ class Shopify::Order
       'v' => 1,
       'tid' => ENV['GA_TRACKING_ID'],
       'cid' => data['google_analytics_client_id'],
-      'uid' => user.id,
+      'uid' => user_id,
       'cu' => 'USD',
       'ti' => @api_order.id
     }
