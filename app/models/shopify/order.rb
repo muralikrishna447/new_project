@@ -18,10 +18,6 @@ class Shopify::Order
   def user
     return @user unless @user.nil?
 
-    if @api_order.customer.multipass_identifier.nil?
-      Shopify::Customer.sync_user(user)
-    end
-
     # TODO - add test coverage for user not found scenarios
     user_id = @api_order.customer.multipass_identifier
     if user_id.nil?
@@ -168,12 +164,23 @@ class Shopify::Order
       Rails.logger.error(msg)
       raise msg
     end
-    Analytics.identify(user_id: user_id, traits: {joule_purchase_count: user.joule_purchase_count})
+    purchase_count = user ? user.joule_purchase_count : 1
+    data = {user_id: user_id, traits: {joule_purchase_count: purchase_count }}
+    add_user_id_or_anonymous(data)
+    Analytics.identify(data)
     Analytics.flush()
 
     send_to_ga(build_transaction_ga_data)
     @api_order.line_items.each do |line_item|
       send_to_ga(build_product_ga_data(line_item))
+    end
+  end
+
+  def add_user_id_or_anonymous(data)
+    if user_id
+      data[:user_id] = user_id
+    else
+      data[:anonymous_id] = @api_order.customer.email
     end
   end
 
@@ -192,9 +199,8 @@ class Shopify::Order
 
     skus = @api_order.line_items.collect{|line_item| line_item.sku}
 
-    {
+    data = {
       event: 'Completed Order Workaround',
-      user_id: user_id,
       context: {
         'GoogleAnalytics' => {
           clientId: data['google_analytics_client_id']
@@ -228,6 +234,9 @@ class Shopify::Order
       }
     }
 
+    add_user_id_or_anonymous(data)
+
+    data
   end
 
   # All these gibberish abbreviations are defined here:
@@ -238,11 +247,12 @@ class Shopify::Order
     ga_common = {
       'v' => 1,
       'tid' => ENV['GA_TRACKING_ID'],
-      'cid' => data['google_analytics_client_id'],
-      'uid' => user_id,
+      'cid' => data['google_analytics_client_id'] || SecureRandom.uuid,
       'cu' => 'USD',
       'ti' => @api_order.id
     }
+
+    ga_common['uid'] = user_id if user_id
     ga_common['cn'] = data['utm_campaign'] if data['utm_campaign']
     ga_common['cs'] = data['utm_source'] if data['utm_source']
     ga_common['cm'] = data['utm_medium'] if data['utm_medium']
