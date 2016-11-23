@@ -67,32 +67,54 @@ module Fulfillment
         tracking_numbers[order_id] = tracking_numbers_for_order[0]
       }
 
-      # 3. Create an open fulfillment for those line-items
+      # 3. Get order from Shopify and make sure it looks right
       Rails.logger.debug "Creating fulfillments for #{by_order_id.length} orders"
-      by_order_id.each_pair{|order_id, line_items|
-        tracking_number = tracking_numbers[order_id]
-        create_open_fulfillment(order_id, line_items)
+      to_fulfill = by_order_id.collect{|order_id, line_items|
+        order = find_and_validate_order(order_id, line_items)
+        {
+          order: order,
+          thermoworks_line_item_ids: line_items.collect{|li|
+            li['cs_line_item_id']
+          },
+          tracking_number: tracking_numbers[order_id]
+        }
       }
 
       # 4. Return a shipment... mixin is responsible for fulfilling
-      return []
+      shipments = to_fulfill.collect {|f|
+        open_fulfillment_and_create_shipment(f)
+      }
+      return shipments
     end
 
-    # TODO: should we do this on export???
-    def self.create_open_fulfillment(order_id, line_items)
-      Rails.logger.debug "Creating open fulfillment for #{order_id}"
+    private
+
+    def self.find_and_validate_order(order_id, line_items)
+      Rails.logger.debug "Validating thermoworks order #{order_id}"
       order = ShopifyAPI::Order.find(order_id)
       raise "Can't find order #{order_id}" unless order
 
+      #TODO: verify thermoworks line_items match the order.line_items
+      order
+    end
+
+    def self.open_fulfillment_and_create_shipment(f)
+      order = f[:order]
+      line_item_ids = f[:thermoworks_line_item_ids]
+      Rails.logger.debug "Creating open fulfillment for #{order.id}"
       fulfillment = ShopifyAPI::Fulfillment.new
       fulfillment.prefix_options[:order_id] = order.id
-      fulfillment.attributes[:line_items] = line_items.collect{|li|
-        {id: li['cs_line_item_id']}
-      }
+      fulfillment.attributes[:line_items] = line_item_ids.collect{|id| {id: id}}
       fulfillment.attributes[:status] = 'open'
       fulfillment.attributes[:notify_customer] = false
-      puts "order is #{order}"
-      puts fulfillment
+      #fulfillment.save
+
+      return Fulfillment::Shipment.new(
+        order: order,
+        fulfillments: fulfillment,
+        tracking_company: 'FedEx',
+        tracking_numbers: [f[:tracking_number]],
+      )
     end
 
   end
