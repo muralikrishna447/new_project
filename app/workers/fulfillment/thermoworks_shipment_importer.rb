@@ -94,7 +94,11 @@ module Fulfillment
       order = ShopifyAPI::Order.find(order_id)
       raise "Can't find order #{order_id}" unless order
 
-      #TODO: verify thermoworks line_items match the order.line_items
+      in_csv = Set.new line_items.collect{|li| li['cs_line_item_id'].to_i}
+      in_order = Set.new order.line_items.collect{|li| li.id}
+      raise "Order #{order_id} doesn't contain all " \
+            "line items for some reason" unless in_csv.subset? in_order
+
       order
     end
 
