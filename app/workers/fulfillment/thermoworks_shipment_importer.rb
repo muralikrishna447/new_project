@@ -50,7 +50,7 @@ module Fulfillment
       by_order_id = fulfilled_items.group_by{|item| item['cs_order_id']}
 
       # 2. Assert that all line-items have the same tracking number
-      Rails.logger.debug "Validating that tracking numbers for Thermoworks orders"
+      Rails.logger.debug "Validating tracking numbers for #{by_order_id.length} Thermoworks orders"
       tracking_numbers = {}
       by_order_id.each_pair{|order_id, line_items|
         tracking_numbers_for_order = line_items.group_by{|li|
@@ -68,7 +68,6 @@ module Fulfillment
       }
 
       # 3. Get order from Shopify and make sure it looks right
-      Rails.logger.debug "Creating fulfillments for #{by_order_id.length} orders"
       to_fulfill = by_order_id.collect{|order_id, line_items|
         order = find_and_validate_order(order_id, line_items)
         {
@@ -80,6 +79,7 @@ module Fulfillment
         }
       }
 
+      Rails.logger.debug "Creating open fulfillments for #{by_order_id.length} orders"
       # 4. Return a shipment... mixin is responsible for fulfilling
       shipments = to_fulfill.collect {|f|
         open_fulfillment_and_create_shipment(f)
