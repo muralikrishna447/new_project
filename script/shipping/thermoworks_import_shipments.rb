@@ -36,3 +36,9 @@ end
 option_parser.parse!
 conf = get_config(options[:env])
 setup_shopify(conf)
+
+Fulfillment::ThermoworksShipmentImporter.perform(
+  complete_fulfillment: false,
+  storage: 'file',
+  storage_filename: options[:input]
+)
