@@ -74,7 +74,7 @@ module Fulfillment
         {
           order: order,
           thermoworks_line_item_ids: line_items.collect{|li|
-            li['cs_line_item_id']
+            li['cs_line_item_id'].to_i
           },
           tracking_number: tracking_numbers[order_id]
         }
@@ -93,7 +93,6 @@ module Fulfillment
       Rails.logger.debug "Validating thermoworks order #{order_id}"
       order = ShopifyAPI::Order.find(order_id)
       raise "Can't find order #{order_id}" unless order
-
       in_csv = Set.new line_items.collect{|li| li['cs_line_item_id'].to_i}
       in_order = Set.new order.line_items.collect{|li| li.id}
       raise "Order #{order_id} doesn't contain all " \
@@ -111,11 +110,16 @@ module Fulfillment
       fulfillment.attributes[:line_items] = line_item_ids.collect{|id| {id: id}}
       fulfillment.attributes[:status] = 'open'
       fulfillment.attributes[:notify_customer] = false
-      #fulfillment.save
+      fulfillment.save
 
       return Fulfillment::Shipment.new(
         order: order,
-        fulfillments: fulfillment,
+
+        # NOTE: fulfillment.save does not update the id!! So we need
+        # to search for the fulfillment again, otherwise the Shopify
+        # gem will fail by trying to access an invalid URL:
+        #   /admin/orders/<id>/fulfillments/new/complete.json
+        fulfillments: fulfillments(order, line_item_ids),
         tracking_company: 'FedEx',
         tracking_numbers: [f[:tracking_number]],
       )
