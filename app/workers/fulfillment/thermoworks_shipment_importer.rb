@@ -101,6 +101,9 @@ module Fulfillment
       order
     end
 
+    # NOTE: Easiest to open a fulfillment at import time, since the
+    # exporter opens a fulfillment per line-item, and here we want to
+    # open a fulfillment for *all* line items
     def self.open_fulfillment_and_create_shipment(f)
       order = f[:order]
       line_item_ids = f[:thermoworks_line_item_ids]
