@@ -79,11 +79,19 @@ describe Api::V0::FirmwareController do
 
     update['type'].should == 'WIFI_FIRMWARE'
     transfer = update['transfer']
-    transfer['type'].should == 'tftp'
-    Rails.application.config.tftp_hosts.include?(transfer['host']).should == true
-    transfer['sha256'].should == @sha256
-    transfer['filename'].should == @filename
-    transfer['totalBytes'].should == @totalBytes
+    transfer.length.should == 2
+
+    transfer[0]['type'].should == 'http'
+    transfer[0]['host'].should == Rails.application.config.firmware_download_host
+    transfer[0]['sha256'].should == @sha256
+    transfer[0]['filename'].should == @filename
+    transfer[0]['totalBytes'].should == @totalBytes
+
+    transfer[1]['type'].should == 'tftp'
+    Rails.application.config.tftp_hosts.include?(transfer[1]['host']).should == true
+    transfer[1]['sha256'].should == @sha256
+    transfer[1]['filename'].should == @filename
+    transfer[1]['totalBytes'].should == @totalBytes
   end
 
   it 'should return unauthorized if not logged in' do
@@ -166,52 +174,5 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
     post :updates
     response.should_not be_success
-  end
-
-  it 'should get HTTP transfer type for wifi firmware if enabled and capable' do
-    BetaFeatureService.stub(:user_has_feature).with(anything(), 'esp_http_dfu')
-      .and_return(true)
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    versions = [
-      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10', 'hardwareVersion' => 'JL.p5'},
-      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '900', 'espFirmwareVersion' => 's360', 'hardwareVersion' => 'JL.p5'},
-    ]
-    for v in versions
-      post :updates, v
-      response.should be_success
-      resp = JSON.parse(response.body)
-      resp['updates'].length.should == 1
-      update = resp['updates'].first
-
-      update['type'].should == 'WIFI_FIRMWARE'
-      transfer = update['transfer']
-      transfer['type'].should == 'http'
-      transfer['host'].should == Rails.application.config.firmware_download_host
-      transfer['sha256'].should == @sha256
-      transfer['filename'].should == @filename
-      transfer['totalBytes'].should == @totalBytes
-    end
-  end
-
-  it 'should not get HTTP transfer type for wifi firmware if not capable' do
-    BetaFeatureService.stub(:user_has_feature).with(anything(), 'esp_http_dfu')
-      .and_return(true)
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    versions = [
-      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '9', 'hardwareVersion' => 'JL.p5'},
-      {'appVersion'=> '0.19.0', 'appFirmwareVersion'=> '47', 'espFirmwareVersion' => '10', 'hardwareVersion' => 'JL.p5'},
-      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '46', 'espFirmwareVersion' => '10', 'hardwareVersion' => 'JL.p5'},
-      {'appVersion'=> '2.33.1', 'appFirmwareVersion'=> '800', 'espFirmwareVersion' => 's350', 'hardwareVersion' => 'JL.p5'},
-    ]
-    for v in versions
-      post :updates, v
-      response.should be_success
-      resp = JSON.parse(response.body)
-      resp['updates'].length.should == 1
-      update = resp['updates'].first
-      update['type'].should == 'WIFI_FIRMWARE'
-      transfer = update['transfer']
-      transfer['type'].should == 'tftp'
-    end
   end
 end
