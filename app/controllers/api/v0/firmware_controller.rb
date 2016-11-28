@@ -92,33 +92,6 @@ module Api
         render_api_response 200, resp
       end
 
-      private
-      def http_dfu_capable?(params)
-        app_version = Semverse::Version.new(params[:appVersion])
-        esp_version_str = params[:espFirmwareVersion] || ''
-        is_staging = esp_version_str.start_with?('s')
-        esp_version = esp_version_str.sub('s', '').to_i
-
-        # Sigh...
-        if is_staging
-          is_capable = (
-            app_version >= Semverse::Version.new("2.33.1") &&
-            (params[:appFirmwareVersion] || '0').to_i >= 900 &&
-            esp_version >= 360
-          )
-        else
-          is_capable = (
-            app_version >= Semverse::Version.new("2.33.1") &&
-            (params[:appFirmwareVersion] || '0').to_i >= 47 &&
-            esp_version >= 10
-          )
-        end
-
-        logger.debug("HTTP DFU capable: #{is_capable} params: #{params}")
-
-        return is_capable
-      end
-
       def get_s3_object_as_json(key)
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
         bucket_name = Rails.application.config.firmware_bucket
