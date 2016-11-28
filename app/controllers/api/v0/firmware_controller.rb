@@ -28,6 +28,11 @@ module Api
           return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify mobile app version'}
         end
 
+        unless dfu_capable?(params)
+          logger.info("Not DFU capable")
+          return render_empty_response
+        end
+
         hardware_version = params[:hardwareVersion]
         if hardware_version != 'JL.p5'
           logger.info("Hardware version does not support DFU: #{hardware_version}")
@@ -56,11 +61,6 @@ module Api
           return render_empty_response
         end
 
-        dfu_over_http = (
-          BetaFeatureService.user_has_feature(user, 'esp_http_dfu') and
-          http_dfu_capable?(params)
-        )
-
         updates = []
         manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
@@ -76,7 +76,7 @@ module Api
           if u['type'] == 'APPLICATION_FIRMWARE'
             u = get_app_firmware_metadata(u)
           elsif u['type'] == 'WIFI_FIRMWARE'
-            u = get_wifi_firmware_metadata(u, dfu_over_http)
+            u = get_wifi_firmware_metadata(u)
           end
 
           # We used to store the versionType in the manifest, but now
@@ -87,8 +87,7 @@ module Api
         end
 
         resp = {
-          updates: updates,
-          bootModeType: 'APPLICATION_BOOT_MODE'
+          updates: updates
         }
 
         if manifest['releaseNotesUrl']
@@ -99,31 +98,12 @@ module Api
       end
 
       private
-      def http_dfu_capable?(params)
+      def dfu_capable?(params)
+        # New backwards incompatible version manifest type for 2.40.2
         app_version = Semverse::Version.new(params[:appVersion])
-        esp_version_str = params[:espFirmwareVersion] || ''
-        is_staging = esp_version_str.start_with?('s')
-        esp_version = esp_version_str.sub('s', '').to_i
-
-        # Sigh...
-        if is_staging
-          is_capable = (
-            app_version >= Semverse::Version.new("2.33.1") &&
-            (params[:appFirmwareVersion] || '0').to_i >= 900 &&
-            esp_version >= 360
-          )
-        else
-          is_capable = (
-            app_version >= Semverse::Version.new("2.33.1") &&
-            (params[:appFirmwareVersion] || '0').to_i >= 47 &&
-            esp_version >= 10
-          )
-        end
-
-        logger.debug("HTTP DFU capable: #{is_capable} params: #{params}")
-
-        return is_capable
+        return app_version >= Semverse::Version.new("2.40.2")
       end
+
 
       def get_s3_object_as_json(key)
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
@@ -134,49 +114,46 @@ module Api
         JSON.parse(o.read)
       end
 
-      def get_wifi_firmware_metadata(update, over_http = false)
+      def get_wifi_firmware_metadata(update)
         type = update['type'] # should always be WIFI_FIRMWARE
         version = update['version']
         metadata = get_s3_object_as_json(
           "joule/#{type}/#{version}/metadata.json"
         )
-
         u = update.dup
-        u['transfer'] = {
-          "filename"    => metadata['filename'],
-          "sha256"      => metadata['sha256'],
-          "totalBytes"  => metadata['totalBytes'], # can be nil..
-        }
-
-        if over_http
-          u['transfer'].update({
+        u['transfer'] = [
+          {
             "type"        => "http",
-            "host"        => Rails.application.config.firmware_download_host
-          })
-        else
-          # round-robin choose a TFTP host.  DIY load balancing!
-          tftp_host = Rails.application.config.tftp_hosts.sample
-          u['transfer'].update({
+            "host"        => Rails.application.config.firmware_download_host,
+            "filename"    => metadata['filename'],
+            "sha256"      => metadata['sha256'],
+            "totalBytes"  => metadata['totalBytes'],
+          },
+          {
             "type"        => "tftp",
-            "host"        => tftp_host,
-          })
-        end
+            # round-robin choose a TFTP host.  DIY load balancing!
+            "host"        => Rails.application.config.tftp_hosts.sample,
+            "filename"    => metadata['filename'],
+            "sha256"      => metadata['sha256'],
+            "totalBytes"  => metadata['totalBytes'],
+          }
+        ]
 
         u
       end
 
       def get_app_firmware_metadata(update)
         u = update.dup
-        # TODO: the location key is now deprecated.  Remove this line
-        # after breaking change day!
         link = get_firmware_link(u['type'], u['version'])
-        u['location'] = link
 
-        # This is the new style
-        u['transfer'] = {
-          "url" => link,
-          "type" => "download",
-        }
+        u['bootModeType'] = 'APPLICATION_BOOT_MODE'
+
+        u['transfer'] = [
+          {
+            "url" => link,
+            "type" => "download",
+          }
+        ]
 
         u
       end
