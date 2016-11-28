@@ -118,6 +118,14 @@ describe Api::V0::FirmwareController do
     resp['updates'].length.should == 0
   end
 
+  it 'should get no updates if old app version' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    post :updates, {'appVersion'=> '2.40.0', 'hardwareVersion' => 'JL.p5'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
+  end
+
   it 'should get firmware version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
 
