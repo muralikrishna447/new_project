@@ -124,11 +124,12 @@ describe Api::V0::FirmwareController do
     update = resp['updates'].first
     update['type'].should == 'APPLICATION_FIRMWARE'
 
-    # TODO: remove this check after breaking-change day
-    update['location'].should == @link
 
-    update['transfer']['url'].should == @link
-    update['transfer']['type'].should == 'download'
+    update['bootModeType'].should == 'APPLICATION_BOOT_MODE'
+    update['transfer'].length.should == 1
+
+    update['transfer'][0]['url'].should == @link
+    update['transfer'][0]['type'].should == 'download'
 
   end
 

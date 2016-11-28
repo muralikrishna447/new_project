@@ -87,8 +87,7 @@ module Api
         end
 
         resp = {
-          updates: updates,
-          bootModeType: 'APPLICATION_BOOT_MODE'
+          updates: updates
         }
 
         if manifest['releaseNotesUrl']
@@ -167,16 +166,16 @@ module Api
 
       def get_app_firmware_metadata(update)
         u = update.dup
-        # TODO: the location key is now deprecated.  Remove this line
-        # after breaking change day!
         link = get_firmware_link(u['type'], u['version'])
-        u['location'] = link
 
-        # This is the new style
-        u['transfer'] = {
-          "url" => link,
-          "type" => "download",
-        }
+        u['bootModeType'] = 'APPLICATION_BOOT_MODE'
+
+        u['transfer'] = [
+          {
+            "url" => link,
+            "type" => "download",
+          }
+        ]
 
         u
       end
