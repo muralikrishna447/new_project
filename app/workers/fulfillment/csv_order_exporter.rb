@@ -188,7 +188,13 @@ module Fulfillment
         fulfillment.attributes[:line_items] = [{ id: line_item.id }]
         fulfillment.attributes[:status] = 'open'
         fulfillment.attributes[:notify_customer] = false
-        fulfillment.save
+        unless fulfillment.save
+          # Creating the fulfillment will oddly return false in certain cases,
+          # (e.g., an order has been refunded but not cancelled). The safest
+          # thing to do here is bail.
+          raise "CSV order export opening fulfillment failed for order with id #{order.id} and " \
+                "line item with id #{line_item.id}"
+        end
       end
 
       def fulfillable_line_item?(order, line_item, sku)

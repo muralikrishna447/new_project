@@ -390,6 +390,13 @@ describe Fulfillment::CSVOrderExporter do
       stub_open_fulfillment(order_2.id, order_2_line_item.id)
       exporter.open_fulfillments(fulfillables)
     end
+
+    context 'saving open fulfillment returns false' do
+      it 'raises error', focus: true do
+        ShopifyAPI::Fulfillment.any_instance.should_receive(:save).and_return(false)
+        expect { exporter.open_fulfillments([fulfillable_1]) }.to raise_error
+      end
+    end
   end
 
   describe 'perform' do
