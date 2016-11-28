@@ -28,6 +28,11 @@ module Api
           return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify mobile app version'}
         end
 
+        unless dfu_capable?(params)
+          logger.info("Not DFU capable")
+          return render_empty_response
+        end
+
         hardware_version = params[:hardwareVersion]
         if hardware_version != 'JL.p5'
           logger.info("Hardware version does not support DFU: #{hardware_version}")
@@ -91,6 +96,14 @@ module Api
 
         render_api_response 200, resp
       end
+
+      private
+      def dfu_capable?(params)
+        # New backwards incompatible version manifest type for 2.40.2
+        app_version = Semverse::Version.new(params[:appVersion])
+        return app_version >= Semverse::Version.new("2.40.2")
+      end
+
 
       def get_s3_object_as_json(key)
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
