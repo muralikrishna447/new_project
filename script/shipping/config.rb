@@ -5,6 +5,11 @@ def get_config(env)
       shopify_key: ENV['SHOPIFY_API_KEY'],
       shopify_pass: ENV['SHOPIFY_PASSWORD'],
       shopify_store: 'chefsteps-staging',
+    },
+    'production' => {
+      shopify_key: ENV['SHOPIFY_API_KEY'],
+      shopify_pass: ENV['SHOPIFY_PASSWORD'],
+      shopify_store: 'delve',
     }
   }[env]
   raise "No config for environment: #{env}" unless conf
