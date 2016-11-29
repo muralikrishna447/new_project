@@ -9,9 +9,9 @@ module Fulfillment
 
     ROSTI_ORDER_NUMBER_COLUMN = '[order_number]'
 
-    SERIAL_NUMBER_COLUMN = '[TRAN]'
+    SERIAL_NUMBER_COLUMN = '[tran]'
 
-    TRACKING_NUMBER_COLUMN = '[CRN]'
+    TRACKING_NUMBER_COLUMN = '[crn]'
 
     def self.configure(params)
       raise 's3_bucket is a required param' unless params[:s3_bucket]
