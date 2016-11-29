@@ -388,14 +388,11 @@ describe Fulfillment::CSVOrderExporter do
     it 'opens fulfillments for all fulfillable line items' do
       stub_open_fulfillment(order_1.id, order_1_line_item.id)
       stub_open_fulfillment(order_2.id, order_2_line_item.id)
+      Shopify::Utils
+        .should_receive(:send_returns_true)
+        .with(instance_of(ShopifyAPI::Fulfillment), :save)
+        .twice
       exporter.open_fulfillments(fulfillables)
-    end
-
-    context 'saving open fulfillment returns false' do
-      it 'raises error', focus: true do
-        ShopifyAPI::Fulfillment.any_instance.should_receive(:save).and_return(false)
-        expect { exporter.open_fulfillments([fulfillable_1]) }.to raise_error
-      end
     end
   end
 

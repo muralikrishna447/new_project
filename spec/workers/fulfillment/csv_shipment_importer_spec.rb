@@ -129,6 +129,15 @@ describe Fulfillment::CSVShipmentImporter do
       stub_fulfillment_update(order_id, fulfillment_2.id, tracking_company, tracking_numbers, true)
       stub_fulfillment_complete(order_id, fulfillment_2.id)
 
+      Shopify::Utils
+        .should_receive(:send_returns_true)
+        .with(instance_of(ShopifyAPI::Fulfillment), :save)
+        .exactly(4).times
+      Shopify::Utils
+        .should_receive(:send_returns_true)
+        .with(instance_of(ShopifyAPI::Fulfillment), :complete)
+        .twice
+
       importer.complete_shipment(shipment)
     end
   end

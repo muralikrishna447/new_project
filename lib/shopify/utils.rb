@@ -52,5 +52,11 @@ module Shopify
       end
       all_orders
     end
+
+    def self.send_returns_true(obj, method_symbol)
+      unless obj.send(method_symbol)
+        raise "Calling #{method_symbol} returned false on #{obj.inspect}"
+      end
+    end
   end
 end
