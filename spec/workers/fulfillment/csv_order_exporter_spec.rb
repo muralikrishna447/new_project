@@ -365,6 +365,7 @@ describe Fulfillment::CSVOrderExporter do
     let(:order_1_line_item) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 11
+      line_item.fulfillable_quantity = 1
       line_item
     end
     let(:order_1) do
@@ -376,6 +377,7 @@ describe Fulfillment::CSVOrderExporter do
     let(:order_2_line_item) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 21
+      line_item.fulfillable_quantity = 2
       line_item
     end
     let(:order_2) do
@@ -399,8 +401,8 @@ describe Fulfillment::CSVOrderExporter do
     let(:fulfillables) { [fulfillable_1, fulfillable_2] }
 
     it 'opens fulfillments for all fulfillable line items' do
-      stub_open_fulfillment(order_1.id, order_1_line_item.id)
-      stub_open_fulfillment(order_2.id, order_2_line_item.id)
+      stub_open_fulfillment(order_1.id, order_1_line_item.id, order_1_line_item.fulfillable_quantity)
+      stub_open_fulfillment(order_2.id, order_2_line_item.id, order_2_line_item.fulfillable_quantity)
       Shopify::Utils
         .should_receive(:send_assert_true)
         .with(instance_of(ShopifyAPI::Fulfillment), :save)
@@ -500,17 +502,17 @@ describe Fulfillment::CSVOrderExporter do
       context 'open_fulfillment param is true' do
         let(:open_fulfillment) { true }
         before :each do
-          stub_open_fulfillment(order.id, line_item.id)
+          stub_open_fulfillment(order.id, line_item.id, line_item.fulfillable_quantity)
         end
         include_examples 'perform'
       end
     end
   end
 
-  def stub_open_fulfillment(order_id, line_item_id)
+  def stub_open_fulfillment(order_id, line_item_id, qty)
     WebMock
       .stub_request(:post, /test.myshopify.com\/admin\/orders\/#{order_id}\/fulfillments.json/)
-      .with(body: "{\"fulfillment\":{\"line_items\":[{\"id\":#{line_item_id}}],\"status\":\"open\",\"notify_customer\":false}}")
+      .with(body: "{\"fulfillment\":{\"line_items\":[{\"id\":#{line_item_id},\"quantity\":#{qty}}],\"status\":\"open\",\"notify_customer\":false}}")
       .to_return(status: 200, body: '', headers: {})
   end
 end

@@ -185,7 +185,9 @@ module Fulfillment
         # TODO add retries
         fulfillment = ShopifyAPI::Fulfillment.new
         fulfillment.prefix_options[:order_id] = order.id
-        fulfillment.attributes[:line_items] = [{ id: line_item.id }]
+        fulfillment.attributes[:line_items] = [
+          { id: line_item.id, quantity: line_item.fulfillable_quantity }
+        ]
         fulfillment.attributes[:status] = 'open'
         fulfillment.attributes[:notify_customer] = false
         Shopify::Utils.send_assert_true(fulfillment, :save)
