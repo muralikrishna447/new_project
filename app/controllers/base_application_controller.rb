@@ -189,19 +189,21 @@ class BaseApplicationController < ActionController::Base
     Librato.increment 'user.signup', sporadic: true
   end
 
-  # This value is carefully chosen and is the same in prod and staging.  Ideally
-  # it would be more descriptive but it was already set and existing systems
-  # rely on it.
-  COUNTRY_MERGE_VAR = 'MMERGE2'
-
   def email_list_signup(user, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
     begin
-      logger.info "[mailchimp] Subscribing [#{user.email}] to list #{[listname]}"
       long_country = geolocate_ip()[:long_country]
+
+      # MMERGE2 is carefully chosen and is the same in prod and staging.  Ideally
+      # it would be more descriptive but it was already set and existing systems
+      # rely on it. It shows up as "Country" in the mailchimp segmentation settings
+      # because of a mapping on their merge vars page.
+      merge_vars = {NAME: user.name, SOURCE: source, MMERGE2: long_country}
+      logger.info "[mailchimp] Subscribing [#{user.email}] to list #{[listname]}, merge_vars: #{merge_vars}"
+
       Gibbon::API.lists.subscribe(
         id: listname,
         email: {email: user.email},
-        merge_vars: {NAME: user.name, SOURCE: source, COUNTRY_MERGE_VAR: long_country},
+        merge_vars: merge_vars,
         double_optin: false,
         send_welcome: false
       )
