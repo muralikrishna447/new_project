@@ -5,16 +5,19 @@ describe Fulfillment::CSVOrderExporter do
 
   describe 'fulfillables' do
     let(:sku) { 'my sku' }
+    let(:fulfillable_quantity) { 1 }
     let(:order_1_line_item_1) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 11
       line_item.sku = order_1_line_item_1_sku
+      line_item.fulfillable_quantity = fulfillable_quantity
       line_item
     end
     let(:order_1_line_item_2) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 12
       line_item.sku = order_1_line_item_2_sku
+      line_item.fulfillable_quantity = fulfillable_quantity
       line_item
     end
     let(:order_1) do
@@ -28,12 +31,14 @@ describe Fulfillment::CSVOrderExporter do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 21
       line_item.sku = order_2_line_item_1_sku
+      line_item.fulfillable_quantity = fulfillable_quantity
       line_item
     end
     let(:order_2_line_item_2) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 22
       line_item.sku = order_2_line_item_2_sku
+      line_item.fulfillable_quantity = fulfillable_quantity
       line_item
     end
     let(:order_2) do
@@ -76,6 +81,14 @@ describe Fulfillment::CSVOrderExporter do
                 )
               ]
             )
+          end
+
+          context 'fulfillable quantity is zero' do
+            let(:fulfillable_quantity) { 0 }
+
+            it 'creates empty fulfillables', focus: true do
+              expect(exporter.fulfillables(orders, [sku])).to be_empty
+            end
           end
         end
 
@@ -295,13 +308,13 @@ describe Fulfillment::CSVOrderExporter do
     let(:line_item_1) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 1
-      line_item.quantity = line_item_1_quantity
+      line_item.fulfillable_quantity = line_item_1_quantity
       line_item
     end
     let(:line_item_2) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 2
-      line_item.quantity = line_item_2_quantity
+      line_item.fulfillable_quantity = line_item_2_quantity
       line_item
     end
     let(:fulfillable_1) do
@@ -434,7 +447,7 @@ describe Fulfillment::CSVOrderExporter do
         line_item = ShopifyAPI::LineItem.new
         line_item.id = 11
         line_item.sku = sku
-        line_item.quantity = 1
+        line_item.fulfillable_quantity = 1
         line_item
       end
       let(:order) do

@@ -149,7 +149,7 @@ module Fulfillment
           break if quantity_processed == quantity
 
           fulfillable_quantity = fulfillable.line_items.inject(0) do |sum, line_item|
-            sum + line_item.quantity
+            sum + line_item.fulfillable_quantity
           end
 
           # We want to ship all the inventory we have available at any given time,
@@ -194,6 +194,12 @@ module Fulfillment
       def fulfillable_line_item?(order, line_item, sku)
         return false unless line_item
         return false if line_item.sku != sku
+        # We may be able to get rid of all the nasty logic below if
+        # we just check the value of fulfillable_quantity, but that's for
+        # another day. This is just a short circuit so we prevent any
+        # fully-refunded orders from shipping.
+        return false if line_item.fulfillable_quantity < 1
+
         # line_item.fulfillment_status doesn't seem to always have the
         # most recent status, probably due to Shopify's caching. Always examine
         # the status of order.fulfillment.
