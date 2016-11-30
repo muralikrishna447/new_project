@@ -107,7 +107,7 @@ module Fulfillment
         end
         # Filter out orders with invalid addresses
         unless Fulfillment::FedexShippingAddressValidator.valid?(order)
-          Rails.logger.info("CSV order export filtering order with id #{order.id} because " \
+          Rails.logger.warn("CSV order export filtering order with id #{order.id} because " \
                             "shipping address validation failed: #{order.attributes[:shipping_address].inspect}")
           return false
         end

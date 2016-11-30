@@ -142,7 +142,7 @@ module Fulfillment
 
     def self.log_validation(params)
       if params[:condition]
-        Rails.logger.info("FedEx address validator order with id #{params[:order_id]} is invalid because #{params[:message]}")
+        Rails.logger.warn("FedEx address validator order with id #{params[:order_id]} is invalid because #{params[:message]}")
       end
       params[:condition]
     end
