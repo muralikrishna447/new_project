@@ -36,6 +36,7 @@ describe UserSync do
       WebMock.assert_requested stub_post
     end
 
+
     it 'should not sync premium status to mailchimp when user is not in mailchimp' do
       setup_member_info_not_in_mailchimp
       @user_sync.sync_mailchimp({premium: true})
@@ -53,7 +54,7 @@ describe UserSync do
 
       # TODO - refactor stub method being mindful of parameter order, etc.
       WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
-        with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"johndoe@chefsteps.com\"},\"merge_vars\":{\"groupings\":[{\"id\":\"test-purchase-group-id\",\"groups\":[\"Premium Member\"]},{\"id\":\"test-joule-group-id\",\"groups\":[\"Joule Purchase\"]}],\"MMERGE2\":\"Canada\"},\"replace_interests\":false}").
+        with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"johndoe@chefsteps.com\"},\"merge_vars\":{\"groupings\":[{\"id\":\"test-purchase-group-id\",\"groups\":[\"Premium Member\"]},{\"id\":\"test-joule-group-id\",\"groups\":[\"Joule Purchase\"]}]},\"replace_interests\":false}").
         to_return(:status => 200, :body => "", :headers => {})
 
       @user_sync.sync_mailchimp
@@ -160,7 +161,7 @@ describe UserSync do
   end
 
   def stub_mailchimp_post(group_id, name)
-    merge_vars = {:groupings => [], 'MMERGE2' => 'Canada'}
+    merge_vars = {:groupings => []}
     body = {:apikey => 'test-api-key', :id => 'test-list-id', :email => {:email => 'johndoe@chefsteps.com'}, :merge_vars => merge_vars, :replace_interests => false}
     if group_id
       merge_vars[:groupings] = [{:id => "#{group_id}", :groups => [name]}]
