@@ -52,7 +52,6 @@ angular.module('ChefStepsApp').controller 'CoursesController', ['$rootScope', '$
     else
       newPath = "/" + includable_type.toLowerCase() + "/" + $scope.currentIncludable.includable_slug
     $location.path(newPath) if $location.path() != newPath
-    window.Intercom?('update')
 
     # Title tag
     document.title = $scope.currentIncludable.includable_title + ' | ' + $scope.course.title + ' Class | ChefSteps'

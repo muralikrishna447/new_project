@@ -45,7 +45,6 @@ class UsersController < ApplicationController
 
       user_data = {id: current_user.id, name: current_user.name, slug:current_user.slug, email: current_user.email, avatar_url: current_user.avatar_url}
       user_data[:token] = token.to_jwt
-      user_data[:intercom_user_hash] = intercom_user_hash(current_user)
       if current_user.admin?
         user_data[:admin] = true
       end
