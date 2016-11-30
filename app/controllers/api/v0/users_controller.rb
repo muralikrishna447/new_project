@@ -99,7 +99,8 @@ module Api
 
         # Hardcoding the list of possible capabilities for now.
         capability_list = [
-          'beta_guides'
+          'beta_guides',
+          'multi_circ',
         ]
         user_capabilities = capability_list.select {|c|
           BetaFeatureService.user_has_feature(user, c)
