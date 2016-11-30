@@ -130,16 +130,6 @@ class ApplicationController < BaseApplicationController
     {root: false}
   end
 
-  helper_method :intercom_app_id
-  def intercom_app_id
-    Rails.configuration.intercom[:app_id]
-  end
-
-  helper_method :intercom_user_hash
-  def intercom_user_hash(user)
-    Digest::HMAC.hexdigest(user.id.to_s, Rails.configuration.intercom[:secret], Digest::SHA256)
-  end
-
 private
 
   def track_event(trackable, action = params[:action])

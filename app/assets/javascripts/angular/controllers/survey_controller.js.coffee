@@ -91,17 +91,6 @@
     data = { survey_results: survey_results }
     mixpanel.track('Survey Answered', survey_results)
 
-    u = csAuthentication.currentUser()
-    if u
-      intercomData = {
-        email: u.email
-        user_id: u.id
-        interests: survey_results.interests.join(',')
-        suggestion: survey_results.suggestion
-      }
-      # http://docs.intercom.io/install-on-your-web-product/integrating-intercom-in-one-page-app
-      Intercom?('update', intercomData)
-
     $http.post('/user_surveys', data)
 
     searchTerms = survey_results.interests

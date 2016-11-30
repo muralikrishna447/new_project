@@ -71,7 +71,6 @@ gem 'aws-sdk-v1'
 gem 'aws-sdk', '~> 2'
 
 gem 'json-jwt'
-gem 'intercom'
 gem "algoliasearch-rails"
 gem 'semverse', '1.2.1'
 

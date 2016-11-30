@@ -173,7 +173,7 @@ window.deepCopy = (obj) ->
     $timeout (->
       # Go back to FreshSteps page
       window.location = [location.protocol, '//', location.host, location.pathname].join('')
-    ), 0.5    
+    ), 0.5
     true
 
   $scope.endEditMode = ->
@@ -595,10 +595,6 @@ window.deepCopy = (obj) ->
       reportedCooked = true
       eventData = $scope.getExtendedEventData()
       mixpanel?.track "Activity Probably Cooked2", eventData
-      Intercom?('trackEvent', "probably-cooked", eventData)
-      Intercom?('trackEvent', "probably-cooked-souffle", eventData) if eventData.slug == "molten-chocolate-souffle"
-      Intercom?('trackEvent', "probably-cooked-standing-rib-roast", eventData) if eventData.slug == "standing-rib-roast"
-      Intercom?('update')
 
   # various ways of tracking printing; if you google it you'll find out how unreliable they all are
   window.onbeforeprint = ->
