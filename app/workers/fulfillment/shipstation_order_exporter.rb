@@ -57,7 +57,7 @@ module Fulfillment
             fulfillable.order.email,
             fulfillable.order.shipping_address.phone,
             line_item.sku,
-            line_item.quantity,
+            line_item.fulfillable_quantity,
             fulfillable.order.tags
           ]
       end

@@ -193,4 +193,27 @@ describe Shopify::Utils do
       end
     end
   end
+
+  describe 'send_assert_true' do
+    let(:method_symbol) { :foo }
+    let(:obj) { double('obj') }
+
+    before :each do
+      obj.should_receive(method_symbol).and_return(return_value)
+    end
+
+    context 'method returns true' do
+      let(:return_value) { true }
+      it 'does not raise error' do
+        Shopify::Utils.send_assert_true(obj, method_symbol)
+      end
+    end
+
+    context 'method returns false' do
+      let(:return_value) { false }
+      it 'raises error' do
+        expect { Shopify::Utils.send_assert_true(obj, method_symbol) }.to raise_error
+      end
+    end
+  end
 end

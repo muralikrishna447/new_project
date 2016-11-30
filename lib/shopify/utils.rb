@@ -52,5 +52,14 @@ module Shopify
       end
       all_orders
     end
+
+    # It's a common pattern in the Shopify API to have a persistence
+    # method return true or false. Use this to assert that the method
+    # returns true, raising an exception if false.
+    def self.send_assert_true(obj, method_symbol)
+      unless obj.send(method_symbol)
+        raise "Calling #{method_symbol} returned false on #{obj.inspect}"
+      end
+    end
   end
 end

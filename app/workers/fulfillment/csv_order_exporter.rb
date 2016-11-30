@@ -107,8 +107,8 @@ module Fulfillment
         end
         # Filter out orders with invalid addresses
         unless Fulfillment::FedexShippingAddressValidator.valid?(order)
-          Rails.logger.info("CSV order export filtering order with id #{order.id} because " \
-                            "shipping address validation failed: #{order.attributes[:shipping_address]}")
+          Rails.logger.warn("CSV order export filtering order with id #{order.id} because " \
+                            "shipping address validation failed: #{order.attributes[:shipping_address].inspect}")
           return false
         end
         true
@@ -149,7 +149,7 @@ module Fulfillment
           break if quantity_processed == quantity
 
           fulfillable_quantity = fulfillable.line_items.inject(0) do |sum, line_item|
-            sum + line_item.quantity
+            sum + line_item.fulfillable_quantity
           end
 
           # We want to ship all the inventory we have available at any given time,
@@ -185,15 +185,23 @@ module Fulfillment
         # TODO add retries
         fulfillment = ShopifyAPI::Fulfillment.new
         fulfillment.prefix_options[:order_id] = order.id
-        fulfillment.attributes[:line_items] = [{ id: line_item.id }]
+        fulfillment.attributes[:line_items] = [
+          { id: line_item.id, quantity: line_item.fulfillable_quantity }
+        ]
         fulfillment.attributes[:status] = 'open'
         fulfillment.attributes[:notify_customer] = false
-        fulfillment.save
+        Shopify::Utils.send_assert_true(fulfillment, :save)
       end
 
       def fulfillable_line_item?(order, line_item, sku)
         return false unless line_item
         return false if line_item.sku != sku
+        # We may be able to get rid of all the nasty logic below if
+        # we just check the value of fulfillable_quantity, but that's for
+        # another day. This is just a short circuit so we prevent any
+        # fully-refunded orders from shipping.
+        return false if line_item.fulfillable_quantity < 1
+
         # line_item.fulfillment_status doesn't seem to always have the
         # most recent status, probably due to Shopify's caching. Always examine
         # the status of order.fulfillment.
