@@ -3,15 +3,12 @@ require 'optparse'
 require 'shopify_api'
 require 'logger'
 require_relative './rails_shim'
+require_relative './config'
 
 options = {}
 option_parser = OptionParser.new do |option|
-  option.on('-k', '--key API_KEY', 'Shopify API key') do |api_key|
-    options[:api_key] = api_key
-  end
-
-  option.on('-p', '--password PASSWORD', 'Shopify password') do |password|
-    options[:password] = password
+  option.on('-e', '--env ENV', 'environment') do |env|
+    options[:env] = env
   end
 
   option.on('-d', '--date STORE', 'date, YYYY-MM-DD') do |date_str|
@@ -19,15 +16,9 @@ option_parser = OptionParser.new do |option|
   end
 end
 option_parser.parse!
-options[:api_key] ||= 'f3c79828c0f50b04866481389eacb2d2'
-options[:password] ||= '5553e01d45c426ced082e9846ad56eee'
-options[:store] ||= 'chefsteps-staging'
 options[:date] ||= Date.today
-
-raise '--key is required' unless options[:api_key]
-raise '--password is required' unless options[:password]
-raise '--store is required' unless options[:store]
-ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
+conf = get_config(options[:env])
+setup_shopify(conf)
 
 # NOTE: would normally use UTC to avoid daylight savings time issues.
 # However, this Thermoworks deal is only valid for a few weeks and
