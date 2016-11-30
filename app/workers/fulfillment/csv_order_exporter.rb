@@ -188,7 +188,7 @@ module Fulfillment
         fulfillment.attributes[:line_items] = [{ id: line_item.id }]
         fulfillment.attributes[:status] = 'open'
         fulfillment.attributes[:notify_customer] = false
-        Shopify::Utils.send_returns_true(fulfillment, :save)
+        Shopify::Utils.send_assert_true(fulfillment, :save)
       end
 
       def fulfillable_line_item?(order, line_item, sku)

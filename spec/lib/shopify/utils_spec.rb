@@ -194,7 +194,7 @@ describe Shopify::Utils do
     end
   end
 
-  describe 'send_returns_true' do
+  describe 'send_assert_true' do
     let(:method_symbol) { :foo }
     let(:obj) { double('obj') }
 
@@ -205,14 +205,14 @@ describe Shopify::Utils do
     context 'method returns true' do
       let(:return_value) { true }
       it 'does not raise error' do
-        Shopify::Utils.send_returns_true(obj, method_symbol)
+        Shopify::Utils.send_assert_true(obj, method_symbol)
       end
     end
 
     context 'method returns false' do
       let(:return_value) { false }
       it 'raises error' do
-        expect { Shopify::Utils.send_returns_true(obj, method_symbol) }.to raise_error
+        expect { Shopify::Utils.send_assert_true(obj, method_symbol) }.to raise_error
       end
     end
   end

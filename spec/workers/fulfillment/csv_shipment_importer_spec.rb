@@ -130,11 +130,11 @@ describe Fulfillment::CSVShipmentImporter do
       stub_fulfillment_complete(order_id, fulfillment_2.id)
 
       Shopify::Utils
-        .should_receive(:send_returns_true)
+        .should_receive(:send_assert_true)
         .with(instance_of(ShopifyAPI::Fulfillment), :save)
         .exactly(4).times
       Shopify::Utils
-        .should_receive(:send_returns_true)
+        .should_receive(:send_assert_true)
         .with(instance_of(ShopifyAPI::Fulfillment), :complete)
         .twice
 

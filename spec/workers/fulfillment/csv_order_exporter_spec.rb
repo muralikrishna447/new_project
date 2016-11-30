@@ -86,7 +86,7 @@ describe Fulfillment::CSVOrderExporter do
           context 'fulfillable quantity is zero' do
             let(:fulfillable_quantity) { 0 }
 
-            it 'creates empty fulfillables', focus: true do
+            it 'creates empty fulfillables' do
               expect(exporter.fulfillables(orders, [sku])).to be_empty
             end
           end
@@ -402,7 +402,7 @@ describe Fulfillment::CSVOrderExporter do
       stub_open_fulfillment(order_1.id, order_1_line_item.id)
       stub_open_fulfillment(order_2.id, order_2_line_item.id)
       Shopify::Utils
-        .should_receive(:send_returns_true)
+        .should_receive(:send_assert_true)
         .with(instance_of(ShopifyAPI::Fulfillment), :save)
         .twice
       exporter.open_fulfillments(fulfillables)
