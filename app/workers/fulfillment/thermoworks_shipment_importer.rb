@@ -115,6 +115,10 @@ module Fulfillment
       fulfillment.attributes[:notify_customer] = false
       fulfillment.save
 
+      # Kind of a hack - need to refetch the order so that it contains
+      # the fulfillment that was just saved above..
+      order = ShopifyAPI::Order.find(order.id)
+
       return Fulfillment::Shipment.new(
         order: order,
 
