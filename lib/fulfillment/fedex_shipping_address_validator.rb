@@ -1,5 +1,7 @@
 module Fulfillment
   class FedexShippingAddressValidator
+    MIN_LINE_LENGTH = 3
+
     MAX_LINE_LENGTH = 35
 
     POBOX_REGEX = /^(?:Post(?:al)?\s*(?:Office\s*)?|P[. ]?\s*O\.?\s*)?Box\b/i
@@ -12,29 +14,29 @@ module Fulfillment
       return false if log_validation(
         order_id: order.id,
         condition: !order.respond_to?(:shipping_address),
-        reason: "order has no shipping address"
+        message: 'order has no shipping address'
       )
 
-      # Name line is required and max length is 35 chars
+      # Name line is required and must be valid length
       return false if log_validation(
         order_id: order.id,
         condition: nil_or_empty?(order.shipping_address.name),
-        reason: 'name is empty or nil'
+        message: 'name is empty or nil'
       )
       return false if log_validation(
         order_id: order.id,
-        condition: exceeds_max_length?(order.shipping_address.name),
-        reason: "name exceeds max length: #{order.shipping_address.name}"
+        condition: invalid_length?(order.shipping_address.name),
+        message: "name has invalid length: #{order.shipping_address.name}"
       )
 
-      # Company line is optional and max length is 35 chars
+      # Company line is optional and must be valid length
       return false if log_validation(
         order_id: order.id,
-        condition: exceeds_max_length?(order.shipping_address.company),
-        reason: "company exceeds max length: #{order.shipping_address.company}"
+        condition: invalid_length?(order.shipping_address.company),
+        message: "company has invalid length: #{order.shipping_address.company}"
       )
 
-      # Address1 line is required and max length is 35 chars
+      # Address1 line is required and must be valid length
       return false if log_validation(
         order_id: order.id,
         condition: nil_or_empty?(order.shipping_address.address1),
@@ -42,22 +44,27 @@ module Fulfillment
       )
       return false if log_validation(
         order_id: order.id,
-        condition: exceeds_max_length?(order.shipping_address.address1),
-        message: "address1 exceeds max length: #{order.shipping_address.address1}"
+        condition: invalid_length?(order.shipping_address.address1),
+        message: "address1 has invalid length: #{order.shipping_address.address1}"
       )
 
-      # Address2 line is optional and max length is 35 chars
+      # Address2 line is optional and must be valid length
       return false if log_validation(
         order_id: order.id,
         condition: exceeds_max_length?(order.shipping_address.address2),
-        message: "address2 exceeds max length: #{order.shipping_address.address2}"
+        message: "address2 has invalid length: #{order.shipping_address.address2}"
       )
 
-      # City is required
+      # City is required and must be valid length
       return false if log_validation(
         order_id: order.id,
         condition: nil_or_empty?(order.shipping_address.city),
         message: 'city is nil or empty'
+      )
+      return false if log_validation(
+        order_id: order.id,
+        condition: invalid_length?(order.shipping_address.city),
+        message: 'city has invalid length'
       )
 
       # State code is required and must be two characters in length
@@ -120,13 +127,22 @@ module Fulfillment
       prop.nil? || prop.empty?
     end
 
+    def self.invalid_length?(prop)
+      return false if nil_or_empty?(prop)
+      return true if prop.length > MAX_LINE_LENGTH
+      return true if prop.length < MIN_LINE_LENGTH
+      false
+    end
+
     def self.exceeds_max_length?(prop)
-      prop && prop.length > MAX_LINE_LENGTH
+      return false if nil_or_empty?(prop)
+      return true if prop.length > MAX_LINE_LENGTH
+      false
     end
 
     def self.log_validation(params)
       if params[:condition]
-        Rails.logger.info("FedEx address validator order with id #{params[:order_id]} is invalid because #{params[:reason]}")
+        Rails.logger.warn("FedEx address validator order with id #{params[:order_id]} is invalid because #{params[:message]}")
       end
       params[:condition]
     end

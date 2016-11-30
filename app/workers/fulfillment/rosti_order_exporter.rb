@@ -76,7 +76,7 @@ module Fulfillment
       line_items = []
       fulfillable.line_items.each do |line_item|
         rosti_order_number = "#{fulfillable.order.name}-#{line_item.id}"
-        Rails.logger.info("Rosti order export adding order with id #{fulfillable.order.id} and line item with id #{line_item.id} and quantity #{line_item.quantity} as Rosti order number #{rosti_order_number}")
+        Rails.logger.info("Rosti order export adding order with id #{fulfillable.order.id} and line item with id #{line_item.id} and quantity #{line_item.fulfillable_quantity} as Rosti order number #{rosti_order_number}")
         line_items <<
           [
             rosti_order_number,
@@ -91,7 +91,7 @@ module Fulfillment
             fulfillable.order.shipping_address.country_code,
             fulfillable.order.shipping_address.phone,
             line_item.sku,
-            line_item.quantity,
+            line_item.fulfillable_quantity,
             RETURN_NAME,        # Return address contact name
             RETURN_COMPANY,     # Return address company
             RETURN_ADDRESS_1,   # Return address line 1

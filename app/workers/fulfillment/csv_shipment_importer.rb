@@ -96,7 +96,7 @@ module Fulfillment
         # update email instead of a shipment confirmation email and you
         # cannot update tracking and complete a fulfillment in a single call.
         fulfillment.attributes[:notify_customer] = false
-        fulfillment.save
+        Shopify::Utils.send_assert_true(fulfillment, :save)
       end
 
       def complete_fulfillment(fulfillment, shipment)
@@ -104,8 +104,8 @@ module Fulfillment
         # We have to set this and save it back to Shopify so that Shopify
         # will send a shipment confirmation email on completion.
         fulfillment.attributes[:notify_customer] = true
-        fulfillment.save
-        fulfillment.complete
+        Shopify::Utils.send_assert_true(fulfillment, :save)
+        Shopify::Utils.send_assert_true(fulfillment, :complete)
       end
     end
   end
