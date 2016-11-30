@@ -42,8 +42,10 @@ ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{op
 
 orders = []
 CSV.foreach(options[:input], headers: true) do |input_row|
-  order = ShopifyAPI::Order.find(input_row['id'])
-  raise "No order for id input_row['id']" unless order
+  order_id = input_row['id']
+  STDERR.puts "Looking up order with id #{order_id}"
+  order = ShopifyAPI::Order.find(order_id)
+  raise "No order for id #{order_id}" unless order
   orders << order
 end
 
