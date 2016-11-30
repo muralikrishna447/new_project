@@ -23,6 +23,7 @@ describe Fulfillment::FedexShippingAddressValidator do
       )
     end
     let(:too_long) { '123456789012345678901234567890123456' }
+    let(:too_short) { '12' }
 
     shared_examples 'invalid' do
       it 'returns false' do
@@ -45,6 +46,21 @@ describe Fulfillment::FedexShippingAddressValidator do
       include_examples 'invalid'
     end
 
+    context 'order has name less than min length' do
+      let(:name) { too_short }
+      include_examples 'invalid'
+    end
+
+    context 'order has name exceeding max length' do
+      let(:name) { too_long }
+      include_examples 'invalid'
+    end
+
+    context 'order has company less than min length' do
+      let(:company) { too_short }
+      include_examples 'invalid'
+    end
+
     context 'order has company exceeding max length' do
       let(:company) { too_long }
       include_examples 'invalid'
@@ -57,6 +73,16 @@ describe Fulfillment::FedexShippingAddressValidator do
 
     context 'order has empty address1' do
       let(:address1) { '' }
+      include_examples 'invalid'
+    end
+
+    context 'order has address1 less than min length' do
+      let(:address1) { too_short }
+      include_examples 'invalid'
+    end
+
+    context 'order has address1 exceeding max length' do
+      let(:address1) { too_long }
       include_examples 'invalid'
     end
 
@@ -73,6 +99,15 @@ describe Fulfillment::FedexShippingAddressValidator do
     context 'order has empty city' do
       let(:city) { '' }
       include_examples 'invalid'
+    end
+
+    context 'order has city less than min length' do
+      let(:city) { too_short }
+      include_examples 'invalid'
+    end
+
+    context 'order has city exceeding max length' do
+      let(:city) { too_long }
     end
 
     context 'order has no province code' do
