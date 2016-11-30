@@ -8,7 +8,6 @@ describe UserSync do
   describe 'sync premium and joule' do
 
     it 'should not set premium status in mailchimp for non-premium member' do
-      stub_intercom_exists
       stub_mailchimp_post(nil,nil)
       setup_member_premium false
       # Test would fail if POST request was made since it's not stubbed
@@ -16,7 +15,6 @@ describe UserSync do
     end
 
     it 'should re-sync premium status to mailchimp' do
-      stub_intercom_exists
       setup_member_premium true
       stub_post = stub_mailchimp_post(Rails.configuration.mailchimp[:premium_group_id], UserSync::PREMIUM_GROUP_NAME)
       setup_premium_user
@@ -31,7 +29,6 @@ describe UserSync do
     end
 
     it 'should sync premium status to mailchimp' do
-      stub_intercom_exists
       setup_member_premium false
       stub_post = stub_mailchimp_post(Rails.configuration.mailchimp[:premium_group_id], UserSync::PREMIUM_GROUP_NAME)
       setup_premium_user
@@ -43,29 +40,27 @@ describe UserSync do
       setup_member_info_not_in_mailchimp
       @user_sync.sync_mailchimp({premium: true})
     end
-    
+
     it 'should not sync premium status to mailchimp when user has been cleaned from mailchimp' do
       setup_cleaned_member_premium false
       @user_sync.sync_mailchimp({premium: true})
     end
-    
+
     it 'should sync premium members who purchased joule' do
-      stub_intercom_exists
       setup_member_joule_purchase true
       setup_joule_purchaser
       setup_premium_user
-      
+
       # TODO - refactor stub method being mindful of parameter order, etc.
       WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
         with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"johndoe@chefsteps.com\"},\"merge_vars\":{\"groupings\":[{\"id\":\"test-purchase-group-id\",\"groups\":[\"Premium Member\"]},{\"id\":\"test-joule-group-id\",\"groups\":[\"Joule Purchase\"]}],\"MMERGE2\":\"Canada\"},\"replace_interests\":false}").
         to_return(:status => 200, :body => "", :headers => {})
-        
+
       @user_sync.sync_mailchimp
     end
-  
+
 
     it 'should not set joule purchase in mailchimp for non-joule member' do
-      stub_intercom_exists
       stub_mailchimp_post(nil, nil)
       setup_member_joule_purchase false
       # Test would fail if POST request was made since it's not stubbed
@@ -73,7 +68,6 @@ describe UserSync do
     end
 
     it 'should re-sync joule purchase to mailchimp' do
-      stub_intercom_exists
       setup_member_joule_purchase true
       stub_post = stub_mailchimp_post(Rails.configuration.mailchimp[:joule_group_id], UserSync::JOULE_PURCHASE_GROUP_NAME)
 
@@ -89,7 +83,6 @@ describe UserSync do
     end
 
     it 'should sync joule purchase to mailchimp' do
-      stub_intercom_exists
       setup_member_joule_purchase false
       stub_post = stub_mailchimp_post(Rails.configuration.mailchimp[:joule_group_id], UserSync::JOULE_PURCHASE_GROUP_NAME)
       setup_joule_purchaser
@@ -101,32 +94,20 @@ describe UserSync do
       setup_member_info_not_in_mailchimp
       @user_sync.sync_mailchimp({premium: true})
     end
-  
+
     it 'should handle unsubscribed members' do
       setup_member_unsubscribed
       setup_premium_user
       @user_sync.sync_mailchimp({premium: true})
     end
-    
-    it 'should gracefully handle users not in intercom' do
-      # TODO - update to use the common mailchimp post stub method
-      WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
-        with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"johndoe@chefsteps.com\"},\"merge_vars\":{\"groupings\":[{\"id\":\"test-purchase-group-id\",\"groups\":[\"Premium Member\"]}]},\"replace_interests\":false}").
-        to_return(:status => 200, :body => "", :headers => {})
-      Intercom::User.should_receive(:find).and_raise(Intercom::ResourceNotFound.new(''))
-      setup_member_premium false
-      stub_post = stub_mailchimp_post(Rails.configuration.mailchimp[:premium_group_id], UserSync::PREMIUM_GROUP_NAME)
-      setup_premium_user
-      @user_sync.sync_mailchimp({premium: true})
-    end
 
     def setup_member_premium(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:premium_group_id], 
+      setup_member_info(Rails.configuration.mailchimp[:premium_group_id],
         UserSync::PREMIUM_GROUP_NAME, in_group, 'subscribed')
     end
-    
+
     def setup_cleaned_member_premium(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:premium_group_id], 
+      setup_member_info(Rails.configuration.mailchimp[:premium_group_id],
         UserSync::PREMIUM_GROUP_NAME, in_group, 'cleaned')
     end
 
@@ -138,7 +119,7 @@ describe UserSync do
     end
 
     def setup_member_joule_purchase(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:joule_group_id], 
+      setup_member_info(Rails.configuration.mailchimp[:joule_group_id],
         UserSync::JOULE_PURCHASE_GROUP_NAME, in_group, 'subscribed')
     end
 
@@ -152,8 +133,8 @@ describe UserSync do
 
   def setup_member_info(group_id, name, in_group, status)
     result = {
-      :success_count => 1, 
-      :data => [{"GROUPINGS"=>[{"id"=>group_id, "name"=>"Doesn't matter", 
+      :success_count => 1,
+      :data => [{"GROUPINGS"=>[{"id"=>group_id, "name"=>"Doesn't matter",
                   "groups"=>[{"name"=>name, "interested"=>in_group}]}],
                  "status" => status }]}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
@@ -177,7 +158,7 @@ describe UserSync do
     .with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
     to_return(:status => 200, :body => result.to_json, :headers => {})
   end
-  
+
   def stub_mailchimp_post(group_id, name)
     merge_vars = {:groupings => [], 'MMERGE2' => 'Canada'}
     body = {:apikey => 'test-api-key', :id => 'test-list-id', :email => {:email => 'johndoe@chefsteps.com'}, :merge_vars => merge_vars, :replace_interests => false}
@@ -187,11 +168,5 @@ describe UserSync do
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
         with(:body => body.to_json).
         to_return(:status => 200, :body => "", :headers => {})
-  end
-    
-  
-  def stub_intercom_exists
-    user = Intercom::User.new({:location_data => OpenStruct.new(:country_name => 'Canada')})
-    Intercom::User.should_receive(:find).and_return(user)
   end
 end

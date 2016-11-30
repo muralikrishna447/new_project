@@ -30,11 +30,6 @@ angular.module('ChefStepsApp').controller 'EnrollAssemblyController', ["$scope",
   $scope.waitForFreeEnrollment = ->
     $scope.waitingForFreeEnrollment = true
 
-  $scope.trackEnrollmentWorkaround = (eventData) ->
-    # This is a workaround for the fact that intercom can't segment based on the eventData, so
-    # also tracking the same data right in the event name.
-    Intercom?('trackEvent', "class-enrolled-#{$scope.assembly.slug}", eventData)
-
   $scope.maybeStartProcessing = (form) ->
     $scope.processing = true
     $scope.errorText = false
@@ -87,6 +82,4 @@ angular.module('ChefStepsApp').controller 'EnrollAssemblyController', ["$scope",
       $scope.assemblyWelcomeModalOpen = true
       eventData = {'class' : $scope.assembly.title}
       mixpanel.track('Class Enrolled', eventData)
-      Intercom?('trackEvent', 'class-enrolled', eventData)
-      $scope.trackEnrollmentWorkaround(eventData)
 ]

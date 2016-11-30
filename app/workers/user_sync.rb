@@ -1,4 +1,3 @@
-require 'intercom'
 # Synchronizes user data from the master, usually CS database to various
 # external systems.
 
@@ -14,10 +13,6 @@ class UserSync
   PREMIUM_GROUP_NAME = "Premium Member"
   JOULE_PURCHASE_GROUP_NAME = "Joule Purchase"
 
-  # This value is carefully chosen and is the same in prod and staging.  Ideally
-  # it would be more descriptive but it was already set and existing systems
-  # rely on it.
-  COUNTRY_MERGE_VAR = 'MMERGE2'
   @queue = :user_sync
 
   def self.perform(user_id)
@@ -48,7 +43,7 @@ class UserSync
     end
 
     member_info = member_info['data'][0]
-    
+
     if member_info['status'] != 'subscribed'
       @logger.warn "User not subscribed to list, actual status [#{member_info['status']}]"
       return
@@ -72,26 +67,6 @@ class UserSync
   def sync_shopify
     Shopify::Customer.sync_user @user
   end
-
-  def country_from_intercom
-    Rails.logger.info "Retriving intercom user for id #{@user.id}"
-    begin
-      intercom_user = Intercom::User.find(:user_id => @user.id)
-    rescue Intercom::ResourceNotFound
-      Rails.logger.info "No intercom user found for user #{@user.id} with email #{@user.email}"
-      return nil
-    end
-
-    Rails.logger.info "Intercom user location data: #{intercom_user.location_data.inspect}"
-    begin
-      intercom_user.location_data.country_name
-    rescue Intercom::AttributeNotSetError
-      Rails.logger.info "Intercom location_data not set"
-      return nil
-    end
-  end
-  
-  private
 
   def add_to_group_param(groups, member_info, group_id, group_name, db_value)
     mailchimp_value = in_mailchimp_group?(member_info, group_id, group_name)
@@ -121,11 +96,6 @@ class UserSync
     merge_vars = {
         groupings: groupings
     }
-    
-    country = country_from_intercom()
-    if country
-      merge_vars[COUNTRY_MERGE_VAR] = country
-    end
 
     Gibbon::API.lists.update_member(
       id: Rails.configuration.mailchimp[:list_id],

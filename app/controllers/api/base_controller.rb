@@ -114,6 +114,7 @@ module Api
       conn.basic_auth(conf.user, conf.license)
       resp = conn.get "/geoip/v2.1/city/#{ip_address}"
       geocode = JSON.parse resp.body
+      puts geocode
 
       if geocode["error"] || !geocode["location"]
         raise GeocodeError.new("Geocoding failed for #{ip_address}")
@@ -124,12 +125,18 @@ module Api
         Utils.spelunk(geocode, ['registered_country', 'iso_code'])
       )
 
+      long_country = (
+        Utils.spelunk(geocode, ['country', 'names', 'en']) ||
+        Utils.spelunk(geocode, ['registered_country', 'names', 'en'])
+      )
+
       if country == nil
         raise GeocodeError.new("No country info for #{ip_address}")
       end
 
       location = {
         country: country,
+        long_country: long_country,
         latitude: geocode["location"]["latitude"],
         longitude: geocode["location"]["longitude"],
         city: Utils.spelunk(geocode, ["city", "names", "en"]),
@@ -138,6 +145,66 @@ module Api
       }
       return location
     end
+
+  # This subscribe / track logic does not belong here but since it's curently
+  # found in no less than three places throughout our code base this is the
+  # least invasive place to store it
+  def subscribe_and_track(user, optout, signup_method)
+    email_list_signup(user, signup_method) unless optout
+    mixpanel.alias(user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
+    mixpanel.track(user.id, 'Signed Up', { signup_method: signup_method })
+    Resque.enqueue(Forum, 'initial_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
+
+    ua = UserAcquisition.new(
+      user_id: user.id,
+      signup_method: signup_method,
+    )
+    ua.landing_page = request.referrer[0..5000] if request.referrer # truncate abnormally long URLs
+
+    if cookies['utm']
+      cookie = JSON.parse(cookies['utm'])
+      ua.referrer = cookie['referrer'][0..5000] if cookie['referrer'] # truncate abnormally long URLs
+      AnalyticsParametizer.utm_params.each { |param| cookie[param] ? ua[param] = cookie[param] : next }
+    end
+
+    if ua.save
+      logger.info("[UserAcquisition] created an acquisition record for user #{user.id}")
+    else
+      logger.error("[UserAcquisition] failed to create an acquisition record for user #{user.id} #{ua.errors.inspect}")
+    end
+
+    Librato.increment 'user.signup', sporadic: true
+  end
+
+  # This value is carefully chosen and is the same in prod and staging.  Ideally
+  # it would be more descriptive but it was already set and existing systems
+  # rely on it.
+  COUNTRY_MERGE_VAR = 'MMERGE2'
+
+  def email_list_signup(user, source='unknown', listname=Rails.configuration.mailchimp[:list_id])
+    begin
+      logger.info "[mailchimp] Subscribing [#{user.email}] to list #{[listname]}"
+      long_country = geolocate_ip()[:long_country]
+      Gibbon::API.lists.subscribe(
+        id: listname,
+        email: {email: user.email},
+        merge_vars: {NAME: user.name, SOURCE: source, COUNTRY_MERGE_VAR: long_country},
+        double_optin: false,
+        send_welcome: false
+      )
+
+    rescue Exception => e
+      case Rails.env
+      when "production", "staging", "staging2"
+        logger.warn("[mailchimp] error: #{e.message}")
+        unless e.message.include?("already subscribed to list")
+          logger.error("[mailchimp] Failed to add user to mailchimp")
+        end
+      else
+        logger.debug("[mailchimp] error, ignoring - did you set MAILCHIMP_API_KEY? Message: #{e.message}")
+      end
+    end
+  end
 
     def get_ip_address
       (cookies[:cs_location] || request.ip)
