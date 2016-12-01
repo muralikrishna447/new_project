@@ -271,7 +271,11 @@ describe Api::V0::CirculatorsController do
       request.env['HTTP_AUTHORIZATION'] = @service_token
 
       stub_sns_publish()
+      Api::V0::CirculatorsController.any_instance.stub(:delete_endpoint) do |arn|
+        @deleted_endpoints << arn
+      end
       @published_messages = []
+      @deleted_endpoints = []
 
       p = PushNotificationToken.new
       p.actor_address = @user_aa
@@ -332,6 +336,25 @@ describe Api::V0::CirculatorsController do
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
           expect(apns['aps']['content-available']).to eq 0
+        end
+
+        it 'should delete token if endpoint disabled' do
+          Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |arn, msg|
+            raise Aws::SNS::Errors::EndpointDisabled.new('foo', 'bar')
+          end
+          token = PushNotificationToken.where(:actor_address_id => @user_aa.id, :app_name => 'joule').first
+          expect(token).to_not be_nil
+          arn = token.endpoint_arn
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: notification_type
+          )
+
+          # Expect token to be deleted
+          token = PushNotificationToken.where(:actor_address_id => @user_aa.id, :app_name => 'joule').first
+          expect(token).to be_nil
+          expect(@deleted_endpoints).to eq([arn])
         end
       end
 
