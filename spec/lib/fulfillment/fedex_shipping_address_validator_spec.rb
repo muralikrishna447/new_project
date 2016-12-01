@@ -9,6 +9,7 @@ describe Fulfillment::FedexShippingAddressValidator do
     let(:city) { 'Springfield' }
     let(:province_code) { 'OR' }
     let(:country_code) { 'US' }
+    let(:phone) { '555-555-5555' }
     let(:order) do
       ShopifyAPI::Order.new(
         shipping_address: {
@@ -18,12 +19,14 @@ describe Fulfillment::FedexShippingAddressValidator do
           address2: address2,
           city: city,
           province_code: province_code,
-          country_code: country_code
+          country_code: country_code,
+          phone: phone
         }
       )
     end
     let(:too_long) { '123456789012345678901234567890123456' }
     let(:too_short) { '12' }
+    let(:invalid_char) { "ABC123\u{00A0}456" } # Non-breaking space, a common bad one
 
     shared_examples 'invalid' do
       it 'returns false' do
@@ -56,6 +59,11 @@ describe Fulfillment::FedexShippingAddressValidator do
       include_examples 'invalid'
     end
 
+    context 'order has name with invalid char' do
+      let(:name) { invalid_char }
+      include_examples 'invalid'
+    end
+
     context 'order has company less than min length' do
       let(:company) { too_short }
       include_examples 'invalid'
@@ -63,6 +71,11 @@ describe Fulfillment::FedexShippingAddressValidator do
 
     context 'order has company exceeding max length' do
       let(:company) { too_long }
+      include_examples 'invalid'
+    end
+
+    context 'order has company with invalid char' do
+      let(:company) { invalid_char }
       include_examples 'invalid'
     end
 
@@ -86,8 +99,18 @@ describe Fulfillment::FedexShippingAddressValidator do
       include_examples 'invalid'
     end
 
+    context 'order has address1 with invalid char' do
+      let(:address1) { invalid_char }
+      include_examples 'invalid'
+    end
+
     context 'order has address2 exceeding max length' do
       let(:address2) { too_long }
+      include_examples 'invalid'
+    end
+
+    context 'order has address2 with invalid char' do
+      let(:address2) { invalid_char }
       include_examples 'invalid'
     end
 
@@ -108,6 +131,12 @@ describe Fulfillment::FedexShippingAddressValidator do
 
     context 'order has city exceeding max length' do
       let(:city) { too_long }
+      include_examples 'invalid'
+    end
+
+    context 'order has city with invalid char' do
+      let(:city) { invalid_char }
+      include_examples 'invalid'
     end
 
     context 'order has no province code' do
@@ -137,6 +166,11 @@ describe Fulfillment::FedexShippingAddressValidator do
 
     context 'order has country code with incorrect length' do
       let(:country_code) { 'XYZ' }
+      include_examples 'invalid'
+    end
+
+    context 'order has phone with invalid char' do
+      let(:phone) { invalid_char }
       include_examples 'invalid'
     end
 
