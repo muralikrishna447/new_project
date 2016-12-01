@@ -17,87 +17,53 @@ module Fulfillment
         message: 'order has no shipping address'
       )
 
-      # Name line is required and must be valid length with no invalid chars
-      return false if log_validation(
-        order_id: order.id,
-        condition: nil_or_empty?(order.shipping_address.name),
-        message: 'name is empty or nil'
-      )
-      return false if log_validation(
-        order_id: order.id,
-        condition: invalid_length?(order.shipping_address.name),
-        message: "name has invalid length: #{order.shipping_address.name}"
-      )
-      return false if log_validation(
-        order_id: order.id,
-        condition: contains_invalid_char?(order.shipping_address.name),
-        message: "name has invalid char: #{order.shipping_address.name}"
+      return false if any_invalid?(
+        order: order,
+        validation_method: :nil_or_empty?,
+        message: 'nil or empty',
+        properties: [
+          :name,
+          :address1,
+          :city,
+          :province_code,
+          :country_code
+        ]
       )
 
-      # Company line is optional and must be valid length with no invalid chars
-      return false if log_validation(
-        order_id: order.id,
-        condition: invalid_length?(order.shipping_address.company),
-        message: "company has invalid length: #{order.shipping_address.company}"
-      )
-      return false if log_validation(
-        order_id: order.id,
-        condition: contains_invalid_char?(order.shipping_address.company),
-        message: "company has invalid char: #{order.shipping_address.company}"
-      )
-
-      # Address1 line is required and must be valid length with no invalid chars
-      return false if log_validation(
-        order_id: order.id,
-        condition: nil_or_empty?(order.shipping_address.address1),
-        message: 'address1 is empty or nil'
-      )
-      return false if log_validation(
-        order_id: order.id,
-        condition: invalid_length?(order.shipping_address.address1),
-        message: "address1 has invalid length: #{order.shipping_address.address1}"
-      )
-      return false if log_validation(
-        order_id: order.id,
-        condition: contains_invalid_char?(order.shipping_address.address1),
-        message: "address1 has invalid char: #{order.shipping_address.address1}"
+      return false if any_invalid?(
+        order: order,
+        validation_method: :invalid_length?,
+        message: "invalid length, must be between #{MIN_LINE_LENGTH} and #{MAX_LINE_LENGTH} characters",
+        properties: [
+          :name,
+          :company,
+          :address1,
+          :city
+        ]
       )
 
-      # Address2 line is optional and must be valid length with no invalid chars
-      return false if log_validation(
-        order_id: order.id,
-        condition: exceeds_max_length?(order.shipping_address.address2),
-        message: "address2 has invalid length: #{order.shipping_address.address2}"
-      )
-      return false if log_validation(
-        order_id: order.id,
-        condition: contains_invalid_char?(order.shipping_address.address2),
-        message: "address2 has invalid char: #{order.shipping_address.address2}"
+      return false if any_invalid?(
+        order: order,
+        validation_method: :exceeds_max_length?,
+        message: "exceeds max length, must be #{MAX_LINE_LENGTH} characters or less",
+        properties: [:address2]
       )
 
-      # City is required and must be valid length with no invalid chars
-      return false if log_validation(
-        order_id: order.id,
-        condition: nil_or_empty?(order.shipping_address.city),
-        message: 'city is nil or empty'
-      )
-      return false if log_validation(
-        order_id: order.id,
-        condition: invalid_length?(order.shipping_address.city),
-        message: "city has invalid length: #{order.shipping_address.city}"
-      )
-      return false if log_validation(
-        order_id: order.id,
-        condition: contains_invalid_char?(order.shipping_address.city),
-        message: "city has invalid char: #{order.shipping_address.city}"
+      return false if any_invalid?(
+        order: order,
+        validation_method: :contains_invalid_char?,
+        message: 'contains invalid character',
+        properties: [
+          :name,
+          :company,
+          :address1,
+          :address2,
+          :city,
+          :phone
+        ]
       )
 
       # State code is required and must be two characters in length
-      return false if log_validation(
-        order_id: order.id,
-        condition: nil_or_empty?(order.shipping_address.province_code),
-        message: 'province_code is nil or empty'
-      )
       return false if log_validation(
         order_id: order.id,
         condition: order.shipping_address.province_code.length != 2,
@@ -105,22 +71,11 @@ module Fulfillment
       )
 
       # Country code is required and must be two characters in length
-      return false if log_validation(
-        order_id: order.id,
-        condition: nil_or_empty?(order.shipping_address.country_code),
-        message: 'country_code is nil or empty'
-      )
+
       return false if log_validation(
         order_id: order.id,
         condition: order.shipping_address.country_code.length != 2,
         message: "country_code has invalid length: #{order.shipping_address.country_code}"
-      )
-
-      # Phone number must not have invalid chars
-      return false if log_validation(
-        order_id: order.id,
-        condition: contains_invalid_char?(order.shipping_address.phone),
-        message: "phone has invalid char: #{order.shipping_address.phone}"
       )
 
       # No PO boxes
@@ -154,6 +109,21 @@ module Fulfillment
     end
 
     private
+
+    def self.any_invalid?(params)
+      invalid = false
+      params[:properties].each do |prop|
+        invalid = true if log_validation(
+          order_id: params[:order].id,
+          condition: FedexShippingAddressValidator.send(
+            params[:validation_method],
+            params[:order].shipping_address.send(prop)
+          ),
+          message: "#{prop}: #{params[:message]}"
+        )
+      end
+      invalid
+    end
 
     def self.nil_or_empty?(prop)
       prop.nil? || prop.empty?
