@@ -17,7 +17,7 @@ module Fulfillment
         message: 'order has no shipping address'
       )
 
-      # Name line is required and must be valid length
+      # Name line is required and must be valid length with no invalid chars
       return false if log_validation(
         order_id: order.id,
         condition: nil_or_empty?(order.shipping_address.name),
@@ -28,15 +28,25 @@ module Fulfillment
         condition: invalid_length?(order.shipping_address.name),
         message: "name has invalid length: #{order.shipping_address.name}"
       )
+      return false if log_validation(
+        order_id: order.id,
+        condition: contains_invalid_char?(order.shipping_address.name),
+        message: "name has invalid char: #{order.shipping_address.name}"
+      )
 
-      # Company line is optional and must be valid length
+      # Company line is optional and must be valid length with no invalid chars
       return false if log_validation(
         order_id: order.id,
         condition: invalid_length?(order.shipping_address.company),
         message: "company has invalid length: #{order.shipping_address.company}"
       )
+      return false if log_validation(
+        order_id: order.id,
+        condition: contains_invalid_char?(order.shipping_address.company),
+        message: "company has invalid char: #{order.shipping_address.company}"
+      )
 
-      # Address1 line is required and must be valid length
+      # Address1 line is required and must be valid length with no invalid chars
       return false if log_validation(
         order_id: order.id,
         condition: nil_or_empty?(order.shipping_address.address1),
@@ -47,15 +57,25 @@ module Fulfillment
         condition: invalid_length?(order.shipping_address.address1),
         message: "address1 has invalid length: #{order.shipping_address.address1}"
       )
+      return false if log_validation(
+        order_id: order.id,
+        condition: contains_invalid_char?(order.shipping_address.address1),
+        message: "address1 has invalid char: #{order.shipping_address.address1}"
+      )
 
-      # Address2 line is optional and must be valid length
+      # Address2 line is optional and must be valid length with no invalid chars
       return false if log_validation(
         order_id: order.id,
         condition: exceeds_max_length?(order.shipping_address.address2),
         message: "address2 has invalid length: #{order.shipping_address.address2}"
       )
+      return false if log_validation(
+        order_id: order.id,
+        condition: contains_invalid_char?(order.shipping_address.address2),
+        message: "address2 has invalid char: #{order.shipping_address.address2}"
+      )
 
-      # City is required and must be valid length
+      # City is required and must be valid length with no invalid chars
       return false if log_validation(
         order_id: order.id,
         condition: nil_or_empty?(order.shipping_address.city),
@@ -64,7 +84,12 @@ module Fulfillment
       return false if log_validation(
         order_id: order.id,
         condition: invalid_length?(order.shipping_address.city),
-        message: 'city has invalid length'
+        message: "city has invalid length: #{order.shipping_address.city}"
+      )
+      return false if log_validation(
+        order_id: order.id,
+        condition: contains_invalid_char?(order.shipping_address.city),
+        message: "city has invalid char: #{order.shipping_address.city}"
       )
 
       # State code is required and must be two characters in length
@@ -89,6 +114,13 @@ module Fulfillment
         order_id: order.id,
         condition: order.shipping_address.country_code.length != 2,
         message: "country_code has invalid length: #{order.shipping_address.country_code}"
+      )
+
+      # Phone number must not have invalid chars
+      return false if log_validation(
+        order_id: order.id,
+        condition: contains_invalid_char?(order.shipping_address.phone),
+        message: "phone has invalid char: #{order.shipping_address.phone}"
       )
 
       # No PO boxes
@@ -137,6 +169,13 @@ module Fulfillment
     def self.exceeds_max_length?(prop)
       return false if nil_or_empty?(prop)
       return true if prop.length > MAX_LINE_LENGTH
+      false
+    end
+
+    # We can only handle ASCII printable characters within codepoints 32-126.
+    def self.contains_invalid_char?(prop)
+      return false if nil_or_empty?(prop)
+      prop.each_codepoint { |c| return true if c < 32 || c > 126 }
       false
     end
 
