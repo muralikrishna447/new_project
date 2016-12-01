@@ -16,7 +16,7 @@ class AdminController < ApplicationController
     if params[:text].to_i != 0
       user = User.where(id: params[:text]).first
     else
-      user = User.where(email: params[:text]).first
+      user = User.where('email iLIKE ?', params[:text]).first
     end
 
     if ! user
