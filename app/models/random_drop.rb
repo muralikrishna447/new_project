@@ -2,7 +2,7 @@ class RandomDrop
 
   @@client = Aws::DynamoDB::Client.new(region: 'us-west-2')
 
-  def self.get(user_id)
+  def self.query(user_id)
     begin
       if !Rails.env.test?
         response = @@client.query(
@@ -13,7 +13,6 @@ class RandomDrop
             ':user_id' => user_id.to_s
           }
         )
-        puts "RESPONSE: #{response.inspect}"
         items = response.items
           .map {|item| Hash[item.each_pair.to_a]}
           .map {|item|
