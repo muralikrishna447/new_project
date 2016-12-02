@@ -17,7 +17,7 @@ describe Api::V0::RandomDropsController do
     get :show, id: @user.id
     response.should be_success
     parsed = JSON.parse response.body
-    parsed['user_id'].should eq(1)
+    parsed['user_id'].should eq(@user.id)
     parsed['discount_code'].should eq('RANDOMDISCOUNT')
     parsed['variant_id'].should eq('VARIANTID')
 
