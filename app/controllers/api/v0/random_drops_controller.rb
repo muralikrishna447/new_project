@@ -5,11 +5,7 @@ module Api
       before_filter :ensure_authorized, only: [:show]
 
       def show
-        @random_drop = {
-          user_id: 1,
-          discount_code: 'RANDOMDISCOUNT',
-          variant_id: 'VARIANTID'
-        }
+        @random_drop = RandomDrop.get(params[:id])
         render_api_response 200, @random_drop
       end
 
