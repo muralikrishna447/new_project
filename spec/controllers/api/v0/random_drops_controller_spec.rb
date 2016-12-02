@@ -20,7 +20,11 @@ describe Api::V0::RandomDropsController do
     parsed['user_id'].should eq(@user.id)
     parsed['discount_code'].should eq('RANDOMDISCOUNT')
     parsed['variant_id'].should eq('VARIANTID')
+  end
 
+  it 'should not return a random drop if user id does not match authenticated user' do
+    get :show, id: 4
+    response.should_not be_success
   end
 
 end
