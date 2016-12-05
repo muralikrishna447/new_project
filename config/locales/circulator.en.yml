@@ -22,5 +22,5 @@ en:
       circulator_error_unknown_reason:
         message: "We’ve got a problem — Joule has stopped cooking."
       disconnect_while_cooking:
-        message: "Hmm, it looks like Joule got disconnected during a cook. To resume cooking, please make sure it’s plugged in and power’s on."
+        message: "Hmm, it looks like Joule got disconnected from WiFi."
     app_name: "Joule"
