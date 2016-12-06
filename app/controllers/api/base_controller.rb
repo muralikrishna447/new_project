@@ -61,19 +61,18 @@ module Api
       unless request.authorization()
         raise AuthorizationError("No Authorization header set")
       end
-
+      # This is very questionable - we should probably enforce the Bearer prefix
       token = request.authorization().split(' ').last
 
-
-      token = AuthToken.from_string(token)
-      aa = ActorAddress.find_for_token(token)
+      @current_token = AuthToken.from_string(token)
+      aa = ActorAddress.find_for_token(@current_token)
       unless aa
         logger.info "Not ActorAddress found for token #{token}"
         return
       end
 
       logger.debug "Found actor address: [#{aa.inspect}]"
-      unless aa.valid_token?(token)
+      unless aa.valid_token?(@current_token)
         logger.info "Invalid token #{token.inspect}"
         return
       end
@@ -102,6 +101,7 @@ module Api
           render_unauthorized if render_response
           return
         end
+
         @user_id_from_token = aa.actor_id
         @actor_address_from_token = aa
       rescue Exception => e

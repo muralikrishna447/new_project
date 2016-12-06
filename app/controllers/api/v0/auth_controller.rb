@@ -164,8 +164,7 @@ module Api
       end
 
       def chefsteps_sso_url(path)
-        token = request.headers['HTTP_AUTHORIZATION']
-        short_lived_token = AuthToken.provide_short_lived(token).to_jwt
+        short_lived_token = AuthToken.provide_short_lived(@current_token).to_jwt
         url = "https://#{Rails.application.config.shared_config[:chefsteps_endpoint]}/sso?token=#{short_lived_token}"
         url += "&path=#{path}" if path.present?
         url
