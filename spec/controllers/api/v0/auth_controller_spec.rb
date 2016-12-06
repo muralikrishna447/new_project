@@ -372,7 +372,7 @@ describe Api::V0::AuthController do
     end
 
     it 'handles chefsteps redirect' do
-      redirect_base = Rails.application.config.shared_config[:chefsteps_endpoint]
+      redirect_base = "www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
       token = request.env['HTTP_AUTHORIZATION']
       path = "https://#{redirect_base}/some-random-path"
       get :external_redirect, :path => path
