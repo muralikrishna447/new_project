@@ -35,10 +35,9 @@ class AuthToken
     end
   end
 
-  def self.provide_short_lived(token_string)
+  def self.provide_short_lived(token)
     begin
-      key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
-      claim = JSON::JWT.decode(token_string, key.to_s)
+      claim = token.claim.clone
       exp = (Time.now + 10.minutes).to_i
       iat = Time.now.to_i # Keep everything the except use a new issued_at because its a different token
       jti = "#{iat}/#{SecureRandom.hex(18)}"

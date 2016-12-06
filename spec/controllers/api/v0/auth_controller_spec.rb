@@ -341,7 +341,7 @@ describe Api::V0::AuthController do
 
   context 'GET /external_redirect' do
     before :each do
-      request.env['HTTP_AUTHORIZATION'] = @aa.current_token.to_jwt
+      request.env['HTTP_AUTHORIZATION'] = "Bearer #{@aa.current_token.to_jwt}"
     end
 
     it 'rejects unconfigured but valid path' do
@@ -419,7 +419,7 @@ describe Api::V0::AuthController do
 
   context 'POST /upgrade_token' do
     before :each do
-      @short_lived_token = AuthToken.provide_short_lived(@aa.current_token.to_jwt).to_jwt
+      @short_lived_token = AuthToken.provide_short_lived(@aa.current_token).to_jwt
     end
 
     it 'upgrades a token' do
