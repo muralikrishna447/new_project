@@ -75,18 +75,35 @@ module Fulfillment
       raise "Unexpected SKU #{sku}"
     end
 
+    def self.get_name(shipping_address)
+      # Sometimes the customer name ends up all in the `last_name`
+      # field... likely a customer import issue.  Manually fix here
+      full = shipping_address.name
+      first = shipping_address.first_name
+      last = shipping_address.last_name
+      if first.length < 1
+        parts = full.split
+        first = parts[0]
+        last = parts[1..-1].join(' ')
+        Rails.logger.debug("Fixing name #{full}: [#{first}] [#{last}]")
+      end
+      return {full_name: full, first_name: first, last_name: last}
+    end
+
     def self.transform(fulfillable)
       line_items = []
       fulfillable.line_items.each do |line_item|
         order = fulfillable.order
+        name = get_name(fulfillable.order.shipping_address)
+
         line_items <<
           [
             order.id,
             line_item.id,
             order.created_at,
-            fulfillable.order.shipping_address.name,
-            fulfillable.order.shipping_address.first_name,
-            fulfillable.order.shipping_address.last_name,
+            name[:full_name],
+            name[:first_name],
+            name[:last_name],
             fulfillable.order.shipping_address.company,
             fulfillable.order.shipping_address.address1,
             fulfillable.order.shipping_address.address2,
