@@ -307,6 +307,7 @@ Delve::Application.routes.draw do
       # match 'activities/', to: 'activities#index', via: [:get, :options]
       # match 'activities/:id', to: 'activities#show', as: 'activity', via: [:get, :options]
 
+      resources :random_drops, only: [:show]
     end
   end
 
