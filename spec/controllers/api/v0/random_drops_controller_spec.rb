@@ -20,6 +20,7 @@ describe Api::V0::RandomDropsController do
     parsed['user_id'].should eq(@user.id)
     parsed['discount_code'].should eq('RANDOMDISCOUNT')
     parsed['variant_id'].should eq('VARIANTID')
+    parsed['url'].should eq("https://store.chefsteps-test-endpoint.com/cart/VARIANTID:1?discount=RANDOMDISCOUNT")
   end
 
   it 'should not return a random drop if user id does not match authenticated user' do
