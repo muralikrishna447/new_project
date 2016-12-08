@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Circulator  do
   before :each do
     @circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
-    @user = Fabricate :user
+    @user = Fabricate :user, id: 456
   end
 
   it "can be created" do
@@ -26,12 +26,30 @@ describe Circulator  do
     @user.owned_circulators.length.should == 1
     @user.owned_circulators.first.id.should == owned_circulator.id
   end
-  
+
   it 'prevents duplicate circulators but allows creation after delete' do
     expect {
       @circulator2 = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
     }.to raise_error(ActiveRecord::RecordNotUnique)
     @circulator.destroy()
     @circulator2 = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
+  end
+
+  describe 'referral codes' do
+    it 'creates when user first connects to circulator as owner' do
+      Resque.should_receive(:enqueue).with(CreateReferralCode, 456)
+      CirculatorUser.create! user: @user, circulator: @circulator, owner: true
+    end
+
+    it 'does not create when not owner' do
+      Resque.should_not_receive(:enqueue)
+      CirculatorUser.create! user: @user, circulator: @circulator, owner: false
+    end
+
+    it 'does not create if user already has code' do
+      Resque.should_not_receive(:enqueue)
+      user = Fabricate :user, id: 789, referral_code: 'kochujang'
+      CirculatorUser.create! user: user, circulator: @circulator, owner: true
+    end
   end
 end

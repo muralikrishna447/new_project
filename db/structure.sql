@@ -2187,7 +2187,8 @@ CREATE TABLE users (
     needs_special_terms boolean DEFAULT false,
     deleted_at timestamp without time zone,
     first_joule_purchased_at timestamp without time zone,
-    joule_purchase_count integer DEFAULT 0
+    joule_purchase_count integer DEFAULT 0,
+    referral_code character varying(255)
 );
 
 
@@ -4231,3 +4232,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160818162532');
 INSERT INTO schema_migrations (version) VALUES ('20160818231947');
 
 INSERT INTO schema_migrations (version) VALUES ('20160913212211');
+
+INSERT INTO schema_migrations (version) VALUES ('20161208175329');
