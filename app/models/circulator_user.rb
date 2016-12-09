@@ -5,7 +5,7 @@ class CirculatorUser < ActiveRecord::Base
 
   attr_accessible :owner, :user, :circulator
 
-  after_commit :sync_mailchimp
+  after_save :sync_mailchimp
   after_destroy :sync_mailchimp
 
   def sync_mailchimp
