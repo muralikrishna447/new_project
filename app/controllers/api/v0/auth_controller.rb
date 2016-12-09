@@ -153,6 +153,7 @@ module Api
           jti: jti, # Unique token id, helps prevent replay attacks
           name: current_api_user.name,
           email: current_api_user.email,
+          external_id: current_api_user.id.to_s,
           user_fields: {
             premium: current_api_user.premium?
           }
