@@ -120,6 +120,9 @@ describe UserSync do
       # 1, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
       CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
+
+      # Fake the resque
+      @user_sync.sync_mailchimp({joule_counts: true})
     end
 
     it 'should not sync if circulator user current circulator count matches non-zero' do
@@ -136,7 +139,7 @@ describe UserSync do
 
     it 'should sync if was circulatoruser but deleted' do
       # Should get user sync twice, but only post once with 0,1
-      #stub_mailchimp_post_joule_counts(0, 1)
+      stub_mailchimp_post_joule_counts(0, 1)
       Resque.should_receive(:enqueue).with(UserSync, @user.id).twice()
 
       # 1, 1 in mailchimp
@@ -145,7 +148,14 @@ describe UserSync do
       # 0, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
       cu = CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
+
+      # Fake the resque
+      @user_sync.sync_mailchimp({joule_counts: true})
+
       owned_circulator.destroy!
+
+      # Fake the resque
+      @user_sync.sync_mailchimp({joule_counts: true})
     end
 
 
