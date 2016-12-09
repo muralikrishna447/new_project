@@ -110,16 +110,16 @@ describe UserSync do
     end
 
     it 'should sync if circulator user current circulator counts mismatch' do
+      # Should post 1,1
+      stub_mailchimp_post_joule_counts(1, 1)
+      Resque.should_receive(:enqueue).with(UserSync, @user.id)
+
       # 0 in mailchimp
       setup_member_info_with_joule_counts(0, 0, 'subscribed')
 
       # 1, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
       CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
-
-      # Should post 1,1
-      stub_mailchimp_post_joule_counts(1, 1)
-      @user_sync.sync_mailchimp({joule_counts: true})
     end
 
     it 'should not sync if circulator user current circulator count matches non-zero' do
@@ -135,6 +135,10 @@ describe UserSync do
     end
 
     it 'should sync if was circulatoruser but deleted' do
+      # Should get user sync twice, but only post once with 0,1
+      #stub_mailchimp_post_joule_counts(0, 1)
+      Resque.should_receive(:enqueue).with(UserSync, @user.id).twice()
+
       # 1, 1 in mailchimp
       setup_member_info_with_joule_counts(1, 1, 'subscribed')
 
@@ -142,11 +146,8 @@ describe UserSync do
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
       cu = CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
       owned_circulator.destroy!
-
-      # Should post 0,1
-      stub_mailchimp_post_joule_counts(0, 1)
-      @user_sync.sync_mailchimp({joule_counts: true})
     end
+
 
     def setup_member_premium(in_group)
       setup_member_info(Rails.configuration.mailchimp[:premium_group_id],

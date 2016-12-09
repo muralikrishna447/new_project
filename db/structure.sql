@@ -3,7 +3,6 @@
 --
 
 SET statement_timeout = 0;
-SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -1319,6 +1318,40 @@ ALTER SEQUENCE pages_id_seq OWNED BY pages.id;
 
 
 --
+-- Name: pending_edits; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE pending_edits (
+    id integer NOT NULL,
+    user_id integer,
+    serialized_content text,
+    editable_id integer,
+    editable_type character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: pending_edits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE pending_edits_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: pending_edits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE pending_edits_id_seq OWNED BY pending_edits.id;
+
+
+--
 -- Name: pg_search_documents; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2559,6 +2592,13 @@ ALTER TABLE ONLY pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY pending_edits ALTER COLUMN id SET DEFAULT nextval('pending_edits_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY pg_search_documents ALTER COLUMN id SET DEFAULT nextval('pg_search_documents_id_seq'::regclass);
 
 
@@ -3015,6 +3055,14 @@ ALTER TABLE ONLY order_sort_images
 
 ALTER TABLE ONLY pages
     ADD CONSTRAINT pages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pending_edits_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY pending_edits
+    ADD CONSTRAINT pending_edits_pkey PRIMARY KEY (id);
 
 
 --
@@ -3566,6 +3614,13 @@ CREATE INDEX index_inclusions_on_course_id_and_activity_id ON inclusions USING b
 --
 
 CREATE INDEX index_ingredients_on_slug ON ingredients USING btree (slug);
+
+
+--
+-- Name: index_pending_edits_on_editable_id_and_editable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_pending_edits_on_editable_id_and_editable_type ON pending_edits USING btree (editable_id, editable_type);
 
 
 --
