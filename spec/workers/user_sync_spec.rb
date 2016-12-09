@@ -114,17 +114,17 @@ describe UserSync do
       stub_mailchimp_post_joule_counts(1, 1)
       Resque.should_receive(:enqueue).with(UserSync, @user.id)
 
-      # 0 in mailchimp
+      # 0, 0 in mailchimp
       setup_member_info_with_joule_counts(0, 0, 'subscribed')
 
       # 1, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
-      CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
+      cu = CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
+      cu.run_callbacks(:commit)
 
       # Fake the resque
       @user_sync.sync_mailchimp({joule_counts: true})
     end
-
 
     it 'should not sync if circulator user current circulator count matches non-zero' do
       # 1, 1 in mailchimp
@@ -149,6 +149,7 @@ describe UserSync do
       # 0, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
       cu = CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
+      cu.run_callbacks(:commit)
 
       # Fake the resque
       @user_sync.sync_mailchimp({joule_counts: true})
