@@ -2554,14 +2554,6 @@ ALTER TABLE ONLY order_sort_images ALTER COLUMN id SET DEFAULT nextval('order_so
 
 ALTER TABLE ONLY pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regclass);
 
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY pending_edits ALTER COLUMN id SET DEFAULT nextval('pending_edits_id_seq'::regclass);
-
-
 --
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
@@ -3022,15 +3014,6 @@ ALTER TABLE ONLY order_sort_images
 
 ALTER TABLE ONLY pages
     ADD CONSTRAINT pages_pkey PRIMARY KEY (id);
-
-
---
--- Name: pending_edits_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY pending_edits
-    ADD CONSTRAINT pending_edits_pkey PRIMARY KEY (id);
-
 
 --
 -- Name: pg_search_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
