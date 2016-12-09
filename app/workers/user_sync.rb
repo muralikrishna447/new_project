@@ -13,6 +13,10 @@ class UserSync
   PREMIUM_GROUP_NAME = "Premium Member"
   JOULE_PURCHASE_GROUP_NAME = "Joule Purchase"
 
+  # Unfortunate limit to merge tag name length
+  JOULES_CONNECTED_MERGE_TAG = "JL_CONN"
+  JOULES_EVER_CONNECTED_MERGE_TAG = "JL_EVR_CON"
+
   @queue = :user_sync
 
   def self.perform(user_id)
@@ -30,7 +34,7 @@ class UserSync
     sync_shopify
   end
 
-  def sync_mailchimp(options = {premium: true, joule: true})
+  def sync_mailchimp(options = {premium: true, joule: true, joule_counts: true})
     list_id = Rails.configuration.mailchimp[:list_id]
     member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
     @logger.info member_info.inspect
@@ -58,14 +62,51 @@ class UserSync
     end
 
     if options[:joule]
+      # This is deprecated b/c it is nearly worthless - it doesn't account for amazon, anonymous purchase, etc
       add_to_group_param(groups, member_info, :joule_group_id, JOULE_PURCHASE_GROUP_NAME, @user.joule_purchase_count > 0)
     end
 
-    add_to_groups(groups)
+    if options[:premium] || options[:joule]
+      add_to_groups(groups)
+    end
+
+    if options[:joule_counts]
+      sync_joule_owner_counts(member_info)
+    end
   end
 
   def sync_shopify
     Shopify::Customer.sync_user @user
+  end
+
+  def sync_joule_owner_counts(member_info)
+    existing_merges = member_info['merges'] || {}
+
+    count = CirculatorUser.where(user_id: @user.id).count
+    ever_count = CirculatorUser.with_deleted.where(user_id: @user.id).count
+
+    if count != (existing_merges[JOULES_CONNECTED_MERGE_TAG] || 0).to_i ||
+        ever_count != (existing_merges[JOULES_EVER_CONNECTED_MERGE_TAG] || 0).to_i
+
+      merge_vars = {
+        JOULES_CONNECTED_MERGE_TAG => count,
+        JOULES_EVER_CONNECTED_MERGE_TAG => ever_count
+      }
+
+      @logger.info("Sync user #{@user.id} joule counts, #{merge_vars.inspect}")
+
+      Gibbon::API.lists.update_member(
+        {
+          id: Rails.configuration.mailchimp[:list_id],
+          email: {
+            email: @user.email
+          },
+          replace_interests: false,
+          merge_vars: merge_vars
+        }
+      )
+
+    end
   end
 
   def add_to_group_param(groups, member_info, group_id, group_name, db_value)
