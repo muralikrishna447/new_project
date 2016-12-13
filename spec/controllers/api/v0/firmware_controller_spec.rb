@@ -24,7 +24,7 @@ describe Api::V0::FirmwareController do
       .and_return(false)
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu_blacklist')
       .and_return(false)
-    enabled_app_versions = ['2.41.2', '2.41.3', '2.41.4']
+    enabled_app_versions = ['2.40.2', '2.41.2', '2.41.3', '2.41.4']
     for v in enabled_app_versions
       set_version_enabled(v, true)
     end
@@ -67,6 +67,8 @@ describe Api::V0::FirmwareController do
     mock_s3_json("manifests/2.41.3/manifest", esp_only_manifest)
     mock_s3_json("manifests/2.41.2/manifest", esp_only_manifest)
     mock_s3_json("manifests/2.41.4/manifest", manifest)
+
+    mock_s3_json("manifests/2.40.2/manifest", manifest)
   end
 
   it 'should get manifests for wifi firmware' do
@@ -182,5 +184,15 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
     post :updates
     response.should_not be_success
+  end
+
+  # Remove this test after app version 2.41.2 is released
+  it 'should not get firmware update if iOS 10.2 and 47' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    request.env['HTTP_USER_AGENT'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 (4302330688)'
+    post :updates, {'appVersion'=> '2.40.2', 'appFirmwareVersion' => '47', 'hardwareVersion' => 'JL.p5'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
   end
 end
