@@ -1,49 +1,6 @@
 require 'spec_helper'
 
-describe Fulfillment::RostiOrderExporter do
-  describe 'job_params' do
-    before do
-      Timecop.freeze(Time.now)
-    end
-    after do
-      Timecop.return
-    end
-
-    context 'storage is s3' do
-      let(:s3_bucket) { 'my s3 bucket' }
-      let(:s3_region) { 'my s3 region' }
-
-      it 'returns s3 storage params' do
-        Fulfillment::RostiOrderExporter.configure(
-          s3_bucket: s3_bucket,
-          s3_region: s3_region
-        )
-        params = { storage: 's3' }
-        expect(Fulfillment::RostiOrderExporter.job_params(params)).to eq(
-          params.merge(
-            storage: 's3',
-            storage_s3_bucket: s3_bucket,
-            storage_s3_region: s3_region,
-            storage_filename: "#{Fulfillment::RostiOrderExporter.type}-#{Time.now.utc.iso8601}.csv",
-            skus: [Shopify::Order::JOULE_SKU]
-          )
-        )
-      end
-    end
-
-    context 'storage is file' do
-      it 'returns file storage params' do
-        params = { storage: 'file' }
-        expect(Fulfillment::RostiOrderExporter.job_params(params)).to eq(
-          params.merge(
-            storage_filename: "#{Fulfillment::RostiOrderExporter.type}-#{Time.now.utc.iso8601}.csv",
-            skus: [Shopify::Order::JOULE_SKU]
-          )
-        )
-      end
-    end
-  end
-
+describe Fulfillment::RostiOrderSubmitter do
   describe 'transform' do
     let(:order_name) { '#12345678' }
     let(:processed_at) { Time.now.utc.iso8601.to_s }
@@ -66,7 +23,7 @@ describe Fulfillment::RostiOrderExporter do
       Fulfillment::Fulfillable.new(
         order: ShopifyAPI::Order.new(
           name: order_name,
-          processed_at: processed_at,
+          processed_at: processed_at, 
           shipping_address: {
             company: company,
             name: name,
@@ -95,7 +52,7 @@ describe Fulfillment::RostiOrderExporter do
     end
 
     it 'transforms fulfillable line items into columns' do
-      expect(Fulfillment::RostiOrderExporter.transform(fulfillable)).to eq(
+      expect(Fulfillment::RostiOrderSubmitter.transform(fulfillable)).to eq(
         [
           [
             "#{order_name}-#{line_item_id_1}",
@@ -111,14 +68,14 @@ describe Fulfillment::RostiOrderExporter do
             phone,
             sku_1,
             quantity_1,
-            Fulfillment::RostiOrderExporter::RETURN_NAME,
-            Fulfillment::RostiOrderExporter::RETURN_COMPANY,
-            Fulfillment::RostiOrderExporter::RETURN_ADDRESS_1,
-            Fulfillment::RostiOrderExporter::RETURN_ADDRESS_2,
-            Fulfillment::RostiOrderExporter::RETURN_CITY,
-            Fulfillment::RostiOrderExporter::RETURN_STATE,
-            Fulfillment::RostiOrderExporter::RETURN_ZIP,
-            Fulfillment::RostiOrderExporter::RETURN_COUNTRY
+            Fulfillment::RostiOrderSubmitter::RETURN_NAME,
+            Fulfillment::RostiOrderSubmitter::RETURN_COMPANY,
+            Fulfillment::RostiOrderSubmitter::RETURN_ADDRESS_1,
+            Fulfillment::RostiOrderSubmitter::RETURN_ADDRESS_2,
+            Fulfillment::RostiOrderSubmitter::RETURN_CITY,
+            Fulfillment::RostiOrderSubmitter::RETURN_STATE,
+            Fulfillment::RostiOrderSubmitter::RETURN_ZIP,
+            Fulfillment::RostiOrderSubmitter::RETURN_COUNTRY
           ],
           [
             "#{order_name}-#{line_item_id_2}",
@@ -134,14 +91,14 @@ describe Fulfillment::RostiOrderExporter do
             phone,
             sku_2,
             quantity_2,
-            Fulfillment::RostiOrderExporter::RETURN_NAME,
-            Fulfillment::RostiOrderExporter::RETURN_COMPANY,
-            Fulfillment::RostiOrderExporter::RETURN_ADDRESS_1,
-            Fulfillment::RostiOrderExporter::RETURN_ADDRESS_2,
-            Fulfillment::RostiOrderExporter::RETURN_CITY,
-            Fulfillment::RostiOrderExporter::RETURN_STATE,
-            Fulfillment::RostiOrderExporter::RETURN_ZIP,
-            Fulfillment::RostiOrderExporter::RETURN_COUNTRY
+            Fulfillment::RostiOrderSubmitter::RETURN_NAME,
+            Fulfillment::RostiOrderSubmitter::RETURN_COMPANY,
+            Fulfillment::RostiOrderSubmitter::RETURN_ADDRESS_1,
+            Fulfillment::RostiOrderSubmitter::RETURN_ADDRESS_2,
+            Fulfillment::RostiOrderSubmitter::RETURN_CITY,
+            Fulfillment::RostiOrderSubmitter::RETURN_STATE,
+            Fulfillment::RostiOrderSubmitter::RETURN_ZIP,
+            Fulfillment::RostiOrderSubmitter::RETURN_COUNTRY
           ]
         ]
       )
