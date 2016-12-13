@@ -103,7 +103,12 @@ module Api
 
         # HACK: Want to get a few more days of DFU out before 2.41.1
         # is out.  Remove this hack after 2016-12-18
+        is_ios_10_2 = request.env['HTTP_USER_AGENT'] =~ /iPhone OS 10_2/
         if app_version == Semverse::Version.new("2.40.2") && params[:appFirmwareVersion] == '47'
+          if is_ios_10_2
+            logger.info("Not allowing DFU for 2.40.2 and iOS 10.2")
+            return false
+          end
           logger.info("Allowing firmware update because app is 2.40.2 " \
                       "and appFirmwareVersion is 47")
           return true
