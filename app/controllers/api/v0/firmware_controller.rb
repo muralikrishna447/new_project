@@ -110,10 +110,10 @@ module Api
         )
         if kinda_busted_app && params[:appFirmwareVersion] == '47'
           if is_ios_10_2
-            logger.info("Not allowing DFU for 2.40.2 and iOS 10.2")
+            logger.info("Not allowing DFU for iOS 10.2")
             return false
           end
-          logger.info("Allowing firmware update because app is 2.40.2 " \
+          logger.info("Allowing firmware update because app is #{app_version} " \
                       "and appFirmwareVersion is 47")
           return true
         end
