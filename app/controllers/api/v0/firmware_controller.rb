@@ -99,9 +99,21 @@ module Api
 
       private
       def dfu_capable?(params)
-        # New backwards incompatible version manifest type for 2.40.2
         app_version = Semverse::Version.new(params[:appVersion])
-        return app_version >= Semverse::Version.new("2.40.2")
+
+        # HACK: Want to get a few more days of DFU out before 2.41.1
+        # is out.  Remove this hack after 2016-12-18
+        if app_version == Semverse::Version.new("2.40.2") && params[:appFirmwareVersion] == '47'
+          logger.info("Allowing firmware update because app is 2.40.2 " \
+                      "and appFirmwareVersion is 47")
+          return true
+        end
+        # ENDHACK
+
+        # New backwards incompatible version manifest type for 2.40.2
+        # *But*, 2.40.2 has a bug where doing an ESP only update (ie:
+        # 61.22 -> 61.23) would break startProgram.
+        return app_version >= Semverse::Version.new("2.41.1")
       end
 
 
