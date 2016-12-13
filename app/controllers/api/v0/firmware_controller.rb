@@ -101,7 +101,7 @@ module Api
       def dfu_capable?(params)
         app_version = Semverse::Version.new(params[:appVersion])
 
-        # HACK: Want to get a few more days of DFU out before 2.41.1
+        # HACK: Want to get a few more days of DFU out before 2.41.2
         # is out.  Remove this hack after 2016-12-18
         is_ios_10_2 = request.env['HTTP_USER_AGENT'] =~ /iPhone OS 10_2/
         kinda_busted_app = (
@@ -120,7 +120,7 @@ module Api
         # ENDHACK
 
         # New backwards incompatible version manifest type for 2.40.2
-        # *But*, 2.40.2 has a bug where doing an ESP only update (ie:
+        # *But*, 2.40.2/2.41.1 have a bug where doing an ESP only update (ie:
         # 61.22 -> 61.23) would break startProgram.
         return app_version >= Semverse::Version.new("2.41.2")
       end
