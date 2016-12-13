@@ -45,6 +45,27 @@ module Fulfillment
         raise 'transform not implemented'
       end
 
+      # Determines whether a line item for an order should be fulfilled
+      # for the given sku.
+      def fulfillable_line_item?(order, line_item, sku)
+        raise 'fulfillable_line_item? not implemented'
+      end
+
+      # Provides the set of orders to be considered for fulfillment.
+      def orders(_search_params)
+        raise 'orders not implemented'
+      end
+
+      # Optional lifecycle hook to perform some action before the CSV is saved
+      # to storage.
+      def before_save(_fulfillables, _params)
+      end
+
+      # Optional lifecycle hook to perform some action after the CSV is
+      # successfully saved to storage.
+      def after_save(_fulfillables, _params)
+      end
+
       def perform(params)
         job_params = job_params(params)
         raise 'skus param is required' unless job_params[:skus]
@@ -58,22 +79,17 @@ module Fulfillment
         # partially fulfilled. Orders that have been completely fulfilled
         # or cancelled are excluded.
         search_params = (job_params[:search_params] || {}).merge(status: 'open')
-        orders = Shopify::Utils.search_orders(search_params)
-        Rails.logger.debug("Got #{orders.length} orders from Shopify API")
+        orders = orders(search_params)
+        Rails.logger.debug("Retrieved #{orders.length} orders")
         all_fulfillables = fulfillables(orders, job_params[:skus])
         all_fulfillables.select! { |fulfillable| include_order?(fulfillable.order) }
         sort!(all_fulfillables)
         to_fulfill = truncate(all_fulfillables, job_params[:quantity])
 
-        if job_params[:open_fulfillment]
-          Rails.logger.info("CSV order export opening fulfillments for #{to_fulfill.length} orders")
-          open_fulfillments(to_fulfill)
-        else
-          Rails.logger.info("CSV order export not opening fulfilments for #{to_fulfill.length} orders")
-        end
-
+        before_save(to_fulfill, job_params)
         storage = Fulfillment::CSVStorageProvider.provider(job_params[:storage])
         storage.save(generate_output(to_fulfill), job_params.merge(type: type))
+        after_save(to_fulfill, job_params)
       end
 
       def fulfillables(orders, skus)
@@ -150,7 +166,7 @@ module Fulfillment
           break if quantity_processed == quantity
 
           fulfillable_quantity = fulfillable.line_items.inject(0) do |sum, line_item|
-            sum + line_item.fulfillable_quantity
+            sum + fulfillable.quantity_for_line_item(line_item)
           end
 
           # We want to ship all the inventory we have available at any given time,
@@ -168,68 +184,7 @@ module Fulfillment
         to_fulfill
       end
 
-      # We open a fulfillment for each line item separately because
-      # we are currently shipping line items separately.
-      def open_fulfillments(fulfillables)
-        fulfillables.each do |fulfillable|
-          fulfillable.line_items.each do |line_item|
-            open_fulfillment_for_line_item(fulfillable.order, line_item)
-          end
-        end
-      end
-
       private
-
-      def open_fulfillment_for_line_item(order, line_item)
-        Rails.logger.info("CSV order export opening fulfillment for order with id #{order.id} and " \
-                          "line item with id #{line_item.id}")
-        # TODO add retries
-        fulfillment = ShopifyAPI::Fulfillment.new
-        fulfillment.prefix_options[:order_id] = order.id
-        fulfillment.attributes[:line_items] = [
-          { id: line_item.id, quantity: line_item.fulfillable_quantity }
-        ]
-        fulfillment.attributes[:status] = 'open'
-        fulfillment.attributes[:notify_customer] = false
-        Shopify::Utils.send_assert_true(fulfillment, :save)
-      end
-
-      def fulfillable_line_item?(order, line_item, sku)
-        return false unless line_item
-        return false if line_item.sku != sku
-        # We may be able to get rid of all the nasty logic below if
-        # we just check the value of fulfillable_quantity, but that's for
-        # another day. This is just a short circuit so we prevent any
-        # fully-refunded orders from shipping.
-        return false if line_item.fulfillable_quantity < 1
-
-        # line_item.fulfillment_status doesn't seem to always have the
-        # most recent status, probably due to Shopify's caching. Always examine
-        # the status of order.fulfillment.
-        Rails.logger.info("CSV order export checking if order with id #{order.id} and line " \
-                          "item id #{line_item.id} is fulfillable for sku #{line_item.sku}")
-        order.fulfillments.each do |fulfillment|
-          fulfillment.line_items.each do |fulfillment_line_item|
-            next unless fulfillment_line_item.id == line_item.id
-            if fulfillment.status == 'success' || fulfillment.status == 'open'
-              Rails.logger.info("CSV order export skipping order with id #{order.id} and " \
-                                "fulfillment with id #{fulfillment.id} because fulfillment " \
-                                "status is #{fulfillment.status}")
-              return false
-            end
-            # If fulfillment for this line item was previously cancelled,
-            # we want to open a new fulfillment.
-            Rails.logger.info("CSV order export order with id #{order.id} and fulfillment with " \
-                              "id #{fulfillment.id} is fulfillable fulfillment status is #{fulfillment.status}")
-            return true
-          end
-        end
-        # No fulfillment for the line item currently exists,
-        # so we want to open a new fulfillment.
-        Rails.logger.info("CSV order export order with id #{order.id} and line " \
-                          "item with id #{line_item.id} is fulfillable because no fulfillment exists")
-        true
-      end
 
       def generate_output(fulfillables)
         CSV.generate(force_quotes: true) do |output|
