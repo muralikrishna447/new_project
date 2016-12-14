@@ -59,6 +59,7 @@ describe Fulfillment::PendingOrderExporter do
           [
             order_id,
             order_name,
+            line_item_id_1,
             processed_at,
             company,
             name,
@@ -75,6 +76,7 @@ describe Fulfillment::PendingOrderExporter do
           [
             order_id,
             order_name,
+            line_item_id_2,
             processed_at,
             company,
             name,
