@@ -75,7 +75,7 @@ module Fulfillment
         raise 'storage param must be specified' unless job_params[:storage]
         Rails.logger.info("CSV order export starting perform with params: #{params}")
 
-        orders = orders(search_params)
+        orders = orders(job_params[:search_params])
         Rails.logger.debug("Retrieved #{orders.length} orders")
         all_fulfillables = fulfillables(orders, job_params[:skus])
         all_fulfillables.select! { |fulfillable| include_order?(fulfillable.order) }
