@@ -34,4 +34,22 @@ describe Circulator  do
     @circulator.destroy()
     @circulator2 = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
   end
+
+  describe 'referral codes' do
+    it 'creates when user first connects to circulator as owner' do
+      Resque.should_receive(:enqueue).with(CreateReferralCode, 456)
+      CirculatorUser.create! user: @user, circulator: @circulator, owner: true
+    end
+
+    it 'does not create when not owner' do
+      Resque.should_not_receive(:enqueue)
+      CirculatorUser.create! user: @user, circulator: @circulator, owner: false
+    end
+
+    it 'does not create if user already has code' do
+      Resque.should_not_receive(:enqueue)
+      user = Fabricate :user, id: 789, referral_code: 'kochujang'
+      CirculatorUser.create! user: user, circulator: @circulator, owner: true
+    end
+  end
 end

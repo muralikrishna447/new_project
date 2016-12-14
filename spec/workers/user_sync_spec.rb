@@ -164,6 +164,7 @@ describe UserSync do
       # Fake the resque
       @user_sync_with_code.sync_mailchimp({joule_data: true})
 
+
       # Now disconnect joule
       owned_circulator.destroy!
 
