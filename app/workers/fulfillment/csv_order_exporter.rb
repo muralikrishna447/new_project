@@ -75,10 +75,6 @@ module Fulfillment
         raise 'storage param must be specified' unless job_params[:storage]
         Rails.logger.info("CSV order export starting perform with params: #{params}")
 
-        # This query returns all open orders, including those that have been
-        # partially fulfilled. Orders that have been completely fulfilled
-        # or cancelled are excluded.
-        search_params = (job_params[:search_params] || {}).merge(status: 'open')
         orders = orders(search_params)
         Rails.logger.debug("Retrieved #{orders.length} orders")
         all_fulfillables = fulfillables(orders, job_params[:skus])

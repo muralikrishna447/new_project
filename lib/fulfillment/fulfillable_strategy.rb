@@ -94,7 +94,7 @@ module Fulfillment
         # get the list of orders from a previously-created CSV from
         # Fulfillment::PendingOrderExporter.
         def orders(search_params)
-          Fulfillment::CSVOrderSearchProvider.orders(search_params)
+          Fulfillment::PendingOrderSearchProvider.orders(search_params)
         end
 
         # Open fulfillments on fulfillable line items prior to saving the file.
