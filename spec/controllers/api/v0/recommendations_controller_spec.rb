@@ -123,7 +123,7 @@ describe Api::V0::RecommendationsController do
     end
 
     it 'should not include bacon if version is too low' do
-      @request.env['X-Application-Version'] = '2.42.1'
+      @request.env['X-Application-Version'] = '2.41'
       get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
       response.should be_success
       parsed = JSON.parse response.body
@@ -131,7 +131,7 @@ describe Api::V0::RecommendationsController do
     end
 
     it 'should  include bacon if version is sufficient' do
-      @request.env['X-Application-Version'] = '2.42.2'
+      @request.env['X-Application-Version'] = '2.42'
       get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
       response.should be_success
       parsed = JSON.parse response.body
