@@ -95,6 +95,7 @@ gem 'coverband_ext', '1.0.1'
 gem 'slack-notifier'
 
 gem 'rack-attack', '4.3.0'
+gem 'retriable', '2.1.0'
 
 group :test do
   gem 'webmock'

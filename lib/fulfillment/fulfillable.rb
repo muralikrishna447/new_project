@@ -64,7 +64,6 @@ module Fulfillment
 
       Rails.logger.info("Opening fulfillment for order with id #{order.id} and " \
                         "line item with id #{line_item.id}")
-      # TODO add retries
       fulfillment = ShopifyAPI::Fulfillment.new
       fulfillment.prefix_options[:order_id] = order.id
       fulfillment.attributes[:line_items] = [

@@ -34,10 +34,14 @@ module Fulfillment
       rows.each do |row|
         order_id = row['order_id'].to_i
         raise "Row has no order ID: #{row.inspect}" unless order_id
-        # TODO add retries
+
         Rails.logger.debug("Retrieving order from Shopify with id #{order_id}")
-        order = ShopifyAPI::Order.find(order_id)
+        order = nil
+        Retriable.retriable tries: 3 do
+          order = ShopifyAPI::Order.find(order_id)
+        end
         raise "Order not found: #{order_id}" unless order_id
+
         orders << order
       end
       orders
