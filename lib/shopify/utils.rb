@@ -1,3 +1,5 @@
+require 'retriable'
+
 module Shopify
   class Utils
     # Returns the order tags as an array.

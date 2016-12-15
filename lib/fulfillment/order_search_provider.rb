@@ -1,3 +1,5 @@
+require 'retriable'
+
 module Fulfillment
   module OrderSearchProvider
     def self.orders(search_params)
