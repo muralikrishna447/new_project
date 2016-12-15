@@ -2,10 +2,17 @@ require 'csv'
 
 module Fulfillment
   class RostiOrderSubmitter
+    extend Resque::Plugins::Lock
     include Fulfillment::CSVOrderExporter
     include Fulfillment::FulfillableStrategy::OpenFulfillment
 
     @queue = :RostiOrderSubmitter
+
+    # Only allow one of these jobs to be enqueued/running
+    # at any given time.
+    def self.lock(_params)
+      Fulfillment::JOB_LOCK_KEY
+    end
 
     def self.configure(params)
       raise 's3_bucket is a required param' unless params[:s3_bucket]

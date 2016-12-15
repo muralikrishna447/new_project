@@ -1,4 +1,5 @@
 require 'csv'
+require 'resque/plugins/lock'
 
 module Fulfillment
   # Exports order IDs (and some order data for the record) in a generic
@@ -6,10 +7,17 @@ module Fulfillment
   # As a second phase, an exporter can use the file produced by this
   # exporter as input and open fulfillments for those orders.
   class PendingOrderExporter
+    extend Resque::Plugins::Lock
     include Fulfillment::CSVOrderExporter
     include Fulfillment::FulfillableStrategy::Export
 
     @queue = :PendingOrderExporter
+
+    # Only allow one of these jobs to be enqueued/running
+    # at any given time.
+    def self.lock(_params)
+      Fulfillment::JOB_LOCK_KEY
+    end
 
     def self.configure(params)
       raise 's3_bucket is a required param' unless params[:s3_bucket]

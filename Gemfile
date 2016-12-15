@@ -96,6 +96,7 @@ gem 'slack-notifier'
 
 gem 'rack-attack', '4.3.0'
 gem 'retriable', '2.1.0'
+gem 'resque-lock', '1.1'
 
 group :test do
   gem 'webmock'
