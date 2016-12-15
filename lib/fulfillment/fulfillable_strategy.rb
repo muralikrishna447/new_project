@@ -1,4 +1,4 @@
-require 'fulfillment/order_search_provider'
+require_relative 'order_search_provider'
 
 module Fulfillment
   module FulfillableStrategy
