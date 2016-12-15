@@ -4,14 +4,11 @@ describe UserSync do
     @user = Fabricate :user, id: @user_id, email: 'johndoe@chefsteps.com'
     @user_sync = UserSync.new(@user_id)
 
-    @referral_code = 'sharejoule-an3000'
-    SecureRandom.stub(:urlsafe_base64).and_return('an3000')
-
+    @referral_code = 'porktato'
     @user_id_with_code = 101
     @user_with_code = Fabricate :user, id: @user_id_with_code, email: 'exenecervenka@chefsteps.com', referral_code: @referral_code
     @user_sync_with_code = UserSync.new(@user_id_with_code)
   end
-
 
   describe 'sync premium and joule' do
 
@@ -44,7 +41,6 @@ describe UserSync do
       @user_sync.sync_mailchimp({premium: true})
       WebMock.assert_requested stub_post
     end
-
 
     it 'should not sync premium status to mailchimp when user is not in mailchimp' do
       setup_member_info_not_in_mailchimp
@@ -122,7 +118,7 @@ describe UserSync do
       Resque.should_receive(:enqueue).with(UserSync, @user.id)
 
       # Since this is first circulator, we would expect referral code created too
-      stub_discount_create(@referral_code)
+      Shopify::Customer.should_receive(:get_referral_code_for_user).and_return(@referral_code)
 
       # 0, 0 in mailchimp
       setup_member_info_with_joule_data(0, 0, '', 'subscribed')
@@ -256,12 +252,5 @@ describe UserSync do
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
         with(body: hash_including(body)).
         to_return(:status => 200, :body => "", :headers => {})
-  end
-
-  def stub_discount_create(code)
-    WebMock.stub_request(:post, "https://123:321@test.myshopify.com/admin/discounts.json").
-      with(:body => "{\"discount\":{\"code\":\"#{code}\",\"discount_type\":\"fixed_amount\",\"value\":\"20.00\",\"usage_limit\":5,\"applies_to_resource\":\"product\",\"applies_to_id\":\"99999999\"}}",
-           :headers => {'Accept'=>'*/*', 'Content-Type'=>'application/json', 'User-Agent'=>'ShopifyAPI/4.2.2 ActiveResource/3.2.16 Ruby/1.9.3'}).
-      to_return(:status => 200, :body => "", :headers => {})
   end
 end

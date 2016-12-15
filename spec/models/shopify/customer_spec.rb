@@ -97,6 +97,26 @@ describe Shopify::Customer do
     end
   end
 
+  context 'referral code' do
+    it 'just returns code if it already exists' do
+      @user = Fabricate :user, :id => 112, :email => 'blah@chefsteps.com', referral_code: 'andre_3000'
+      expect(Shopify::Customer.get_referral_code_for_user @user).to eq 'andre_3000'
+    end
+
+    it 'creates, stores, and syncs referral code if it doesnt exist' do
+      @user = Fabricate :user, :id => 112, :email => 'blah@chefsteps.com'
+      referral_code = 'sharejoule-xyzzy'
+      SecureRandom.stub(:urlsafe_base64).and_return('xyzzy')
+      WebMock.stub_request(:post, "https://123:321@test.myshopify.com/admin/discounts.json").
+        with(:body => "{\"discount\":{\"code\":\"#{referral_code}\",\"discount_type\":\"fixed_amount\",\"value\":\"20.00\",\"usage_limit\":5,\"applies_to_resource\":\"product\",\"applies_to_id\":\"99999999\"}}",
+            :headers => {'Accept'=>'*/*', 'Content-Type'=>'application/json', 'User-Agent'=>'ShopifyAPI/4.2.2 ActiveResource/3.2.16 Ruby/1.9.3'}).
+        to_return(:status => 200, :body => "", :headers => {})
+
+      expect(Shopify::Customer.get_referral_code_for_user @user).to eq referral_code
+      expect(@user.referral_code).to eq referral_code
+    end
+  end
+
   def stub_put(id='207119551')
     WebMock.stub_request(:put, /\.com\/admin\/customers\/#{id}.json/).
       to_return(:status => 200, :body => "", :headers => {})

@@ -88,24 +88,7 @@ class UserSync
     merges[JOULES_EVER_CONNECTED_MERGE_TAG] = CirculatorUser.with_deleted.where(user_id: @user.id).count
 
     if merges[JOULES_EVER_CONNECTED_MERGE_TAG] > 0
-      if ! @user.referral_code
-        code = 'sharejoule-' + unique_code { |code| User.unscoped.exists?(referral_code: code) }
-
-        # For now at least, always doing a fixed $20.00 off Joule only, good for 5 uses
-        ShopifyAPI::Discount.create(
-          code: code,
-          discount_type: 'fixed_amount',
-          value: '20.00',
-          usage_limit: 5,
-          applies_to_resource: 'product',
-          applies_to_id: Rails.configuration.shopify[:joule_product_id]
-        )
-        @user.referral_code = code
-        @user.save!
-        @logger.info("Created unique referral discount code #{code} for #{@user.id}")
-      end
-
-      merges[REFERRAL_CODE_MERGE_TAG] = @user.referral_code
+      merges[REFERRAL_CODE_MERGE_TAG] = Shopify::Customer.get_referral_code_for_user @user
     end
 
     if merges != existing_merges
