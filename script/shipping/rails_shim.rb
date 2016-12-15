@@ -6,9 +6,9 @@ lib_dir = File.join(cs_root, 'lib')
 
 # require any .rb files from these directories
 directories_to_add = [
-  File.join(cs_root, 'app', 'workers', 'fulfillment'),
-  File.join(lib_dir, 'fulfillment'),
   File.join(lib_dir, 'shopify'),
+  File.join(lib_dir, 'fulfillment'),
+  File.join(cs_root, 'app', 'workers', 'fulfillment')
 ]
 
 for d in directories_to_add
