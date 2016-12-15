@@ -35,6 +35,7 @@ module Fulfillment
         order_id = row['order_id'].to_i
         raise "Row has no order ID: #{row.inspect}" unless order_id
         # TODO add retries
+        Rails.logger.debug("Retrieving order from Shopify with id #{order_id}")
         order = ShopifyAPI::Order.find(order_id)
         raise "Order not found: #{order_id}" unless order_id
         orders << order
