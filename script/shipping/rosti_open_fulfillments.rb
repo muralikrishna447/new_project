@@ -39,6 +39,7 @@ ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{op
 
 Fulfillment::RostiOrderSubmitter.perform(
   storage: 'stdout',
+  skus: [Shopify::Order::JOULE_SKU],
   search_params: {
     storage: 'file',
     storage_filename: options[:input]
