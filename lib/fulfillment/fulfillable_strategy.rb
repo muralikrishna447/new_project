@@ -8,6 +8,8 @@ module Fulfillment
       end
 
       module ClassMethods
+        # Line items are fulfillable in an export if they have a fulfillable
+        # quantity > 0 and don't currently have an open or successful fulfillment.
         def fulfillable_line_item?(order, line_item, sku)
           return false unless line_item
           return false if line_item.sku != sku
