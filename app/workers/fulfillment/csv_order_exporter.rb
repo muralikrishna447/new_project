@@ -13,6 +13,8 @@ module Fulfillment
       shipping-validation-error
     )
 
+    JOB_LOCK_KEY = 'fulfillment-order-export'
+
     def self.included(base)
       base.extend(ClassMethods)
     end

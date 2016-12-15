@@ -1,4 +1,5 @@
 require 'csv'
+require 'resque/plugins/lock'
 
 module Fulfillment
   class RostiOrderSubmitter
@@ -11,7 +12,7 @@ module Fulfillment
     # Only allow one of these jobs to be enqueued/running
     # at any given time.
     def self.lock(_params)
-      Fulfillment::JOB_LOCK_KEY
+      Fulfillment::CSVOrderExporter::JOB_LOCK_KEY
     end
 
     def self.configure(params)
