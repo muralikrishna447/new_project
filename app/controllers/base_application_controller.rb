@@ -201,10 +201,12 @@ class BaseApplicationController < ActionController::Base
         NAME: user.name,
         SOURCE: source,
         MMERGE2: long_country,
-        groupings: {
-          id: Rails.configuration.mailchimp[:email_preferences_group_id],
-          groups: Rails.configuration.mailchimp[:email_preferences_group_default]
-        }
+        groupings: [
+          {
+            id: Rails.configuration.mailchimp[:email_preferences_group_id],
+            groups: Rails.configuration.mailchimp[:email_preferences_group_default]
+          }
+        ]
       }
       logger.info "[mailchimp] Subscribing [#{user.email}] to list #{[listname]}, merge_vars: #{merge_vars}"
 
