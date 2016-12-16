@@ -197,7 +197,15 @@ class BaseApplicationController < ActionController::Base
       # it would be more descriptive but it was already set and existing systems
       # rely on it. It shows up as "Country" in the mailchimp segmentation settings
       # because of a mapping on their merge vars page.
-      merge_vars = {NAME: user.name, SOURCE: source, MMERGE2: long_country}
+      merge_vars = {
+        NAME: user.name,
+        SOURCE: source,
+        MMERGE2: long_country,
+        groupings: {
+          id: Rails.configuration.mailchimp[:email_preferences_group_id],
+          groups: Rails.configuration.mailchimp[:email_preferences_group_default]
+        }
+      }
       logger.info "[mailchimp] Subscribing [#{user.email}] to list #{[listname]}, merge_vars: #{merge_vars}"
 
       Gibbon::API.lists.subscribe(
