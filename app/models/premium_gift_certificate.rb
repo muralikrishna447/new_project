@@ -6,14 +6,7 @@ class PremiumGiftCertificate < ActiveRecord::Base
   scope :unredeemed, -> { where(redeemed: false) }
 
   after_initialize do
-    if ! self.token
-      loop do
-        # 6 chars incluing 0-9, a-z, should give us 36^6 = 2,176,782,336 possibilities. Enough
-        # to keep crackers at bay. Loop to avoid (extremely rare) duplicate.
-        self.token = SecureRandom.urlsafe_base64.downcase.delete('_-')[0..5]
-        break unless PremiumGiftCertificate.unscoped.exists?(token: self.token)
-      end
-    end
+    self.token = self.token || unique_code { |token| PremiumGiftCertificate.unscoped.exists?(token: token) }
   end
 
   def self.redeem(user, token)

@@ -3,6 +3,11 @@ describe UserSync do
     @user_id = 100
     @user = Fabricate :user, id: @user_id, email: 'johndoe@chefsteps.com'
     @user_sync = UserSync.new(@user_id)
+
+    @referral_code = 'porktato'
+    @user_id_with_code = 101
+    @user_with_code = Fabricate :user, id: @user_id_with_code, email: 'exenecervenka@chefsteps.com', referral_code: @referral_code
+    @user_sync_with_code = UserSync.new(@user_id_with_code)
   end
 
   describe 'sync premium and joule' do
@@ -37,7 +42,6 @@ describe UserSync do
       WebMock.assert_requested stub_post
     end
 
-
     it 'should not sync premium status to mailchimp when user is not in mailchimp' do
       setup_member_info_not_in_mailchimp
       @user_sync.sync_mailchimp({premium: true})
@@ -60,7 +64,6 @@ describe UserSync do
 
       @user_sync.sync_mailchimp
     end
-
 
     it 'should not set joule purchase in mailchimp for non-joule member' do
       stub_mailchimp_post(nil, nil)
@@ -106,16 +109,19 @@ describe UserSync do
     it 'should not sync joule owner counts if matching at zero against default merge vars' do
       # Test would fail if POST request was made since it's not stubbed
       setup_member_premium false
-      @user_sync.sync_mailchimp({joule_counts: true})
+      @user_sync.sync_mailchimp({joule_data: true})
     end
 
     it 'should sync if circulator user current circulator counts mismatch' do
       # Should post 1,1
-      stub_mailchimp_post_joule_counts(1, 1)
+      stub_mailchimp_post_joule_data(1, 1, @referral_code)
       Resque.should_receive(:enqueue).with(UserSync, @user.id)
 
+      # Since this is first circulator, we would expect referral code created too
+      Shopify::Customer.should_receive(:get_referral_code_for_user).and_return(@referral_code)
+
       # 0, 0 in mailchimp
-      setup_member_info_with_joule_counts(0, 0, 'subscribed')
+      setup_member_info_with_joule_data(0, 0, '', 'subscribed')
 
       # 1, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
@@ -123,43 +129,44 @@ describe UserSync do
       cu.run_callbacks(:commit)
 
       # Fake the resque
-      @user_sync.sync_mailchimp({joule_counts: true})
+      @user_sync.sync_mailchimp({joule_data: true})
     end
 
     it 'should not sync if circulator user current circulator count matches non-zero' do
       # 1, 1 in mailchimp
-      setup_member_info_with_joule_counts(1, 1, 'subscribed')
+      setup_member_info_with_joule_data(1, 1, @referral_code, 'subscribed')
 
       # 1, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
-      CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
+      CirculatorUser.create! user: @user_with_code, circulator: owned_circulator, owner: true
 
       # Should not post
-      @user_sync.sync_mailchimp({joule_counts: true})
+      @user_sync_with_code.sync_mailchimp({joule_data: true})
     end
 
-    it 'should sync if was circulatoruser but deleted' do
+    it 'should sync if was CirculatorUser but deleted'do
       # Should get user sync twice, but only post once with 0,1
-      stub_mailchimp_post_joule_counts(0, 1)
-      Resque.should_receive(:enqueue).with(UserSync, @user.id).twice()
+      stub_mailchimp_post_joule_data(0, 1, @referral_code)
+      Resque.should_receive(:enqueue).with(UserSync, @user_with_code.id).twice()
 
       # 1, 1 in mailchimp
-      setup_member_info_with_joule_counts(1, 1, 'subscribed')
+      setup_member_info_with_joule_data(1, 1, @referral_code, 'subscribed')
 
       # 0, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
-      cu = CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
+      cu = CirculatorUser.create! user: @user_with_code, circulator: owned_circulator, owner: true
       cu.run_callbacks(:commit)
 
       # Fake the resque
-      @user_sync.sync_mailchimp({joule_counts: true})
+      @user_sync_with_code.sync_mailchimp({joule_data: true})
 
+
+      # Now disconnect joule
       owned_circulator.destroy!
 
       # Fake the resque
-      @user_sync.sync_mailchimp({joule_counts: true})
+      @user_sync.sync_mailchimp({joule_data: true})
     end
-
 
     def setup_member_premium(in_group)
       setup_member_info(Rails.configuration.mailchimp[:premium_group_id],
@@ -198,18 +205,16 @@ describe UserSync do
                   "groups"=>[{"name"=>name, "interested"=>in_group}]}],
                  "status" => status }]}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
-       with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
        to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
-  def setup_member_info_with_joule_counts(count, ever_count, status)
+  def setup_member_info_with_joule_data(count, ever_count, referral_code, status)
     result = {
       :success_count => 1,
       :data => [{"GROUPINGS"=>[],
-                 "merges"=>{"JL_CONN"=>count, "JL_EVR_CON"=>ever_count},
+                 "merges"=>{"JL_CONN"=>count, "JL_EVR_CON"=>ever_count, "REFER_CODE"=>referral_code},
                  "status" => status }]}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
-       with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
        to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
@@ -217,7 +222,6 @@ describe UserSync do
   def setup_member_info_not_in_mailchimp
     result = {"success_count"=>0, "error_count"=>1, "errors"=>[{"email"=>{"email"=>"a@b.com"}, "error"=>"The id passed does not exist on this list", "code"=>232}], "data"=>[]}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
-       with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
        to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
@@ -226,9 +230,9 @@ describe UserSync do
       "errors"=>[], "data"=>[{"email"=>"first@chocolateyshatner.com",
       "status"=>"unsubscribed"}]}
 
-    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info")
-    .with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
-    to_return(:status => 200, :body => result.to_json, :headers => {})
+    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
+      with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
+      to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
   def stub_mailchimp_post(group_id, name)
@@ -242,11 +246,11 @@ describe UserSync do
         to_return(:status => 200, :body => "", :headers => {})
   end
 
-  def stub_mailchimp_post_joule_counts(count, ever_count)
-    merge_vars = {"JL_CONN"=>count, "JL_EVR_CON"=>ever_count}
+  def stub_mailchimp_post_joule_data(count, ever_count, referral_code)
+    merge_vars = {"JL_CONN"=>count, "JL_EVR_CON"=>ever_count, "REFER_CODE"=>referral_code}
     body = {:apikey => 'test-api-key', :id => 'test-list-id', :email => {:email => 'johndoe@chefsteps.com'}, :replace_interests => false, :merge_vars => merge_vars}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
-        with(:body => body.to_json).
+        with(body: hash_including(body)).
         to_return(:status => 200, :body => "", :headers => {})
   end
 end

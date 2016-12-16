@@ -16,6 +16,7 @@ class UserSync
   # Unfortunate limit to merge tag name length
   JOULES_CONNECTED_MERGE_TAG = "JL_CONN"
   JOULES_EVER_CONNECTED_MERGE_TAG = "JL_EVR_CON"
+  REFERRAL_CODE_MERGE_TAG = "REFER_CODE"
 
   @queue = :user_sync
 
@@ -34,7 +35,7 @@ class UserSync
     sync_shopify
   end
 
-  def sync_mailchimp(options = {premium: true, joule: true, joule_counts: true})
+  def sync_mailchimp(options = {premium: true, joule: true, joule_data: true})
     list_id = Rails.configuration.mailchimp[:list_id]
     member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
     @logger.info member_info.inspect
@@ -70,8 +71,8 @@ class UserSync
       add_to_groups(groups)
     end
 
-    if options[:joule_counts]
-      sync_joule_owner_counts(member_info)
+    if options[:joule_data]
+      sync_joule_data(member_info)
     end
   end
 
@@ -79,21 +80,20 @@ class UserSync
     Shopify::Customer.sync_user @user
   end
 
-  def sync_joule_owner_counts(member_info)
+  def sync_joule_data(member_info)
     existing_merges = member_info['merges'] || {}
+    merges = existing_merges
 
-    count = CirculatorUser.where(user_id: @user.id).count
-    ever_count = CirculatorUser.with_deleted.where(user_id: @user.id).count
+    merges[JOULES_CONNECTED_MERGE_TAG] = CirculatorUser.where(user_id: @user.id).count
+    merges[JOULES_EVER_CONNECTED_MERGE_TAG] = CirculatorUser.with_deleted.where(user_id: @user.id).count
 
-    if count != (existing_merges[JOULES_CONNECTED_MERGE_TAG] || 0).to_i ||
-        ever_count != (existing_merges[JOULES_EVER_CONNECTED_MERGE_TAG] || 0).to_i
+    if merges[JOULES_EVER_CONNECTED_MERGE_TAG] > 0
+      merges[REFERRAL_CODE_MERGE_TAG] = Shopify::Customer.get_referral_code_for_user @user
+    end
 
-      merge_vars = {
-        JOULES_CONNECTED_MERGE_TAG => count,
-        JOULES_EVER_CONNECTED_MERGE_TAG => ever_count
-      }
+    if merges != existing_merges
 
-      @logger.info("Sync user #{@user.id} joule counts, #{merge_vars.inspect}")
+      @logger.info("Sync user #{@user.id} joule counts, #{merges.inspect}")
 
       Gibbon::API.lists.update_member(
         {
@@ -102,7 +102,7 @@ class UserSync
             email: @user.email
           },
           replace_interests: false,
-          merge_vars: merge_vars
+          merge_vars: merges
         }
       )
 
