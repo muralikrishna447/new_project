@@ -89,11 +89,11 @@ describe Fulfillment::FulfillableStrategy do
         let(:fulfillments) { [] }
         let(:fulfillables) { [Fulfillment::Fulfillable.new(order: order, line_items: [line_item])] }
         context 'trigger_child_job param is true' do
-          let(:child_job_class) { Class }
+          let(:child_job_class) { 'Class' }
           let(:child_job_params) { { foo: 'bar' } }
 
           it 'queues child job' do
-            child_job_class.should_receive(:perform).with(child_job_params)
+            child_job_class.constantize.should_receive(:perform).with(child_job_params)
             exporter.after_save(
               fulfillables,
               trigger_child_job: true,

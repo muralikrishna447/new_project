@@ -69,13 +69,15 @@ module Fulfillment
       end
 
       def perform(params)
-        job_params = job_params(params)
+        # Params hash keys are deserialized as strings coming out of Redis,
+        # so we re-symbolize them here.
+        job_params = job_params(params).deep_symbolize_keys
+        Rails.logger.info("CSV order export starting perform with params: #{job_params}")
         raise 'skus param is required' unless job_params[:skus]
         raise 'skus param must not be empty' if job_params[:skus].empty?
         raise 'quantity param is required' unless job_params[:quantity]
         raise 'quantity param must be greater than zero' unless job_params[:quantity] > 0
         raise 'storage param must be specified' unless job_params[:storage]
-        Rails.logger.info("CSV order export starting perform with params: #{params}")
 
         orders = orders(job_params[:search_params])
         Rails.logger.debug("Retrieved #{orders.length} orders")

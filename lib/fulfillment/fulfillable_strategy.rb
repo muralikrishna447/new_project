@@ -59,7 +59,7 @@ module Fulfillment
         def after_save(_fulfillables, params)
           return unless params[:trigger_child_job]
           raise 'No child job class was specified' unless params[:child_job_class]
-          params[:child_job_class].send(:perform, params[:child_job_params])
+          params[:child_job_class].constantize.send(:perform, params[:child_job_params])
         end
       end
     end

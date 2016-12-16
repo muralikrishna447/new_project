@@ -16,7 +16,7 @@ namespace :fulfillment do
       storage_s3_bucket: Fulfillment::PendingOrderExporter.s3_bucket,
       storage_filename: pending_order_filename,
       trigger_child_job: true,
-      child_job_class: Fulfillment::RostiOrderSubmitter,
+      child_job_class: 'Fulfillment::RostiOrderSubmitter',
       child_job_params: {
         skus: [Shopify::Order::JOULE_SKU],
         search_params: {
