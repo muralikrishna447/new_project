@@ -86,12 +86,7 @@ class UserSync
       JOULES_EVER_CONNECTED_MERGE_TAG => CirculatorUser.with_deleted.where(user_id: @user.id).count
     }
 
-    puts "Old: " + member_info['merges'].inspect
-    puts "New: " + merges.inspect
-
     if merges[JOULES_EVER_CONNECTED_MERGE_TAG] > 0
-      puts "New2: " + merges.inspect
-
 
       merges[REFERRAL_CODE_MERGE_TAG] = Shopify::Customer.get_referral_code_for_user @user
 

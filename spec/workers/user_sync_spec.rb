@@ -246,12 +246,6 @@ describe UserSync do
   end
 
   def stub_mailchimp_post_joule_data(email, count, ever_count, referral_code)
-    merge_vars = {"JL_CONN"=>count, "JL_EVR_CON"=>ever_count, "REFER_CODE"=>referral_code}
-    body = {:apikey => 'test-api-key', :id => 'test-list-id', :replace_interests => false, :merge_vars => merge_vars}
-    #WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
-        #with(body: hash_including(body)).
-        #to_return(:status => 200, :body => "", :headers => {})
-
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
       with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"#{email}\"},\"replace_interests\":false,\"merge_vars\":{\"JL_CONN\":#{count},\"JL_EVR_CON\":#{ever_count},\"REFER_CODE\":\"#{referral_code}\"}}").
       to_return(:status => 200, :body => "", :headers => {})
