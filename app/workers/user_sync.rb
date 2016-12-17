@@ -1,4 +1,3 @@
-require 'intercom'
 # Synchronizes user data from the master, usually CS database to various
 # external systems.
 
@@ -14,10 +13,11 @@ class UserSync
   PREMIUM_GROUP_NAME = "Premium Member"
   JOULE_PURCHASE_GROUP_NAME = "Joule Purchase"
 
-  # This value is carefully chosen and is the same in prod and staging.  Ideally
-  # it would be more descriptive but it was already set and existing systems
-  # rely on it.
-  COUNTRY_MERGE_VAR = 'MMERGE2'
+  # Unfortunate limit to merge tag name length
+  JOULES_CONNECTED_MERGE_TAG = "JL_CONN"
+  JOULES_EVER_CONNECTED_MERGE_TAG = "JL_EVR_CON"
+  REFERRAL_CODE_MERGE_TAG = "REFER_CODE"
+
   @queue = :user_sync
 
   def self.perform(user_id)
@@ -35,7 +35,7 @@ class UserSync
     sync_shopify
   end
 
-  def sync_mailchimp(options = {premium: true, joule: true})
+  def sync_mailchimp(options = {premium: true, joule: true, joule_data: true})
     list_id = Rails.configuration.mailchimp[:list_id]
     member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
     @logger.info member_info.inspect
@@ -48,7 +48,7 @@ class UserSync
     end
 
     member_info = member_info['data'][0]
-    
+
     if member_info['status'] != 'subscribed'
       @logger.warn "User not subscribed to list, actual status [#{member_info['status']}]"
       return
@@ -63,35 +63,51 @@ class UserSync
     end
 
     if options[:joule]
+      # This is deprecated b/c it is nearly worthless - it doesn't account for amazon, anonymous purchase, etc
       add_to_group_param(groups, member_info, :joule_group_id, JOULE_PURCHASE_GROUP_NAME, @user.joule_purchase_count > 0)
     end
 
-    add_to_groups(groups)
+    if options[:premium] || options[:joule]
+      add_to_groups(groups)
+    end
+
+    if options[:joule_data]
+      sync_joule_data(member_info)
+    end
   end
 
   def sync_shopify
     Shopify::Customer.sync_user @user
   end
 
-  def country_from_intercom
-    Rails.logger.info "Retriving intercom user for id #{@user.id}"
-    begin
-      intercom_user = Intercom::User.find(:user_id => @user.id)
-    rescue Intercom::ResourceNotFound
-      Rails.logger.info "No intercom user found for user #{@user.id} with email #{@user.email}"
-      return nil
+  def sync_joule_data(member_info)
+    existing_merges = member_info['merges'] || {}
+    merges = existing_merges.clone
+
+    merges[JOULES_CONNECTED_MERGE_TAG] = CirculatorUser.where(user_id: @user.id).count
+    merges[JOULES_EVER_CONNECTED_MERGE_TAG] = CirculatorUser.with_deleted.where(user_id: @user.id).count
+
+    if merges[JOULES_EVER_CONNECTED_MERGE_TAG] > 0
+      merges[REFERRAL_CODE_MERGE_TAG] = Shopify::Customer.get_referral_code_for_user @user
     end
 
-    Rails.logger.info "Intercom user location data: #{intercom_user.location_data.inspect}"
-    begin
-      intercom_user.location_data.country_name
-    rescue Intercom::AttributeNotSetError
-      Rails.logger.info "Intercom location_data not set"
-      return nil
+    if merges != existing_merges
+
+      @logger.info("Sync user #{@user.id} joule counts, #{merges.inspect}")
+
+      Gibbon::API.lists.update_member(
+        {
+          id: Rails.configuration.mailchimp[:list_id],
+          email: {
+            email: @user.email
+          },
+          replace_interests: false,
+          merge_vars: merges
+        }
+      )
+
     end
   end
-  
-  private
 
   def add_to_group_param(groups, member_info, group_id, group_name, db_value)
     mailchimp_value = in_mailchimp_group?(member_info, group_id, group_name)
@@ -121,11 +137,6 @@ class UserSync
     merge_vars = {
         groupings: groupings
     }
-    
-    country = country_from_intercom()
-    if country
-      merge_vars[COUNTRY_MERGE_VAR] = country
-    end
 
     Gibbon::API.lists.update_member(
       id: Rails.configuration.mailchimp[:list_id],

@@ -54,95 +54,6 @@ module Api
       end
     end
 
-    def null_location
-      return {
-        country: nil,
-        latitude: nil,
-        longitude: nil,
-        city: nil,
-        state: nil,
-        zip: nil
-      }
-    end
-
-    def geolocate_ip(ip_address = nil)
-      t1 = Time.now
-      metric_suffix = 'hit'
-      location = null_location()
-      ip_address = ip_address || get_ip_address
-      logger.info("Geolocating IP: #{ip_address}")
-      conf = Rails.configuration.geoip
-
-      return location if ip_address == '127.0.0.1'
-
-      begin
-        key = "geocode-cache-#{ip_address}"
-        location = Rails.cache.fetch(key, expires_in: conf.cache_expiry) do
-          metric_suffix = 'miss'
-          get_location_from_api(ip_address)
-        end
-      # TODO: we should narrow the scope of this rescue block, but not
-      # sure all the ways in which Geoip2 can fail
-      rescue Exception => e
-        metric_suffix = 'fail'
-        logger.error "Geocode failed: #{e}"
-        logger.error e.backtrace.join("\n")
-      end
-
-      delta = Time.now - t1
-      metric_name = "geocode.time.#{metric_suffix}"
-      logger.info "#{metric_name} took #{delta}s"
-      Librato.timing metric_name, delta * 1000
-      Librato.increment "geocode.count.#{metric_suffix}"
-
-      return location
-    end
-
-    protected
-
-    class GeocodeError < StandardError
-    end
-
-    def get_location_from_api(ip_address)
-      conn = Faraday.new(
-        :url => "https://geoip.maxmind.com", request: { timeout: 2, open_timeout: 1}
-      ) do |faraday|
-        faraday.request  :url_encoded             # form-encode POST params
-        faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-      end
-      conf = Rails.configuration.geoip
-      conn.basic_auth(conf.user, conf.license)
-      resp = conn.get "/geoip/v2.1/city/#{ip_address}"
-      geocode = JSON.parse resp.body
-
-      if geocode["error"] || !geocode["location"]
-        raise GeocodeError.new("Geocoding failed for #{ip_address}")
-      end
-
-      country = (
-        Utils.spelunk(geocode, ['country', 'iso_code']) ||
-        Utils.spelunk(geocode, ['registered_country', 'iso_code'])
-      )
-
-      if country == nil
-        raise GeocodeError.new("No country info for #{ip_address}")
-      end
-
-      location = {
-        country: country,
-        latitude: geocode["location"]["latitude"],
-        longitude: geocode["location"]["longitude"],
-        city: Utils.spelunk(geocode, ["city", "names", "en"]),
-        state: Utils.spelunk(geocode, ["subdivisions", 0, "iso_code"]),
-        zip: Utils.spelunk(geocode, ["postal", "code"]),
-      }
-      return location
-    end
-
-    def get_ip_address
-      (cookies[:cs_location] || request.ip)
-    end
-
     class AuthorizationError < StandardError
     end
 
@@ -150,19 +61,18 @@ module Api
       unless request.authorization()
         raise AuthorizationError("No Authorization header set")
       end
-
+      # This is very questionable - we should probably enforce the Bearer prefix
       token = request.authorization().split(' ').last
 
-
-      token = AuthToken.from_string(token)
-      aa = ActorAddress.find_for_token(token)
+      @current_token = AuthToken.from_string(token)
+      aa = ActorAddress.find_for_token(@current_token)
       unless aa
         logger.info "Not ActorAddress found for token #{token}"
         return
       end
 
       logger.debug "Found actor address: [#{aa.inspect}]"
-      unless aa.valid_token?(token)
+      unless aa.valid_token?(@current_token)
         logger.info "Invalid token #{token.inspect}"
         return
       end
@@ -191,6 +101,7 @@ module Api
           render_unauthorized if render_response
           return
         end
+
         @user_id_from_token = aa.actor_id
         @actor_address_from_token = aa
       rescue Exception => e

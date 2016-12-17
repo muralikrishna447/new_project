@@ -104,7 +104,7 @@ describe Fulfillment::RostiShipmentImporter do
         context 'csv has single row for line item' do
           it 'returns shipment with single tracking number and serial number' do
             Fulfillment::RostiShipmentImporter.should_receive(:fulfillments).with(order, [line_item_id_int]).and_return(fulfillments)
-            expect(Fulfillment::RostiShipmentImporter.to_shipments(csv_rows)).to match_array(
+            expect(Fulfillment::RostiShipmentImporter.to_shipments(csv_rows)).to eq(
               [
                 Fulfillment::Shipment.new(
                   order: order,
@@ -132,7 +132,7 @@ describe Fulfillment::RostiShipmentImporter do
 
           it 'returns shipment with multiple tracking numbers and serial numbers' do
             Fulfillment::RostiShipmentImporter.should_receive(:fulfillments).with(order, [line_item_id_int]).and_return(fulfillments)
-            expect(Fulfillment::RostiShipmentImporter.to_shipments(csv_rows)).to match_array(
+            expect(Fulfillment::RostiShipmentImporter.to_shipments(csv_rows)).to eq(
               [
                 Fulfillment::Shipment.new(
                   order: order,

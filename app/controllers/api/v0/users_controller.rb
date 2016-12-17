@@ -99,7 +99,8 @@ module Api
 
         # Hardcoding the list of possible capabilities for now.
         capability_list = [
-          'beta_guides'
+          'beta_guides',
+          'multi_circ',
         ]
         user_capabilities = capability_list.select {|c|
           BetaFeatureService.user_has_feature(user, c)
@@ -108,13 +109,11 @@ module Api
       end
 
       private
-
-      # Why is this code duplicated here?
       def create_new_user(user, optout, source)
         if user.save
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
           subscribe_and_track user, optout, source
-
+          Resque.enqueue(UserSync, @user.id)
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
           logger.warn "create_new_user errors: #{user.errors.inspect}"

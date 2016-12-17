@@ -6,12 +6,16 @@ module Fulfillment
     include Fulfillment::CSVOrderExporter
 
     THERMOWORKS_SKUS = [
-      'THS-231-207',
-      'THS-231-227',
-      'THS-231-237',
-      'THS-231-247',
-      'THS-231-277',
-      'THS-231-357',
+      'THS-234-407',
+      'THS-234-417',
+      'THS-234-427',
+      'THS-234-437',
+      'THS-234-447',
+      'THS-234-457',
+      'THS-234-477',
+      'THS-234-487',
+      'THS-234-497',
+      'THS-234-507',
       'TX-3100-BL',
       'TX-3100-BK',
       'TX-3100-GR',
@@ -41,6 +45,8 @@ module Fulfillment
         'ChefSteps Line Item ID',
         'Order Creation Date',
         'Recipient Name',
+        'Recipient First Name',
+        'Recipient Last Name',
         'Recipient Company',
         'Address Line 1',
         'Address Line 2',
@@ -58,16 +64,46 @@ module Fulfillment
       ]
     end
 
+    def self.transform_sku(sku)
+
+      if sku.start_with?('TX')
+        return "ThermoPop : #{sku}"
+      elsif sku.start_with?('THS-234')
+        return "Thermapen Mk4 : #{sku}"
+      end
+
+      raise "Unexpected SKU #{sku}"
+    end
+
+    def self.get_name(shipping_address)
+      # Sometimes the customer name ends up all in the `last_name`
+      # field... likely a customer import issue.  Manually fix here
+      full = shipping_address.name
+      first = shipping_address.first_name
+      last = shipping_address.last_name
+      if first.length < 1
+        parts = full.split
+        first = parts[0]
+        last = parts[1..-1].join(' ')
+        Rails.logger.debug("Fixing name #{full}: [#{first}] [#{last}]")
+      end
+      return {full_name: full, first_name: first, last_name: last}
+    end
+
     def self.transform(fulfillable)
       line_items = []
       fulfillable.line_items.each do |line_item|
         order = fulfillable.order
+        name = get_name(fulfillable.order.shipping_address)
+
         line_items <<
           [
             order.id,
             line_item.id,
             order.created_at,
-            fulfillable.order.shipping_address.name,
+            name[:full_name],
+            name[:first_name],
+            name[:last_name],
             fulfillable.order.shipping_address.company,
             fulfillable.order.shipping_address.address1,
             fulfillable.order.shipping_address.address2,
@@ -76,7 +112,7 @@ module Fulfillment
             fulfillable.order.shipping_address.zip,
             fulfillable.order.shipping_address.phone,
             fulfillable.order.customer.email,
-            line_item.sku,
+            transform_sku(line_item.sku),
             line_item.quantity,
 
             # To be filled in by Thermoworks

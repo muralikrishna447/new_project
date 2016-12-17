@@ -5,16 +5,19 @@ describe Fulfillment::CSVOrderExporter do
 
   describe 'fulfillables' do
     let(:sku) { 'my sku' }
+    let(:fulfillable_quantity) { 1 }
     let(:order_1_line_item_1) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 11
       line_item.sku = order_1_line_item_1_sku
+      line_item.fulfillable_quantity = fulfillable_quantity
       line_item
     end
     let(:order_1_line_item_2) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 12
       line_item.sku = order_1_line_item_2_sku
+      line_item.fulfillable_quantity = fulfillable_quantity
       line_item
     end
     let(:order_1) do
@@ -28,12 +31,14 @@ describe Fulfillment::CSVOrderExporter do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 21
       line_item.sku = order_2_line_item_1_sku
+      line_item.fulfillable_quantity = fulfillable_quantity
       line_item
     end
     let(:order_2_line_item_2) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 22
       line_item.sku = order_2_line_item_2_sku
+      line_item.fulfillable_quantity = fulfillable_quantity
       line_item
     end
     let(:order_2) do
@@ -64,7 +69,7 @@ describe Fulfillment::CSVOrderExporter do
           let(:order_2_line_item_1_sku) { sku }
           let(:order_2_line_item_2_sku) { sku }
           it 'creates fulfillables with all orders and line items' do
-            expect(exporter.fulfillables(orders, [sku])).to match_array(
+            expect(exporter.fulfillables(orders, [sku])).to eq(
               [
                 Fulfillment::Fulfillable.new(
                   order: order_1,
@@ -77,6 +82,14 @@ describe Fulfillment::CSVOrderExporter do
               ]
             )
           end
+
+          context 'fulfillable quantity is zero' do
+            let(:fulfillable_quantity) { 0 }
+
+            it 'creates empty fulfillables' do
+              expect(exporter.fulfillables(orders, [sku])).to be_empty
+            end
+          end
         end
 
         context 'sku matches on first line item only' do
@@ -87,7 +100,7 @@ describe Fulfillment::CSVOrderExporter do
           let(:order_2_line_item_2_sku) { another_sku }
 
           it 'creates fulfillable with all orders and first line item' do
-            expect(exporter.fulfillables(orders, [sku])).to match_array(
+            expect(exporter.fulfillables(orders, [sku])).to eq(
               [
                 Fulfillment::Fulfillable.new(
                   order: order_1,
@@ -139,7 +152,7 @@ describe Fulfillment::CSVOrderExporter do
           let(:order_2_line_item_1_status) { 'open' }
 
           it 'creates fulfillables with line items that do not have open fulfillments' do
-            expect(exporter.fulfillables(orders, [sku])).to match_array(
+            expect(exporter.fulfillables(orders, [sku])).to eq(
               [
                 Fulfillment::Fulfillable.new(
                   order: order_1,
@@ -159,7 +172,7 @@ describe Fulfillment::CSVOrderExporter do
           let(:order_2_line_item_1_status) { 'open' }
 
           it 'creates fulfillables with line items that do not have successful fulfillments' do
-            expect(exporter.fulfillables(orders, [sku])).to match_array(
+            expect(exporter.fulfillables(orders, [sku])).to eq(
               [
                 Fulfillment::Fulfillable.new(
                   order: order_1,
@@ -179,7 +192,7 @@ describe Fulfillment::CSVOrderExporter do
           let(:order_2_line_item_1_status) { 'cancelled' }
 
           it 'creates fulfillables with all orders and line items' do
-            expect(exporter.fulfillables(orders, [sku])).to match_array(
+            expect(exporter.fulfillables(orders, [sku])).to eq(
               [
                 Fulfillment::Fulfillable.new(
                   order: order_1,
@@ -249,13 +262,13 @@ describe Fulfillment::CSVOrderExporter do
 
   describe 'sort!' do
     let(:fulfillable_1) do
-      order = ShopifyAPI::Order.new
+      order = ShopifyAPI::Order.new(id: 1)
       order.processed_at = '2016-02-04T00:00:00-08:00'
       order.tags = order_1_tags
       Fulfillment::Fulfillable.new(order: order)
     end
     let(:fulfillable_2) do
-      order = ShopifyAPI::Order.new
+      order = ShopifyAPI::Order.new(id: 2)
       order.processed_at = '2016-02-05T00:00:00-08:00'
       order.tags = order_2_tags
       Fulfillment::Fulfillable.new(order: order)
@@ -268,7 +281,7 @@ describe Fulfillment::CSVOrderExporter do
       let(:order_2_tags) { '' }
       it 'sorts orders in order of processing time ascending' do
         exporter.sort!(fulfillables)
-        expect(fulfillables).to match_array([fulfillable_1, fulfillable_2])
+        expect(fulfillables).to eq([fulfillable_1, fulfillable_2])
       end
     end
 
@@ -277,7 +290,7 @@ describe Fulfillment::CSVOrderExporter do
       let(:order_2_tags) { Fulfillment::CSVOrderExporter::PRIORITY_TAG }
       it 'bumps the order with the priority tag to the top' do
         exporter.sort!(fulfillables)
-        expect(fulfillables).to match_array([fulfillable_2, fulfillable_1])
+        expect(fulfillables).to eq([fulfillable_2, fulfillable_1])
       end
     end
 
@@ -286,7 +299,7 @@ describe Fulfillment::CSVOrderExporter do
       let(:order_2_tags) { Fulfillment::CSVOrderExporter::PRIORITY_TAG }
       it 'sorts orders in order of processing time ascending' do
         exporter.sort!(fulfillables)
-        expect(fulfillables).to match_array([fulfillable_1, fulfillable_2])
+        expect(fulfillables).to eq([fulfillable_1, fulfillable_2])
       end
     end
   end
@@ -295,13 +308,13 @@ describe Fulfillment::CSVOrderExporter do
     let(:line_item_1) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 1
-      line_item.quantity = line_item_1_quantity
+      line_item.fulfillable_quantity = line_item_1_quantity
       line_item
     end
     let(:line_item_2) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 2
-      line_item.quantity = line_item_2_quantity
+      line_item.fulfillable_quantity = line_item_2_quantity
       line_item
     end
     let(:fulfillable_1) do
@@ -323,7 +336,7 @@ describe Fulfillment::CSVOrderExporter do
       let(:line_item_2_quantity) { 2 }
 
       it 'returns fulfillables with all line items' do
-        expect(exporter.truncate(fulfillables, 100)).to match_array(fulfillables)
+        expect(exporter.truncate(fulfillables, 100)).to eq(fulfillables)
       end
     end
 
@@ -333,7 +346,7 @@ describe Fulfillment::CSVOrderExporter do
         let(:line_item_2_quantity) { 1 }
 
         it 'returns fulfillables with quantity less than requested' do
-          expect(exporter.truncate(fulfillables, 9)).to match_array([fulfillable_2])
+          expect(exporter.truncate(fulfillables, 9)).to eq([fulfillable_2])
         end
       end
 
@@ -342,7 +355,7 @@ describe Fulfillment::CSVOrderExporter do
         let(:line_item_2_quantity) { 1 }
 
         it 'returns fulfillables with quantity less than requested' do
-          expect(exporter.truncate(fulfillables, 1)).to match_array([fulfillable_1])
+          expect(exporter.truncate(fulfillables, 1)).to eq([fulfillable_1])
         end
       end
     end
@@ -352,6 +365,7 @@ describe Fulfillment::CSVOrderExporter do
     let(:order_1_line_item) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 11
+      line_item.fulfillable_quantity = 1
       line_item
     end
     let(:order_1) do
@@ -363,6 +377,7 @@ describe Fulfillment::CSVOrderExporter do
     let(:order_2_line_item) do
       line_item = ShopifyAPI::LineItem.new
       line_item.id = 21
+      line_item.fulfillable_quantity = 2
       line_item
     end
     let(:order_2) do
@@ -386,8 +401,12 @@ describe Fulfillment::CSVOrderExporter do
     let(:fulfillables) { [fulfillable_1, fulfillable_2] }
 
     it 'opens fulfillments for all fulfillable line items' do
-      stub_open_fulfillment(order_1.id, order_1_line_item.id)
-      stub_open_fulfillment(order_2.id, order_2_line_item.id)
+      stub_open_fulfillment(order_1.id, order_1_line_item.id, order_1_line_item.fulfillable_quantity)
+      stub_open_fulfillment(order_2.id, order_2_line_item.id, order_2_line_item.fulfillable_quantity)
+      Shopify::Utils
+        .should_receive(:send_assert_true)
+        .with(instance_of(ShopifyAPI::Fulfillment), :save)
+        .twice
       exporter.open_fulfillments(fulfillables)
     end
   end
@@ -430,7 +449,7 @@ describe Fulfillment::CSVOrderExporter do
         line_item = ShopifyAPI::LineItem.new
         line_item.id = 11
         line_item.sku = sku
-        line_item.quantity = 1
+        line_item.fulfillable_quantity = 1
         line_item
       end
       let(:order) do
@@ -483,17 +502,17 @@ describe Fulfillment::CSVOrderExporter do
       context 'open_fulfillment param is true' do
         let(:open_fulfillment) { true }
         before :each do
-          stub_open_fulfillment(order.id, line_item.id)
+          stub_open_fulfillment(order.id, line_item.id, line_item.fulfillable_quantity)
         end
         include_examples 'perform'
       end
     end
   end
 
-  def stub_open_fulfillment(order_id, line_item_id)
+  def stub_open_fulfillment(order_id, line_item_id, qty)
     WebMock
       .stub_request(:post, /test.myshopify.com\/admin\/orders\/#{order_id}\/fulfillments.json/)
-      .with(body: "{\"fulfillment\":{\"line_items\":[{\"id\":#{line_item_id}}],\"status\":\"open\",\"notify_customer\":false}}")
+      .with(body: "{\"fulfillment\":{\"line_items\":[{\"id\":#{line_item_id},\"quantity\":#{qty}}],\"status\":\"open\",\"notify_customer\":false}}")
       .to_return(status: 200, body: '', headers: {})
   end
 end

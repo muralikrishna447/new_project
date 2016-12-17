@@ -43,7 +43,7 @@ describe Fulfillment::CSVShipmentImporter do
       context 'fulfillment for line item is open' do
         let(:fulfillment_status) { 'open' }
         it 'returns the fulfillment' do
-          expect(importer.fulfillments(order, [line_item_id])).to match_array(order_fulfillments)
+          expect(importer.fulfillments(order, [line_item_id])).to eq(order_fulfillments)
         end
       end
     end
@@ -65,7 +65,7 @@ describe Fulfillment::CSVShipmentImporter do
       end
 
       it 'returns the fulfillment' do
-        expect(importer.fulfillments(order, [line_item_id_1, line_item_id_2])).to match_array(order_fulfillments)
+        expect(importer.fulfillments(order, [line_item_id_1, line_item_id_2])).to eq(order_fulfillments)
       end
     end
 
@@ -92,7 +92,7 @@ describe Fulfillment::CSVShipmentImporter do
       end
 
       it 'returns the fulfillments' do
-        expect(importer.fulfillments(order, [line_item_id_1, line_item_id_2])).to match_array(order_fulfillments)
+        expect(importer.fulfillments(order, [line_item_id_1, line_item_id_2])).to eq(order_fulfillments)
       end
     end
   end
@@ -128,6 +128,15 @@ describe Fulfillment::CSVShipmentImporter do
       stub_fulfillment_update(order_id, fulfillment_2.id, tracking_company, tracking_numbers, false)
       stub_fulfillment_update(order_id, fulfillment_2.id, tracking_company, tracking_numbers, true)
       stub_fulfillment_complete(order_id, fulfillment_2.id)
+
+      Shopify::Utils
+        .should_receive(:send_assert_true)
+        .with(instance_of(ShopifyAPI::Fulfillment), :save)
+        .exactly(4).times
+      Shopify::Utils
+        .should_receive(:send_assert_true)
+        .with(instance_of(ShopifyAPI::Fulfillment), :complete)
+        .twice
 
       importer.complete_shipment(shipment)
     end

@@ -6,7 +6,7 @@ class Shopify::Customer
     @user = user
     @shopify_customer = shopify_customer
   end
-  
+
   def self.find_for_user(user, email_override=nil)
     email = email_override || user.email
     shopify_customer = ShopifyAPI::Customer.search(:query => "email:\"#{email}\"").first
@@ -38,7 +38,7 @@ class Shopify::Customer
     end
     return Shopify::Customer.new(user, shopify_customer)
   end
-  
+
   def self.create_for_user(user)
     Rails.logger.info "Creating Shopify customer for user [#{user.id}]"
     customer = ShopifyAPI::Customer.create(
@@ -48,7 +48,7 @@ class Shopify::Customer
     Rails.logger.info "Created Shopify customer [#{customer.inspect}]"
     return Shopify::Customer.new(user, customer)
   end
-  
+
   def self.sync_user(user)
     Rails.logger.info "Syncing user [#{user.id}] to shopify"
     customer = find_for_user(user)
@@ -64,6 +64,30 @@ class Shopify::Customer
     return customer
   end
 
+  def self.get_referral_code_for_user(user)
+    if ! user.referral_code
+      code = 'sharejoule-' + unique_code { |code| User.unscoped.exists?(referral_code: code) }
+
+      # For now at least, always doing a fixed $20.00 off Joule only, good for 5 uses
+      ShopifyAPI::Discount.create(
+        code: code,
+        discount_type: 'fixed_amount',
+        value: '20.00',
+        usage_limit: 5,
+        applies_to_resource: 'product',
+        applies_to_id: Rails.configuration.shopify[:joule_product_id]
+      )
+
+      # Don't save user until shopify succeeds
+      user.referral_code = code
+      user.save!
+
+      Rails.logger.info "Created unique referral discount code #{code} for #{user.id}"
+    end
+
+    return user.referral_code
+  end
+
   def sync_tags!
     if @shopify_customer.respond_to?(:tags)
       current_tags = @shopify_customer.tags.split(',').sort!.collect {|tag| tag.strip}
@@ -73,7 +97,7 @@ class Shopify::Customer
     tags = Array.new(current_tags)
     tags.delete PREMIUM_MEMBER_TAG
     tags.delete JOULE_PREMIUM_DISCOUNT_TAG
-  
+
     if @user.premium?
       tags << PREMIUM_MEMBER_TAG
     end
@@ -89,7 +113,7 @@ class Shopify::Customer
       Rails.logger.info "Current tags #{current_tags.inspect} is #{tags.inspect}.  Not syncing"
     end
   end
-  
+
   def tags
     @shopify_customer.tags
   end
@@ -100,7 +124,7 @@ class Shopify::Customer
       Rails.logger.info "Shopify customer [#{@shopify_customer.id}] already has new email [#{new_email}]"
       return
     end
-    
+
     if @shopify_customer.email != old_email
       msg = "Shopify customer [#{@shopify_customer.id}] email does not match old email [#{new_email}]"
       Rails.logger.info msg

@@ -24,7 +24,7 @@ describe Shopify::Utils do
       end
 
       it 'returns the array of tags' do
-        expect(Shopify::Utils.order_tags(order)).to match_array([tag_1, tag_2])
+        expect(Shopify::Utils.order_tags(order)).to eq([tag_1, tag_2])
       end
     end
   end
@@ -180,7 +180,7 @@ describe Shopify::Utils do
         path_2 = ShopifyAPI::Order.collection_path(limit: page_size, page: 2, param_key => param_value)
         ShopifyAPI::Order.should_receive(:find).once.with(:all, from: path_2).and_return([order_3])
 
-        expect(Shopify::Utils.search_orders({ param_key => param_value }, page_size)).to match_array([order_1, order_2, order_3])
+        expect(Shopify::Utils.search_orders({ param_key => param_value }, page_size)).to eq([order_1, order_2, order_3])
       end
     end
 
@@ -189,7 +189,30 @@ describe Shopify::Utils do
         path_1 = ShopifyAPI::Order.collection_path(limit: page_size, page: 1, param_key => param_value)
         ShopifyAPI::Order.should_receive(:find).once.with(:all, from: path_1).and_return([order_1])
 
-        expect(Shopify::Utils.search_orders({ param_key => param_value }, page_size)).to match_array([order_1])
+        expect(Shopify::Utils.search_orders({ param_key => param_value }, page_size)).to eq([order_1])
+      end
+    end
+  end
+
+  describe 'send_assert_true' do
+    let(:method_symbol) { :foo }
+    let(:obj) { double('obj') }
+
+    before :each do
+      obj.should_receive(method_symbol).and_return(return_value)
+    end
+
+    context 'method returns true' do
+      let(:return_value) { true }
+      it 'does not raise error' do
+        Shopify::Utils.send_assert_true(obj, method_symbol)
+      end
+    end
+
+    context 'method returns false' do
+      let(:return_value) { false }
+      it 'raises error' do
+        expect { Shopify::Utils.send_assert_true(obj, method_symbol) }.to raise_error
       end
     end
   end

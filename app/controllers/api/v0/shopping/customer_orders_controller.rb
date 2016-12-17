@@ -11,17 +11,21 @@ module Api
             customer_multipass_identifier = @order.customer.multipass_identifier
             current_api_user_id = current_api_user.id.to_s
             current_api_user_role = current_api_user.role
+            shipping_address_updatable = shipping_address_updatable(@order)
             if current_api_user && (customer_multipass_identifier == current_api_user_id || current_api_user_role == 'admin')
               response = {
                 id: @order.id,
                 fulfillment_status: @order.fulfillment_status,
-                shipping_address: @order.shipping_address
+                shipping_address: @order.method_defined?(:shipping_address) ? @order.shipping_address : nil,
+                shipping_address_updatable: shipping_address_updatable[:updatable],
+                update_message: shipping_address_updatable[:update_message]
               }
               render_api_response 200, response
             else
               render_api_response(401, {message: 'Unauthorized'})
             end
-          rescue
+          rescue Exception => e
+            puts "EXCEPTION: #{e}"
             render_api_response(404, {message: 'Order not found'})
           end
         end
@@ -71,6 +75,27 @@ module Api
             render_api_response(500, {message: 'Error confirming ShippingAddress'})
           end
           render_api_response 200, {message: "Successfully confirmed address for Order Id #{order_id}", order_id: order_id}
+        end
+
+        private
+
+        def shipping_address_updatable(order)
+          fulfillment_statuses = order.fulfillments.map{|f| f.status}
+
+          if fulfillment_statuses.include?('open') || fulfillment_statuses.include?('pending') # Not updatable if any fulfillments are open or pending
+            updatable = false
+            update_message = 'One or more items in your order are being prepared for shipping.'
+          elsif fulfillment_statuses.include?('success') # Not updatable if all status equal success
+            updatable = false
+            update_message = 'One or more items in this order have been shipped.'
+          else
+            updatable = true
+          end
+
+          {
+            updatable: updatable,
+            update_message: update_message
+          }
         end
 
       end

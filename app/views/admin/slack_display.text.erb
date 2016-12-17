@@ -1,0 +1,28 @@
+Here's what I've got for <%= user.email %>:
+```
+ID: <%= user.id %>
+Name: <%= user.name %>
+Account created: <%= user.created_at.in_time_zone(tz) %>
+Location: <%= user.location %>
+Role: <%= user.role %>
+Premium: <%= user.premium_member %> <%= user.premium_membership_created_at ? '- since ' + user.premium_membership_created_at.in_time_zone(tz).to_s : '' %>
+Joule purchase count: <%= user.joule_purchase_count %>
+Joule WiFi owner count: <%= user.owned_circulators.count %>
+Admin link: https://www.chefsteps.com/admin/users/<%= user.id %>
+Circulators: <%= circulator_users.count > 0 ? "" : "(none)" %>
+<% circulator_users.each_with_index do |cu, idx| %>
+  <% circ = cu.circulator %>
+  <% if circ %>
+    Serial: <%= circ.serial_number %>
+    ID: <%= circ.id %>
+    Name: <%= circ.name %>
+    Notes: <%= circ.notes %>
+    Owned by user?: <%= cu.owner %>
+    Circulator address: <%= circ.circulator_id %>
+    Last accessed: <%= circ.last_accessed_at ? circ.last_accessed_at.in_time_zone(tz).to_s : "none" %>
+    <% if idx != circulator_users.count - 1 %>
+      ***************
+    <% end %>
+  <% end %>
+<% end %>
+```

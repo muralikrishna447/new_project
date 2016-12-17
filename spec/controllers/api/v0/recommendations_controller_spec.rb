@@ -105,4 +105,38 @@ describe Api::V0::RecommendationsController do
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 0
   end
+
+  describe 'bacon hack' do
+    before :each do
+      @bacon_ad = Fabricate :advertisement, matchname: 'homeHeroOwner', published: true, title: "Bacon", url: "/#/guide/2xIIxBtjwAKSMiWIOAOC4i/overview"
+      @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
+      controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+
+      sign_in @user
+    end
+
+    it 'should not include bacon if version is not set' do
+      get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
+      response.should be_success
+      parsed = JSON.parse response.body
+      parsed['results'].count.should eq 1
+    end
+
+    it 'should not include bacon if version is too low' do
+      @request.env['X-Application-Version'] = '2.41'
+      get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
+      response.should be_success
+      parsed = JSON.parse response.body
+      parsed['results'].count.should eq 1
+    end
+
+    it 'should  include bacon if version is sufficient' do
+      @request.env['X-Application-Version'] = '2.42'
+      get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
+      response.should be_success
+      parsed = JSON.parse response.body
+      parsed['results'].count.should eq 2
+    end
+
+  end
 end

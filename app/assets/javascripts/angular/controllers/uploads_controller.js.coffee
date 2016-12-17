@@ -38,7 +38,6 @@ angular.module('ChefStepsApp').controller 'UploadsController', ["$scope", "$reso
       else if data.activity.title.length > 0
         photo_uploaded_for = 'Activity - ' + data.activity.title
       eventData = {'Uploaded Photo For' : photo_uploaded_for}
-      Intercom?('trackEvent', 'activity-photo-uploaded', eventData)
     )
 
   $scope.photoPreview = (file) ->

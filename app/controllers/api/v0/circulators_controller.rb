@@ -133,7 +133,8 @@ module Api
         render_api_response 200
       end
 
-      def publish_notification(endpoint_arn, message, notification_type, content_available)
+      def publish_notification(token, message, notification_type, content_available)
+        endpoint_arn = token.endpoint_arn
         Librato.increment("api.publish_notification_requests")
         # TODO - add APNS once we have a testable endpoint
         title = I18n.t("circulator.app_name", raise: true)
@@ -147,9 +148,17 @@ module Api
         begin
           publish_json_message(endpoint_arn, message.to_json)
         rescue Aws::SNS::Errors::EndpointDisabled
-          # TODO: I'm seeing a lot of these in the logs.  Is this to
-          # be expected?
-          logger.info "Failed to publish to #{endpoint_arn}. Endpoint disabled."
+          # NOTE: Clean up any disabled endpoints, since they're
+          # likely not useful anymore.  There is a chance that Apple
+          # tokens can get 'disabled' even though they are still
+          # valid.  But the app should re-register the token the next
+          # time it boots up.
+          #
+          # See: https://forums.aws.amazon.com/thread.jspa?threadID=152300
+
+          logger.info "Failed to publish to #{endpoint_arn} because endpoint disabled. Deleting token and endpoint."
+          token.destroy
+          delete_endpoint(endpoint_arn)
         end
       end
 
@@ -163,6 +172,11 @@ module Api
           message_structure: 'json',
           message: json_str
         )
+      end
+
+      def delete_endpoint(endpoint_arn)
+        sns = Aws::SNS::Client.new(region: 'us-east-1')
+        sns.delete_endpoint(endpoint_arn: endpoint_arn)
       end
 
       # Ex: POST /api/v0/circulators/coefficients
@@ -243,7 +257,7 @@ module Api
             next if token.nil?
             logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
                         " of type #{notification_type} token #{token.inspect}"
-            publish_notification(token.endpoint_arn, message, notification_type, content_available)
+            publish_notification(token, message, notification_type, content_available)
           end
         end
 

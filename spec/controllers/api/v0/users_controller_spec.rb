@@ -23,7 +23,6 @@ describe Api::V0::UsersController do
       result.delete('email').should == @user.email
       result.delete('slug').should == @user.slug
       result.delete('avatar_url').should == @user.avatar_url
-      result.delete('intercom_user_hash').should == ApplicationController.new.intercom_user_hash(@user)
       result.delete('needs_special_terms').should == @user.needs_special_terms
       result.delete('encrypted_bloom_info')
 
@@ -32,6 +31,7 @@ describe Api::V0::UsersController do
       result.delete('used_circulator_discount').should == false
       result.delete('admin').should == false
       result.delete('joule_purchase_count').should == 0
+      result.delete('referral_code').should == nil
       result.empty?.should == true
     end
 
@@ -61,8 +61,8 @@ describe Api::V0::UsersController do
 
   context 'POST /create' do
     it 'should create a user' do
-      # Disabled until we fix the resque job
-      #Resque.should_receive(:enqueue)
+      Resque.should_receive(:enqueue).with(Forum, "initial_user", "bloomAPI", kind_of(Numeric))
+      Resque.should_receive(:enqueue).with(UserSync, kind_of(Numeric))
       post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should be_success
     end

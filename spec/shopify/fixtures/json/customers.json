@@ -20,6 +20,7 @@
       }
     ],
     "multipass_identifier": 123,
+    "email": "test@chefsteps.com",
     "id": 207119551,
     "note": null,
     "last_name": "Norman",
@@ -30,6 +31,7 @@
   {
     "accepts_marketing": false,
     "orders_count": 0,
+    "email": "test@chefsteps.com",
     "addresses": [
       {
         "name": null,
@@ -56,6 +58,7 @@
     "email": "specialme@example.org"
   },
   {
+    "email": "test2@chefsteps.com",
     "multipass_identifier": "112",
     "id": 207119552,
     "email": "old@chefsteps.com"

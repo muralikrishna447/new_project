@@ -55,7 +55,16 @@ module Api
           # Which isn't considered an error.
           if platform == 'jouleApp' && slot == 'homeHero'
             if circulator_owner || connected
-              ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.sample(limit).to_a
+              ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
+
+              # TODO: remove this hack for bacon ad. We hadn't thought through the problem that an ad
+              # could be for a URL to content the app doesn't have yet. In the future, the app should
+              # filter those out or retrieve them in real time.
+              unless version_gte(request.headers['X-Application-Version'], '2.42')
+                ads.delete_if { |ad| ad[:url] == '/#/guide/2xIIxBtjwAKSMiWIOAOC4i/overview' }
+              end
+
+              ads = ads.sample(limit).to_a
             else
               ads = Advertisement.where(matchname: 'homeHeroNonOwner').published.all.sample(limit).to_a
             end
@@ -63,6 +72,12 @@ module Api
 
           render_api_response 200, ads, Api::AdvertisementSerializer
         end
+      end
+
+      def version_gte(version, min_version)
+        return false if version.blank?
+        # Thanks, Gem module!!
+        Gem::Version.new(version) >=  Gem::Version.new(min_version)
       end
     end
   end

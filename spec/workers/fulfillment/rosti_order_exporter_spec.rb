@@ -83,19 +83,19 @@ describe Fulfillment::RostiOrderExporter do
           ShopifyAPI::LineItem.new(
             id: line_item_id_1,
             sku: sku_1,
-            quantity: quantity_1
+            fulfillable_quantity: quantity_1
           ),
           ShopifyAPI::LineItem.new(
             id: line_item_id_2,
             sku: sku_2,
-            quantity: quantity_2
+            fulfillable_quantity: quantity_2
           )
         ]
       )
     end
 
     it 'transforms fulfillable line items into columns' do
-      expect(Fulfillment::RostiOrderExporter.transform(fulfillable)).to match_array(
+      expect(Fulfillment::RostiOrderExporter.transform(fulfillable)).to eq(
         [
           [
             "#{order_name}-#{line_item_id_1}",

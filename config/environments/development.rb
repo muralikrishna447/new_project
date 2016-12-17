@@ -94,7 +94,9 @@ Delve::Application.configure do
     :api_key => '4494fae45457c6a2c4d1f3ba59609353-us12',
     :list_id => '5f55993b84',
     :premium_group_id => '757',
-    :joule_group_id => '1481'
+    :joule_group_id => '1481',
+    :email_preferences_group_id => '9505',
+    :email_preferences_group_default => ["Thing 1", "Thing 2"]
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 
@@ -106,7 +108,7 @@ Delve::Application.configure do
   ENV['ZENDESK_DOMAIN']     = "chefsteps-staging.zendesk.com"
   ENV['ZENDESK_MAPPED_DOMAIN'] = "chefsteps-staging.zendesk.com"
   ENV['ZENDESK_SHARED_SECRET'] = "eGQwqBQT7MuyvLxUKm1940fSrqSMDHqnimWfxlWmkUfNccf2"
-
+  ENV['GA_TRACKING_ID'] = 'UA-34555970-6'
   Librato::Metrics.authenticate(
     ENV['LIBRATO_USER'],
     ENV['LIBRATO_TOKEN'],

@@ -8,6 +8,9 @@ describe Api::V0::Shopping::CustomerOrdersController do
     customer_order_101_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_101').data)['order']
     customer_order_202_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_202').data)['order']
     customer_order_303_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_303').data)['order']
+    customer_order_404_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_404').data)['order']
+    customer_order_505_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_505').data)['order']
+    customer_order_606_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('customer_order_606').data)['order']
 
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/orders\/101.json/)
       .to_return(status: 200, body: customer_order_101_data.to_json, headers: {})
@@ -15,6 +18,12 @@ describe Api::V0::Shopping::CustomerOrdersController do
       .to_return(status: 200, body: customer_order_202_data.to_json, headers: {})
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/orders\/303.json/)
       .to_return(status: 200, body: customer_order_303_data.to_json, headers: {})
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/orders\/404.json/)
+      .to_return(status: 200, body: customer_order_404_data.to_json, headers: {})
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/orders\/505.json/)
+      .to_return(status: 200, body: customer_order_505_data.to_json, headers: {})
+    WebMock.stub_request(:get, /test.myshopify.com\/admin\/orders\/606.json/)
+      .to_return(status: 200, body: customer_order_606_data.to_json, headers: {})
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/orders\/random01.json/)
       .to_return(status: 404, body: {message: 'customer_order not found'}.to_json, headers: {})
   end
@@ -137,5 +146,40 @@ describe Api::V0::Shopping::CustomerOrdersController do
       post :confirm_address, id: '101'
       response.should be_success
     end
+  end
+
+  describe 'private methods' do
+    before :each do
+      @controller = Api::V0::Shopping::CustomerOrdersController.new
+    end
+
+    context 'shipping_address_updatable(order)' do
+      it "should return true for an unfulfilled order" do
+        order = ShopifyAPI::Order.find(101)
+        updatable = @controller.instance_eval { shipping_address_updatable(order)[:updatable] }
+        expect(updatable).to be_true
+      end
+      
+
+      it "should return false for an order with any open fulfillments" do
+        order = ShopifyAPI::Order.find(404)
+        updatable = @controller.instance_eval { shipping_address_updatable(order)[:updatable] }
+        expect(updatable).to be_false
+      end
+
+      it "should return false for an order with any pending fulfillments" do
+        order = ShopifyAPI::Order.find(505)
+        updatable = @controller.instance_eval { shipping_address_updatable(order)[:updatable] }
+        expect(updatable).to be_false
+      end
+
+      it "should return false for an order with any pending fulfillments" do
+        order = ShopifyAPI::Order.find(606)
+        updatable = @controller.instance_eval { shipping_address_updatable(order)[:updatable] }
+        expect(updatable).to be_false
+      end
+
+    end
+
   end
 end
