@@ -93,7 +93,6 @@ class UserSync
       if merges != member_info['merges']
 
         @logger.info("Sync user #{@user.id} joule counts, #{merges.inspect}")
-        puts "Sync user #{@user.id} joule counts, #{merges.inspect}"
 
         Gibbon::API.lists.update_member(
           {
