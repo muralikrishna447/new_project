@@ -81,31 +81,31 @@ class UserSync
   end
 
   def sync_joule_data(member_info)
-    existing_merges = member_info['merges'] || {}
-    merges = existing_merges.clone
-
-    merges[JOULES_CONNECTED_MERGE_TAG] = CirculatorUser.where(user_id: @user.id).count
-    merges[JOULES_EVER_CONNECTED_MERGE_TAG] = CirculatorUser.with_deleted.where(user_id: @user.id).count
+    merges = {
+      JOULES_CONNECTED_MERGE_TAG => CirculatorUser.where(user_id: @user.id).count,
+      JOULES_EVER_CONNECTED_MERGE_TAG => CirculatorUser.with_deleted.where(user_id: @user.id).count
+    }
 
     if merges[JOULES_EVER_CONNECTED_MERGE_TAG] > 0
+
       merges[REFERRAL_CODE_MERGE_TAG] = Shopify::Customer.get_referral_code_for_user @user
-    end
 
-    if merges != existing_merges
+      if merges != member_info['merges']
 
-      @logger.info("Sync user #{@user.id} joule counts, #{merges.inspect}")
+        @logger.info("Sync user #{@user.id} joule counts, #{merges.inspect}")
 
-      Gibbon::API.lists.update_member(
-        {
-          id: Rails.configuration.mailchimp[:list_id],
-          email: {
-            email: @user.email
-          },
-          replace_interests: false,
-          merge_vars: merges
-        }
-      )
+        Gibbon::API.lists.update_member(
+          {
+            id: Rails.configuration.mailchimp[:list_id],
+            email: {
+              email: @user.email
+            },
+            replace_interests: false,
+            merge_vars: merges
+          }
+        )
 
+      end
     end
   end
 

@@ -114,7 +114,7 @@ describe UserSync do
 
     it 'should sync if circulator user current circulator counts mismatch' do
       # Should post 1,1
-      stub_mailchimp_post_joule_data(1, 1, @referral_code)
+      stub_mailchimp_post_joule_data(@user.email, 1, 1, @referral_code)
       Resque.should_receive(:enqueue).with(UserSync, @user.id)
 
       # Since this is first circulator, we would expect referral code created too
@@ -144,9 +144,9 @@ describe UserSync do
       @user_sync_with_code.sync_mailchimp({joule_data: true})
     end
 
-    it 'should sync if was CirculatorUser but deleted'do
+    it 'should sync if was CirculatorUser but deleted' do
       # Should get user sync twice, but only post once with 0,1
-      stub_mailchimp_post_joule_data(0, 1, @referral_code)
+      stub_mailchimp_post_joule_data(@user_with_code.email, 0, 1, @referral_code)
       Resque.should_receive(:enqueue).with(UserSync, @user_with_code.id).twice()
 
       # 1, 1 in mailchimp
@@ -160,12 +160,11 @@ describe UserSync do
       # Fake the resque
       @user_sync_with_code.sync_mailchimp({joule_data: true})
 
-
       # Now disconnect joule
       owned_circulator.destroy!
 
       # Fake the resque
-      @user_sync.sync_mailchimp({joule_data: true})
+      @user_sync_with_code.sync_mailchimp({joule_data: true})
     end
 
     def setup_member_premium(in_group)
@@ -246,11 +245,9 @@ describe UserSync do
         to_return(:status => 200, :body => "", :headers => {})
   end
 
-  def stub_mailchimp_post_joule_data(count, ever_count, referral_code)
-    merge_vars = {"JL_CONN"=>count, "JL_EVR_CON"=>ever_count, "REFER_CODE"=>referral_code}
-    body = {:apikey => 'test-api-key', :id => 'test-list-id', :email => {:email => 'johndoe@chefsteps.com'}, :replace_interests => false, :merge_vars => merge_vars}
+  def stub_mailchimp_post_joule_data(email, count, ever_count, referral_code)
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
-        with(body: hash_including(body)).
-        to_return(:status => 200, :body => "", :headers => {})
+      with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"#{email}\"},\"replace_interests\":false,\"merge_vars\":{\"JL_CONN\":#{count},\"JL_EVR_CON\":#{ever_count},\"REFER_CODE\":\"#{referral_code}\"}}").
+      to_return(:status => 200, :body => "", :headers => {})
   end
 end
