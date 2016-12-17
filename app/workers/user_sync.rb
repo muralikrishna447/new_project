@@ -82,7 +82,7 @@ class UserSync
 
   def sync_joule_data(member_info)
     existing_merges = member_info['merges'] || {}
-    merges = existing_merges
+    merges = existing_merges.clone
 
     merges[JOULES_CONNECTED_MERGE_TAG] = CirculatorUser.where(user_id: @user.id).count
     merges[JOULES_EVER_CONNECTED_MERGE_TAG] = CirculatorUser.with_deleted.where(user_id: @user.id).count
