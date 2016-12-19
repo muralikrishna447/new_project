@@ -144,20 +144,20 @@ module Api
         u = update.dup
         u['transfer'] = [
           {
-            "type"        => "http",
-            "host"        => Rails.application.config.firmware_download_host,
-            "filename"    => metadata['filename'],
-            "sha256"      => metadata['sha256'],
-            "totalBytes"  => metadata['totalBytes'],
-          },
-          {
             "type"        => "tftp",
             # round-robin choose a TFTP host.  DIY load balancing!
             "host"        => Rails.application.config.tftp_hosts.sample,
             "filename"    => metadata['filename'],
             "sha256"      => metadata['sha256'],
             "totalBytes"  => metadata['totalBytes'],
-          }
+          },
+          {
+            "type"        => "http",
+            "host"        => Rails.application.config.firmware_download_host,
+            "filename"    => metadata['filename'],
+            "sha256"      => metadata['sha256'],
+            "totalBytes"  => metadata['totalBytes'],
+          },
         ]
 
         u
