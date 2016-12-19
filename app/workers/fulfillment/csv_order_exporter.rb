@@ -117,7 +117,7 @@ module Fulfillment
       def include_order?(order)
         # Filter out any order that has filtered tags
         unless (Shopify::Utils.order_tags(order) & FILTERED_TAGS).empty?
-          Rails.logger.info("CSV order export filtering order with id #{order.id} " \
+          Rails.logger.warn("CSV order export filtering order with id #{order.id} " \
                             "because it has one or more filtered tags: #{order.tags}")
           return false
         end
