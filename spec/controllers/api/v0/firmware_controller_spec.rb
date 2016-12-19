@@ -83,17 +83,17 @@ describe Api::V0::FirmwareController do
     transfer = update['transfer']
     transfer.length.should == 2
 
-    transfer[0]['type'].should == 'http'
-    transfer[0]['host'].should == Rails.application.config.firmware_download_host
-    transfer[0]['sha256'].should == @sha256
-    transfer[0]['filename'].should == @filename
-    transfer[0]['totalBytes'].should == @totalBytes
-
-    transfer[1]['type'].should == 'tftp'
-    Rails.application.config.tftp_hosts.include?(transfer[1]['host']).should == true
+    transfer[1]['type'].should == 'http'
+    transfer[1]['host'].should == Rails.application.config.firmware_download_host
     transfer[1]['sha256'].should == @sha256
     transfer[1]['filename'].should == @filename
     transfer[1]['totalBytes'].should == @totalBytes
+
+    transfer[0]['type'].should == 'tftp'
+    Rails.application.config.tftp_hosts.include?(transfer[0]['host']).should == true
+    transfer[0]['sha256'].should == @sha256
+    transfer[0]['filename'].should == @filename
+    transfer[0]['totalBytes'].should == @totalBytes
   end
 
   it 'should return unauthorized if not logged in' do
