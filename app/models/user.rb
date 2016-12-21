@@ -40,6 +40,8 @@ class User < ActiveRecord::Base
 
   has_many :actor_addresses, as: :actor
 
+  has_many :tf2_redemptions
+
   serialize :viewed_activities, Array
 
   scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
@@ -304,6 +306,19 @@ class User < ActiveRecord::Base
     rescue Exception => e
       logger.error("Merge failed for user with id #{id}, transaction was rolled back: #{e.message}")
       raise e
+  end
+
+  # For tf2 redemption codes
+  def max_tf2_redemptions
+    owned_joules = self.owned_circulators.count
+    purchased_joules = self.joule_purchase_count
+    owned_joules > purchased_joules ? owned_joules : purchased_joules
+  end
+
+  # For tf2 redemption codes
+  def can_do_tf2_redemption?
+    current_redemptions = self.tf2_redemptions.count
+    current_redemptions < max_tf2_redemptions
   end
 
   private
