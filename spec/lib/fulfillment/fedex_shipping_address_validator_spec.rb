@@ -28,8 +28,26 @@ describe Fulfillment::FedexShippingAddressValidator do
     let(:too_short) { '12' }
     let(:invalid_char) { "ABC123\u{00A0}456" } # Non-breaking space, a common bad one
 
+    context 'shipping address is valid' do
+      it 'validate returns is_valid true' do
+        expect(Fulfillment::FedexShippingAddressValidator.validate(order)).to eq(
+          is_valid: true,
+          messages: []
+        )
+      end
+
+      it 'valid? returns true' do
+        expect(Fulfillment::FedexShippingAddressValidator.validate(order)).to be_true
+      end
+    end
+
     shared_examples 'invalid' do
-      it 'returns false' do
+      it 'validate returns validation with message' do
+        validation = Fulfillment::FedexShippingAddressValidator.validate(order)
+        expect(validation[:is_valid]).to be_false
+        expect(validation[:messages]).not_to be_empty
+      end
+      it 'valid? returns false' do
         expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be_false
       end
     end

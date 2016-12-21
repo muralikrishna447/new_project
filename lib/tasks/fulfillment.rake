@@ -87,4 +87,14 @@ namespace :fulfillment do
       Resque.enqueue(Fulfillment::RostiShipmentPoller, params)
     end
   end
+
+  task :validate_shipping_addresses, [:inline] => :environment do |_t, args|
+    args.with_defaults(inline: false)
+
+    if args[:inline]
+      Fulfillment::ShippingAddressValidator.perform
+    else
+      Resque.enqueue(Fulfillment::ShippingAddressValidator)
+    end
+  end
 end

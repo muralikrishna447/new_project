@@ -1,0 +1,79 @@
+require 'shopify_api'
+
+module Fulfillment
+  class ShippingAddressValidator
+    VALIDATION_MESSAGE_NOTE_KEY = 'address-validation-message'
+
+    VALIDATION_ERROR_TAG = 'shipping-validation-error'
+
+    @queue = :ShippingAddressValidator
+
+    def self.perform
+      Shopify::Utils.search_orders(status: 'open').each { |order| validate(order) }
+    end
+
+    def self.validate(order)
+      validation = Fulfillment::FedexShippingAddressValidator.validate(order)
+
+      # Clear any previous validation errors if address is now valid.
+      if validation[:is_valid]
+        Rails.logger.info("ShippingAddressValidator order with id #{order.id} is valid, " \
+                          'clearing any existing validation errors')
+        clear_validation_errors(order)
+        return
+      end
+
+      # Concatenate all validation messages into one string to put in Shopify.
+      message = validation[:messages].join(', ')
+
+      # Don't bother saving the order back to Shopify if already handled.
+      return if handled?(order, message)
+      Rails.logger.warn("ShippingAddressValidator order with id #{order.id} is invalid, " \
+                        "adding message #{message}")
+      add_validation_error(order, message)
+    end
+
+    def self.handled?(order, message)
+      has_error_tag = Shopify::Utils.order_tags(order).include?(VALIDATION_ERROR_TAG)
+      note = validation_note(order)
+      return true if has_error_tag && note && note.attributes[:value] == message
+      false
+    end
+
+    def self.validation_note(order)
+      order.note_attributes.select { |attr| attr.attributes[:name] == VALIDATION_MESSAGE_NOTE_KEY }.first
+    end
+
+    def self.clear_validation_errors(order)
+      has_error_tag = Shopify::Utils.order_tags(order).include?(VALIDATION_ERROR_TAG)
+      Shopify::Utils.remove_from_order_tags(order, [VALIDATION_ERROR_TAG]) if has_error_tag
+      note = validation_note(order)
+      # ShopifyAPI::NoteAttribute doesn't seem to implement equality so
+      # have to do a delete the ugly way.
+      if note
+        order.note_attributes.delete_if do |attr|
+          attr.attributes[:name] == note.attributes[:name] &&
+            attr.attributes[:value] == note.attributes[:value]
+        end
+      end
+      order.save if has_error_tag || note
+    end
+
+    def self.add_validation_error(order, message)
+      Shopify::Utils.add_to_order_tags(order, [VALIDATION_ERROR_TAG])
+
+      # Update existing message or add it to array if it doesn't exist.
+      note = validation_note(order)
+      if note
+        note.attributes[:value] = message
+      else
+        order.note_attributes.push(
+          name: VALIDATION_MESSAGE_NOTE_KEY,
+          value: message
+        )
+      end
+
+      order.save
+    end
+  end
+end

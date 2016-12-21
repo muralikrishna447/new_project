@@ -7,11 +7,11 @@ module Fulfillment
     PRIORITY_TAG = 'shipping-priority'
 
     # Orders with these tags are not included in the output.
-    FILTERED_TAGS = %w(
-      shipping-started
-      shipping-hold
-      shipping-validation-error
-    )
+    FILTERED_TAGS = [
+      'shipping-started',
+      'shipping-hold',
+      Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG
+    ]
 
     JOB_LOCK_KEY = 'fulfillment-order-export'
 
