@@ -22,8 +22,10 @@
             available codes.
 
         .redemptions
-          - if @max_redemptions > 0
+          - if @current_redemptions.size > 0
             %h4 Here are your codes:
+          - else
+            %h4 You haven't redeemed any codes yet
           - @current_redemptions.each do |redemption|
             .redemption.redeemed
               %strong.tf2-code
