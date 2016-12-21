@@ -1,33 +1,44 @@
-.component-container
-  .component.small
-    %h1
-      Team Fortress 2
-      %br
-      Taunt Redemptions
-    - if @message
-      .notification-container
-        .notification
-          = @message
-    - if @max_redemptions > 0
-      %p
-        By our records you have
-        = @current_redemptions.size
-        of
-        = @max_redemptions
-        currently redeemed codes
-      .redemptions
-        - @current_redemptions.each do |redemption|
-          .redemption.redeemed
-            %strong
-              = redemption.redemption_code
-            redeemed
-            = redemption.redeemed_at.strftime("%B %d, %Y")
+.page
+  .component-container
+    .component.small
+      %h1
+        Team Fortress 2
+        %br
+        Taunt Redemptions
+      - if @message
+        %br
+        .notification-container
+          .notification
+            = @message
+      - if @max_redemptions > 0
+        -if @max_redemptions == @current_redemptions.size
+          %p
+            You have redeemed all
+            = @max_redemptions
+            of your available codes.
+        -else
+          %p
+            You have redeemed
+            = @current_redemptions.size
+            of your
+            = @max_redemptions
+            available codes.
 
-        - if @max_redemptions != @current_redemptions.size
-          .redemption.unredeemed
-            Redeem your Team Fortress 2 code.  This will generate you a promotional code that you can use in Steam.
-            %form(action="/tf2/redemptions" method="post")
-              %input(type="submit" class="button solid orange redemption_button" value="Redeem Now")
-    - else
-      %p
-        We currently show you don't have any Joules under your account
+        .redemptions
+          - if @max_redemptions > 0
+            %p Here are your codes:
+          - @current_redemptions.each do |redemption|
+            .redemption.redeemed
+              %strong
+                = redemption.redemption_code
+              redeemed
+              = redemption.redeemed_at.strftime("%B %d, %Y")
+
+          - if @max_redemptions != @current_redemptions.size
+            .redemption.unredeemed
+              Redeem your Team Fortress 2 code.  This will generate a promotional code that you can use in Steam.
+              %form(action="/tf2/redemptions" method="post")
+                %input(type="submit" class="button solid orange redemption_button" value="Redeem Now")
+      - else
+        %p
+          We currently show you don't have any Joules under your account.
