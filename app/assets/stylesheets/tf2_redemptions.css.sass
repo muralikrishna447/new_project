@@ -1,9 +1,61 @@
 @import 'mixins'
-.sandvich
-  padding-bottom: 20px
+.tf2
+  background-image: url(https://d3awvtnmmsvyot.cloudfront.net/api/file/BrQMsmG8RkyES6oLSiSD)
+  background-size: cover
+  background-position: center center
+  min-height: 100vh
+  @media (max-width: 700px)
+    min-height: auto
+    background-image: none
+    &:before
+      content: ""
+      display: block
+      position: relative
+      height: 200px
+      width: 100%
+      background-image: url(https://d3awvtnmmsvyot.cloudfront.net/api/file/BrQMsmG8RkyES6oLSiSD)
+      background-size: cover
+      background-position: top center
+.tf2-redemptions
+  background-image: url(https://d3awvtnmmsvyot.cloudfront.net/api/file/tNORpFEjQQKy1fe6wASq)
+  @media (max-width: 700px)
+    background-image: none
+    &:before
+      background-image: url(https://d3awvtnmmsvyot.cloudfront.net/api/file/tNORpFEjQQKy1fe6wASq)
+.tf2 .component-container
+  padding-top: 42px
+  margin-bottom: 0
+.tf2 .component.small
+  max-width: 450px
+  background-color: #fff
+  border-radius: 4px
+  padding: 50px 30px
+  margin-bottom: 40px
+  @media (max-width: 700px)
+    padding: 0
+.tf2 h1
+  text-align: center
+  @media (max-width: 700px)
+    font-size: 28px
+    line-height: 1.1
+    max-width: 300px
+    margin: auto
+.tf2-redemptions h1
+  max-width: 400px
+  margin: auto
+.steak-img
+  padding: 40px 0
   text-align: center
   img
-    max-width: 90%
+    max-width: 60%
+.tf2-cta
+  text-align: center
+  margin-bottom: 30px
+  padding-top: 20px
+  border-top: 1px solid #e9e9e9
+.tf2-cta .button
+  min-width: 220px
+  margin-top: 10px
 .button.red
   background-color: #bb3b3e
   border-color: #bb3b3e
@@ -16,14 +68,28 @@
   background-color: #ff674d
   border-color: #ff674d
   color: white
-.redemption.unredeemed
-  padding-top: 20px
 .notification-container
   padding-top: 10px
 .notification
-  border: 1px solid
-  border-radius: 0px
-  border-color: #ff674d
-  margin-bottom: 2.4rem
-  padding: 2.4rem
-  padding-top: 20px
+  border-radius: 4px
+  background-color: #ff674d
+  color: #fff
+  text-align: center
+  margin: 20px 0
+  padding: 15px
+.redemption-status
+  margin: 20px 0 30px
+  text-align: center
+.redemptions
+  text-align: center
+  border-top: 1px solid #e9e9e9
+  padding: 30px 0 0
+.redemption.unredeemed
+  padding-top: 30px
+  margin-top: 30px
+  border-top: 1px solid #e9e9e9
+  .button
+    margin-top: 20px
+    min-width: 220px
+.tf2-code
+  font-size: 20px
