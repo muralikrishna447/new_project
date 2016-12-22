@@ -2019,6 +2019,39 @@ ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
 
 
 --
+-- Name: tf2_redemptions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tf2_redemptions (
+    id integer NOT NULL,
+    user_id integer,
+    redemption_code character varying(255),
+    redeemed_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: tf2_redemptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tf2_redemptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tf2_redemptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tf2_redemptions_id_seq OWNED BY tf2_redemptions.id;
+
+
+--
 -- Name: uploads; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2693,6 +2726,13 @@ ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclas
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY tf2_redemptions ALTER COLUMN id SET DEFAULT nextval('tf2_redemptions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY uploads ALTER COLUMN id SET DEFAULT nextval('uploads_id_seq'::regclass);
 
 
@@ -3168,6 +3208,14 @@ ALTER TABLE ONLY taggings
 
 ALTER TABLE ONLY tags
     ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tf2_redemptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tf2_redemptions
+    ADD CONSTRAINT tf2_redemptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -3658,6 +3706,13 @@ CREATE INDEX index_taggings_on_taggable_id_and_taggable_type_and_context ON tagg
 --
 
 CREATE UNIQUE INDEX index_tags_on_name ON tags USING btree (name);
+
+
+--
+-- Name: index_tf2_redemptions_on_redemption_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_tf2_redemptions_on_redemption_code ON tf2_redemptions USING btree (redemption_code);
 
 
 --
@@ -4243,3 +4298,5 @@ INSERT INTO schema_migrations (version) VALUES ('20160913212211');
 INSERT INTO schema_migrations (version) VALUES ('20161208175329');
 
 INSERT INTO schema_migrations (version) VALUES ('20161214230642');
+
+INSERT INTO schema_migrations (version) VALUES ('20161221053707');
