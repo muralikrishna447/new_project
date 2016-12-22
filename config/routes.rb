@@ -221,6 +221,10 @@ Delve::Application.routes.draw do
   match '/components', to: 'components#index'
   match '/components/*path', to: 'components#index'
 
+  get "/tf2" => "tf2_redemptions#index"
+  get "/tf2/redemptions" => "tf2_redemptions#show"
+  post "/tf2/redemptions" => "tf2_redemptions#create"
+
   namespace :api do
     namespace :admin do
       resources :users, only: [:show, :index] do
