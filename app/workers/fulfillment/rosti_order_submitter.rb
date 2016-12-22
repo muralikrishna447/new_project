@@ -109,5 +109,15 @@ module Fulfillment
       end
       line_items
     end
+
+    def self.after_save(fulfillables, _params)
+      Librato.increment 'fulfillment.rosti.order-submitter.success', sporadic: true
+      Librato.increment 'fulfillment.rosti.order-submitter.count', by: fulfillables.length, sporadic: true
+      total_quantity = fulfillables.inject(0) do |sum, fulfillable|
+        sum + fulfillable.quantity
+      end
+      Librato.increment 'fulfillment.rosti.order-submitter.quantity', by: total_quantity, sporadic: true
+      Librato.tracker.flush
+    end
   end
 end

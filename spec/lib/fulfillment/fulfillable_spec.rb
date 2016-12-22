@@ -1,16 +1,18 @@
 require 'spec_helper'
 
 describe Fulfillment::Fulfillable do
+  let(:line_item_1_quantity) { 1 }
   let(:line_item_1) do
     line_item = ShopifyAPI::LineItem.new
     line_item.id = 11
-    line_item.fulfillable_quantity = 1
+    line_item.fulfillable_quantity = line_item_1_quantity
     line_item
   end
+  let(:line_item_2_quantity) { 2 }
   let(:line_item_2) do
     line_item = ShopifyAPI::LineItem.new
     line_item.id = 21
-    line_item.fulfillable_quantity = 2
+    line_item.fulfillable_quantity = line_item_2_quantity
     line_item
   end
   let(:order) do
@@ -82,6 +84,14 @@ describe Fulfillment::Fulfillable do
       it 'returns quantity for open fulfillment' do
         expect(fulfillable.quantity_for_line_item(line_item_1)).to eq fulfillment_quantity
       end
+    end
+  end
+
+  describe 'quantity' do
+    let(:fulfillments) { [] }
+    let(:total_quantity) { line_item_1_quantity + line_item_2_quantity }
+    it 'returns sum of fulfillable quantity for all line items' do
+      expect(fulfillable.quantity).to eq total_quantity
     end
   end
 

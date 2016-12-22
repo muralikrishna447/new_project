@@ -36,6 +36,13 @@ module Fulfillment
       quantity
     end
 
+    # Returns total quantity of all fulfillable line items.
+    def quantity
+      line_items.inject(0) do |sum, line_item|
+        sum + quantity_for_line_item(line_item)
+      end
+    end
+
     def ==(other)
       order == other.order && line_items == other.line_items
     end
