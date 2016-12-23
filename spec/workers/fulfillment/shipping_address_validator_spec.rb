@@ -7,8 +7,8 @@ describe Fulfillment::ShippingAddressValidator do
       Shopify::Utils.should_receive(:search_orders).with(status: 'open').and_return([order])
       Fulfillment::ShippingAddressValidator.should_receive(:validate).with(order).and_return(true)
       Librato.should_receive(:increment).with('fulfillment.address-validator.success', sporadic: true)
-      Librato.should_receive(:measure).with('fulfillment.address-validator.valid.count', 1)
-      Librato.should_receive(:measure).with('fulfillment.address-validator.invalid.count', 0)
+      Librato.should_receive(:increment).with('fulfillment.address-validator.valid.count', by: 1, sporadic: true)
+      Librato.should_receive(:increment).with('fulfillment.address-validator.invalid.count', by: 0, sporadic: true)
       Fulfillment::ShippingAddressValidator.perform
     end
   end

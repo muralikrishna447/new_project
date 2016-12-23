@@ -23,8 +23,8 @@ module Fulfillment
       Rails.logger.info("ShippingAddressValidator complete, found #{valid_count} " \
                         "open orders with valid addresses and #{invalid_count} invalid")
       Librato.increment 'fulfillment.address-validator.success', sporadic: true
-      Librato.measure 'fulfillment.address-validator.valid.count', valid_count
-      Librato.measure 'fulfillment.address-validator.invalid.count', invalid_count
+      Librato.increment 'fulfillment.address-validator.valid.count', by: valid_count, sporadic: true
+      Librato.increment 'fulfillment.address-validator.invalid.count', by: invalid_count, sporadic: true
       Librato.tracker.flush
     end
 
