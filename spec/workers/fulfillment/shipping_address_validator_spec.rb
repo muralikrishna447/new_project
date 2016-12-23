@@ -3,9 +3,12 @@ require 'spec_helper'
 describe Fulfillment::ShippingAddressValidator do
   describe 'perform' do
     let(:order) { double('order') }
-    it 'calls validate on order' do
+    it 'calls validate on order and reports metrics' do
       Shopify::Utils.should_receive(:search_orders).with(status: 'open').and_return([order])
-      Fulfillment::ShippingAddressValidator.should_receive(:validate).with(order)
+      Fulfillment::ShippingAddressValidator.should_receive(:validate).with(order).and_return(true)
+      Librato.should_receive(:increment).with('fulfillment.address-validator.success', sporadic: true)
+      Librato.should_receive(:measure).with('fulfillment.address-validator.valid.count', 1)
+      Librato.should_receive(:measure).with('fulfillment.address-validator.invalid.count', 0)
       Fulfillment::ShippingAddressValidator.perform
     end
   end
@@ -43,7 +46,7 @@ describe Fulfillment::ShippingAddressValidator do
         it 'removes tag and note and saves order' do
           order.should_receive(:tags=).with('')
           order.should_receive(:save)
-          Fulfillment::ShippingAddressValidator.validate(order)
+          expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_true
           expect(note_attributes).to eq([existing_note])
         end
       end
@@ -54,7 +57,7 @@ describe Fulfillment::ShippingAddressValidator do
 
         it 'does not save order' do
           order.should_not_receive(:save)
-          Fulfillment::ShippingAddressValidator.validate(order)
+          expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_true
         end
       end
     end
@@ -86,7 +89,7 @@ describe Fulfillment::ShippingAddressValidator do
 
             it 'does not save order' do
               order.should_not_receive(:save)
-              Fulfillment::ShippingAddressValidator.validate(order)
+              expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
             end
           end
 
@@ -96,7 +99,7 @@ describe Fulfillment::ShippingAddressValidator do
             it 'adds validation error tag to order and saves it' do
               order.should_receive(:tags=).with(Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG)
               order.should_receive(:save)
-              Fulfillment::ShippingAddressValidator.validate(order)
+              expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
             end
           end
         end
@@ -110,7 +113,7 @@ describe Fulfillment::ShippingAddressValidator do
 
             it 'saves order with new message' do
               order.should_receive(:save)
-              Fulfillment::ShippingAddressValidator.validate(order)
+              expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
               expect(note_attributes.first.value).to eq validation_message
             end
           end
@@ -121,7 +124,7 @@ describe Fulfillment::ShippingAddressValidator do
             it 'saves order with validation tag and new message' do
               order.should_receive(:tags=).with(Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG)
               order.should_receive(:save)
-              Fulfillment::ShippingAddressValidator.validate(order)
+              expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
               expect(note_attributes.first.value).to eq validation_message
             end
           end
@@ -136,7 +139,7 @@ describe Fulfillment::ShippingAddressValidator do
         it 'saves order with validation tag and message' do
           order.should_receive(:tags=).with(Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG)
           order.should_receive(:save)
-          Fulfillment::ShippingAddressValidator.validate(order)
+          expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
           expect(note_attributes).to eq [
             {
               name: Fulfillment::ShippingAddressValidator::VALIDATION_MESSAGE_NOTE_KEY,

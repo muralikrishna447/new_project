@@ -9,7 +9,23 @@ module Fulfillment
     @queue = :ShippingAddressValidator
 
     def self.perform
-      Shopify::Utils.search_orders(status: 'open').each { |order| validate(order) }
+      valid_count = 0
+      invalid_count = 0
+      Shopify::Utils.search_orders(status: 'open').each do |order|
+        is_valid = validate(order)
+        if is_valid
+          valid_count += 1
+        else
+          invalid_count += 1
+        end
+      end
+
+      Rails.logger.info("ShippingAddressValidator complete, found #{valid_count} " \
+                        "open orders with valid addresses and #{invalid_count} invalid")
+      Librato.increment 'fulfillment.address-validator.success', sporadic: true
+      Librato.measure 'fulfillment.address-validator.valid.count', valid_count
+      Librato.measure 'fulfillment.address-validator.invalid.count', invalid_count
+      Librato.tracker.flush
     end
 
     def self.validate(order)
@@ -20,17 +36,18 @@ module Fulfillment
         Rails.logger.info("ShippingAddressValidator order with id #{order.id} is valid, " \
                           'clearing any existing validation errors')
         clear_validation_errors(order)
-        return
+        return true
       end
 
       # Concatenate all validation messages into one string to put in Shopify.
       message = validation[:messages].join(', ')
 
       # Don't bother saving the order back to Shopify if already handled.
-      return if handled?(order, message)
+      return false if handled?(order, message)
       Rails.logger.warn("ShippingAddressValidator order with id #{order.id} is invalid, " \
                         "adding message #{message}")
       add_validation_error(order, message)
+      false
     end
 
     def self.handled?(order, message)
