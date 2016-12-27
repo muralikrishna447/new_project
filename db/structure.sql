@@ -1128,10 +1128,14 @@ CREATE TABLE joule_cook_history_programs (
     cook_id character varying(255),
     timer_id integer,
     program_type character varying(255),
-    set_point integer,
-    holding_temperature integer,
+    set_point double precision,
+    holding_temperature double precision,
     cook_time integer,
     cook_history_item_id integer,
+    delayed_start integer,
+    wait_for_preheat boolean,
+    turbo boolean,
+    predictive boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
