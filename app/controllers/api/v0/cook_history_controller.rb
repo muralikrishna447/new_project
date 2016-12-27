@@ -1,13 +1,18 @@
 module Api
   module V0
     class CookHistoryController < BaseController
+      before_filter :ensure_authorized
 
       def index
-        render json: { message: "hello world!" }
+        user = User.find(@user_id_from_token)
+        cook_history_items = user.cook_history_items.includes(:joule_cook_history_program)
+        render json: cook_history_items, each_serializer: Api::CookHistoryItemSerializer
       end
       
       def create
-        binding.pry
+        user = User.find(@user_id_from_token)
+        cook_history_item = user.cook_history_items.new(params[:cook_history])
+        render nothing: true, status: 200 if cook_history_item.save
       end
       
     end

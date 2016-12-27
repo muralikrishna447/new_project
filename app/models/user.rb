@@ -39,6 +39,8 @@ class User < ActiveRecord::Base
   has_many :owned_circulators, source: :circulator, through: :circulator_users, conditions: ["circulator_users.owner = ?", true]
 
   has_many :actor_addresses, as: :actor
+  
+  has_many :cook_history_items
 
   serialize :viewed_activities, Array
 

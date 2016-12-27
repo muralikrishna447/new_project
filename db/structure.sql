@@ -699,7 +699,7 @@ ALTER SEQUENCE components_id_seq OWNED BY components.id;
 CREATE TABLE cook_history_items (
     id integer NOT NULL,
     user_id integer,
-    type character varying(255),
+    program_type character varying(255),
     user_content_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
