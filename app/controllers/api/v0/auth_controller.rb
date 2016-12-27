@@ -212,11 +212,10 @@ module Api
           aa = ActorAddress.create_for_user(current_api_user, {client_metadata: 'facebook-messenger'})
           token = aa.current_token.to_jwt
           redirect_params = {
-            token: token,
-            verb: 'POST'
+            token: token
           }
           redirect_uri = path_uri.to_s+"&#{redirect_params.to_query}"
-          render_api_response 200, {redirect: redirect_uri}
+          render_api_response 200, {redirect: redirect_uri, close: true}
 
         elsif path_uri.host == "#{ENV['ZENDESK_DOMAIN']}" || path_uri.host == "#{ENV['ZENDESK_MAPPED_DOMAIN']}"
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}

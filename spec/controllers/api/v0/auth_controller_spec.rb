@@ -422,19 +422,19 @@ describe Api::V0::AuthController do
 
       response.code.should eq("200")
 
-      redirect = JSON.parse(response.body)['redirect']
+      parsed_body = JSON.parse(response.body)
+      redirect = parsed_body['redirect']
       uri = URI(redirect)
       uri.host.should eq(Rails.application.config.shared_config[:facebook][:messenger_bot_endpoint])
 
       fb_params = redirect.split('?')[1]
       parsed_fb_params = CGI::parse(fb_params)
-      puts parsed_fb_params
       token_string = parsed_fb_params['token'][0]
       token = AuthToken.from_string token_string
       address_id = token['a']
       ActorAddress.where(address_id: address_id).first.client_metadata.should == 'facebook-messenger'
-      parsed_fb_params['verb'][0].should == 'POST'
-      parsed_fb_params['psid'][0].should == '1234'
+
+      parsed_body['close'].should == true
     end
   end
 
