@@ -196,6 +196,7 @@ module Api
           token =  Shopify::Multipass.for_user(current_api_user, return_to)
           redirect_uri = "https://#{Rails.configuration.shopify[:store_domain]}/account/login/multipass/#{token}"
           render_api_response 200, {redirect: redirect_uri}
+
         elsif path_uri.host == 'pitangui.amazon.com'
           aa = ActorAddress.create_for_user(current_api_user, {client_metadata: 'amazon'})
           token = aa.current_token.to_jwt
@@ -205,10 +206,24 @@ module Api
           redirect_uri = path_uri.to_s+"##{redirect_params.to_query}"
           render_api_response 200, {redirect: redirect_uri}
 
+        # External auth for facebook messenger bot is a little different; we don't actually redirect
+        # the browser, but instead tell it where to post the token and then close the browser window.
+        elsif path_uri.host == Rails.application.config.shared_config[:facebook][:messenger_bot_endpoint]
+          aa = ActorAddress.create_for_user(current_api_user, {client_metadata: 'facebook-messenger'})
+          token = aa.current_token.to_jwt
+          redirect_params = {
+            token: token,
+            verb: 'POST'
+          }
+          redirect_uri = path_uri.to_s+"&#{redirect_params.to_query}"
+          render_api_response 200, {redirect: redirect_uri}
+
         elsif path_uri.host == "#{ENV['ZENDESK_DOMAIN']}" || path_uri.host == "#{ENV['ZENDESK_MAPPED_DOMAIN']}"
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
+
         elsif path_uri.host == "www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
           render_api_response 200, {redirect: chefsteps_sso_url(params[:path])}
+
         else
           return render_api_response 404, {message: "No redirect configured for path [#{path}]."}
         end
