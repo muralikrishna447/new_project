@@ -5,10 +5,10 @@ class CirculatorUser < ActiveRecord::Base
 
   attr_accessible :owner, :user, :circulator
 
-  after_commit :sync_mailchimp
-  after_destroy :sync_mailchimp
+  after_commit :user_sync
+  after_destroy :user_sync
 
-  def sync_mailchimp
+  def user_sync
     Resque.enqueue(UserSync, self.user.id)
   end
 

@@ -31,6 +31,7 @@ describe Api::V0::UsersController do
       result.delete('used_circulator_discount').should == false
       result.delete('admin').should == false
       result.delete('joule_purchase_count').should == 0
+      result.delete('referral_code').should == nil
       result.empty?.should == true
     end
 

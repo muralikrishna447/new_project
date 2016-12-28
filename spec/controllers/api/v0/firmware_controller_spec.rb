@@ -24,7 +24,7 @@ describe Api::V0::FirmwareController do
       .and_return(false)
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu_blacklist')
       .and_return(false)
-    enabled_app_versions = ['2.40.2', '2.40.3', '2.40.4']
+    enabled_app_versions = ['2.40.2', '2.41.2', '2.41.3', '2.41.4']
     for v in enabled_app_versions
       set_version_enabled(v, true)
     end
@@ -64,14 +64,16 @@ describe Api::V0::FirmwareController do
     mock_s3_json(
       "joule/WIFI_FIRMWARE/#{@esp_version}/metadata.json", esp_metadata
     )
-    mock_s3_json("manifests/2.40.3/manifest", esp_only_manifest)
-    mock_s3_json("manifests/2.40.2/manifest", esp_only_manifest)
-    mock_s3_json("manifests/2.40.4/manifest", manifest)
+    mock_s3_json("manifests/2.41.3/manifest", esp_only_manifest)
+    mock_s3_json("manifests/2.41.2/manifest", esp_only_manifest)
+    mock_s3_json("manifests/2.41.4/manifest", manifest)
+
+    mock_s3_json("manifests/2.40.2/manifest", manifest)
   end
 
   it 'should get manifests for wifi firmware' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.40.3', 'hardwareVersion' => 'JL.p5'}
+    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 1
@@ -81,28 +83,28 @@ describe Api::V0::FirmwareController do
     transfer = update['transfer']
     transfer.length.should == 2
 
-    transfer[0]['type'].should == 'http'
-    transfer[0]['host'].should == Rails.application.config.firmware_download_host
-    transfer[0]['sha256'].should == @sha256
-    transfer[0]['filename'].should == @filename
-    transfer[0]['totalBytes'].should == @totalBytes
-
-    transfer[1]['type'].should == 'tftp'
-    Rails.application.config.tftp_hosts.include?(transfer[1]['host']).should == true
+    transfer[1]['type'].should == 'http'
+    transfer[1]['host'].should == Rails.application.config.firmware_download_host
     transfer[1]['sha256'].should == @sha256
     transfer[1]['filename'].should == @filename
     transfer[1]['totalBytes'].should == @totalBytes
+
+    transfer[0]['type'].should == 'tftp'
+    Rails.application.config.tftp_hosts.include?(transfer[0]['host']).should == true
+    transfer[0]['sha256'].should == @sha256
+    transfer[0]['filename'].should == @filename
+    transfer[0]['totalBytes'].should == @totalBytes
   end
 
   it 'should return unauthorized if not logged in' do
-    post :updates, {'appVersion'=> '2.40.3', 'hardwareVersion' => 'JL.p5'}
+    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
     response.code.should == '401'
   end
 
   it 'should get no updates if manifest version not enabled' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    set_version_enabled('2.40.3', false)
-    post :updates, {'appVersion'=> '2.40.3', 'hardwareVersion' => 'JL.p5'}
+    set_version_enabled('2.41.3', false)
+    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -112,7 +114,7 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu_blacklist')
       .and_return(true)
-    post :updates, {'appVersion'=> '2.40.3', 'hardwareVersion' => 'JL.p5'}
+    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -120,7 +122,7 @@ describe Api::V0::FirmwareController do
 
   it 'should get no updates if old app version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.40.0', 'hardwareVersion' => 'JL.p5'}
+    post :updates, {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -129,7 +131,7 @@ describe Api::V0::FirmwareController do
   it 'should get firmware version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
 
-    post :updates, {'appVersion'=> '2.40.4', 'hardwareVersion' => 'JL.p5'}
+    post :updates, {'appVersion'=> '2.41.4', 'hardwareVersion' => 'JL.p5'}
 
     response.should be_success
     resp = JSON.parse(response.body)
@@ -151,7 +153,7 @@ describe Api::V0::FirmwareController do
 
   it 'should not get any updates if proto4 hardware' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.40.4', 'hardwareVersion' => 'JL.p4'}
+    post :updates, {'appVersion'=> '2.41.4', 'hardwareVersion' => 'JL.p4'}
 
     response.should be_success
     resp = JSON.parse(response.body)
@@ -160,7 +162,7 @@ describe Api::V0::FirmwareController do
 
   it 'should not return firmware version if up to date' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.40.3', 'espFirmwareVersion' => @esp_version, 'hardwareVersion' => 'JL.p5'}
+    post :updates, {'appVersion'=> '2.41.3', 'espFirmwareVersion' => @esp_version, 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -182,5 +184,15 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
     post :updates
     response.should_not be_success
+  end
+
+  # Remove this test after app version 2.41.2 is released
+  it 'should not get firmware update if iOS 10.2 and 47' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    request.env['HTTP_USER_AGENT'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 (4302330688)'
+    post :updates, {'appVersion'=> '2.40.2', 'appFirmwareVersion' => '47', 'hardwareVersion' => 'JL.p5'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
   end
 end

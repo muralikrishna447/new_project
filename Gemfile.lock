@@ -706,9 +706,3 @@ DEPENDENCIES
   uglifier (>= 1.0.3)
   unicorn
   webmock
-
-RUBY VERSION
-   ruby 1.9.3p551
-
-BUNDLED WITH
-   1.13.6

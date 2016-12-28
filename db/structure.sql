@@ -2149,6 +2149,39 @@ ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
 
 
 --
+-- Name: tf2_redemptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE tf2_redemptions (
+    id integer NOT NULL,
+    user_id integer,
+    redemption_code character varying(255),
+    redeemed_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: tf2_redemptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tf2_redemptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tf2_redemptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tf2_redemptions_id_seq OWNED BY tf2_redemptions.id;
+
+
+--
 -- Name: uploads; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2317,7 +2350,8 @@ CREATE TABLE users (
     needs_special_terms boolean DEFAULT false,
     deleted_at timestamp without time zone,
     first_joule_purchased_at timestamp without time zone,
-    joule_purchase_count integer DEFAULT 0
+    joule_purchase_count integer DEFAULT 0,
+    referral_code character varying(255)
 );
 
 
@@ -2840,6 +2874,13 @@ ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclas
 
 
 --
+-- Name: tf2_redemptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tf2_redemptions ALTER COLUMN id SET DEFAULT nextval('tf2_redemptions_id_seq'::regclass);
+
+
+--
 -- Name: uploads id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3342,6 +3383,14 @@ ALTER TABLE ONLY taggings
 
 ALTER TABLE ONLY tags
     ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tf2_redemptions tf2_redemptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tf2_redemptions
+    ADD CONSTRAINT tf2_redemptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -3863,6 +3912,13 @@ CREATE UNIQUE INDEX index_tags_on_name ON tags USING btree (name);
 
 
 --
+-- Name: index_tf2_redemptions_on_redemption_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_tf2_redemptions_on_redemption_code ON tf2_redemptions USING btree (redemption_code);
+
+
+--
 -- Name: index_users_on_authentication_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3874,6 +3930,13 @@ CREATE UNIQUE INDEX index_users_on_authentication_token ON users USING btree (au
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
+
+
+--
+-- Name: index_users_on_referral_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_referral_code ON users USING btree (referral_code);
 
 
 --
@@ -4434,6 +4497,12 @@ INSERT INTO schema_migrations (version) VALUES ('20160818162532');
 INSERT INTO schema_migrations (version) VALUES ('20160818231947');
 
 INSERT INTO schema_migrations (version) VALUES ('20160913212211');
+
+INSERT INTO schema_migrations (version) VALUES ('20161208175329');
+
+INSERT INTO schema_migrations (version) VALUES ('20161214230642');
+
+INSERT INTO schema_migrations (version) VALUES ('20161221053707');
 
 INSERT INTO schema_migrations (version) VALUES ('20161226225433');
 
