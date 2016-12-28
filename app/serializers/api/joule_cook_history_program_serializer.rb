@@ -4,8 +4,6 @@ class Api::JouleCookHistoryProgramSerializer < ApplicationSerializer
   :set_point, :cook_id, :delayed_start, :wait_for_preheat, 
   :turbo, :predictive, :created_at, :program_metadata
   
-  belongs_to :cook_history_item
-  
   def created_at
     object.created_at.strftime("%s").to_i
   end

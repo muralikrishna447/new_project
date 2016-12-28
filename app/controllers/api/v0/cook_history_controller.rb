@@ -15,6 +15,12 @@ module Api
         render nothing: true, status: 200 if cook_history_item.save
       end
       
+      def destroy
+        user = User.find(@user_id_from_token)
+        item = user.cook_history_items.find(params[:id])
+        render nothing: true, status: 200 if item.destroy
+      end
+      
     end
   end
 end
