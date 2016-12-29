@@ -25,6 +25,14 @@ describe Api::V0::CookHistoryController do
     @history_item = Fabricate :cook_history_item,  history_item_type: 'joule', 
       joule_cook_history_program_attributes: joule_program_data, user_id: @user.id
   end
+  
+  it "should respond with an array of a user's cook history items" do
+    get :index
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed["results"].is_a?(Array)
+    parsed["results"].first["uuid"].should == @history_item.uuid
+  end
 
   # POST /api/v0/cook_history
   it 'should create a Cook History Item that belongs to authenticated user' do
