@@ -699,8 +699,9 @@ ALTER SEQUENCE components_id_seq OWNED BY components.id;
 CREATE TABLE cook_history_items (
     id integer NOT NULL,
     user_id integer,
-    program_type character varying(255),
+    history_item_type character varying(255),
     user_content_id integer,
+    uuid character varying(255),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1127,7 +1128,7 @@ CREATE TABLE joule_cook_history_programs (
     guide_id character varying(255),
     cook_id character varying(255),
     timer_id integer,
-    history_item_type character varying(255),
+    program_type character varying(255),
     program_id character varying(255),
     set_point double precision,
     holding_temperature double precision,

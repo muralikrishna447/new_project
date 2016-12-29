@@ -19,7 +19,7 @@ module Api
       
       def destroy
         user = User.find(@user_id_from_token)
-        item = user.cook_history_items.find(params[:id])
+        item = user.cook_history_items.find_by_uuid(params[:id])
         if item && item.destroy
           render_api_response 200, { message: "Successfully destroyed #{params[:id]}" }
         else
