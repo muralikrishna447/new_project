@@ -2,7 +2,7 @@ class Api::JouleCookHistoryProgramSerializer < ApplicationSerializer
   format_keys :lower_camel
   attributes :cook_time, :guide, :holding_temperature, :program_type, 
   :set_point, :cook_id, :delayed_start, :wait_for_preheat, 
-  :turbo, :predictive, :created_at, :program_metadata
+  :predictive, :created_at, :program_metadata
   
   def created_at
     object.created_at.strftime("%s").to_i
@@ -16,6 +16,8 @@ class Api::JouleCookHistoryProgramSerializer < ApplicationSerializer
     {
       guideId: object.guide_id,
       cookId: object.cook_id,
+      timerId: object.timer_id,
+      programId: object.program_id
     }
   end
   
