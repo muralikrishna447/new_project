@@ -702,6 +702,7 @@ CREATE TABLE cook_history_items (
     history_item_type character varying(255),
     user_content_id integer,
     uuid character varying(255),
+    deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1137,6 +1138,7 @@ CREATE TABLE joule_cook_history_programs (
     delayed_start integer,
     wait_for_preheat boolean,
     predictive boolean,
+    deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

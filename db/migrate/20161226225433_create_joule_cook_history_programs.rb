@@ -13,6 +13,7 @@ class CreateJouleCookHistoryPrograms < ActiveRecord::Migration
       t.integer :delayed_start
       t.boolean :wait_for_preheat
       t.boolean :predictive
+      t.datetime :deleted_at
       t.timestamps
     end
   end
