@@ -416,7 +416,7 @@ describe Api::V0::AuthController do
       ActorAddress.where(address_id: address_id).first.client_metadata.should == 'amazon'
     end
 
-    it 'returns a proper token for facebook messenger bot', focus: true do
+    it 'returns a proper token for facebook messenger bot' do
       sign_in @user
       get :external_redirect, :path => "http://" + Rails.application.config.shared_config[:facebook][:messenger_bot_endpoint] + "/auth?psid=1234"
 
