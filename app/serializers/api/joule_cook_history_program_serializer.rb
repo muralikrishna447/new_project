@@ -17,7 +17,7 @@ class Api::JouleCookHistoryProgramSerializer < ApplicationSerializer
       guideId: object.guide_id,
       cookId: object.cook_id,
       timerId: object.timer_id,
-      programId: object.program_id
+      # programId: object.program_id
     }
   end
   

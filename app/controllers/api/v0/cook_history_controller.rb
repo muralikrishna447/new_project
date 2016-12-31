@@ -5,7 +5,9 @@ module Api
 
       def index
         user = User.find(@user_id_from_token)
-        cook_history_items = user.cook_history_items.includes(:joule_cook_history_program).first(20)
+        cook_history_items = user.cook_history_items
+          .includes(:joule_cook_history_program)
+          .order('created_at ASC').last(20)
         render_api_response 200, cook_history_items, Api::CookHistoryItemSerializer
       end
       
@@ -13,7 +15,8 @@ module Api
         user = User.find(@user_id_from_token)
         cook_history_item = user.cook_history_items.new(params[:cook_history])
         if cook_history_item.save
-          render_api_response 200, cook_history_item, Api::CookHistoryItemSerializer
+          serializer = Api::CookHistoryItemSerializer.new(cook_history_item)
+          render_api_response 200, serializer.serializable_hash
         end
       end
       
