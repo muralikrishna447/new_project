@@ -42,7 +42,7 @@ module Fulfillment
         Retriable.retriable tries: 3 do
           order = ShopifyAPI::Order.find(order_id)
         end
-        raise "Order not found: #{order_id}" unless order_id
+        raise "Order not found: #{order_id}" unless order
 
         orders << order
       end
