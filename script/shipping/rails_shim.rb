@@ -24,3 +24,16 @@ module Rails
     LOG
   end
 end
+
+# Stub out no-ops for Librato metrics
+module Librato
+  def self.increment(name, args)
+  end
+
+  def self.tracker
+    mock = Object.new
+    def mock.flush
+    end
+    mock
+  end
+end
