@@ -3,7 +3,6 @@ class CreateCookHistoryItems < ActiveRecord::Migration
     create_table :cook_history_items do |t|
       t.integer :user_id
       t.string :history_item_type
-      t.integer :user_content_id
       t.string :uuid, :unique => true
       t.datetime :deleted_at
       t.timestamps

@@ -700,7 +700,6 @@ CREATE TABLE cook_history_items (
     id integer NOT NULL,
     user_id integer,
     history_item_type character varying(255),
-    user_content_id integer,
     uuid character varying(255),
     deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
