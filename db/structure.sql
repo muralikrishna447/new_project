@@ -1127,7 +1127,7 @@ CREATE TABLE joule_cook_history_programs (
     id integer NOT NULL,
     guide_id character varying(255),
     cook_id character varying(255),
-    timer_id integer,
+    timer_id character varying(255),
     program_type character varying(255),
     program_id character varying(255),
     set_point double precision,

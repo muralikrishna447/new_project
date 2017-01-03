@@ -3,7 +3,7 @@ class CreateJouleCookHistoryPrograms < ActiveRecord::Migration
     create_table :joule_cook_history_programs do |t|
       t.string :guide_id
       t.string :cook_id
-      t.integer :timer_id
+      t.string :timer_id
       t.string :program_type
       t.string :program_id
       t.float :set_point
