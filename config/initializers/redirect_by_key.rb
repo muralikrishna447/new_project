@@ -1,6 +1,7 @@
 Rails.configuration.redirect_by_key = {
   'cantConnectToWifi' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/223021308--Why-can-t-I-connect-Joule-to-WiFi-",
   'cantSignIn' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/223020748-Why-can-t-I-sign-in-",
+  'resetPassword' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/235391727-How-do-I-reset-my-password-",
   'cantPair' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/223021408-I-can-t-pair-with-Joule-",
   'pairedButCantConnect' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/223021468-I-ve-paired-with-Joule-but-I-can-t-connect-",
   'noOwnerNoWifi' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/223021348--I-can-t-connect-Joule-to-WiFi-because-I-m-not-the-owner-",

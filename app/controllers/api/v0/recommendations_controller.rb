@@ -61,7 +61,7 @@ module Api
               # could be for a URL to content the app doesn't have yet. In the future, the app should
               # filter those out or retrieve them in real time.
               unless version_gte(request.headers['X-Application-Version'], '2.42')
-                ads.delete_if { |ad| ad[:url] == '/#/guide/2xIIxBtjwAKSMiWIOAOC4i/overview' }
+                ads.delete_if { |ad| ad[:campaign] == 'baconGuideAd' }
               end
 
               ads = ads.sample(limit).to_a

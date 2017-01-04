@@ -108,7 +108,7 @@ describe Api::V0::RecommendationsController do
 
   describe 'bacon hack' do
     before :each do
-      @bacon_ad = Fabricate :advertisement, matchname: 'homeHeroOwner', published: true, title: "Bacon", url: "/#/guide/2xIIxBtjwAKSMiWIOAOC4i/overview"
+      @bacon_ad = Fabricate :advertisement, matchname: 'homeHeroOwner', published: true, title: "Bacon", url: "/#/guide/2xIIxBtjwAKSMiWIOAOC4i/overview", campaign: "baconGuideAd"
       @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
       controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
 
