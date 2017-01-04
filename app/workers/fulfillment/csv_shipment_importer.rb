@@ -94,6 +94,13 @@ module Fulfillment
       private
 
       def update_tracking(fulfillment, shipment)
+        if tracking_updated?(fulfillment, shipment)
+          Rails.logger.info('CSV shipment importer tracking was already updated for order with id ' \
+                            "#{shipment.order.id}, name #{shipment.order.name} and fulfillment " \
+                            "with id #{fulfillment.id}: #{shipment.tracking_company} #{shipment.tracking_numbers}")
+          return
+        end
+
         Rails.logger.info('CSV shipment import updating tracking for order with id ' \
                           "#{shipment.order.id}, name #{shipment.order.name} and fulfillment " \
                           "with id #{fulfillment.id}: #{shipment.tracking_company} #{shipment.tracking_numbers}")
@@ -114,6 +121,11 @@ module Fulfillment
         fulfillment.attributes[:notify_customer] = true
         Shopify::Utils.send_assert_true(fulfillment, :save)
         Shopify::Utils.send_assert_true(fulfillment, :complete)
+      end
+
+      def tracking_updated?(fulfillment, shipment)
+        fulfillment.attributes[:tracking_company] == shipment.tracking_company &&
+          (fulfillment.attributes[:tracking_numbers] || []).sort == (shipment.tracking_numbers || []).sort
       end
     end
   end
