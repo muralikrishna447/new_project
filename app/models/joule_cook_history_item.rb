@@ -1,10 +1,12 @@
-class CookHistoryItem < ActiveRecord::Base
+class JouleCookHistoryItem < ActiveRecord::Base
   acts_as_paranoid
-  attr_accessible :history_item_type, :user_id, 
-    :joule_cook_history_program_attributes, :uuid
+  
+  attr_accessible :idempotency_id, :start_time, :started_from
+  :cook_time, :guide_id, :holding_temperature, 
+  :program_type, :set_point, :timer_id, :cook_id,
+  :delayed_start, :wait_for_preheat, :predictive
+  
   belongs_to :user
-  has_one :joule_cook_history_program, :dependent => :destroy
-  accepts_nested_attributes_for :joule_cook_history_program
   
   before_create :generate_unique_uuid
   validates_uniqueness_of :uuid

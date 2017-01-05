@@ -693,40 +693,6 @@ ALTER SEQUENCE components_id_seq OWNED BY components.id;
 
 
 --
--- Name: cook_history_items; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE cook_history_items (
-    id integer NOT NULL,
-    user_id integer,
-    history_item_type character varying(255),
-    uuid character varying(255),
-    deleted_at timestamp without time zone,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: cook_history_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE cook_history_items_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: cook_history_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE cook_history_items_id_seq OWNED BY cook_history_items.id;
-
-
---
 -- Name: copies; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1120,34 +1086,37 @@ ALTER SEQUENCE ingredients_id_seq OWNED BY ingredients.id;
 
 
 --
--- Name: joule_cook_history_programs; Type: TABLE; Schema: public; Owner: -
+-- Name: joule_cook_history_items; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE joule_cook_history_programs (
+CREATE TABLE joule_cook_history_items (
     id integer NOT NULL,
+    uuid character varying(255),
+    user_id integer,
+    idempotency_id character varying(255),
+    start_time timestamp without time zone,
+    started_from character varying(255),
+    deleted_at timestamp without time zone,
     guide_id character varying(255),
     cook_id character varying(255),
     timer_id character varying(255),
     program_type character varying(255),
-    program_id character varying(255),
     set_point double precision,
     holding_temperature double precision,
     cook_time integer,
     cook_history_item_id integer,
     delayed_start integer,
     wait_for_preheat boolean,
-    predictive boolean,
-    deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: joule_cook_history_programs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: joule_cook_history_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE joule_cook_history_programs_id_seq
+CREATE SEQUENCE joule_cook_history_items_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1156,10 +1125,10 @@ CREATE SEQUENCE joule_cook_history_programs_id_seq
 
 
 --
--- Name: joule_cook_history_programs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: joule_cook_history_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE joule_cook_history_programs_id_seq OWNED BY joule_cook_history_programs.id;
+ALTER SEQUENCE joule_cook_history_items_id_seq OWNED BY joule_cook_history_items.id;
 
 
 --
@@ -2596,13 +2565,6 @@ ALTER TABLE ONLY components ALTER COLUMN id SET DEFAULT nextval('components_id_s
 
 
 --
--- Name: cook_history_items id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY cook_history_items ALTER COLUMN id SET DEFAULT nextval('cook_history_items_id_seq'::regclass);
-
-
---
 -- Name: copies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2680,10 +2642,10 @@ ALTER TABLE ONLY ingredients ALTER COLUMN id SET DEFAULT nextval('ingredients_id
 
 
 --
--- Name: joule_cook_history_programs id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: joule_cook_history_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY joule_cook_history_programs ALTER COLUMN id SET DEFAULT nextval('joule_cook_history_programs_id_seq'::regclass);
+ALTER TABLE ONLY joule_cook_history_items ALTER COLUMN id SET DEFAULT nextval('joule_cook_history_items_id_seq'::regclass);
 
 
 --
@@ -3068,14 +3030,6 @@ ALTER TABLE ONLY components
 
 
 --
--- Name: cook_history_items cook_history_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY cook_history_items
-    ADD CONSTRAINT cook_history_items_pkey PRIMARY KEY (id);
-
-
---
 -- Name: copies copies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3164,11 +3118,11 @@ ALTER TABLE ONLY ingredients
 
 
 --
--- Name: joule_cook_history_programs joule_cook_history_programs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: joule_cook_history_items joule_cook_history_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY joule_cook_history_programs
-    ADD CONSTRAINT joule_cook_history_programs_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY joule_cook_history_items
+    ADD CONSTRAINT joule_cook_history_items_pkey PRIMARY KEY (id);
 
 
 --
@@ -3792,6 +3746,13 @@ CREATE INDEX index_inclusions_on_course_id_and_activity_id ON inclusions USING b
 --
 
 CREATE INDEX index_ingredients_on_slug ON ingredients USING btree (slug);
+
+
+--
+-- Name: index_joule_cook_history_items_on_user_id_and_idempotency_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_joule_cook_history_items_on_user_id_and_idempotency_id ON joule_cook_history_items USING btree (user_id, idempotency_id);
 
 
 --
@@ -4507,5 +4468,3 @@ INSERT INTO schema_migrations (version) VALUES ('20161214230642');
 INSERT INTO schema_migrations (version) VALUES ('20161221053707');
 
 INSERT INTO schema_migrations (version) VALUES ('20161226225433');
-
-INSERT INTO schema_migrations (version) VALUES ('20161226233417');
