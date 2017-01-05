@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
 
   has_many :actor_addresses, as: :actor
   
-  has_many :cook_history_items
+  has_many :joule_cook_history_items
 
   has_many :tf2_redemptions
 
