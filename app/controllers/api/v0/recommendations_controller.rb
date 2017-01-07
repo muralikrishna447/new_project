@@ -51,23 +51,23 @@ module Api
 
           ads = []
 
-          # These are the only two known uses right now. Anything else, we got no recommendations.
+          # These are the only known uses right now. Anything else, we got no recommendations.
           # Which isn't considered an error.
           if platform == 'jouleApp' && slot == 'homeHero'
             if circulator_owner || connected
-              ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
+              possible_ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
 
               # TODO: remove this hack for bacon ad. We hadn't thought through the problem that an ad
               # could be for a URL to content the app doesn't have yet. In the future, the app should
               # filter those out or retrieve them in real time.
               unless version_gte(request.headers['X-Application-Version'], '2.42')
-                ads.delete_if { |ad| ad[:campaign] == 'baconGuideAd' }
+                possible_ads.delete_if { |ad| ad[:campaign] == 'baconGuideAd' }
               end
-
-              ads = ads.sample(limit).to_a
             else
-              ads = Advertisement.where(matchname: 'homeHeroNonOwner').published.all.sample(limit).to_a
+              possible_ads = Advertisement.where(matchname: 'homeHeroNonOwner').published.all.to_a
             end
+
+            ads = Utils.weighted_random_sample(possible_ads, :weight, limit)
           end
 
           render_api_response 200, ads, Api::AdvertisementSerializer
