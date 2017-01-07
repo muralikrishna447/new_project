@@ -59,11 +59,12 @@ describe Api::V0::RecommendationsController do
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
     @owner_ad2 = Fabricate :advertisement, matchname: 'homeHeroOwner', published: true, title: "More Things", image: "{\"url\":\"http://foo/bar\",\"filename\":\"98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"mimetype\":\"image/jpeg\",\"size\":93111,\"key\":\"Vp8xHWW7TRKYRH3FsLBu_98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"container\":\"chefsteps-staging\",\"isWriteable\":true}"
     sign_in @user
-
+    Utils.should_receive(:weighted_random_sample).and_return([@owner_ad2])
     get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 1}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
+    parsed['results'][0]['title'].should eq 'More Things'
   end
 
   it 'should respond new-skool style with owner ad if known platform set, known slot, and connected param is true' do
