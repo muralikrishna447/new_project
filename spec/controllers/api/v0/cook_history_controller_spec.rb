@@ -60,6 +60,16 @@ describe Api::V0::CookHistoryController do
     parsed = JSON.parse response.body
     JouleCookHistoryItem.find_by_uuid(parsed["uuid"]).user.should == @user
   end
+  
+  # POST /api/v0/cook_history
+  it 'should not create item with identical user/udempotency_id as existing entry' do
+    2.times do
+      post :create, { cook_history: cook_history_params }
+      response.should be_success
+    end
+    # 2 since an item has also been created in 'before :each'
+    @user.joule_cook_history_items.length.should == 2
+  end
 
    # DELETE /api/v0/cook_history
    it 'should delete a Cook History Item' do

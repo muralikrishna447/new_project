@@ -19,16 +19,16 @@ module Api
         user = User.find(@user_id_from_token)
         cook_history_item = user.joule_cook_history_items.new(params[:cook_history])
         
-        if cook_history_item.valid?
-          case get_save_status(cook_history_item)
-          when :success
-            render_cook_history_item(cook_history_item)
-          when :not_unique
-            pre_existing_item = user.joule_cook_history_items.find_by_idempotency_id(params[:cook_history][:idempotence_id])
-            render_cook_history_item(pre_existing_item) if pre_existing_item
-          end
-        else 
+        unless cook_history_item.valid?
           render_api_response 422, { errors: cook_history_item.errors }
+        end
+        
+        case get_save_status(cook_history_item)
+        when :success
+          render_cook_history_item(cook_history_item)
+        when :not_unique
+          pre_existing_item = user.joule_cook_history_items.find_by_idempotency_id(params[:cook_history][:idempotency_id])
+          render_cook_history_item(pre_existing_item) if pre_existing_item
         end
       end
       
