@@ -91,6 +91,9 @@ module Api
               uri = URI.parse(ad[:url])
               code_query = {discountCode: current_api_user.referral_code}.to_query
               uri.query = [uri.query, code_query].compact.join('&')
+              # The code also has to get embedded into the nested shareMessage in an arbitrary position, so
+              # we look for XXXXXX and replace it.
+              uri.query.gsub! 'XXXXXX', current_api_user.referral_code
               ad[:url] = uri.to_s
             end
           end
