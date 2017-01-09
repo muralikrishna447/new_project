@@ -67,6 +67,8 @@ module Api
               possible_ads = Advertisement.where(matchname: 'homeHeroNonOwner').published.all.to_a
             end
 
+            handle_referral_codes(possible_ads)
+
             ads = Utils.weighted_random_sample(possible_ads, :weight, limit)
           end
 
@@ -74,10 +76,28 @@ module Api
         end
       end
 
+      private
+
       def version_gte(version, min_version)
         return false if version.blank?
         # Thanks, Gem module!!
         Gem::Version.new(version) >=  Gem::Version.new(min_version)
+      end
+
+      def handle_referral_codes(ads)
+        if @user_id_from_token && current_api_user && ! current_api_user.referral_code.blank?
+          ads.each do |ad|
+            if ad[:add_referral_code]
+              uri = URI.parse(ad[:url])
+              code_query = {discountCode: current_api_user.referral_code}.to_query
+              uri.query = [uri.query, code_query].compact.join('&')
+              ad[:url] = uri.to_s
+            end
+          end
+        else
+          # No user or no code available, so throw out any ads that require them
+          ads.delete_if { |ad| ad[:add_referral_code] }
+        end
       end
     end
   end
