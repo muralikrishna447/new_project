@@ -42,6 +42,20 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
 
 
+--
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
+
+
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -107,9 +121,9 @@ CREATE TABLE activities (
     featured_image_id text,
     activity_type character varying(255),
     last_edited_by_id integer,
-    assignment_recipes text,
     source_activity_id integer,
     source_type integer DEFAULT 0,
+    assignment_recipes text,
     published_at timestamp without time zone,
     author_notes text,
     likes_count integer,
@@ -193,25 +207,6 @@ CREATE TABLE activity_ingredients (
     display_quantity character varying(255),
     note character varying(255)
 );
-
-
---
--- Name: activity_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE activity_ingredients_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: activity_ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE activity_ingredients_id_seq OWNED BY activity_ingredients.id;
 
 
 --
@@ -1091,53 +1086,6 @@ ALTER SEQUENCE ingredients_id_seq OWNED BY ingredients.id;
 
 
 --
--- Name: joule_cook_history_items; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE joule_cook_history_items (
-    id integer NOT NULL,
-    uuid character varying(255),
-    user_id integer,
-    idempotency_id character varying(255),
-    start_time character varying(255),
-    started_from character varying(255),
-    deleted_at timestamp without time zone,
-    guide_id character varying(255),
-    cook_id character varying(255),
-    timer_id character varying(255),
-    program_id character varying(255),
-    program_type character varying(255),
-    set_point double precision,
-    holding_temperature double precision,
-    cook_time integer,
-    cook_history_item_id integer,
-    delayed_start integer,
-    wait_for_preheat boolean,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: joule_cook_history_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE joule_cook_history_items_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: joule_cook_history_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE joule_cook_history_items_id_seq OWNED BY joule_cook_history_items.id;
-
-
---
 -- Name: likes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1719,6 +1667,75 @@ ALTER SEQUENCE quizzes_id_seq OWNED BY quizzes.id;
 
 
 --
+-- Name: recipe_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE recipe_ingredients_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: recipe_ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE recipe_ingredients_id_seq OWNED BY activity_ingredients.id;
+
+
+--
+-- Name: recipe_ingredients; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE recipe_ingredients (
+    id integer DEFAULT nextval('recipe_ingredients_id_seq'::regclass) NOT NULL,
+    recipe_id integer NOT NULL,
+    ingredient_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    unit character varying(255),
+    quantity numeric,
+    ingredient_order integer
+);
+
+
+--
+-- Name: recipes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE recipes (
+    id integer NOT NULL,
+    title character varying(255),
+    activity_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    yield character varying(255),
+    recipe_order integer
+);
+
+
+--
+-- Name: recipes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE recipes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: recipes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE recipes_id_seq OWNED BY recipes.id;
+
+
+--
 -- Name: revision_records; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1886,8 +1903,8 @@ CREATE TABLE steps (
     directions text,
     image_id text,
     transcript text,
-    subrecipe_title character varying(255),
     image_description character varying(255),
+    subrecipe_title character varying(255),
     audio_clip character varying(255),
     audio_title character varying(255),
     hide_number boolean,
@@ -2238,17 +2255,17 @@ CREATE TABLE users (
     level integer DEFAULT 0,
     role character varying(255),
     stripe_id character varying(255),
+    authentication_token character varying(255),
     google_refresh_token character varying(255),
     google_access_token character varying(255),
     google_user_id character varying(255),
-    authentication_token character varying(255),
     referrer_id integer,
     referred_from character varying(255),
     survey_results hstore,
+    events_count integer,
     twitter_user_id character varying(255),
     twitter_auth_token character varying(255),
     twitter_user_name character varying(255),
-    events_count integer,
     signup_incentive_available boolean DEFAULT true,
     timf_incentive_available boolean DEFAULT true,
     premium_member boolean DEFAULT false,
@@ -2407,7 +2424,7 @@ ALTER TABLE ONLY activity_equipment ALTER COLUMN id SET DEFAULT nextval('activit
 -- Name: activity_ingredients id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY activity_ingredients ALTER COLUMN id SET DEFAULT nextval('activity_ingredients_id_seq'::regclass);
+ALTER TABLE ONLY activity_ingredients ALTER COLUMN id SET DEFAULT nextval('recipe_ingredients_id_seq'::regclass);
 
 
 --
@@ -2579,13 +2596,6 @@ ALTER TABLE ONLY ingredients ALTER COLUMN id SET DEFAULT nextval('ingredients_id
 
 
 --
--- Name: joule_cook_history_items id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY joule_cook_history_items ALTER COLUMN id SET DEFAULT nextval('joule_cook_history_items_id_seq'::regclass);
-
-
---
 -- Name: likes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2702,6 +2712,13 @@ ALTER TABLE ONLY quiz_sessions ALTER COLUMN id SET DEFAULT nextval('quiz_session
 --
 
 ALTER TABLE ONLY quizzes ALTER COLUMN id SET DEFAULT nextval('quizzes_id_seq'::regclass);
+
+
+--
+-- Name: recipes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY recipes ALTER COLUMN id SET DEFAULT nextval('recipes_id_seq'::regclass);
 
 
 --
@@ -2840,10 +2857,10 @@ ALTER TABLE ONLY activity_equipment
 
 
 --
--- Name: activity_ingredients activity_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: recipe_ingredients activity_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY activity_ingredients
+ALTER TABLE ONLY recipe_ingredients
     ADD CONSTRAINT activity_ingredients_pkey PRIMARY KEY (id);
 
 
@@ -3048,14 +3065,6 @@ ALTER TABLE ONLY ingredients
 
 
 --
--- Name: joule_cook_history_items joule_cook_history_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY joule_cook_history_items
-    ADD CONSTRAINT joule_cook_history_items_pkey PRIMARY KEY (id);
-
-
---
 -- Name: likes likes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3189,6 +3198,14 @@ ALTER TABLE ONLY quiz_sessions
 
 ALTER TABLE ONLY quizzes
     ADD CONSTRAINT quizzes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: recipes recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY recipes
+    ADD CONSTRAINT recipes_pkey PRIMARY KEY (id);
 
 
 --
@@ -3671,13 +3688,6 @@ CREATE INDEX index_ingredients_on_slug ON ingredients USING btree (slug);
 
 
 --
--- Name: index_joule_cook_history_items_on_user_id_and_idempotency_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_joule_cook_history_items_on_user_id_and_idempotency_id ON joule_cook_history_items USING btree (user_id, idempotency_id);
-
-
---
 -- Name: index_premium_gift_certificates_on_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3717,6 +3727,34 @@ CREATE INDEX index_quizzes_on_activity_id ON quizzes USING btree (activity_id);
 --
 
 CREATE UNIQUE INDEX index_quizzes_on_slug ON quizzes USING btree (slug);
+
+
+--
+-- Name: index_recipe_ingredients_on_ingredient_order; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recipe_ingredients_on_ingredient_order ON recipe_ingredients USING btree (ingredient_order);
+
+
+--
+-- Name: index_recipe_ingredients_on_recipe_id_and_ingredient_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_recipe_ingredients_on_recipe_id_and_ingredient_id ON recipe_ingredients USING btree (recipe_id, ingredient_id);
+
+
+--
+-- Name: index_recipes_on_activity_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recipes_on_activity_id ON recipes USING btree (activity_id);
+
+
+--
+-- Name: index_recipes_on_recipe_order; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recipes_on_recipe_order ON recipes USING btree (recipe_order);
 
 
 --
@@ -4360,5 +4398,3 @@ INSERT INTO schema_migrations (version) VALUES ('20161208175329');
 INSERT INTO schema_migrations (version) VALUES ('20161214230642');
 
 INSERT INTO schema_migrations (version) VALUES ('20161221053707');
-
-INSERT INTO schema_migrations (version) VALUES ('20161226225433');
