@@ -6,6 +6,8 @@
   = f.inputs do
     = render '/shared/filepicker_group', label_text: "Image", param: "advertisement[image]", value: @advertisement.image
     = f.input :published
+    = f.input :weight
+    = f.input :add_referral_code
     = f.input :matchname, input_html: { rows: 1}, label: "Identifier used by RecSys. Careful!"
     = f.input :title, input_html: { rows: 1}, label: "Title (large text on ad, optional)"
     = f.input :description, input_html: { rows: 2}, label: "Description (smaller text on ad, optional)"

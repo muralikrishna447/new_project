@@ -3,7 +3,9 @@ ActiveAdmin.register Advertisement do
 
   index do
     column :matchname
+    column :weight
     column :published
+    column :add_referral_code
     column :title
     column :description
     column :campaign
