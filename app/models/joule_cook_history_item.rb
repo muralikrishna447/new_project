@@ -26,8 +26,6 @@ class JouleCookHistoryItem < ActiveRecord::Base
   validates :timer_id, presence: true, if: 'automatic?'
   validates :cook_id, presence: true, if: 'automatic?'
   validates :program_id, presence: true, if: 'automatic?'
-  
-  default_scope { order('start_time ASC') }
 
   private
   

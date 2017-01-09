@@ -6,7 +6,7 @@ module Api
       def index
         page = params[:page] || 1
         user = User.find(@user_id_from_token)
-        page_array = user.joule_cook_history_items.page(page).per(20)
+        page_array = user.joule_cook_history_items.order('start_time DESC').page(page).per(20)
         serialized_items = ActiveModel::ArraySerializer.new(page_array, each_serializer: Api::JouleCookHistoryItemSerializer)
         render_api_response 200, {
           cookHistory: serialized_items,
