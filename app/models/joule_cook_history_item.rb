@@ -1,6 +1,8 @@
 class JouleCookHistoryItem < ActiveRecord::Base
   acts_as_paranoid
   
+  paginates_per 20
+  
   attr_accessible :idempotency_id, :start_time, :started_from,
   :cook_time, :guide_id, :holding_temperature, 
   :program_type, :set_point, :timer_id, :cook_id,
