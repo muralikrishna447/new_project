@@ -3,6 +3,7 @@ ActiveAdmin.register Advertisement do
 
   index do
     column :matchname
+    column :weight
     column :published
     column :title
     column :description

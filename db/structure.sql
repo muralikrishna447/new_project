@@ -299,7 +299,8 @@ CREATE TABLE advertisements (
     published boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    matchname character varying(255)
+    matchname character varying(255),
+    weight integer DEFAULT 100
 );
 
 
@@ -4300,3 +4301,5 @@ INSERT INTO schema_migrations (version) VALUES ('20161208175329');
 INSERT INTO schema_migrations (version) VALUES ('20161214230642');
 
 INSERT INTO schema_migrations (version) VALUES ('20161221053707');
+
+INSERT INTO schema_migrations (version) VALUES ('20170105211422');
