@@ -58,9 +58,8 @@ describe Api::V0::RecommendationsController do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', joule_purchase_count: 1
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
     @owner_ad2 = Fabricate :advertisement, matchname: 'homeHeroOwner', published: true, title: "More Things", image: "{\"url\":\"http://foo/bar\",\"filename\":\"98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"mimetype\":\"image/jpeg\",\"size\":93111,\"key\":\"Vp8xHWW7TRKYRH3FsLBu_98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"container\":\"chefsteps-staging\",\"isWriteable\":true}"
-    Array.any_instance.stub(:sample).and_return([@owner_ad2])
-
     sign_in @user
+    Utils.should_receive(:weighted_random_sample).and_return([@owner_ad2])
     get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 1}
     response.should be_success
     parsed = JSON.parse response.body
@@ -78,6 +77,31 @@ describe Api::V0::RecommendationsController do
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
     parsed['results'][0]['title'].should eq 'Owner All The Things'
+  end
+
+  it 'should not include referral ad if no referral code for user'do
+    @refer_ad = Fabricate :advertisement, add_referral_code: true, matchname: 'homeHeroOwner', published: true, title: "Refer Madness", image: "{\"url\":\"http://foo/bar\",\"filename\":\"98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"mimetype\":\"image/jpeg\",\"size\":93111,\"key\":\"Vp8xHWW7TRKYRH3FsLBu_98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"container\":\"chefsteps-staging\",\"isWriteable\":true}"
+    @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
+    controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+    sign_in @user
+    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed['results'].count.should eq 1
+  end
+
+  it 'should include referral ad and adjust url if user has referral code' do
+    target_url = "/refer?title=Here's%20a%20referral%20code!&description=It's%20pretty%20groovy,%20but%20it%20doesn't%20work!&shareMessage=Share%20this%20will%20your%20pals:%20https:%252F%252Fwww.chefsteps.com%252Fjoule%3Fcode%3DXXXXXX&shareSubject=Hint:%20You%20Should%20Buy%20Joule&discountAmount=50%25"
+    expect_url = "/refer?title=Here's%20a%20referral%20code!&description=It's%20pretty%20groovy,%20but%20it%20doesn't%20work!&shareMessage=Share%20this%20will%20your%20pals:%20https:%252F%252Fwww.chefsteps.com%252Fjoule%3Fcode%3Dborscht&shareSubject=Hint:%20You%20Should%20Buy%20Joule&discountAmount=50%25&discountCode=borscht"
+    @refer_ad = Fabricate :advertisement, weight: 100, url: target_url, add_referral_code: true, matchname: 'homeHeroOwner', published: true, title: "Refer Madness", image: "{\"url\":\"http://foo/bar\",\"filename\":\"98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"mimetype\":\"image/jpeg\",\"size\":93111,\"key\":\"Vp8xHWW7TRKYRH3FsLBu_98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"container\":\"chefsteps-staging\",\"isWriteable\":true}"
+    @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', referral_code: 'borscht'
+    controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+    sign_in @user
+    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed['results'].count.should eq 2
+    [parsed['results'][0]['url'], parsed['results'][1]['url']] .should include expect_url
   end
 
   it 'should respond new-skool style with non owner ad if known platform set, known slot, and not owner, purchaser, or connected' do
