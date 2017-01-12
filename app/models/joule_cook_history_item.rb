@@ -1,18 +1,16 @@
 class JouleCookHistoryItem < ActiveRecord::Base
   acts_as_paranoid
   
+  HASHID_SALT = '3cc6500d43f5b84uyg7gyi13889639'
+  @@hashids = Hashids.new(HASHID_SALT, 8)
+  
   paginates_per 20
   
   attr_accessible :idempotency_id, :start_time, :started_from,
-  :cook_time, :guide_id, :holding_temperature, 
-  :program_type, :set_point, :timer_id, :cook_id,
-  :delayed_start, :wait_for_preheat, :predictive, :program_id
+  :cook_time, :guide_id, :program_type, :set_point, :timer_id, :cook_id,
+  :wait_for_preheat, :program_id
   
   belongs_to :user
-  
-  before_create :generate_unique_uuid
-  
-  validates_uniqueness_of :uuid
   
   validates :idempotency_id, presence: true
   validates :idempotency_id, length: { minimum: 16 }
@@ -39,6 +37,14 @@ class JouleCookHistoryItem < ActiveRecord::Base
   
   def automatic?
     self.program_type == 'AUTOMATIC'
+  end
+  
+  def self.find_by_external_id(external_id)
+    self.find_by_id @@hashids.decode(external_id)
+  end
+  
+  def external_id
+    @@hashids.encode(self.id)
   end
   
 end

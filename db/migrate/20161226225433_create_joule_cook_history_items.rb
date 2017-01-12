@@ -1,7 +1,6 @@
 class CreateJouleCookHistoryItems < ActiveRecord::Migration
   def change
     create_table :joule_cook_history_items do |t|
-      t.string :uuid, unique: true
       t.integer :user_id
       t.string :idempotency_id
       t.string :start_time
@@ -14,11 +13,8 @@ class CreateJouleCookHistoryItems < ActiveRecord::Migration
       t.string :program_id
       t.string :program_type
       t.float :set_point
-      t.float :holding_temperature
       t.integer :cook_time
       t.integer :cook_history_item_id
-      t.integer :delayed_start
-      t.boolean :wait_for_preheat
       t.timestamps
     end
     add_index :joule_cook_history_items, [:user_id, :idempotency_id], unique: true

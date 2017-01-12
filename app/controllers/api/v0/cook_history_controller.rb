@@ -28,13 +28,17 @@ module Api
           render_cook_history_item(cook_history_item)
         when :not_unique
           pre_existing_item = user.joule_cook_history_items.find_by_idempotency_id(params[:cook_history][:idempotency_id])
-          render_cook_history_item(pre_existing_item) if pre_existing_item
+          if pre_existing_item
+            render_cook_history_item(pre_existing_item)
+          else # This means that a user is trying to create an entry that already exists, but has been "deleted"
+            render_api_response 409, { message: "You are attempting to recreate a previously deleted resource" }
+          end
         end
       end
       
       def destroy
         user = User.find(@user_id_from_token)
-        item = user.joule_cook_history_items.find_by_uuid(params[:id])
+        item = user.joule_cook_history_items.find_by_external_id(params[:id])
         if item && item.destroy
           render_api_response 200, { message: "Successfully destroyed #{params[:id]}" }
         else
