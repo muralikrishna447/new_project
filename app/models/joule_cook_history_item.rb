@@ -26,6 +26,18 @@ class JouleCookHistoryItem < ActiveRecord::Base
   validates :timer_id, presence: true, if: 'automatic?'
   validates :cook_id, presence: true, if: 'automatic?'
   validates :program_id, presence: true, if: 'automatic?'
+  
+  def self.find_by_external_id(external_id)
+    self.find_by_id @@hashids.decode(external_id)
+  end
+  
+  def external_id
+    @@hashids.encode(self.id)
+  end
+  
+  def automatic?
+    self.program_type == 'AUTOMATIC'
+  end
 
   private
   
@@ -35,16 +47,6 @@ class JouleCookHistoryItem < ActiveRecord::Base
     end while self.class.where(uuid: self.uuid).exists?
   end
   
-  def automatic?
-    self.program_type == 'AUTOMATIC'
-  end
   
-  def self.find_by_external_id(external_id)
-    self.find_by_id @@hashids.decode(external_id)
-  end
-  
-  def external_id
-    @@hashids.encode(self.id)
-  end
   
 end

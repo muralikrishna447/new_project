@@ -7,7 +7,6 @@ describe Api::V0::CookHistoryController do
      cook_id: "eb10428ed5f24c55988cbd1bf84523d4",
      cook_time: 64800,
      guide_id: "3kXWJim8FqKsC6AOy62M8C",
-     holding_temperature: 58,
      idempotency_id: "7095f553-f68e-4e33-9de6-08c6369e0db6",
      program_id: "6yrX59W7oQ82sUE0woWgUS",
      program_type: "AUTOMATIC",
@@ -30,7 +29,7 @@ describe Api::V0::CookHistoryController do
     response.should be_success
     parsed = JSON.parse response.body
     parsed["cookHistory"].is_a?(Array)
-    parsed["cookHistory"].first["uuid"].should == @history_item.uuid
+    parsed["cookHistory"].first["externalId"].should == @history_item.external_id
   end
   
   # GET /api/v0/cook_history
@@ -58,11 +57,11 @@ describe Api::V0::CookHistoryController do
     post :create, { cook_history: cook_history_params }
     response.should be_success
     parsed = JSON.parse response.body
-    JouleCookHistoryItem.find_by_uuid(parsed["uuid"]).user.should == @user
+    JouleCookHistoryItem.find_by_external_id(parsed["externalId"]).user.should == @user
   end
   
   # POST /api/v0/cook_history
-  it 'should not create item with identical user/udempotency_id as existing entry' do
+  it 'should not create item with identical user/idempotency_id as existing entry' do
     2.times do
       post :create, { cook_history: cook_history_params }
       response.should be_success
@@ -73,7 +72,7 @@ describe Api::V0::CookHistoryController do
 
    # DELETE /api/v0/cook_history
    it 'should delete a Cook History Item' do
-     delete :destroy, id: @history_item.uuid
+     delete :destroy, id: @history_item.external_id
      response.should be_success
    end
 
