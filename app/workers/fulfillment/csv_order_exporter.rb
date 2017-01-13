@@ -111,6 +111,7 @@ module Fulfillment
                             "shipping address validation failed: #{order.attributes[:shipping_address].inspect}")
           return false
         end
+        return false if Fulfillment::FraudFilter.fraud_suspected?(order)
         true
       end
 
