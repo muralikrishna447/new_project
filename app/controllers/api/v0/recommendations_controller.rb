@@ -53,7 +53,7 @@ module Api
 
           # These are the only known uses right now. Anything else, we got no recommendations.
           # Which isn't considered an error.
-          if platform == 'jouleApp' && slot == 'homeHero'
+          if platform == 'jouleApp' && (slot == 'homeHero' || slot == 'referPage')
             if circulator_owner || connected
               possible_ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
 
@@ -67,7 +67,7 @@ module Api
               possible_ads = Advertisement.where(matchname: 'homeHeroNonOwner').published.all.to_a
             end
 
-            handle_referral_codes(possible_ads)
+            handle_referral_codes(possible_ads, slot == 'referPage')
 
             ads = Utils.weighted_random_sample(possible_ads, :weight, limit)
           end
@@ -84,7 +84,11 @@ module Api
         Gem::Version.new(version) >=  Gem::Version.new(min_version)
       end
 
-      def handle_referral_codes(ads)
+      def handle_referral_codes(ads, referral_only)
+        if referral_only
+          ads.delete_if { |ad| ! ad[:add_referral_code] }
+        end
+
         if @user_id_from_token && current_api_user && ! current_api_user.referral_code.blank?
           ads.each do |ad|
             if ad[:add_referral_code]
