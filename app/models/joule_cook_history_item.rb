@@ -38,15 +38,5 @@ class JouleCookHistoryItem < ActiveRecord::Base
   def automatic?
     self.program_type == 'AUTOMATIC'
   end
-
-  private
-  
-  def generate_unique_uuid
-    begin
-      self.uuid = SecureRandom.uuid
-    end while self.class.where(uuid: self.uuid).exists?
-  end
-  
-  
   
 end
