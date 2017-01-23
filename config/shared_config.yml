@@ -22,7 +22,7 @@ production:
     env: "production"
   facebook:
     app_id: "380147598730003"
-    messenger_bot_endpoint: "chatbot-fb-messenger.chefsteps.com"
+    messenger_bot_endpoint: "chefsteps-chatbot-fb-messenger.herokuapp.com"
 
 staging:
   env: "staging"
