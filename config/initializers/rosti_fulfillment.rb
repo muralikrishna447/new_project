@@ -22,3 +22,9 @@ Fulfillment::RostiShipmentImporter.configure(
   s3_region: aws_region,
   s3_bucket: rosti_bucket
 )
+
+shipments_queue_url = 'https://sqs.us-east-1.amazonaws.com/021963864089/fulfillment-rosti-shipments-development'
+Fulfillment::RostiShipmentPoller.configure(
+  aws_region: aws_region,
+  sqs_url: shipments_queue_url
+)

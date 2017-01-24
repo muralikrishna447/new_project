@@ -75,4 +75,15 @@ namespace :fulfillment do
       Resque.enqueue(Fulfillment::RostiOrderSubmitter, params)
     end
   end
+
+  task :rosti_poll_shipments, [:complete_fulfillment, :inline] => :environment do |_t, args|
+    args.with_defaults(complete_fulfillment: true, inline: false)
+
+    params = { complete_fulfillment: args[:complete_fulfillment] }
+    if args[:inline]
+      Fulfillment::RostiShipmentPoller.perform(params)
+    else
+      Resque.enqueue(Fulfillment::RostiShipmentPoller, params)
+    end
+  end
 end
