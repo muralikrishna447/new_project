@@ -43,6 +43,17 @@ module Api
                 page -= 1
               end
             end
+
+            products = products.select do |product|
+              first_variant = get_first_variant(product)
+              is_valid = first_variant && first_variant.sku
+              unless is_valid
+                logger.warn "Filtering out product with no variant/sku: #{product.id} #{product.title}"
+              end
+              is_valid
+            end
+
+
             results = products.map do |product|
               first_variant = get_first_variant(product)
 
