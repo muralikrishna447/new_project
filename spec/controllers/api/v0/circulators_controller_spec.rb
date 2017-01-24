@@ -85,12 +85,14 @@ describe Api::V0::CirculatorsController do
            :secret_key => secret_key
            }
           )
+      response.code.should == '400'
       response.should_not be_success
     end
   end
 
+
+
   it 'should create circulator with no secret key' do
-    @circulator
     post(:create,
          circulator: {
            :serial_number => 'abc123',
@@ -103,6 +105,17 @@ describe Api::V0::CirculatorsController do
     circ_id = returnedCirculator['circulatorId']
     circulator = Circulator.where(circulator_id: circ_id).first
     circulator.encrypted_secret_key.should == nil
+  end
+
+  it 'should return 400 if circulator address invalid' do
+    post(:create,
+         circulator: {
+           :serial_number => 'abc123',
+           :notes => 'red one',
+           :id => '1234' # too short
+         }
+    )
+    response.code.should == '400'
   end
 
   it 'should prevent duplicate circulators' do
