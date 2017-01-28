@@ -1,7 +1,15 @@
 require 'aws-sdk'
 
 module Fulfillment
-  module RostiShipmentPoller
+  class RostiShipmentPoller
+    extend Resque::Plugins::Lock
+
+    @queue = :RostiShipmentPoller
+
+    def self.lock(_params)
+      Fulfillment::CSVShipmentImporter::JOB_LOCK_KEY
+    end
+
     def self.configure(params)
       @@aws_region = params[:aws_region]
       @@sqs_url = params[:sqs_url]
@@ -58,7 +66,17 @@ module Fulfillment
             storage: 's3',
             storage_filename: key
           )
+          Rails.logger.info("RostiShipmentPoller processing complete for file #{bucket}:#{key}")
+
           delete_message(sqs, received_message)
+          Rails.logger.info("RostiShipmentPoller deleted SQS message for file #{bucket}:#{key}")
+
+          # Delete the shipments file from S3. The files are copied to an
+          # archival location and the buckets are versioned to maintain history.
+          # We delete objects after processing so it's easy to see what files
+          # have completed processing versus pending.
+          s3.bucket(bucket).object(key).delete
+          Rails.logger.info("RostiShipmentPoller deleted S3 object #{bucket}:#{key}")
         end
       end
     end

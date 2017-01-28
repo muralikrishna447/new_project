@@ -4,6 +4,8 @@ module Fulfillment
   # Mixin for importing shipment data from a fulfillment
   # provider in CSV format and updating Shopify.
   module CSVShipmentImporter
+    JOB_LOCK_KEY = 'fulfillment-shipment-import'
+
     def self.included(base)
       base.extend(ClassMethods)
     end
