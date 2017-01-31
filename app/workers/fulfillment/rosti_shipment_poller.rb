@@ -23,10 +23,12 @@ module Fulfillment
       @@sqs_url
     end
 
-    def self.perform(params)
-      sqs = Aws::SQS::Client.new(region: aws_region)
-      s3 = Aws::S3::Resource.new(region: aws_region)
+    def self.perform(params = {})
+      # Params hash keys are deserialized as strings coming out of Redis,
+      # so we re-symbolize them here.
+      job_params = params.deep_symbolize_keys
 
+      sqs = sqs_client
       result = sqs.receive_message(queue_url: sqs_url)
 
       if result.messages.empty?
@@ -38,54 +40,63 @@ module Fulfillment
         sqs_message = JSON.parse(received_message.body)
         sns_message = JSON.parse(sqs_message.fetch('Message'))
         sns_message.fetch('Records').each do |s3_record|
-          bucket = s3_record.fetch('s3').fetch('bucket').fetch('name')
-          key = s3_record.fetch('s3').fetch('object').fetch('key')
-          Rails.logger.info("RostiShipmentPoller received message for S3 shipments file #{bucket}:#{key}")
-
-          # File should be in the shipments path and have .csv extension.
-          # This queue receives notifications for all paths in the bucket,
-          # so we ignore/delete any messages that don't match.
-          unless key =~ /^shipments\/.+\.csv$/
-            Rails.logger.info("RostiShipmentPoller S3 key does not match expected format, skipping: #{bucket}:#{key}")
-            delete_message(sqs, received_message)
-            next
-          end
-
-          # In prod the queue has a delivery delay. We check to make sure the
-          # file still exists in case Rosti added the file then deleted it
-          # shortly after. (It happens!)
-          unless s3.bucket(bucket).object(key).exists?
-            Rails.logger.info("RostiShipmentPoller S3 key does not exist, skipping: #{bucket}:#{key}")
-            delete_message(sqs, received_message)
-            next
-          end
-
-          Rails.logger.info("RostiShipmentPoller triggering import for file #{bucket}:#{key}")
-          Fulfillment::RostiShipmentImporter.perform(
-            complete_fulfillment: params[:complete_fulfillment],
-            storage: 's3',
-            storage_filename: key
-          )
-          Rails.logger.info("RostiShipmentPoller processing complete for file #{bucket}:#{key}")
-
-          delete_message(sqs, received_message)
-          Rails.logger.info("RostiShipmentPoller deleted SQS message for file #{bucket}:#{key}")
-
-          # Delete the shipments file from S3. The files are copied to an
-          # archival location and the buckets are versioned to maintain history.
-          # We delete objects after processing so it's easy to see what files
-          # have completed processing versus pending.
-          s3.bucket(bucket).object(key).delete
-          Rails.logger.info("RostiShipmentPoller deleted S3 object #{bucket}:#{key}")
+          process_s3_record(s3_record, job_params)
         end
+        sqs.delete_message(
+          queue_url: sqs_url,
+          receipt_handle: received_message.receipt_handle
+        )
       end
+
+      Librato.increment 'fulfillment.rosti.shipment-poller.success', sporadic: true
+      Librato.tracker.flush
     end
 
-    def self.delete_message(sqs, message)
-      sqs.delete_message(
-        queue_url: sqs_url,
-        receipt_handle: message.receipt_handle
+    def self.process_s3_record(s3_record, params)
+      bucket = s3_record.fetch('s3').fetch('bucket').fetch('name')
+      key = s3_record.fetch('s3').fetch('object').fetch('key')
+      Rails.logger.info("RostiShipmentPoller received message for S3 shipments file #{bucket}:#{key}")
+
+      # File should be in the shipments path and have .csv extension.
+      # This queue receives notifications for all paths in the bucket,
+      # so we ignore/delete any messages that don't match.
+      unless key =~ /^shipments\/.+\.csv$/
+        Rails.logger.info("RostiShipmentPoller S3 key does not match expected format, skipping: #{bucket}:#{key}")
+        return
+      end
+
+      # In prod the queue has a delivery delay. We check to make sure the
+      # file still exists in case Rosti added the file then deleted it
+      # shortly after. (It happens!)
+      s3 = s3_client
+      unless s3.bucket(bucket).object(key).exists?
+        Rails.logger.info("RostiShipmentPoller S3 key does not exist, skipping: #{bucket}:#{key}")
+        return
+      end
+
+      Rails.logger.info("RostiShipmentPoller triggering import for file #{bucket}:#{key}")
+      Fulfillment::RostiShipmentImporter.perform(
+        complete_fulfillment: params[:complete_fulfillment],
+        storage: 's3',
+        storage_filename: key
       )
+      Rails.logger.info("RostiShipmentPoller processing complete for file #{bucket}:#{key}")
+
+      # Delete the shipments file from S3. The files are copied to an
+      # archival location and the buckets are versioned to maintain history.
+      # We delete objects after processing so it's easy to see what files
+      # have completed processing versus pending.
+      s3.bucket(bucket).object(key).delete
+      Rails.logger.info("RostiShipmentPoller deleted S3 object #{bucket}:#{key}")
+    end
+
+    # Stub these out for unit tests.
+    def self.sqs_client
+      Aws::SQS::Client.new(region: aws_region)
+    end
+
+    def self.s3_client
+      Aws::S3::Resource.new(region: aws_region)
     end
   end
 end
