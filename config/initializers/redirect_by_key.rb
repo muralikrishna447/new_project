@@ -15,5 +15,7 @@ Rails.configuration.redirect_by_key = {
   'hardwareTroubleshooting' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/sections/203206487-Hardware-Specs",
   # if an unrecognized key is provided, we return this fallback url
   # if we use redirect_by_key for anything beyond support, rethink this fallback strategy
-  'fallback' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/"
+  'fallback' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/",
+  # We're hard-coding the domaine so that we don't need to do pre-auth with staging versions of the app.
+  'sousVidePackaging' => "https://www.chefsteps.com/activities/a-complete-guide-to-sous-vide-packaging-safety-sustainability-and-sourcing"
 }
