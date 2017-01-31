@@ -35,7 +35,7 @@ namespace :fulfillment do
     }
 
     Rails.logger.info("Rosti order export and submit with export id #{export_id} starting with params #{params}")
-    if args[:inline]
+    if args[:inline].to_s == 'true'
       Fulfillment::PendingOrderExporter.perform(params)
     else
       Resque.enqueue(Fulfillment::PendingOrderExporter, params)
@@ -69,18 +69,19 @@ namespace :fulfillment do
     }
 
     Rails.logger.info("Rosti order submit with export id #{export_id} starting with params #{params}")
-    if args[:inline]
+    if args[:inline].to_s == 'true'
       Fulfillment::RostiOrderSubmitter.perform(params)
     else
       Resque.enqueue(Fulfillment::RostiOrderSubmitter, params)
     end
   end
 
-  task :rosti_poll_shipments, [:complete_fulfillment, :inline] => :environment do |_t, args|
-    args.with_defaults(complete_fulfillment: true, inline: false)
+  task :rosti_poll_shipments, [:inline] => :environment do |_t, args|
+    args.with_defaults(inline: false)
 
-    params = { complete_fulfillment: args[:complete_fulfillment] }
-    if args[:inline]
+    params = { complete_fulfillment: true }
+    Rails.logger.info("Rosti shipment poller starting with params #{params}")
+    if args[:inline].to_s == 'true'
       Fulfillment::RostiShipmentPoller.perform(params)
     else
       Resque.enqueue(Fulfillment::RostiShipmentPoller, params)
