@@ -24,6 +24,10 @@ module Fulfillment
         raise 'to_shipments not implemented'
       end
 
+      # Optional lifecycle hook to implement.
+      def after_import(_shipments, _params)
+      end
+
       # Returns an array of ShopifyAPI::Fulfillment objects in the order
       # for the given array of line item IDs. This logic seems pretty
       # universal across fulfillment providers but you can override this
@@ -75,7 +79,9 @@ module Fulfillment
       # For now they'll be in storage and we can backfill them some place when
       # we actually know how we're going to use them.
       def perform(params)
-        job_params = job_params(params)
+        # Params hash keys are deserialized as strings coming out of Redis,
+        # so we re-symbolize them here.
+        job_params = job_params(params).deep_symbolize_keys
         Rails.logger.info("CSV shipment import starting perform with params: #{job_params}")
 
         storage = Fulfillment::CSVStorageProvider.provider(job_params[:storage])
@@ -91,6 +97,7 @@ module Fulfillment
           Rails.logger.info("CSV shipment import not completing fulfillment for #{shipments.length} " \
                             'shipments because complete_fulfillment is false')
         end
+        after_import(shipments, params)
       end
 
       private
