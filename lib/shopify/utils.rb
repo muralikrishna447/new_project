@@ -1,3 +1,5 @@
+require 'retriable'
+
 module Shopify
   class Utils
     # Returns the order tags as an array.
@@ -44,8 +46,10 @@ module Shopify
       loop do
         Rails.logger.debug("Shopify search_orders fetching page #{page}")
         path = ShopifyAPI::Order.collection_path(params.merge(limit: page_size, page: page))
-        # TODO add retries
-        orders = ShopifyAPI::Order.find(:all, from: path)
+        orders = nil
+        Retriable.retriable tries: 3 do
+          orders = ShopifyAPI::Order.find(:all, from: path)
+        end
         all_orders.concat(orders)
         break if orders.length < page_size
         page += 1
@@ -57,9 +61,11 @@ module Shopify
     # method return true or false. Use this to assert that the method
     # returns true, raising an exception if false.
     def self.send_assert_true(obj, method_symbol)
-      unless obj.send(method_symbol)
-        raise "Calling #{method_symbol} returned false on #{obj.inspect}"
+      success = false
+      Retriable.retriable tries: 3 do
+        success = obj.send(method_symbol)
       end
+      raise "Calling #{method_symbol} returned false on #{obj.inspect}" unless success
     end
   end
 end
