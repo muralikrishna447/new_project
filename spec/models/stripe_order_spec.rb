@@ -78,7 +78,6 @@ describe StripeOrder do
     @stripe_circulator_order = Fabricate(:stripe_order, idempotency_key: 'CS123', user_id: @user.id, data: @circulator_sale)
     @stripe_circulator_discount = Fabricate(:stripe_order, idempotency_key: 'CS123', user_id: @user.id, data: @circ_premium_price)
     @premium_order = Fabricate(:stripe_order, idempotency_key: 'CS321', user_id: @user.id, data: @premium_sale)
-    AvaTax::TaxService.any_instance.stub(:get).and_return({'TotalTaxable' => '2', 'TotalTax' => '0.07'})
   end
 
   context "stripe_order" do
