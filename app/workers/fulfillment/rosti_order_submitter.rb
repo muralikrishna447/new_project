@@ -1,10 +1,19 @@
 require 'csv'
+require 'resque/plugins/lock'
 
 module Fulfillment
-  class RostiOrderExporter
+  class RostiOrderSubmitter
+    extend Resque::Plugins::Lock
     include Fulfillment::CSVOrderExporter
+    include Fulfillment::FulfillableStrategy::OpenFulfillment
 
-    @queue = :RostiOrderExporter
+    @queue = :RostiOrderSubmitter
+
+    # Only allow one of these jobs to be enqueued/running
+    # at any given time.
+    def self.lock(_params)
+      Fulfillment::CSVOrderExporter::JOB_LOCK_KEY
+    end
 
     def self.configure(params)
       raise 's3_bucket is a required param' unless params[:s3_bucket]
@@ -13,21 +22,16 @@ module Fulfillment
       @@s3_region = params[:s3_region]
     end
 
-    def self.type
-      'orders'
+    def self.s3_region
+      @@s3_region
     end
 
-    def self.job_params(params)
-      job_params = params.merge(
-        skus: [Shopify::Order::JOULE_SKU],
-        storage_filename: "#{type}-#{Time.now.utc.iso8601}.csv"
-      )
-      job_params[:storage] ||= 's3'
-      if job_params[:storage] == 's3'
-        job_params[:storage_s3_bucket] = @@s3_bucket
-        job_params[:storage_s3_region] = @@s3_region
-      end
-      job_params
+    def self.s3_bucket
+      @@s3_bucket
+    end
+
+    def self.type
+      'orders'
     end
 
     def self.schema
@@ -76,7 +80,8 @@ module Fulfillment
       line_items = []
       fulfillable.line_items.each do |line_item|
         rosti_order_number = "#{fulfillable.order.name}-#{line_item.id}"
-        Rails.logger.info("Rosti order export adding order with id #{fulfillable.order.id} and line item with id #{line_item.id} and quantity #{line_item.fulfillable_quantity} as Rosti order number #{rosti_order_number}")
+        quantity = fulfillable.quantity_for_line_item(line_item)
+        Rails.logger.info("Rosti order export adding order with id #{fulfillable.order.id} and line item with id #{line_item.id} and quantity #{quantity} as Rosti order number #{rosti_order_number}")
         line_items <<
           [
             rosti_order_number,
@@ -91,7 +96,7 @@ module Fulfillment
             fulfillable.order.shipping_address.country_code,
             fulfillable.order.shipping_address.phone,
             line_item.sku,
-            line_item.fulfillable_quantity,
+            quantity,
             RETURN_NAME,        # Return address contact name
             RETURN_COMPANY,     # Return address company
             RETURN_ADDRESS_1,   # Return address line 1
@@ -103,6 +108,16 @@ module Fulfillment
           ]
       end
       line_items
+    end
+
+    def self.after_save(fulfillables, _params)
+      Librato.increment 'fulfillment.rosti.order-submitter.success', sporadic: true
+      Librato.increment 'fulfillment.rosti.order-submitter.count', by: fulfillables.length, sporadic: true
+      total_quantity = fulfillables.inject(0) do |sum, fulfillable|
+        sum + fulfillable.quantity
+      end
+      Librato.increment 'fulfillment.rosti.order-submitter.quantity', by: total_quantity, sporadic: true
+      Librato.tracker.flush
     end
   end
 end

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'fulfillment/order_search_provider'
 
 describe Fulfillment::CSVOrderExporter do
   let(:exporter) { Class.new { include Fulfillment::CSVOrderExporter } }
@@ -6,46 +7,20 @@ describe Fulfillment::CSVOrderExporter do
   describe 'fulfillables' do
     let(:sku) { 'my sku' }
     let(:fulfillable_quantity) { 1 }
-    let(:order_1_line_item_1) do
-      line_item = ShopifyAPI::LineItem.new
-      line_item.id = 11
-      line_item.sku = order_1_line_item_1_sku
-      line_item.fulfillable_quantity = fulfillable_quantity
-      line_item
-    end
-    let(:order_1_line_item_2) do
-      line_item = ShopifyAPI::LineItem.new
-      line_item.id = 12
-      line_item.sku = order_1_line_item_2_sku
-      line_item.fulfillable_quantity = fulfillable_quantity
-      line_item
-    end
+    let(:order_1_line_item_1) { ShopifyAPI::LineItem.new(id: 11) }
+    let(:order_1_line_item_2) { ShopifyAPI::LineItem.new(id: 12) }
     let(:order_1) do
       order = ShopifyAPI::Order.new
       order.id = 1
       order.line_items = [order_1_line_item_1, order_1_line_item_2]
-      order.fulfillments = order_1_fulfillments
       order
     end
-    let(:order_2_line_item_1) do
-      line_item = ShopifyAPI::LineItem.new
-      line_item.id = 21
-      line_item.sku = order_2_line_item_1_sku
-      line_item.fulfillable_quantity = fulfillable_quantity
-      line_item
-    end
-    let(:order_2_line_item_2) do
-      line_item = ShopifyAPI::LineItem.new
-      line_item.id = 22
-      line_item.sku = order_2_line_item_2_sku
-      line_item.fulfillable_quantity = fulfillable_quantity
-      line_item
-    end
+    let(:order_2_line_item_1) { ShopifyAPI::LineItem.new(id: 21) }
+    let(:order_2_line_item_2) { ShopifyAPI::LineItem.new(id: 22) }
     let(:order_2) do
       order = ShopifyAPI::Order.new
       order.id = 2
       order.line_items = [order_2_line_item_1, order_2_line_item_2]
-      order.fulfillments = order_2_fulfillments
       order
     end
 
@@ -59,47 +34,36 @@ describe Fulfillment::CSVOrderExporter do
     context 'orders is not empty' do
       let(:orders) { [order_1, order_2] }
 
-      context 'orders has line items with no fulfillments' do
-        let(:order_1_fulfillments) { [] }
-        let(:order_2_fulfillments) { [] }
+      context 'no line items are fulfillable' do
+        it 'creates empty fulfillables' do
+          exporter.should_receive(:fulfillable_line_item?).exactly(4).times.and_return(false)
+          expect(exporter.fulfillables(orders, [sku])).to be_empty
+        end
+      end
 
-        context 'sku matches on line items' do
-          let(:order_1_line_item_1_sku) { sku }
-          let(:order_1_line_item_2_sku) { sku }
-          let(:order_2_line_item_1_sku) { sku }
-          let(:order_2_line_item_2_sku) { sku }
-          it 'creates fulfillables with all orders and line items' do
-            expect(exporter.fulfillables(orders, [sku])).to eq(
-              [
-                Fulfillment::Fulfillable.new(
-                  order: order_1,
-                  line_items: [order_1_line_item_1, order_1_line_item_2]
-                ),
-                Fulfillment::Fulfillable.new(
-                  order: order_2,
-                  line_items: [order_2_line_item_1, order_2_line_item_2]
-                )
-              ]
-            )
-          end
-
-          context 'fulfillable quantity is zero' do
-            let(:fulfillable_quantity) { 0 }
-
-            it 'creates empty fulfillables' do
-              expect(exporter.fulfillables(orders, [sku])).to be_empty
-            end
-          end
+      context 'all line items are fulfillable' do
+        it 'creates fulfillables with all orders and line items' do
+          exporter.should_receive(:fulfillable_line_item?).exactly(4).times.and_return(true)
+          expect(exporter.fulfillables(orders, [sku])).to eq(
+            [
+              Fulfillment::Fulfillable.new(
+                order: order_1,
+                line_items: [order_1_line_item_1, order_1_line_item_2]
+              ),
+              Fulfillment::Fulfillable.new(
+                order: order_2,
+                line_items: [order_2_line_item_1, order_2_line_item_2]
+              )
+            ]
+          )
         end
 
-        context 'sku matches on first line item only' do
-          let(:another_sku) { 'another sku' }
-          let(:order_1_line_item_1_sku) { sku }
-          let(:order_1_line_item_2_sku) { another_sku }
-          let(:order_2_line_item_1_sku) { sku }
-          let(:order_2_line_item_2_sku) { another_sku }
-
+        context 'only first line item is fulfillable' do
           it 'creates fulfillable with all orders and first line item' do
+            exporter.should_receive(:fulfillable_line_item?).with(order_1, order_1_line_item_1, sku).and_return(true)
+            exporter.should_receive(:fulfillable_line_item?).with(order_1, order_1_line_item_2, sku).and_return(false)
+            exporter.should_receive(:fulfillable_line_item?).with(order_2, order_2_line_item_1, sku).and_return(true)
+            exporter.should_receive(:fulfillable_line_item?).with(order_2, order_2_line_item_2, sku).and_return(false)
             expect(exporter.fulfillables(orders, [sku])).to eq(
               [
                 Fulfillment::Fulfillable.new(
@@ -109,98 +73,6 @@ describe Fulfillment::CSVOrderExporter do
                 Fulfillment::Fulfillable.new(
                   order: order_2,
                   line_items: [order_2_line_item_1]
-                )
-              ]
-            )
-          end
-        end
-
-        context 'sku does not match on any line items' do
-          let(:another_sku) { 'another sku' }
-          let(:order_1_line_item_1_sku) { another_sku }
-          let(:order_1_line_item_2_sku) { another_sku }
-          let(:order_2_line_item_1_sku) { another_sku }
-          let(:order_2_line_item_2_sku) { another_sku }
-
-          it 'creates empty fulfillables' do
-            expect(exporter.fulfillables([], [sku])).to be_empty
-          end
-        end
-      end
-
-      context 'orders has line items with existing fulfillment' do
-        let(:order_1_line_item_1_sku) { sku }
-        let(:order_1_line_item_2_sku) { sku }
-        let(:order_2_line_item_1_sku) { sku }
-        let(:order_2_line_item_2_sku) { sku }
-
-        let(:order_1_fulfillments) do
-          fulfillment = ShopifyAPI::Fulfillment.new
-          fulfillment.line_items = [order_1_line_item_1]
-          fulfillment.status = order_1_line_item_1_status
-          [fulfillment]
-        end
-        let(:order_2_fulfillments) do
-          fulfillment = ShopifyAPI::Fulfillment.new
-          fulfillment.line_items = [order_2_line_item_1]
-          fulfillment.status = order_2_line_item_1_status
-          [fulfillment]
-        end
-
-        context 'fulfillment has status open' do
-          let(:order_1_line_item_1_status) { 'open' }
-          let(:order_2_line_item_1_status) { 'open' }
-
-          it 'creates fulfillables with line items that do not have open fulfillments' do
-            expect(exporter.fulfillables(orders, [sku])).to eq(
-              [
-                Fulfillment::Fulfillable.new(
-                  order: order_1,
-                  line_items: [order_1_line_item_2]
-                ),
-                Fulfillment::Fulfillable.new(
-                  order: order_2,
-                  line_items: [order_2_line_item_2]
-                )
-              ]
-            )
-          end
-        end
-
-        context 'fulfillment has status success' do
-          let(:order_1_line_item_1_status) { 'open' }
-          let(:order_2_line_item_1_status) { 'open' }
-
-          it 'creates fulfillables with line items that do not have successful fulfillments' do
-            expect(exporter.fulfillables(orders, [sku])).to eq(
-              [
-                Fulfillment::Fulfillable.new(
-                  order: order_1,
-                  line_items: [order_1_line_item_2]
-                ),
-                Fulfillment::Fulfillable.new(
-                  order: order_2,
-                  line_items: [order_2_line_item_2]
-                )
-              ]
-            )
-          end
-        end
-
-        context 'fulfillment has status cancelled' do
-          let(:order_1_line_item_1_status) { 'cancelled' }
-          let(:order_2_line_item_1_status) { 'cancelled' }
-
-          it 'creates fulfillables with all orders and line items' do
-            expect(exporter.fulfillables(orders, [sku])).to eq(
-              [
-                Fulfillment::Fulfillable.new(
-                  order: order_1,
-                  line_items: [order_1_line_item_1, order_1_line_item_2]
-                ),
-                Fulfillment::Fulfillable.new(
-                  order: order_2,
-                  line_items: [order_2_line_item_1, order_2_line_item_2]
                 )
               ]
             )
@@ -379,56 +251,6 @@ describe Fulfillment::CSVOrderExporter do
     end
   end
 
-  describe 'open_fulfillments' do
-    let(:order_1_line_item) do
-      line_item = ShopifyAPI::LineItem.new
-      line_item.id = 11
-      line_item.fulfillable_quantity = 1
-      line_item
-    end
-    let(:order_1) do
-      order = ShopifyAPI::Order.new
-      order.id = 1
-      order.line_items = [order_1_line_item]
-      order
-    end
-    let(:order_2_line_item) do
-      line_item = ShopifyAPI::LineItem.new
-      line_item.id = 21
-      line_item.fulfillable_quantity = 2
-      line_item
-    end
-    let(:order_2) do
-      order = ShopifyAPI::Order.new
-      order.id = 2
-      order.line_items = [order_2_line_item]
-      order
-    end
-    let(:fulfillable_1) do
-      Fulfillment::Fulfillable.new(
-        order: order_1,
-        line_items: [order_1_line_item]
-      )
-    end
-    let(:fulfillable_2) do
-      Fulfillment::Fulfillable.new(
-        order: order_2,
-        line_items: [order_2_line_item]
-      )
-    end
-    let(:fulfillables) { [fulfillable_1, fulfillable_2] }
-
-    it 'opens fulfillments for all fulfillable line items' do
-      stub_open_fulfillment(order_1.id, order_1_line_item.id, order_1_line_item.fulfillable_quantity)
-      stub_open_fulfillment(order_2.id, order_2_line_item.id, order_2_line_item.fulfillable_quantity)
-      Shopify::Utils
-        .should_receive(:send_assert_true)
-        .with(instance_of(ShopifyAPI::Fulfillment), :save)
-        .twice
-      exporter.open_fulfillments(fulfillables)
-    end
-  end
-
   describe 'perform' do
     before :each do
       Fulfillment::FraudFilter.stub(:fraud_suspected?).and_return(false)
@@ -488,53 +310,28 @@ describe Fulfillment::CSVOrderExporter do
       let(:csv_header) { 'my header' }
       let(:csv_body) { 'my order line items' }
 
-      shared_examples 'perform' do
-        it 'saves fulfillables' do
-          Shopify::Utils.should_receive(:search_orders).with(status: 'open').and_return([order])
-          Fulfillment::FedexShippingAddressValidator.should_receive(:valid?).with(order).and_return(true)
+      it 'saves fulfillables' do
+        Fulfillment::FedexShippingAddressValidator.should_receive(:valid?).with(order).and_return(true)
 
-          exporter.should_receive(:schema).and_return([csv_header])
-          exporter.should_receive(:type).and_return(export_type)
-          exporter.should_receive(:transform).and_return([[csv_body]])
+        exporter.should_receive(:schema).and_return([csv_header])
+        exporter.should_receive(:type).and_return(export_type)
+        exporter.should_receive(:transform).and_return([[csv_body]])
+        exporter.should_receive(:fulfillable_line_item?).and_return(true)
+        exporter.should_receive(:orders).and_return([order])
+        exporter.should_receive(:before_save)
+        exporter.should_receive(:after_save)
 
-          storage_provider = double('storage_provider')
-          params = {
-            skus: [sku],
-            quantity: 1,
-            storage: storage_provider_name,
-            open_fulfillment: open_fulfillment
-          }
-          storage_provider.should_receive(:save).with("\"#{csv_header}\"\n\"#{csv_body}\"\n", params.merge(type: export_type))
-          Fulfillment::CSVStorageProvider.should_receive(:provider).with(storage_provider_name).and_return(storage_provider)
+        storage_provider = double('storage_provider')
+        params = {
+          skus: [sku],
+          quantity: 1,
+          storage: storage_provider_name
+        }
+        storage_provider.should_receive(:save).with("\"#{csv_header}\"\n\"#{csv_body}\"\n", params.merge(type: export_type))
+        Fulfillment::CSVStorageProvider.should_receive(:provider).with(storage_provider_name).and_return(storage_provider)
 
-          exporter.perform(params)
-        end
-      end
-
-      context 'open_fulfillment param is false' do
-        let(:open_fulfillment) { false }
-        include_examples 'perform'
-      end
-
-      context 'open_fulfillment param is nil' do
-        let(:open_fulfillment) { nil }
-        include_examples 'perform'
-      end
-
-      context 'open_fulfillment param is true' do
-        let(:open_fulfillment) { true }
-        before :each do
-          stub_open_fulfillment(order.id, line_item.id, line_item.fulfillable_quantity)
-        end
-        include_examples 'perform'
+        exporter.perform(params)
       end
     end
-  end
-
-  def stub_open_fulfillment(order_id, line_item_id, qty)
-    WebMock
-      .stub_request(:post, /test.myshopify.com\/admin\/orders\/#{order_id}\/fulfillments.json/)
-      .with(body: "{\"fulfillment\":{\"line_items\":[{\"id\":#{line_item_id},\"quantity\":#{qty}}],\"status\":\"open\",\"notify_customer\":false}}")
-      .to_return(status: 200, body: '', headers: {})
   end
 end

@@ -58,7 +58,12 @@ module Api
           logger.info "Creating circulator #{circulator.inspect}"
 
           circulator.save!
-          aa = ActorAddress.create_for_circulator(circulator)
+
+          begin
+            aa = ActorAddress.create_for_circulator(circulator)
+          rescue ArgumentError
+            return render_api_response 400, {message: "Invalid parameters"}
+          end
           circulatorUser = CirculatorUser.new user: user, circulator: circulator
           unless params[:owner] == false
             circulatorUser.owner = true
@@ -86,7 +91,7 @@ module Api
       end
 
       def token
-        Librato.increment("api.circulator_token_requests")
+      Librato.increment("api.circulator_token_requests")
         # Assume that address_id matches circulator_id
         aa = ActorAddress.where(address_id: @circulator.circulator_id).first
         unless aa

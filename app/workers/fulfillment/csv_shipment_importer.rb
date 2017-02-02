@@ -34,10 +34,13 @@ module Fulfillment
             next unless line_item_ids.include?(line_item.id)
             found_line_item_ids[line_item.id] = true
             if fulfillment.status == 'open'
-              Rails.logger.info("CSV shipment import found open fulfillment with id #{fulfillment.id} for order with id #{order.id}, name #{order.name} and line item with id #{line_item.id}")
+              Rails.logger.info("CSV shipment import found open fulfillment with id #{fulfillment.id} " \
+                                "for order with id #{order.id}, name #{order.name} and line item with id #{line_item.id}")
               fulfillments[fulfillment.id] = fulfillment
             else
-              Rails.logger.info("CSV shipment import not including fulfillment with id #{fulfillment.id} because status is #{fulfillment.status} for order with id #{order.id}, name #{order.name} and line item with id #{line_item.id}")
+              Rails.logger.info("CSV shipment import not including fulfillment with id #{fulfillment.id} " \
+                                "because status is #{fulfillment.status} for order with id #{order.id}, " \
+                                "name #{order.name} and line item with id #{line_item.id}")
             end
           end
         end
@@ -47,7 +50,8 @@ module Fulfillment
         missing_line_item_ids = []
         line_item_ids.each do |line_item_id|
           unless found_line_item_ids[line_item_id] == true
-            Rails.logger.error("CSV shipment import expected to find fulfillment for order with id #{order.id} and line item id #{line_item_id}")
+            Rails.logger.error("CSV shipment import expected to find fulfillment for order with id #{order.id} " \
+                              " and line item id #{line_item_id}")
             missing_line_item_ids << line_item_id
           end
         end
@@ -82,14 +86,17 @@ module Fulfillment
           Rails.logger.info("CSV shipment import completing fulfillment for #{shipments.length} shipments")
           shipments.each { |shipment| complete_shipment(shipment) }
         else
-          Rails.logger.info("CSV shipment import not completing fulfillment for #{shipments.length} shipments because complete_fulfillment is false")
+          Rails.logger.info("CSV shipment import not completing fulfillment for #{shipments.length} " \
+                            'shipments because complete_fulfillment is false')
         end
       end
 
       private
 
       def update_tracking(fulfillment, shipment)
-        Rails.logger.info("CSV shipment import updating tracking for order with id #{shipment.order.id}, name #{shipment.order.name} and fulfillment with id #{fulfillment.id}: #{shipment.tracking_company} #{shipment.tracking_numbers}")
+        Rails.logger.info('CSV shipment import updating tracking for order with id ' \
+                          "#{shipment.order.id}, name #{shipment.order.name} and fulfillment " \
+                          "with id #{fulfillment.id}: #{shipment.tracking_company} #{shipment.tracking_numbers}")
         fulfillment.attributes[:tracking_company] = shipment.tracking_company
         fulfillment.attributes[:tracking_numbers] = shipment.tracking_numbers
         # We don't want to notify the customer here b/c it sends a shipment
@@ -100,7 +107,8 @@ module Fulfillment
       end
 
       def complete_fulfillment(fulfillment, shipment)
-        Rails.logger.info("CSV shipment import completing fulfillment for order with id #{shipment.order.id}, name #{shipment.order.name} and fulfillment with id #{fulfillment.id}")
+        Rails.logger.info("CSV shipment import completing fulfillment for order with id " \
+                          "#{shipment.order.id}, name #{shipment.order.name} and fulfillment with id #{fulfillment.id}")
         # We have to set this and save it back to Shopify so that Shopify
         # will send a shipment confirmation email on completion.
         fulfillment.attributes[:notify_customer] = true

@@ -33,14 +33,13 @@ module Fulfillment
 
     def save(output, params)
       validate_params(params)
-      raise 'type is a required param' unless params[:type]
 
       Rails.logger.info("S3 storage provider saving object with params #{params}")
       s3 = Aws::S3::Resource.new(region: params[:storage_s3_region])
       obj =
         s3
         .bucket(params[:storage_s3_bucket])
-        .object("#{params[:type]}/#{params[:storage_filename]}")
+        .object("#{params[:storage_filename]}")
       obj.put(body: output)
     end
 
