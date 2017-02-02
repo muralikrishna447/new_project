@@ -82,8 +82,6 @@ gem 'resque'
 
 gem 'sanitize'
 
-gem 'avatax'
-
 gem 'analytics-ruby', :require => "segment"
 
 gem 'prerender_rails'
