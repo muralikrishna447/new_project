@@ -84,10 +84,27 @@ describe Fulfillment::CSVOrderExporter do
 
   describe 'include_order?' do
     let(:tags) { '' }
+    let(:financial_status) { 'paid' }
     let(:order) do
-      order = ShopifyAPI::Order.new
-      order.tags = tags
-      order
+      ShopifyAPI::Order.new(
+        tags: tags,
+        financial_status: financial_status
+      )
+    end
+
+    shared_examples 'payment status' do
+      context 'order has not been paid' do
+        let(:financial_status) { 'authorized' }
+        it 'returns false' do
+          expect(exporter.include_order?(order)).to be_false
+        end
+      end
+      context 'order has been paid' do
+        let(:financial_status) { 'paid' }
+        it 'returns true' do
+          expect(exporter.include_order?(order)).to be_true
+        end
+      end
     end
 
     context 'order is not suspected fraudulent' do
@@ -130,10 +147,14 @@ describe Fulfillment::CSVOrderExporter do
         end
 
         context 'address validator returns true' do
-          it 'returns true' do
+          before :each do
             Fulfillment::FedexShippingAddressValidator.stub(:valid?).and_return(true)
+          end
+
+          it 'returns true' do
             expect(exporter.include_order?(order)).to be_true
           end
+          include_examples 'payment status'
         end
       end
     end
@@ -303,6 +324,7 @@ describe Fulfillment::CSVOrderExporter do
         order.fulfillments = []
         order.tags = ''
         order.processed_at = '2016-02-04T00:00:00-08:00'
+        order.financial_status = 'paid'
         order
       end
       let(:storage_provider_name) { 'my storage' }
