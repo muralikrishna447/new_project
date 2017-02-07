@@ -101,27 +101,6 @@ module Api
       def dfu_capable?(params)
         app_version = Semverse::Version.new(params[:appVersion])
 
-        # HACK: Want to get a few more days of DFU out before 2.41.2
-        # is out.  Remove this hack after 2016-12-18
-        is_ios_10_2 = request.env['HTTP_USER_AGENT'] =~ /iPhone OS 10_2/
-        kinda_busted_app = (
-          app_version  == Semverse::Version.new("2.40.2") ||
-          app_version  == Semverse::Version.new("2.41.1")
-        )
-        if kinda_busted_app && params[:appFirmwareVersion] == '47'
-          if is_ios_10_2
-            logger.info("Not allowing DFU for iOS 10.2")
-            return false
-          end
-          logger.info("Allowing firmware update because app is #{app_version} " \
-                      "and appFirmwareVersion is 47")
-          return true
-        end
-        # ENDHACK
-
-        # New backwards incompatible version manifest type for 2.40.2
-        # *But*, 2.40.2/2.41.1 have a bug where doing an ESP only update (ie:
-        # 61.22 -> 61.23) would break startProgram.
         return app_version >= Semverse::Version.new("2.41.2")
       end
 
