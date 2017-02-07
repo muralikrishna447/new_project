@@ -46,7 +46,7 @@ def fulfillable_line_item?(order, line_item)
 end
 
 def pickup_time(line_item)
-  pickup_times = line_item.properties.select { |p| p.name == 'Pickup Time' }
+  pickup_times = line_item.properties.select { |p| p.name == 'customizery_1' }
   raise "No Pickup Time property found for line item #{line_item.inspect}" if pickup_times.empty?
   raise "Multiple Pickup Time properties found for line item #{line_item.inspect}" if pickup_times.length > 1
   pickup_times.first.value
