@@ -61,6 +61,13 @@ module Api
           return render_empty_response
         end
 
+        resp = build_response_from_manifest(manifest)
+
+        render_api_response 200, resp
+      end
+
+      private
+      def build_response_from_manifest(manifest)
         updates = []
         manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
@@ -94,16 +101,14 @@ module Api
           resp['releaseNotesUrl'] = manifest['releaseNotesUrl']
         end
 
-        render_api_response 200, resp
+        return resp
       end
 
-      private
       def dfu_capable?(params)
         app_version = Semverse::Version.new(params[:appVersion])
 
         return app_version >= Semverse::Version.new("2.41.2")
       end
-
 
       def get_s3_object_as_json(key)
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
