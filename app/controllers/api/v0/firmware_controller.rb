@@ -55,9 +55,13 @@ module Api
           return render_empty_response
         end
 
-        manifest = get_firmware_for_app_version(app_version)
-        if manifest.nil?
+        begin
+          manifest = get_firmware_for_app_version(app_version)
+        rescue ManifestMissingError => e
           logger.info "No manifest found for app version #{app_version}"
+          return render_empty_response
+        rescue ManifestInvalidError => e
+          logger.error "There was a problem with manifest for #{app_version}: #{e}"
           return render_empty_response
         end
 
@@ -67,6 +71,13 @@ module Api
       end
 
       private
+
+      class ManifestMissingError < StandardError
+      end
+
+      class ManifestInvalidError < StandardError
+      end
+
       def build_response_from_manifest(manifest)
         updates = []
         manifest["updates"].each do |u|
@@ -94,12 +105,10 @@ module Api
         end
 
         resp = {
-          updates: updates
+          updates: updates,
+          releaseNotesUrl: manifest['releaseNotesUrl'],
+          releaseNotes: manifest['releaseNotesUrl'],
         }
-
-        if manifest['releaseNotesUrl']
-          resp['releaseNotesUrl'] = manifest['releaseNotesUrl']
-        end
 
         return resp
       end
@@ -183,8 +192,23 @@ module Api
         key_name = "manifests/#{version}/manifest"
         bucket = AWS::S3::Bucket.new(bucket_name, :client => s3_client)
         o = bucket.objects[key_name]
-        return nil if !o.exists?
-        JSON.parse(o.read)
+        raise ManifestMissingError.new("Could not find manifest for #{version}") unless o.exists?
+
+        begin
+          firmware = JSON.parse(o.read)
+        rescue JSON::ParserError => e
+          raise ManifestInvalidError.new("Bad JSON in manifest")
+        end
+
+        unless firmware['releaseNotesUrl']
+          raise ManifestInvalidError.new("Manifest is missing releaseNotesUrl")
+        end
+
+        unless firmware['releaseNotes'] && firmware['releaseNotes'].length > 0
+          raise ManifestInvalidError.new("Manifest is missing releaseNotes array")
+        end
+
+        firmware
       end
 
       def get_firmware_link(type, version)

@@ -31,9 +31,14 @@ describe Api::V0::FirmwareController do
 
     @link = 'http://www.foo.com'
     @release_notes_url_1 = "https://www.chefsteps.com/releases/46.11"
+    @release_notes = [
+      'Adds a display',
+      'Ability to reticulate splines',
+    ]
     controller.stub(:get_firmware_link).and_return(@link)
     manifest =  {
       "releaseNotesUrl" => @release_notes_url_1,
+      "releaseNotes" => @release_notes,
       "updates" => [
         {
           "versionType" => "appFirmwareVersion",
@@ -45,6 +50,8 @@ describe Api::V0::FirmwareController do
 
     @esp_version = "706"
     esp_only_manifest = {
+      "releaseNotesUrl" => @release_notes_url_1,
+      "releaseNotes" => @release_notes,
       "updates" =>[
         {
           "versionType" => "espFirmwareVersion",
