@@ -54,6 +54,7 @@ describe Api::V0::FirmwareController do
     esp_only_manifest = {
       "releaseNotesUrl" => @release_notes_url_1,
       "releaseNotes" => @release_notes,
+      "urgency" => "critical",
       "updates" =>[
         {
           "versionType" => "espFirmwareVersion",
@@ -129,6 +130,16 @@ describe Api::V0::FirmwareController do
     resp['updates'].length.should == 0
   end
 
+  it 'should get proper urgency if beta feature is enabled' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'manifest_urgency')
+      .and_return(true)
+    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['urgency'].should == 'critical'
+  end
+
   it 'should get no updates if old app version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     post :updates, {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5'}
@@ -144,7 +155,6 @@ describe Api::V0::FirmwareController do
 
     response.should be_success
     resp = JSON.parse(response.body)
-    puts resp.inspect
 
     resp['urgency'].should == 'normal'
     resp['releaseNotes'].should == @release_notes
