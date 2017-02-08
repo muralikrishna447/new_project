@@ -58,7 +58,7 @@ module Api
         end
 
         begin
-          manifest = get_firmware_for_app_version(app_version)
+          manifest = get_manifest_for_app_version(app_version)
         rescue ManifestMissingError => e
           logger.info "No manifest found for app version #{app_version}"
           return render_empty_response
@@ -185,7 +185,7 @@ module Api
         render_api_response 200, {:updates => []}
       end
 
-      def get_firmware_for_app_version(version)
+      def get_manifest_for_app_version(version)
         # Sample manifest
         # {
         #  "releaseNotesUrl" : "http://foo.com/release",
@@ -204,26 +204,25 @@ module Api
         raise ManifestMissingError.new("Could not find manifest for #{version}") unless o.exists?
 
         begin
-          firmware = JSON.parse(o.read)
+          manifest = JSON.parse(o.read)
         rescue JSON::ParserError => e
           raise ManifestInvalidError.new("Bad JSON in manifest")
         end
 
-        unless firmware['releaseNotesUrl']
+        unless manifest['releaseNotesUrl']
           raise ManifestInvalidError.new("Manifest is missing releaseNotesUrl")
         end
 
-        unless firmware['releaseNotes'] && firmware['releaseNotes'].length > 0
+        unless manifest['releaseNotes'] && manifest['releaseNotes'].length > 0
           raise ManifestInvalidError.new("Manifest is missing releaseNotes array")
         end
 
-        urgency = firmware['urgency']
-        if firmware['urgency'] && !UPDATE_URGENCIES.include?(urgency)
+        urgency = manifest['urgency']
+        if manifest['urgency'] && !UPDATE_URGENCIES.include?(urgency)
           raise ManifestInvalidError.new("Manifest specifies unsupported urgency param: #{urgency}")
         end
 
-
-        firmware
+        manifest
       end
 
       def get_firmware_link(type, version)
