@@ -106,13 +106,11 @@ module Api
           updates << u
         end
 
-
         if BetaFeatureService.user_has_feature(user, 'manifest_urgency')
           manifest_urgency = manifest['urgency'] || 'normal'
         else
           manifest_urgency = 'normal'
         end
-
 
         resp = {
           updates: updates,
@@ -218,6 +216,12 @@ module Api
         unless firmware['releaseNotes'] && firmware['releaseNotes'].length > 0
           raise ManifestInvalidError.new("Manifest is missing releaseNotes array")
         end
+
+        urgency = firmware['urgency']
+        if firmware['urgency'] && !UPDATE_URGENCIES.include?(urgency)
+          raise ManifestInvalidError.new("Manifest specifies unsupported urgency param: #{urgency}")
+        end
+
 
         firmware
       end
