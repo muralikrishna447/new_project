@@ -14,7 +14,7 @@ module Api
         "WIFI_FIRMWARE"        => "espFirmwareVersion"
       }
 
-      UPDATE_URGENCIES = ['normal', 'critical', 'manditory']
+      UPDATE_URGENCIES = ['normal', 'critical', 'mandatory']
 
       def updates
         # How this currently works
