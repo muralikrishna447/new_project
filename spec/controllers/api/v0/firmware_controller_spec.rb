@@ -24,6 +24,8 @@ describe Api::V0::FirmwareController do
       .and_return(false)
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu_blacklist')
       .and_return(false)
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'manifest_urgency')
+      .and_return(false)
     enabled_app_versions = ['2.40.2', '2.41.2', '2.41.3', '2.41.4']
     for v in enabled_app_versions
       set_version_enabled(v, true)
@@ -31,9 +33,14 @@ describe Api::V0::FirmwareController do
 
     @link = 'http://www.foo.com'
     @release_notes_url_1 = "https://www.chefsteps.com/releases/46.11"
+    @release_notes = [
+      'Adds a display',
+      'Ability to reticulate splines',
+    ]
     controller.stub(:get_firmware_link).and_return(@link)
     manifest =  {
       "releaseNotesUrl" => @release_notes_url_1,
+      "releaseNotes" => @release_notes,
       "updates" => [
         {
           "versionType" => "appFirmwareVersion",
@@ -45,6 +52,9 @@ describe Api::V0::FirmwareController do
 
     @esp_version = "706"
     esp_only_manifest = {
+      "releaseNotesUrl" => @release_notes_url_1,
+      "releaseNotes" => @release_notes,
+      "urgency" => "critical",
       "updates" =>[
         {
           "versionType" => "espFirmwareVersion",
@@ -120,6 +130,16 @@ describe Api::V0::FirmwareController do
     resp['updates'].length.should == 0
   end
 
+  it 'should get proper urgency if beta feature is enabled' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'manifest_urgency')
+      .and_return(true)
+    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['urgency'].should == 'critical'
+  end
+
   it 'should get no updates if old app version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     post :updates, {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5'}
@@ -135,8 +155,9 @@ describe Api::V0::FirmwareController do
 
     response.should be_success
     resp = JSON.parse(response.body)
-    puts resp.inspect
 
+    resp['urgency'].should == 'normal'
+    resp['releaseNotes'].should == @release_notes
     resp['releaseNotesUrl'].should == @release_notes_url_1
     resp['updates'].length.should == 1
     update = resp['updates'].first
@@ -184,15 +205,5 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
     post :updates
     response.should_not be_success
-  end
-
-  # Remove this test after app version 2.41.2 is released
-  it 'should not get firmware update if iOS 10.2 and 47' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    request.env['HTTP_USER_AGENT'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_2 like Mac OS X) AppleWebKit/602.3.12 (KHTML, like Gecko) Mobile/14C92 (4302330688)'
-    post :updates, {'appVersion'=> '2.40.2', 'appFirmwareVersion' => '47', 'hardwareVersion' => 'JL.p5'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
   end
 end
