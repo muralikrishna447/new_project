@@ -14,6 +14,8 @@ module Api
         "WIFI_FIRMWARE"        => "espFirmwareVersion"
       }
 
+      UPDATE_URGENCIES = ['normal', 'critical', 'manditory']
+
       def updates
         # How this currently works
         # - Static mapping of app version to firmware app version
@@ -65,7 +67,7 @@ module Api
           return render_empty_response
         end
 
-        resp = build_response_from_manifest(manifest)
+        resp = build_response_from_manifest(user, manifest)
 
         render_api_response 200, resp
       end
@@ -78,7 +80,7 @@ module Api
       class ManifestInvalidError < StandardError
       end
 
-      def build_response_from_manifest(manifest)
+      def build_response_from_manifest(user, manifest)
         updates = []
         manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
@@ -104,10 +106,19 @@ module Api
           updates << u
         end
 
+
+        if BetaFeatureService.user_has_feature(user, 'manifest_urgency')
+          manifest_urgency = manifest['urgency'] || 'normal'
+        else
+          manifest_urgency = 'normal'
+        end
+
+
         resp = {
           updates: updates,
           releaseNotesUrl: manifest['releaseNotesUrl'],
-          releaseNotes: manifest['releaseNotesUrl'],
+          releaseNotes: manifest['releaseNotes'],
+          urgency: manifest_urgency,
         }
 
         return resp

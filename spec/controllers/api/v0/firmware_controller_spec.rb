@@ -24,6 +24,8 @@ describe Api::V0::FirmwareController do
       .and_return(false)
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu_blacklist')
       .and_return(false)
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'manifest_urgency')
+      .and_return(false)
     enabled_app_versions = ['2.40.2', '2.41.2', '2.41.3', '2.41.4']
     for v in enabled_app_versions
       set_version_enabled(v, true)
@@ -144,6 +146,8 @@ describe Api::V0::FirmwareController do
     resp = JSON.parse(response.body)
     puts resp.inspect
 
+    resp['urgency'].should == 'normal'
+    resp['releaseNotes'].should == @release_notes
     resp['releaseNotesUrl'].should == @release_notes_url_1
     resp['updates'].length.should == 1
     update = resp['updates'].first
