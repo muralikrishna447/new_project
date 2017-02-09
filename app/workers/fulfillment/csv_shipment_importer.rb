@@ -4,6 +4,8 @@ module Fulfillment
   # Mixin for importing shipment data from a fulfillment
   # provider in CSV format and updating Shopify.
   module CSVShipmentImporter
+    JOB_LOCK_KEY = 'fulfillment-shipment-import'
+
     def self.included(base)
       base.extend(ClassMethods)
     end
@@ -20,6 +22,10 @@ module Fulfillment
       # Fulfillment::Shipment. Implement this according to your CSV schema.
       def to_shipments(_csv_rows)
         raise 'to_shipments not implemented'
+      end
+
+      # Optional lifecycle hook to implement.
+      def after_import(_shipments, _params)
       end
 
       # Returns an array of ShopifyAPI::Fulfillment objects in the order
@@ -73,7 +79,9 @@ module Fulfillment
       # For now they'll be in storage and we can backfill them some place when
       # we actually know how we're going to use them.
       def perform(params)
-        job_params = job_params(params)
+        # Params hash keys are deserialized as strings coming out of Redis,
+        # so we re-symbolize them here.
+        job_params = job_params(params).deep_symbolize_keys
         Rails.logger.info("CSV shipment import starting perform with params: #{job_params}")
 
         storage = Fulfillment::CSVStorageProvider.provider(job_params[:storage])
@@ -89,11 +97,19 @@ module Fulfillment
           Rails.logger.info("CSV shipment import not completing fulfillment for #{shipments.length} " \
                             'shipments because complete_fulfillment is false')
         end
+        after_import(shipments, params)
       end
 
       private
 
       def update_tracking(fulfillment, shipment)
+        if tracking_updated?(fulfillment, shipment)
+          Rails.logger.info('CSV shipment importer tracking was already updated for order with id ' \
+                            "#{shipment.order.id}, name #{shipment.order.name} and fulfillment " \
+                            "with id #{fulfillment.id}: #{shipment.tracking_company} #{shipment.tracking_numbers}")
+          return
+        end
+
         Rails.logger.info('CSV shipment import updating tracking for order with id ' \
                           "#{shipment.order.id}, name #{shipment.order.name} and fulfillment " \
                           "with id #{fulfillment.id}: #{shipment.tracking_company} #{shipment.tracking_numbers}")
@@ -114,6 +130,11 @@ module Fulfillment
         fulfillment.attributes[:notify_customer] = true
         Shopify::Utils.send_assert_true(fulfillment, :save)
         Shopify::Utils.send_assert_true(fulfillment, :complete)
+      end
+
+      def tracking_updated?(fulfillment, shipment)
+        fulfillment.attributes[:tracking_company] == shipment.tracking_company &&
+          (fulfillment.attributes[:tracking_numbers] || []).sort == (shipment.tracking_numbers || []).sort
       end
     end
   end
