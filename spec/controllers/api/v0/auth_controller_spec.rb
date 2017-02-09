@@ -418,23 +418,21 @@ describe Api::V0::AuthController do
 
     it 'returns a proper token for facebook messenger bot' do
       sign_in @user
-      get :external_redirect, :path => "http://" + Rails.application.config.shared_config[:facebook][:messenger_bot_endpoint] + "/auth?psid=1234"
+      get :external_redirect, :path => "http://" + Rails.application.config.shared_config[:facebook][:messenger_endpoint] + "/auth?psid=1234"
 
       response.code.should eq("200")
 
       parsed_body = JSON.parse(response.body)
       redirect = parsed_body['redirect']
       uri = URI(redirect)
-      uri.host.should eq(Rails.application.config.shared_config[:facebook][:messenger_bot_endpoint])
+      uri.host.should eq(Rails.application.config.shared_config[:facebook][:messenger_endpoint])
 
       fb_params = redirect.split('?')[1]
       parsed_fb_params = CGI::parse(fb_params)
-      token_string = parsed_fb_params['token'][0]
+      token_string = parsed_fb_params['authorization_code'][0]
       token = AuthToken.from_string token_string
       address_id = token['a']
       ActorAddress.where(address_id: address_id).first.client_metadata.should == 'facebook-messenger'
-
-      parsed_body['close'].should == true
     end
   end
 

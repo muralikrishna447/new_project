@@ -206,17 +206,15 @@ module Api
           redirect_uri = path_uri.to_s+"##{redirect_params.to_query}"
           render_api_response 200, {redirect: redirect_uri}
 
-        # External auth for facebook messenger bot is a little different; we don't actually redirect
-        # the browser, but instead tell it where to post the token and then close the browser window.
-        elsif path_uri.host == Rails.application.config.shared_config[:facebook][:messenger_bot_endpoint].split(':')[0]
+        elsif path_uri.host == Rails.application.config.shared_config[:facebook][:messenger_endpoint]
           aa = ActorAddress.create_for_user(current_api_user, {client_metadata: 'facebook-messenger'})
           token = aa.current_token.to_jwt
           redirect_params = {
-            token: token
+            authorization_code: token
           }
           redirect_uri = path_uri
           redirect_uri.query = [redirect_uri.query, redirect_params.to_query].compact.join('&')
-          render_api_response 200, {redirect: redirect_uri.to_s, close: true}
+          render_api_response 200, {redirect: redirect_uri.to_s}
 
         elsif path_uri.host == "#{ENV['ZENDESK_DOMAIN']}" || path_uri.host == "#{ENV['ZENDESK_MAPPED_DOMAIN']}"
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}

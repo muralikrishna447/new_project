@@ -1,4 +1,5 @@
 require 'aws-sdk'
+require 'retriable'
 
 module Fulfillment
   module CSVStorageProvider
@@ -28,7 +29,11 @@ module Fulfillment
     def read(params)
       validate_params(params)
       s3 = Aws::S3::Resource.new(region: params[:storage_s3_region])
-      s3.bucket(params[:storage_s3_bucket]).object(params[:storage_filename]).get.body.read
+      body = nil
+      Retriable.retriable tries: 3 do
+        body = s3.bucket(params[:storage_s3_bucket]).object(params[:storage_filename]).get.body.read
+      end
+      body
     end
 
     def save(output, params)
@@ -40,7 +45,9 @@ module Fulfillment
         s3
         .bucket(params[:storage_s3_bucket])
         .object("#{params[:storage_filename]}")
-      obj.put(body: output)
+      Retriable.retriable tries: 3 do
+        obj.put(body: output)
+      end
     end
 
     private

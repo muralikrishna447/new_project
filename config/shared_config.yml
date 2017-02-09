@@ -9,7 +9,7 @@ development:
     env: "dev"
   facebook: &development_facebook
     app_id: "249352241894051"
-    messenger_bot_endpoint: "localhost:5000"
+    messenger_endpoint: "messenger.com"
 
 production:
   env: "production"
@@ -22,7 +22,7 @@ production:
     env: "production"
   facebook:
     app_id: "380147598730003"
-    messenger_bot_endpoint: "chefsteps-chatbot-fb-messenger.herokuapp.com"
+    messenger_endpoint: "messenger.com"
 
 staging:
   env: "staging"
@@ -35,7 +35,7 @@ staging:
     env: "staging"
   facebook: &staging_facebook
     app_id: "642634055780525"
-    messenger_bot_endpoint: "chefsteps-chatbot-fb-staging.herokuapp.com"
+    messenger_endpoint: "messenger.com"
 
 staging2:
   env: "staging"
@@ -46,7 +46,7 @@ staging2:
     <<: *staging_bloom
   facebook:
     <<: *staging_facebook
-    messenger_bot_endpoint: "chefsteps-chatbot-fb-staging.herokuapp.com"
+    messenger_endpoint: "messenger.com"
 
 test:
   env: "test"
@@ -58,4 +58,4 @@ test:
     env: "test"
   facebook:
     app_id: "249352241894051"
-    messenger_bot_endpoint: "imaginary-messenger-endpoint.booyah.com"
+    messenger_endpoint: "imaginarymessenger.com"

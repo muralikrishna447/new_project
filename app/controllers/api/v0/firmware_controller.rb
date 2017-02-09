@@ -14,6 +14,8 @@ module Api
         "WIFI_FIRMWARE"        => "espFirmwareVersion"
       }
 
+      UPDATE_URGENCIES = ['normal', 'critical', 'mandatory']
+
       def updates
         # How this currently works
         # - Static mapping of app version to firmware app version
@@ -55,12 +57,30 @@ module Api
           return render_empty_response
         end
 
-        manifest = get_firmware_for_app_version(app_version)
-        if manifest.nil?
+        begin
+          manifest = get_manifest_for_app_version(app_version)
+        rescue ManifestMissingError => e
           logger.info "No manifest found for app version #{app_version}"
+          return render_empty_response
+        rescue ManifestInvalidError => e
+          logger.error "There was a problem with manifest for #{app_version}: #{e}"
           return render_empty_response
         end
 
+        resp = build_response_from_manifest(user, manifest)
+
+        render_api_response 200, resp
+      end
+
+      private
+
+      class ManifestMissingError < StandardError
+      end
+
+      class ManifestInvalidError < StandardError
+      end
+
+      def build_response_from_manifest(user, manifest)
         updates = []
         manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
@@ -86,45 +106,27 @@ module Api
           updates << u
         end
 
-        resp = {
-          updates: updates
-        }
-
-        if manifest['releaseNotesUrl']
-          resp['releaseNotesUrl'] = manifest['releaseNotesUrl']
+        if BetaFeatureService.user_has_feature(user, 'manifest_urgency')
+          manifest_urgency = manifest['urgency'] || 'normal'
+        else
+          manifest_urgency = 'normal'
         end
 
-        render_api_response 200, resp
+        resp = {
+          updates: updates,
+          releaseNotesUrl: manifest['releaseNotesUrl'],
+          releaseNotes: manifest['releaseNotes'],
+          urgency: manifest_urgency,
+        }
+
+        return resp
       end
 
-      private
       def dfu_capable?(params)
         app_version = Semverse::Version.new(params[:appVersion])
 
-        # HACK: Want to get a few more days of DFU out before 2.41.2
-        # is out.  Remove this hack after 2016-12-18
-        is_ios_10_2 = request.env['HTTP_USER_AGENT'] =~ /iPhone OS 10_2/
-        kinda_busted_app = (
-          app_version  == Semverse::Version.new("2.40.2") ||
-          app_version  == Semverse::Version.new("2.41.1")
-        )
-        if kinda_busted_app && params[:appFirmwareVersion] == '47'
-          if is_ios_10_2
-            logger.info("Not allowing DFU for iOS 10.2")
-            return false
-          end
-          logger.info("Allowing firmware update because app is #{app_version} " \
-                      "and appFirmwareVersion is 47")
-          return true
-        end
-        # ENDHACK
-
-        # New backwards incompatible version manifest type for 2.40.2
-        # *But*, 2.40.2/2.41.1 have a bug where doing an ESP only update (ie:
-        # 61.22 -> 61.23) would break startProgram.
         return app_version >= Semverse::Version.new("2.41.2")
       end
-
 
       def get_s3_object_as_json(key)
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
@@ -183,7 +185,7 @@ module Api
         render_api_response 200, {:updates => []}
       end
 
-      def get_firmware_for_app_version(version)
+      def get_manifest_for_app_version(version)
         # Sample manifest
         # {
         #  "releaseNotesUrl" : "http://foo.com/release",
@@ -199,8 +201,28 @@ module Api
         key_name = "manifests/#{version}/manifest"
         bucket = AWS::S3::Bucket.new(bucket_name, :client => s3_client)
         o = bucket.objects[key_name]
-        return nil if !o.exists?
-        JSON.parse(o.read)
+        raise ManifestMissingError.new("Could not find manifest for #{version}") unless o.exists?
+
+        begin
+          manifest = JSON.parse(o.read)
+        rescue JSON::ParserError => e
+          raise ManifestInvalidError.new("Bad JSON in manifest")
+        end
+
+        unless manifest['releaseNotesUrl']
+          raise ManifestInvalidError.new("Manifest is missing releaseNotesUrl")
+        end
+
+        unless manifest['releaseNotes'] && manifest['releaseNotes'].length > 0
+          raise ManifestInvalidError.new("Manifest is missing releaseNotes array")
+        end
+
+        urgency = manifest['urgency']
+        if manifest['urgency'] && !UPDATE_URGENCIES.include?(urgency)
+          raise ManifestInvalidError.new("Manifest specifies unsupported urgency param: #{urgency}")
+        end
+
+        manifest
       end
 
       def get_firmware_link(type, version)

@@ -83,8 +83,22 @@ module Fulfillment
       end
 
       unless row[TRACKING_NUMBER_COLUMN] && !row[TRACKING_NUMBER_COLUMN].empty?
-        raise "Tracking number column is invalid: #{row['CRN']}"
+        raise "Tracking number column is invalid: #{row[TRACKING_NUMBER_COLUMN]}"
       end
+
+      unless row[TRACKING_NUMBER_COLUMN] =~ /^[0-9]{12,14}$/
+        raise "Tracking number column is invalid: #{row[TRACKING_NUMBER_COLUMN]}"
+      end
+    end
+
+    def self.after_import(shipments, _params)
+      Librato.increment 'fulfillment.rosti.shipment-importer.success', sporadic: true
+      Librato.increment 'fulfillment.rosti.shipment-importer.orders.count', by: shipments.length, sporadic: true
+      package_count = shipments.inject(0) do |sum, shipment|
+        sum + shipment.tracking_numbers.length
+      end
+      Librato.increment 'fulfillment.rosti.shipment-importer.packages.count', by: package_count, sporadic: true
+      Librato.tracker.flush
     end
   end
 end
