@@ -115,6 +115,7 @@ module Fulfillment
       end
 
       def include_order?(order)
+        return false unless Fulfillment::PaymentStatusFilter.payment_captured?(order)
         # Filter out any order that has filtered tags
         unless (Shopify::Utils.order_tags(order) & FILTERED_TAGS).empty?
           Rails.logger.info("CSV order export filtering order with id #{order.id} " \
