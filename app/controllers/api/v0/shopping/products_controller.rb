@@ -35,11 +35,20 @@ module Api
           @products = CacheExtensions::fetch_with_rescue("shopping/products", 1.minute, 1.minute) do
             page = 1
             products = []
-            count = ShopifyAPI::Product.count
+            begin
+              count = ShopifyAPI::Product.count
+            rescue Exception => e
+              raise CacheExtensions::CacheFetchError.new(e)
+            end
+
             if count > 0
               page += count.divmod(250).first
               while page > 0
-                products += ShopifyAPI::Product.all(:params => {:page => page, :limit => 250})
+                begin
+                  products += ShopifyAPI::Product.all(:params => {:page => page, :limit => 250})
+                rescue Exception => e
+                  raise CacheExtensions::CacheFetchError.new(e)
+                end
                 page -= 1
               end
             end

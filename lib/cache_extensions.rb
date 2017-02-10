@@ -1,9 +1,8 @@
- module CacheExtensions
+module CacheExtensions
+  class CacheFetchError < StandardError
+  end
+
   class << self
-
-    class CacheFetchError < StandardError
-    end
-
     # This allows caching with an expiration, but if there is an
     # CacheFetchError thrown from the block that produces the cache
     # value, it uses the old value from the cache, retrying
