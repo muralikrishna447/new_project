@@ -45,10 +45,11 @@ module Api
               page += count.divmod(250).first
               while page > 0
                 begin
-                  products += ShopifyAPI::Product.all(:params => {:page => page, :limit => 250})
+                  page_of_products = ShopifyAPI::Product.all(:params => {:page => page, :limit => 250})
                 rescue Exception => e
                   raise CacheExtensions::TransientFetchError.new(e)
                 end
+                products += page_of_products
                 page -= 1
               end
             end
