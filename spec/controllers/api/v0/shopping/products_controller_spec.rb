@@ -1,7 +1,7 @@
 
 describe Api::V0::Shopping::ProductsController do
   before :each do
-
+    Rails.cache.clear()
     @non_premium_user = Fabricate :user, name: 'Non Premium User', email: 'non_premium_user@chefsteps.com', role: 'user', premium_member: false
     @premium_user = Fabricate :user, name: 'Premium User', email: 'premium_user@chefsteps.com', role: 'user', premium_member: true, used_circulator_discount: false
     @premium_user_used_discount = Fabricate :user, name: 'Premium User Used Discount', email: 'premium_user_used_discount@chefsteps.com', role: 'user', premium_member: true, used_circulator_discount: true
@@ -39,6 +39,40 @@ describe Api::V0::Shopping::ProductsController do
       response.should be_success
       products = JSON.parse(response.body)
       products.length.should eq(4)
+    end
+
+    it "should respond with an array of products even if shopify Product API dies" do
+      get :index
+      response.should be_success
+      products = JSON.parse(response.body)
+      products.length.should eq(4)
+
+      ShopifyAPI::Product.stub(:all) \
+        .and_raise(StandardError.new('uh oh we failed to get products'))
+
+      Timecop.travel(Time.now + 2.minutes) do
+        get :index
+        response.should be_success
+        products = JSON.parse(response.body)
+        products.length.should eq(4)
+      end
+    end
+
+    it "should respond with an array of products even if shopify Product count API dies" do
+      get :index
+      response.should be_success
+      products = JSON.parse(response.body)
+      products.length.should eq(4)
+
+      ShopifyAPI::Product.stub(:count) \
+        .and_raise(StandardError.new('uh oh we failed to get product count'))
+
+      Timecop.travel(Time.now + 2.minutes) do
+        get :index
+        response.should be_success
+        products = JSON.parse(response.body)
+        products.length.should eq(4)
+      end
     end
   end
 
