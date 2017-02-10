@@ -39,7 +39,7 @@ Delve::Application.configure do
   config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
   config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')
   config.logger.formatter = proc do |severity, datetime, progname, msg|
-    "#{severity} - #{msg}\n"
+    "[#{severity}] #{msg}\n"
   end
 
   # Prepend all log lines with the following tags
