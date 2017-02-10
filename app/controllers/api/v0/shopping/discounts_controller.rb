@@ -11,7 +11,7 @@ module Api
               begin
                 ShopifyAPI::Discount.find(params[:id])
               rescue Exception => e
-                raise CacheExtensions::CacheFetchError.new(e)
+                raise CacheExtensions::TransientFetchError.new(e)
               end
             end
             @discount.valid = valid?(@discount)

@@ -1,10 +1,10 @@
 module CacheExtensions
-  class CacheFetchError < StandardError
+  class TransientFetchError < StandardError
   end
 
   class << self
     # This allows caching with an expiration, but if there is an
-    # CacheFetchError thrown from the block that produces the cache
+    # TransientFetchError thrown from the block that produces the cache
     # value, it uses the old value from the cache, retrying
     # occasionally. The trick is to not put an expiration on the cache
     # value, but on a separate generated key, because Rails.cache.read
@@ -29,7 +29,7 @@ module CacheExtensions
           result = yield
           Rails.cache.write(key, result)
           Rails.cache.write(freshness_key, 'fresh', expires_in: expiration)
-        rescue CacheFetchError => error
+        rescue TransientFetchError => error
           Rails.cache.write(freshness_key, 'retrying', expires_in: retry_expiration)
           Rails.logger.error("Got error #{error} attempting to update cache #{key}. Using saved value for #{retry_expiration} additional time.")
           Librato.increment 'fetch_with_rescue.block_raised.#{key}', sporadic: true

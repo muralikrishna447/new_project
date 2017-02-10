@@ -38,7 +38,7 @@ module Api
             begin
               count = ShopifyAPI::Product.count
             rescue Exception => e
-              raise CacheExtensions::CacheFetchError.new(e)
+              raise CacheExtensions::TransientFetchError.new(e)
             end
 
             if count > 0
@@ -47,7 +47,7 @@ module Api
                 begin
                   products += ShopifyAPI::Product.all(:params => {:page => page, :limit => 250})
                 rescue Exception => e
-                  raise CacheExtensions::CacheFetchError.new(e)
+                  raise CacheExtensions::TransientFetchError.new(e)
                 end
                 page -= 1
               end
