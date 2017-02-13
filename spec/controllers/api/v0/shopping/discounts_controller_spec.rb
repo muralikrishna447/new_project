@@ -52,6 +52,24 @@ describe Api::V0::Shopping::DiscountsController do
       discount['valid'].should be_true
     end
 
+    it "should return a discount even on API failure" do
+      get :show, id: '101'
+      response.should be_success
+
+      ShopifyAPI::Discount.stub(:find) \
+        .and_raise(StandardError.new('uh oh we failed to get discount'))
+
+      Timecop.travel(Time.now + 2.minutes) do
+        get :show, id: '101'
+        response.should be_success
+        discount = JSON.parse(response.body)
+        discount['code'].should eq('valid01')
+        discount['status'].should eq('enabled')
+        discount['value'].should eq('10.00')
+        discount['valid'].should be_true
+      end
+    end
+
     it "should return 404" do
       get :show, id: 'random01'
       response.should_not be_success

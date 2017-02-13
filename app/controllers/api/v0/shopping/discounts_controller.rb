@@ -8,7 +8,11 @@ module Api
         def show
           begin
             @discount = CacheExtensions::fetch_with_rescue("shopping/discounts/#{params[:id]}", 1.minute, 1.minute) do
-              ShopifyAPI::Discount.find(params[:id])
+              begin
+                ShopifyAPI::Discount.find(params[:id])
+              rescue Exception => e
+                raise CacheExtensions::TransientFetchError.new(e)
+              end
             end
             @discount.valid = valid?(@discount)
             render_api_response 200, @discount
