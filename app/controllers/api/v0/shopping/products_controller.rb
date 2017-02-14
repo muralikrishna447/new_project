@@ -35,14 +35,35 @@ module Api
           @products = CacheExtensions::fetch_with_rescue("shopping/products", 1.minute, 1.minute) do
             page = 1
             products = []
-            count = ShopifyAPI::Product.count
+            begin
+              count = ShopifyAPI::Product.count
+            rescue Exception => e
+              raise CacheExtensions::TransientFetchError.new(e)
+            end
+
             if count > 0
               page += count.divmod(250).first
               while page > 0
-                products += ShopifyAPI::Product.all(:params => {:page => page, :limit => 250})
+                begin
+                  page_of_products = ShopifyAPI::Product.all(:params => {:page => page, :limit => 250})
+                rescue Exception => e
+                  raise CacheExtensions::TransientFetchError.new(e)
+                end
+                products += page_of_products
                 page -= 1
               end
             end
+
+            products = products.select do |product|
+              first_variant = get_first_variant(product)
+              is_valid = first_variant && first_variant.sku
+              unless is_valid
+                logger.warn "Filtering out product with no variant/sku: #{product.id} #{product.title}"
+              end
+              is_valid
+            end
+
+
             results = products.map do |product|
               first_variant = get_first_variant(product)
 

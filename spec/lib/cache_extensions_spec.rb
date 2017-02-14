@@ -35,7 +35,7 @@ describe CacheExtensions do
       end
       Timecop.travel(Time.now + 2.minutes) do
         r = CacheExtensions::fetch_with_rescue('foo', 1.minute, 1.minute) do
-          raise 'not so happy'
+          raise CacheExtensions::TransientFetchError.new('not so happy')
         end
         expect(r).to eq 'happy'
       end
@@ -47,7 +47,7 @@ describe CacheExtensions do
       end
       Timecop.travel(Time.now + 11.minutes) do
         CacheExtensions::fetch_with_rescue('foo', 10.minute, 2.minute) do
-          raise 'not so happy'
+          raise CacheExtensions::TransientFetchError.new 'not so happy'
         end
       end
       Timecop.travel(Time.now + 12.minutes) do

@@ -289,6 +289,10 @@ Delve::Application.routes.draw do
         resources :products do
           # match '/product/:product_id', to: 'shopping#product'
         end
+        resources :marketplace do
+          get :guide_button, on: :collection
+          get :guide_button_redirect, on: :collection
+        end
         resources :users do
           post :multipass, on: :collection
           get :multipass, on: :collection
@@ -312,7 +316,7 @@ Delve::Application.routes.draw do
       # match 'activities/:id', to: 'activities#show', as: 'activity', via: [:get, :options]
 
       resources :random_drops, only: [:show]
-      
+
       resources :cook_history
     end
   end

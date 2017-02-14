@@ -40,6 +40,9 @@ Delve::Application.configure do
 
   config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
   config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')
+  config.logger.formatter = proc do |severity, datetime, progname, msg|
+    "[#{severity}] #{msg}\n"
+  end
 
   # Use a different logger for distributed setups
   # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
