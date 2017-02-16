@@ -69,6 +69,12 @@ describe Api::V0::CookHistoryController do
     # 2 since an item has also been created in 'before :each'
     @user.joule_cook_history_items.length.should == 2
   end
+  
+  # DELETE /api/v0/cook_history
+  it 'should delete a Cook History Item' do
+    delete :destroy, id: @history_item.external_id
+    response.should be_success
+  end
 
   # PUT /api/v0/cook_history/update_by_cook_id
   it 'Can update existing resource' do

@@ -61,12 +61,11 @@ module Api
           render_api_response 422, { errors: cook_history_item.errors }
         end
         
-        
-        
         if cook_history_item.save
           render_cook_history_item(cook_history_item)
+        else
+          render_api_response 500, { errors: 'Failed to update cook history item' }
         end
-        
       end
       
       private
