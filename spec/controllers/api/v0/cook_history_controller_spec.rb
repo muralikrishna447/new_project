@@ -70,10 +70,32 @@ describe Api::V0::CookHistoryController do
     @user.joule_cook_history_items.length.should == 2
   end
 
-   # DELETE /api/v0/cook_history
-   it 'should delete a Cook History Item' do
-     delete :destroy, id: @history_item.external_id
-     response.should be_success
-   end
+  # PUT /api/v0/cook_history/update_by_cook_id
+  it 'Can update existing resource' do
+    new_cook_history_params = cook_history_params.clone
+    cook_id = cook_history_params[:cook_id]
+    new_cook_history_params[:cook_time] = 9001
+    @history_item.cook_time.should == cook_history_params[:cook_time]
+    put :update_by_cook_id, { cook_history: new_cook_history_params }
+    response.should be_success
+    @history_item.reload
+    @history_item.cook_time.should == new_cook_history_params[:cook_time]
+  end
+
+  it 'Creates a new resource if no existing resource' do
+    new_cook_history_params = cook_history_params.clone
+    new_cook_history_params[:cook_id] = 'asdfg'
+    put :update_by_cook_id, { cook_history: new_cook_history_params }
+    response.should be_success
+    new_entry = @user.joule_cook_history_items.find_by_cook_id('asdfg')
+    !!new_entry.should == true
+  end
+
+  it 'Rejects invalid resource' do
+    new_cook_history_params = cook_history_params.clone
+    new_cook_history_params[:set_point] = '9001a'
+    put :update_by_cook_id, { cook_history: new_cook_history_params }
+    response.status.should == 422
+  end
 
 end
