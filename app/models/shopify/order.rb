@@ -57,6 +57,11 @@ class Shopify::Order
 
   def process!
     # TODO - fix order processing race condition - probably optimistic locking on user
+    unless Fulfillment::PaymentStatusFilter.payment_captured?(@api_order)
+      Rails.logger.info "Not processing order [#{@api_order.id}}]} because payment has not been captured"
+      return
+    end
+
     Rails.logger.info "Processing order [#{@api_order.id}] with financial_status [#{@api_order.financial_status}] and fulfillment_status [#{@api_order.fulfillment_status}]"
     if all_but_joule_fulfilled?
       Rails.logger.info "Order already fulfilled."
@@ -80,12 +85,6 @@ class Shopify::Order
         order_contains_joule = true
         # TODO - fix joule_purchase to be idempotent
         user.joule_purchased if user
-      elsif item.sku == PREMIUM_SKU
-        if !gift_order? && item.quantity > 1
-          raise "Order contains more than one non-gift premium."
-        end
-        # TODO - check premium limit for non-gift
-        fulfill_premium(item, true)
       else
         Rails.logger.info "Unknown sku [#{item.sku}]."
       end
@@ -104,7 +103,7 @@ class Shopify::Order
     Librato.timing 'shopify.fulfillment.initial.latency', initial_fulfillment_latency
 
     # Sync premium / discount status
-    Shopify::Customer.sync_user(user) if user
+    sync_user
     # TODO - figure out how to try to do this only once
     send_analytics
   end
@@ -312,5 +311,9 @@ class Shopify::Order
     data['google_analytics_client_id'] = google_analytics_client_id(ga_data.value) if ga_data
 
     return data
+  end
+
+  def sync_user
+    Shopify::Customer.sync_user(user) if user
   end
 end

@@ -520,6 +520,9 @@ GEM
       faraday (~> 0.8.1)
       jwt (>= 0.1.5)
       multi_json (>= 1.0.0)
+    signifyd (0.1.5)
+      activesupport
+      rest-client
     simple-rss (1.2.3)
     simplecov (0.8.2)
       docile (~> 1.1.0)
@@ -700,6 +703,7 @@ DEPENDENCIES
   shopify-mock!
   shopify_api
   showdown-rails
+  signifyd
   simple-rss
   simplecov
   slack-notifier
