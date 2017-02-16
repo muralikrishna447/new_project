@@ -58,7 +58,7 @@ module Api
         cook_history_item.update_attributes(params[:cook_history])
 
         unless cook_history_item.valid?
-          render_api_response 422, { errors: cook_history_item.errors }
+          return render_api_response 422, { errors: cook_history_item.errors }
         end
         
         if cook_history_item.save
