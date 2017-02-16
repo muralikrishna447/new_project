@@ -46,6 +46,29 @@ module Api
         end
       end
       
+      def update_by_cook_id
+        user = User.find(@user_id_from_token)
+        cook_id = params[:cook_history][:cook_id]
+        
+        cook_history_item = user.joule_cook_history_items.find_by_cook_id(cook_id)
+        unless cook_history_item
+          cook_history_item = user.joule_cook_history_items.new(params[:cook_history])
+        end
+        
+        cook_history_item.update_attributes(params[:cook_history])
+
+        unless cook_history_item.valid?
+          render_api_response 422, { errors: cook_history_item.errors }
+        end
+        
+        
+        
+        if cook_history_item.save
+          render_cook_history_item(cook_history_item)
+        end
+        
+      end
+      
       private
       
       def get_save_status(record)
