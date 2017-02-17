@@ -351,20 +351,34 @@ describe Api::V0::CirculatorsController do
           expect(apns['aps']['content-available']).to eq 0
         end
 
-        it 'should notify clients Joule name if provided' do
-          post(
-            :notify_clients,
-            id: @circulator.circulator_id,
-            notification_type: notification_type,
-            notification_params: {
-              joule_name: 'BurgerBob'
-            }
-          )
-          expect(@published_messages.length).to eq 1
-          msg = JSON.parse(@published_messages[0][:msg])
-          apns = JSON.parse msg['APNS']
-          expect(apns['aps']['content-available']).to eq 0
-          expect(apns['aps']['alert']).to include('BurgerBob')
+        it 'should notify clients with Joule name if provided' do
+          notification_types = [
+            'guided_water_heated',
+            'water_heated',
+            'circulator_error_hardware_failure',
+            'circulator_error_button_pressed',
+            'circulator_error_low_water_level',
+            'circulator_error_tipped_over',
+            'circulator_error_overheating',
+            'circulator_error_power_loss',
+            'circulator_error_unknown_reason',
+            'disconnect_while_cooking',
+          ]
+
+          for type in notification_types
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: type,
+              notification_params: {
+                joule_name: 'BurgerBob'
+              }
+            )
+            msg = JSON.parse(@published_messages[-1][:msg])
+            apns = JSON.parse msg['APNS']
+            expect(apns['aps']['alert']).to include('BurgerBob')
+          end
+
         end
 
         it 'should delete token if endpoint disabled' do
