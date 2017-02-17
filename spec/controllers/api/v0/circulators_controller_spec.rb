@@ -351,6 +351,22 @@ describe Api::V0::CirculatorsController do
           expect(apns['aps']['content-available']).to eq 0
         end
 
+        it 'should notify clients Joule name if provided' do
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: notification_type,
+            notification_params: {
+              joule_name: 'BurgerBob'
+            }
+          )
+          expect(@published_messages.length).to eq 1
+          msg = JSON.parse(@published_messages[0][:msg])
+          apns = JSON.parse msg['APNS']
+          expect(apns['aps']['content-available']).to eq 0
+          expect(apns['aps']['alert']).to include('BurgerBob')
+        end
+
         it 'should delete token if endpoint disabled' do
           Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |arn, msg|
             raise Aws::SNS::Errors::EndpointDisabled.new('foo', 'bar')
