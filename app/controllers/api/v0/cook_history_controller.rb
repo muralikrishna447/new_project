@@ -2,16 +2,25 @@ module Api
   module V0
     class CookHistoryController < BaseController
       before_filter :ensure_authorized
-
+      
       def index
-        page = params[:page] || 1
-        user = User.find(@user_id_from_token)
-        page_array = user.joule_cook_history_items.order('start_time DESC').page(page)
-        serialized_items = ActiveModel::ArraySerializer.new(page_array, each_serializer: Api::JouleCookHistoryItemSerializer)
+        cursor = params[:cursor]
+        # Enforce that cursor is an Integer if truthy
+        # falsey cursor will return beginning of list
+        if cursor
+          raise 'Not an integer' unless cursor.is_a? Integer
+        end
+        
+        user_items = User.find(@user_id_from_token).joule_cook_history_items
+        page = JouleCookHistoryItem.group_paginate(user_items, cursor)
+        serialized_items = ActiveModel::ArraySerializer.new(
+          page[:body],
+          each_serializer: Api::JouleCookHistoryItemSerializer
+        )
         render_api_response 200, {
           cookHistory: serialized_items,
-          currentPage: page,
-          totalPages: page_array.total_pages
+          nextCursor: page[:next_cursor],
+          endOfList: page[:end_of_list]
         }
       end
       
@@ -43,28 +52,6 @@ module Api
           render_api_response 200, { message: "Successfully destroyed #{params[:id]}" }
         else
           render_api_response 404, { message: "Item not found" }
-        end
-      end
-      
-      def update_by_cook_id
-        user = User.find(@user_id_from_token)
-        cook_id = params[:cook_history][:cook_id]
-        
-        cook_history_item = user.joule_cook_history_items.find_by_cook_id(cook_id)
-        unless cook_history_item
-          cook_history_item = user.joule_cook_history_items.new(params[:cook_history])
-        end
-        
-        cook_history_item.update_attributes(params[:cook_history])
-
-        unless cook_history_item.valid?
-          return render_api_response 422, { errors: cook_history_item.errors }
-        end
-        
-        if cook_history_item.save
-          render_cook_history_item(cook_history_item)
-        else
-          render_api_response 500, { errors: 'Failed to update cook history item' }
         end
       end
       
