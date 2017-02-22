@@ -14,11 +14,16 @@ option_parser = OptionParser.new do |option|
   option.on('-s', '--store STORE', 'Shopify store name') do |store|
     options[:store] = store
   end
+
+  option.on('-m', '--map MAP_FILE', 'Map file') do |map_file|
+    options[:map_file] = map_file
+  end
 end
 option_parser.parse!
 raise '--key is required' unless options[:api_key]
 raise '--password is required' unless options[:password]
 raise '--store is required' unless options[:store]
+raise '--map is required' unless options[:map_file]
 
 ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
 
@@ -52,6 +57,15 @@ def pickup_time(line_item)
   pickup_times.first.value
 end
 
+sku_info = {}
+CSV.foreach(options[:map_file], headers: true) do |row|
+  sku_info[row['ChefSteps SKU']] = {
+    cut_number: row['Cut Number'],
+    cut_name: row['Cut Name'],
+    weight_lbs: row['Weight'].to_f
+  }
+end
+
 orders = Shopify::Utils.search_orders(status: 'open')
 fulfillables = []
 orders.each do |order|
@@ -74,6 +88,9 @@ output_str = CSV.generate(force_quotes: true) do |output|
     'Email',
     'Product SKU',
     'Product Name',
+    'Cut Name',
+    'Cut Number',
+    'Product Weight (lbs)',
     'Quantity',
     'Line Item Total',
     'Pickup Time'
@@ -88,6 +105,9 @@ output_str = CSV.generate(force_quotes: true) do |output|
         fulfillable.order.email,
         line_item.sku,
         line_item.name,
+        sku_info[line_item.sku] ? sku_info[line_item.sku][:cut_name] : '',
+        sku_info[line_item.sku] ? sku_info[line_item.sku][:cut_number] : '',
+        sku_info[line_item.sku] ? sku_info[line_item.sku][:weight_lbs] : '',
         line_item.fulfillable_quantity,
         line_item.pre_tax_price,
         pickup_time(line_item)

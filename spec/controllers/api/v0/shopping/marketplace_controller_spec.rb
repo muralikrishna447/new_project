@@ -10,6 +10,12 @@ describe Api::V0::Shopping::MarketplaceController do
       expect(JSON.parse(response.body)['button']).to eq expected
     end
 
+    it 'supports existing marketplace guides with two-line buttons' do
+      get :guide_button, guide_id: 'JIO8hrpTywMCSI40KswcY'
+      expected = {'line_1' => 'Shop short ribs', 'line_2' => '$84'}
+      expect(JSON.parse(response.body)['button']).to eq expected
+    end
+
     it 'supports beta-flagged guides' do
       BetaFeatureService.stub(:user_has_feature).with(anything(), 'steak_buy_button').and_return(true)
       request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
