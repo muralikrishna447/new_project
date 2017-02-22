@@ -29,7 +29,17 @@ module Api
           '6ORApkpQQ04IcKse0qIW8k' => {
             url: "https://#{Rails.configuration.shopify[:store_domain]}/products/snake-river-farms-steak-selection?utm_source=App&utm_medium=post&utm_campaign=chefsteps_app_sales_srf",
             button_text: 'Shop steaks',
-          }
+          },
+          '4Abjel4yI8esSEwcIAoqws' => {
+            url: "https://#{Rails.configuration.shopify[:store_domain]}/products/wagyu-beef-brisket?utm_source=App&utm_medium=post&utm_campaign=wagyu_beef_brisket_app",
+            button_text: 'Shop brisket',
+            button_text_line_2: '$84',
+          },
+          'JIO8hrpTywMCSI40KswcY' => {
+            url: "https://#{Rails.configuration.shopify[:store_domain]}/products/72-hour-short-ribs?utm_source=App&utm_medium=post&utm_campaign=short_ribs",
+            button_text: 'Shop short ribs',
+            button_text_line_2: '$84',
+          },
         }
 
 
@@ -38,7 +48,11 @@ module Api
           if @@marketplace_guides[guide_id]
             Rails.logger.info "Matching marketplace guide"
             button_text = @@marketplace_guides[guide_id][:button_text]
-            return render_api_response 200, {button: {line_1: button_text}}
+            button_text_line_2 = @@marketplace_guides[guide_id][:button_text_line_2]
+
+            button = {button: {line_1: button_text }}
+            button[:button][:line_2] = button_text_line_2 if button_text_line_2
+            return render_api_response 200, button
           end
 
           if @user_id_from_token.nil?
