@@ -317,7 +317,6 @@ Delve::Application.routes.draw do
 
       resources :random_drops, only: [:show]
 
-      put '/cook_history/update_by_cook_id', to: 'cook_history#update_by_cook_id'
       resources :cook_history
     end
   end

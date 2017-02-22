@@ -7,8 +7,6 @@ class JouleCookHistoryItem < ActiveRecord::Base
   @@page_size = 20
   @@page_search_chunk_size = 50
   
-  paginates_per 20
-  
   attr_accessible :idempotency_id, :start_time, :started_from,
   :cook_time, :guide_id, :program_type, :set_point, :timer_id, :cook_id,
   :wait_for_preheat, :program_id
