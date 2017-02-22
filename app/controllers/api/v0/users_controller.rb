@@ -101,7 +101,8 @@ module Api
         capability_list = [
           'beta_guides',
           'multi_circ',
-          'fbjoule'
+          'fbjoule',
+          'update_during_pairing',
         ]
         user_capabilities = capability_list.select {|c|
           BetaFeatureService.user_has_feature(user, c)
