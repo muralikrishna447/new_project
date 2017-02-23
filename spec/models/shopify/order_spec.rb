@@ -9,6 +9,7 @@ describe Shopify::Order do
   SIMPLE_ORDER_FULFILLED = 100003
   SIMPLE_ORDER_UNFULFILLED = 100004
   PREMIUM_GIFT_ORDER = 100005
+  UNPAID_PREMIUM_ORDER_ID = 100006
 
   context 'order retrieval' do
     it 'retrieves an order' do
@@ -34,19 +35,6 @@ describe Shopify::Order do
            to_return(:status => 200, :body => customer_data.to_json, :headers => {})
 
       Analytics.should_receive(:flush)
-    end
-
-    it 'fulfills a simple premium order' do
-      # TODO - assert actual email contents
-
-      stub_fulfillment
-      stub_metafield_get
-      Shopify::Customer.should_receive(:sync_user)
-
-      @user.premium?.should == false
-      order = Shopify::Order.find(PREMIUM_ORDER_ID)
-      order.process!
-      @user.reload.premium?.should == true
     end
 
     it 'fulfills a simple joule order' do
@@ -119,6 +107,34 @@ describe Shopify::Order do
     it 'knows if order is unfulfilled' do
       stub_metafield_get
       expect(Shopify::Order.find(SIMPLE_ORDER_UNFULFILLED).all_but_joule_fulfilled?).to be_false
+    end
+  end
+
+  context 'unpaid order' do
+    it 'returns immediately if an order is unpaid' do
+      order = Shopify::Order.find(UNPAID_PREMIUM_ORDER_ID)
+      order.should_not_receive(:sync_user)
+      order.should_not_receive(:send_analytics)
+      order.process!
+    end
+  end
+
+  describe 'fulfill_premium' do
+    before(:each) do
+      @user = Fabricate(:user, :id => 123)
+    end
+
+    it 'fulfills a simple premium order' do
+      # TODO - assert actual email contents
+
+      stub_fulfillment
+      stub_metafield_get
+
+      @user.premium?.should == false
+      api_order = ShopifyAPI::Order.find(PREMIUM_ORDER_ID)
+      order = Shopify::Order.new(api_order)
+      order.fulfill_premium(api_order.line_items.first, true)
+      @user.reload.premium?.should == true
     end
   end
 
