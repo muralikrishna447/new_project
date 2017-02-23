@@ -172,15 +172,37 @@ describe Shopify::Utils do
     let(:order_3) { ShopifyAPI::Order.new(id: 3) }
     let(:param_key) { 'my_key'.to_sym }
     let(:param_value) { 'my_value' }
+    let(:params) { { my_key: 'my_value' } }
+
+    it 'returns all orders' do
+      Shopify::Utils
+        .stub(:search_orders_with_each)
+        .with(params, page_size)
+        .and_yield(order_1).and_yield(order_2).and_yield(order_3)
+      expect(Shopify::Utils.search_orders(params, page_size)).to eq [order_1, order_2, order_3]
+    end
+  end
+
+  describe 'search_orders_with_each' do
+    let(:page_size) { 2 }
+    let(:order_1) { ShopifyAPI::Order.new(id: 1) }
+    let(:order_2) { ShopifyAPI::Order.new(id: 2) }
+    let(:order_3) { ShopifyAPI::Order.new(id: 3) }
+    let(:param_key) { 'my_key'.to_sym }
+    let(:param_value) { 'my_value' }
 
     context 'response has order count equal to page size' do
-      it 'returns results from all pages' do
+      it 'yields results from all pages' do
         path_1 = ShopifyAPI::Order.collection_path(limit: page_size, page: 1, param_key => param_value)
         ShopifyAPI::Order.should_receive(:find).once.with(:all, from: path_1).and_return([order_1, order_2])
         path_2 = ShopifyAPI::Order.collection_path(limit: page_size, page: 2, param_key => param_value)
         ShopifyAPI::Order.should_receive(:find).once.with(:all, from: path_2).and_return([order_3])
 
-        expect(Shopify::Utils.search_orders({ param_key => param_value }, page_size)).to eq([order_1, order_2, order_3])
+        orders = []
+        Shopify::Utils.search_orders_with_each({ param_key => param_value }, page_size) do |order|
+          orders << order
+        end
+        expect(orders).to eq [order_1, order_2, order_3]
       end
     end
 
@@ -189,7 +211,11 @@ describe Shopify::Utils do
         path_1 = ShopifyAPI::Order.collection_path(limit: page_size, page: 1, param_key => param_value)
         ShopifyAPI::Order.should_receive(:find).once.with(:all, from: path_1).and_return([order_1])
 
-        expect(Shopify::Utils.search_orders({ param_key => param_value }, page_size)).to eq([order_1])
+        orders = []
+        Shopify::Utils.search_orders_with_each({ param_key => param_value }, page_size) do |order|
+          orders << order
+        end
+        expect(orders).to eq [order_1]
       end
     end
   end
@@ -213,6 +239,58 @@ describe Shopify::Utils do
       let(:return_value) { false }
       it 'raises error' do
         expect { Shopify::Utils.send_assert_true(obj, method_symbol) }.to raise_error
+      end
+    end
+  end
+
+  describe 'order_by_id' do
+    let(:order_id) { 1234 }
+    let(:order) { ShopifyAPI::Order.new(id: order_id) }
+
+    context 'order exists' do
+      before :each do
+        ShopifyAPI::Order.stub(:find).with(order_id).and_return(order)
+      end
+      it 'returns order' do
+        expect(Shopify::Utils.order_by_id(order_id)).to eq order
+      end
+    end
+
+    context 'order does not exist' do
+      before :each do
+        ShopifyAPI::Order
+          .stub(:find)
+          .with(order_id)
+          .and_raise(ActiveResource::ResourceNotFound.new(double('response')))
+      end
+      it 'raises error' do
+        expect{ Shopify::Utils.order_by_id(order_id) }.to raise_error
+      end
+    end
+  end
+
+  describe 'contains_only_premium?' do
+    let(:order) { ShopifyAPI::Order.new(line_items: line_items) }
+    context 'order line items contain only premium' do
+      let(:line_items) do
+        [
+          ShopifyAPI::LineItem.new(sku: Shopify::Order::PREMIUM_SKU)
+        ]
+      end
+      it 'returns true' do
+        expect(Shopify::Utils.contains_only_premium?(order)).to be_true
+      end
+    end
+
+    context 'order line items has something other than premium' do
+      let(:line_items) do
+        [
+          ShopifyAPI::LineItem.new(sku: Shopify::Order::PREMIUM_SKU),
+          ShopifyAPI::LineItem.new(sku: Shopify::Order::JOULE_SKU)
+        ]
+      end
+      it 'returns false' do
+        expect(Shopify::Utils.contains_only_premium?(order)).to be_false
       end
     end
   end
