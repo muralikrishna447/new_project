@@ -4,22 +4,11 @@ module Api
       before_filter :ensure_authorized
       
       def index
-        cursor = params[:cursor]
-        # Enforce that cursor is an Integer if truthy
-        # falsey cursor will return beginning of list
-        if cursor
-          raise 'Not an integer' unless cursor.is_a? Integer
-        end
-        
-        user_items = User.find(@user_id_from_token).joule_cook_history_items
-        page = cook_history_entries_collapsed(20)
         serialized_items = ActiveModel::ArraySerializer.new(
-          page,
+          cook_history_entries_collapsed,
           each_serializer: Api::JouleCookHistoryItemSerializer
         )
-        render_api_response 200, {
-          cookHistory: serialized_items,
-        }
+        render_api_response 200, { cookHistory: serialized_items }
       end
       
       def create
@@ -68,8 +57,30 @@ module Api
         render_api_response 200, serializer.serializable_hash
       end
       
-      def cook_history_entries_collapsed(max_entries)
-        entries = User.find(@user_id_from_token).joule_cook_history_items.page(0)
+      def cook_history_entries_collapsed
+        page_size = JouleCookHistoryItem.page_size
+        current_page = 0
+        end_of_list = false
+        
+        entries_by_cook_id = {}
+        entry_query = User.find(@user_id_from_token)
+          .joule_cook_history_items
+          .order('id DESC')
+        while !end_of_list && entries_by_cook_id.length < page_size
+          entries = entry_query.page(current_page)
+          end_of_list= entries.length < page_size
+          current_page += 1
+          
+          # Insert most recent cook_id instance
+          # only works if entries is ordered 'id DESC'
+          entries.each do |entry|
+            unless entries_by_cook_id[entry.cook_id]
+              entries_by_cook_id[entry.cook_id] = entry
+            end
+          end
+          
+        end
+        entries_by_cook_id.values.sort_by{|entry| -entry.id}.first(page_size)
       end
       
     end

@@ -5,6 +5,8 @@ class JouleCookHistoryItem < ActiveRecord::Base
   @@hashids = Hashids.new(HASHID_SALT, 8)
   
   @@page_size = 20
+  paginates_per @@page_size
+  
   @@page_search_chunk_size = 50
   
   attr_accessible :idempotency_id, :start_time, :started_from,
@@ -28,6 +30,10 @@ class JouleCookHistoryItem < ActiveRecord::Base
   validates :cook_id, presence: true, if: 'automatic?'
   validates :program_id, presence: true, if: 'automatic?'
   
+  def self.page_size
+    @@page_size
+  end
+  
   def self.find_by_external_id(external_id)
     self.find_by_id @@hashids.decode(external_id)
   end
@@ -38,53 +44,6 @@ class JouleCookHistoryItem < ActiveRecord::Base
   
   def automatic?
     self.program_type == 'AUTOMATIC'
-  end
-  
-  def self.collapse_to_first_of_each_cook_id(array)
-    first_entries = {}
-    array.each do |entry|
-      key = entry.cook_id
-      first_entries[key] = entry unless first_entries[key]
-    end
-    first_entries.values
-  end
-  
-  def self.entries_from_cursor(association, cursor)
-    if cursor
-      association = association.where('id < ?', cursor)
-    end
-    entries_desc = association.order('id DESC').first(@@page_search_chunk_size)
-    end_of_list = entries_desc.count < @@page_search_chunk_size
-    entries_collapsed = JouleCookHistoryItem.collapse_to_first_of_each_cook_id(entries_desc)
-    { entries: entries_collapsed, end_of_list: end_of_list }
-  end
-  
-  def self.group_paginate(association, cursor)  
-    page = []
-    current_cursor = cursor
-    
-    loop do
-      cursor_results = self.entries_from_cursor(association, current_cursor)
-      page.push(cursor_results[:entries]).flatten!
-      additional_needed = (@@page_size > page.count)
-      end_of_list = cursor_results[:end_of_list]
-      if !additional_needed || end_of_list
-        size_capped_page = page.first(@@page_size)
-        size_not_capped = size_capped_page.count
-        if end_of_list
-          next_cursor = false
-        end
-        return {
-          body: size_capped_page,
-          next_cursor: size_capped_page.last.id,
-          additional_needed: additional_needed,
-          end_of_list: end_of_list
-        }
-      else
-        current_cursor = cursor_results[:entries].last.id
-      end
-    end
-    
   end
   
 end

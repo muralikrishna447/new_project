@@ -20,11 +20,19 @@ describe Api::V0::CookHistoryController do
     @user = Fabricate :user, name: 'Test User', email: 'admin@chefsteps.com'
     sign_in @user
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
-    @history_item = Fabricate :joule_cook_history_item, user_id: @user.id, idempotency_id: SecureRandom.uuid
+  end
+  
+  def fabricate_unique_cook_history_item
+    @history_item = Fabricate :joule_cook_history_item,
+      user_id: @user.id,
+      idempotency_id: SecureRandom.uuid,
+      cook_id: SecureRandom.uuid
+      
   end
   
   # GET /api/v0/cook_history
   it "should respond with an array of a user's cook history items" do
+    fabricate_unique_cook_history_item
     get :index
     response.should be_success
     parsed = JSON.parse response.body
@@ -73,32 +81,51 @@ describe Api::V0::CookHistoryController do
     response.should be_success
     parsed = JSON.parse response.body
     parsed["cookHistory"].length.should == 10
-    parsed["cookHistory"].last.timer_id.should == 'new'
+    last_entry = parsed["cookHistory"].last
+    last_entry['program']['programMetadata']['timerId'].should == 'new'
   end
   
   # GET /api/v0/cook_history
-  it "should paginate with 20 results per page" do
+  it "should limit results to page size" do
     
-    21.times do |index|
+    22.times do |index|
       Fabricate :joule_cook_history_item,
         user_id: @user.id,
         idempotency_id: SecureRandom.uuid,
         cook_id: index
     end
     
-    binding.pry
+    get :index
+    
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed["cookHistory"].length.should == 20
+  end
+  
+  # GET /api/v0/cook_history
+  it "should limit results to page size when duplicates exist" do
+    
+    # Create 10 unique entries
+    10.times do |index|
+      Fabricate :joule_cook_history_item,
+        user_id: @user.id,
+        idempotency_id: SecureRandom.uuid,
+        cook_id: index
+    end
+    
+    # Create 10 non-unique entries and 10 unique entries
+    20.times do |index|
+      Fabricate :joule_cook_history_item,
+        user_id: @user.id,
+        idempotency_id: SecureRandom.uuid,
+        cook_id: index
+    end
     
     get :index
     
     response.should be_success
     parsed = JSON.parse response.body
     parsed["cookHistory"].length.should == 20
-    
-    get :index, {cursor: parsed['nextCursor']}
-    
-    response.should be_success
-    parsed = JSON.parse response.body
-    parsed["cookHistory"].length.should == 2
   end
 
   # POST /api/v0/cook_history
@@ -111,6 +138,7 @@ describe Api::V0::CookHistoryController do
   
   # POST /api/v0/cook_history
   it 'should not create item with identical user/idempotency_id as existing entry' do
+    fabricate_unique_cook_history_item
     2.times do
       post :create, { cook_history: cook_history_params }
       response.should be_success
@@ -121,6 +149,7 @@ describe Api::V0::CookHistoryController do
   
   # DELETE /api/v0/cook_history
   it 'should delete a Cook History Item' do
+    fabricate_unique_cook_history_item
     delete :destroy, id: @history_item.external_id
     response.should be_success
   end
