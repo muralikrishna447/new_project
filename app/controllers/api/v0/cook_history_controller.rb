@@ -12,15 +12,13 @@ module Api
         end
         
         user_items = User.find(@user_id_from_token).joule_cook_history_items
-        page = JouleCookHistoryItem.group_paginate(user_items, cursor)
+        page = cook_history_entries_collapsed(20)
         serialized_items = ActiveModel::ArraySerializer.new(
-          page[:body],
+          page,
           each_serializer: Api::JouleCookHistoryItemSerializer
         )
         render_api_response 200, {
           cookHistory: serialized_items,
-          nextCursor: page[:next_cursor],
-          endOfList: page[:end_of_list]
         }
       end
       
@@ -68,6 +66,10 @@ module Api
       def render_cook_history_item(item)
         serializer = Api::JouleCookHistoryItemSerializer.new(item)
         render_api_response 200, serializer.serializable_hash
+      end
+      
+      def cook_history_entries_collapsed(max_entries)
+        entries = User.find(@user_id_from_token).joule_cook_history_items.page(0)
       end
       
     end

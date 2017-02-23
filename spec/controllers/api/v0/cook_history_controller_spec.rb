@@ -32,11 +32,15 @@ describe Api::V0::CookHistoryController do
     parsed["cookHistory"].first["externalId"].should == @history_item.external_id
   end
   
+  
   # GET /api/v0/cook_history
-  it "should paginate with 20 results per page" do
+  it "should paginate with 20 results in the first page" do
     
-    21.times do
-      Fabricate :joule_cook_history_item, user_id: @user.id, idempotency_id: SecureRandom.uuid
+    21.times do |index|
+      Fabricate :joule_cook_history_item,
+        user_id: @user.id,
+        idempotency_id: SecureRandom.uuid,
+        cook_id: index
     end
     
     get :index
@@ -44,8 +48,53 @@ describe Api::V0::CookHistoryController do
     response.should be_success
     parsed = JSON.parse response.body
     parsed["cookHistory"].length.should == 20
+  end
+  
+  # GET /api/v0/cook_history
+  it "should collapse cook history entries with non-unique cook_ids" do
+    10.times do |index|
+      Fabricate :joule_cook_history_item,
+        user_id: @user.id,
+        idempotency_id: SecureRandom.uuid,
+        cook_id: index,
+        timer_id: "old"
+    end
     
-    get :index, {page: 2}
+    10.times do |index|
+      Fabricate :joule_cook_history_item,
+        user_id: @user.id,
+        idempotency_id: SecureRandom.uuid,
+        cook_id: index,
+        timer_id: "new"
+    end
+    
+    get :index
+    
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed["cookHistory"].length.should == 10
+    parsed["cookHistory"].last.timer_id.should == 'new'
+  end
+  
+  # GET /api/v0/cook_history
+  it "should paginate with 20 results per page" do
+    
+    21.times do |index|
+      Fabricate :joule_cook_history_item,
+        user_id: @user.id,
+        idempotency_id: SecureRandom.uuid,
+        cook_id: index
+    end
+    
+    binding.pry
+    
+    get :index
+    
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed["cookHistory"].length.should == 20
+    
+    get :index, {cursor: parsed['nextCursor']}
     
     response.should be_success
     parsed = JSON.parse response.body

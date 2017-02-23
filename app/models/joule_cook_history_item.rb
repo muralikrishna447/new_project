@@ -54,7 +54,7 @@ class JouleCookHistoryItem < ActiveRecord::Base
       association = association.where('id < ?', cursor)
     end
     entries_desc = association.order('id DESC').first(@@page_search_chunk_size)
-    end_of_list = entries_desc.length < @@page_search_chunk_size
+    end_of_list = entries_desc.count < @@page_search_chunk_size
     entries_collapsed = JouleCookHistoryItem.collapse_to_first_of_each_cook_id(entries_desc)
     { entries: entries_collapsed, end_of_list: end_of_list }
   end
@@ -66,19 +66,22 @@ class JouleCookHistoryItem < ActiveRecord::Base
     loop do
       cursor_results = self.entries_from_cursor(association, current_cursor)
       page.push(cursor_results[:entries]).flatten!
-      next_cursor = cursor_results[:entries].last.id
-      additional_needed = (@@page_size > page.length)
+      additional_needed = (@@page_size > page.count)
       end_of_list = cursor_results[:end_of_list]
       if !additional_needed || end_of_list
-        next_cursor = false if end_of_list
+        size_capped_page = page.first(@@page_size)
+        size_not_capped = size_capped_page.count
+        if end_of_list
+          next_cursor = false
+        end
         return {
-          body: page.first(@@page_size),
-          next_cursor: next_cursor,
+          body: size_capped_page,
+          next_cursor: size_capped_page.last.id,
           additional_needed: additional_needed,
           end_of_list: end_of_list
         }
       else
-        current_cursor = next_cursor
+        current_cursor = cursor_results[:entries].last.id
       end
     end
     
