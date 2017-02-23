@@ -92,7 +92,7 @@ output_str = CSV.generate(force_quotes: true) do |output|
     'Cut Number',
     'Product Weight (lbs)',
     'Quantity',
-    'Line Item Total',
+    'Unit Price',
     'Pickup Time'
   ]
 
@@ -109,7 +109,7 @@ output_str = CSV.generate(force_quotes: true) do |output|
         sku_info[line_item.sku] ? sku_info[line_item.sku][:cut_number] : '',
         sku_info[line_item.sku] ? sku_info[line_item.sku][:weight_lbs] : '',
         line_item.fulfillable_quantity,
-        line_item.pre_tax_price,
+        line_item.price,
         pickup_time(line_item)
       ]
     end
