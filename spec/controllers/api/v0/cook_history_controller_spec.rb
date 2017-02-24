@@ -18,6 +18,7 @@ describe Api::V0::CookHistoryController do
 
   before :each do
     @user = Fabricate :user, name: 'Test User', email: 'admin@chefsteps.com'
+    @user_entries = @user.joule_cook_history_items
     sign_in @user
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
   end
@@ -27,7 +28,6 @@ describe Api::V0::CookHistoryController do
       user_id: @user.id,
       idempotency_id: SecureRandom.uuid,
       cook_id: SecureRandom.uuid
-      
   end
   
   # GET /api/v0/cook_history
@@ -144,7 +144,7 @@ describe Api::V0::CookHistoryController do
       response.should be_success
     end
     # 2 since an item has also been created in 'before :each'
-    @user.joule_cook_history_items.length.should == 2
+    @user_entries.length.should == 2
   end
   
   # DELETE /api/v0/cook_history
@@ -152,6 +152,31 @@ describe Api::V0::CookHistoryController do
     fabricate_unique_cook_history_item
     delete :destroy, id: @history_item.external_id
     response.should be_success
+    @user_entries.exists?(@history_item.id).should == false
+  end
+  
+  # DELETE /api/v0/cook_history
+  it 'should delete all entries with the same cook_id as the entry specified' do
+    duplicate_1 = Fabricate :joule_cook_history_item,
+      user_id: @user.id,
+      idempotency_id: SecureRandom.uuid,
+      cook_id: 'duplicate'
+    duplicate_2 = Fabricate :joule_cook_history_item,
+      user_id: @user.id,
+      idempotency_id: SecureRandom.uuid,
+      cook_id: 'duplicate'
+    unique = Fabricate :joule_cook_history_item,
+      user_id: @user.id,
+      idempotency_id: SecureRandom.uuid,
+      cook_id: 'unique'
+      
+    delete :destroy, id: duplicate_1.external_id
+    
+    response.should be_success
+    
+    @user_entries.exists?(duplicate_1.id).should == false
+    @user_entries.exists?(duplicate_2.id).should == false
+    @user_entries.exists?(unique.id).should == true
   end
 
 end

@@ -34,12 +34,13 @@ module Api
       
       def destroy
         user = User.find(@user_id_from_token)
-        item = user.joule_cook_history_items.find_by_external_id(params[:id])
-        if item && item.destroy
-          render_api_response 200, { message: "Successfully destroyed #{params[:id]}" }
+        entry = user.joule_cook_history_items.find_by_external_id(params[:id])
+        if entry
+          destroy_all_by_cook_id(user.joule_cook_history_items, entry.cook_id)
         else
-          render_api_response 404, { message: "Item not found" }
+          return render_api_response 404, { message: "Entry not found" }
         end
+        
       end
       
       private
@@ -55,6 +56,15 @@ module Api
       def render_cook_history_item(item)
         serializer = Api::JouleCookHistoryItemSerializer.new(item)
         render_api_response 200, serializer.serializable_hash
+      end
+      
+      def destroy_all_by_cook_id(user_entries, cook_id)
+        entries_to_destroy = user_entries.where(cook_id: cook_id)
+        if entries_to_destroy.destroy_all
+          render_api_response 200, { message: "Successfully destroyed #{params[:id]} and associated entries." }
+        else
+          render_api_response 500, { message: "Unable to destroy associated entries." }
+        end
       end
       
       def cook_history_entries_collapsed
