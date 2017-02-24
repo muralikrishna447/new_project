@@ -502,18 +502,6 @@ describe Api::V0::CirculatorsController do
           :notification_type => 'water_heated'})
         response.code.should == '200'
       end
-
-      it 'should call notify_owners with a notification_type' do
-
-        Api::V0::CirculatorsController.any_instance.should_receive(:notify_owners).with(anything, anything, anything, notification_type, anything)
-
-        post(
-          :notify_clients,
-          id: @circulator.circulator_id,
-          notification_type: notification_type
-        )
-
-      end
     end
   end
 

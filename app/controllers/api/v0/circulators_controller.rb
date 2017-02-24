@@ -295,7 +295,7 @@ module Api
         false
       end
 
-      def notify_owners circulator, idempotency_key, push_notification
+      def notify_owners(circulator, idempotency_key, push_notification)
         owners = circulator.circulator_users.select {|cu| cu.owner}
 
         owners.each do |owner|
