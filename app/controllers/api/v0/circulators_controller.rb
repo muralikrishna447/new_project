@@ -253,16 +253,16 @@ module Api
           template = I18n.t("circulator.push.#{notification_type}.template", raise: true)
           message = template % notification_params
         rescue I18n::MissingTranslationData
-          logger.debug "No template found"
+          logger.debug "No template found for #{notification_type}, falling back to default"
         rescue KeyError
-          logger.debug "Bad params, falling back to default"
+          logger.debug "Bad params for #{notification_type}, falling back to default"
         end
 
         unless message
           begin
             message = I18n.t("circulator.push.#{notification_type}.message", raise: true)
           rescue I18n::MissingTranslationData
-            raise MissingNotificationError.new()
+            raise MissingNotificationError.new("Missing notification for #{notification_type}")
           end
         end
 
