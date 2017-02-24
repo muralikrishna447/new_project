@@ -244,12 +244,13 @@ module Api
 
       def get_notification_message
         message = nil
+        notification_type = params[:notification_type]
         notification_params = (params[:notification_params] || {}).inject({}){|memo,(k,v)|
           memo[k.to_sym] = v; memo
         }
 
         begin
-          template = I18n.t("circulator.push.#{params[:notification_type]}.template", raise: true)
+          template = I18n.t("circulator.push.#{notification_type}.template", raise: true)
           message = template % notification_params
         rescue I18n::MissingTranslationData
           logger.debug "No template found"
@@ -259,7 +260,7 @@ module Api
 
         unless message
           begin
-            message = I18n.t("circulator.push.#{params[:notification_type]}.message", raise: true)
+            message = I18n.t("circulator.push.#{notification_type}.message", raise: true)
           rescue I18n::MissingTranslationData
             raise MissingNotificationError.new()
           end
@@ -267,7 +268,7 @@ module Api
 
         begin
           content_available = I18n.t(
-            "circulator.push.#{params[:notification_type]}.content_available",
+            "circulator.push.#{notification_type}.content_available",
             raise: true
           )
         rescue I18n::MissingTranslationData
@@ -275,7 +276,7 @@ module Api
         end
 
         return PushNotification.new(
-          params[:notification_type], message, content_available
+          notification_type, message, content_available
         )
       end
 
