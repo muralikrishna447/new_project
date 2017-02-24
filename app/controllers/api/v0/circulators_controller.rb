@@ -117,23 +117,17 @@ module Api
         end
 
         begin
-          message = I18n.t("circulator.push.#{params[:notification_type]}.message", raise: true)
-        rescue I18n::MissingTranslationData
+          push_notification = get_notification_message()
+        rescue MissingNotificationError
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
-        end
-
-        begin
-          content_available = I18n.t(
-            "circulator.push.#{params[:notification_type]}.content_available",
-            raise: true
-          )
-        rescue I18n::MissingTranslationData
-          content_available = 0
         end
 
         logger.info "Attempting to send notification for #{circulator.circulator_id}" \
                     " of type #{params[:notification_type]}"
-        notify_owners(circulator, params[:idempotency_key], message, params[:notification_type], content_available)
+        notify_owners(
+          circulator, params[:idempotency_key], push_notification.message,
+          push_notification.notification_type, push_notification.content_available
+        )
 
         render_api_response 200
       end
@@ -233,6 +227,57 @@ module Api
       end
 
       private
+
+      class MissingNotificationError < StandardError
+      end
+
+      class PushNotification
+        attr_reader :notification_type, :message, :content_available
+
+        def initialize(notification_type, message, content_available)
+          @notification_type = notification_type
+          @message = message
+          @content_available = content_available
+        end
+      end
+
+
+      def get_notification_message
+        message = nil
+        notification_params = (params[:notification_params] || {}).inject({}){|memo,(k,v)|
+          memo[k.to_sym] = v; memo
+        }
+
+        begin
+          template = I18n.t("circulator.push.#{params[:notification_type]}.template", raise: true)
+          message = template % notification_params
+        rescue I18n::MissingTranslationData
+          logger.debug "No template found"
+        rescue KeyError
+          logger.debug "Bad params, falling back to default"
+        end
+
+        unless message
+          begin
+            message = I18n.t("circulator.push.#{params[:notification_type]}.message", raise: true)
+          rescue I18n::MissingTranslationData
+            raise MissingNotificationError.new()
+          end
+        end
+
+        begin
+          content_available = I18n.t(
+            "circulator.push.#{params[:notification_type]}.content_available",
+            raise: true
+          )
+        rescue I18n::MissingTranslationData
+          content_available = 0
+        end
+
+        return PushNotification.new(
+          params[:notification_type], message, content_available
+        )
+      end
 
       def notified?(circulator, idempotency_key)
         if idempotency_key.blank?
