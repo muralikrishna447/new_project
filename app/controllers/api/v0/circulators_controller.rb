@@ -124,15 +124,15 @@ module Api
 
         logger.info "Attempting to send notification for #{circulator.circulator_id}" \
                     " of type #{params[:notification_type]}"
-        notify_owners(
-          circulator, params[:idempotency_key], push_notification.message,
-          push_notification.notification_type, push_notification.content_available
-        )
+        notify_owners circulator, params[:idempotency_key], push_notification
 
         render_api_response 200
       end
 
-      def publish_notification(token, message, notification_type, content_available)
+      def publish_notification(token, push_notification)
+        message = push_notification.message
+        notification_type = push_notification.notification_type
+        content_available = push_notification.content_available
         endpoint_arn = token.endpoint_arn
         Librato.increment("api.publish_notification_requests")
         # TODO - add APNS once we have a testable endpoint
@@ -295,7 +295,7 @@ module Api
         false
       end
 
-      def notify_owners(circulator, idempotency_key, message, notification_type, content_available)
+      def notify_owners circulator, idempotency_key, push_notification
         owners = circulator.circulator_users.select {|cu| cu.owner}
 
         owners.each do |owner|
@@ -306,8 +306,8 @@ module Api
             token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
             next if token.nil?
             logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
-                        " of type #{notification_type} token #{token.inspect}"
-            publish_notification(token, message, notification_type, content_available)
+                        " of type #{push_notification.notification_type} token #{token.inspect}"
+            publish_notification(token, push_notification)
           end
         end
 
