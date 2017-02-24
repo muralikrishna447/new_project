@@ -3669,10 +3669,10 @@ CREATE INDEX index_ingredients_on_slug ON ingredients USING btree (slug);
 
 
 --
--- Name: index_joule_cook_history_items_on_user_id_and_idempotency_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_joule_cook_history_items_on_cook_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_joule_cook_history_items_on_user_id_and_idempotency_id ON joule_cook_history_items USING btree (user_id, idempotency_id);
+CREATE INDEX index_joule_cook_history_items_on_cook_id ON joule_cook_history_items USING btree (cook_id);
 
 
 --
@@ -3834,6 +3834,13 @@ CREATE INDEX revision_records_type_and_created_at ON revision_records USING btre
 --
 
 CREATE UNIQUE INDEX taggings_idx ON taggings USING btree (tag_id, taggable_id, taggable_type, context, tagger_id, tagger_type);
+
+
+--
+-- Name: unique_idempotency_id_per_user; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX unique_idempotency_id_per_user ON joule_cook_history_items USING btree (user_id, idempotency_id, deleted_at);
 
 
 --
@@ -4364,3 +4371,5 @@ INSERT INTO schema_migrations (version) VALUES ('20161226225433');
 INSERT INTO schema_migrations (version) VALUES ('20170105211422');
 
 INSERT INTO schema_migrations (version) VALUES ('20170109173731');
+
+INSERT INTO schema_migrations (version) VALUES ('20170224233915');
