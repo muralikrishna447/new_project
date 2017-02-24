@@ -48,10 +48,10 @@ describe Fraud::PaymentProcessor do
         Fraud::PaymentProcessor.stub(:capturable?).with(order).and_return(false)
       end
 
-      context 'order has closed metafield' do
+      context 'order_has_score? returns true' do
         let(:signifyd_case) { nil }
         before :each do
-          Fraud::PaymentProcessor.stub(:order_has_closed_metafield?).with(order).and_return(true)
+          Fraud::PaymentProcessor.stub(:order_has_score?).with(order).and_return(true)
         end
 
         it 'does not call close_signifyd_case' do
@@ -60,9 +60,9 @@ describe Fraud::PaymentProcessor do
         end
       end
 
-      context 'order does not have closed metafield' do
+      context 'order_has_score? returns false' do
         before :each do
-          Fraud::PaymentProcessor.stub(:order_has_closed_metafield?).with(order).and_return(false)
+          Fraud::PaymentProcessor.stub(:order_has_score?).with(order).and_return(false)
         end
 
         context 'signifyd case exists' do
@@ -185,7 +185,7 @@ describe Fraud::PaymentProcessor do
     context 'score has already been added' do
       let(:note_attributes) do
         [
-          ShopifyAPI::NoteAttribute(
+          ShopifyAPI::NoteAttribute.new(
             name: Fraud::PaymentProcessor::SIGNIFYD_SCORE_ATTR_NAME,
             value: '900'
           )
@@ -254,14 +254,6 @@ describe Fraud::PaymentProcessor do
       }
     end
 
-    before :each do
-      order.should_receive(:add_metafield).with(ShopifyAPI::Metafield.new(
-        namespace: Shopify::Order::METAFIELD_NAMESPACE,
-        key: Fraud::PaymentProcessor::SIGNIFYD_CLOSED_METAFIELD_NAME,
-        value: 'true'
-      ))
-    end
-
     context 'case is already closed' do
       let(:status) { 'DISMISSED' }
       it 'does not close case' do
@@ -306,32 +298,33 @@ describe Fraud::PaymentProcessor do
     end
   end
 
-  describe 'order_has_closed_metafield?' do
-    let(:order) { double('order') }
+  describe 'order_has_score?' do
+    let(:order) do
+      ShopifyAPI::Order.new(
+        id: 1234,
+        note_attributes: note_attributes
+      )
+    end
 
-    context 'order metafields contains key' do
-      let(:metafields) do
+    context 'order has score note attribute' do
+      let(:note_attributes) do
         [
-          ShopifyAPI::Metafield.new(
-            namespace: Shopify::Order::METAFIELD_NAMESPACE,
-            key: Fraud::PaymentProcessor::SIGNIFYD_CLOSED_METAFIELD_NAME,
-            value: 'true',
-            value_type: 'string'
+          ShopifyAPI::NoteAttribute.new(
+            name: Fraud::PaymentProcessor::SIGNIFYD_SCORE_ATTR_NAME,
+            value: '900'
           )
         ]
       end
 
       it 'returns true' do
-        order.stub(:metafields).and_return(metafields)
-        expect(Fraud::PaymentProcessor.order_has_closed_metafield?(order)).to be_true
+        expect(Fraud::PaymentProcessor.order_has_score?(order)).to be_true
       end
     end
 
     context 'order metafields does not contain key' do
-      let(:metafields) { [] }
+      let(:note_attributes) { [] }
       it 'returns false' do
-        order.stub(:metafields).and_return(metafields)
-        expect(Fraud::PaymentProcessor.order_has_closed_metafield?(order)).to be_false
+        expect(Fraud::PaymentProcessor.order_has_score?(order)).to be_false
       end
     end
   end

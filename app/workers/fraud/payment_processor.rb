@@ -15,11 +15,6 @@ module Fraud
     # We store the Signifyd score on the order as a note attribute.
     SIGNIFYD_SCORE_ATTR_NAME = 'signifyd-fraud-score'
 
-    # We add a metafield indicating the Signifyd case is closed
-    # to trade lots of unnecessary Signifyd API calls for some
-    # Shopify metafields API calls.
-    SIGNIFYD_CLOSED_METAFIELD_NAME = 'signifyd-case-closed'
-
     @queue = 'PaymentProcessor'
 
     def self.perform(order_id)
@@ -44,7 +39,10 @@ module Fraud
           raise msg
         end
       else
-        return if order_has_closed_metafield?(order)
+        # Assume that if the order has a score that we've previously closed
+        # the Signifyd case. This is a cheap way to avoid more Shopify API
+        # calls. Not foolproof, but more than good enough.
+        return if order_has_score?(order)
 
         # Ensure we close cases in Signifyd that are not capturable
         # (e.g., orders that have been cancelled) so they don't
@@ -97,7 +95,7 @@ module Fraud
     # Adds the Signifyd score and risk level to the Shopify
     # order risks so it's visible there. Fancy!
     def self.add_score_to_order(order, score)
-      return if order.note_attributes.find { |attr| attr.name == SIGNIFYD_SCORE_ATTR_NAME }
+      return if order_has_score?(order)
 
       order.note_attributes.push(ShopifyAPI::NoteAttribute.new(
         name: SIGNIFYD_SCORE_ATTR_NAME,
@@ -136,14 +134,6 @@ module Fraud
           Signifyd::Case.update(case_id, 'status' => 'DISMISSED')
         end
       end
-      Retriable.retriable tries: 3 do
-        order.add_metafield(ShopifyAPI::Metafield.new(
-          namespace: Shopify::Order::METAFIELD_NAMESPACE,
-          key: SIGNIFYD_CLOSED_METAFIELD_NAME,
-          value: 'true',
-          value_type: 'string'
-        ))
-      end
     end
 
     def self.order_is_new?(order)
@@ -151,12 +141,8 @@ module Fraud
       (Time.now - processed_at) <= SIGNIFYD_NOT_FOUND_WINDOW_SECONDS
     end
 
-    def self.order_has_closed_metafield?(order)
-      return true if order.metafields.find do |field|
-        field.namespace == Shopify::Order::METAFIELD_NAMESPACE &&
-          field.key == SIGNIFYD_CLOSED_METAFIELD_NAME &&
-          field.value == 'true'
-      end
+    def self.order_has_score?(order)
+      return true if order.note_attributes.find { |attr| attr.name == SIGNIFYD_SCORE_ATTR_NAME }
       false
     end
   end
