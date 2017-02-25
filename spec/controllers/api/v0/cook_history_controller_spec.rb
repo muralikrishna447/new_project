@@ -138,11 +138,12 @@ describe Api::V0::CookHistoryController do
   
   # POST /api/v0/cook_history
   it 'should not create item with identical user/idempotency_id as existing entry' do
+    fabricate_unique_cook_history_item
     2.times do
       post :create, { cook_history: cook_history_params }
       response.should be_success
     end
-    @user_entries.length.should == 1
+    @user_entries.length.should == 2
   end
   
   # DELETE /api/v0/cook_history
