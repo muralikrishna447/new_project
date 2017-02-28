@@ -129,7 +129,11 @@ module Api
       end
 
       def get_s3_object_as_json(key)
-        s3_client = AWS::S3::Client.new(region: 'us-east-1')
+        s3_client = AWS::S3::Client.new(
+          region: 'us-east-1',
+          http_read_timeout: 3,
+          http_open_timeout: 2,
+        )
         bucket_name = Rails.application.config.firmware_bucket
         bucket = AWS::S3::Bucket.new(bucket_name, :client => s3_client)
         o = bucket.objects[key]
