@@ -5,46 +5,11 @@ module Api
         STEAK_GUIDE_ID = '2MH313EsysIOwGcMooSSkk'
         before_filter :ensure_authorized_or_anonymous
 
-        @@marketplace_guides = {
-          '3N1qPSrcViOGEYCeaG6io4' => {
-              url: "https://#{Rails.configuration.shopify[:store_domain]}/products/snake-river-farms-steak-selection?utm_source=App&utm_medium=post&utm_campaign=chefsteps_app_sales_srf",
-              button_text: 'Shop steaks'
-          },
-          '6h1aaoAJcAeGuoAgQs28kw' => {
-            url: "https://#{Rails.configuration.shopify[:store_domain]}/products/snake-river-farms-kurobuta-pork-selection?utm_source=App&utm_medium=post&utm_campaign=chefsteps_app_sales_srf",
-            button_text: 'Shop pork',
-          },
-          '1EufIMhjAMmc0UoWyEOmIs' => {
-            url: "https://#{Rails.configuration.shopify[:store_domain]}/products/double-r-ranch-steak-selection?utm_source=App&utm_medium=post&utm_campaign=chefsteps_app_sales_srf",
-            button_text: 'Shop steaks',
-          },
-          'pBOwIfZdDiOeo4egsUg0C' => {
-            url: "https://#{Rails.configuration.shopify[:store_domain]}/products/snake-river-farms-kurobuta-pork-selection?utm_source=App&utm_medium=post&utm_campaign=chefsteps_app_sales_srf",
-            button_text: 'Shop pork',
-          },
-          '6U0Sv3hcDm06oCk0W8iO6m' => {
-            url: "https://#{Rails.configuration.shopify[:store_domain]}/products/double-r-ranch-steak-selection?utm_source=App&utm_medium=post&utm_campaign=chefsteps_app_sales_srf",
-            button_text: 'Shop steaks',
-          },
-          '6ORApkpQQ04IcKse0qIW8k' => {
-            url: "https://#{Rails.configuration.shopify[:store_domain]}/products/snake-river-farms-steak-selection?utm_source=App&utm_medium=post&utm_campaign=chefsteps_app_sales_srf",
-            button_text: 'Shop steaks',
-          },
-          '4Abjel4yI8esSEwcIAoqws' => {
-            url: "https://#{Rails.configuration.shopify[:store_domain]}/products/wagyu-beef-brisket?utm_source=App&utm_medium=post&utm_campaign=wagyu_beef_brisket_app",
-            button_text: 'Shop brisket',
-            button_text_line_2: '$84',
-          },
-          'JIO8hrpTywMCSI40KswcY' => {
-            url: "https://#{Rails.configuration.shopify[:store_domain]}/products/72-hour-short-ribs?utm_source=App&utm_medium=post&utm_campaign=short_ribs",
-            button_text: 'Shop short ribs',
-            button_text_line_2: '$84',
-          },
-        }
-
+        @@marketplace_guides = HashWithIndifferentAccess.new
 
         def guide_button
           guide_id = params[:guide_id]
+          fetch_marketplace_guides
           if @@marketplace_guides[guide_id]
             Rails.logger.info "Matching marketplace guide"
             button_text = @@marketplace_guides[guide_id][:button_text]
@@ -73,6 +38,7 @@ module Api
 
         def guide_button_redirect
           guide_id = params[:guide_id]
+          fetch_marketplace_guides
           if @@marketplace_guides[guide_id]
             Rails.logger.info "Matching with marketplace guide."
             return_to = @@marketplace_guides[guide_id][:url]
@@ -97,6 +63,16 @@ module Api
         private
         def render_no_button
           render_api_response 200, {}
+        end
+
+        def fetch_marketplace_guides
+          @@marketplace_guides = Rails.cache.fetch('marketplace_guides', expires_in: 60.minutes) do
+            marketplace_guides = HashWithIndifferentAccess.new
+            MarketplaceGuide.all.each do |guide|
+              marketplace_guides[guide[:guide_id]] = guide.attributes
+            end
+            marketplace_guides
+          end
         end
       end
     end
