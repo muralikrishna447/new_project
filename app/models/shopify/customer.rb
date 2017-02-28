@@ -64,7 +64,7 @@ class Shopify::Customer
     return customer
   end
 
-  def self.get_referral_code_for_user(user)
+  def self.find_or_create_referral_code_for_user(user)
     if ! user.referral_code
       code = 'sharejoule-' + unique_code { |code| User.unscoped.exists?(referral_code: code) }
 

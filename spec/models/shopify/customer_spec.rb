@@ -100,7 +100,7 @@ describe Shopify::Customer do
   context 'referral code' do
     it 'just returns code if it already exists' do
       @user = Fabricate :user, :id => 112, :email => 'blah@chefsteps.com', referral_code: 'andre_3000'
-      expect(Shopify::Customer.get_referral_code_for_user @user).to eq 'andre_3000'
+      expect(Shopify::Customer.find_or_create_referral_code_for_user @user).to eq 'andre_3000'
     end
 
     it 'creates, stores, and syncs referral code if it doesnt exist' do
@@ -112,7 +112,7 @@ describe Shopify::Customer do
             :headers => {'Accept'=>'*/*', 'Content-Type'=>'application/json', 'User-Agent'=>'ShopifyAPI/4.2.2 ActiveResource/3.2.16 Ruby/1.9.3'}).
         to_return(:status => 200, :body => "", :headers => {})
 
-      expect(Shopify::Customer.get_referral_code_for_user @user).to eq referral_code
+      expect(Shopify::Customer.find_or_create_referral_code_for_user @user).to eq referral_code
       expect(@user.referral_code).to eq referral_code
     end
   end
