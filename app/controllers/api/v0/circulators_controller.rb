@@ -117,7 +117,7 @@ module Api
         end
 
         begin
-          push_notification = get_notification_message()
+          push_notification = get_push_notification()
         rescue MissingNotificationError
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
         end
@@ -246,7 +246,7 @@ module Api
       end
 
 
-      def get_notification_message
+      def get_push_notification
         message = nil
         notification_type = params[:notification_type]
         notification_params = (params[:notification_params] || {}).inject({}){|memo,(k,v)|
