@@ -4,9 +4,8 @@ class JouleCookHistoryItem < ActiveRecord::Base
   HASHID_SALT = '3cc6500d43f5b84uyg7gyi13889639'
   @@hashids = Hashids.new(HASHID_SALT, 8)
   
-  @@page_size = 20
-  @@db_lookup_page_size = 20
-  paginates_per @@db_lookup_page_size
+  @@db_lookup_size = 20
+  paginates_per @@db_lookup_size
   
   attr_accessible :idempotency_id, :start_time, :started_from,
   :cook_time, :guide_id, :program_type, :set_point, :timer_id, :cook_id,
@@ -29,8 +28,8 @@ class JouleCookHistoryItem < ActiveRecord::Base
   validates :cook_id, presence: true, if: 'automatic?'
   validates :program_id, presence: true, if: 'automatic?'
   
-  def self.page_size
-    @@page_size
+  def self.db_lookup_size
+    @@db_lookup_size
   end
   
   def self.find_by_external_id(external_id)

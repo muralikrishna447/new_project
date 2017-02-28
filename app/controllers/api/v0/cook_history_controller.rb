@@ -5,7 +5,7 @@ module Api
 
       def index
         serialized_items = ActiveModel::ArraySerializer.new(
-          cook_history_entries_collapsed,
+          cook_history_entries_collapsed(20),
           each_serializer: Api::JouleCookHistoryItemSerializer
         )
         render_api_response 200, { cookHistory: serialized_items }
@@ -68,8 +68,8 @@ module Api
         end
       end
       
-      def cook_history_entries_collapsed
-        page_size = JouleCookHistoryItem.page_size
+      def cook_history_entries_collapsed(page_size)
+        db_lookup_size = JouleCookHistoryItem.db_lookup_size
         current_page = 0
         end_of_list = false
         
@@ -79,7 +79,7 @@ module Api
           .order('id DESC')
         while !end_of_list && entries_by_cook_id.length < page_size
           entries = entry_query.page(current_page)
-          end_of_list = entries.length < page_size
+          end_of_list = entries.length < db_lookup_size
           current_page += 1
           
           # Insert most recent cook_id instance
