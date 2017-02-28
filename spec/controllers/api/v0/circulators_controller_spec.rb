@@ -351,7 +351,7 @@ describe Api::V0::CirculatorsController do
           expect(apns['aps']['content-available']).to eq 0
         end
 
-        it 'should notify clients with Joule name if provided' do
+        it 'should notify clients with emoji Joule name' do
           notification_types = [
             'guided_water_heated',
             'water_heated',
@@ -365,18 +365,20 @@ describe Api::V0::CirculatorsController do
             'disconnect_while_cooking',
           ]
 
+          name = "BurgerBob\u{1f354}".encode('utf-8')
+
           for type in notification_types
             post(
               :notify_clients,
               id: @circulator.circulator_id,
               notification_type: type,
               notification_params: {
-                joule_name: 'BurgerBob'
+                joule_name: name
               }
             )
             msg = JSON.parse(@published_messages[-1][:msg])
             apns = JSON.parse msg['APNS']
-            expect(apns['aps']['alert']).to include('BurgerBob')
+            expect(apns['aps']['alert']).to include(name)
           end
 
         end
