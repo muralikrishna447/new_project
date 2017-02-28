@@ -383,6 +383,20 @@ describe Api::V0::CirculatorsController do
 
         end
 
+        it 'should fallback to default message for nil template vars' do
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'water_heated',
+            notification_params: {
+              joule_name: nil
+            }
+          )
+          msg = JSON.parse(@published_messages[-1][:msg])
+          apns = JSON.parse msg['APNS']
+          expect(apns['aps']['alert']).to include('Your water has heated!')
+        end
+
         it 'should delete token if endpoint disabled' do
           Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |arn, msg|
             raise Aws::SNS::Errors::EndpointDisabled.new('foo', 'bar')

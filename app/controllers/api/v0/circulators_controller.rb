@@ -250,16 +250,18 @@ module Api
         message = nil
         notification_type = params[:notification_type]
         notification_params = (params[:notification_params] || {}).inject({}){|memo,(k,v)|
-          memo[k.to_sym] = v; memo
+          unless v.nil?
+            memo[k.to_sym] = v; memo
+          end
+          memo
         }
-
         begin
           template = I18n.t("circulator.push.#{notification_type}.template", raise: true)
           message = template % notification_params
         rescue I18n::MissingTranslationData
-          logger.debug "No template found for #{notification_type}, falling back to default"
+          logger.info "No template found for #{notification_type}, falling back to default"
         rescue KeyError
-          logger.debug "Bad params for #{notification_type}, falling back to default"
+          logger.warn "Bad params for #{notification_type}, falling back to default"
         end
 
         unless message
