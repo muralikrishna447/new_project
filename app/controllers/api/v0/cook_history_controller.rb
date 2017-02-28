@@ -60,6 +60,7 @@ module Api
       
       def destroy_all_by_cook_id(user_entries, cook_id)
         entries_to_destroy = user_entries.where(cook_id: cook_id)
+        logger.info "Destroying #{entries_to_destroy.count} cook history entries with cook_id: #{cook_id}"
         if entries_to_destroy.destroy_all
           render_api_response 200, { message: "Successfully destroyed #{params[:id]} and associated entries." }
         else
@@ -78,7 +79,7 @@ module Api
           .order('id DESC')
         while !end_of_list && entries_by_cook_id.length < page_size
           entries = entry_query.page(current_page)
-          end_of_list= entries.length < page_size
+          end_of_list = entries.length < page_size
           current_page += 1
           
           # Insert most recent cook_id instance

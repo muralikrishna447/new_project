@@ -5,7 +5,8 @@ class JouleCookHistoryItem < ActiveRecord::Base
   @@hashids = Hashids.new(HASHID_SALT, 8)
   
   @@page_size = 20
-  paginates_per @@page_size
+  @@db_lookup_page_size = 20
+  paginates_per @@db_lookup_page_size
   
   attr_accessible :idempotency_id, :start_time, :started_from,
   :cook_time, :guide_id, :program_type, :set_point, :timer_id, :cook_id,
