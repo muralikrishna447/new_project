@@ -93,7 +93,7 @@ module Api
           response_data = response['data']
           if response_data && response_data['is_valid'] && response_data['app_id'] == facebook_app_id && response_data['user_id'] == facebook_user_id
             fb_user_api = Koala::Facebook::API.new(access_token)
-            fb_user = fb_user_api.get_object('me')
+            fb_user = fb_user_api.get_object('me', {fields: 'email,name,id'}) # Now required to explicity get email
             fb_user_id = fb_user['id']
 
             # Search for existing user
