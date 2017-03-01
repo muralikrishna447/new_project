@@ -136,15 +136,31 @@ module Api
         endpoint_arn = token.endpoint_arn
         Librato.increment("api.publish_notification_requests")
 
+        title = I18n.t("circulator.app_name", raise: true)
+        gcm_data = {
+          data: {
+            message: message,
+            title: title,
+            notification_type: notification_type,
+            "content_available" => if content_available == 0 then false else true end
+          }
+        }
+        apns_data = {
+          aps: {
+            alert: message,
+            sound: 'default',
+            notification_type: notification_type,
+            "content-available" => content_available
+          }
+        }
+
         # NOTE: We *need* to use JSON.generate because to_json has a
         # bug in it when it comes to higher unicode codepoints.  See:
         # http://stackoverflow.com/questions/7775597/bug-in-ruby-json-lib-when-handling-4-byte-unicode-emoji
-        title = I18n.t("circulator.app_name", raise: true)
-        gcm_content_available = if content_available == 0 then false else true end
         message = {
-          GCM: JSON.generate({data: {message: message, title: title, notification_type: notification_type, "content_available" => gcm_content_available}}),
-          APNS_SANDBOX: JSON.generate({aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}),
-          APNS: JSON.generate({aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}})
+          GCM: JSON.generate(gcm_data),
+          APNS_SANDBOX: JSON.generate(apns_data),
+          APNS: JSON.generate(apns_data)
         }
 
         logger.info "Publishing #{message.inspect}"

@@ -378,7 +378,9 @@ describe Api::V0::CirculatorsController do
             )
             msg = JSON.parse(@published_messages[-1][:msg])
             apns = JSON.parse msg['APNS']
+            gcm = JSON.parse msg['GCM']
             expect(apns['aps']['alert']).to include(name)
+            expect(gcm['data']['message']).to include(name)
           end
 
         end
