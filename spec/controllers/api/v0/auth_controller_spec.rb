@@ -194,7 +194,8 @@ describe Api::V0::AuthController do
         "email" => 'test@test.com',
         "name" => 'Test User'
       }
-      @fb_user_api.stub(:get_object).with('me').and_return fb_user_api_mock_response
+      puts "HERE: #{@fake_user_access_token}"
+      @fb_user_api.stub(:get_object).with('me', {fields: 'email,name,id'}).and_return fb_user_api_mock_response
 
       user = {
         access_token: @fake_user_access_token,
@@ -222,7 +223,7 @@ describe Api::V0::AuthController do
         "email" => 'existing@test.com',
         "name" => 'Existing Dude'
       }
-      @fb_user_api.stub(:get_object).with('me').and_return fb_user_api_mock_response
+      @fb_user_api.stub(:get_object).with('me', {:fields=>"email,name,id"}).and_return fb_user_api_mock_response
 
       user = {
         access_token: @fake_user_access_token,
@@ -317,7 +318,7 @@ describe Api::V0::AuthController do
         "email" => 'existing@test.com',
         "name" => 'Existing Dude'
       }
-      @fb_user_api.stub(:get_object).with('me').and_return fb_user_api_mock_response
+      @fb_user_api.stub(:get_object).with('me', {:fields=>"email,name,id"}).and_return fb_user_api_mock_response
 
       user = {
         access_token: @fake_user_access_token,
