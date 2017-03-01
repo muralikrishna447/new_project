@@ -1,0 +1,10 @@
+
+= semantic_form_for [:admin, @marketplace_guide] do |f|
+  = f.semantic_errors *f.object.errors.keys
+  = f.inputs do
+    //= render '/shared/filepicker_group', label_text: "Image", param: "advertisement[image]", value: @advertisement.image
+    = f.input :guide_id, label: 'Guide ID'
+    = f.input :url
+    = f.input :button_text
+    = f.input :button_text_line_2
+    = f.actions
