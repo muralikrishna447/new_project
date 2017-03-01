@@ -94,6 +94,11 @@ module Api
           if response_data && response_data['is_valid'] && response_data['app_id'] == facebook_app_id && response_data['user_id'] == facebook_user_id
             fb_user_api = Koala::Facebook::API.new(access_token)
             fb_user = fb_user_api.get_object('me', {fields: 'email,name,id'}) # Now required to explicity get email
+
+            if !fb_user['email']
+              render_api_response 400, {message: "Failed to authenticate Facebook.  Email field is missing."} and return
+            end
+
             fb_user_id = fb_user['id']
 
             # Search for existing user

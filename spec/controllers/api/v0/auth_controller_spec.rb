@@ -237,6 +237,35 @@ describe Api::V0::AuthController do
       expect(u.facebook_user_id).to eq('54321')
     end
 
+    it 'should return a 400 if the Facebook user account is missing an email field' do
+      exiting_user = Fabricate :user, email: 'existing@test.com', password: '123456', name: 'Existing Dude', provider: 'facebook', facebook_user_id: '54321'
+      fb_mock_response = {
+        "data" => {
+          "is_valid" => true,
+          "user_id" => '54321',
+          "app_id" => @facebook_app_id
+        }
+      }
+      @fb.stub(:debug_token).with(@fake_user_access_token).and_yield fb_mock_response
+
+      fb_user_api_mock_response = {
+        "id" => '54321',
+        "name" => 'Existing Dude'
+      }
+      @fb_user_api.stub(:get_object).with('me', {:fields=>"email,name,id"}).and_return fb_user_api_mock_response
+
+      user = {
+        access_token: @fake_user_access_token,
+        user_id: '54321'
+      }
+      post :authenticate_facebook, {user:user}
+      expect(response.code).to eq("400")
+      # expect(response.body['token']).not_to be_empty
+      # u = User.where(email: 'existing@test.com').first
+      # expect(u.provider).to eq('facebook')
+      # expect(u.facebook_user_id).to eq('54321')
+    end
+
     it 'should not return a ChefSteps token for an invalid Facebook token' do
       fb_mock_response = {
         "data" => {
