@@ -117,41 +117,39 @@ module Api
         end
 
         begin
-          message = I18n.t("circulator.push.#{params[:notification_type]}.message", raise: true)
-        rescue I18n::MissingTranslationData
+          push_notification = get_push_notification()
+        rescue MissingNotificationError
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
-        end
-
-        begin
-          content_available = I18n.t(
-            "circulator.push.#{params[:notification_type]}.content_available",
-            raise: true
-          )
-        rescue I18n::MissingTranslationData
-          content_available = 0
         end
 
         logger.info "Attempting to send notification for #{circulator.circulator_id}" \
                     " of type #{params[:notification_type]}"
-        notify_owners(circulator, params[:idempotency_key], message, params[:notification_type], content_available)
+        notify_owners circulator, params[:idempotency_key], push_notification
 
         render_api_response 200
       end
 
-      def publish_notification(token, message, notification_type, content_available)
+      def publish_notification(token, push_notification)
+        message = push_notification.message
+        notification_type = push_notification.notification_type
+        content_available = push_notification.content_available
         endpoint_arn = token.endpoint_arn
         Librato.increment("api.publish_notification_requests")
-        # TODO - add APNS once we have a testable endpoint
+
+        # NOTE: We *need* to use JSON.generate because to_json has a
+        # bug in it when it comes to higher unicode codepoints.  See:
+        # http://stackoverflow.com/questions/7775597/bug-in-ruby-json-lib-when-handling-4-byte-unicode-emoji
         title = I18n.t("circulator.app_name", raise: true)
         gcm_content_available = if content_available == 0 then false else true end
         message = {
-          GCM: {data: {message: message, title: title, notification_type: notification_type, "content_available" => gcm_content_available}}.to_json,
-          APNS_SANDBOX: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json,
-          APNS: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json
+          GCM: JSON.generate({data: {message: message, title: title, notification_type: notification_type, "content_available" => gcm_content_available}}),
+          APNS_SANDBOX: JSON.generate({aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}),
+          APNS: JSON.generate({aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}})
         }
+
         logger.info "Publishing #{message.inspect}"
         begin
-          publish_json_message(endpoint_arn, message.to_json)
+          publish_json_message(endpoint_arn, JSON.generate(message))
         rescue Aws::SNS::Errors::EndpointDisabled
           # NOTE: Clean up any disabled endpoints, since they're
           # likely not useful anymore.  There is a chance that Apple
@@ -234,6 +232,60 @@ module Api
 
       private
 
+      class MissingNotificationError < StandardError
+      end
+
+      class PushNotification
+        attr_reader :notification_type, :message, :content_available
+
+        def initialize(notification_type, message, content_available)
+          @notification_type = notification_type
+          @message = message
+          @content_available = content_available
+        end
+      end
+
+
+      def get_push_notification
+        message = nil
+        notification_type = params[:notification_type]
+        notification_params = (params[:notification_params] || {}).inject({}){|memo,(k,v)|
+          unless v.nil?
+            memo[k.to_sym] = v; memo
+          end
+          memo
+        }
+        begin
+          template = I18n.t("circulator.push.#{notification_type}.template", raise: true)
+          message = template % notification_params
+        rescue I18n::MissingTranslationData
+          logger.info "No template found for #{notification_type}, falling back to default"
+        rescue KeyError
+          logger.warn "Bad params for #{notification_type}, falling back to default"
+        end
+
+        unless message
+          begin
+            message = I18n.t("circulator.push.#{notification_type}.message", raise: true)
+          rescue I18n::MissingTranslationData
+            raise MissingNotificationError.new("Missing notification for #{notification_type}")
+          end
+        end
+
+        begin
+          content_available = I18n.t(
+            "circulator.push.#{notification_type}.content_available",
+            raise: true
+          )
+        rescue I18n::MissingTranslationData
+          content_available = 0
+        end
+
+        return PushNotification.new(
+          notification_type, message, content_available
+        )
+      end
+
       def notified?(circulator, idempotency_key)
         if idempotency_key.blank?
           logger.info "No idempotency_key was specified, will send notification for circulator with id #{circulator.id}"
@@ -250,7 +302,7 @@ module Api
         false
       end
 
-      def notify_owners(circulator, idempotency_key, message, notification_type, content_available)
+      def notify_owners(circulator, idempotency_key, push_notification)
         owners = circulator.circulator_users.select {|cu| cu.owner}
 
         owners.each do |owner|
@@ -261,8 +313,8 @@ module Api
             token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
             next if token.nil?
             logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
-                        " of type #{notification_type} token #{token.inspect}"
-            publish_notification(token, message, notification_type, content_available)
+                        " of type #{push_notification.notification_type} token #{token.inspect}"
+            publish_notification(token, push_notification)
           end
         end
 
