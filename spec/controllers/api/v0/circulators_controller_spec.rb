@@ -351,6 +351,52 @@ describe Api::V0::CirculatorsController do
           expect(apns['aps']['content-available']).to eq 0
         end
 
+        it 'should notify clients with emoji Joule name' do
+          notification_types = [
+            'guided_water_heated',
+            'water_heated',
+            'circulator_error_hardware_failure',
+            'circulator_error_button_pressed',
+            'circulator_error_low_water_level',
+            'circulator_error_tipped_over',
+            'circulator_error_overheating',
+            'circulator_error_power_loss',
+            'circulator_error_unknown_reason',
+            'disconnect_while_cooking',
+          ]
+
+          name = "BurgerBob\u{1f354}".encode('utf-8')
+
+          for type in notification_types
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: type,
+              notification_params: {
+                joule_name: name
+              }
+            )
+            msg = JSON.parse(@published_messages[-1][:msg])
+            apns = JSON.parse msg['APNS']
+            expect(apns['aps']['alert']).to include(name)
+          end
+
+        end
+
+        it 'should fallback to default message for nil template vars' do
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'water_heated',
+            notification_params: {
+              joule_name: nil
+            }
+          )
+          msg = JSON.parse(@published_messages[-1][:msg])
+          apns = JSON.parse msg['APNS']
+          expect(apns['aps']['alert']).to include('Your water has heated!')
+        end
+
         it 'should delete token if endpoint disabled' do
           Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |arn, msg|
             raise Aws::SNS::Errors::EndpointDisabled.new('foo', 'bar')
@@ -471,18 +517,6 @@ describe Api::V0::CirculatorsController do
           :id => @circulator.circulator_id,
           :notification_type => 'water_heated'})
         response.code.should == '200'
-      end
-
-      it 'should call notify_owners with a notification_type' do
-
-        Api::V0::CirculatorsController.any_instance.should_receive(:notify_owners).with(anything, anything, anything, notification_type, anything)
-
-        post(
-          :notify_clients,
-          id: @circulator.circulator_id,
-          notification_type: notification_type
-        )
-
       end
     end
   end
