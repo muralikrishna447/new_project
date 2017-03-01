@@ -96,6 +96,7 @@ module Api
             fb_user = fb_user_api.get_object('me', {fields: 'email,name,id'}) # Now required to explicity get email
 
             if !fb_user['email']
+              logger.info "Failed to authenticate Facebook, email missing for access_token: #{access_token}"
               render_api_response 400, {message: "Failed to authenticate Facebook.  Email field is missing."} and return
             end
 
