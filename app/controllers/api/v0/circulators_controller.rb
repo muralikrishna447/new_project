@@ -143,7 +143,7 @@ module Api
             title: title,
             notification_type: notification_type,
             circulator_address: circulator.circulator_id,
-            "content_available" => if content_available == 0 then false else true end
+            "content_available" => content_available == 1 ? true : false
           }
         }
         apns_data = {
