@@ -256,10 +256,6 @@ describe Fulfillment::CSVOrderExporter do
   end
 
   describe 'perform' do
-    before :each do
-      Fulfillment::FraudFilter.stub(:fraud_suspected?).and_return(false)
-    end
-
     shared_examples 'invalid params' do
       it 'raises exception' do
         expect { exporter.perform(params) }.to raise_error
