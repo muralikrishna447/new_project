@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.1
--- Dumped by pg_dump version 9.6.1
+-- Dumped from database version 9.6.2
+-- Dumped by pg_dump version 9.6.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1166,6 +1166,40 @@ CREATE SEQUENCE likes_id_seq
 --
 
 ALTER SEQUENCE likes_id_seq OWNED BY likes.id;
+
+
+--
+-- Name: marketplace_guides; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE marketplace_guides (
+    id integer NOT NULL,
+    guide_id character varying(255),
+    url character varying(255),
+    button_text character varying(255),
+    button_text_line_2 character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: marketplace_guides_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE marketplace_guides_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: marketplace_guides_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE marketplace_guides_id_seq OWNED BY marketplace_guides.id;
 
 
 --
@@ -2591,6 +2625,13 @@ ALTER TABLE ONLY likes ALTER COLUMN id SET DEFAULT nextval('likes_id_seq'::regcl
 
 
 --
+-- Name: marketplace_guides id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY marketplace_guides ALTER COLUMN id SET DEFAULT nextval('marketplace_guides_id_seq'::regclass);
+
+
+--
 -- Name: merit_actions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3059,6 +3100,14 @@ ALTER TABLE ONLY joule_cook_history_items
 
 ALTER TABLE ONLY likes
     ADD CONSTRAINT likes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: marketplace_guides marketplace_guides_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY marketplace_guides
+    ADD CONSTRAINT marketplace_guides_pkey PRIMARY KEY (id);
 
 
 --
@@ -4364,3 +4413,5 @@ INSERT INTO schema_migrations (version) VALUES ('20161226225433');
 INSERT INTO schema_migrations (version) VALUES ('20170105211422');
 
 INSERT INTO schema_migrations (version) VALUES ('20170109173731');
+
+INSERT INTO schema_migrations (version) VALUES ('20170228210819');

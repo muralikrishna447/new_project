@@ -1,6 +1,8 @@
 describe Api::V0::Shopping::MarketplaceController do
   before :each do
     @user = Fabricate :user, id: 10001, name: 'customer_1', email: 'customer_1@chefsteps.com', role: 'user'
+    @marketplace_guide1 = Fabricate :marketplace_guide, id: 1, guide_id: '3N1qPSrcViOGEYCeaG6io4', url: 'https://test.myshopify.com/products/snake-river-farms-steak-selection?utm_source=App&utm_medium=post&utm_campaign=chefsteps_app_sales_srf', button_text: 'Shop steaks'
+    @marketplace_guide2 = Fabricate :marketplace_guide, id: 2, guide_id: 'JIO8hrpTywMCSI40KswcY', url: 'https://store.chocolateyshatner.com/products/72-hour-short-ribs?utm_source=App&utm_medium=post&utm_campaign=short_ribs', button_text: 'Shop short ribs', button_text_line_2: '$84'
   end
 
   context 'GET /marketplace/guide_button' do
