@@ -129,7 +129,7 @@ module Api
         render_api_response 200
       end
 
-      def publish_notification(token, push_notification)
+      def publish_notification(circulator, token, push_notification)
         message = push_notification.message
         notification_type = push_notification.notification_type
         content_available = push_notification.content_available
@@ -142,6 +142,7 @@ module Api
             message: message,
             title: title,
             notification_type: notification_type,
+            circulator_address: circulator.circulator_id,
             "content_available" => if content_available == 0 then false else true end
           }
         }
@@ -150,6 +151,7 @@ module Api
             alert: message,
             sound: 'default',
             notification_type: notification_type,
+            circulator_address: circulator.circulator_id,
             "content-available" => content_available
           }
         }
@@ -323,7 +325,7 @@ module Api
             next if token.nil?
             logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
                         " of type #{push_notification.notification_type} token #{token.inspect}"
-            publish_notification(token, push_notification)
+            publish_notification(circulator, token, push_notification)
           end
         end
 

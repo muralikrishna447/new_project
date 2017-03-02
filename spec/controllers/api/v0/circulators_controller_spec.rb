@@ -314,6 +314,8 @@ describe Api::V0::CirculatorsController do
           gcm = JSON.parse msg['GCM']
           expect(apns['aps']['content-available']).to eq 1
           expect(gcm['data']['content_available']).to eq true
+          expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
+          expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
         end
       end
 
@@ -397,6 +399,22 @@ describe Api::V0::CirculatorsController do
           msg = JSON.parse(@published_messages[-1][:msg])
           apns = JSON.parse msg['APNS']
           expect(apns['aps']['alert']).to include('Your water has heated!')
+        end
+
+        it 'should pass circulator_address in params' do
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'water_heated',
+            notification_params: {
+              joule_name: nil
+            }
+          )
+          msg = JSON.parse(@published_messages[-1][:msg])
+          apns = JSON.parse msg['APNS']
+          gcm = JSON.parse msg['GCM']
+          expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
+          expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
         end
 
         it 'should delete token if endpoint disabled' do
