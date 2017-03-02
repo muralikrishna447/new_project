@@ -288,15 +288,8 @@ module Api
           end
         end
 
-        begin
-          content_available = I18n.t(
-            "circulator.push.#{notification_type}.content_available",
-            raise: true
-          )
-        rescue I18n::MissingTranslationData
-          content_available = 0
-        end
-
+        # Always pass content_available
+        content_available = 1
         return PushNotification.new(
           notification_type, message, content_available
         )
