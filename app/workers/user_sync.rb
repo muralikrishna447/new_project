@@ -48,6 +48,12 @@ class UserSync
     end
 
     member_info = member_info['data'][0]
+    joule_counts = get_joule_counts()
+
+    # Create referral code in rails db even if user is unsubscribed or we aren't syncing to mailchimp
+    if options[:joule] && joule_counts[:ever_connected_count] > 0
+      Shopify::Customer.find_or_create_referral_code_for_user @user
+    end
 
     if member_info['status'] != 'subscribed'
       @logger.warn "User not subscribed to list, actual status [#{member_info['status']}]"
@@ -72,7 +78,7 @@ class UserSync
     end
 
     if options[:joule_data]
-      sync_joule_data(member_info)
+      sync_joule_data(member_info, joule_counts)
     end
   end
 
@@ -80,15 +86,20 @@ class UserSync
     Shopify::Customer.sync_user @user
   end
 
-  def sync_joule_data(member_info)
-    merges = {
-      JOULES_CONNECTED_MERGE_TAG => CirculatorUser.where(user_id: @user.id).count,
-      JOULES_EVER_CONNECTED_MERGE_TAG => CirculatorUser.with_deleted.where(user_id: @user.id).count
+  def get_joule_counts
+    {
+      connected_count: CirculatorUser.where(user_id: @user.id).count,
+      ever_connected_count: CirculatorUser.with_deleted.where(user_id: @user.id).count
     }
+  end
 
-    if merges[JOULES_EVER_CONNECTED_MERGE_TAG] > 0
-
-      merges[REFERRAL_CODE_MERGE_TAG] = Shopify::Customer.get_referral_code_for_user @user
+  def sync_joule_data(member_info, joule_counts)
+    if joule_counts[:ever_connected_count] > 0
+      merges = {
+        JOULES_CONNECTED_MERGE_TAG => joule_counts[:connected_count],
+        JOULES_EVER_CONNECTED_MERGE_TAG => joule_counts[:ever_connected_count],
+        REFERRAL_CODE_MERGE_TAG => Shopify::Customer.find_or_create_referral_code_for_user(@user)
+      }
 
       if merges != member_info['merges']
 
