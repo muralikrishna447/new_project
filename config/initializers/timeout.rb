@@ -1,2 +1,3 @@
-Rack::Timeout.timeout = 25 #Set to 5 seconds less than heroku timeout
+# Heroku timeout is 30s
+Rack::Timeout.timeout = 10
 Rack::Timeout.unregister_state_change_observer(:logger)
