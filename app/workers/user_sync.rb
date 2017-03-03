@@ -31,8 +31,8 @@ class UserSync
   end
 
   def sync
-    sync_mailchimp(joule_counts)
-    sync_referral_code(joule_counts)
+    sync_mailchimp
+    sync_referral_code
     sync_shopify
   end
 
