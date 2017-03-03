@@ -39,7 +39,7 @@ class UserSync
   def sync_referral_code
     joule_counts = get_joule_counts()
 
-    if options[:joule] && joule_counts[:ever_connected_count] > 0
+    if joule_counts[:ever_connected_count] > 0
       Shopify::Customer.find_or_create_referral_code_for_user @user
     end
   end
