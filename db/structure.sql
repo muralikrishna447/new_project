@@ -2,12 +2,17 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.6.2
+-- Dumped by pg_dump version 9.6.2
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -37,20 +42,6 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 COMMENT ON EXTENSION hstore IS 'data type for storing sets of (key, value) pairs';
 
 
---
--- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
-
-
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -58,7 +49,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE active_admin_comments (
@@ -94,7 +85,7 @@ ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
 
 
 --
--- Name: activities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: activities; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE activities (
@@ -116,9 +107,9 @@ CREATE TABLE activities (
     featured_image_id text,
     activity_type character varying(255),
     last_edited_by_id integer,
+    assignment_recipes text,
     source_activity_id integer,
     source_type integer DEFAULT 0,
-    assignment_recipes text,
     published_at timestamp without time zone,
     author_notes text,
     likes_count integer,
@@ -153,7 +144,7 @@ ALTER SEQUENCE activities_id_seq OWNED BY activities.id;
 
 
 --
--- Name: activity_equipment; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: activity_equipment; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE activity_equipment (
@@ -187,7 +178,7 @@ ALTER SEQUENCE activity_equipment_id_seq OWNED BY activity_equipment.id;
 
 
 --
--- Name: activity_ingredients; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: activity_ingredients; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE activity_ingredients (
@@ -205,7 +196,26 @@ CREATE TABLE activity_ingredients (
 
 
 --
--- Name: actor_addresses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: activity_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE activity_ingredients_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: activity_ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE activity_ingredients_id_seq OWNED BY activity_ingredients.id;
+
+
+--
+-- Name: actor_addresses; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE actor_addresses (
@@ -245,7 +255,7 @@ ALTER SEQUENCE actor_addresses_id_seq OWNED BY actor_addresses.id;
 
 
 --
--- Name: admin_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: admin_users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE admin_users (
@@ -285,7 +295,7 @@ ALTER SEQUENCE admin_users_id_seq OWNED BY admin_users.id;
 
 
 --
--- Name: advertisements; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: advertisements; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE advertisements (
@@ -325,7 +335,7 @@ ALTER SEQUENCE advertisements_id_seq OWNED BY advertisements.id;
 
 
 --
--- Name: answers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: answers; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE answers (
@@ -360,7 +370,7 @@ ALTER SEQUENCE answers_id_seq OWNED BY answers.id;
 
 
 --
--- Name: assemblies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: assemblies; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE assemblies (
@@ -413,7 +423,7 @@ ALTER SEQUENCE assemblies_id_seq OWNED BY assemblies.id;
 
 
 --
--- Name: assembly_inclusions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: assembly_inclusions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE assembly_inclusions (
@@ -448,7 +458,7 @@ ALTER SEQUENCE assembly_inclusions_id_seq OWNED BY assembly_inclusions.id;
 
 
 --
--- Name: assignments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: assignments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE assignments (
@@ -483,7 +493,7 @@ ALTER SEQUENCE assignments_id_seq OWNED BY assignments.id;
 
 
 --
--- Name: badges_sashes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: badges_sashes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE badges_sashes (
@@ -515,7 +525,7 @@ ALTER SEQUENCE badges_sashes_id_seq OWNED BY badges_sashes.id;
 
 
 --
--- Name: box_sort_images; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: box_sort_images; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE box_sort_images (
@@ -549,7 +559,7 @@ ALTER SEQUENCE box_sort_images_id_seq OWNED BY box_sort_images.id;
 
 
 --
--- Name: circulator_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: circulator_users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE circulator_users (
@@ -581,7 +591,7 @@ ALTER SEQUENCE circulator_users_id_seq OWNED BY circulator_users.id;
 
 
 --
--- Name: circulators; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: circulators; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE circulators (
@@ -618,7 +628,7 @@ ALTER SEQUENCE circulators_id_seq OWNED BY circulators.id;
 
 
 --
--- Name: comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: comments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE comments (
@@ -653,7 +663,7 @@ ALTER SEQUENCE comments_id_seq OWNED BY comments.id;
 
 
 --
--- Name: components; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: components; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE components (
@@ -690,7 +700,7 @@ ALTER SEQUENCE components_id_seq OWNED BY components.id;
 
 
 --
--- Name: copies; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: copies; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE copies (
@@ -722,7 +732,7 @@ ALTER SEQUENCE copies_id_seq OWNED BY copies.id;
 
 
 --
--- Name: courses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: courses; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE courses (
@@ -761,7 +771,7 @@ ALTER SEQUENCE courses_id_seq OWNED BY courses.id;
 
 
 --
--- Name: enrollments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: enrollments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE enrollments (
@@ -799,7 +809,7 @@ ALTER SEQUENCE enrollments_id_seq OWNED BY enrollments.id;
 
 
 --
--- Name: equipment; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: equipment; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE equipment (
@@ -831,7 +841,7 @@ ALTER SEQUENCE equipment_id_seq OWNED BY equipment.id;
 
 
 --
--- Name: events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: events; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE events (
@@ -869,7 +879,7 @@ ALTER SEQUENCE events_id_seq OWNED BY events.id;
 
 
 --
--- Name: followerships; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: followerships; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE followerships (
@@ -901,7 +911,7 @@ ALTER SEQUENCE followerships_id_seq OWNED BY followerships.id;
 
 
 --
--- Name: friendly_id_slugs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: friendly_id_slugs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE friendly_id_slugs (
@@ -933,7 +943,7 @@ ALTER SEQUENCE friendly_id_slugs_id_seq OWNED BY friendly_id_slugs.id;
 
 
 --
--- Name: gift_certificates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: gift_certificates; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE gift_certificates (
@@ -974,7 +984,7 @@ ALTER SEQUENCE gift_certificates_id_seq OWNED BY gift_certificates.id;
 
 
 --
--- Name: images; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: images; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE images (
@@ -1009,7 +1019,7 @@ ALTER SEQUENCE images_id_seq OWNED BY images.id;
 
 
 --
--- Name: inclusions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: inclusions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE inclusions (
@@ -1042,7 +1052,7 @@ ALTER SEQUENCE inclusions_id_seq OWNED BY inclusions.id;
 
 
 --
--- Name: ingredients; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: ingredients; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE ingredients (
@@ -1083,7 +1093,7 @@ ALTER SEQUENCE ingredients_id_seq OWNED BY ingredients.id;
 
 
 --
--- Name: joule_cook_history_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: joule_cook_history_items; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE joule_cook_history_items (
@@ -1126,7 +1136,7 @@ ALTER SEQUENCE joule_cook_history_items_id_seq OWNED BY joule_cook_history_items
 
 
 --
--- Name: likes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: likes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE likes (
@@ -1159,7 +1169,7 @@ ALTER SEQUENCE likes_id_seq OWNED BY likes.id;
 
 
 --
--- Name: marketplace_guides; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: marketplace_guides; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE marketplace_guides (
@@ -1193,7 +1203,7 @@ ALTER SEQUENCE marketplace_guides_id_seq OWNED BY marketplace_guides.id;
 
 
 --
--- Name: merit_actions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: merit_actions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE merit_actions (
@@ -1230,7 +1240,7 @@ ALTER SEQUENCE merit_actions_id_seq OWNED BY merit_actions.id;
 
 
 --
--- Name: merit_activity_logs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: merit_activity_logs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE merit_activity_logs (
@@ -1263,7 +1273,7 @@ ALTER SEQUENCE merit_activity_logs_id_seq OWNED BY merit_activity_logs.id;
 
 
 --
--- Name: merit_score_points; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: merit_score_points; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE merit_score_points (
@@ -1295,7 +1305,7 @@ ALTER SEQUENCE merit_score_points_id_seq OWNED BY merit_score_points.id;
 
 
 --
--- Name: merit_scores; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: merit_scores; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE merit_scores (
@@ -1325,7 +1335,7 @@ ALTER SEQUENCE merit_scores_id_seq OWNED BY merit_scores.id;
 
 
 --
--- Name: order_sort_images; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: order_sort_images; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE order_sort_images (
@@ -1356,7 +1366,7 @@ ALTER SEQUENCE order_sort_images_id_seq OWNED BY order_sort_images.id;
 
 
 --
--- Name: pages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: pages; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE pages (
@@ -1398,7 +1408,7 @@ ALTER SEQUENCE pages_id_seq OWNED BY pages.id;
 
 
 --
--- Name: pg_search_documents; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: pg_search_documents; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE pg_search_documents (
@@ -1431,7 +1441,7 @@ ALTER SEQUENCE pg_search_documents_id_seq OWNED BY pg_search_documents.id;
 
 
 --
--- Name: poll_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: poll_items; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE poll_items (
@@ -1467,7 +1477,7 @@ ALTER SEQUENCE poll_items_id_seq OWNED BY poll_items.id;
 
 
 --
--- Name: polls; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: polls; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE polls (
@@ -1503,7 +1513,7 @@ ALTER SEQUENCE polls_id_seq OWNED BY polls.id;
 
 
 --
--- Name: premium_gift_certificates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: premium_gift_certificates; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE premium_gift_certificates (
@@ -1538,7 +1548,7 @@ ALTER SEQUENCE premium_gift_certificates_id_seq OWNED BY premium_gift_certificat
 
 
 --
--- Name: private_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: private_tokens; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE private_tokens (
@@ -1569,7 +1579,7 @@ ALTER SEQUENCE private_tokens_id_seq OWNED BY private_tokens.id;
 
 
 --
--- Name: publishing_schedules; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: publishing_schedules; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE publishing_schedules (
@@ -1601,7 +1611,7 @@ ALTER SEQUENCE publishing_schedules_id_seq OWNED BY publishing_schedules.id;
 
 
 --
--- Name: push_notification_tokens; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: push_notification_tokens; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE push_notification_tokens (
@@ -1635,7 +1645,7 @@ ALTER SEQUENCE push_notification_tokens_id_seq OWNED BY push_notification_tokens
 
 
 --
--- Name: questions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: questions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE questions (
@@ -1672,7 +1682,7 @@ ALTER SEQUENCE questions_id_seq OWNED BY questions.id;
 
 
 --
--- Name: quiz_sessions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: quiz_sessions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE quiz_sessions (
@@ -1705,7 +1715,7 @@ ALTER SEQUENCE quiz_sessions_id_seq OWNED BY quiz_sessions.id;
 
 
 --
--- Name: quizzes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: quizzes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE quizzes (
@@ -1741,26 +1751,7 @@ ALTER SEQUENCE quizzes_id_seq OWNED BY quizzes.id;
 
 
 --
--- Name: recipe_ingredients_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE recipe_ingredients_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: recipe_ingredients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE recipe_ingredients_id_seq OWNED BY activity_ingredients.id;
-
-
---
--- Name: revision_records; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: revision_records; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE revision_records (
@@ -1794,7 +1785,7 @@ ALTER SEQUENCE revision_records_id_seq OWNED BY revision_records.id;
 
 
 --
--- Name: sashes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: sashes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE sashes (
@@ -1824,7 +1815,7 @@ ALTER SEQUENCE sashes_id_seq OWNED BY sashes.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE schema_migrations (
@@ -1833,7 +1824,7 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: settings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: settings; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE settings (
@@ -1876,7 +1867,7 @@ ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
 
 
 --
--- Name: step_ingredients; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: step_ingredients; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE step_ingredients (
@@ -1913,7 +1904,7 @@ ALTER SEQUENCE step_ingredients_id_seq OWNED BY step_ingredients.id;
 
 
 --
--- Name: steps; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: steps; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE steps (
@@ -1927,8 +1918,8 @@ CREATE TABLE steps (
     directions text,
     image_id text,
     transcript text,
-    image_description character varying(255),
     subrecipe_title character varying(255),
+    image_description character varying(255),
     audio_clip character varying(255),
     audio_title character varying(255),
     hide_number boolean,
@@ -1959,7 +1950,7 @@ ALTER SEQUENCE steps_id_seq OWNED BY steps.id;
 
 
 --
--- Name: stripe_events; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: stripe_events; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE stripe_events (
@@ -1999,7 +1990,7 @@ ALTER SEQUENCE stripe_events_id_seq OWNED BY stripe_events.id;
 
 
 --
--- Name: stripe_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: stripe_orders; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE stripe_orders (
@@ -2033,7 +2024,7 @@ ALTER SEQUENCE stripe_orders_id_seq OWNED BY stripe_orders.id;
 
 
 --
--- Name: taggings; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: taggings; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE taggings (
@@ -2068,7 +2059,7 @@ ALTER SEQUENCE taggings_id_seq OWNED BY taggings.id;
 
 
 --
--- Name: tags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tags; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tags (
@@ -2098,7 +2089,7 @@ ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
 
 
 --
--- Name: tf2_redemptions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tf2_redemptions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE tf2_redemptions (
@@ -2131,7 +2122,7 @@ ALTER SEQUENCE tf2_redemptions_id_seq OWNED BY tf2_redemptions.id;
 
 
 --
--- Name: uploads; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: uploads; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE uploads (
@@ -2172,7 +2163,7 @@ ALTER SEQUENCE uploads_id_seq OWNED BY uploads.id;
 
 
 --
--- Name: user_acquisitions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: user_acquisitions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE user_acquisitions (
@@ -2212,7 +2203,7 @@ ALTER SEQUENCE user_acquisitions_id_seq OWNED BY user_acquisitions.id;
 
 
 --
--- Name: user_activities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: user_activities; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE user_activities (
@@ -2245,7 +2236,7 @@ ALTER SEQUENCE user_activities_id_seq OWNED BY user_activities.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE users (
@@ -2279,17 +2270,17 @@ CREATE TABLE users (
     level integer DEFAULT 0,
     role character varying(255),
     stripe_id character varying(255),
-    authentication_token character varying(255),
     google_refresh_token character varying(255),
     google_access_token character varying(255),
     google_user_id character varying(255),
+    authentication_token character varying(255),
     referrer_id integer,
     referred_from character varying(255),
     survey_results hstore,
-    events_count integer,
     twitter_user_id character varying(255),
     twitter_auth_token character varying(255),
     twitter_user_name character varying(255),
+    events_count integer,
     signup_incentive_available boolean DEFAULT true,
     timf_incentive_available boolean DEFAULT true,
     premium_member boolean DEFAULT false,
@@ -2324,7 +2315,7 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: versions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: versions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE versions (
@@ -2355,7 +2346,7 @@ ALTER SEQUENCE versions_id_seq OWNED BY versions.id;
 
 
 --
--- Name: videos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: videos; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE videos (
@@ -2391,7 +2382,7 @@ ALTER SEQUENCE videos_id_seq OWNED BY videos.id;
 
 
 --
--- Name: votes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: votes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE votes (
@@ -2424,455 +2415,455 @@ ALTER SEQUENCE votes_id_seq OWNED BY votes.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: active_admin_comments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('active_admin_comments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: activities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY activities ALTER COLUMN id SET DEFAULT nextval('activities_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: activity_equipment id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY activity_equipment ALTER COLUMN id SET DEFAULT nextval('activity_equipment_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: activity_ingredients id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY activity_ingredients ALTER COLUMN id SET DEFAULT nextval('recipe_ingredients_id_seq'::regclass);
+ALTER TABLE ONLY activity_ingredients ALTER COLUMN id SET DEFAULT nextval('activity_ingredients_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: actor_addresses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY actor_addresses ALTER COLUMN id SET DEFAULT nextval('actor_addresses_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: admin_users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY admin_users ALTER COLUMN id SET DEFAULT nextval('admin_users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: advertisements id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY advertisements ALTER COLUMN id SET DEFAULT nextval('advertisements_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: answers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY answers ALTER COLUMN id SET DEFAULT nextval('answers_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: assemblies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY assemblies ALTER COLUMN id SET DEFAULT nextval('assemblies_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: assembly_inclusions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY assembly_inclusions ALTER COLUMN id SET DEFAULT nextval('assembly_inclusions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: assignments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY assignments ALTER COLUMN id SET DEFAULT nextval('assignments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: badges_sashes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY badges_sashes ALTER COLUMN id SET DEFAULT nextval('badges_sashes_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: box_sort_images id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY box_sort_images ALTER COLUMN id SET DEFAULT nextval('box_sort_images_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: circulator_users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY circulator_users ALTER COLUMN id SET DEFAULT nextval('circulator_users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: circulators id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY circulators ALTER COLUMN id SET DEFAULT nextval('circulators_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: comments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY comments ALTER COLUMN id SET DEFAULT nextval('comments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: components id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY components ALTER COLUMN id SET DEFAULT nextval('components_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: copies id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY copies ALTER COLUMN id SET DEFAULT nextval('copies_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: courses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY courses ALTER COLUMN id SET DEFAULT nextval('courses_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: enrollments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY enrollments ALTER COLUMN id SET DEFAULT nextval('enrollments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: equipment id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY equipment ALTER COLUMN id SET DEFAULT nextval('equipment_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY events ALTER COLUMN id SET DEFAULT nextval('events_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: followerships id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY followerships ALTER COLUMN id SET DEFAULT nextval('followerships_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: friendly_id_slugs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('friendly_id_slugs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: gift_certificates id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY gift_certificates ALTER COLUMN id SET DEFAULT nextval('gift_certificates_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: images id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: inclusions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY inclusions ALTER COLUMN id SET DEFAULT nextval('inclusions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: ingredients id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ingredients ALTER COLUMN id SET DEFAULT nextval('ingredients_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: joule_cook_history_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY joule_cook_history_items ALTER COLUMN id SET DEFAULT nextval('joule_cook_history_items_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: likes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY likes ALTER COLUMN id SET DEFAULT nextval('likes_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: marketplace_guides id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY marketplace_guides ALTER COLUMN id SET DEFAULT nextval('marketplace_guides_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: merit_actions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY merit_actions ALTER COLUMN id SET DEFAULT nextval('merit_actions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: merit_activity_logs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY merit_activity_logs ALTER COLUMN id SET DEFAULT nextval('merit_activity_logs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: merit_score_points id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY merit_score_points ALTER COLUMN id SET DEFAULT nextval('merit_score_points_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: merit_scores id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY merit_scores ALTER COLUMN id SET DEFAULT nextval('merit_scores_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: order_sort_images id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY order_sort_images ALTER COLUMN id SET DEFAULT nextval('order_sort_images_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: pages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY pages ALTER COLUMN id SET DEFAULT nextval('pages_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: pg_search_documents id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY pg_search_documents ALTER COLUMN id SET DEFAULT nextval('pg_search_documents_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: poll_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY poll_items ALTER COLUMN id SET DEFAULT nextval('poll_items_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: polls id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY polls ALTER COLUMN id SET DEFAULT nextval('polls_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: premium_gift_certificates id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY premium_gift_certificates ALTER COLUMN id SET DEFAULT nextval('premium_gift_certificates_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: private_tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY private_tokens ALTER COLUMN id SET DEFAULT nextval('private_tokens_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: publishing_schedules id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY publishing_schedules ALTER COLUMN id SET DEFAULT nextval('publishing_schedules_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: push_notification_tokens id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY push_notification_tokens ALTER COLUMN id SET DEFAULT nextval('push_notification_tokens_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: questions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY questions ALTER COLUMN id SET DEFAULT nextval('questions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: quiz_sessions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY quiz_sessions ALTER COLUMN id SET DEFAULT nextval('quiz_sessions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: quizzes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY quizzes ALTER COLUMN id SET DEFAULT nextval('quizzes_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: revision_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY revision_records ALTER COLUMN id SET DEFAULT nextval('revision_records_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: sashes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY sashes ALTER COLUMN id SET DEFAULT nextval('sashes_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: settings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: step_ingredients id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY step_ingredients ALTER COLUMN id SET DEFAULT nextval('step_ingredients_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: steps id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY steps ALTER COLUMN id SET DEFAULT nextval('steps_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: stripe_events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stripe_events ALTER COLUMN id SET DEFAULT nextval('stripe_events_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: stripe_orders id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stripe_orders ALTER COLUMN id SET DEFAULT nextval('stripe_orders_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: taggings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY taggings ALTER COLUMN id SET DEFAULT nextval('taggings_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: tags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: tf2_redemptions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tf2_redemptions ALTER COLUMN id SET DEFAULT nextval('tf2_redemptions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: uploads id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY uploads ALTER COLUMN id SET DEFAULT nextval('uploads_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: user_acquisitions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY user_acquisitions ALTER COLUMN id SET DEFAULT nextval('user_acquisitions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: user_activities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY user_activities ALTER COLUMN id SET DEFAULT nextval('user_activities_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: versions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY versions ALTER COLUMN id SET DEFAULT nextval('versions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: videos id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY videos ALTER COLUMN id SET DEFAULT nextval('videos_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: votes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY votes ALTER COLUMN id SET DEFAULT nextval('votes_id_seq'::regclass);
 
 
 --
--- Name: activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: activities activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY activities
@@ -2880,7 +2871,7 @@ ALTER TABLE ONLY activities
 
 
 --
--- Name: activity_equipment_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: activity_equipment activity_equipment_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY activity_equipment
@@ -2888,7 +2879,7 @@ ALTER TABLE ONLY activity_equipment
 
 
 --
--- Name: activity_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: activity_ingredients activity_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY activity_ingredients
@@ -2896,7 +2887,7 @@ ALTER TABLE ONLY activity_ingredients
 
 
 --
--- Name: actor_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: actor_addresses actor_addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY actor_addresses
@@ -2904,7 +2895,7 @@ ALTER TABLE ONLY actor_addresses
 
 
 --
--- Name: admin_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: active_admin_comments admin_notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY active_admin_comments
@@ -2912,7 +2903,7 @@ ALTER TABLE ONLY active_admin_comments
 
 
 --
--- Name: admin_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: admin_users admin_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY admin_users
@@ -2920,7 +2911,7 @@ ALTER TABLE ONLY admin_users
 
 
 --
--- Name: advertisements_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: advertisements advertisements_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY advertisements
@@ -2928,7 +2919,7 @@ ALTER TABLE ONLY advertisements
 
 
 --
--- Name: answers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: answers answers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY answers
@@ -2936,7 +2927,7 @@ ALTER TABLE ONLY answers
 
 
 --
--- Name: assemblies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: assemblies assemblies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY assemblies
@@ -2944,7 +2935,7 @@ ALTER TABLE ONLY assemblies
 
 
 --
--- Name: assembly_inclusions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: assembly_inclusions assembly_inclusions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY assembly_inclusions
@@ -2952,7 +2943,7 @@ ALTER TABLE ONLY assembly_inclusions
 
 
 --
--- Name: assignments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: assignments assignments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY assignments
@@ -2960,7 +2951,7 @@ ALTER TABLE ONLY assignments
 
 
 --
--- Name: badges_sashes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: badges_sashes badges_sashes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY badges_sashes
@@ -2968,7 +2959,7 @@ ALTER TABLE ONLY badges_sashes
 
 
 --
--- Name: box_sort_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: box_sort_images box_sort_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY box_sort_images
@@ -2976,7 +2967,7 @@ ALTER TABLE ONLY box_sort_images
 
 
 --
--- Name: circulator_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: circulator_users circulator_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY circulator_users
@@ -2984,7 +2975,7 @@ ALTER TABLE ONLY circulator_users
 
 
 --
--- Name: circulators_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: circulators circulators_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY circulators
@@ -2992,7 +2983,7 @@ ALTER TABLE ONLY circulators
 
 
 --
--- Name: comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY comments
@@ -3000,7 +2991,7 @@ ALTER TABLE ONLY comments
 
 
 --
--- Name: components_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: components components_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY components
@@ -3008,7 +2999,7 @@ ALTER TABLE ONLY components
 
 
 --
--- Name: copies_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: copies copies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY copies
@@ -3016,7 +3007,7 @@ ALTER TABLE ONLY copies
 
 
 --
--- Name: courses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: courses courses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY courses
@@ -3024,7 +3015,7 @@ ALTER TABLE ONLY courses
 
 
 --
--- Name: enrollments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: enrollments enrollments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY enrollments
@@ -3032,7 +3023,7 @@ ALTER TABLE ONLY enrollments
 
 
 --
--- Name: equipment_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: equipment equipment_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY equipment
@@ -3040,7 +3031,7 @@ ALTER TABLE ONLY equipment
 
 
 --
--- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY events
@@ -3048,7 +3039,7 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: followerships_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: followerships followerships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY followerships
@@ -3056,7 +3047,7 @@ ALTER TABLE ONLY followerships
 
 
 --
--- Name: friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: friendly_id_slugs friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY friendly_id_slugs
@@ -3064,7 +3055,7 @@ ALTER TABLE ONLY friendly_id_slugs
 
 
 --
--- Name: gift_certificates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: gift_certificates gift_certificates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY gift_certificates
@@ -3072,7 +3063,7 @@ ALTER TABLE ONLY gift_certificates
 
 
 --
--- Name: images_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: images images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY images
@@ -3080,7 +3071,7 @@ ALTER TABLE ONLY images
 
 
 --
--- Name: inclusions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: inclusions inclusions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY inclusions
@@ -3088,7 +3079,7 @@ ALTER TABLE ONLY inclusions
 
 
 --
--- Name: ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: ingredients ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ingredients
@@ -3096,7 +3087,7 @@ ALTER TABLE ONLY ingredients
 
 
 --
--- Name: joule_cook_history_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: joule_cook_history_items joule_cook_history_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY joule_cook_history_items
@@ -3104,7 +3095,7 @@ ALTER TABLE ONLY joule_cook_history_items
 
 
 --
--- Name: likes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: likes likes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY likes
@@ -3112,7 +3103,7 @@ ALTER TABLE ONLY likes
 
 
 --
--- Name: marketplace_guides_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: marketplace_guides marketplace_guides_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY marketplace_guides
@@ -3120,7 +3111,7 @@ ALTER TABLE ONLY marketplace_guides
 
 
 --
--- Name: merit_actions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: merit_actions merit_actions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY merit_actions
@@ -3128,7 +3119,7 @@ ALTER TABLE ONLY merit_actions
 
 
 --
--- Name: merit_activity_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: merit_activity_logs merit_activity_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY merit_activity_logs
@@ -3136,7 +3127,7 @@ ALTER TABLE ONLY merit_activity_logs
 
 
 --
--- Name: merit_score_points_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: merit_score_points merit_score_points_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY merit_score_points
@@ -3144,7 +3135,7 @@ ALTER TABLE ONLY merit_score_points
 
 
 --
--- Name: merit_scores_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: merit_scores merit_scores_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY merit_scores
@@ -3152,7 +3143,7 @@ ALTER TABLE ONLY merit_scores
 
 
 --
--- Name: order_sort_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: order_sort_images order_sort_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY order_sort_images
@@ -3160,7 +3151,7 @@ ALTER TABLE ONLY order_sort_images
 
 
 --
--- Name: pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pages pages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY pages
@@ -3168,7 +3159,7 @@ ALTER TABLE ONLY pages
 
 
 --
--- Name: pg_search_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: pg_search_documents pg_search_documents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY pg_search_documents
@@ -3176,7 +3167,7 @@ ALTER TABLE ONLY pg_search_documents
 
 
 --
--- Name: poll_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: poll_items poll_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY poll_items
@@ -3184,7 +3175,7 @@ ALTER TABLE ONLY poll_items
 
 
 --
--- Name: polls_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: polls polls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY polls
@@ -3192,7 +3183,7 @@ ALTER TABLE ONLY polls
 
 
 --
--- Name: premium_gift_certificates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: premium_gift_certificates premium_gift_certificates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY premium_gift_certificates
@@ -3200,7 +3191,7 @@ ALTER TABLE ONLY premium_gift_certificates
 
 
 --
--- Name: private_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: private_tokens private_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY private_tokens
@@ -3208,7 +3199,7 @@ ALTER TABLE ONLY private_tokens
 
 
 --
--- Name: publishing_schedules_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: publishing_schedules publishing_schedules_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY publishing_schedules
@@ -3216,7 +3207,7 @@ ALTER TABLE ONLY publishing_schedules
 
 
 --
--- Name: push_notification_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: push_notification_tokens push_notification_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY push_notification_tokens
@@ -3224,7 +3215,7 @@ ALTER TABLE ONLY push_notification_tokens
 
 
 --
--- Name: questions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: questions questions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY questions
@@ -3232,7 +3223,7 @@ ALTER TABLE ONLY questions
 
 
 --
--- Name: quiz_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: quiz_sessions quiz_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY quiz_sessions
@@ -3240,7 +3231,7 @@ ALTER TABLE ONLY quiz_sessions
 
 
 --
--- Name: quizzes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: quizzes quizzes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY quizzes
@@ -3248,7 +3239,7 @@ ALTER TABLE ONLY quizzes
 
 
 --
--- Name: revision_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: revision_records revision_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY revision_records
@@ -3256,7 +3247,7 @@ ALTER TABLE ONLY revision_records
 
 
 --
--- Name: sashes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: sashes sashes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY sashes
@@ -3264,7 +3255,7 @@ ALTER TABLE ONLY sashes
 
 
 --
--- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: settings settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY settings
@@ -3272,7 +3263,7 @@ ALTER TABLE ONLY settings
 
 
 --
--- Name: step_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: step_ingredients step_ingredients_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY step_ingredients
@@ -3280,7 +3271,7 @@ ALTER TABLE ONLY step_ingredients
 
 
 --
--- Name: steps_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: steps steps_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY steps
@@ -3288,7 +3279,7 @@ ALTER TABLE ONLY steps
 
 
 --
--- Name: stripe_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: stripe_events stripe_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stripe_events
@@ -3296,7 +3287,7 @@ ALTER TABLE ONLY stripe_events
 
 
 --
--- Name: stripe_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: stripe_orders stripe_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY stripe_orders
@@ -3304,7 +3295,7 @@ ALTER TABLE ONLY stripe_orders
 
 
 --
--- Name: taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: taggings taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY taggings
@@ -3312,7 +3303,7 @@ ALTER TABLE ONLY taggings
 
 
 --
--- Name: tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tags
@@ -3320,7 +3311,7 @@ ALTER TABLE ONLY tags
 
 
 --
--- Name: tf2_redemptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: tf2_redemptions tf2_redemptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY tf2_redemptions
@@ -3328,7 +3319,7 @@ ALTER TABLE ONLY tf2_redemptions
 
 
 --
--- Name: uploads_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: uploads uploads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY uploads
@@ -3336,7 +3327,7 @@ ALTER TABLE ONLY uploads
 
 
 --
--- Name: user_acquisitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: user_acquisitions user_acquisitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY user_acquisitions
@@ -3344,7 +3335,7 @@ ALTER TABLE ONLY user_acquisitions
 
 
 --
--- Name: user_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: user_activities user_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY user_activities
@@ -3352,7 +3343,7 @@ ALTER TABLE ONLY user_activities
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -3360,7 +3351,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: versions versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY versions
@@ -3368,7 +3359,7 @@ ALTER TABLE ONLY versions
 
 
 --
--- Name: videos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: videos videos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY videos
@@ -3376,7 +3367,7 @@ ALTER TABLE ONLY videos
 
 
 --
--- Name: votes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: votes votes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY votes
@@ -3384,518 +3375,518 @@ ALTER TABLE ONLY votes
 
 
 --
--- Name: activity_equipment_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: activity_equipment_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX activity_equipment_index ON activity_equipment USING btree (activity_id, equipment_id);
 
 
 --
--- Name: aindex_endpoint_and_address; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: aindex_endpoint_and_address; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX aindex_endpoint_and_address ON push_notification_tokens USING btree (endpoint_arn, actor_address_id);
 
 
 --
--- Name: enrollable_user_index; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: enrollable_user_index; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX enrollable_user_index ON enrollments USING btree (enrollable_type, enrollable_id, user_id);
 
 
 --
--- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_active_admin_comments_on_author_type_and_author_id ON active_admin_comments USING btree (author_type, author_id);
 
 
 --
--- Name: index_active_admin_comments_on_namespace; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_active_admin_comments_on_namespace; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_active_admin_comments_on_namespace ON active_admin_comments USING btree (namespace);
 
 
 --
--- Name: index_activities_on_activity_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_activities_on_activity_order; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_activities_on_activity_order ON activities USING btree (activity_order);
 
 
 --
--- Name: index_activities_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_activities_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_activities_on_slug ON activities USING btree (slug);
 
 
 --
--- Name: index_activity_equipment_on_equipment_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_activity_equipment_on_equipment_order; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_activity_equipment_on_equipment_order ON activity_equipment USING btree (equipment_order);
 
 
 --
--- Name: index_activity_ingredients_on_activity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_activity_ingredients_on_activity_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_activity_ingredients_on_activity_id ON activity_ingredients USING btree (activity_id);
 
 
 --
--- Name: index_activity_ingredients_on_ingredient_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_activity_ingredients_on_ingredient_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_activity_ingredients_on_ingredient_id ON activity_ingredients USING btree (ingredient_id);
 
 
 --
--- Name: index_activity_ingredients_on_ingredient_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_activity_ingredients_on_ingredient_order; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_activity_ingredients_on_ingredient_order ON activity_ingredients USING btree (ingredient_order);
 
 
 --
--- Name: index_actor_addresses_on_actor_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_actor_addresses_on_actor_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_actor_addresses_on_actor_id ON actor_addresses USING btree (actor_id);
 
 
 --
--- Name: index_actor_addresses_on_actor_type_and_actor_id_and_unique_key; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_actor_addresses_on_actor_type_and_actor_id_and_unique_key; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_actor_addresses_on_actor_type_and_actor_id_and_unique_key ON actor_addresses USING btree (actor_type, actor_id, unique_key);
 
 
 --
--- Name: index_actor_addresses_on_address_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_actor_addresses_on_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_actor_addresses_on_address_id ON actor_addresses USING btree (address_id);
 
 
 --
--- Name: index_admin_notes_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_admin_notes_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_admin_notes_on_resource_type_and_resource_id ON active_admin_comments USING btree (resource_type, resource_id);
 
 
 --
--- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_admin_users_on_email ON admin_users USING btree (email);
 
 
 --
--- Name: index_admin_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_admin_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON admin_users USING btree (reset_password_token);
 
 
 --
--- Name: index_answers_on_question_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_answers_on_question_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_answers_on_question_id_and_user_id ON answers USING btree (question_id, user_id);
 
 
 --
--- Name: index_assembly_inclusions_on_assembly_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_assembly_inclusions_on_assembly_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_assembly_inclusions_on_assembly_id ON assembly_inclusions USING btree (assembly_id);
 
 
 --
--- Name: index_assembly_inclusions_on_includable_id_and_includable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_assembly_inclusions_on_includable_id_and_includable_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_assembly_inclusions_on_includable_id_and_includable_type ON assembly_inclusions USING btree (includable_id, includable_type);
 
 
 --
--- Name: index_assignments_on_activity_id_and_child_activity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_assignments_on_activity_id_and_child_activity_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_assignments_on_activity_id_and_child_activity_id ON assignments USING btree (activity_id, child_activity_id);
 
 
 --
--- Name: index_badges_sashes_on_badge_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_badges_sashes_on_badge_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_badges_sashes_on_badge_id ON badges_sashes USING btree (badge_id);
 
 
 --
--- Name: index_badges_sashes_on_badge_id_and_sash_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_badges_sashes_on_badge_id_and_sash_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_badges_sashes_on_badge_id_and_sash_id ON badges_sashes USING btree (badge_id, sash_id);
 
 
 --
--- Name: index_badges_sashes_on_sash_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_badges_sashes_on_sash_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_badges_sashes_on_sash_id ON badges_sashes USING btree (sash_id);
 
 
 --
--- Name: index_box_sort_images_on_image_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_box_sort_images_on_image_order; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_box_sort_images_on_image_order ON box_sort_images USING btree (image_order);
 
 
 --
--- Name: index_box_sort_images_on_question_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_box_sort_images_on_question_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_box_sort_images_on_question_id ON box_sort_images USING btree (question_id);
 
 
 --
--- Name: index_circulator_users_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_circulator_users_on_deleted_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_circulator_users_on_deleted_at ON circulator_users USING btree (deleted_at);
 
 
 --
--- Name: index_circulator_users_on_user_id_and_circulator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_circulator_users_on_user_id_and_circulator_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_circulator_users_on_user_id_and_circulator_id ON circulator_users USING btree (user_id, circulator_id);
 
 
 --
--- Name: index_circulator_users_unique; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_circulator_users_unique; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_circulator_users_unique ON circulator_users USING btree (user_id, circulator_id, (COALESCE(deleted_at, 'infinity'::timestamp without time zone)));
 
 
 --
--- Name: index_circulators_on_circulator_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_circulators_on_circulator_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_circulators_on_circulator_id ON circulators USING btree (circulator_id, (COALESCE(deleted_at, 'infinity'::timestamp without time zone)));
 
 
 --
--- Name: index_circulators_on_deleted_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_circulators_on_deleted_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_circulators_on_deleted_at ON circulators USING btree (deleted_at);
 
 
 --
--- Name: index_comments_on_commentable_id_and_commentable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_comments_on_commentable_id_and_commentable_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_comments_on_commentable_id_and_commentable_type ON comments USING btree (commentable_id, commentable_type);
 
 
 --
--- Name: index_copies_on_location; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_copies_on_location; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_copies_on_location ON copies USING btree (location);
 
 
 --
--- Name: index_events_on_action; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_action; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_action ON events USING btree (action);
 
 
 --
--- Name: index_events_on_action_and_trackable_type_and_trackable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_action_and_trackable_type_and_trackable_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_action_and_trackable_type_and_trackable_id ON events USING btree (action, trackable_type, trackable_id);
 
 
 --
--- Name: index_events_on_group_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_group_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_group_name ON events USING btree (group_name);
 
 
 --
--- Name: index_events_on_group_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_group_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_group_type ON events USING btree (group_type);
 
 
 --
--- Name: index_events_on_trackable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_trackable_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_trackable_type ON events USING btree (trackable_type);
 
 
 --
--- Name: index_events_on_trackable_type_and_trackable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_trackable_type_and_trackable_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_trackable_type_and_trackable_id ON events USING btree (trackable_type, trackable_id);
 
 
 --
--- Name: index_events_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_events_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_events_on_user_id ON events USING btree (user_id);
 
 
 --
--- Name: index_followerships_on_follower_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_followerships_on_follower_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_followerships_on_follower_id ON followerships USING btree (follower_id);
 
 
 --
--- Name: index_followerships_on_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_followerships_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_followerships_on_user_id ON followerships USING btree (user_id);
 
 
 --
--- Name: index_friendly_id_slugs_on_slug_and_sluggable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_friendly_id_slugs_on_slug_and_sluggable_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_friendly_id_slugs_on_slug_and_sluggable_type ON friendly_id_slugs USING btree (slug, sluggable_type);
 
 
 --
--- Name: index_friendly_id_slugs_on_sluggable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_friendly_id_slugs_on_sluggable_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_friendly_id_slugs_on_sluggable_id ON friendly_id_slugs USING btree (sluggable_id);
 
 
 --
--- Name: index_friendly_id_slugs_on_sluggable_type; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_friendly_id_slugs_on_sluggable_type; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_friendly_id_slugs_on_sluggable_type ON friendly_id_slugs USING btree (sluggable_type);
 
 
 --
--- Name: index_gift_certificates_on_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_gift_certificates_on_token; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_gift_certificates_on_token ON gift_certificates USING btree (token);
 
 
 --
--- Name: index_inclusions_on_activity_id_and_course_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_inclusions_on_activity_id_and_course_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_inclusions_on_activity_id_and_course_id ON inclusions USING btree (activity_id, course_id);
 
 
 --
--- Name: index_inclusions_on_course_id_and_activity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_inclusions_on_course_id_and_activity_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_inclusions_on_course_id_and_activity_id ON inclusions USING btree (course_id, activity_id);
 
 
 --
--- Name: index_ingredients_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_ingredients_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_ingredients_on_slug ON ingredients USING btree (slug);
 
 
 --
--- Name: index_joule_cook_history_items_on_user_id_and_idempotency_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_joule_cook_history_items_on_user_id_and_idempotency_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_joule_cook_history_items_on_user_id_and_idempotency_id ON joule_cook_history_items USING btree (user_id, idempotency_id);
 
 
 --
--- Name: index_premium_gift_certificates_on_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_premium_gift_certificates_on_token; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_premium_gift_certificates_on_token ON premium_gift_certificates USING btree (token);
 
 
 --
--- Name: index_push_notification_tokens_on_actor_address_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_push_notification_tokens_on_actor_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_push_notification_tokens_on_actor_address_id ON push_notification_tokens USING btree (actor_address_id);
 
 
 --
--- Name: index_questions_on_question_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_questions_on_question_order; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_questions_on_question_order ON questions USING btree (question_order);
 
 
 --
--- Name: index_quiz_sessions_on_user_id_and_quiz_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_quiz_sessions_on_user_id_and_quiz_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_quiz_sessions_on_user_id_and_quiz_id ON quiz_sessions USING btree (user_id, quiz_id);
 
 
 --
--- Name: index_quizzes_on_activity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_quizzes_on_activity_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_quizzes_on_activity_id ON quizzes USING btree (activity_id);
 
 
 --
--- Name: index_quizzes_on_slug; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_quizzes_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_quizzes_on_slug ON quizzes USING btree (slug);
 
 
 --
--- Name: index_step_ingredients_on_ingredient_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_step_ingredients_on_ingredient_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_step_ingredients_on_ingredient_id ON step_ingredients USING btree (ingredient_id);
 
 
 --
--- Name: index_step_ingredients_on_ingredient_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_step_ingredients_on_ingredient_order; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_step_ingredients_on_ingredient_order ON step_ingredients USING btree (ingredient_order);
 
 
 --
--- Name: index_step_ingredients_on_step_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_step_ingredients_on_step_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_step_ingredients_on_step_id ON step_ingredients USING btree (step_id);
 
 
 --
--- Name: index_steps_on_activity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_steps_on_activity_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_steps_on_activity_id ON steps USING btree (activity_id);
 
 
 --
--- Name: index_steps_on_step_order; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_steps_on_step_order; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_steps_on_step_order ON steps USING btree (step_order);
 
 
 --
--- Name: index_taggings_on_taggable_id_and_taggable_type_and_context; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_taggings_on_taggable_id_and_taggable_type_and_context; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_taggings_on_taggable_id_and_taggable_type_and_context ON taggings USING btree (taggable_id, taggable_type, context);
 
 
 --
--- Name: index_tags_on_name; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_tags_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_tags_on_name ON tags USING btree (name);
 
 
 --
--- Name: index_tf2_redemptions_on_redemption_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_tf2_redemptions_on_redemption_code; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_tf2_redemptions_on_redemption_code ON tf2_redemptions USING btree (redemption_code);
 
 
 --
--- Name: index_users_on_authentication_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_authentication_token; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_authentication_token ON users USING btree (authentication_token);
 
 
 --
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON users USING btree (email);
 
 
 --
--- Name: index_users_on_referral_code; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_referral_code; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_users_on_referral_code ON users USING btree (referral_code);
 
 
 --
--- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
 
 
 --
--- Name: index_users_on_survey_results; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_survey_results; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_users_on_survey_results ON users USING gist (survey_results);
 
 
 --
--- Name: index_versions_on_version; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_versions_on_version; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_versions_on_version ON versions USING btree (version);
 
 
 --
--- Name: revision_records_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: revision_records_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX revision_records_id ON revision_records USING btree (revisionable_id);
 
 
 --
--- Name: revision_records_type_and_created_at; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: revision_records_type_and_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX revision_records_type_and_created_at ON revision_records USING btree (revisionable_type, created_at, trash);
 
 
 --
--- Name: taggings_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: taggings_idx; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX taggings_idx ON taggings USING btree (tag_id, taggable_id, taggable_type, context, tagger_id, tagger_type);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
@@ -3905,7 +3896,7 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
 INSERT INTO schema_migrations (version) VALUES ('20120906183600');
 
