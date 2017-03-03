@@ -31,18 +31,20 @@ class UserSync
   end
 
   def sync
-    sync_mailchimp
+    sync_mailchimp(joule_counts)
+    sync_referral_code(joule_counts)
     sync_shopify
   end
 
-  def sync_mailchimp(options = {premium: true, joule: true, joule_data: true})
+  def sync_referral_code
     joule_counts = get_joule_counts()
 
-    # Create referral code in rails db even if user is unsubscribed or we aren't syncing to mailchimp
     if options[:joule] && joule_counts[:ever_connected_count] > 0
       Shopify::Customer.find_or_create_referral_code_for_user @user
     end
+  end
 
+  def sync_mailchimp(options = {premium: true, joule: true, joule_data: true})
     list_id = Rails.configuration.mailchimp[:list_id]
     member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
     @logger.info member_info.inspect
@@ -79,7 +81,7 @@ class UserSync
     end
 
     if options[:joule_data]
-      sync_joule_data(member_info, joule_counts)
+      sync_joule_data(member_info)
     end
   end
 
@@ -94,7 +96,9 @@ class UserSync
     }
   end
 
-  def sync_joule_data(member_info, joule_counts)
+  def sync_joule_data(member_info)
+    joule_counts = get_joule_counts()
+
     if joule_counts[:ever_connected_count] > 0
       merges = {
         JOULES_CONNECTED_MERGE_TAG => joule_counts[:connected_count],
