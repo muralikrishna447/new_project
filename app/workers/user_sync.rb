@@ -36,11 +36,6 @@ class UserSync
   end
 
   def sync_mailchimp(options = {premium: true, joule: true, joule_data: true})
-    list_id = Rails.configuration.mailchimp[:list_id]
-    member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
-    @logger.info member_info.inspect
-
-    member_info = member_info['data'][0]
     joule_counts = get_joule_counts()
 
     # Create referral code in rails db even if user is unsubscribed or we aren't syncing to mailchimp
@@ -48,6 +43,9 @@ class UserSync
       Shopify::Customer.find_or_create_referral_code_for_user @user
     end
 
+    list_id = Rails.configuration.mailchimp[:list_id]
+    member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
+    @logger.info member_info.inspect
     if member_info['success_count'] == 0
       @logger.warn "User not found in MailChimp #{member_info.inspect}"
       return
@@ -55,6 +53,8 @@ class UserSync
       @logger.warn "User unsubscribed from list #{member_info.inspect}"
       return
     end
+
+    member_info = member_info['data'][0]
 
     if member_info['status'] != 'subscribed'
       @logger.warn "User not subscribed to list, actual status [#{member_info['status']}]"
