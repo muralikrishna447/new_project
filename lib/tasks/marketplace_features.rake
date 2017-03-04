@@ -166,17 +166,19 @@ namespace :marketplace_features do
     table_config = Rails.configuration.dynamodb.beta_features_table_config
 
     while associations.length > 0
-      batch_to_delete = create_batch_delete_associations(associations, args.group_name)
-      dynamo_client.batch_write_item({
-             request_items: {
-                 table_config[:group_associations_table] => batch_to_delete
-             },
-             return_consumed_capacity: "INDEXES", # accepts INDEXES, TOTAL, NONE
-             return_item_collection_metrics: "SIZE" # accepts SIZE, NONE
-      })
-      puts "[#{Time.now}] Deleted #{batch_to_delete.length} items"
+      while associations.length > 0
+        batch_to_delete = create_batch_delete_associations(associations, args.group_name)
+        dynamo_client.batch_write_item({
+               request_items: {
+                   table_config[:group_associations_table] => batch_to_delete
+               },
+               return_consumed_capacity: "INDEXES", # accepts INDEXES, TOTAL, NONE
+               return_item_collection_metrics: "SIZE" # accepts SIZE, NONE
+        })
+        puts "[#{Time.now}] Deleted #{batch_to_delete.length} items"
+      end
+      associations = find_associations(args.group_name)
     end
-
   end
 
 
