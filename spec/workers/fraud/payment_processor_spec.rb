@@ -217,6 +217,7 @@ describe Fraud::PaymentProcessor do
         it 'saves order risk to shopify with accept recommendation' do
           Shopify::Utils.should_receive(:send_assert_true).with(saved_order, :save)
           Shopify::Utils.should_receive(:send_assert_true).with(risk, :save)
+          Librato.should_not_receive(:increment).with('fraud.payment-processor.orders.lowscore.count', sporadic: true)
           Fraud::PaymentProcessor.add_score_to_order(order, signifyd_score)
         end
       end
@@ -228,6 +229,7 @@ describe Fraud::PaymentProcessor do
         it 'saves order risk to shopify with investigate recommendation' do
           Shopify::Utils.should_receive(:send_assert_true).with(saved_order, :save)
           Shopify::Utils.should_receive(:send_assert_true).with(risk, :save)
+          Librato.should_receive(:increment).with('fraud.payment-processor.orders.lowscore.count', sporadic: true)
           Fraud::PaymentProcessor.add_score_to_order(order, signifyd_score)
         end
       end
