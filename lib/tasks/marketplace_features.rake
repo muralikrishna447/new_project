@@ -142,6 +142,7 @@ namespace :marketplace_features do
     dynamo_client = Aws::DynamoDB::Client.new(region: 'us-east-1')
     table_config = Rails.configuration.dynamodb.beta_features_table_config
 
+    #double loop is hokey, need to figure out why I'm not getting all items with the one loop
     while associations.length > 0
       while associations.length > 0
         batch_to_delete = create_batch_delete_associations(associations, args.group_name)
@@ -157,25 +158,6 @@ namespace :marketplace_features do
       associations = find_associations(args.group_name)
     end
   end
-
-
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
