@@ -2,6 +2,7 @@ require 'CSV'
 
 namespace :marketplace_features do
   MARKETPLACE_GROUP = 'seattle_marketplace_customers'
+  MARKETPLACE_FEATURE = 'seattle_marketplace_offers'
   DEV_GROUP = 'dev'
   BATCH_SIZE = 25
 
@@ -9,8 +10,8 @@ namespace :marketplace_features do
     #create marketplace group/features, unless it already exists
     dynamo_client = Aws::DynamoDB::Client.new(region: 'us-east-1')
     table_config = Rails.configuration.dynamodb.beta_features_table_config
-    [ {feature: 'seattle_marketplace_offers', group: MARKETPLACE_GROUP},
-      {feature: 'seattle_marketplace_offers', group: DEV_GROUP}].each do |params|
+    [ {feature: MARKETPLACE_FEATURE, group: MARKETPLACE_GROUP},
+      {feature: MARKETPLACE_FEATURE, group: DEV_GROUP}].each do |params|
 
       begin
         dynamo_client.put_item(
