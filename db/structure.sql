@@ -1179,7 +1179,8 @@ CREATE TABLE marketplace_guides (
     button_text character varying(255),
     button_text_line_2 character varying(255),
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    feature_name character varying(255) DEFAULT 'seattle_marketplace_offers'::character varying
 );
 
 
@@ -4415,3 +4416,5 @@ INSERT INTO schema_migrations (version) VALUES ('20170105211422');
 INSERT INTO schema_migrations (version) VALUES ('20170109173731');
 
 INSERT INTO schema_migrations (version) VALUES ('20170228210819');
+
+INSERT INTO schema_migrations (version) VALUES ('20170306212842');

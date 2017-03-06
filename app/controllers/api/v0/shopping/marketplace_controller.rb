@@ -2,8 +2,6 @@ module Api
   module V0
     module Shopping
       class MarketplaceController < BaseController
-        MARKETPLACE_FEATURE = 'seattle_marketplace_offers'
-
         before_filter :ensure_authorized_or_anonymous
 
         @@marketplace_guides = HashWithIndifferentAccess.new
@@ -11,7 +9,7 @@ module Api
         def guide_button
           guide_id = params[:guide_id]
           fetch_marketplace_guides
-          if @@marketplace_guides[guide_id] && BetaFeatureService.user_has_feature(current_api_user, MARKETPLACE_FEATURE)
+          if @@marketplace_guides[guide_id] && BetaFeatureService.user_has_feature(current_api_user, @@marketplace_guides[guide_id][:feature_name])
             Rails.logger.info "Matching marketplace guide"
             button_text = @@marketplace_guides[guide_id][:button_text]
             button_text_line_2 = @@marketplace_guides[guide_id][:button_text_line_2]
