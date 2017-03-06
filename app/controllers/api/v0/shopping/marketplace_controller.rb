@@ -2,7 +2,8 @@ module Api
   module V0
     module Shopping
       class MarketplaceController < BaseController
-        STEAK_GUIDE_ID = '2MH313EsysIOwGcMooSSkk'
+        MARKETPLACE_FEATURE = 'seattle_marketplace_offers'
+
         before_filter :ensure_authorized_or_anonymous
 
         @@marketplace_guides = HashWithIndifferentAccess.new
@@ -10,7 +11,7 @@ module Api
         def guide_button
           guide_id = params[:guide_id]
           fetch_marketplace_guides
-          if @@marketplace_guides[guide_id]
+          if @@marketplace_guides[guide_id] && BetaFeatureService.user_has_feature(current_api_user, MARKETPLACE_FEATURE)
             Rails.logger.info "Matching marketplace guide"
             button_text = @@marketplace_guides[guide_id][:button_text]
             button_text_line_2 = @@marketplace_guides[guide_id][:button_text_line_2]
@@ -25,14 +26,6 @@ module Api
             return render_no_button
           end
 
-          if params[:guide_id] != STEAK_GUIDE_ID
-            Rails.logger.info "Steak guide not selected - showing no button"
-            return render_no_button
-          end
-
-          if BetaFeatureService.user_has_feature(current_api_user, 'steak_buy_button')
-            return render_api_response 200, {button: {line_1: "Buy locally", line_2: "$20-$40"}}
-          end
           return render_no_button
         end
 
