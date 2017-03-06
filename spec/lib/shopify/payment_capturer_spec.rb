@@ -100,23 +100,19 @@ describe Shopify::PaymentCapturer do
 
     context 'order has financial_status partially_paid' do
       let(:financial_status) { 'partially_paid' }
-      let(:auth_amount_1) { 4.31 }
-      let(:auth_amount_2) { 6.45 }
-      let(:transaction_1) { ShopifyAPI::Transaction.new(amount: auth_amount_1) }
-      let(:transaction_2) { ShopifyAPI::Transaction.new(amount: auth_amount_2) }
-      let(:transactions) { [transaction_1, transaction_2] }
+      let(:auth_amount) { '4.31' }
+      let(:transaction) { ShopifyAPI::Transaction.new(amount: auth_amount) }
 
       context 'order has successful non-gift-card authorizations' do
         before :each do
-          order.stub(:transactions).and_return(transactions)
-          capturer.stub(:successful_cc_auth?).with(transaction_1).and_return(true)
-          capturer.stub(:successful_cc_auth?).with(transaction_2).and_return(true)
+          order.stub(:transactions).and_return([transaction])
+          capturer.stub(:successful_cc_auth?).with(transaction).and_return(true)
         end
 
-        it 'returns capture transaction with sum of authorization amounts' do
+        it 'returns capture transaction with authorization amount' do
           transaction = ShopifyAPI::Transaction.new(
             kind: 'capture',
-            amount: auth_amount_1 + auth_amount_2
+            amount: 4.31
           )
           transaction.prefix_options[:order_id] = order_id
           expect(capturer.build_capture_transaction(order)).to eq(transaction)
@@ -125,12 +121,26 @@ describe Shopify::PaymentCapturer do
 
       context 'order has no successful non-gift-card authorizations' do
         before :each do
-          capturer.stub(:successful_cc_auth?).with(transaction_1).and_return(false)
-          capturer.stub(:successful_cc_auth?).with(transaction_2).and_return(false)
+          order.stub(:transactions).and_return([transaction])
+          capturer.stub(:successful_cc_auth?).with(transaction).and_return(false)
         end
 
         it 'raises error' do
           expect { capturer.build_capture_transaction(order) }.to raise_error
+        end
+      end
+
+      context 'order has multiple successful non-gift-card authorizations' do
+        let(:transaction_dupe) { ShopifyAPI::Transaction.new(amount: auth_amount) }
+
+        before :each do
+          order.stub(:transactions).and_return([transaction, transaction_dupe])
+          capturer.stub(:successful_cc_auth?).with(transaction).and_return(true)
+          capturer.stub(:successful_cc_auth?).with(transaction_dupe).and_return(true)
+        end
+
+        it 'raises error' do
+          expect { capturer.build_capture_transaction(order) }
         end
       end
     end

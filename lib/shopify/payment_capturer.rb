@@ -71,8 +71,11 @@ module Shopify
         if auth_transacations.empty?
           raise "No credit card authorization found for order with id #{order.id}"
         end
+        if auth_transacations.size > 1
+          raise "Multiple credit card authorizations found for order with id #{order.id}"
+        end
 
-        amount = auth_transacations.inject(0.0) { |sum, t| sum + t.amount.to_f }
+        amount = auth_transacations.first.amount.to_f
         Rails.logger.info "PaymentProcessor will capture authorization amount #{amount} " \
                           "for order with id #{order.id}"
         transaction.amount = amount
