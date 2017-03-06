@@ -132,7 +132,6 @@ module Api
       def publish_notification(circulator, token, push_notification)
         message = push_notification.message
         notification_type = push_notification.notification_type
-        content_available = push_notification.content_available
         endpoint_arn = token.endpoint_arn
         Librato.increment("api.publish_notification_requests")
 
@@ -143,7 +142,6 @@ module Api
             title: title,
             notification_type: notification_type,
             circulator_address: circulator.circulator_id,
-            "content_available" => content_available == 1 ? true : false
           }
         }
         apns_data = {
@@ -152,7 +150,6 @@ module Api
             sound: 'default',
             notification_type: notification_type,
             circulator_address: circulator.circulator_id,
-            "content-available" => content_available
           }
         }
 
@@ -254,12 +251,11 @@ module Api
       end
 
       class PushNotification
-        attr_reader :notification_type, :message, :content_available
+        attr_reader :notification_type, :message
 
-        def initialize(notification_type, message, content_available)
+        def initialize(notification_type, message)
           @notification_type = notification_type
           @message = message
-          @content_available = content_available
         end
       end
 
@@ -290,10 +286,8 @@ module Api
           end
         end
 
-        # Always pass content_available
-        content_available = 1
         return PushNotification.new(
-          notification_type, message, content_available
+          notification_type, message
         )
       end
 

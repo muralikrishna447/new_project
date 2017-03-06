@@ -312,8 +312,6 @@ describe Api::V0::CirculatorsController do
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
           gcm = JSON.parse msg['GCM']
-          expect(apns['aps']['content-available']).to eq 1
-          expect(gcm['data']['content_available']).to eq true
           expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
           expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
         end
@@ -331,8 +329,6 @@ describe Api::V0::CirculatorsController do
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
           gcm = JSON.parse msg['GCM']
-          expect(apns['aps']['content-available']).to eq 1
-          expect(gcm['data']['content_available']).to eq true
         end
       end
 
@@ -350,7 +346,6 @@ describe Api::V0::CirculatorsController do
           expect(@published_messages.length).to eq 1
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
-          expect(apns['aps']['content-available']).to eq 1
         end
 
         it 'should notify clients with emoji Joule name' do
