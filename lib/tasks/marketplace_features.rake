@@ -85,7 +85,7 @@ namespace :marketplace_features do
     batch
   end
 
-  task :add_marketplace_associations2, [:csv_file] => :environment do |t,args|
+  task :add_marketplace_associations, [:csv_file] => :environment do |t,args|
     create_marketplace_group_features
 
     email_addrs = load_email_addresses(args.csv_file)
@@ -113,7 +113,7 @@ namespace :marketplace_features do
              return_consumed_capacity: "INDEXES", # accepts INDEXES, TOTAL, NONE
              return_item_collection_metrics: "SIZE"
           })
-          puts "Added #{batch_items.length} items"
+          puts "[#{Time.now}] Added #{batch_items.length} items"
           batch_items.clear
         end
       end
@@ -131,30 +131,6 @@ namespace :marketplace_features do
       batch_items.clear
     end
 
-  end
-
-
-  task :add_marketplace_associations, [:csv_file] => :environment do |t,args|
-    create_marketplace_group_features
-
-    email_addrs = load_email_addresses(args.csv_file)
-    dynamo_client = Aws::DynamoDB::Client.new(region: 'us-east-1')
-    table_config = Rails.configuration.dynamodb.beta_features_table_config
-
-    batch_items = []
-    users = User.where(:email => email_addrs)
-    users.each do |user|
-      [MARKETPLACE_GROUP, DEV_GROUP].each do |group|
-        dynamo_client.put_item(
-            item: {
-                user_id: user.id,
-                group_name: group
-            },
-            table_name: table_config[:group_associations_table]
-        )
-        puts "#{user.id} : #{group} added"
-      end
-    end
   end
 
 
