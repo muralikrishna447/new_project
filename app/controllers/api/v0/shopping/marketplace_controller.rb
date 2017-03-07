@@ -9,21 +9,28 @@ module Api
         def guide_button
           guide_id = params[:guide_id]
           fetch_marketplace_guides
-          if @@marketplace_guides[guide_id] && BetaFeatureService.user_has_feature(current_api_user, @@marketplace_guides[guide_id][:feature_name])
-            Rails.logger.info "Matching marketplace guide"
-            button_text = @@marketplace_guides[guide_id][:button_text]
-            button_text_line_2 = @@marketplace_guides[guide_id][:button_text_line_2]
 
-            button = {button: {line_1: button_text }}
-            button[:button][:line_2] = button_text_line_2 if button_text_line_2
-            return render_api_response 200, button
+          if @@marketplace_guides[guide_id]
+            Rails.logger.info "Matching marketplace guide"
+            render_button = true
+            if @@marketplace_guides[guide_id][:feature_name].present?
+              render_button = BetaFeatureService.user_has_feature(current_api_user, @@marketplace_guides[guide_id][:feature_name])
+            end
+
+            if render_button
+              button_text = @@marketplace_guides[guide_id][:button_text]
+              button_text_line_2 = @@marketplace_guides[guide_id][:button_text_line_2]
+
+              button = {button: {line_1: button_text }}
+              button[:button][:line_2] = button_text_line_2 if button_text_line_2
+              return render_api_response 200, button
+            end
           end
 
           if @user_id_from_token.nil?
             Rails.logger.info "User not logged in - showing no button"
             return render_no_button
           end
-
           return render_no_button
         end
 
