@@ -1,6 +1,6 @@
 
 namespace :marketplace_features do
-  require 'CSV'
+  require 'csv'
 
   MARKETPLACE_GROUP = 'seattle_marketplace_customers'
   MARKETPLACE_FEATURE = 'seattle_marketplace_offers'
