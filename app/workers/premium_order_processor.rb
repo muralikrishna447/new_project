@@ -52,15 +52,18 @@ class PremiumOrderProcessor
   end
 
   def self.fulfill_premium_items(order, api_order, items)
-    items.each { |item| fulfill_premium_item(order, api_order, item) }
-    order.sync_user
+    fulfilled = false
+    items.each do |item|
+      fulfilled = true if fulfill_premium_item(order, api_order, item)
+    end
+    order.sync_user if fulfilled
   end
 
   def self.fulfill_premium_item(order, api_order, item)
     unless fulfillable_line_item?(item)
       Rails.logger.info "PremiumOrderProcessor premium line item with id #{item.id} " \
                         "for order with id #{api_order.id} is not fulfillable, skipping"
-      return
+      return false
     end
 
     if !order.gift_order? && item.quantity > 1
@@ -75,6 +78,7 @@ class PremiumOrderProcessor
     Rails.logger.info "Initial fulfillment latency [#{initial_fulfillment_latency}]"
     Librato.timing 'shopify.premium-order-processor.fulfillment.latency', initial_fulfillment_latency
     Librato.increment 'shopify.premium-order-processor.fulfillment.count', sporadic: true
+    true
   end
 
   def self.fulfillable_line_item?(item)

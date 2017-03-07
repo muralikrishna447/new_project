@@ -85,14 +85,27 @@ describe PremiumOrderProcessor do
     end
     let(:order_wrapper) { double('order_wrapper') }
 
-    it 'calls fulfill_premium_item and syncs user' do
-      PremiumOrderProcessor.should_receive(:fulfill_premium_item).with(
-        order_wrapper,
-        order,
-        premium_line_item
-      )
-      order_wrapper.should_receive(:sync_user)
-      PremiumOrderProcessor.fulfill_premium_items(order_wrapper, order, [premium_line_item])
+    before :each do
+      PremiumOrderProcessor
+        .should_receive(:fulfill_premium_item)
+        .with(order_wrapper, order, premium_line_item)
+        .and_return(was_fulfilled)
+    end
+
+    context 'a premium line item was fulfilled' do
+      let(:was_fulfilled) { true }
+      it 'syncs user' do
+        order_wrapper.should_receive(:sync_user)
+        PremiumOrderProcessor.fulfill_premium_items(order_wrapper, order, [premium_line_item])
+      end
+    end
+
+    context 'a premium line item was not fulfilled' do
+      let(:was_fulfilled) { false }
+      it 'does not sync user' do
+        order_wrapper.should_not_receive(:sync_user)
+        PremiumOrderProcessor.fulfill_premium_items(order_wrapper, order, [premium_line_item])
+      end
     end
   end
 
@@ -115,9 +128,9 @@ describe PremiumOrderProcessor do
         PremiumOrderProcessor.stub(:fulfillable_line_item?).with(line_item).and_return(false)
       end
 
-      it 'does not fulfill premium' do
+      it 'does not fulfill premium and returns false' do
         order_wrapper.should_not_receive(:fulfill_premium)
-        PremiumOrderProcessor.fulfill_premium_item(order_wrapper, order, line_item)
+        expect(PremiumOrderProcessor.fulfill_premium_item(order_wrapper, order, line_item)).to be_false
       end
     end
 
@@ -133,9 +146,9 @@ describe PremiumOrderProcessor do
 
         context 'order has premium line item with quantity 1' do
           let(:quantity) { 1 }
-          it 'calls fulfill_premium' do
+          it 'calls fulfill_premium and returns true' do
             order_wrapper.should_receive(:fulfill_premium).with(line_item, true)
-            PremiumOrderProcessor.fulfill_premium_item(order_wrapper, order, line_item)
+            expect(PremiumOrderProcessor.fulfill_premium_item(order_wrapper, order, line_item)).to be_true
           end
         end
 
@@ -153,9 +166,9 @@ describe PremiumOrderProcessor do
           order_wrapper.stub(:gift_order?).and_return(true)
         end
 
-        it 'calls fulfill_premium' do
+        it 'calls fulfill_premium and returns true' do
           order_wrapper.should_receive(:fulfill_premium).with(line_item, true)
-          PremiumOrderProcessor.fulfill_premium_item(order_wrapper, order, line_item)
+          expect(PremiumOrderProcessor.fulfill_premium_item(order_wrapper, order, line_item)).to be_true
         end
       end
     end
