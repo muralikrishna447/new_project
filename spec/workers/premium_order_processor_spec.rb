@@ -9,7 +9,7 @@ describe PremiumOrderProcessor do
         line_items: line_items
       )
     end
-    let(:order_wrapper) { 'order_wrapper' }
+    let(:order_wrapper) { double('order_wrapper') }
     before :each do
       Shopify::Utils.stub(:order_by_id).with(order_id).and_return(order)
       Shopify::Order.stub(:new).with(order).and_return(order_wrapper)
@@ -21,8 +21,8 @@ describe PremiumOrderProcessor do
 
       context 'order contains only premium line item' do
         it 'calls capture_only_premium and fulfill_premium_items' do
-          PremiumOrderProcessor.should_receive(:capture_only_premium).with(order_wrapper, order)
-          PremiumOrderProcessor.should_receive(:fulfill_premium_items).with(order_wrapper, order, line_items)
+          PremiumOrderProcessor.should_receive(:capture_only_premium).with(order_wrapper)
+          PremiumOrderProcessor.should_receive(:fulfill_premium_items).with(order_wrapper, line_items)
           PremiumOrderProcessor.perform(order_id)
         end
       end
@@ -33,7 +33,7 @@ describe PremiumOrderProcessor do
 
         it 'calls fulfill_premium_items and does not call capture_only_premium' do
           PremiumOrderProcessor.should_not_receive(:capture_only_premium)
-          PremiumOrderProcessor.should_receive(:fulfill_premium_items).with(order_wrapper, order, [premium_line_item])
+          PremiumOrderProcessor.should_receive(:fulfill_premium_items).with(order_wrapper, [premium_line_item])
           PremiumOrderProcessor.perform(order_id)
         end
       end
@@ -53,6 +53,10 @@ describe PremiumOrderProcessor do
     let(:order) { ShopifyAPI::Order.new(id: 1234) }
     let(:order_wrapper) { double('order_wrapper') }
 
+    before :each do
+      order_wrapper.stub(:api_order).and_return(order)
+    end
+
     context 'order is capturable' do
       before :each do
         PremiumOrderProcessor.stub(:capturable?).and_return(true)
@@ -60,7 +64,7 @@ describe PremiumOrderProcessor do
       it 'calls capture_payment and sends analytics' do
         PremiumOrderProcessor.should_receive(:capture_payment).with(order)
         order_wrapper.should_receive(:send_analytics)
-        PremiumOrderProcessor.capture_only_premium(order_wrapper, order)
+        PremiumOrderProcessor.capture_only_premium(order_wrapper)
       end
     end
 
@@ -70,25 +74,19 @@ describe PremiumOrderProcessor do
       end
       it 'does not call capture_payment' do
         PremiumOrderProcessor.should_not_receive(:capture_payment)
-        PremiumOrderProcessor.capture_only_premium(order_wrapper, order)
+        PremiumOrderProcessor.capture_only_premium(order_wrapper)
       end
     end
   end
 
   describe 'fulfill_premium_items' do
     let(:premium_line_item) { ShopifyAPI::LineItem.new(sku: Shopify::Order::PREMIUM_SKU) }
-    let(:order) do
-      ShopifyAPI::Order.new(
-        id: 1234,
-        line_items: [premium_line_item]
-      )
-    end
     let(:order_wrapper) { double('order_wrapper') }
 
     before :each do
       PremiumOrderProcessor
         .should_receive(:fulfill_premium_item)
-        .with(order_wrapper, order, premium_line_item)
+        .with(order_wrapper, premium_line_item)
         .and_return(was_fulfilled)
     end
 
@@ -96,7 +94,7 @@ describe PremiumOrderProcessor do
       let(:was_fulfilled) { true }
       it 'syncs user' do
         order_wrapper.should_receive(:sync_user)
-        PremiumOrderProcessor.fulfill_premium_items(order_wrapper, order, [premium_line_item])
+        PremiumOrderProcessor.fulfill_premium_items(order_wrapper, [premium_line_item])
       end
     end
 
@@ -104,7 +102,7 @@ describe PremiumOrderProcessor do
       let(:was_fulfilled) { false }
       it 'does not sync user' do
         order_wrapper.should_not_receive(:sync_user)
-        PremiumOrderProcessor.fulfill_premium_items(order_wrapper, order, [premium_line_item])
+        PremiumOrderProcessor.fulfill_premium_items(order_wrapper, [premium_line_item])
       end
     end
   end
@@ -122,6 +120,10 @@ describe PremiumOrderProcessor do
       ShopifyAPI::LineItem.new(sku: Shopify::Order::PREMIUM_SKU, quantity: quantity)
     end
 
+    before :each do
+      order_wrapper.stub(:api_order).and_return(order)
+    end
+
     context 'fulfillable_line_item? returns false' do
       let(:quantity) { 1 }
       before :each do
@@ -130,7 +132,7 @@ describe PremiumOrderProcessor do
 
       it 'does not fulfill premium and returns false' do
         order_wrapper.should_not_receive(:fulfill_premium)
-        expect(PremiumOrderProcessor.fulfill_premium_item(order_wrapper, order, line_item)).to be_false
+        expect(PremiumOrderProcessor.fulfill_premium_item(order_wrapper, line_item)).to be_false
       end
     end
 
@@ -148,14 +150,14 @@ describe PremiumOrderProcessor do
           let(:quantity) { 1 }
           it 'calls fulfill_premium and returns true' do
             order_wrapper.should_receive(:fulfill_premium).with(line_item, true)
-            expect(PremiumOrderProcessor.fulfill_premium_item(order_wrapper, order, line_item)).to be_true
+            expect(PremiumOrderProcessor.fulfill_premium_item(order_wrapper, line_item)).to be_true
           end
         end
 
         context 'order has premium line item with quantity > 1' do
           let(:quantity) { 2 }
           it 'raises exception' do
-            expect { PremiumOrderProcessor.fulfill_premium_item(order_wrapper, order, line_item) }.to raise_error
+            expect { PremiumOrderProcessor.fulfill_premium_item(order_wrapper, line_item) }.to raise_error
           end
         end
       end
@@ -168,7 +170,7 @@ describe PremiumOrderProcessor do
 
         it 'calls fulfill_premium and returns true' do
           order_wrapper.should_receive(:fulfill_premium).with(line_item, true)
-          expect(PremiumOrderProcessor.fulfill_premium_item(order_wrapper, order, line_item)).to be_true
+          expect(PremiumOrderProcessor.fulfill_premium_item(order_wrapper, line_item)).to be_true
         end
       end
     end
