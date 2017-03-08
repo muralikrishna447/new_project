@@ -94,8 +94,10 @@ namespace :marketplace_features do
     dynamo_client = Aws::DynamoDB::Client.new(region: 'us-east-1')
     table_config = Rails.configuration.dynamodb.beta_features_table_config
 
+    total_written = 0
     batch_items = []
     users = User.where(:email => email_addrs)
+    total_to_write = users.length * 2
     users.each do |user|
       [MARKETPLACE_GROUP, DEV_GROUP].each do |group|
 
@@ -115,8 +117,33 @@ namespace :marketplace_features do
              return_consumed_capacity: "INDEXES", # accepts INDEXES, TOTAL, NONE
              return_item_collection_metrics: "SIZE"
           })
-          puts "[#{Time.now}] Added #{batch_items.length} items"
+
+          sleep(2) #to prevent throttling
+
+          unprocessed_count = resp.unprocessed_items.empty? ? 0 : resp.unprocessed_items[table_config[:group_associations_table]].length
+          this_write_count = batch_items.length - unprocessed_count
+          puts "[#{Time.now}] wrote #{this_write_count} items"
+          total_written += this_write_count
+
+          while !resp.unprocessed_items.empty?
+            sleep(3)
+            unprocessed = resp.unprocessed_items[table_config[:group_associations_table]]
+            attempting_write_count = unprocessed.length
+            puts "[#{Time.now}] retrying #{attempting_write_count} items"
+            resp = dynamo_client.batch_write_item({
+                          request_items: {
+                              table_config[:group_associations_table] => unprocessed
+                          },
+                          return_consumed_capacity: "INDEXES", # accepts INDEXES, TOTAL, NONE
+                          return_item_collection_metrics: "SIZE"
+            })
+            unprocessed_count = resp.unprocessed_items.empty? ? 0 : resp.unprocessed_items[table_config[:group_associations_table]].length
+            this_write_count = attempting_write_count - unprocessed_count
+            puts "[#{Time.now}] wrote #{this_write_count} items"
+            total_written += this_write_count
+          end
           batch_items.clear
+          puts "[#{Time.now}] #{total_written} total written, #{total_to_write - total_written} left"
         end
       end
     end
