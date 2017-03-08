@@ -6,6 +6,8 @@ class Shopify::Order
   ALL_BUT_JOULE_FULFILLED_METAFIELD_NAME = 'all-but-joule-fulfilled'
   GIFT_ATTRIBUTE_NAME = "gift-order"
 
+  attr_accessor :api_order
+
   def initialize(api_order)
     @api_order = api_order
   end

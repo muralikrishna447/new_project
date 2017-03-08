@@ -37,20 +37,19 @@ module Fulfillment
 
       if result.messages.empty?
         Rails.logger.info('RostiShipmentPoller no messages received')
-        return
-      end
-
-      result.messages.each do |received_message|
-        sqs_message = JSON.parse(received_message.body)
-        sns_message = JSON.parse(sqs_message.fetch('Message'))
-        sns_message.fetch('Records').each do |s3_record|
-          process_s3_record(s3_record, job_params)
-        end
-        Retriable.retriable tries: 3 do
-          sqs.delete_message(
-            queue_url: sqs_url,
-            receipt_handle: received_message.receipt_handle
-          )
+      else
+        result.messages.each do |received_message|
+          sqs_message = JSON.parse(received_message.body)
+          sns_message = JSON.parse(sqs_message.fetch('Message'))
+          sns_message.fetch('Records').each do |s3_record|
+            process_s3_record(s3_record, job_params)
+          end
+          Retriable.retriable tries: 3 do
+            sqs.delete_message(
+              queue_url: sqs_url,
+              receipt_handle: received_message.receipt_handle
+            )
+          end
         end
       end
 

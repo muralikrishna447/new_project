@@ -104,7 +104,10 @@ module Fraud
       Shopify::Utils.send_assert_true(order, :save)
 
       recommendation = 'accept'
-      recommendation = 'investigate' if score <= SIGNIFYD_MIN_SCORE
+      if score <= SIGNIFYD_MIN_SCORE
+        recommendation = 'investigate'
+        Librato.increment 'fraud.payment-processor.orders.lowscore.count', sporadic: true
+      end
       risk = ShopifyAPI::OrderRisk.new(
         display: true,
         message: "The Signifyd fraud score is #{score.to_i}.",
