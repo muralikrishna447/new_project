@@ -2,7 +2,6 @@ module Api
   module V0
     module Shopping
       class MarketplaceController < BaseController
-        STEAK_GUIDE_ID = '2MH313EsysIOwGcMooSSkk'
         before_filter :ensure_authorized_or_anonymous
 
         @@marketplace_guides = HashWithIndifferentAccess.new
@@ -10,28 +9,27 @@ module Api
         def guide_button
           guide_id = params[:guide_id]
           fetch_marketplace_guides
+
           if @@marketplace_guides[guide_id]
             Rails.logger.info "Matching marketplace guide"
-            button_text = @@marketplace_guides[guide_id][:button_text]
-            button_text_line_2 = @@marketplace_guides[guide_id][:button_text_line_2]
+            render_button = true
+            if @@marketplace_guides[guide_id][:feature_name].present?
+              render_button = BetaFeatureService.user_has_feature(current_api_user, @@marketplace_guides[guide_id][:feature_name])
+            end
 
-            button = {button: {line_1: button_text }}
-            button[:button][:line_2] = button_text_line_2 if button_text_line_2
-            return render_api_response 200, button
+            if render_button
+              button_text = @@marketplace_guides[guide_id][:button_text]
+              button_text_line_2 = @@marketplace_guides[guide_id][:button_text_line_2]
+
+              button = {button: {line_1: button_text }}
+              button[:button][:line_2] = button_text_line_2 if button_text_line_2
+              return render_api_response 200, button
+            end
           end
 
           if @user_id_from_token.nil?
             Rails.logger.info "User not logged in - showing no button"
             return render_no_button
-          end
-
-          if params[:guide_id] != STEAK_GUIDE_ID
-            Rails.logger.info "Steak guide not selected - showing no button"
-            return render_no_button
-          end
-
-          if BetaFeatureService.user_has_feature(current_api_user, 'steak_buy_button')
-            return render_api_response 200, {button: {line_1: "Buy locally", line_2: "$20-$40"}}
           end
           return render_no_button
         end

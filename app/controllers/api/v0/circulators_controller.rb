@@ -129,22 +129,37 @@ module Api
         render_api_response 200
       end
 
-      def publish_notification(token, push_notification)
+      def publish_notification(circulator, token, push_notification)
         message = push_notification.message
         notification_type = push_notification.notification_type
-        content_available = push_notification.content_available
         endpoint_arn = token.endpoint_arn
         Librato.increment("api.publish_notification_requests")
+
+        title = I18n.t("circulator.app_name", raise: true)
+        gcm_data = {
+          data: {
+            message: message,
+            title: title,
+            notification_type: notification_type,
+            circulator_address: circulator.circulator_id,
+          }
+        }
+        apns_data = {
+          aps: {
+            alert: message,
+            sound: 'default',
+            notification_type: notification_type,
+            circulator_address: circulator.circulator_id,
+          }
+        }
 
         # NOTE: We *need* to use JSON.generate because to_json has a
         # bug in it when it comes to higher unicode codepoints.  See:
         # http://stackoverflow.com/questions/7775597/bug-in-ruby-json-lib-when-handling-4-byte-unicode-emoji
-        title = I18n.t("circulator.app_name", raise: true)
-        gcm_content_available = if content_available == 0 then false else true end
         message = {
-          GCM: JSON.generate({data: {message: message, title: title, notification_type: notification_type, "content_available" => gcm_content_available}}),
-          APNS_SANDBOX: JSON.generate({aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}),
-          APNS: JSON.generate({aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}})
+          GCM: JSON.generate(gcm_data),
+          APNS_SANDBOX: JSON.generate(apns_data),
+          APNS: JSON.generate(apns_data)
         }
 
         logger.info "Publishing #{message.inspect}"
@@ -236,12 +251,11 @@ module Api
       end
 
       class PushNotification
-        attr_reader :notification_type, :message, :content_available
+        attr_reader :notification_type, :message
 
-        def initialize(notification_type, message, content_available)
+        def initialize(notification_type, message)
           @notification_type = notification_type
           @message = message
-          @content_available = content_available
         end
       end
 
@@ -272,17 +286,8 @@ module Api
           end
         end
 
-        begin
-          content_available = I18n.t(
-            "circulator.push.#{notification_type}.content_available",
-            raise: true
-          )
-        rescue I18n::MissingTranslationData
-          content_available = 0
-        end
-
         return PushNotification.new(
-          notification_type, message, content_available
+          notification_type, message
         )
       end
 
@@ -314,7 +319,7 @@ module Api
             next if token.nil?
             logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
                         " of type #{push_notification.notification_type} token #{token.inspect}"
-            publish_notification(token, push_notification)
+            publish_notification(circulator, token, push_notification)
           end
         end
 

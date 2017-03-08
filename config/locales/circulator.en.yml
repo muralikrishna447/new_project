@@ -14,7 +14,6 @@ en:
       circulator_error_button_pressed:
         message: "You stopped your cook!"
         template: "You stopped your cook for %{joule_name}!"
-        content_available: 1
       circulator_error_low_water_level:
         message: "Uh oh, the water level is too low. To operate properly, Joule needs H2O. Please add more."
         template: "Uh-oh, the water level is too low. To operate properly, %{joule_name} needs H2O. Please add more."
