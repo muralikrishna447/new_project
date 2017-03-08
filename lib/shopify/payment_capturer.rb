@@ -31,8 +31,7 @@ module Shopify
 
       def capture_payment(order)
         Rails.logger.info("PaymentProcessor capturing payment for order with id #{order.id}")
-        transaction = ShopifyAPI::Transaction.new(kind: 'capture')
-        transaction.prefix_options[:order_id] = order.id
+        transaction = build_capture_transaction(order)
         begin
           Shopify::Utils.send_assert_true(transaction, :save)
         rescue => e
@@ -48,6 +47,46 @@ module Shopify
                               'but it was already captured.'
           end
         end
+      end
+
+      def build_capture_transaction(order)
+        # For orders that are not partially paid, the Shopify API will capture
+        # the correct amount without explicitly specifying it.
+        transaction = ShopifyAPI::Transaction.new(kind: 'capture')
+        transaction.prefix_options[:order_id] = order.id
+        return transaction unless order.financial_status == 'partially_paid'
+
+        # For orders that are partially paid (e.g., because a gift card was used
+        # for a part of the total amount), the Shopify API will try to capture
+        # the full amount without taking into account the part that was already paid.
+        # The call to capture payment fails because it the capture amount is greater
+        # than what was authorized. So here we have to look up the amount that was
+        # authorized (which is another Shopify API call) and explicitly set that
+        # amount on the capture transaction.
+        Rails.logger.info "PaymentProcessor order with id #{order.id} is partially_paid, " \
+                          'finding authorization amount to capture'
+        auth_transacations = order.transactions.select do |transaction|
+          successful_cc_auth?(transaction)
+        end
+        if auth_transacations.empty?
+          raise "No credit card authorization found for order with id #{order.id}"
+        end
+        if auth_transacations.size > 1
+          raise "Multiple credit card authorizations found for order with id #{order.id}"
+        end
+
+        amount = auth_transacations.first.amount.to_f
+        Rails.logger.info "PaymentProcessor will capture authorization amount #{amount} " \
+                          "for order with id #{order.id}"
+        transaction.amount = amount
+        transaction
+      end
+
+      def successful_cc_auth?(transaction)
+        return false unless transaction.kind == 'authorization'
+        return false if transaction.gateway == 'gift_card'
+        return false unless transaction.status == 'success'
+        true
       end
     end
   end
