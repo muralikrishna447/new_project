@@ -4,19 +4,14 @@ module Api
       before_filter :ensure_authorized_or_anonymous
 
       def manifest
-        manifest_endpoints = {
-          'development' => 'http://api.jouleapp.com/manifests/resources.json',
-          'staging' => 'https://d1azuiz827qxpe.cloudfront.net/resources/staging/resources.json',
-          'beta' => 'https://d1azuiz827qxpe.cloudfront.net/resources/beta/resources.json',
-          'production' => 'https://d1azuiz827qxpe.cloudfront.net/resources/latest/resources.json'
-        }
+        manifest_endpoints = YAML.load_file(Rails.root.join('config', 'content_config.yml'))['manifest_endpoints']
         response = {}
         if manifest_endpoints[params[:content_env]]
-          response[:manifest_endpoint] = manifest_endpoints[params[:content_env]]
+          redirect_to manifest_endpoints[params[:content_env]], status: 302
+        else
+          render_api_response 404
         end
-        render_api_response 200, response
       end
-
     end
   end
 end
