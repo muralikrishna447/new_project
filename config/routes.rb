@@ -280,6 +280,8 @@ Delve::Application.routes.draw do
       get 'auth/external_redirect', to: 'auth#external_redirect'
       get 'auth/external_redirect_by_key', to: 'auth#external_redirect_by_key'
 
+      get 'content_config/manifest', to: 'content#manifest'
+
       namespace :shopping do
         resources :discounts, only: [:show]
         resources :customer_orders, only: [:show] do
