@@ -45,7 +45,7 @@ describe Fulfillment::ShippingAddressValidator do
 
         it 'removes tag and note and saves order' do
           order.should_receive(:tags=).with('')
-          order.should_receive(:save)
+          order.should_receive(:save!)
           expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_true
           expect(note_attributes).to eq([existing_note])
         end
@@ -56,7 +56,7 @@ describe Fulfillment::ShippingAddressValidator do
         let(:tags) { '' }
 
         it 'does not save order' do
-          order.should_not_receive(:save)
+          order.should_not_receive(:save!)
           expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_true
         end
       end
@@ -88,7 +88,7 @@ describe Fulfillment::ShippingAddressValidator do
             let(:tags) { Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG }
 
             it 'does not save order' do
-              order.should_not_receive(:save)
+              order.should_not_receive(:save!)
               expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
             end
           end
@@ -98,7 +98,7 @@ describe Fulfillment::ShippingAddressValidator do
 
             it 'adds validation error tag to order and saves it' do
               order.should_receive(:tags=).with(Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG)
-              order.should_receive(:save)
+              order.should_receive(:save!)
               expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
             end
           end
@@ -112,7 +112,7 @@ describe Fulfillment::ShippingAddressValidator do
             let(:tags) { Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG }
 
             it 'saves order with new message' do
-              order.should_receive(:save)
+              order.should_receive(:save!)
               expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
               expect(note_attributes.first.value).to eq validation_message
             end
@@ -123,7 +123,7 @@ describe Fulfillment::ShippingAddressValidator do
 
             it 'saves order with validation tag and new message' do
               order.should_receive(:tags=).with(Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG)
-              order.should_receive(:save)
+              order.should_receive(:save!)
               expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
               expect(note_attributes.first.value).to eq validation_message
             end
@@ -138,7 +138,7 @@ describe Fulfillment::ShippingAddressValidator do
 
         it 'saves order with validation tag and message' do
           order.should_receive(:tags=).with(Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG)
-          order.should_receive(:save)
+          order.should_receive(:save!)
           expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
           expect(note_attributes).to eq [
             {
