@@ -11,12 +11,14 @@ module Fulfillment
     def self.perform
       valid_count = 0
       invalid_count = 0
-      Shopify::Utils.search_orders(status: 'open').each do |order|
+      Shopify::Utils.search_orders_with_each(status: 'open') do |order|
         is_valid = validate(order)
         if is_valid
           valid_count += 1
         else
           invalid_count += 1
+          order_age_days = (Time.now - Time.parse(order.processed_at)) / 60 / 60 / 24
+          Librato.measure 'fulfillment.address-validator.invalid.age', order_age_days
         end
       end
 
