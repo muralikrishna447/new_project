@@ -75,7 +75,7 @@ module Fulfillment
             attr.attributes[:value] == note.attributes[:value]
         end
       end
-      order.save! if has_error_tag || note
+      Shopify::Utils.send_assert_true(order, :save) if has_error_tag || note
     end
 
     def self.add_validation_error(order, message)
@@ -92,7 +92,7 @@ module Fulfillment
         )
       end
 
-      order.save!
+      Shopify::Utils.send_assert_true(order, :save)
     end
   end
 end
