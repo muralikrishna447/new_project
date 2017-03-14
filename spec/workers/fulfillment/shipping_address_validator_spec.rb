@@ -14,12 +14,13 @@ describe Fulfillment::ShippingAddressValidator do
   end
 
   describe 'validate' do
+    let(:order_id) { 1 }
     let(:order) do
-      order = double('order')
-      order.stub(:id).and_return(1)
-      order.stub(:note_attributes).and_return(note_attributes)
-      order.stub(:tags).and_return(tags)
-      order
+      ShopifyAPI::Order.new(
+        id: order_id,
+        note_attributes: note_attributes,
+        tags: tags
+      )
     end
 
     context 'address is valid' do
@@ -42,12 +43,17 @@ describe Fulfillment::ShippingAddressValidator do
         end
         let(:note_attributes) { [validation_note, existing_note] }
         let(:tags) { Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG }
+        let(:updated_order) do
+          ShopifyAPI::Order.new(
+            id: order_id,
+            note_attributes: [existing_note],
+            tags: ''
+          )
+        end
 
         it 'removes tag and note and saves order' do
-          order.should_receive(:tags=).with('')
-          Shopify::Utils.should_receive(:send_assert_true).with(order, :save)
+          Shopify::Utils.should_receive(:send_assert_true).with(updated_order, :save)
           expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_true
-          expect(note_attributes).to eq([existing_note])
         end
       end
 
@@ -120,9 +126,14 @@ describe Fulfillment::ShippingAddressValidator do
 
           context 'order does not have validation tag' do
             let(:tags) { '' }
+            let(:updated_order) do
+              ShopifyAPI::Order.new(
+                id: order_id,
+                tags: Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG
+              )
+            end
 
             it 'saves order with validation tag and new message' do
-              order.should_receive(:tags=).with(Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG)
               Shopify::Utils.should_receive(:send_assert_true).with(order, :save)
               expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
               expect(note_attributes.first.value).to eq validation_message
@@ -135,17 +146,22 @@ describe Fulfillment::ShippingAddressValidator do
         let(:note_attributes) { [] }
         let(:tags) { '' }
         let(:validation_message) { 'my validation message' }
+        let(:updated_order) do
+          ShopifyAPI::Order.new(
+            id: order_id,
+            note_attributes: [
+              {
+                name: Fulfillment::ShippingAddressValidator::VALIDATION_MESSAGE_NOTE_KEY,
+                value: validation_message
+              }
+            ],
+            tags: Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG
+          )
+        end
 
         it 'saves order with validation tag and message' do
-          order.should_receive(:tags=).with(Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG)
-          Shopify::Utils.should_receive(:send_assert_true).with(order, :save)
+          Shopify::Utils.should_receive(:send_assert_true).with(updated_order, :save)
           expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
-          expect(note_attributes).to eq [
-            {
-              name: Fulfillment::ShippingAddressValidator::VALIDATION_MESSAGE_NOTE_KEY,
-              value: validation_message
-            }
-          ]
         end
       end
     end

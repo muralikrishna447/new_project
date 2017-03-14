@@ -75,7 +75,7 @@ module Fulfillment
             attr.attributes[:value] == note.attributes[:value]
         end
       end
-      Shopify::Utils.send_assert_true(order, :save) if has_error_tag || note
+      save_order_fields(order) if has_error_tag || note
     end
 
     def self.add_validation_error(order, message)
@@ -92,7 +92,22 @@ module Fulfillment
         )
       end
 
-      Shopify::Utils.send_assert_true(order, :save)
+      save_order_fields(order)
+    end
+
+    private
+
+    def self.save_order_fields(order)
+      # We create a new order object with the minimal set of fields so as
+      # to not trigger Shopify's built-in address validation which may
+      # cause the save to fail.
+      updated = ShopifyAPI::Order.new(
+        id: order.id,
+        note_attributes: order.note_attributes,
+        tags: order.tags
+      )
+
+      Shopify::Utils.send_assert_true(updated, :save)
     end
   end
 end
