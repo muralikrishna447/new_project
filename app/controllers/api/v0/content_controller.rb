@@ -6,12 +6,11 @@ module Api
       @@manifest_endpoints = HashWithIndifferentAccess.new
 
       def manifest
-        if @user_id_from_token.nil?
-          Rails.logger.error "ContentController: no user token"
-          return render_api_response 401
-        end
-
         @@manifest_endpoints = fetch_endpoints
+
+        if @user_id_from_token.nil?
+          return redirect_to @@manifest_endpoints['production'], status: 302
+        end
 
         if BetaFeatureService.user_has_feature(current_api_user, 'beta_guides')
           #always use the staging manifest for beta guides users
