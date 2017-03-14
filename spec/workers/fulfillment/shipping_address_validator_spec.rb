@@ -3,13 +3,39 @@ require 'spec_helper'
 describe Fulfillment::ShippingAddressValidator do
   describe 'perform' do
     let(:order) { double('order') }
-    it 'calls validate on order and reports metrics' do
-      Shopify::Utils.should_receive(:search_orders_with_each).with(status: 'open').and_yield(order)
-      Fulfillment::ShippingAddressValidator.should_receive(:validate).with(order).and_return(true)
-      Librato.should_receive(:increment).with('fulfillment.address-validator.success', sporadic: true)
-      Librato.should_receive(:increment).with('fulfillment.address-validator.valid.count', by: 1, sporadic: true)
-      Librato.should_receive(:increment).with('fulfillment.address-validator.invalid.count', by: 0, sporadic: true)
-      Fulfillment::ShippingAddressValidator.perform
+    let(:skus) { ['my_sku'] }
+
+    context 'should_validate? returns true' do
+      before :each do
+        Fulfillment::ShippingAddressValidator
+          .stub(:should_validate?)
+          .with(order, skus)
+          .and_return(true)
+      end
+
+      it 'calls validate on order and reports metrics' do
+        Shopify::Utils.should_receive(:search_orders_with_each).with(status: 'open').and_yield(order)
+        Fulfillment::ShippingAddressValidator.should_receive(:validate).with(order).and_return(true)
+        Librato.should_receive(:increment).with('fulfillment.address-validator.success', sporadic: true)
+        Librato.should_receive(:increment).with('fulfillment.address-validator.valid.count', by: 1, sporadic: true)
+        Librato.should_receive(:increment).with('fulfillment.address-validator.invalid.count', by: 0, sporadic: true)
+        Fulfillment::ShippingAddressValidator.perform(skus)
+      end
+    end
+
+    context 'should_validate? returns false' do
+      before :each do
+        Fulfillment::ShippingAddressValidator
+          .stub(:should_validate?)
+          .with(order, skus)
+          .and_return(false)
+      end
+
+      it 'does not call validate on order' do
+        Shopify::Utils.should_receive(:search_orders_with_each).with(status: 'open').and_yield(order)
+        Fulfillment::ShippingAddressValidator.should_not_receive(:validate)
+        Fulfillment::ShippingAddressValidator.perform(skus)
+      end
     end
   end
 
@@ -163,6 +189,35 @@ describe Fulfillment::ShippingAddressValidator do
           Shopify::Utils.should_receive(:send_assert_true).with(updated_order, :save)
           expect(Fulfillment::ShippingAddressValidator.validate(order)).to be_false
         end
+      end
+    end
+  end
+
+  describe 'should_validate?' do
+    let(:order) { ShopifyAPI::Order.new(id: 1) }
+    let(:skus) { ['my_sku'] }
+
+    context 'order has no line items for skus' do
+      before :each do
+        Shopify::Utils
+          .stub(:line_items_for_skus)
+          .with(order, skus)
+          .and_return([])
+      end
+      it 'returns false' do
+        expect(Fulfillment::ShippingAddressValidator.should_validate?(order, skus)).to be_false
+      end
+    end
+
+    context 'order has line items for skus' do
+      before :each do
+        Shopify::Utils
+          .stub(:line_items_for_skus)
+          .with(order, skus)
+          .and_return([double('line_item')])
+      end
+      it 'returns true' do
+        expect(Fulfillment::ShippingAddressValidator.should_validate?(order, skus)).to be_true
       end
     end
   end

@@ -294,4 +294,30 @@ describe Shopify::Utils do
       end
     end
   end
+
+  describe 'line_items_for_skus' do
+    let(:order) { ShopifyAPI::Order.new(id: 1, line_items: line_items) }
+    let(:sku_1) { 'sku_1' }
+    let(:sku_2) { 'sku_2' }
+    let(:sku_3) { 'sku_3' }
+    let(:line_item_1) { ShopifyAPI::LineItem.new(sku: sku_1) }
+    let(:line_item_2) { ShopifyAPI::LineItem.new(sku: sku_2) }
+    let(:line_item_3) { ShopifyAPI::LineItem.new(sku: sku_3) }
+
+    context 'order has line items matching skus' do
+      let(:line_items) { [line_item_1, line_item_2, line_item_3] }
+      let(:skus) { [sku_1, sku_3] }
+      it 'returns an array of line items matching skus' do
+        expect(Shopify::Utils.line_items_for_skus(order, skus)).to eq [
+          line_item_1,
+          line_item_3
+        ]
+      end
+    end
+
+    context 'order has no line items matching skus' do
+      it 'returns an empty array' do
+      end
+    end
+  end
 end

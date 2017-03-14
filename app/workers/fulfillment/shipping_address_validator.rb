@@ -8,12 +8,12 @@ module Fulfillment
 
     @queue = :ShippingAddressValidator
 
-    def self.perform
+    def self.perform(skus)
       valid_count = 0
       invalid_count = 0
       Shopify::Utils.search_orders_with_each(status: 'open') do |order|
-        is_valid = validate(order)
-        if is_valid
+        next unless should_validate?(order, skus)
+        if validate(order)
           valid_count += 1
         else
           invalid_count += 1
@@ -93,6 +93,15 @@ module Fulfillment
       end
 
       save_order_fields(order)
+    end
+
+    def self.should_validate?(order, skus)
+      if Shopify::Utils.line_items_for_skus(order, skus).empty?
+        Rails.logger.info "ShippingAddressValidator order with id #{order.id} " \
+                          "has no line items matching skus #{skus}, skipping"
+        return false
+      end
+      true
     end
 
     private

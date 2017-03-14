@@ -91,10 +91,11 @@ namespace :fulfillment do
   task :validate_shipping_addresses, [:inline] => :environment do |_t, args|
     args.with_defaults(inline: false)
 
+    params = { skus: [Shopify::Order::JOULE_SKU] }
     if args[:inline]
-      Fulfillment::ShippingAddressValidator.perform
+      Fulfillment::ShippingAddressValidator.perform(params)
     else
-      Resque.enqueue(Fulfillment::ShippingAddressValidator)
+      Resque.enqueue(Fulfillment::ShippingAddressValidator, params)
     end
   end
 end
