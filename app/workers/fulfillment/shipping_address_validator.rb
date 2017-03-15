@@ -9,6 +9,7 @@ module Fulfillment
     @queue = :ShippingAddressValidator
 
     def self.perform(skus)
+      Rails.logger.info("ShippingAddressValidator starting perform with SKUs #{skus}")
       valid_count = 0
       invalid_count = 0
       Shopify::Utils.search_orders_with_each(status: 'open') do |order|

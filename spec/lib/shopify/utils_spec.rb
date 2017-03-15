@@ -316,7 +316,10 @@ describe Shopify::Utils do
     end
 
     context 'order has no line items matching skus' do
+      let(:line_items) { [line_item_3] }
+      let(:skus) { [sku_1, sku_2] }
       it 'returns an empty array' do
+        expect(Shopify::Utils.line_items_for_skus(order, skus)).to be_empty
       end
     end
   end
