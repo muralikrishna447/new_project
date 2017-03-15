@@ -1,6 +1,6 @@
 module ExternalServiceTokenChecker
   def self.is_authorized(request_auth)
-    allowed_services = ['Messaging']
+    allowed_services = ['Messaging', 'AdminPushMessaging']
     if request_auth
       begin
         token_string = request_auth.split(' ').last
