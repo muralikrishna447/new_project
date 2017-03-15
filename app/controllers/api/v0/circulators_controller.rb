@@ -129,36 +129,6 @@ module Api
         render_api_response 200
       end
 
-      def admin_notify_clients
-        Librato.increment("api.circulator_admin_notify_clients_requests")
-
-        @circulator = Circulator.where(circulator_id: params[:id]).first
-        if @circulator.nil?
-          return render_api_response 404, {message: "Circulator not found"}
-        end
-
-        if notified?(@circulator, params[:idempotency_key])
-          return render_api_response 200, { message: 'A notification has already '\
-                                                     'been sent for circulator with '\
-                                                     "id #{@circulator.id} and idempotency "\
-                                                     "key #{params[:idempotency_key]}." }
-        end
-
-        begin
-          push_notification = get_admin_push_notification()
-        rescue MissingNotificationError
-          return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
-        rescue InvalidParamsError => e
-          return render_api_response 400, {message: e.message}
-        end
-
-        logger.info "Attempting to send notification for #{@circulator.circulator_id}" \
-                    " of type #{params[:notification_type]}"
-
-        notify_owners @circulator, params[:idempotency_key], push_notification, true
-        render_api_response 200, { notification: push_notification.message }
-      end
-
       def publish_notification(circulator, token, push_notification, is_admin_message)
         message = push_notification.message
         notification_type = push_notification.notification_type
@@ -224,6 +194,37 @@ module Api
           delete_endpoint(endpoint_arn)
         end
       end
+
+      def admin_notify_clients
+        Librato.increment("api.circulator_admin_notify_clients_requests")
+
+        @circulator = Circulator.where(circulator_id: params[:id]).first
+        if @circulator.nil?
+          return render_api_response 404, {message: "Circulator not found"}
+        end
+
+        if notified?(@circulator, params[:idempotency_key])
+          return render_api_response 200, { message: 'A notification has already '\
+                                                     'been sent for circulator with '\
+                                                     "id #{@circulator.id} and idempotency "\
+                                                     "key #{params[:idempotency_key]}." }
+        end
+
+        begin
+          push_notification = get_admin_push_notification()
+        rescue MissingNotificationError
+          return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
+        rescue InvalidParamsError => e
+          return render_api_response 400, {message: e.message}
+        end
+
+        logger.info "Attempting to send notification for #{@circulator.circulator_id}" \
+                    " of type #{params[:notification_type]}"
+
+        notify_owners @circulator, params[:idempotency_key], push_notification, true
+        render_api_response 200, { notification: push_notification.message }
+      end
+
 
       # NOTE: Do not add logic to this method!! Want to keep this as
       # thin as possible for testing purposes (because we have to mock
