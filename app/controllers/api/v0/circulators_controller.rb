@@ -129,9 +129,6 @@ module Api
         render_api_response 200
       end
 
-
-      #{"notification_type"=>"water_heated", "notification_params"=>{"joule_name"=>"Joulecool"}, "id"=>"c00000f650217c7a", "circulator"=>{}}
-
       def admin_notify_clients
         Librato.increment("api.circulator_admin_notify_clients_requests")
 
