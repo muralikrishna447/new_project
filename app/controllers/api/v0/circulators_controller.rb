@@ -203,7 +203,11 @@ module Api
           return render_api_response 404, {message: "Circulator not found"}
         end
 
-        if notified?(@circulator, params[:idempotency_key])
+        unless params[:idempotency_key]
+          return render_api_response 400, {message: "You must pass the idempotency_key parameter."}
+        end
+
+        if notified?(@circulator, params[:idempotency_key], true)
           return render_api_response 200, { message: 'A notification has already '\
                                                      'been sent for circulator with '\
                                                      "id #{@circulator.id} and idempotency "\
@@ -369,10 +373,12 @@ module Api
         )
       end
 
-      def notified?(circulator, idempotency_key)
-        if idempotency_key.blank?
-          logger.info "No idempotency_key was specified, will send notification for circulator with id #{circulator.id}"
-          return false
+      def notified?(circulator, idempotency_key, enforce_idempotency_key=false)
+        unless enforce_idempotency_key
+          if idempotency_key.blank?
+            logger.info "No idempotency_key was specified, will send notification for circulator with id #{circulator.id}"
+            return false
+          end
         end
 
         cache_key = notification_cache_key(circulator, idempotency_key)
