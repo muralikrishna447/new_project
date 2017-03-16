@@ -4,7 +4,7 @@ require 'retriable'
 module Fulfillment
   class AwsQueuePoller
 
-    LOGGING_NAMESPACE = 'chefsteps_com_task_poller_'+ Rails.env + '_'
+    LOGGING_NAMESPACE = 'task-poller-'+ Rails.env + '-'
 
     LOCK_QUEUE_NAME = (LOGGING_NAMESPACE + 'lock').to_sym
 
