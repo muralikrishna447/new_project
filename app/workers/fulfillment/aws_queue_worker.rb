@@ -1,7 +1,6 @@
 module Fulfillment
   class AwsQueueWorker
 
-
     AWS_QUEUE_WORKER = 'aws-queue-worker'
 
     LOGGING_NAMESPACE = (AWS_QUEUE_WORKER + '-' + Rails.env + '-').downcase.gsub(/\s+/, '-')
@@ -57,6 +56,8 @@ module Fulfillment
     end
 
     # Task Handlers - dispatch_TASK_NAME
+    # If this system becomes more used consider putting these in modules and mixing them
+    # in dynamically
     def self.dispatch_submit_orders_to_rosti(message)
       max_quantity = 1500 # Consider pull this from the message, but let's leave that for now
       max_quantity = 5 if Rails.env.development?

@@ -1,6 +1,31 @@
 require 'aws-sdk'
 require 'retriable'
 
+################### HOW IT WORKS #############################################
+#
+# Heroku scheduler is configured to invoke this task with via rake
+#
+# bundle exec rake aws:run_task_if_queued[TASK_NAME]
+#
+# That rake task queues this poller up in resque to run in the background
+# TASK_NAME is the key here, it's in both the name of the SQS queue to check:
+#
+# https://sqs.us-east-1.amazonaws.com/021963864089/task-poller-{RAILS_ENV}-{TASK_NAME}
+#
+# and the name of the dispatch_{TASK_NAME} method in the Fulfillment::AwsQueueWorker
+#
+# Basically if the Fulfillment::AwsQueuePoller finds an available message in the
+# the specific queue, then dispatch_{TASK_NAME} method in the Fulfillment::AwsQueueWorker
+# is called inline (Errors are captured and keep the message in the Queue for next time)
+#
+# If the dispatch_{TASK_NAME} method completes successfully the message is deleted
+#
+# The goal here is that we can run the rake tasks in the Heroku scheduler (which does
+# not support cron type scheduling) on a recurring basis and nothing will happen
+# unless another task has dropped a message in that tasks SQS queue
+#
+############################################################################
+
 module Fulfillment
   class AwsQueuePoller
 
