@@ -1,5 +1,5 @@
 namespace :aws do
-  desc "Checks AWA SQS Queue for tasks to run"
+  desc "Checks AWS SQS Queue for tasks to run - Queue name is task-poller-{RAILS_ENV}-{TASK_NAME} "
   task :run_task_if_queued, [:task_name, :inline] => :environment do |_t, args|
     args.with_defaults(inline: false)
     Rails.logger.info("AwsQueuePoller starting with params #{args}")
