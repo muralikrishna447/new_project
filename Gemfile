@@ -116,7 +116,7 @@ group :development, :test do
   gem "simplecov", require: false
   gem 'angularjs-rails'
   gem 'guard-resque'
-  gem 'debugger'
+#  gem 'debugger'
 end
 
 group :assets, :angular, :test, :development do
