@@ -353,7 +353,7 @@ module Api
 
         ['message', 'okText'].each do |param|
           unless params.key?(param)
-            raise InvalidParamsError.new("#{param} paramter must be specified")
+            raise InvalidParamsError.new("#{param} parameter must be specified")
           end
         end
 
