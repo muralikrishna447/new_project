@@ -4,20 +4,20 @@ require 'retriable'
 module Fulfillment
   class AwsQueuePoller
 
-    LOGGING_NAMESPACE = 'task-poller-'+ Rails.env + '-'
-
-    LOCK_QUEUE_NAME = (LOGGING_NAMESPACE + 'lock').to_sym
-
-    LIBRATO_PREFIX = LOGGING_NAMESPACE
-
-    QUEUE_NAME = LOGGING_NAMESPACE
-
     extend Resque::Plugins::Lock
 
-    @queue = LOCK_QUEUE_NAME
+    TASK_POLLER = 'task-poller'
+
+    LOGGING_NAMESPACE = (TASK_POLLER + '-' + Rails.env + '-').downcase.gsub(/\s+/, '-')
+
+    QUEUE_LABEL = LOGGING_NAMESPACE
+
+    RESQUE_LOCK_NAME = (LOGGING_NAMESPACE + '-lock').to_sym
+
+    LIBRATO_PREFIX = LOGGING_NAMESPACE.tr('-', '.')
 
     def self.lock(_params)
-      LOCK_QUEUE_NAME
+      RESQUE_LOCK_NAME
     end
 
     def self.configure(params)
@@ -30,7 +30,7 @@ module Fulfillment
     end
 
     def self.sqs_url(task_name)
-      "#{@@task_queue_prefix}#{QUEUE_NAME}#{task_name}"
+      "#{@@task_queue_prefix}#{QUEUE_LABEL}#{task_name}"
     end
 
     def self.perform(task_name)
@@ -68,7 +68,11 @@ module Fulfillment
       else
         librato_increment('success', task_name)
       ensure
-        Librato.tracker.flush
+        begin
+          Librato.tracker.flush
+        rescue StandardError => error
+          Rails.logger.error "Flushing librator tracker #{error.message}"
+        end
       end
     end
 
@@ -83,7 +87,6 @@ module Fulfillment
       Fulfillment::AwsQueueWorker.perform(params);
 
       librato_increment('processing.complete', task_name)
-
     end
 
     # Stub these out for unit tests.
@@ -92,11 +95,14 @@ module Fulfillment
     end
 
     def self.librato_increment(subkey, task_name)
-      Rails.logger.info("#{LIBRATO_PREFIX}#{task_name} : #{subkey}")
+      librato_metric = "#{LIBRATO_PREFIX}#{task_name}.#{subkey}"
+      source = sqs_url(task_name)
+      Rails.logger.info("Librato Increment -> #{librato_metric} : source => #{source}")
       begin
-        Librato.increment LIBRATO_PREFIX + subkey, sporadic: true, source: sqs_url(task_name)
+        Librato.increment librato_metric, sporadic: true, source: source
       rescue StandardError => error
-        Rails.logger.error error.message
+        # Errors will be reported on flush
+        # Rails.logger.error error.message
       end
     end
 
