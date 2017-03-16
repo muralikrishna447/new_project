@@ -298,6 +298,127 @@ describe Api::V0::CirculatorsController do
       p.save!
     end
 
+    #'random_drop' && notification_type != 'dynamic_alert'
+    describe 'admin_notify_clients' do
+      it 'requires idempotency_key parameter' do
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'not_random_drop',
+            okText: "Go get it",
+            message: "sup",
+            notification_type: 'random_drop',
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(JSON.parse(response.body)).to eq ({"message"=>"You must pass the idempotency_key parameter.", "request_id"=>nil, "status"=>400})
+      end
+
+      it 'requires message parameter' do
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'not_random_drop',
+            okText: "Go get it",
+            notification_type: 'random_drop',
+            idempotency_key: Time.now + rand,
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(JSON.parse(response.body)).to eq ({"message"=>"message parameter must be specified", "request_id"=>nil, "status"=>400})
+      end
+
+      it 'requires okText parameters' do
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'random_drop',
+            idempotency_key: Time.now + rand,
+            message: "Hello world",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(JSON.parse(response.body)).to eq ({"message"=>"okText parameter must be specified", "request_id"=>nil, "status"=>400})
+      end
+
+      it 'Sends a message once per idempotency key' do
+        idempotency_key = Time.now.to_i + rand
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'random_drop',
+            okText: "Go get it",
+            idempotency_key: idempotency_key,
+            message: "sup",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(response.code).to eq '200'
+        puts JSON.parse(response.body)
+
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'random_drop',
+            okText: "Go get it",
+            idempotency_key: idempotency_key,
+            message: "sup",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(response.code).to eq '200'
+        message = JSON.parse(response.body)["message"]
+        expect(message).to include("A notification has already been sent")
+        expect(message).to include("and idempotency key #{idempotency_key}")
+      end
+
+      it 'supports notification types random_drop and dynamic_alert' do
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'not_random_drop',
+            okText: "Go get it",
+            idempotency_key: Time.now.to_i + rand,
+            message: "sup",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(response.code).to eq '400'
+
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'random_drop',
+            okText: "Go get it",
+            idempotency_key: Time.now.to_i + rand,
+            message: "sup",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(response.code).to eq '200'
+
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'dynamic_alert',
+            okText: "Go get it",
+            idempotency_key: Time.now.to_i + rand,
+            message: "sup",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(response.code).to eq '200'
+      end
+    end
+
     describe 'notify_clients' do
       context 'disconnect while cooking' do
         it 'sends a notification' do
