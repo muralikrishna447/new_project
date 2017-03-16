@@ -331,6 +331,10 @@ Delve::Application.routes.draw do
     get "end_clean" => "application#end_clean"
   end
 
+  namespace :admin do
+    resources :shopify_users, :only => [:index]
+  end
+
   # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
   match '/*path' => 'application#options', :via => :options
 
