@@ -97,6 +97,7 @@ module Fulfillment
       ensure
         begin
           Librato.tracker.flush
+          Rails.logger.info('Librato Tracker Flush')
         rescue StandardError => error
           Rails.logger.error "Flushing librator tracker #{error.message}"
         end

@@ -30,6 +30,7 @@ module Fulfillment
         librato_increment('success', task_name)
       ensure
         Librato.tracker.flush
+        Rails.logger.info('Librato Tracker Flush')
       end
     end
 

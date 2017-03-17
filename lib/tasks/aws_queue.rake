@@ -11,6 +11,7 @@ namespace :aws do
 
       Fulfillment::AwsQueuePoller.perform(args[:task_name].to_s)
     else
+      Rails.logger.info("AwsQueuePoller Queued for #{task_name}")
       Resque.enqueue(Fulfillment::AwsQueuePoller, args[:task_name].to_s)
     end
   end
