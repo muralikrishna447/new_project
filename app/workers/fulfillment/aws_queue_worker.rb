@@ -61,6 +61,7 @@ module Fulfillment
     def self.dispatch_submit_orders_to_rosti(message)
       max_quantity = 1500 # Consider pull this from the message, but let's leave that for now
       max_quantity = 5 if Rails.env.development?
+      max_quantity = 10 if Rails.env.staging?
       inline = true
       Fulfillment::RostiOrderSubmitter.submit_orders_to_rosti( max_quantity, inline )
     end
