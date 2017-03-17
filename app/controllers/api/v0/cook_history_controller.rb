@@ -17,7 +17,7 @@ module Api
 
       def find_by_guide
         guide_id = params[:guide_id]
-        limit = params[:limit] || 999999
+        limit = params[:limit]
 
         if guide_id.blank?
           render_api_response 400, { message: "guide_id is required" }
@@ -25,7 +25,8 @@ module Api
         end
 
         user = User.find(@user_id_from_token)
-        results = user.joule_cook_history_items.order('start_time DESC').where(guide_id: guide_id).limit(limit)
+        results = user.joule_cook_history_items.order('start_time DESC').where(guide_id: guide_id)
+        results = results.limit(limit) if limit.present?
         serialized_items = ActiveModel::ArraySerializer.new(results, each_serializer: Api::JouleCookHistoryItemSerializer)
         render_api_response 200, {
           cookHistory: serialized_items
