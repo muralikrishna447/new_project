@@ -1,0 +1,5 @@
+manifest_endpoints:
+  development: 'http://api.jouleapp.com/manifests/resources.json'
+  staging: 'https://d1azuiz827qxpe.cloudfront.net/resources/v2/staging/resources.json'
+  beta: 'https://d1azuiz827qxpe.cloudfront.net/resources/v2/beta/resources.json'
+  production: 'https://d1azuiz827qxpe.cloudfront.net/resources/v2/latest/resources.json'
