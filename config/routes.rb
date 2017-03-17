@@ -320,7 +320,9 @@ Delve::Application.routes.draw do
 
       resources :random_drops, only: [:show]
 
-      resources :cook_history
+      resources :cook_history do
+        get :find_by_guide, on: :collection
+      end
     end
   end
 
