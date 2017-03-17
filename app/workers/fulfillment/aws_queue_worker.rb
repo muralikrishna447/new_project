@@ -3,20 +3,9 @@ module Fulfillment
 
     AWS_QUEUE_WORKER = 'aws-queue-worker'
 
-    LOGGING_NAMESPACE = (AWS_QUEUE_WORKER + '-' + Rails.env + '-').downcase.gsub(/\s+/, '-')
-
-    QUEUE_LABEL = LOGGING_NAMESPACE
-
-    RESQUE_LOCK_NAME = (LOGGING_NAMESPACE + '-lock').to_sym
+    LOGGING_NAMESPACE = (AWS_QUEUE_WORKER + '-').downcase.gsub(/\s+/, '-')
 
     LIBRATO_PREFIX = LOGGING_NAMESPACE.tr('-', '.')
-
-
-    extend Resque::Plugins::Lock
-
-    def self.lock(_params)
-      RESQUE_LOCK_NAME
-    end
 
     def self.perform(params = {})
       sym_params = {}

@@ -31,11 +31,13 @@ module Fulfillment
 
     extend Resque::Plugins::Lock
 
+    @queue = :AwsQueuePoller
+
     TASK_POLLER = 'task-poller'
 
-    LOGGING_NAMESPACE = (TASK_POLLER + '-' + Rails.env + '-').downcase.gsub(/\s+/, '-')
+    LOGGING_NAMESPACE = (TASK_POLLER + '-').downcase.gsub(/\s+/, '-')
 
-    QUEUE_LABEL = LOGGING_NAMESPACE
+    QUEUE_LABEL = LOGGING_NAMESPACE + Rails.env + '-'
 
     RESQUE_LOCK_NAME = (LOGGING_NAMESPACE + '-lock').to_sym
 

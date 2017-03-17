@@ -33,13 +33,13 @@ describe Fulfillment::AwsQueuePoller do
         sqs_client.should_not_receive(:delete_message)
 
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.started", increment_options)
+            "task.poller.#{task_name}.started", increment_options)
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.attempt.receive", increment_options)
+            "task.poller.#{task_name}.attempt.receive", increment_options)
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.empty.queue", increment_options)
+            "task.poller.#{task_name}.empty.queue", increment_options)
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.success", increment_options)
+            "task.poller.#{task_name}.success", increment_options)
 
         Fulfillment::AwsQueuePoller.perform(task_name)
       end
@@ -59,19 +59,19 @@ describe Fulfillment::AwsQueuePoller do
       it 'calls process_sqs_message successfully and deletes the message' do
 
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.started", increment_options)
+            "task.poller.#{task_name}.started", increment_options)
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.attempt.receive", increment_options)
+            "task.poller.#{task_name}.attempt.receive", increment_options)
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.received", increment_options)
+            "task.poller.#{task_name}.received", increment_options)
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.processing.starting", increment_options)
+            "task.poller.#{task_name}.processing.starting", increment_options)
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.processing.complete", increment_options)
+            "task.poller.#{task_name}.processing.complete", increment_options)
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.delete.message", increment_options)
+            "task.poller.#{task_name}.delete.message", increment_options)
         Librato.should_receive(:increment).with(
-            "task.poller.test.#{task_name}.success", increment_options)
+            "task.poller.#{task_name}.success", increment_options)
 
         sqs_client.should_receive(:delete_message)
         Fulfillment::AwsQueueWorker.should_receive(:perform).with({
@@ -91,15 +91,15 @@ describe Fulfillment::AwsQueuePoller do
         it 'should not delete the message' do
 
           Librato.should_receive(:increment).with(
-              "task.poller.test.#{task_name}.started", increment_options)
+              "task.poller.#{task_name}.started", increment_options)
           Librato.should_receive(:increment).with(
-              "task.poller.test.#{task_name}.attempt.receive", increment_options)
+              "task.poller.#{task_name}.attempt.receive", increment_options)
           Librato.should_receive(:increment).with(
-              "task.poller.test.#{task_name}.received", increment_options)
+              "task.poller.#{task_name}.received", increment_options)
           Librato.should_receive(:increment).with(
-              "task.poller.test.#{task_name}.processing.starting", increment_options)
+              "task.poller.#{task_name}.processing.starting", increment_options)
           Librato.should_receive(:increment).with(
-              "task.poller.test.#{task_name}.failure", increment_options)
+              "task.poller.#{task_name}.failure", increment_options)
 
           sqs_client.should_not_receive(:delete_message)
 
