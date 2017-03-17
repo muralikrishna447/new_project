@@ -3609,13 +3609,6 @@ CREATE INDEX index_comments_on_commentable_id_and_commentable_type ON comments U
 
 
 --
--- Name: index_cook_history_on_user_idempotence_guide; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE UNIQUE INDEX index_cook_history_on_user_idempotence_guide ON joule_cook_history_items USING btree (user_id, idempotency_id, guide_id);
-
-
---
 -- Name: index_copies_on_location; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3732,6 +3725,13 @@ CREATE INDEX index_inclusions_on_course_id_and_activity_id ON inclusions USING b
 --
 
 CREATE INDEX index_ingredients_on_slug ON ingredients USING btree (slug);
+
+
+--
+-- Name: index_joule_cook_history_items_on_user_id_and_guide_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_joule_cook_history_items_on_user_id_and_guide_id ON joule_cook_history_items USING btree (user_id, guide_id);
 
 
 --
