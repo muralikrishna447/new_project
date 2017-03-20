@@ -14,7 +14,8 @@ module Fulfillment
         # Params hash keys are deserialized as strings coming out of Redis,
         # so we re-symbolize them here.
         sym_params = params.deep_symbolize_keys
-        task_name = sym_params[:task]
+        task_name = sym_params.fetch(:task)
+
 
         librato_increment('started', task_name)
 
@@ -39,13 +40,14 @@ module Fulfillment
     end
 
     def self.dispatch_task(task_name, message_body)
+      Rails.logger.info('AWSQueueWorker Dispatching ' + task_name.to_s + ' with ' + message_body.to_s)
       # Always perform tasks inline here, so if the task fails the messages
       # will not be deleted from the SQS queue. Going ASYNC will break that
 
       method_name = ('dispatch_' + task_name).to_sym
 
       # This will throw and cancel the message delivery if the method does not exist
-      self.send(method_name, [message_body])
+      self.send(method_name, message_body)
 
     end
 
@@ -53,15 +55,31 @@ module Fulfillment
     # If this system becomes more used consider putting these in modules and mixing them
     # in dynamically
     def self.dispatch_submit_orders_to_rosti(message)
-      max_quantity = 1500 # Consider pull this from the message, but let's leave that for now
+
+      Rails.logger.info('AWSQueueWorker dispatch_submit_orders_to_rosti( ' + message + ')')
+
+      max_quantity = 1500
       max_quantity = 5 if Rails.env.development?
       max_quantity = 10 if Rails.env.staging? || Rails.env.staging2?
+
+      begin
+        message_opts = JSON.parse(message, {symbolize_names: true})
+        max_quantity = message_opts.fetch(:max_quantity, max_quantity)
+        Rails.logger.info("AWSQueueWorker dispatch_submit_orders_to_rosti max_quantity is #{max_quantity}")
+      rescue StandardError => e
+        Rails.logger.error("Error parsing dispatch_submit_orders_to_rosti message : " + message)
+        Rails.logger.error(e.message)
+      end
+
+
       inline = true
       Fulfillment::RostiOrderSubmitter.submit_orders_to_rosti( max_quantity, inline )
     end
 
 
     def self.librato_increment(subkey, task_name)
+      subkey = 'unknown' if subkey.nil?
+      task_name = 'unknown' if task_name.nil?
       Rails.logger.info("Librato: #{LIBRATO_PREFIX} : #{subkey} : #{task_name}")
       begin
         Librato.increment LIBRATO_PREFIX + task_name + '.' + subkey, sporadic: true

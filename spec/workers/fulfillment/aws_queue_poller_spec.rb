@@ -7,7 +7,7 @@ describe Fulfillment::AwsQueuePoller do
   }
   let(:env_string) { "test" }
   let(:increment_options) {
-    {sporadic: true, source: "#{sqs_prefix}task-poller-#{env_string}-#{task_name}"}
+    {sporadic: true}
   }
 
   describe 'perform' do
