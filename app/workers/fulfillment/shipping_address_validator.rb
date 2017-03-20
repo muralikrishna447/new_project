@@ -102,6 +102,15 @@ module Fulfillment
                           "has no line items matching skus #{skus}, skipping"
         return false
       end
+      # The Shopify order query API doesn't allow you to search for things
+      # that are not fulfilled or partially fulfilled, so we filter out any
+      # open orders that are fulfilled here. The address doesn't matter if
+      # it has already shipped!
+      if order.fulfillment_status == 'fulfilled'
+        Rails.logger.info "ShippingAddressValidator order with id #{order.id} " \
+                          'is fulfilled, skipping'
+        return false
+      end
       true
     end
 
