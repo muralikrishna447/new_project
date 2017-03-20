@@ -81,6 +81,45 @@ describe Fulfillment::AwsQueuePoller do
         Fulfillment::AwsQueuePoller.perform(task_name)
       end
 
+      context 'multiple messages in queue' do
+
+        let(:messages) do
+          message = double('message')
+          message.stub(:body).and_return(message_body)
+          message.stub(:receipt_handle)
+          message2 = double('message2')
+          message2.stub(:body).and_return(message_body)
+          message2.stub(:receipt_handle)
+          [message, message2]
+        end
+
+        it 'calls process_sqs_message ONCE successfully and deletes all the messages' do
+
+          Librato.should_receive(:increment).with(
+              "task.poller.#{task_name}.started", increment_options)
+          Librato.should_receive(:increment).with(
+              "task.poller.#{task_name}.attempt.receive", increment_options)
+          Librato.should_receive(:increment).with(
+              "task.poller.#{task_name}.received", increment_options).exactly(messages.length).times
+          Librato.should_receive(:increment).with(
+              "task.poller.#{task_name}.processing.starting", increment_options)
+          Librato.should_receive(:increment).with(
+              "task.poller.#{task_name}.processing.complete", increment_options)
+          Librato.should_receive(:increment).with(
+              "task.poller.#{task_name}.delete.message", increment_options).exactly(messages.length).times
+          Librato.should_receive(:increment).with(
+              "task.poller.#{task_name}.success", increment_options)
+
+          sqs_client.should_receive(:delete_message).exactly(messages.length).times
+          Fulfillment::AwsQueueWorker.should_receive(:perform).with({
+                                                                        :task => task_name,
+                                                                        :message => message_body
+                                                                    })
+          Fulfillment::AwsQueuePoller.perform(task_name)
+        end
+
+      end
+
       context 'dispatch explodes' do
 
         before :each do
