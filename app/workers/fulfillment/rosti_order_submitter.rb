@@ -13,9 +13,11 @@ module Fulfillment
     def self.submit_orders_to_rosti(max_quantity, perform_inline)
       Rails.logger.info("submit_orders_to_rosti perform_inline : #{perform_inline}")
 
+      filename_date = Time.now.in_time_zone('Asia/Shanghai')
+
       export_id = SecureRandom.hex
-      pending_order_filename = "#{Fulfillment::PendingOrderExporter.type}/#{Time.now.utc.strftime('%Y/%m/%d')}/#{Fulfillment::PendingOrderExporter.type}_#{export_id}.csv"
-      submitted_order_filename = "#{Fulfillment::RostiOrderSubmitter.type}/#{Fulfillment::RostiOrderSubmitter.type}_#{Time.now.utc.strftime('%Y-%m-%d')}_#{export_id}.csv"
+      pending_order_filename = "#{Fulfillment::PendingOrderExporter.type}/#{filename_date.strftime('%Y/%m/%d')}/#{Fulfillment::PendingOrderExporter.type}_#{export_id}.csv"
+      submitted_order_filename = "#{Fulfillment::RostiOrderSubmitter.type}/#{Fulfillment::RostiOrderSubmitter.type}_#{filename_date.strftime('%Y-%m-%d')}_#{export_id}.csv"
 
       params = {
           skus: [Shopify::Order::JOULE_SKU],
