@@ -99,7 +99,7 @@ module Fulfillment
           Librato.tracker.flush
           Rails.logger.info('Librato Tracker Flush')
         rescue StandardError => error
-          Rails.logger.error "Flushing librator tracker #{error.message}"
+          log_error error
         end
       end
     end
@@ -130,7 +130,7 @@ module Fulfillment
         Librato.increment librato_metric, sporadic: true, source: source
       rescue StandardError => error
         # Errors will be reported on flush
-        # Rails.logger.error error.message
+        Rails.logger.error error.message
       end
     end
 

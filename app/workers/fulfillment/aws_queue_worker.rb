@@ -23,14 +23,18 @@ module Fulfillment
         dispatch_task(task_name, sym_params[:message])
 
       rescue StandardError => error
-        Rails.logger.error(error)
+        log_error error
         librato_increment('failure', task_name)
           raise # This is important because it will leave the message in the queue
       else
         librato_increment('success', task_name)
       ensure
-        Librato.tracker.flush
-        Rails.logger.info('Librato Tracker Flush')
+        begin
+          Librato.tracker.flush
+          Rails.logger.info('Librato Tracker Flush')
+        rescue StandardError => error
+          log_error error
+        end
       end
     end
 
