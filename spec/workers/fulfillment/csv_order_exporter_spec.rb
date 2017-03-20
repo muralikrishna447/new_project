@@ -323,7 +323,10 @@ describe Fulfillment::CSVOrderExporter do
 
         exporter.should_receive(:schema).and_return([csv_header])
         exporter.should_receive(:type).and_return(export_type)
-        exporter.should_receive(:transform).and_return([[csv_body]])
+        exporter.should_receive(:transform){|ff|
+          # Check that the cleaner worked
+          expect(ff.order.shipping_address.address1).to eq('Hallo')
+        }.and_return([[csv_body]])
         exporter.should_receive(:fulfillable_line_item?).and_return(true)
         exporter.should_receive(:orders).and_return([order])
         exporter.should_receive(:before_save)
@@ -339,9 +342,6 @@ describe Fulfillment::CSVOrderExporter do
         Fulfillment::CSVStorageProvider.should_receive(:provider).with(storage_provider_name).and_return(storage_provider)
 
         exporter.perform(params)
-
-        # Make sure the shipping_address was cleaned up
-        expect(order.shipping_address.address1).to eq('Hallo')
       end
     end
   end
