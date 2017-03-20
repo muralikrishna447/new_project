@@ -62,11 +62,11 @@ module Fulfillment
 
 
     def self.librato_increment(subkey, task_name)
-      Rails.logger.info("#{LIBRATO_PREFIX} : #{subkey} : #{task_name}")
+      Rails.logger.info("Librato: #{LIBRATO_PREFIX} : #{subkey} : #{task_name}")
       begin
         Librato.increment LIBRATO_PREFIX + task_name + '.' + subkey, sporadic: true
       rescue StandardError => error
-        Rails.logger.error error
+        log_error error
       end
     end
 

@@ -123,14 +123,11 @@ module Fulfillment
     end
 
     def self.librato_increment(subkey, task_name)
-      librato_metric = "#{LIBRATO_PREFIX}#{task_name}.#{subkey}"
-      source = sqs_url(task_name)
-      Rails.logger.info("Librato Increment -> #{librato_metric} : source => #{source}")
+      Rails.logger.info("Librato: #{LIBRATO_PREFIX} : #{subkey} : #{task_name}")
       begin
-        Librato.increment librato_metric, sporadic: true, source: source
+        Librato.increment LIBRATO_PREFIX + task_name + '.' + subkey, sporadic: true
       rescue StandardError => error
-        # Errors will be reported on flush
-        Rails.logger.error error.message
+        log_error error
       end
     end
 
