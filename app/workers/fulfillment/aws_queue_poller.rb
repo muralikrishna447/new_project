@@ -71,6 +71,11 @@ module Fulfillment
           result = sqs.receive_message(queue_url: sqs_url(task_name))
         end
 
+        # We don't want to run the task multiple time when multiple old messages are
+        # Are in the queue - this is controlled mainly by the queue settings
+        # But just to be sure
+        task_run = false
+
         if result.messages.empty?
           librato_increment('empty.queue', task_name)
         else
@@ -78,7 +83,10 @@ module Fulfillment
             librato_increment('received', task_name)
             Rails.logger.info("AwsQueuePoller received message #{received_message}")
 
-            process_sqs_message(received_message.body, task_name)
+            if !task_run
+              process_sqs_message(received_message.body, task_name)
+              task_run = true
+            end
 
             Retriable.retriable tries: 3 do
               librato_increment('delete.message', task_name)
