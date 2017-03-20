@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 require 'fulfillment/order_search_provider'
 
@@ -297,7 +299,11 @@ describe Fulfillment::CSVOrderExporter do
         line_item
       end
       let(:order) do
-        order = ShopifyAPI::Order.new
+        order = ShopifyAPI::Order.new(
+            shipping_address: {
+                address1: 'Hällo'
+            }
+        )
         order.id = 1
         order.line_items = [line_item]
         order.fulfillments = []
@@ -313,6 +319,7 @@ describe Fulfillment::CSVOrderExporter do
 
       it 'saves fulfillables' do
         Fulfillment::FedexShippingAddressValidator.should_receive(:valid?).with(order).and_return(true)
+        Fulfillment::OrderCleaners.should_receive(:clean!).with(order).and_call_original
 
         exporter.should_receive(:schema).and_return([csv_header])
         exporter.should_receive(:type).and_return(export_type)
@@ -332,6 +339,9 @@ describe Fulfillment::CSVOrderExporter do
         Fulfillment::CSVStorageProvider.should_receive(:provider).with(storage_provider_name).and_return(storage_provider)
 
         exporter.perform(params)
+
+        # Make sure the shipping_address was cleaned up
+        expect(order.shipping_address.address1).to eq('Hallo')
       end
     end
   end
