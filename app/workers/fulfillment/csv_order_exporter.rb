@@ -1,4 +1,5 @@
 require_relative 'shipping_address_validator'
+require_relative 'csv_order_exporter_cleaners'
 
 module Fulfillment
   # Mixin for implementing a CSV export of Shopify orders for fulfillment.
@@ -84,7 +85,10 @@ module Fulfillment
         orders = orders(job_params[:search_params])
         Rails.logger.debug("Retrieved #{orders.length} orders")
         all_fulfillables = fulfillables(orders, job_params[:skus])
-        all_fulfillables.select! { |fulfillable| include_order?(fulfillable.order) }
+        all_fulfillables.select! do |fulfillable|
+          Fulfillment::OrderCleaners.clean!(fulfillable.order)
+          include_order?(fulfillable.order)
+        end
         sort!(all_fulfillables)
         to_fulfill = truncate(all_fulfillables, job_params[:quantity])
 
