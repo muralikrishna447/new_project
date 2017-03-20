@@ -86,11 +86,16 @@ module Fulfillment
         Rails.logger.debug("Retrieved #{orders.length} orders")
         all_fulfillables = fulfillables(orders, job_params[:skus])
         all_fulfillables.select! do |fulfillable|
-          Fulfillment::OrderCleaners.clean!(fulfillable.order)
           include_order?(fulfillable.order)
         end
+
         sort!(all_fulfillables)
         to_fulfill = truncate(all_fulfillables, job_params[:quantity])
+
+        # Clean Fields (shipping_address) for export
+        to_fulfill.each do |fulfillable|
+          Fulfillment::OrderCleaners.clean!(fulfillable.order)
+        end
 
         before_save(to_fulfill, job_params)
         storage = Fulfillment::CSVStorageProvider.provider(job_params[:storage])
