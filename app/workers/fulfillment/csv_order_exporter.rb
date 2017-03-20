@@ -1,3 +1,5 @@
+require_relative 'shipping_address_validator'
+
 module Fulfillment
   # Mixin for implementing a CSV export of Shopify orders for fulfillment.
   # This is meant to be used in offline batch jobs as it has to crawl through
@@ -7,11 +9,11 @@ module Fulfillment
     PRIORITY_TAG = 'shipping-priority'
 
     # Orders with these tags are not included in the output.
-    FILTERED_TAGS = %w(
-      shipping-started
-      shipping-hold
-      shipping-validation-error
-    )
+    FILTERED_TAGS = [
+      'shipping-started',
+      'shipping-hold',
+      Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG
+    ]
 
     JOB_LOCK_KEY = 'fulfillment-order-export'
 

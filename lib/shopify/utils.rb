@@ -93,5 +93,11 @@ module Shopify
     def self.contains_only_premium?(order)
       order.line_items.all? { |line_item| line_item.sku == Shopify::Order::PREMIUM_SKU }
     end
+
+    # Returns an array of line items corresponding to the specified array
+    # of skus, or an empty array if no matches are found.
+    def self.line_items_for_skus(order, skus)
+      order.line_items.select { |line_item| skus.include?(line_item.sku) }
+    end
   end
 end

@@ -50,4 +50,15 @@ namespace :fulfillment do
       Resque.enqueue(Fulfillment::RostiShipmentPoller, params)
     end
   end
+
+  task :validate_shipping_addresses, [:inline] => :environment do |_t, args|
+    args.with_defaults(inline: false)
+
+    skus = [Shopify::Order::JOULE_SKU]
+    if args[:inline]
+      Fulfillment::ShippingAddressValidator.perform(skus)
+    else
+      Resque.enqueue(Fulfillment::ShippingAddressValidator, skus)
+    end
+  end
 end
