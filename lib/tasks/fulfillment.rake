@@ -1,45 +1,8 @@
 namespace :fulfillment do
   task :rosti_export_and_submit_orders, [:max_quantity, :inline] => :environment do |_t, args|
     args.with_defaults(inline: false)
-    Rails.logger.info("Rosti order export and submit rake task starting with args #{args}")
-
-    export_id = SecureRandom.hex
-    pending_order_filename = "#{Fulfillment::PendingOrderExporter.type}/#{Time.now.utc.strftime('%Y/%m/%d')}/#{Fulfillment::PendingOrderExporter.type}_#{export_id}.csv"
-    submitted_order_filename = "#{Fulfillment::RostiOrderSubmitter.type}/#{Fulfillment::RostiOrderSubmitter.type}_#{Time.now.utc.strftime('%Y-%m-%d')}_#{export_id}.csv"
-    max_quantity = args[:max_quantity].to_i
-
-    params = {
-      skus: [Shopify::Order::JOULE_SKU],
-      quantity: max_quantity,
-      storage: 's3',
-      storage_s3_region: Fulfillment::PendingOrderExporter.s3_region,
-      storage_s3_bucket: Fulfillment::PendingOrderExporter.s3_bucket,
-      storage_filename: pending_order_filename,
-      trigger_child_job: true,
-      child_job_class: 'Fulfillment::RostiOrderSubmitter',
-      child_job_params: {
-        skus: [Shopify::Order::JOULE_SKU],
-        search_params: {
-          storage: 's3',
-          storage_s3_region: Fulfillment::PendingOrderExporter.s3_region,
-          storage_s3_bucket: Fulfillment::PendingOrderExporter.s3_bucket,
-          storage_filename: pending_order_filename
-        },
-        open_fulfillment: true,
-        quantity: max_quantity,
-        storage: 's3',
-        storage_s3_region: Fulfillment::RostiOrderSubmitter.s3_region,
-        storage_s3_bucket: Fulfillment::RostiOrderSubmitter.s3_bucket,
-        storage_filename: submitted_order_filename
-      }
-    }
-
-    Rails.logger.info("Rosti order export and submit with export id #{export_id} starting with params #{params}")
-    if args[:inline].to_s == 'true'
-      Fulfillment::PendingOrderExporter.perform(params)
-    else
-      Resque.enqueue(Fulfillment::PendingOrderExporter, params)
-    end
+    args.with_defaults(max_quantity: 1500)
+    Fulfillment::RostiOrderSubmitter.submit_orders_to_rosti( args[:max_quantity].to_i, args[:inline].to_s == 'true')
   end
 
   task :rosti_submit_orders, [:pending_order_filename, :export_id, :max_quantity, :inline] => :environment do |_t, args|
