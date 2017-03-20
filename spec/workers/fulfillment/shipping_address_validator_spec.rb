@@ -194,10 +194,16 @@ describe Fulfillment::ShippingAddressValidator do
   end
 
   describe 'should_validate?' do
-    let(:order) { ShopifyAPI::Order.new(id: 1) }
+    let(:order) do
+      ShopifyAPI::Order.new(
+        id: 1,
+        fulfillment_status: fulfillment_status
+      )
+    end
     let(:skus) { ['my_sku'] }
 
     context 'order has no line items for skus' do
+      let(:fulfillment_status) { nil }
       before :each do
         Shopify::Utils
           .stub(:line_items_for_skus)
@@ -216,8 +222,19 @@ describe Fulfillment::ShippingAddressValidator do
           .with(order, skus)
           .and_return([double('line_item')])
       end
-      it 'returns true' do
-        expect(Fulfillment::ShippingAddressValidator.should_validate?(order, skus)).to be_true
+
+      context 'fulfillment_status is not fulfilled' do
+        let(:fulfillment_status) { nil }
+        it 'returns true' do
+          expect(Fulfillment::ShippingAddressValidator.should_validate?(order, skus)).to be_true
+        end
+      end
+
+      context 'fulfillment_status is fulfilled' do
+        let(:fulfillment_status) { 'fulfilled' }
+        it 'returns false' do
+          expect(Fulfillment::ShippingAddressValidator.should_validate?(order, skus)).to be_false
+        end
       end
     end
   end
