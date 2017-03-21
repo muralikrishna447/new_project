@@ -171,7 +171,7 @@ module Fulfillment
 
     def self.send_notification_email(total_quantity, job_params)
 
-      log_info("RostiOrderSubmitter:send_notification_email(#{total_quantity}, #{job_params})")
+      Rails.logger.info("RostiOrderSubmitter:send_notification_email(#{total_quantity}, #{job_params})")
 
       email_address = job_params.fetch(:notification_email, nil) unless job_params.nil?
 
@@ -186,13 +186,6 @@ module Fulfillment
         end
       else
         Librato.increment 'fulfillment.rosti.order-submitter.mailer.skipped', sporadic: true
-      end
-    end
-
-    def self.log_info(message)
-      Rails.logger.info(message)
-      if Rails.env.development?
-        puts message
       end
     end
   end
