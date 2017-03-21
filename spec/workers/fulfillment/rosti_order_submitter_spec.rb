@@ -120,11 +120,39 @@ describe Fulfillment::RostiOrderSubmitter do
       fulfillable
     end
     let(:fulfillables) { [fulfillable_1, fulfillable_2] }
+    let(:params){ { notification_email: 'outbound@example.com' } }
     it 'reports metrics' do
       Librato.should_receive(:increment).with('fulfillment.rosti.order-submitter.success', sporadic: true)
       Librato.should_receive(:increment).with('fulfillment.rosti.order-submitter.count', by: fulfillables.length, sporadic: true)
       Librato.should_receive(:increment).with('fulfillment.rosti.order-submitter.quantity', by: total_quantity, sporadic: true)
-      Fulfillment::RostiOrderSubmitter.after_save(fulfillables, {})
+      Fulfillment::RostiOrderSubmitter.should_receive(:send_notification_email).with(total_quantity, params)
+      Fulfillment::RostiOrderSubmitter.after_save(fulfillables, params)
+    end
+  end
+
+  describe 'send_notification_email' do
+
+    let(:total_quantity) { 101 }
+
+    context 'with email_address' do
+      let(:notification_email) {'ff@chefsteps.com'}
+      let(:info) {{ notification_email: notification_email }}
+      it 'Should send the email' do
+        RostiOrderSubmitterMailer.any_instance.should_receive(:mail).with do |args|
+          expect(args[:from]).to eq(notification_email)
+          expect(args[:to]).to eq(notification_email)
+          expect(args[:reply_to]).to eq(notification_email)
+        end
+        Fulfillment::RostiOrderSubmitter.send_notification_email(total_quantity, info)
+      end
+    end
+
+    context 'without email_address' do
+      let(:info) {{  }}
+      it 'Should send the email' do
+        RostiOrderSubmitterMailer.should_not_receive(:notification)
+        Fulfillment::RostiOrderSubmitter.send_notification_email(total_quantity, info)
+      end
     end
   end
 end
