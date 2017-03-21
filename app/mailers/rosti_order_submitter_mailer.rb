@@ -2,7 +2,6 @@ class RostiOrderSubmitterMailer < ActionMailer::Base
   def notification(info)
     logger.info("RostiOrderSubmitterMailer  [#{info.to_s}]")
 
-
     [:email_address, :total_quantity].each do | key |
       raise(ArgumentError, "#{key} is required") unless info.has_key? key
     end

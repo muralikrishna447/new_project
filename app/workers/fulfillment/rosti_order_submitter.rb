@@ -10,7 +10,7 @@ module Fulfillment
     @queue = :RostiOrderSubmitter
 
 
-    def self.submit_orders_to_rosti(max_quantity, perform_inline)
+    def self.submit_orders_to_rosti(max_quantity, perform_inline, notification_email)
       Rails.logger.info("submit_orders_to_rosti perform_inline : #{perform_inline}")
 
       filename_date = Time.now.in_time_zone('Asia/Shanghai')
@@ -29,6 +29,7 @@ module Fulfillment
           trigger_child_job: true,
           child_job_class: 'Fulfillment::RostiOrderSubmitter',
           child_job_params: {
+              notification_email: notification_email,
               skus: [Shopify::Order::JOULE_SKU],
               search_params: {
                   storage: 's3',
@@ -170,7 +171,7 @@ module Fulfillment
 
     def self.send_notification_email(total_quantity, job_params)
 
-      Rails.logger.info("RostiOrderSubmitter:send_notification_email(#{total_quantity}, #{job_params})")
+      log_info("RostiOrderSubmitter:send_notification_email(#{total_quantity}, #{job_params})")
 
       email_address = job_params.fetch(:notification_email, nil) unless job_params.nil?
 
@@ -185,6 +186,13 @@ module Fulfillment
         end
       else
         Librato.increment 'fulfillment.rosti.order-submitter.mailer.skipped', sporadic: true
+      end
+    end
+
+    def self.log_info(message)
+      Rails.logger.info(message)
+      if Rails.env.development?
+        puts message
       end
     end
   end

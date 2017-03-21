@@ -27,9 +27,10 @@ describe RostiOrderSubmitterMailer do
 
       mail.deliver
 
+      expect(mail.body.to_s).to match(/108/)
+
       ActionMailer::Base.deliveries.count.should == 1
       email = ActionMailer::Base.deliveries.first
-
       expect(email[:subject].to_s).to match(/^ChefSteps Fulfillment File Notification \d\d\/\d\d\/\d\d\d\d - 108 units$/)
       expect(email[:to].to_s).to eq email_address
     end
