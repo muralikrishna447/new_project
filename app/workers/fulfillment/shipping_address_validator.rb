@@ -14,6 +14,10 @@ module Fulfillment
       invalid_count = 0
       Shopify::Utils.search_orders_with_each(status: 'open') do |order|
         next unless should_validate?(order, skus)
+
+        # Clean the order
+        Fulfillment::OrderCleaners.clean!(order)
+
         if validate(order)
           valid_count += 1
         else

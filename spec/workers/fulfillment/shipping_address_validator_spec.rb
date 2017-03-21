@@ -14,6 +14,7 @@ describe Fulfillment::ShippingAddressValidator do
       end
 
       it 'calls validate on order and reports metrics' do
+        order.should_receive(:shipping_address?).and_return(false)
         Shopify::Utils.should_receive(:search_orders_with_each).with(status: 'open').and_yield(order)
         Fulfillment::ShippingAddressValidator.should_receive(:validate).with(order).and_return(true)
         Librato.should_receive(:increment).with('fulfillment.address-validator.success', sporadic: true)
