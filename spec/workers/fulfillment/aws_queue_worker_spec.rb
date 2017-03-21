@@ -65,12 +65,17 @@ describe Fulfillment::AwsQueueWorker do
 
 
     context 'with task and valid message' do
+      let(:message){
+        {
+            max_quantity: 99,
+            notification_email: notification_email
+        }
+      }
       let(:notification_email) { 'test@examplenotification.com' }
-      let (:message_body){'{ "max_quantity" : 99}' }
+      let (:message_body){ message.to_json }
       let(:params) { {
           task: task_name,
-          message: message_body,
-          notification_email: notification_email
+          message: message_body
       } }
       it 'RostiOrderSubmitter with max_quantity 99 and inline true' do
         Fulfillment::RostiOrderSubmitter.should_receive(:submit_orders_to_rosti).with(99, true, notification_email)
