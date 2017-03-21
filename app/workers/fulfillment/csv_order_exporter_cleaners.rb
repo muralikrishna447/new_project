@@ -24,7 +24,6 @@ module Fulfillment
             if shipping_address.send("#{field}?".to_sym)
               source = shipping_address.send(field.to_sym)
               cleaned = I18n.transliterate(source) unless source.nil?
-              puts "SOURCE #{source} CLEANED #{cleaned}"
               shipping_address.send("#{field}=".to_sym, cleaned)
             end
           end
