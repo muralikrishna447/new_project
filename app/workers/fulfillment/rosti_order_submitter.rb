@@ -9,6 +9,52 @@ module Fulfillment
 
     @queue = :RostiOrderSubmitter
 
+
+    def self.submit_orders_to_rosti(max_quantity, perform_inline, notification_email)
+      Rails.logger.info("submit_orders_to_rosti perform_inline : #{perform_inline}")
+
+      filename_date = Time.now.in_time_zone('Asia/Shanghai')
+
+      export_id = SecureRandom.hex
+      pending_order_filename = "#{Fulfillment::PendingOrderExporter.type}/#{filename_date.strftime('%Y/%m/%d')}/#{Fulfillment::PendingOrderExporter.type}_#{export_id}.csv"
+      submitted_order_filename = "#{Fulfillment::RostiOrderSubmitter.type}/#{Fulfillment::RostiOrderSubmitter.type}_#{filename_date.strftime('%Y-%m-%d')}_#{export_id}.csv"
+
+      params = {
+          skus: [Shopify::Order::JOULE_SKU],
+          quantity: max_quantity,
+          storage: 's3',
+          storage_s3_region: Fulfillment::PendingOrderExporter.s3_region,
+          storage_s3_bucket: Fulfillment::PendingOrderExporter.s3_bucket,
+          storage_filename: pending_order_filename,
+          trigger_child_job: true,
+          child_job_class: 'Fulfillment::RostiOrderSubmitter',
+          child_job_params: {
+              notification_email: notification_email,
+              skus: [Shopify::Order::JOULE_SKU],
+              search_params: {
+                  storage: 's3',
+                  storage_s3_region: Fulfillment::PendingOrderExporter.s3_region,
+                  storage_s3_bucket: Fulfillment::PendingOrderExporter.s3_bucket,
+                  storage_filename: pending_order_filename
+              },
+              open_fulfillment: true,
+              quantity: max_quantity,
+              storage: 's3',
+              storage_s3_region: Fulfillment::RostiOrderSubmitter.s3_region,
+              storage_s3_bucket: Fulfillment::RostiOrderSubmitter.s3_bucket,
+              storage_filename: submitted_order_filename
+          }
+      }
+
+      Rails.logger.info("Rosti order export and submit with export id #{export_id} starting with params #{params}")
+      if perform_inline
+        Fulfillment::PendingOrderExporter.perform(params)
+      else
+        Resque.enqueue(Fulfillment::PendingOrderExporter, params)
+      end
+
+    end
+
     # Only allow one of these jobs to be enqueued/running
     # at any given time.
     def self.lock(_params)
@@ -110,14 +156,37 @@ module Fulfillment
       line_items
     end
 
-    def self.after_save(fulfillables, _params)
+    def self.after_save(fulfillables, job_params)
       Librato.increment 'fulfillment.rosti.order-submitter.success', sporadic: true
       Librato.increment 'fulfillment.rosti.order-submitter.count', by: fulfillables.length, sporadic: true
       total_quantity = fulfillables.inject(0) do |sum, fulfillable|
         sum + fulfillable.quantity
       end
+
+      send_notification_email(total_quantity, job_params)
+
       Librato.increment 'fulfillment.rosti.order-submitter.quantity', by: total_quantity, sporadic: true
       Librato.tracker.flush
+    end
+
+    def self.send_notification_email(total_quantity, job_params)
+
+      Rails.logger.info("RostiOrderSubmitter:send_notification_email(#{total_quantity}, #{job_params})")
+
+      email_address = job_params.fetch(:notification_email, nil) unless job_params.nil?
+
+      if email_address
+        begin
+          info = {email_address: email_address, total_quantity: total_quantity}
+          RostiOrderSubmitterMailer.notification(info).deliver
+          Librato.increment 'fulfillment.rosti.order-submitter.mailer.success', sporadic: true
+        rescue StandardError => e
+          Librato.increment 'fulfillment.rosti.order-submitter.mailer.error', sporadic: true
+          Rails.logger.error "RostiOrderSubmitterMailer : failed with error: #{e}, for #{email_address}"
+        end
+      else
+        Librato.increment 'fulfillment.rosti.order-submitter.mailer.skipped', sporadic: true
+      end
     end
   end
 end

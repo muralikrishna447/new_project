@@ -14,7 +14,7 @@ gem "devise"
 gem 'oauth2'
 gem 'omniauth'
 gem 'omniauth-facebook'
-gem 'koala'
+gem "koala", "~> 2.5"
 
 gem 'haml'
 gem 'activeadmin'
@@ -95,6 +95,7 @@ gem 'slack-notifier'
 gem 'rack-attack', '4.3.0'
 gem 'retriable', '2.1.0'
 gem 'resque-lock', '1.1'
+gem 'signifyd'
 
 group :test do
   gem 'webmock'
@@ -115,7 +116,6 @@ group :development, :test do
   gem "simplecov", require: false
   gem 'angularjs-rails'
   gem 'guard-resque'
-  gem 'debugger'
 end
 
 group :assets, :angular, :test, :development do

@@ -273,12 +273,15 @@ Delve::Application.routes.draw do
       resources :circulators, only: [:index, :create, :update, :destroy] do
         get :token, on: :member
         post :notify_clients, on: :member
+        post :admin_notify_clients, on: :member
         post :coefficients, on: :collection
       end
 
       post 'firmware/updates', to: 'firmware#updates'
       get 'auth/external_redirect', to: 'auth#external_redirect'
       get 'auth/external_redirect_by_key', to: 'auth#external_redirect_by_key'
+
+      get 'content_config/manifest', to: 'content#manifest'
 
       namespace :shopping do
         resources :discounts, only: [:show]
@@ -317,7 +320,9 @@ Delve::Application.routes.draw do
 
       resources :random_drops, only: [:show]
 
-      resources :cook_history
+      resources :cook_history do
+        get :find_by_guide, on: :collection
+      end
     end
   end
 

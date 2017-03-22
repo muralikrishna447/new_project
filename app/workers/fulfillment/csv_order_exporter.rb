@@ -1,3 +1,6 @@
+require_relative 'shipping_address_validator'
+require_relative 'csv_order_exporter_cleaners'
+
 module Fulfillment
   # Mixin for implementing a CSV export of Shopify orders for fulfillment.
   # This is meant to be used in offline batch jobs as it has to crawl through
@@ -7,11 +10,11 @@ module Fulfillment
     PRIORITY_TAG = 'shipping-priority'
 
     # Orders with these tags are not included in the output.
-    FILTERED_TAGS = %w(
-      shipping-started
-      shipping-hold
-      shipping-validation-error
-    )
+    FILTERED_TAGS = [
+      'shipping-started',
+      'shipping-hold',
+      Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG
+    ]
 
     JOB_LOCK_KEY = 'fulfillment-order-export'
 
@@ -82,6 +85,12 @@ module Fulfillment
         orders = orders(job_params[:search_params])
         Rails.logger.debug("Retrieved #{orders.length} orders")
         all_fulfillables = fulfillables(orders, job_params[:skus])
+
+        # Clean Fields (shipping_address) for export before include_order? is called
+        all_fulfillables.each do |fulfillable|
+          Fulfillment::OrderCleaners.clean!(fulfillable.order)
+        end
+
         all_fulfillables.select! { |fulfillable| include_order?(fulfillable.order) }
         sort!(all_fulfillables)
         to_fulfill = truncate(all_fulfillables, job_params[:quantity])
@@ -128,7 +137,6 @@ module Fulfillment
                             "shipping address validation failed: #{order.attributes[:shipping_address].inspect}")
           return false
         end
-        return false if Fulfillment::FraudFilter.fraud_suspected?(order)
         true
       end
 

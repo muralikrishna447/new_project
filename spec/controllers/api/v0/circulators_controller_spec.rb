@@ -298,6 +298,127 @@ describe Api::V0::CirculatorsController do
       p.save!
     end
 
+    #'random_drop' && notification_type != 'dynamic_alert'
+    describe 'admin_notify_clients' do
+      it 'requires idempotency_key parameter' do
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'not_random_drop',
+            okText: "Go get it",
+            message: "sup",
+            notification_type: 'random_drop',
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(JSON.parse(response.body)).to eq ({"message"=>"You must pass the idempotency_key parameter.", "request_id"=>nil, "status"=>400})
+      end
+
+      it 'requires message parameter' do
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'not_random_drop',
+            okText: "Go get it",
+            notification_type: 'random_drop',
+            idempotency_key: Time.now + rand,
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(JSON.parse(response.body)).to eq ({"message"=>"message parameter must be specified", "request_id"=>nil, "status"=>400})
+      end
+
+      it 'requires okText parameters' do
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'random_drop',
+            idempotency_key: Time.now + rand,
+            message: "Hello world",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(JSON.parse(response.body)).to eq ({"message"=>"okText parameter must be specified", "request_id"=>nil, "status"=>400})
+      end
+
+      it 'Sends a message once per idempotency key' do
+        idempotency_key = Time.now.to_i + rand
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'random_drop',
+            okText: "Go get it",
+            idempotency_key: idempotency_key,
+            message: "sup",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(response.code).to eq '200'
+        puts JSON.parse(response.body)
+
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'random_drop',
+            okText: "Go get it",
+            idempotency_key: idempotency_key,
+            message: "sup",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(response.code).to eq '200'
+        message = JSON.parse(response.body)["message"]
+        expect(message).to include("A notification has already been sent")
+        expect(message).to include("and idempotency key #{idempotency_key}")
+      end
+
+      it 'supports notification types random_drop and dynamic_alert' do
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'not_random_drop',
+            okText: "Go get it",
+            idempotency_key: Time.now.to_i + rand,
+            message: "sup",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(response.code).to eq '400'
+
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'random_drop',
+            okText: "Go get it",
+            idempotency_key: Time.now.to_i + rand,
+            message: "sup",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(response.code).to eq '200'
+
+        post(
+            :admin_notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'dynamic_alert',
+            okText: "Go get it",
+            idempotency_key: Time.now.to_i + rand,
+            message: "sup",
+            redirectKey: "cantPair",
+            cancelText: "No thanks man",
+            headerColor: "orange"
+        )
+        expect(response.code).to eq '200'
+      end
+    end
+
     describe 'notify_clients' do
       context 'disconnect while cooking' do
         it 'sends a notification' do
@@ -312,8 +433,8 @@ describe Api::V0::CirculatorsController do
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
           gcm = JSON.parse msg['GCM']
-          expect(apns['aps']['content-available']).to eq 0
-          expect(gcm['data']['content_available']).to eq false
+          expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
+          expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
         end
       end
 
@@ -329,8 +450,6 @@ describe Api::V0::CirculatorsController do
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
           gcm = JSON.parse msg['GCM']
-          expect(apns['aps']['content-available']).to eq 1
-          expect(gcm['data']['content_available']).to eq true
         end
       end
 
@@ -348,7 +467,70 @@ describe Api::V0::CirculatorsController do
           expect(@published_messages.length).to eq 1
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
-          expect(apns['aps']['content-available']).to eq 0
+        end
+
+        it 'should notify clients with emoji Joule name' do
+          notification_types = [
+            'guided_water_heated',
+            'water_heated',
+            'circulator_error_hardware_failure',
+            'circulator_error_button_pressed',
+            'circulator_error_low_water_level',
+            'circulator_error_tipped_over',
+            'circulator_error_overheating',
+            'circulator_error_power_loss',
+            'circulator_error_unknown_reason',
+            'disconnect_while_cooking',
+          ]
+
+          name = "BurgerBob\u{1f354}".encode('utf-8')
+
+          for type in notification_types
+            post(
+              :notify_clients,
+              id: @circulator.circulator_id,
+              notification_type: type,
+              notification_params: {
+                joule_name: name
+              }
+            )
+            msg = JSON.parse(@published_messages[-1][:msg])
+            apns = JSON.parse msg['APNS']
+            gcm = JSON.parse msg['GCM']
+            expect(apns['aps']['alert']).to include(name)
+            expect(gcm['data']['message']).to include(name)
+          end
+
+        end
+
+        it 'should fallback to default message for nil template vars' do
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'water_heated',
+            notification_params: {
+              joule_name: nil
+            }
+          )
+          msg = JSON.parse(@published_messages[-1][:msg])
+          apns = JSON.parse msg['APNS']
+          expect(apns['aps']['alert']).to include('Your water has heated!')
+        end
+
+        it 'should pass circulator_address in params' do
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: 'water_heated',
+            notification_params: {
+              joule_name: nil
+            }
+          )
+          msg = JSON.parse(@published_messages[-1][:msg])
+          apns = JSON.parse msg['APNS']
+          gcm = JSON.parse msg['GCM']
+          expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
+          expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
         end
 
         it 'should delete token if endpoint disabled' do
@@ -471,18 +653,6 @@ describe Api::V0::CirculatorsController do
           :id => @circulator.circulator_id,
           :notification_type => 'water_heated'})
         response.code.should == '200'
-      end
-
-      it 'should call notify_owners with a notification_type' do
-
-        Api::V0::CirculatorsController.any_instance.should_receive(:notify_owners).with(anything, anything, anything, notification_type, anything)
-
-        post(
-          :notify_clients,
-          id: @circulator.circulator_id,
-          notification_type: notification_type
-        )
-
       end
     end
   end

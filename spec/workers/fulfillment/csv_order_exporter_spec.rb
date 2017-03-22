@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require 'spec_helper'
 require 'fulfillment/order_search_provider'
 
@@ -107,66 +109,49 @@ describe Fulfillment::CSVOrderExporter do
       end
     end
 
-    context 'order is not suspected fraudulent' do
-      before :each do
-        Fulfillment::FraudFilter.stub(:fraud_suspected?).and_return(false)
-      end
-
-      context 'order has filtered tag' do
-        shared_examples 'filtered tag' do
-          it 'returns false' do
-            Fulfillment::FedexShippingAddressValidator.should_not_receive(:valid?)
-            expect(exporter.include_order?(order)).to be_false
-          end
-        end
-
-        context 'order has shipping-started tag' do
-          let(:tags) { 'shipping-started' }
-          include_examples 'filtered tag'
-        end
-
-        context 'order has shipping-hold tag' do
-          let(:tags) { 'shipping-hold' }
-          include_examples 'filtered tag'
-        end
-
-        context 'order has shipping-validation-error tag' do
-          let(:tags) { 'shipping-validation-error' }
-          include_examples 'filtered tag'
+    context 'order has filtered tag' do
+      shared_examples 'filtered tag' do
+        it 'returns false' do
+          Fulfillment::FedexShippingAddressValidator.should_not_receive(:valid?)
+          expect(exporter.include_order?(order)).to be_false
         end
       end
 
-      context 'order has no filtered tags' do
-        let(:tags) { 'other-tag' }
+      context 'order has shipping-started tag' do
+        let(:tags) { 'shipping-started' }
+        include_examples 'filtered tag'
+      end
 
-        context 'address validator returns false' do
-          it 'returns false' do
-            Fulfillment::FedexShippingAddressValidator.stub(:valid?).and_return(false)
-            expect(exporter.include_order?(order)).to be_false
-          end
-        end
+      context 'order has shipping-hold tag' do
+        let(:tags) { 'shipping-hold' }
+        include_examples 'filtered tag'
+      end
 
-        context 'address validator returns true' do
-          before :each do
-            Fulfillment::FedexShippingAddressValidator.stub(:valid?).and_return(true)
-          end
-
-          it 'returns true' do
-            expect(exporter.include_order?(order)).to be_true
-          end
-          include_examples 'payment status'
-        end
+      context 'order has shipping-validation-error tag' do
+        let(:tags) { 'shipping-validation-error' }
+        include_examples 'filtered tag'
       end
     end
 
-    context 'order is suspected fraudulent' do
-      before :each do
-        Fulfillment::FedexShippingAddressValidator.stub(:valid?).and_return(true)
-        Fulfillment::FraudFilter.stub(:fraud_suspected?).and_return(true)
+    context 'order has no filtered tags' do
+      let(:tags) { 'other-tag' }
+
+      context 'address validator returns false' do
+        it 'returns false' do
+          Fulfillment::FedexShippingAddressValidator.stub(:valid?).and_return(false)
+          expect(exporter.include_order?(order)).to be_false
+        end
       end
 
-      it 'returns false' do
-        expect(exporter.include_order?(order)).to be_false
+      context 'address validator returns true' do
+        before :each do
+          Fulfillment::FedexShippingAddressValidator.stub(:valid?).and_return(true)
+        end
+
+        it 'returns true' do
+          expect(exporter.include_order?(order)).to be_true
+        end
+        include_examples 'payment status'
       end
     end
   end
@@ -273,10 +258,6 @@ describe Fulfillment::CSVOrderExporter do
   end
 
   describe 'perform' do
-    before :each do
-      Fulfillment::FraudFilter.stub(:fraud_suspected?).and_return(false)
-    end
-
     shared_examples 'invalid params' do
       it 'raises exception' do
         expect { exporter.perform(params) }.to raise_error
@@ -318,7 +299,11 @@ describe Fulfillment::CSVOrderExporter do
         line_item
       end
       let(:order) do
-        order = ShopifyAPI::Order.new
+        order = ShopifyAPI::Order.new(
+            shipping_address: {
+                address1: 'Hällo'
+            }
+        )
         order.id = 1
         order.line_items = [line_item]
         order.fulfillments = []
@@ -334,10 +319,14 @@ describe Fulfillment::CSVOrderExporter do
 
       it 'saves fulfillables' do
         Fulfillment::FedexShippingAddressValidator.should_receive(:valid?).with(order).and_return(true)
+        Fulfillment::OrderCleaners.should_receive(:clean!).with(order).and_call_original
 
         exporter.should_receive(:schema).and_return([csv_header])
         exporter.should_receive(:type).and_return(export_type)
-        exporter.should_receive(:transform).and_return([[csv_body]])
+        exporter.should_receive(:transform){|ff|
+          # Check that the cleaner worked
+          expect(ff.order.shipping_address.address1).to eq('Hallo')
+        }.and_return([[csv_body]])
         exporter.should_receive(:fulfillable_line_item?).and_return(true)
         exporter.should_receive(:orders).and_return([order])
         exporter.should_receive(:before_save)

@@ -2,10 +2,10 @@ require_dependency 'beta_feature_service'
 module Api
   module V0
     class CirculatorsController < BaseController
-      before_filter :ensure_authorized, except: [:notify_clients,:coefficients]
+      before_filter :ensure_authorized, except: [:notify_clients, :admin_notify_clients, :coefficients]
       before_filter :ensure_circulator_owner, only: [:update, :destroy]
       before_filter :ensure_circulator_user, only: [:token]
-      before_filter :ensure_authorized_service, only: [:notify_clients]
+      before_filter :ensure_authorized_service, only: [:notify_clients, :admin_notify_clients]
 
       def index
         @user = User.find @user_id_from_token
@@ -117,41 +117,69 @@ module Api
         end
 
         begin
-          message = I18n.t("circulator.push.#{params[:notification_type]}.message", raise: true)
-        rescue I18n::MissingTranslationData
+          push_notification = get_push_notification()
+        rescue MissingNotificationError
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
-        end
-
-        begin
-          content_available = I18n.t(
-            "circulator.push.#{params[:notification_type]}.content_available",
-            raise: true
-          )
-        rescue I18n::MissingTranslationData
-          content_available = 0
         end
 
         logger.info "Attempting to send notification for #{circulator.circulator_id}" \
                     " of type #{params[:notification_type]}"
-        notify_owners(circulator, params[:idempotency_key], message, params[:notification_type], content_available)
+        notify_owners circulator, params[:idempotency_key], push_notification
 
         render_api_response 200
       end
 
-      def publish_notification(token, message, notification_type, content_available)
+      def publish_notification(circulator, token, push_notification, is_admin_message)
+        message = push_notification.message
+        notification_type = push_notification.notification_type
         endpoint_arn = token.endpoint_arn
         Librato.increment("api.publish_notification_requests")
-        # TODO - add APNS once we have a testable endpoint
+
         title = I18n.t("circulator.app_name", raise: true)
-        gcm_content_available = if content_available == 0 then false else true end
-        message = {
-          GCM: {data: {message: message, title: title, notification_type: notification_type, "content_available" => gcm_content_available}}.to_json,
-          APNS_SANDBOX: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json,
-          APNS: {aps: {alert: message, sound: 'default', notification_type: notification_type, "content-available" => content_available}}.to_json
+        gcm_data = {
+          data: {
+            message: message,
+            title: title,
+            notification_type: notification_type,
+            circulator_address: circulator.circulator_id,
+          }
         }
+        apns_data = {
+          aps: {
+            alert: message,
+            sound: 'default',
+            notification_type: notification_type,
+            circulator_address: circulator.circulator_id,
+          }
+        }
+
+        if is_admin_message
+          #copy additional params into gcm_data and apns_data
+          ["content_available",
+               "headerIcon",
+               "headerColor",
+               "titleString",
+               "bodyString",
+               "okText",
+               "cancelText",
+               "redirectKey"].each do |key|
+            gcm_data[:data][key] = params[key] if params.key?(key)
+            apns_data[:aps][key] = params[key] if params.key?(key)
+          end
+        end
+
+        # NOTE: We *need* to use JSON.generate because to_json has a
+        # bug in it when it comes to higher unicode codepoints.  See:
+        # http://stackoverflow.com/questions/7775597/bug-in-ruby-json-lib-when-handling-4-byte-unicode-emoji
+        message = {
+          GCM: JSON.generate(gcm_data),
+          APNS_SANDBOX: JSON.generate(apns_data),
+          APNS: JSON.generate(apns_data)
+        }
+
         logger.info "Publishing #{message.inspect}"
         begin
-          publish_json_message(endpoint_arn, message.to_json)
+          publish_json_message(endpoint_arn, JSON.generate(message))
         rescue Aws::SNS::Errors::EndpointDisabled
           # NOTE: Clean up any disabled endpoints, since they're
           # likely not useful anymore.  There is a chance that Apple
@@ -166,6 +194,41 @@ module Api
           delete_endpoint(endpoint_arn)
         end
       end
+
+      def admin_notify_clients
+        Librato.increment("api.circulator_admin_notify_clients_requests")
+
+        @circulator = Circulator.where(circulator_id: params[:id]).first
+        if @circulator.nil?
+          return render_api_response 404, {message: "Circulator not found"}
+        end
+
+        unless params[:idempotency_key]
+          return render_api_response 400, {message: "You must pass the idempotency_key parameter."}
+        end
+
+        if notified?(@circulator, params[:idempotency_key], true)
+          return render_api_response 200, { message: 'A notification has already '\
+                                                     'been sent for circulator with '\
+                                                     "id #{@circulator.id} and idempotency "\
+                                                     "key #{params[:idempotency_key]}." }
+        end
+
+        begin
+          push_notification = get_admin_push_notification()
+        rescue MissingNotificationError
+          return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
+        rescue InvalidParamsError => e
+          return render_api_response 400, {message: e.message}
+        end
+
+        logger.info "Attempting to send notification for #{@circulator.circulator_id}" \
+                    " of type #{params[:notification_type]}"
+
+        notify_owners @circulator, params[:idempotency_key], push_notification, true
+        render_api_response 200, { notification: push_notification.message }
+      end
+
 
       # NOTE: Do not add logic to this method!! Want to keep this as
       # thin as possible for testing purposes (because we have to mock
@@ -234,10 +297,88 @@ module Api
 
       private
 
-      def notified?(circulator, idempotency_key)
-        if idempotency_key.blank?
-          logger.info "No idempotency_key was specified, will send notification for circulator with id #{circulator.id}"
-          return false
+      class MissingNotificationError < StandardError
+      end
+
+      class InvalidParamsError < StandardError
+      end
+
+      class PushNotification
+        attr_reader :notification_type, :message
+
+        def initialize(notification_type, message)
+          @notification_type = notification_type
+          @message = message
+        end
+      end
+
+
+      def get_push_notification
+        message = nil
+        notification_type = params[:notification_type]
+        notification_params = (params[:notification_params] || {}).inject({}){|memo,(k,v)|
+          unless v.nil?
+            memo[k.to_sym] = v; memo
+          end
+          memo
+        }
+        begin
+          template = I18n.t("circulator.push.#{notification_type}.template", raise: true)
+          message = template % notification_params
+        rescue I18n::MissingTranslationData
+          logger.info "No template found for #{notification_type}, falling back to default"
+        rescue KeyError
+          logger.warn "Bad params for #{notification_type}, falling back to default"
+        end
+
+        unless message
+          begin
+            message = I18n.t("circulator.push.#{notification_type}.message", raise: true)
+          rescue I18n::MissingTranslationData
+            raise MissingNotificationError.new("Missing notification for #{notification_type}")
+          end
+        end
+
+        return PushNotification.new(
+          notification_type, message
+        )
+      end
+
+      def get_admin_push_notification
+        notification_type = params[:notification_type]
+
+        if notification_type != 'random_drop' && notification_type != 'dynamic_alert'
+          raise MissingNotificationError.new("Unknown notification type for #{notification_type}")
+        end
+
+        ['message', 'okText'].each do |param|
+          unless params.key?(param)
+            raise InvalidParamsError.new("#{param} parameter must be specified")
+          end
+        end
+
+        if params[:redirectKey].present?
+          raise InvalidParamsError.new("unrecognized redirect key: #{params[:redirectKey]}") unless Rails.configuration.redirect_by_key.key?(params[:redirectKey])
+        end
+
+        notification_params = (params[:notification_params] || {}).inject({}){|memo,(k,v)|
+          unless v.nil?
+            memo[k.to_sym] = v; memo
+          end
+          memo
+        }
+
+        return PushNotification.new(
+            notification_type, params[:message]
+        )
+      end
+
+      def notified?(circulator, idempotency_key, enforce_idempotency_key=false)
+        unless enforce_idempotency_key
+          if idempotency_key.blank?
+            logger.info "No idempotency_key was specified, will send notification for circulator with id #{circulator.id}"
+            return false
+          end
         end
 
         cache_key = notification_cache_key(circulator, idempotency_key)
@@ -250,7 +391,7 @@ module Api
         false
       end
 
-      def notify_owners(circulator, idempotency_key, message, notification_type, content_available)
+      def notify_owners(circulator, idempotency_key, push_notification, is_admin_message=false)
         owners = circulator.circulator_users.select {|cu| cu.owner}
 
         owners.each do |owner|
@@ -261,8 +402,8 @@ module Api
             token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
             next if token.nil?
             logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
-                        " of type #{notification_type} token #{token.inspect}"
-            publish_notification(token, message, notification_type, content_available)
+                        " of type #{push_notification.notification_type} token #{token.inspect}"
+            publish_notification(circulator, token, push_notification, is_admin_message)
           end
         end
 

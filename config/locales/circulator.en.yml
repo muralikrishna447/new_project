@@ -4,23 +4,32 @@ en:
     push:
       guided_water_heated:
         message: "Your water has heated! Start the timer and let’s cook."
+        template: "The water has heated for %{joule_name}! Start the timer and let’s cook."
       water_heated:
         message: "Your water has heated! Let’s cook."
+        template: "The water has heated for %{joule_name}! Let’s cook."
       circulator_error_hardware_failure:
         message: "Unfortunately, we’ve detected a critical issue with your Joule, and it can no longer be used. Please contact us, and we’ll make this right."
+        template: "Unfortunately, we’ve detected a critical issue with %{joule_name}, and it can no longer be used. Please contact us, and we’ll make this right."
       circulator_error_button_pressed:
         message: "You stopped your cook!"
-        content_available: 1
+        template: "You stopped your cook for %{joule_name}!"
       circulator_error_low_water_level:
         message: "Uh oh, the water level is too low. To operate properly, Joule needs H2O. Please add more."
+        template: "Uh-oh, the water level is too low. To operate properly, %{joule_name} needs H2O. Please add more."
       circulator_error_tipped_over:
         message: "Help! Joule has fallen, and she can’t get up! We've detected that Joule has tipped over. Please stand it up to resume normal functioning."
+        template: "Help! %{joule_name} has fallen, and she can’t get up! We’ve detected that %{joule_name} has tipped over. Please stand it up to resume normal functioning."
       circulator_error_overheating:
         message: "Yowza, Joule is too hot. Make sure she's not covered above the power cord. Your little sous viding buddy may need to be cleaned."
+        template: "Yowza, %{joule_name} is too hot. Make sure it’s not covered above the power cord. Your little sous vide buddy may need to be cleaned."
       circulator_error_power_loss:
         message: "Joule lost power!"
+        template: "%{joule_name} lost power!"
       circulator_error_unknown_reason:
         message: "We’ve got a problem — Joule has stopped cooking."
+        template: "We’ve got a problem — %{joule_name} has stopped cooking."
       disconnect_while_cooking:
         message: "Hmm, it looks like Joule got disconnected from WiFi."
+        template: "Hmm, it looks like %{joule_name} got disconnected from WiFi."
     app_name: "Joule"

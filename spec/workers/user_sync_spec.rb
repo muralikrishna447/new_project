@@ -118,7 +118,7 @@ describe UserSync do
       Resque.should_receive(:enqueue).with(UserSync, @user.id)
 
       # Since this is first circulator, we would expect referral code created too
-      Shopify::Customer.should_receive(:get_referral_code_for_user).and_return(@referral_code)
+      Shopify::Customer.should_receive(:find_or_create_referral_code_for_user).and_return(@referral_code)
 
       # 0, 0 in mailchimp
       setup_member_info_with_joule_data(0, 0, '', 'subscribed')

@@ -19,6 +19,7 @@ describe Fulfillment::RostiShipmentPoller do
   describe 'perform' do
     before :each do
       Fulfillment::RostiShipmentPoller.stub(:sqs_client).and_return(sqs_client)
+      Librato.should_receive(:increment).with('fulfillment.rosti.shipment-poller.success', sporadic: true)
     end
 
     let(:sqs_client) do
