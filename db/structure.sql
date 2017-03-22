@@ -3728,14 +3728,21 @@ CREATE INDEX index_ingredients_on_slug ON ingredients USING btree (slug);
 
 
 --
--- Name: index_joule_cook_history_items_on_cook_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_joule_cook_history_items_on_cook_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_joule_cook_history_items_on_cook_id ON joule_cook_history_items USING btree (cook_id);
 
 
 --
--- Name: index_joule_cook_history_items_on_user_id_and_idempotency_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_joule_cook_history_items_on_user_id_and_guide_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_joule_cook_history_items_on_user_id_and_guide_id ON joule_cook_history_items USING btree (user_id, guide_id);
+
+
+--
+-- Name: index_joule_cook_history_items_on_user_id_and_idempotency_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_joule_cook_history_items_on_user_id_and_idempotency_id ON joule_cook_history_items USING btree (user_id, idempotency_id);
