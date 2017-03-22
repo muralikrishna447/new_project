@@ -1,8 +1,9 @@
 namespace :fulfillment do
-  task :rosti_export_and_submit_orders, [:max_quantity, :inline] => :environment do |_t, args|
+  task :rosti_export_and_submit_orders, [:max_quantity, :inline, :notification_email] => :environment do |_t, args|
+    args.with_defaults(notification_email: nil)
     args.with_defaults(inline: false)
     args.with_defaults(max_quantity: 1500)
-    Fulfillment::RostiOrderSubmitter.submit_orders_to_rosti( args[:max_quantity].to_i, args[:inline].to_s == 'true')
+    Fulfillment::RostiOrderSubmitter.submit_orders_to_rosti( args[:max_quantity].to_i, args[:inline].to_s == 'true', args[:notification_email].to_s)
   end
 
   task :rosti_submit_orders, [:pending_order_filename, :export_id, :max_quantity, :inline] => :environment do |_t, args|

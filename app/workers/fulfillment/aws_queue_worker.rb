@@ -61,10 +61,12 @@ module Fulfillment
       max_quantity = 1500
       max_quantity = 5 if Rails.env.development?
       max_quantity = 10 if Rails.env.staging? || Rails.env.staging2?
+      notification_email = nil
 
       begin
         message_opts = JSON.parse(message, {symbolize_names: true})
         max_quantity = message_opts.fetch(:max_quantity, max_quantity)
+        notification_email = message_opts.fetch(:notification_email, notification_email)
         Rails.logger.info("AWSQueueWorker dispatch_submit_orders_to_rosti max_quantity is #{max_quantity}")
       rescue StandardError => e
         Rails.logger.error("Error parsing dispatch_submit_orders_to_rosti message : " + message)
@@ -73,7 +75,7 @@ module Fulfillment
 
 
       inline = true
-      Fulfillment::RostiOrderSubmitter.submit_orders_to_rosti( max_quantity, inline )
+      Fulfillment::RostiOrderSubmitter.submit_orders_to_rosti( max_quantity, inline, notification_email )
     end
 
 
