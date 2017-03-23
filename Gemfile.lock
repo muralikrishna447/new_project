@@ -709,8 +709,5 @@ DEPENDENCIES
   unicorn
   webmock
 
-RUBY VERSION
-   ruby 1.9.3p551
-
 BUNDLED WITH
    1.14.6
