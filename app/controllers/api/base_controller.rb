@@ -189,9 +189,9 @@ module Api
       end
 
       contents[:request_id] = request.uuid()
-      contents[:status] = status
+      contents[:status] = contents[:status] || status
       loggable_contents = prepare_loggable_contents(contents)
-      logger.info("API Response: #{loggable_contents}")
+      logger.info("API Response: #{loggable_contents.inspect}")
       render json: contents, status: status
     end
 
