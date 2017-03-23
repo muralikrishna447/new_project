@@ -207,8 +207,8 @@ module Api
     def prepare_loggable_contents(contents)
       if contents[:token] || contents[:redirect]
         loggable_contents = contents.clone
-        loggable_contents[:token] = '[FILTERED]' if loggable_contents[:token]
-        loggable_contents[:redirect] = loggable_contents[:redirect].gsub(/#{AuthToken::PREFIX}\.\w*\.\w*/, '[FILTERED]') if loggable_contents[:redirect]
+        loggable_contents[:token] &&= '[FILTERED]'
+        loggable_contents[:redirect] &&= loggable_contents[:redirect].gsub(/#{AuthToken::PREFIX}\.\w*\.\w*/, '[FILTERED]')
       else
         loggable_contents = contents
       end
