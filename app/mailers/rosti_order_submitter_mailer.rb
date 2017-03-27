@@ -11,6 +11,6 @@ class RostiOrderSubmitterMailer < ActionMailer::Base
     @total_quantity = info[:total_quantity]
     @subject = "ChefSteps Fulfillment File Notification #{@dropped_on} - #{@total_quantity} units"
 
-    mail(to: @email_address, from: @email_address, reply_to: @email_address, subject: @subject)
+    mail(to: @email_address, from: 'noreply@chefsteps.com', reply_to: @email_address, subject: @subject)
   end
 end
