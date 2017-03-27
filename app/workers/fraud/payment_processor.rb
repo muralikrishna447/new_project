@@ -101,7 +101,7 @@ module Fraud
         name: SIGNIFYD_SCORE_ATTR_NAME,
         value: score
       ))
-      Shopify::Utils.send_assert_true(order, :save)
+      save_order_notes(order)
 
       recommendation = 'accept'
       if score <= SIGNIFYD_MIN_SCORE
@@ -147,6 +147,20 @@ module Fraud
     def self.order_has_score?(order)
       return true if order.note_attributes.find { |attr| attr.name == SIGNIFYD_SCORE_ATTR_NAME }
       false
+    end
+
+    private
+
+    def self.save_order_notes(order)
+      # We create a new order object with the minimal set of fields so as
+      # to not trigger Shopify's built-in address validation which may
+      # cause the save to fail.
+      updated = ShopifyAPI::Order.new(
+        id: order.id,
+        note_attributes: order.note_attributes
+      )
+
+      Shopify::Utils.send_assert_true(updated, :save)
     end
   end
 end
