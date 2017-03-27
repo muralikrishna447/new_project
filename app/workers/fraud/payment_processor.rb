@@ -106,7 +106,9 @@ module Fraud
       recommendation = 'accept'
       if score <= SIGNIFYD_MIN_SCORE
         recommendation = 'investigate'
-        Librato.increment 'fraud.payment-processor.orders.lowscore.count', sporadic: true
+        unless Shopify::Utils.contains_only_premium?(order)
+          Librato.increment 'fraud.payment-processor.orders.lowscore.count', sporadic: true
+        end
       end
       risk = ShopifyAPI::OrderRisk.new(
         display: true,
