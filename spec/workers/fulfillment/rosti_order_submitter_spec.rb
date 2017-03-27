@@ -139,7 +139,6 @@ describe Fulfillment::RostiOrderSubmitter do
       let(:info) {{ notification_email: notification_email }}
       it 'Should send the email' do
         RostiOrderSubmitterMailer.any_instance.should_receive(:mail).with do |args|
-          expect(args[:from]).to eq(notification_email)
           expect(args[:to]).to eq(notification_email)
           expect(args[:reply_to]).to eq(notification_email)
         end
