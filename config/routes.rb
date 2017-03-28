@@ -21,7 +21,7 @@ Delve::Application.routes.draw do
   root to: 'home#new_home'
   get '/robots.txt' => RobotsTxt
 
-  match '/libraries', to: 'home#libraries'
+  match '/libraries', to: 'legal#libraries'
   match '/joule/warranty', to: 'home#joule_warranty'
   match '/facebook_optout', to: 'home#facebook_optout'
 
