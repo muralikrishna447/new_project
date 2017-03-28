@@ -106,6 +106,9 @@ module Fraud
       recommendation = 'accept'
       if score <= SIGNIFYD_MIN_SCORE
         recommendation = 'investigate'
+        # Premium-only orders are known to score low due to lack of
+        # shipping address and they aren't manually reviewed, so don't count
+        # them in the metrics.
         unless Shopify::Utils.contains_only_premium?(order)
           Librato.increment 'fraud.payment-processor.orders.lowscore.count', sporadic: true
         end
