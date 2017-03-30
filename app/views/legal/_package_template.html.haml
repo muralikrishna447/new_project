@@ -1,0 +1,12 @@
+%div.os-attribution
+  %span.os-attribution-header #{package}
+  %span.homepage
+    %a(href="#{url}") homepage
+  %span.license
+    -if defined? license_url
+      %a(href="#{license_url}") license
+    -else
+      %span no license
+  -if defined? addendum_file
+    %div.os-attribution-addendum
+      = render "legal/licenses/#{addendum_file}"

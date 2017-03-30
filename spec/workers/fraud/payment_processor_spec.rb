@@ -226,11 +226,30 @@ describe Fraud::PaymentProcessor do
         let(:signifyd_score) { 400 }
         let(:recommendation) { 'accept' }
         let(:shopify_score) { 0.6 }
-        it 'saves order risk to shopify with investigate recommendation' do
+
+        before :each do
           Shopify::Utils.should_receive(:send_assert_true).with(saved_order, :save)
           Shopify::Utils.should_receive(:send_assert_true).with(risk, :save)
-          Librato.should_receive(:increment).with('fraud.payment-processor.orders.lowscore.count', sporadic: true)
-          Fraud::PaymentProcessor.add_score_to_order(order, signifyd_score)
+        end
+
+        context 'order is premium only' do
+          before :each do
+            Shopify::Utils.stub(:contains_only_premium?).and_return(true)
+          end
+          it 'does not increment low score counter' do
+            Librato.should_not_receive(:increment).with('fraud.payment-processor.orders.lowscore.count', sporadic: true)
+            Fraud::PaymentProcessor.add_score_to_order(order, signifyd_score)
+          end
+        end
+
+        context 'order is not premium-only' do
+          before :each do
+            Shopify::Utils.stub(:contains_only_premium?).and_return(false)
+          end
+          it 'increments low score counter' do
+            Librato.should_receive(:increment).with('fraud.payment-processor.orders.lowscore.count', sporadic: true)
+            Fraud::PaymentProcessor.add_score_to_order(order, signifyd_score)
+          end
         end
       end
     end
