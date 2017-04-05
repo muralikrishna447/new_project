@@ -271,6 +271,28 @@ describe Api::V0::CirculatorsController do
       @circulator.notes.should == 'new notes'
     end
   end
+
+  context 'emoji handling' do
+    before :each do
+      @emoji_name = "Burger\u{1f354}".encode('utf-8')
+      @emoji_notes = "I love \u{1f354}s".encode('utf-8')
+      @emoji_circulator = Fabricate :circulator, notes: @emoji_notes,
+                                    circulator_id: '4545454545454577', name: @emoji_name
+
+      @circulator_user = Fabricate :circulator_user, user: @user, circulator: @emoji_circulator, owner: true
+    end
+
+    it 'should list more circulators' do
+      get :index
+
+      response.should be_success
+      circulators = JSON.parse(response.body)
+      circulators.length.should == 2
+      circulators[0]['name'].should == @emoji_name
+    end
+  end
+
+
   context 'notify_clients' do
     before :each do
       issued_at = (Time.now.to_f * 1000).to_i
