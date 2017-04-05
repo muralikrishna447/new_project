@@ -274,21 +274,25 @@ describe Api::V0::CirculatorsController do
 
   context 'emoji handling' do
     before :each do
+      @emoji_user = Fabricate :user, id: 77898, email: 'emoji@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
       @emoji_name = "Burger\u{1f354}".encode('utf-8')
       @emoji_notes = "I love \u{1f354}s".encode('utf-8')
       @emoji_circulator = Fabricate :circulator, notes: @emoji_notes,
                                     circulator_id: '4545454545454577', name: @emoji_name
 
-      @circulator_user = Fabricate :circulator_user, user: @user, circulator: @emoji_circulator, owner: true
+      @circulator_user = Fabricate :circulator_user, user: @emoji_user, circulator: @emoji_circulator, owner: true
+      @emoji_user_aa = ActorAddress.create_for_user(@emoji_user, client_metadata: "create")
+      token = @emoji_user_aa.current_token
+      request.env['HTTP_AUTHORIZATION'] = token.to_jwt
     end
 
-    it 'should list more circulators' do
+    it 'should list circulators' do
       get :index
 
       response.should be_success
       circulators = JSON.parse(response.body)
-      circulators.length.should == 2
       circulators[0]['name'].should == @emoji_name
+      circulators[0]['notes'].should == @emoji_notes
     end
   end
 
