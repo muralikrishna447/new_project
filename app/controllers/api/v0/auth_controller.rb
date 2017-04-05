@@ -239,7 +239,8 @@ module Api
           return render_api_response 400, {message: "No key provided"}
         end
 
-        url = Rails.configuration.redirect_by_key[params[:key]]
+        #if the key parameter is a shopify url, simply use that url for the redirect
+        url = shopify_url?(key) ? key : Rails.configuration.redirect_by_key[params[:key]]
         unless url
           logger.error("unrecognized key provided to redirect_by_key")
           return render_api_response 200, {redirect: Rails.configuration.redirect_by_key['fallback']}

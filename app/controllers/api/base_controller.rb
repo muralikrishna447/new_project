@@ -198,5 +198,10 @@ module Api
     def render_unauthorized
       render_api_response(403, {message: 'Unauthorized.'})
     end
+
+    def shopify_url?(redirect_key)
+      redirect_key =~ /^https:\/\/#{Rails.configuration.shopify[:store_domain]}/
+    end
+
   end
 end

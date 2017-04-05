@@ -429,6 +429,14 @@ describe Api::V0::AuthController do
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
 
+    it 'handles shopify redirect' do
+      #the controller should use the key parameter as the redirect url
+      key_url = "https://#{Rails.configuration.shopify[:store_domain]}/test_url"
+      get :external_redirect_by_key, :key => key_url
+      response.code.should == '200'
+      JSON.parse(response.body)['redirect'].should start_with("https://#{Rails.configuration.shopify[:store_domain]}/account/login/multipass")
+    end
+
     it 'returns a proper token for amazon' do
       sign_in @user
       get :external_redirect, :path => "https://pitangui.amazon.com?vendorId=12345"
