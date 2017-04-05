@@ -12,9 +12,13 @@ module Api
 
           if @@marketplace_guides[guide_id]
             Rails.logger.info "Matching marketplace guide"
-            render_button = true
-            if @@marketplace_guides[guide_id][:feature_name].present?
-              render_button = BetaFeatureService.user_has_feature(current_api_user, @@marketplace_guides[guide_id][:feature_name])
+            render_button = false
+            if @@marketplace_guides[guide_id][:feature_name].blank?
+              render_button = true
+            else
+              if @user_id_from_token.present?
+                render_button = BetaFeatureService.user_has_feature(current_api_user, @@marketplace_guides[guide_id][:feature_name])
+              end
             end
 
             if render_button
@@ -25,11 +29,6 @@ module Api
               button[:button][:line_2] = button_text_line_2 if button_text_line_2
               return render_api_response 200, button
             end
-          end
-
-          if @user_id_from_token.nil?
-            Rails.logger.info "User not logged in - showing no button"
-            return render_no_button
           end
           return render_no_button
         end
