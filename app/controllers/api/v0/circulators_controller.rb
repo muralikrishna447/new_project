@@ -357,8 +357,10 @@ module Api
           end
         end
 
-        if params[:redirectKey].present?
-          raise InvalidParamsError.new("unrecognized redirect key: #{params[:redirectKey]}") unless Rails.configuration.redirect_by_key.key?(params[:redirectKey])
+        unless shopify_url?(params[:redirectKey])
+          if params[:redirectKey].present?
+            raise InvalidParamsError.new("unrecognized redirect key: #{params[:redirectKey]}") unless Rails.configuration.redirect_by_key.key?(params[:redirectKey])
+          end
         end
 
         notification_params = (params[:notification_params] || {}).inject({}){|memo,(k,v)|

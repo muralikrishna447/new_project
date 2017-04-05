@@ -240,12 +240,7 @@ module Api
         end
 
         #if the key parameter is a shopify url, simply use that url for the redirect
-        if key =~ /^https:\/\/#{Rails.configuration.shopify[:store_domain]}/
-          url = key
-        else
-          url = Rails.configuration.redirect_by_key[params[:key]]
-        end
-
+        url = shopify_url?(key) ? key : Rails.configuration.redirect_by_key[params[:key]]
         unless url
           logger.error("unrecognized key provided to redirect_by_key")
           return render_api_response 200, {redirect: Rails.configuration.redirect_by_key['fallback']}
