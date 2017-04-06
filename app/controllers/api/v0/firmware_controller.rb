@@ -16,6 +16,8 @@ module Api
 
       UPDATE_URGENCIES = ['normal', 'critical', 'mandatory']
 
+      HW_VERSION_WHITELIST = ['JL.p5', 'J5']
+
       def updates
         # How this currently works
         # - Static mapping of app version to firmware app version
@@ -36,7 +38,7 @@ module Api
         end
 
         hardware_version = params[:hardwareVersion]
-        if hardware_version != 'JL.p5'
+        if !HW_VERSION_WHITELIST.include? hardware_version
           logger.info("Hardware version does not support DFU: #{hardware_version}")
           return render_empty_response
         end
