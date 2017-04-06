@@ -168,18 +168,15 @@ module Api
           end
         end
 
-        # NOTE: We *need* to use JSON.generate because to_json has a
-        # bug in it when it comes to higher unicode codepoints.  See:
-        # http://stackoverflow.com/questions/7775597/bug-in-ruby-json-lib-when-handling-4-byte-unicode-emoji
         message = {
-          GCM: JSON.generate(gcm_data),
-          APNS_SANDBOX: JSON.generate(apns_data),
-          APNS: JSON.generate(apns_data)
+          GCM: gcm_data.to_json,
+          APNS_SANDBOX: apns_data.to_json,
+          APNS: apns_data.to_json,
         }
 
         logger.info "Publishing #{message.inspect}"
         begin
-          publish_json_message(endpoint_arn, JSON.generate(message))
+          publish_json_message(endpoint_arn, message.to_json)
         rescue Aws::SNS::Errors::EndpointDisabled
           # NOTE: Clean up any disabled endpoints, since they're
           # likely not useful anymore.  There is a chance that Apple
