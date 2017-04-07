@@ -172,13 +172,25 @@ describe Api::V0::FirmwareController do
 
   end
 
-  it 'should not get any updates if proto4 hardware' do
+  it 'should respect hardware version whitelists' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.41.4', 'hardwareVersion' => 'JL.p4'}
 
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
+    hw_versions = [
+      {:hw_version => 'JL.p5', :enabled => true},
+      {:hw_version => 'JL.p4', :enabled => false},
+      {:hw_version => 'J5', :enabled => true},
+    ]
+
+    for v in hw_versions
+      post :updates, {'appVersion'=> '2.41.4', 'hardwareVersion' => v[:hw_version]}
+      response.should be_success
+      resp = JSON.parse(response.body)
+      if v[:enabled]
+        resp['updates'].length.should > 0
+      else
+        resp['updates'].length.should == 0
+      end
+    end
   end
 
   it 'should not return firmware version if up to date' do
