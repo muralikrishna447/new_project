@@ -103,6 +103,7 @@ module Api
           'multi_circ',
           'fbjoule',
           'update_during_pairing',
+          'sqlite'
         ]
         user_capabilities = capability_list.select {|c|
           BetaFeatureService.user_has_feature(user, c)
