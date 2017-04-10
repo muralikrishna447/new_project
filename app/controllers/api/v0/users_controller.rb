@@ -105,7 +105,8 @@ module Api
           'update_during_pairing',
           'sqlite'
         ]
-        user_capabilities = Rails.cache.fetch('user-capabilities-#{user.id}', expires_in: 5.minutes) do
+        cache_key = "user-capabilities-#{user.id}"
+        user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
           capability_list.select {|c|
             BetaFeatureService.user_has_feature(user, c)
           }
