@@ -98,10 +98,25 @@ output_str = CSV.generate(force_quotes: true) do |output|
     'Variant',
     'Quantity',
     'Unit Price',
-    'Fulfillment Time'
+    'Fulfillment Time',
+    'Delivery Address'
   ]
 
   fulfillables.each do |fulfillable|
+    name = fulfillable.order.shipping_address.name if fulfillable.order.respond_to?(:shipping_address)
+    name ||= fulfillable.order.billing_address.name if fulfillable.order.respond_to?(:billing_address)
+    name ||= 'Unknown'
+
+    phone = fulfillable.order.shipping_address.phone if fulfillable.order.respond_to?(:shipping_address)
+    phone ||= fulfillable.order.billing_address.phone if fulfillable.order.respond_to?(:billing_address)
+    phone ||= 'Unknown'
+
+    delivery_address = ''
+    if fulfillable.order.respond_to?(:shipping_address)
+      a = fulfillable.order.shipping_address
+      delivery_address = "#{a.address1} #{a.address2} #{a.company} #{a.city} #{a.province_code} #{a.zip}"
+    end
+
     fulfillable.line_items.each do |line_item|
       fulfillment_time = delivery_time(line_item) if line_item.variant_title == 'Delivery'
       fulfillment_time ||= pickup_time(line_item)
@@ -109,15 +124,16 @@ output_str = CSV.generate(force_quotes: true) do |output|
       output << [
         fulfillable.order.name,
         fulfillable.order.processed_at,
-        fulfillable.order.respond_to?(:billing_address) ? fulfillable.order.billing_address.name : 'Unknown',
-        fulfillable.order.respond_to?(:billing_address) ? fulfillable.order.billing_address.phone : 'Unknown',
+        name,
         fulfillable.order.email,
+        phone,
         line_item.sku,
-        line_item.name,
+        line_item.title,
         line_item.variant_title,
         line_item.fulfillable_quantity,
         line_item.price,
-        fulfillment_time ? fulfillment_time : 'Unknown'
+        fulfillment_time ? fulfillment_time : 'Unknown',
+        delivery_address
       ]
     end
   end
