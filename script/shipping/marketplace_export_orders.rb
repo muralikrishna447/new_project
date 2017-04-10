@@ -51,10 +51,25 @@ def fulfillable_line_item?(order, line_item)
 end
 
 def pickup_time(line_item)
-  pickup_times = line_item.properties.select { |p| p.name == 'Pickup Time' || p.name == 'customizery_1' }
-  raise "No Pickup Time property found for line item #{line_item.inspect}" if pickup_times.empty?
+  # At various times we've stored the pickup time property under different names (sigh).
+  properties = ['Pickup Time', 'customizery_1', 'Pickup Times', 'Pickup Details']
+  pickup_times = line_item.properties.select { |p| properties.include?(p.name) }
+  if pickup_times.empty?
+    Rails.logger.warn "No Pickup Time property found for line item #{line_item.inspect}"
+    return nil
+  end
   raise "Multiple Pickup Time properties found for line item #{line_item.inspect}" if pickup_times.length > 1
   pickup_times.first.value
+end
+
+def delivery_time(line_item)
+  delivery_times = line_item.properties.select { |p| p.name == 'Delivery Details' }
+  if delivery_times.empty?
+    Rails.logger.warn "No Delivery Details property found for line item #{line_item.inspect}"
+    return nil
+  end
+  raise "Multiple Delivery Details properties found for line item #{line_item.inspect}" if delivery_times.length > 1
+  delivery_times.first.value
 end
 
 orders = Shopify::Utils.search_orders(status: 'open')
@@ -80,13 +95,17 @@ output_str = CSV.generate(force_quotes: true) do |output|
     'Phone',
     'Product SKU',
     'Product Title',
+    'Variant',
     'Quantity',
     'Unit Price',
-    'Pickup Time'
+    'Fulfillment Time'
   ]
 
   fulfillables.each do |fulfillable|
     fulfillable.line_items.each do |line_item|
+      fulfillment_time = delivery_time(line_item) if line_item.variant_title == 'Delivery'
+      fulfillment_time ||= pickup_time(line_item)
+
       output << [
         fulfillable.order.name,
         fulfillable.order.processed_at,
@@ -95,9 +114,10 @@ output_str = CSV.generate(force_quotes: true) do |output|
         fulfillable.order.email,
         line_item.sku,
         line_item.name,
+        line_item.variant_title,
         line_item.fulfillable_quantity,
         line_item.price,
-        pickup_time(line_item)
+        fulfillment_time ? fulfillment_time : 'Unknown'
       ]
     end
   end
