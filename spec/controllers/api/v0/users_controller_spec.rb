@@ -166,6 +166,10 @@ describe Api::V0::UsersController do
   end
 
   context 'GET /capabilities' do
+    before :each do
+      Rails.cache.clear()
+    end
+
     it 'get empty list if no capabilities' do
       request.env['HTTP_AUTHORIZATION'] = @token
       get :capabilities
