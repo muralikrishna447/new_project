@@ -155,8 +155,7 @@ module Api
 
         if is_admin_message
           #copy additional params into gcm_data and apns_data
-          ["content_available",
-               "headerIcon",
+          ["headerIcon",
                "headerColor",
                "titleString",
                "bodyString",
