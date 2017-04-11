@@ -136,21 +136,17 @@ module Api
         Librato.increment("api.publish_notification_requests")
 
         title = I18n.t("circulator.app_name", raise: true)
+
+        base_params = push_notification.params.merge({
+          notification_type: notification_type,
+          circulator_address: circulator.circulator_id
+        })
+
         gcm_data = {
-          data: {
-            message: message,
-            title: title,
-            notification_type: notification_type,
-            circulator_address: circulator.circulator_id,
-          }
+          data: base_params.merge({message: message, title: title,})
         }
         apns_data = {
-          aps: {
-            alert: message,
-            sound: 'default',
-            notification_type: notification_type,
-            circulator_address: circulator.circulator_id,
-          }
+          aps: base_params.merge({alert: message, sound: 'default'})
         }
 
         if is_admin_message
@@ -300,11 +296,12 @@ module Api
       end
 
       class PushNotification
-        attr_reader :notification_type, :message
+        attr_reader :notification_type, :message, :params
 
-        def initialize(notification_type, message)
+        def initialize(notification_type, message, params = nil)
           @notification_type = notification_type
           @message = message
+          @params = params || {}
         end
       end
 
@@ -335,8 +332,14 @@ module Api
           end
         end
 
+        # Other metadata that we want to pass on to the app
+        keys = ['feed_id']
+        additional_params = (params[:notification_params] || {}).select{
+          |k,v| keys.include? k
+        }
+
         return PushNotification.new(
-          notification_type, message
+          notification_type, message, additional_params
         )
       end
 
