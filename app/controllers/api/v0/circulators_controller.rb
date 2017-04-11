@@ -403,7 +403,7 @@ module Api
             token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
             next if token.nil?
             logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
-                        " of type #{push_notification.notification_type} token #{token.inspect}"
+                        " of type #{push_notification.notification_type} token_id=#{token.id} ARN=#{token.endpoint_arn}"
             publish_notification(circulator, token, push_notification, is_admin_message)
           end
         end
