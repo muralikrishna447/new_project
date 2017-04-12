@@ -4,24 +4,24 @@ en:
     push:
       guided_water_heated:
         message: "Your water has heated! Start the timer and let’s cook."
-        template: "The water has heated for %{joule_name}! Start the timer and let’s cook."
+        template: "%{joule_name}’s water has heated! Start the timer, and let’s cook."
       water_heated:
         message: "Your water has heated! Let’s cook."
-        template: "The water has heated for %{joule_name}! Let’s cook."
+        template: "%{joule_name}’s water has heated! Let’s cook."
       circulator_error_hardware_failure:
         message: "Unfortunately, we’ve detected a critical issue with your Joule, and it can no longer be used. Please contact us, and we’ll make this right."
         template: "Unfortunately, we’ve detected a critical issue with %{joule_name}, and it can no longer be used. Please contact us, and we’ll make this right."
       circulator_error_button_pressed:
         message: "You stopped your cook!"
-        template: "You stopped your cook for %{joule_name}!"
+        template: "You stopped %{joule_name}’s cook!"
       circulator_error_low_water_level:
-        message: "Uh oh, the water level is too low. To operate properly, Joule needs H2O. Please add more."
+        message: "Uh-oh, the water level is too low. To operate properly, Joule needs H2O. Please add more."
         template: "Uh-oh, the water level is too low. To operate properly, %{joule_name} needs H2O. Please add more."
       circulator_error_tipped_over:
-        message: "Help! Joule has fallen, and she can’t get up! We've detected that Joule has tipped over. Please stand it up to resume normal functioning."
-        template: "Help! %{joule_name} has fallen, and she can’t get up! We’ve detected that %{joule_name} has tipped over. Please stand it up to resume normal functioning."
+        message: "Help! Joule has fallen, and it can’t get up! We've detected that Joule has tipped over. Please stand it up to resume normal functioning."
+        template: "Help! %{joule_name} has fallen, and it can’t get up! We’ve detected that %{joule_name} has tipped over. Please stand it up to resume normal functioning."
       circulator_error_overheating:
-        message: "Yowza, Joule is too hot. Make sure she's not covered above the power cord. Your little sous viding buddy may need to be cleaned."
+        message: "Yowza, Joule is too hot. Make sure it's not covered above the power cord. Your little sous viding buddy may need to be cleaned."
         template: "Yowza, %{joule_name} is too hot. Make sure it’s not covered above the power cord. Your little sous vide buddy may need to be cleaned."
       circulator_error_power_loss:
         message: "Joule lost power!"
