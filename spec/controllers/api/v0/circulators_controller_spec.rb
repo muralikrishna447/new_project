@@ -546,10 +546,12 @@ describe Api::V0::CirculatorsController do
         it 'should pass circulator_address in params' do
           post(
             :notify_clients,
+            format: 'json',
             id: @circulator.circulator_id,
             notification_type: 'water_heated',
             notification_params: {
-              joule_name: nil
+              joule_name: nil,
+              feed_id: 123,
             }
           )
           msg = JSON.parse(@published_messages[-1][:msg])
@@ -557,6 +559,32 @@ describe Api::V0::CirculatorsController do
           gcm = JSON.parse msg['GCM']
           expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
           expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
+          expect(apns['aps']['feed_id']).to eq 123
+          expect(gcm['data']['feed_id']).to eq 123
+        end
+
+        it 'should not be able to overwrite reserved fields' do
+          post(
+            :notify_clients,
+            format: 'json',
+            id: @circulator.circulator_id,
+            notification_type: 'water_heated',
+            notification_params: {
+              joule_name: nil,
+              message: 'BAD',
+              alert: 'BAD',
+              sound: 'BAD',
+              title: 'BAD',
+              feed_id: 123,
+            }
+          )
+          msg = JSON.parse(@published_messages[-1][:msg])
+          apns = JSON.parse msg['APNS']
+          gcm = JSON.parse msg['GCM']
+          for k in ['message', 'alert', 'sound', 'title']
+            apns['aps'][k].should_not == 'BAD'
+            gcm['data'][k].should_not == 'BAD'
+          end
         end
 
         it 'should delete token if endpoint disabled' do
@@ -568,6 +596,7 @@ describe Api::V0::CirculatorsController do
           arn = token.endpoint_arn
           post(
             :notify_clients,
+            format: 'json',
             id: @circulator.circulator_id,
             notification_type: notification_type
           )
@@ -592,6 +621,7 @@ describe Api::V0::CirculatorsController do
           it 'does not send notification' do
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -605,6 +635,7 @@ describe Api::V0::CirculatorsController do
           it 'sends notification' do
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -619,6 +650,7 @@ describe Api::V0::CirculatorsController do
             # We should see two notifications in total
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -627,6 +659,7 @@ describe Api::V0::CirculatorsController do
             Timecop.freeze(73.hours)
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -640,6 +673,7 @@ describe Api::V0::CirculatorsController do
           it 'does not send a new notification' do
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -648,6 +682,7 @@ describe Api::V0::CirculatorsController do
             Timecop.freeze(71.hours)
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
