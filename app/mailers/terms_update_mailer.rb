@@ -3,6 +3,8 @@ class TermsUpdateMailer < ActionMailer::Base
   default reply_to: 'Team ChefSteps <no-reply@chefsteps.com>'
 
   def prepare(email_address, terms_version)
+    raise 'terms_version param is required' if terms_version.to_s.empty?
+
     Rails.logger.info "Preparing TermsUpdateMailer for email address #{email_address} and terms version #{terms_version}"
 
     subject = 'Hello. We\'ve Updated Our Privacy Policy.'
