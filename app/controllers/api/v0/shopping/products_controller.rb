@@ -67,11 +67,20 @@ module Api
             results = products.map do |product|
               first_variant = get_first_variant(product)
 
+              product_images = product.images.map do |image|
+                {
+                  product_id: image.product_id,
+                  src: image.src,
+                  variant_ids: image.variant_ids
+                }
+              end
+
               {
                 id: product.id,
                 title: product.title,
                 sku: get_product_sku(first_variant.sku),
-                variants: get_variants(product)
+                variants: get_variants(product),
+                images: product_images
               }
             end
             results
