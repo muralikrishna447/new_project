@@ -21,12 +21,25 @@ describe Fulfillment::OrderSearchProvider do
       let(:storage_provider) { 'my_storage_provider' }
       let(:params) { { storage: storage_provider } }
 
-      it 'looks up orders by id from csv' do
+      before :each do
         storage = double('storage')
         Fulfillment::CSVStorageProvider.should_receive(:provider).with(storage_provider).and_return(storage)
-        storage.should_receive(:read).with(params).and_return("order_id\n#{order_id}")
+        storage.should_receive(:read).with(params).and_return(csv_contents)
         ShopifyAPI::Order.should_receive(:find).with(order_id).and_return(order)
-        expect(Fulfillment::PendingOrderSearchProvider.orders(params)).to eq [order]
+      end
+
+      context 'order has single line item in csv file' do
+        let(:csv_contents) { "order_id\n#{order_id}" }
+        it 'returns order' do
+          expect(Fulfillment::PendingOrderSearchProvider.orders(params)).to eq [order]
+        end
+      end
+
+      context 'order has multiple line items in csv file' do
+        let(:csv_contents) { "order_id\n#{order_id}\n#{order_id}" }
+        it 'returns unique order' do
+          expect(Fulfillment::PendingOrderSearchProvider.orders(params)).to eq [order]
+        end
       end
     end
   end
