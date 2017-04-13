@@ -69,7 +69,6 @@ module Api
 
               product_images = product.images.map do |image|
                 {
-                  product_id: image.product_id,
                   src: image.src,
                   variant_ids: image.variant_ids
                 }
