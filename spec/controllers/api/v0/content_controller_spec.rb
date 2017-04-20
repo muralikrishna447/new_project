@@ -14,25 +14,19 @@ describe Api::V0::ContentController do
       sign_in @admin
     end
 
-    it 'supports development envronment for a logged in user' do
+    it 'supports development environment for a logged in user' do
       get :manifest, content_env: 'development'
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments['development']['default']
     end
 
-    it 'supports development envronment for a logged in user' do
+    it 'supports staging environment for a logged in user' do
       get :manifest, content_env: 'staging'
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments['staging']['default']
     end
 
-    it 'supports development envronment for a logged in user' do
-      get :manifest, content_env: 'beta'
-      expect(response.status).to eq 302
-      expect(response.header["Location"]).to eq @supported_environments['beta']['default']
-    end
-
-    it 'supports development envronment for a logged in user' do
+    it 'supports production environment for a logged in user' do
       get :manifest, content_env: 'production'
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments['production']['default']
@@ -58,25 +52,19 @@ describe Api::V0::ContentController do
       sign_in @admin
     end
 
-    it 'supports development envronment for a logged in user' do
+    it 'supports development environment for a logged in user' do
       get :manifest, content_env: 'development'
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments['development']['slim_guides']
     end
 
-    it 'supports development envronment for a logged in user' do
+    it 'supports staging environment for a logged in user' do
       get :manifest, content_env: 'staging'
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments['staging']['slim_guides']
     end
 
-    it 'supports development envronment for a logged in user' do
-      get :manifest, content_env: 'beta'
-      expect(response.status).to eq 302
-      expect(response.header["Location"]).to eq @supported_environments['beta']['slim_guides']
-    end
-
-    it 'supports development envronment for a logged in user' do
+    it 'supports production envronment for a logged in user' do
       get :manifest, content_env: 'production'
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments['production']['slim_guides']
