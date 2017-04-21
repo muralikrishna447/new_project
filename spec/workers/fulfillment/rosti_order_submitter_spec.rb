@@ -183,6 +183,23 @@ describe Fulfillment::RostiOrderSubmitter do
           expect(Fulfillment::RostiOrderSubmitter.clearance_port(country_code, province_code)).to eq 'CA-YYZI'
         end
       end
+
+      context 'province code is unknown' do
+        let(:province_code) { 'ZZ' }
+
+        it 'raises error' do
+          expect { Fulfillment::RostiOrderSubmitter.clearance_port(country_code, province_code) }.to raise_error
+        end
+      end
+    end
+
+    context 'country code is unknown' do
+      let(:country_code) { 'XY' }
+      let(:province_code) { 'ZZ' }
+
+      it 'raises error' do
+        expect { Fulfillment::RostiOrderSubmitter.clearance_port(country_code, province_code) }.to raise_error
+      end
     end
   end
 end
