@@ -97,6 +97,8 @@ gem 'retriable', '2.1.0'
 gem 'resque-lock', '1.1'
 gem 'signifyd'
 
+gem 'quickbase_client'
+
 group :test do
   gem 'webmock'
   gem 'shopify-mock', :git => 'https://github.com/ChefSteps/shopify-mock', :ref => '74132ae3a471ec29cb85547987c061e3f749fd1b'
