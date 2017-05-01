@@ -7,7 +7,7 @@ module Api
       # Required since this only this controller contains the code to actually
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
-      before_filter :ensure_authorized, except: [:create, :log_upload_url]
+      before_filter :ensure_authorized, except: [:create, :log_upload_url, :make_premium]
       LOG_UPLOAD_URL_EXPIRATION = 60*60*24 #Seconds
 
       def me
@@ -112,6 +112,22 @@ module Api
           }
         end
         render_api_response 200, {:capabilities => user_capabilities}
+      end
+
+      def make_premium
+        [:id, :price].each do |param|
+          unless params[param]
+            return render json: {status: 400, message: "Bad Request: #{param} parameter missing."}, status: 400
+          end
+        end
+
+        user = User.find(params[:id])
+        unless user
+          return render_api_response 404, {:message => "User not found"}
+        end
+
+        user.make_premium_member(params[:price].to_f)
+        return render_api_response 200, {:message => "Success"}
       end
 
       private

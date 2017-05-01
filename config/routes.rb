@@ -277,6 +277,8 @@ Delve::Application.routes.draw do
         post :coefficients, on: :collection
       end
 
+      post 'users/make_premium', to: 'users#make_premium'
+
       post 'firmware/updates', to: 'firmware#updates'
       get 'auth/external_redirect', to: 'auth#external_redirect'
       get 'auth/external_redirect_by_key', to: 'auth#external_redirect_by_key'
