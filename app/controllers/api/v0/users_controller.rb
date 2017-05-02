@@ -8,6 +8,7 @@ module Api
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
       before_filter :ensure_authorized, except: [:create, :log_upload_url, :make_premium]
+      before_filter :ensure_authorized_service, only: [:make_premium]
       LOG_UPLOAD_URL_EXPIRATION = 60*60*24 #Seconds
 
       def me
