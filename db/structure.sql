@@ -3728,6 +3728,13 @@ CREATE INDEX index_ingredients_on_slug ON ingredients USING btree (slug);
 
 
 --
+-- Name: index_joule_cook_history_items_on_cook_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_joule_cook_history_items_on_cook_id ON joule_cook_history_items USING btree (cook_id);
+
+
+--
 -- Name: index_joule_cook_history_items_on_user_id_and_guide_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -4430,6 +4437,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161226225433');
 INSERT INTO schema_migrations (version) VALUES ('20170105211422');
 
 INSERT INTO schema_migrations (version) VALUES ('20170109173731');
+
+INSERT INTO schema_migrations (version) VALUES ('20170224233915');
 
 INSERT INTO schema_migrations (version) VALUES ('20170228210819');
 
