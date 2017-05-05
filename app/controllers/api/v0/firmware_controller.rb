@@ -86,11 +86,19 @@ module Api
         updates = []
         manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
-          current_version = params[param_type]
+          current_version = params[param_type] || ""
+          current_version_num = current_version.match(/s?(\d*)/)[1].to_i # handle staging
+          unless current_version_num
+            logger.info "No version information provided for #{u['type']}!"
+            next
+          end
+
+
+          manifest_version_num = u['version'].to_i
 
           logger.info "#{u['type']}: current [#{current_version}] vs update [#{u['version']}]"
 
-          if current_version == u['version']
+          if current_version_num >= manifest_version_num
             logger.info "Correct version for type [#{u['type']}]"
             next
           end
