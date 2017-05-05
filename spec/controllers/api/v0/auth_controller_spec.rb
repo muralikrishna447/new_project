@@ -89,6 +89,7 @@ describe Api::V0::AuthController do
   context 'GET /validate' do
 
     before :each do
+      Rails.cache.clear()
       issued_at = (Time.now.to_f * 1000).to_i
 
       service_claim = {
@@ -112,7 +113,11 @@ describe Api::V0::AuthController do
       @for_user = ActorAddress.create_for_user @user, client_metadata: "test"
 
       @valid_token = @for_user.current_token.to_jwt
+      @valid_circ_token = @for_circ.current_token.to_jwt
       @invalid_token = 'Bearer Some Bad Token'
+
+      BetaFeatureService.stub(:user_has_feature).with(anything(), anything())
+        .and_return(false)
     end
 
     it 'should validate if provided a valid service token' do
@@ -130,6 +135,24 @@ describe Api::V0::AuthController do
       response.should be_success
       json_resp = JSON.parse(response.body)
       expect(json_resp['addressableAddresses']).to eq([@for_circ.address_id])
+    end
+
+    it 'user should have empty capabilities' do
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      get :validate, token: @valid_token
+      response.should be_success
+      json_resp = JSON.parse(response.body)
+      expect(json_resp['capabilities']).to eq([])
+    end
+
+    it 'circ should have predictive capability' do
+      BetaFeatureService.stub(:user_has_feature).with(anything(), 'predictive')
+        .and_return(true)
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      get :validate, token: @valid_circ_token
+      response.should be_success
+      json_resp = JSON.parse(response.body)
+      expect(json_resp['capabilities']).to eq(['predictive'])
     end
 
     it 'should not validate if no valid service token provided' do
