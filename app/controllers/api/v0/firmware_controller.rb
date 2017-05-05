@@ -32,6 +32,11 @@ module Api
           return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify mobile app version'}
         end
 
+        if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil?
+          logger.info("Must specify appFirmwareVersion and espFirmwareVersion")
+          return render_empty_response
+        end
+
         unless dfu_capable?(params)
           logger.info("Not DFU capable")
           return render_empty_response
@@ -89,9 +94,9 @@ module Api
           param_type = VERSION_MAPPING[u['type']]
           current_version = params[param_type] || ""
           current_version_num = current_version.match(/s?(\d*)/)[1].to_i # handle staging
-          unless current_version_num
-            logger.info "No version information provided for #{u['type']}!"
-            next
+          if current_version_num == 0 # to_i converts unknown patterns to 0
+            logger.warn "No version information provided for #{u['type']}! Returning no updates"
+            return []
           end
 
 

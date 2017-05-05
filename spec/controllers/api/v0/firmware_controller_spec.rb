@@ -123,7 +123,8 @@ describe Api::V0::FirmwareController do
 
   it 'should get manifests for wifi firmware' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'espFirmwareVersion' => '1'}
+    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5',
+                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 1
@@ -150,6 +151,14 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     post :updates, {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5',
                     'appFirmwareVersion' => '70', 'espFirmwareVersion' => '23'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
+  end
+
+  it 'should return no updates if no version info provided' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    post :updates, {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -227,7 +236,8 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'manifest_urgency')
       .and_return(true)
-    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
+    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5',
+                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['urgency'].should == 'critical'
@@ -235,7 +245,8 @@ describe Api::V0::FirmwareController do
 
   it 'should get no updates if old app version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5'}
+    post :updates, {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5',
+                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -244,7 +255,8 @@ describe Api::V0::FirmwareController do
   it 'should get firmware version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
 
-    post :updates, {'appVersion'=> '2.41.4', 'hardwareVersion' => 'JL.p5', 'appFirmwareVersion' => '10'}
+    post :updates, {'appVersion'=> '2.41.4', 'hardwareVersion' => 'JL.p5',
+                    'appFirmwareVersion' => '10', 'espFirmwareVersion' => '1'}
 
     response.should be_success
     resp = JSON.parse(response.body)
@@ -275,7 +287,8 @@ describe Api::V0::FirmwareController do
     ]
 
     for v in hw_versions
-      post :updates, {'appVersion'=> '2.41.4', 'hardwareVersion' => v[:hw_version], 'appFirmwareVersion' => '10'}
+      post :updates, {'appVersion'=> '2.41.4', 'hardwareVersion' => v[:hw_version],
+                      'appFirmwareVersion' => '10', 'espFirmwareVersion' => '1'}
       response.should be_success
       resp = JSON.parse(response.body)
       if v[:enabled]
@@ -299,7 +312,8 @@ describe Api::V0::FirmwareController do
       to_return(:status => 404, :body => "", :headers => {})
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     set_version_enabled('0.10.0', true)
-    post :updates, {'appVersion'=> '0.10.0', 'hardwareVersion' => 'JL.p5'}
+    post :updates, {'appVersion'=> '0.10.0', 'hardwareVersion' => 'JL.p5',
+                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
     puts response.code
     response.should be_success
     resp = JSON.parse(response.body)
