@@ -26,6 +26,8 @@ describe Api::V0::FirmwareController do
       .and_return(false)
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'manifest_urgency')
       .and_return(false)
+    BetaFeatureService.stub(:user_has_feature).with(anything(), 'allow_dfu_downgrade')
+      .and_return(false)
     enabled_app_versions = ['2.40.2', '2.41.2', '2.41.3', '2.41.4', '2.48.3', '2.49.9']
     for v in enabled_app_versions
       set_version_enabled(v, true)
@@ -151,6 +153,18 @@ describe Api::V0::FirmwareController do
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
+  end
+
+
+  it 'should allow downgrades if beta feature allows it' do
+    BetaFeatureService.stub(:user_has_feature).with(anything(), "allow_dfu_downgrade")
+      .and_return(true)
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    post :updates, {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5',
+                    'appFirmwareVersion' => '700', 'espFirmwareVersion' => '230'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 2
   end
 
   it 'should return an upgrade for ESP, but not downgrade app' do
