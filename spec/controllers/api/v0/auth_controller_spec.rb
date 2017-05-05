@@ -145,7 +145,7 @@ describe Api::V0::AuthController do
       expect(json_resp['capabilities']).to eq([])
     end
 
-    it 'circ should have predictive capability' do
+    it 'circ should have predictive capability if enabled' do
       BetaFeatureService.stub(:user_has_feature).with(anything(), 'predictive')
         .and_return(true)
       request.env['HTTP_AUTHORIZATION'] = @service_token
@@ -153,6 +153,14 @@ describe Api::V0::AuthController do
       response.should be_success
       json_resp = JSON.parse(response.body)
       expect(json_resp['capabilities']).to eq(['predictive'])
+    end
+
+    it 'circ should have not have predictive capability if not enabled' do
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      get :validate, token: @valid_circ_token
+      response.should be_success
+      json_resp = JSON.parse(response.body)
+      expect(json_resp['capabilities']).to eq([])
     end
 
     it 'should not validate if no valid service token provided' do
