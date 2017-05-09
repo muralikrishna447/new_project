@@ -32,6 +32,11 @@ module Api
           return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify mobile app version'}
         end
 
+        if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil?
+          logger.info("Must specify appFirmwareVersion and espFirmwareVersion")
+          return render_empty_response
+        end
+
         unless dfu_capable?(params)
           logger.info("Not DFU capable")
           return render_empty_response
@@ -84,14 +89,28 @@ module Api
 
       def build_response_from_manifest(user, manifest)
         updates = []
+        can_downgrade = BetaFeatureService.user_has_feature(user, 'allow_dfu_downgrade')
         manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
-          current_version = params[param_type]
+          current_version = params[param_type] || ""
+          current_version_num = current_version.match(/s?(\d*)/)[1].to_i # handle staging
+          if current_version_num == 0 # to_i converts unknown patterns to 0
+            logger.warn "No version information provided for #{u['type']}! Returning no updates"
+            return []
+          end
+
+
+          manifest_version_num = u['version'].to_i
 
           logger.info "#{u['type']}: current [#{current_version}] vs update [#{u['version']}]"
 
-          if current_version == u['version']
+          if current_version_num == manifest_version_num
             logger.info "Correct version for type [#{u['type']}]"
+            next
+          end
+
+          if (current_version_num > manifest_version_num) && !can_downgrade
+            logger.info "Current version #{current_version} > #{u['version']} [#{u['type']}]"
             next
           end
 
