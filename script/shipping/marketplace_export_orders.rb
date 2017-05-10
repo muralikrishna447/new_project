@@ -27,57 +27,13 @@ raise '--vendor is required' unless @options[:vendor]
 
 ShopifyAPI::Base.site = "https://#{@options[:api_key]}:#{@options[:password]}@#{@options[:store]}.myshopify.com/admin"
 
-def fulfillable_line_item?(order, line_item)
-  return false unless line_item
-  return false if line_item.vendor != @options[:vendor]
-  return false if line_item.fulfillable_quantity < 1
-  order.fulfillments.each do |fulfillment|
-    fulfillment.line_items.each do |fulfillment_line_item|
-      next unless fulfillment_line_item.id == line_item.id
-      if fulfillment.status == 'success' || fulfillment.status == 'open'
-        Rails.logger.debug("Skipping order with id #{order.id} and " \
-                           "fulfillment with id #{fulfillment.id} because fulfillment " \
-                           "status is #{fulfillment.status}")
-        return false
-      end
-      Rails.logger.debug("Order with id #{order.id} and fulfillment with " \
-                        "id #{fulfillment.id} is fulfillable fulfillment status is #{fulfillment.status}")
-      return true
-    end
-  end
-  Rails.logger.debug("Order with id #{order.id} and line " \
-                    "item with id #{line_item.id} is fulfillable because no fulfillment exists")
-  true
-end
-
-def pickup_time(line_item)
-  # At various times we've stored the pickup time property under different names (sigh).
-  properties = ['Pickup Time', 'customizery_1', 'Pickup Times', 'Pickup Details']
-  pickup_times = line_item.properties.select { |p| properties.include?(p.name) }
-  if pickup_times.empty?
-    Rails.logger.warn "No Pickup Time property found for line item #{line_item.inspect}"
-    return nil
-  end
-  raise "Multiple Pickup Time properties found for line item #{line_item.inspect}" if pickup_times.length > 1
-  pickup_times.first.value
-end
-
-def delivery_time(line_item)
-  delivery_times = line_item.properties.select { |p| p.name == 'Delivery Details' }
-  if delivery_times.empty?
-    Rails.logger.warn "No Delivery Details property found for line item #{line_item.inspect}"
-    return nil
-  end
-  raise "Multiple Delivery Details properties found for line item #{line_item.inspect}" if delivery_times.length > 1
-  delivery_times.first.value
-end
-
-orders = Shopify::Utils.search_orders(status: 'open')
 fulfillables = []
-orders.each do |order|
+Shopify::Utils.search_orders_with_each(status: 'open') do |order|
   fulfillable_line_items = []
   order.line_items.each do |line_item|
-    fulfillable_line_items << line_item if fulfillable_line_item?(order, line_item)
+    if Fulfillment::MarketplaceUtils.fulfillable_line_item?(order, line_item, @options[:vendor])
+      fulfillable_line_items << line_item
+    end
   end
   next if fulfillable_line_items.empty?
   fulfillables << Fulfillment::Fulfillable.new(
@@ -98,8 +54,10 @@ output_str = CSV.generate(force_quotes: true) do |output|
     'Variant',
     'Quantity',
     'Unit Price',
-    'Fulfillment Time',
-    'Delivery Address'
+    'Fulfillment Details',
+    'Delivery Address',
+    # TODO make this vendor-specific based on collection metafields
+    'SMS Opted In'
   ]
 
   fulfillables.each do |fulfillable|
@@ -111,19 +69,26 @@ output_str = CSV.generate(force_quotes: true) do |output|
     phone ||= fulfillable.order.billing_address.phone if fulfillable.order.respond_to?(:billing_address)
     phone ||= 'Unknown'
 
-    delivery_address = ''
-    if fulfillable.order.respond_to?(:shipping_address)
-      a = fulfillable.order.shipping_address
-      delivery_address = "#{a.address1} #{a.address2} #{a.company} #{a.city} #{a.province_code} #{a.zip}"
-    end
-
     fulfillable.line_items.each do |line_item|
-      fulfillment_time = delivery_time(line_item) if line_item.variant_title == 'Delivery'
-      fulfillment_time ||= pickup_time(line_item)
+      delivery_address = ''
+      if Fulfillment::MarketplaceUtils.delivery?(line_item)
+        fulfillment_details = Fulfillment::MarketplaceUtils.delivery_details(line_item)
+        if fulfillable.order.respond_to?(:shipping_address)
+          a = fulfillable.order.shipping_address
+          delivery_address = "#{a.address1} #{a.address2} #{a.company} #{a.city} #{a.province_code} #{a.zip}"
+        end
+      else
+        fulfillment_details = Fulfillment::MarketplaceUtils.pickup_details(line_item)
+      end
+
+      unless fulfillment_details
+        Rails.logger.warn "No fulfillment details found for order with id #{fulfillment.order.id} " \
+                          "and line item with id #{line_item.id}"
+      end
 
       output << [
         fulfillable.order.name,
-        fulfillable.order.processed_at,
+        DateTime.parse(fulfillable.order.processed_at).strftime('%m/%d/%Y %H:%M:%S'),
         name,
         fulfillable.order.email,
         phone,
@@ -132,8 +97,9 @@ output_str = CSV.generate(force_quotes: true) do |output|
         line_item.variant_title,
         line_item.fulfillable_quantity,
         line_item.price,
-        fulfillment_time ? fulfillment_time : 'Unknown',
-        delivery_address
+        fulfillment_details ? fulfillment_details : 'Unknown',
+        delivery_address,
+        Fulfillment::MarketplaceUtils.sms_opted_in?(fulfillable.order)
       ]
     end
   end
