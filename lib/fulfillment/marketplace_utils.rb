@@ -115,7 +115,7 @@ module Fulfillment
 
       if collections.length > 1
         Rails.logger.warn "Multiple collections exist for the vendor #{vendor}, " \
-                          'assuming SMS reminders are not available'
+                          'not going to guess which one is correct'
         return []
       end
 
