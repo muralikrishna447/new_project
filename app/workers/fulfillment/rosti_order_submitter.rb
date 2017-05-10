@@ -102,7 +102,8 @@ module Fulfillment
         '[return_address_city]',
         '[return_address_state]',
         '[return_address_zip]',
-        '[return_address_country]'
+        '[return_address_country]',
+        '[clearance_port]'
       ]
     end
 
@@ -150,7 +151,11 @@ module Fulfillment
             RETURN_CITY,        # Return address city
             RETURN_STATE,       # Return address state
             RETURN_ZIP,         # Return address ZIP
-            RETURN_COUNTRY      # Return address country
+            RETURN_COUNTRY,     # Return address country
+            clearance_port(
+              fulfillable.order.shipping_address.country_code,
+              fulfillable.order.shipping_address.province_code
+            )
           ]
       end
       line_items
@@ -187,6 +192,43 @@ module Fulfillment
       else
         Librato.increment 'fulfillment.rosti.order-submitter.mailer.skipped', sporadic: true
       end
+    end
+
+    # Shipment clearance ports to help route packages most efficiently
+    # based on the destination province in Canada.
+    YYCI_PORT = 'CA-YYCI'.freeze
+    YYZI_PORT = 'CA-YYZI'.freeze
+    CANADA_CLEARANCE_PORTS = {
+      'AB' => YYCI_PORT,
+      'BC' => YYCI_PORT,
+      'MB' => YYCI_PORT,
+      'NT' => YYCI_PORT,
+      'NU' => YYCI_PORT,
+      'SK' => YYCI_PORT,
+      'YT' => YYCI_PORT,
+      'NB' => YYZI_PORT,
+      'NF' => YYZI_PORT,
+      'NL' => YYZI_PORT,
+      'NS' => YYZI_PORT,
+      'ON' => YYZI_PORT,
+      'PE' => YYZI_PORT,
+      'PQ' => YYZI_PORT,
+      'QC' => YYZI_PORT
+    }.freeze
+
+    def self.clearance_port(country_code, province_code)
+      # US clearance port is always Memphis.
+      return 'US-MEMI' if country_code == 'US'
+
+      if country_code == 'CA'
+        clearance_port = CANADA_CLEARANCE_PORTS[province_code]
+      end
+
+      unless clearance_port
+        raise "No clearance port for country_code #{country_code} and province_code #{province_code}"
+      end
+
+      clearance_port
     end
   end
 end

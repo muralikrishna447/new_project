@@ -75,7 +75,8 @@ describe Fulfillment::RostiOrderSubmitter do
             Fulfillment::RostiOrderSubmitter::RETURN_CITY,
             Fulfillment::RostiOrderSubmitter::RETURN_STATE,
             Fulfillment::RostiOrderSubmitter::RETURN_ZIP,
-            Fulfillment::RostiOrderSubmitter::RETURN_COUNTRY
+            Fulfillment::RostiOrderSubmitter::RETURN_COUNTRY,
+            'US-MEMI'
           ],
           [
             "#{order_name}-#{line_item_id_2}",
@@ -98,7 +99,8 @@ describe Fulfillment::RostiOrderSubmitter do
             Fulfillment::RostiOrderSubmitter::RETURN_CITY,
             Fulfillment::RostiOrderSubmitter::RETURN_STATE,
             Fulfillment::RostiOrderSubmitter::RETURN_ZIP,
-            Fulfillment::RostiOrderSubmitter::RETURN_COUNTRY
+            Fulfillment::RostiOrderSubmitter::RETURN_COUNTRY,
+            'US-MEMI'
           ]
         ]
       )
@@ -151,6 +153,52 @@ describe Fulfillment::RostiOrderSubmitter do
       it 'Should send the email' do
         RostiOrderSubmitterMailer.should_not_receive(:notification)
         Fulfillment::RostiOrderSubmitter.send_notification_email(total_quantity, info)
+      end
+    end
+  end
+
+  describe 'clearance_port' do
+    context 'country code is US' do
+      let(:country_code) { 'US' }
+      let(:province_code) { 'WA' }
+
+      it 'returns memphis clearance port' do
+        expect(Fulfillment::RostiOrderSubmitter.clearance_port(country_code, province_code)).to eq 'US-MEMI'
+      end
+    end
+
+    context 'country code is CA' do
+      let(:country_code) { 'CA' }
+
+      context 'province code has calgary clearance port' do
+        let(:province_code) { 'YT' }
+        it 'returns calgary clearance port' do
+          expect(Fulfillment::RostiOrderSubmitter.clearance_port(country_code, province_code)).to eq 'CA-YYCI'
+        end
+      end
+
+      context 'province code has toronto clearance port' do
+        let(:province_code) { 'QC' }
+        it 'returns toronto clearance port' do
+          expect(Fulfillment::RostiOrderSubmitter.clearance_port(country_code, province_code)).to eq 'CA-YYZI'
+        end
+      end
+
+      context 'province code is unknown' do
+        let(:province_code) { 'ZZ' }
+
+        it 'raises error' do
+          expect { Fulfillment::RostiOrderSubmitter.clearance_port(country_code, province_code) }.to raise_error
+        end
+      end
+    end
+
+    context 'country code is unknown' do
+      let(:country_code) { 'XY' }
+      let(:province_code) { 'ZZ' }
+
+      it 'raises error' do
+        expect { Fulfillment::RostiOrderSubmitter.clearance_port(country_code, province_code) }.to raise_error
       end
     end
   end
