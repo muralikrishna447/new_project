@@ -249,4 +249,95 @@ describe Fulfillment::MarketplaceUtils do
       end
     end
   end
+
+  describe 'sms_reminders_available?' do
+    let(:vendor) { 'my vendor' }
+
+    context 'sms_reminders_available metafield exists' do
+      let(:metafields) do
+        [
+          ShopifyAPI::Metafield.new(
+            namespace: 'chefsteps',
+            key: 'sms_reminders_available',
+            value: metafield_value
+          )
+        ]
+      end
+      before :each do
+        Fulfillment::MarketplaceUtils.stub(:vendor_metafields).with(vendor) { metafields }
+      end
+
+      context 'metafield value is true' do
+        let(:metafield_value) { 'true' }
+        it 'returns true' do
+          expect(Fulfillment::MarketplaceUtils.sms_reminders_available?(vendor)).to be_true
+        end
+      end
+
+      context 'metafield value is not true' do
+        let(:metafield_value) { 'false' }
+        it 'returns false' do
+          expect(Fulfillment::MarketplaceUtils.sms_reminders_available?(vendor)).to be_false
+        end
+      end
+
+      context 'sms_reminders_available metafield does not exist' do
+        let(:metafields) { [] }
+        it 'returns false' do
+          expect(Fulfillment::MarketplaceUtils.sms_reminders_available?(vendor)).to be_false
+        end
+      end
+    end
+  end
+
+  describe 'vendor_metafields' do
+    let(:vendor) { 'my vendor' }
+
+    context 'vendor collection does not exist' do
+      before :each do
+        ShopifyAPI::SmartCollection.stub(:find) { [] }
+      end
+      it 'returns empty array' do
+        expect(Fulfillment::MarketplaceUtils.vendor_metafields(vendor)).to be_empty
+      end
+    end
+
+    context 'more than one vendor collection exists' do
+      before :each do
+        ShopifyAPI::SmartCollection.stub(:find) do
+          [
+            ShopifyAPI::SmartCollection.new,
+            ShopifyAPI::SmartCollection.new
+          ]
+        end
+      end
+      it 'returns empty array' do
+        expect(Fulfillment::MarketplaceUtils.vendor_metafields(vendor)).to be_empty
+      end
+    end
+
+    context 'one vendor collection exists' do
+      let(:metafields) do
+        [
+          ShopifyAPI::Metafield.new(
+            namespace: 'foo',
+            key: 'bar',
+            value: 'baz'
+          )
+        ]
+      end
+      let(:collection) do
+        collection = double('collection')
+        collection.should_receive(:metafields).and_return(metafields)
+        collection
+      end
+      before :each do
+        ShopifyAPI::SmartCollection.stub(:find) { [collection] }
+      end
+
+      it 'returns collection metafields' do
+        expect(Fulfillment::MarketplaceUtils.vendor_metafields(vendor)).to eq metafields
+      end
+    end
+  end
 end

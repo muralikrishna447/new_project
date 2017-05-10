@@ -93,5 +93,33 @@ module Fulfillment
       end
       false
     end
+
+    # Returns true if the vendor has SMS reminders available,
+    # false otherwise.
+    def self.sms_reminders_available?(vendor)
+      vendor_metafields(vendor).find do |metafield|
+        return true if metafield.namespace == 'chefsteps' &&
+                       metafield.key == 'sms_reminders_available' &&
+                       metafield.value == 'true'
+      end
+      false
+    end
+
+    # We store vendor-level configuration as metafields on the
+    # vendor collection with a title equal to the vendor name.
+    def self.vendor_metafields(vendor)
+      path = ShopifyAPI::SmartCollection.collection_path(title: vendor)
+      collections = ShopifyAPI::SmartCollection.find(:all, from: path)
+
+      return [] if collections.empty?
+
+      if collections.length > 1
+        Rails.logger.warn "Multiple collections exist for the vendor #{vendor}, " \
+                          'assuming SMS reminders are not available'
+        return []
+      end
+
+      collections.first.metafields
+    end
   end
 end

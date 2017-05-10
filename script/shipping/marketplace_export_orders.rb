@@ -43,7 +43,7 @@ Shopify::Utils.search_orders_with_each(status: 'open') do |order|
 end
 
 output_str = CSV.generate(force_quotes: true) do |output|
-  output << [
+  header_row = [
     'Order Number',
     'Processed At',
     'Name',
@@ -55,10 +55,19 @@ output_str = CSV.generate(force_quotes: true) do |output|
     'Quantity',
     'Unit Price',
     'Fulfillment Details',
-    'Delivery Address',
-    # TODO make this vendor-specific based on collection metafields
-    'SMS Opted In'
+    'Delivery Address'
   ]
+  # Add a column indicating whether the customer opted in, but only
+  # if the vendor has SMS reminders available.
+  sms_reminders_available = false
+  if Fulfillment::MarketplaceUtils.sms_reminders_available?(@options[:vendor])
+    Rails.logger.debug("Vendor #{@options[:vendor]} has SMS reminders available, will add to export")
+    sms_reminders_available = true
+    header_row << 'SMS Opted In'
+  else
+    Rails.logger.debug("Vendor #{@options[:vendor]} does not have SMS reminders available, not adding to export")
+  end
+  output << header_row
 
   fulfillables.each do |fulfillable|
     name = fulfillable.order.shipping_address.name if fulfillable.order.respond_to?(:shipping_address)
@@ -82,11 +91,11 @@ output_str = CSV.generate(force_quotes: true) do |output|
       end
 
       unless fulfillment_details
-        Rails.logger.warn "No fulfillment details found for order with id #{fulfillment.order.id} " \
+        Rails.logger.warn "No fulfillment details found for order with id #{fulfillable.order.id} " \
                           "and line item with id #{line_item.id}"
       end
 
-      output << [
+      line_item_row = [
         fulfillable.order.name,
         DateTime.parse(fulfillable.order.processed_at).strftime('%m/%d/%Y %H:%M:%S'),
         name,
@@ -98,9 +107,14 @@ output_str = CSV.generate(force_quotes: true) do |output|
         line_item.fulfillable_quantity,
         line_item.price,
         fulfillment_details ? fulfillment_details : 'Unknown',
-        delivery_address,
-        Fulfillment::MarketplaceUtils.sms_opted_in?(fulfillable.order)
+        delivery_address
       ]
+
+      if sms_reminders_available
+        line_item_row << Fulfillment::MarketplaceUtils.sms_opted_in?(fulfillable.order)
+      end
+
+      output << line_item_row
     end
   end
 end
