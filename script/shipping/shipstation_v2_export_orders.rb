@@ -1,12 +1,13 @@
 require './rails_shim'
 
 #
-# Exports Shopify Joule orders using the API to a CSV on standard output.
+# Exports Shopify orders using the API to a CSV on standard output.
 # Options:
 #   --key: Your Shopify API key
 #   --password: Your Shopify API key password
 #   --store: The name of the Shopify store ('delve' for prod, or 'chefsteps-staging')
-#
+#   --quantity: Maximum quantity of items to export
+#   --sku: SKU to export
 
 # Options parsing
 options = {}
@@ -23,8 +24,12 @@ option_parser = OptionParser.new do |option|
     options[:store] = store
   end
 
-  option.on('-q', '--quantity QUANTITY', 'Quantity to export') do |store|
-    options[:quantity] = store
+  option.on('-q', '--quantity QUANTITY', 'Quantity to export') do |quantity|
+    options[:quantity] = quantity.to_i
+  end
+
+  option.on('-i', '--sku SKU', 'SKU to export') do |sku|
+    options[:sku] = sku
   end
 end
 option_parser.parse!
@@ -32,12 +37,15 @@ raise '--key is required' unless options[:api_key]
 raise '--password is required' unless options[:password]
 raise '--store is required' unless options[:store]
 raise '--quantity is required' unless options[:quantity]
+raise '--sku is required' unless options[:sku]
 
 # Configure shopify client
 ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
 
-Fulfillment::ShipstationOrderExporter.perform(
+Fulfillment::PendingOrderExporter.perform(
   storage: 'stdout',
+  skus: [options[:sku]],
   open_fulfillment: false,
-  quantity: options[:quantity].to_i
+  trigger_child_job: false,
+  quantity: options[:quantity]
 )

@@ -1,19 +1,14 @@
 require 'csv'
 
 module Fulfillment
-  class ShipstationOrderExporter
+  class ShipstationOrderSubmitter
     include Fulfillment::CSVOrderExporter
+    include Fulfillment::FulfillableStrategy::OpenFulfillment
 
     @queue = :ShipstationOrderExporter
 
     def self.type
       'orders'
-    end
-
-    def self.job_params(params)
-      job_params = params.merge(skus: ['cs10001'])
-      job_params[:storage] ||= 'stdout'
-      job_params
     end
 
     def self.schema
@@ -44,7 +39,7 @@ module Fulfillment
         line_items <<
           [
             fulfillable.order.id,
-            fulfillable.order.name,
+            "#{fulfillable.order.name}-#{line_item.id}",
             fulfillable.order.processed_at,
             fulfillable.order.shipping_address.name,
             fulfillable.order.shipping_address.company,
@@ -62,15 +57,6 @@ module Fulfillment
           ]
       end
       line_items
-    end
-
-    def self.include_order?(order)
-      # Filter out any order that has filtered tags
-      unless (Shopify::Utils.order_tags(order) & FILTERED_TAGS).empty?
-        Rails.logger.info("ShipStation order export filtering order with id #{order.id} because it has one or more filtered tags: #{order.tags}")
-        return false
-      end
-      true
     end
   end
 end
