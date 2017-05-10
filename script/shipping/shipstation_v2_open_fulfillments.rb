@@ -51,7 +51,7 @@ raise '--quantity is required' unless options[:quantity]
 # Configure shopify client
 ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{options[:store]}.myshopify.com/admin"
 
-Fulfillment::ShipstationOrderExporter.perform(
+Fulfillment::ShipstationOrderSubmitter.perform(
   storage: 'stdout',
   skus: [options[:sku]],
   search_params: {

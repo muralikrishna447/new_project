@@ -1,7 +1,7 @@
 require 'csv'
 
 module Fulfillment
-  class ShipstationOrderExporter
+  class ShipstationOrderSubmitter
     include Fulfillment::CSVOrderExporter
     include Fulfillment::FulfillableStrategy::OpenFulfillment
 
