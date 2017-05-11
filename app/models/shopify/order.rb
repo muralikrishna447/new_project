@@ -1,6 +1,7 @@
 class Shopify::Order
   PREMIUM_SKU = 'cs10002'
   JOULE_SKU = 'cs10001'
+  JOULE_WHITE_SKU = 'cs20001'
 
   METAFIELD_NAMESPACE = 'chefsteps' # duplicate code!?
   ALL_BUT_JOULE_FULFILLED_METAFIELD_NAME = 'all-but-joule-fulfilled'
@@ -83,7 +84,7 @@ class Shopify::Order
         next
       end
       # Hard code the SKUs for now, we can talk when we have more than two
-      if item.sku == JOULE_SKU
+      if item.sku == JOULE_SKU || item.sku == JOULE_WHITE_SKU
         order_contains_joule = true
         # TODO - fix joule_purchase to be idempotent
         user.joule_purchased if user
