@@ -100,11 +100,18 @@ describe Api::V0::AuthController do
 
       @user = Fabricate(:user, id: 200, email: 'user@chefsteps.com',
                         password: '123456', name: 'A User', role: 'user')
+      @other_user = Fabricate(:user, id: 201, email: 'user2@chefsteps.com',
+                        password: '123456', name: 'Another User', role: 'user')
+
+      @other_circulator = Fabricate(:circulator, notes: 'some other notes',
+                                    circulator_id: '9912121212121299')
+      CirculatorUser.create(user: @other_user, circulator: @other_circulator, owner: true)
+
+
       @circulator = Fabricate(:circulator, notes: 'some notes',
                               circulator_id: '1212121212121212')
       CirculatorUser.create(user: @user, circulator: @circulator, owner: true)
-      @other_circulator = Fabricate(:circulator, notes: 'some other notes',
-                              circulator_id: '9912121212121299')
+
       @user.circulators = [@circulator]
 
 
@@ -146,7 +153,7 @@ describe Api::V0::AuthController do
     end
 
     it 'circ should have predictive capability if enabled' do
-      BetaFeatureService.stub(:user_has_feature).with(anything(), 'predictive')
+      BetaFeatureService.stub(:user_has_feature).with(@user, 'predictive')
         .and_return(true)
       request.env['HTTP_AUTHORIZATION'] = @service_token
       get :validate, token: @valid_circ_token
