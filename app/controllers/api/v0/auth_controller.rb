@@ -353,13 +353,13 @@ module Api
         cache_key = "aa-capabilities-#{aa.id}"
         return Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
           circulator = Circulator.includes(:circulator_users) \
-                         .where(id: aa.actor_id).first
+                         .find(aa.actor_id)
           owners = circulator.circulator_users.select {|cu| cu.owner}
           if owners.length > 1
             logger.warn "Unhandled: circulator #{circulator.id} has multiple owners."
             return []
           end
-          owner = owners.first
+          owner = owners.first.user
           logger.info "Using capabilities for user #{owner.id} for ActorAddress #{aa.id}"
           capability_list.select {|c|
             BetaFeatureService.user_has_feature(owner, c)
