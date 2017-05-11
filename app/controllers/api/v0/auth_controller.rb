@@ -292,6 +292,7 @@ module Api
             addressableAddresses: addressable_addresses,
             actorType: aa.actor_type, # this one can probably be in claim
             data: token.claim,
+            capabilities: get_capabilities_for_actor_address(aa),
           }
 
           render json: resp, status: 200
@@ -336,6 +337,34 @@ module Api
           return render_unauthorized
         end
 
+      end
+
+      private
+
+      def get_capabilities_for_actor_address(aa)
+        # Only circ capabilities for now
+        unless aa.actor_type == 'Circulator'
+          return []
+        end
+        logger.info "Searching for capabilities for ActorAddress #{aa.id}"
+        capability_list = [
+          'predictive',
+        ]
+        cache_key = "aa-capabilities-#{aa.id}"
+        return Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+          circulator = Circulator.includes(:circulator_users) \
+                         .find(aa.actor_id)
+          owners = circulator.circulator_users.select {|cu| cu.owner}
+          if owners.length > 1
+            logger.warn "Unhandled: circulator #{circulator.id} has multiple owners."
+            return []
+          end
+          owner = owners.first.user
+          logger.info "Using capabilities for user #{owner.id} for ActorAddress #{aa.id}"
+          capability_list.select {|c|
+            BetaFeatureService.user_has_feature(owner, c)
+          }
+        end
       end
 
     end
