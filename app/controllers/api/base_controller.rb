@@ -202,6 +202,7 @@ module Api
 
     def shopify_url?(redirect_key)
       redirect_key =~ /^https:\/\/#{Rails.configuration.shopify[:store_domain]}/
+    end
 
     private
     def prepare_loggable_contents(contents)
