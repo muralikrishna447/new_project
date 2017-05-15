@@ -189,9 +189,9 @@ module Api
       end
 
       contents[:request_id] = request.uuid()
-      contents[:status] = status
-
-      logger.info("API Response: #{contents.inspect}")
+      contents[:status] = contents[:status] || status
+      loggable_contents = prepare_loggable_contents(contents)
+      logger.info("API Response: #{loggable_contents.inspect}")
       render json: contents, status: status
     end
 
@@ -199,8 +199,20 @@ module Api
       render_api_response(403, {message: 'Unauthorized.'})
     end
 
+
     def shopify_url?(redirect_key)
       redirect_key =~ /^https:\/\/#{Rails.configuration.shopify[:store_domain]}/
+
+    private
+    def prepare_loggable_contents(contents)
+      if contents[:token] || contents[:redirect]
+        loggable_contents = contents.clone
+        loggable_contents[:token] &&= '[FILTERED]'
+        loggable_contents[:redirect] &&= loggable_contents[:redirect].gsub(/#{AuthToken::PREFIX}\.\w*\.\w*/, '[FILTERED]')
+      else
+        loggable_contents = contents
+      end
+      loggable_contents
     end
 
   end

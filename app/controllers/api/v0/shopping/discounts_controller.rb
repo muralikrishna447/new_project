@@ -15,7 +15,7 @@ module Api
               end
             end
             @discount.valid = valid?(@discount)
-            render_api_response 200, @discount
+            render_api_response 200, @discount.attributes
           rescue
             render_api_response(404, {message: 'Discount not found.'})
           end
