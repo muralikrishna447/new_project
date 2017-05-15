@@ -113,6 +113,9 @@ describe Api::V0::FirmwareController do
     mock_s3_json(
       "joule/WIFI_FIRMWARE/#{@esp_version}/metadata.json", esp_metadata
     )
+    mock_s3_json(
+      "joule/WIFI_FIRMWARE/s#{@esp_version}/metadata.json", esp_metadata
+    )
     mock_s3_json("manifests/2.41.3/manifest", esp_only_manifest)
     mock_s3_json("manifests/2.41.2/manifest", esp_only_manifest)
     mock_s3_json("manifests/2.41.4/manifest", manifest)
@@ -190,8 +193,8 @@ describe Api::V0::FirmwareController do
 
   it 'should return an upgrade for staging ESP' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5',
-                    'appFirmwareVersion' => '70', 'espFirmwareVersion' => 's3'}
+    post :updates, {'appVersion'=> '2.49.9', 'hardwareVersion' => 'JL.p5',
+                    'appFirmwareVersion' => '70', 'espFirmwareVersion' => 's22'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 1
@@ -201,8 +204,8 @@ describe Api::V0::FirmwareController do
 
   it 'should not return an upgrade for staging ESP' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5',
-                    'appFirmwareVersion' => '70', 'espFirmwareVersion' => 's100'}
+    post :updates, {'appVersion'=> '2.49.9', 'hardwareVersion' => 'JL.p5',
+                    'appFirmwareVersion' => '70', 'espFirmwareVersion' => 's24'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
