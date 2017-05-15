@@ -87,20 +87,23 @@ module Api
       class ManifestInvalidError < StandardError
       end
 
+      def get_version_number(version_string)
+        version_string.match(/s?(\d*)/)[1].to_i # handle staging
+      end
+
       def build_response_from_manifest(user, manifest)
         updates = []
         can_downgrade = BetaFeatureService.user_has_feature(user, 'allow_dfu_downgrade')
         manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
           current_version = params[param_type] || ""
-          current_version_num = current_version.match(/s?(\d*)/)[1].to_i # handle staging
+          current_version_num = get_version_number(current_version)
           if current_version_num == 0 # to_i converts unknown patterns to 0
             logger.warn "No version information provided for #{u['type']}! Returning no updates"
             return []
           end
 
-
-          manifest_version_num = u['version'].to_i
+          manifest_version_num = get_version_number(u['version'])
 
           logger.info "#{u['type']}: current [#{current_version}] vs update [#{u['version']}]"
 
@@ -110,7 +113,7 @@ module Api
           end
 
           if (current_version_num > manifest_version_num) && !can_downgrade
-            logger.info "Current version #{current_version} > #{u['version']} [#{u['type']}]"
+            logger.info "Current version #{current_version_num} > #{manifest_version_num} [#{u['type']}]"
             next
           end
 
