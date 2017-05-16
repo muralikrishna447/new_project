@@ -9,7 +9,7 @@ module Api
           Librato.increment("api.authenticate_requests")
           unless params.has_key?(:user) && params[:user].has_key?(:email)
             logger.info("User not specified #{params.inspect}")
-            render json: {status: 400, message: 'Bad Request'}, status: 400
+            render_api_response 400, {message: 'Bad Request'}
             return
           end
 
@@ -56,7 +56,7 @@ module Api
                 return render_unauthorized
               else
                 aa.double_increment
-                return render json: {status: 200, message: 'Success.', token: aa.current_token.to_jwt}, status: 200
+                return render_api_response 200, {message: 'Success.', token: aa.current_token.to_jwt}
               end
             else
               logger.info ("No ActorAddress found for token #{token}")
@@ -65,13 +65,13 @@ module Api
           end
 
           aa = ActorAddress.create_for_user(user, client_metadata: params[:client_metadata])
-          render json: {status: 200, message: 'Success.', token: aa.current_token.to_jwt}, status: 200
+          render_api_response 200, { message: 'Success.', token: aa.current_token.to_jwt}
 
         rescue Exception => e
           # TODO - specific issues with the request should be handle as 400
           logger.warn "Authenticate Exception: #{e.class} #{e}"
           logger.error e.backtrace.join("\n")
-          render json: {status: 500, message: 'Internal Server Error'}, status: 500
+          render_api_response 500, {message: 'Internal Server Error'}
         end
       end
 
@@ -295,11 +295,11 @@ module Api
             capabilities: get_capabilities_for_actor_address(aa),
           }
 
-          render json: resp, status: 200
+          render_api_response 200, resp
         rescue Exception => e
           logger.error "Authenticate Exception: #{e.class} #{e}"
           logger.error e.backtrace.join("\n")
-          render json: {status: 500, message: 'Internal Server Error'}, status: 500
+          render_api_response 500, {message: 'Internal Server Error'}
         end
       end
 
@@ -332,7 +332,7 @@ module Api
         upgraded_token = AuthToken.upgrade_token(token_string)
         if upgraded_token
           Rails.cache.write cache_key, 1, expires_in: 1.days
-          return render json: {status: 200, message: 'Success.', token: upgraded_token.to_jwt}, status: 200
+          return render_api_response 200, {message: 'Success.', token: upgraded_token.to_jwt}
         else
           return render_unauthorized
         end

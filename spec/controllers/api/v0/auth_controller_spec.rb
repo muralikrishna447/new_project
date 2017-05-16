@@ -5,6 +5,13 @@ describe Api::V0::AuthController do
     @other_user = Fabricate :user, email: 'jane@chefsteps.com', password: 'matter', name: 'Jane'
     @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
     @aa = ActorAddress.create_for_user @user, client_metadata: "cooking_app"
+    # Make sure no tokens are getting logged!
+    Rails.logger.stub(:info) do |log_line|
+      contains_token = log_line =~ /eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/
+      if contains_token
+        raise "Token being logged - #{log_line}"
+      end
+    end
   end
 
   context 'POST /authenticate' do
