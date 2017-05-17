@@ -302,7 +302,8 @@ describe Api::V0::FirmwareController do
 
   it 'should not return firmware version if up to date' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.41.3', 'espFirmwareVersion' => @esp_version, 'hardwareVersion' => 'JL.p5'}
+    post :updates, {'appVersion'=> '2.41.3', 'appFirmwareVersion' => '61',
+                    'espFirmwareVersion' => @esp_version, 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -336,14 +337,14 @@ describe Api::V0::FirmwareController do
         "urgency" => "critical",
         "updates" => [
           {
-            "versionType" => "bootloaderVersion",
-            "type" => "BOOTLOADER_FIRMWARE",
-            "version" => @bootloader_version
-          },
-          {
             "versionType" => "espFirmwareVersion",
             "type" => "WIFI_FIRMWARE",
             "version" => @esp_version
+          },
+          {
+            "versionType" => "bootloaderVersion",
+            "type" => "BOOTLOADER_FIRMWARE",
+            "version" => @bootloader_version
           },
           {
             "versionType" => "appFirmwareVersion",
@@ -354,16 +355,30 @@ describe Api::V0::FirmwareController do
       }
       mock_s3_json("manifests/2.52.0/manifest", bootloader_manifest)
       set_version_enabled('2.52.0', true)
-
     end
 
     it 'should get bootloader' do
       request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-      post :updates, {'appVersion'=> '2.41.3', 'espFirmwareVersion' => @esp_version, 'hardwareVersion' => 'JL.p5'}
+      params = {
+        'appVersion'=> '2.52.0',
+        'appFirmwareVersion' => '10',
+        'espFirmwareVersion' => '10',
+        'hardwareVersion' => 'JL.p5',
+        'bootloaderVersion' => '21',
+      }
+      post :updates, params
       response.should be_success
       resp = JSON.parse(response.body)
-      resp['updates'].length.should == 0
-      puts 'yes'
+      resp['updates'].length.should == 3
+
+      resp['updates'][0]['type'].should == 'WIFI_FIRMWARE'
+      resp['updates'][0]['bootModeType'].should == nil
+
+      resp['updates'][1]['type'].should == 'BOOTLOADER_FIRMWARE'
+      resp['updates'][1]['bootModeType'].should == nil
+
+      resp['updates'][1]['type'].should == 'APPLICATION_FIRMWARE'
+      resp['updates'][1]['bootModeType'].should == 'BOOTLOADER_BOOT_MODE'
     end
   end
 end
