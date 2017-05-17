@@ -233,7 +233,7 @@ module Api
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
 
         elsif path_uri.host == "www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
-          render_api_response 200, {redrect: chefsteps_sso_url(params[:path])}
+          render_api_response 200, {redirect: chefsteps_sso_url(params[:path])}
 
         elsif path_uri.host == Rails.application.config.shared_config[:spree_domain]
           render_api_response 200, {redirect: spree_sso_url(params[:path])}
