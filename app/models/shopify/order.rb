@@ -19,6 +19,7 @@ class Shopify::Order
 
   def user
     return @user unless @user.nil?
+    return nil unless @api_order.respond_to?(:customer)
 
     # TODO - add test coverage for user not found scenarios
     user_id = @api_order.customer.multipass_identifier
@@ -107,7 +108,8 @@ class Shopify::Order
     # Sync premium / discount status
     sync_user
     # TODO - figure out how to try to do this only once
-    send_analytics
+    # No customer means Amazon or other imported order for which we don't want to send analytics
+    send_analytics if user
   end
 
 
