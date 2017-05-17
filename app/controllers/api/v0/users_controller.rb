@@ -115,6 +115,7 @@ module Api
         render_api_response 200, {:capabilities => user_capabilities}
       end
 
+      #API needed for spree, called when a customer purchases ChefSteps premium
       def make_premium
         [:id, :price].each do |param|
           unless params[param]
