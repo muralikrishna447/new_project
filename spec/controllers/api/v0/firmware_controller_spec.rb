@@ -328,4 +328,44 @@ describe Api::V0::FirmwareController do
     post :updates
     response.should_not be_success
   end
+
+  describe 'bootloader' do
+    before :each do
+      @bootloader_version = '24'
+      bootloader_manifest = {
+        "releaseNotesUrl" => @release_notes_url_1,
+        "releaseNotes" => @release_notes,
+        "urgency" => "critical",
+        "updates" => [
+          {
+            "versionType" => "bootloaderVersion",
+            "type" => "BOOTLOADER_FIRMWARE",
+            "version" => @bootloader_version
+          },
+          {
+            "versionType" => "espFirmwareVersion",
+            "type" => "WIFI_FIRMWARE",
+            "version" => @esp_version
+          },
+          {
+            "versionType" => "appFirmwareVersion",
+            "type" => "APPLICATION_FIRMWARE",
+            "version" => @app_firmware_version
+          }
+        ]
+      }
+      mock_s3_json("manifests/2.52.0/manifest", bootloader_manifest)
+      set_version_enabled('2.52.0', true)
+
+    end
+
+    it 'should get bootloader' do
+      request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+      post :updates, {'appVersion'=> '2.41.3', 'espFirmwareVersion' => @esp_version, 'hardwareVersion' => 'JL.p5'}
+      response.should be_success
+      resp = JSON.parse(response.body)
+      resp['updates'].length.should == 0
+      puts 'yes'
+    end
+  end
 end
