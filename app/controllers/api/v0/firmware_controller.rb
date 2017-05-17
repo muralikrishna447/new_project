@@ -11,7 +11,8 @@ module Api
       # identifyCirculator
       VERSION_MAPPING = {
         "APPLICATION_FIRMWARE" => "appFirmwareVersion",
-        "WIFI_FIRMWARE"        => "espFirmwareVersion"
+        "WIFI_FIRMWARE"        => "espFirmwareVersion",
+        "BOOTLOADER_FIRMWARE"  => "bootloaderVersion",
       }
 
       UPDATE_URGENCIES = ['normal', 'critical', 'mandatory']
@@ -33,7 +34,7 @@ module Api
         end
 
         if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil?
-          logger.info("Must specify appFirmwareVersion and espFirmwareVersion")
+          logger.warn("Must specify appFirmwareVersion and espFirmwareVersion")
           return render_empty_response
         end
 
@@ -91,9 +92,11 @@ module Api
         version_string.match(/s?(\d*)/)[1].to_i # handle staging
       end
 
-      def build_response_from_manifest(user, manifest)
+
+      def get_applicable_updates(user, manifest)
         updates = []
         can_downgrade = BetaFeatureService.user_has_feature(user, 'allow_dfu_downgrade')
+
         manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
           current_version = params[param_type] || ""
@@ -118,7 +121,9 @@ module Api
           end
 
           if u['type'] == 'APPLICATION_FIRMWARE'
-            u = get_app_firmware_metadata(u)
+            u = get_firmware_metadata(u)
+          elsif u['type'] == 'BOOTLOADER_FIRMWARE'
+            u = get_firmware_metadata(u)
           elsif u['type'] == 'WIFI_FIRMWARE'
             u = get_wifi_firmware_metadata(u)
           end
@@ -129,6 +134,19 @@ module Api
 
           updates << u
         end
+        return updates
+      end
+
+      def build_response_from_manifest(user, manifest)
+        updates = get_applicable_updates(user, manifest)
+        update_types = updates.map {|u| u['type'] }
+        puts "#{update_types}"
+        if update_types.include? 'BOOTLOADER_FIRMWARE'
+          updates.last['bootModeType'] = 'BOOTLOADER_BOOT_MODE'
+        elsif update_types.include? 'APPLICATION_FIRMWARE'
+          updates.last['bootModeType'] = 'APPLICATION_BOOT_MODE'
+        end
+
 
         if BetaFeatureService.user_has_feature(user, 'manifest_urgency')
           manifest_urgency = manifest['urgency'] || 'normal'
@@ -193,11 +211,9 @@ module Api
         u
       end
 
-      def get_app_firmware_metadata(update)
+      def get_firmware_metadata(update)
         u = update.dup
         link = get_firmware_link(u['type'], u['version'])
-
-        u['bootModeType'] = 'APPLICATION_BOOT_MODE'
 
         u['transfer'] = [
           {
@@ -254,9 +270,13 @@ module Api
       end
 
       def get_firmware_link(type, version)
+        fname = {
+          "APPLICATION_FIRMWARE" => "application.bin",
+          "BOOTLOADER_FIRMWARE"  => "bootloader.bin",
+        }[type]
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
         bucket_name = Rails.application.config.firmware_bucket
-        key_name = "joule/#{type}/#{version}/application.bin"
+        key_name = "joule/#{type}/#{version}/#{fname}"
         bucket = AWS::S3::Bucket.new(bucket_name, :client => s3_client)
         o = bucket.objects[key_name]
         o.url_for(:get, {secure: true, expires: LINK_EXPIRE_SECS}).to_s
