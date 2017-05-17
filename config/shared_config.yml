@@ -58,6 +58,8 @@ test:
   env: "test"
   chefsteps_endpoint: "chefsteps-test-endpoint.com"
   freshsteps_endpoint: "test.url"
+  spree_domain: "spree.test.com"
+  spree_endpoint: "https://spree.test.com/"
   bloom:
     api_endpoint: "bloomAPI"
     community_endpoint: "communityAPI"
