@@ -337,11 +337,6 @@ describe Api::V0::FirmwareController do
         "urgency" => "critical",
         "updates" => [
           {
-            "versionType" => "espFirmwareVersion",
-            "type" => "WIFI_FIRMWARE",
-            "version" => @esp_version
-          },
-          {
             "versionType" => "bootloaderVersion",
             "type" => "BOOTLOADER_FIRMWARE",
             "version" => @bootloader_version
@@ -350,7 +345,12 @@ describe Api::V0::FirmwareController do
             "versionType" => "appFirmwareVersion",
             "type" => "APPLICATION_FIRMWARE",
             "version" => @app_firmware_version
-          }
+          },
+          {
+            "versionType" => "espFirmwareVersion",
+            "type" => "WIFI_FIRMWARE",
+            "version" => @esp_version
+          },
         ]
       }
       mock_s3_json("manifests/2.52.0/manifest", bootloader_manifest)

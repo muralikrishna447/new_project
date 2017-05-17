@@ -134,13 +134,20 @@ module Api
 
           updates << u
         end
+
+        # We always want to apply updates in this order.
+        sort_order = {
+          "WIFI_FIRMWARE"        => 0,
+          "BOOTLOADER_FIRMWARE"  => 1,
+          "APPLICATION_FIRMWARE" => 2,
+        }
+        updates.sort_by! {|u| sort_order[u['type']] }
         return updates
       end
 
       def build_response_from_manifest(user, manifest)
         updates = get_applicable_updates(user, manifest)
         update_types = updates.map {|u| u['type'] }
-        puts "#{update_types}"
         if update_types.include? 'BOOTLOADER_FIRMWARE'
           updates.last['bootModeType'] = 'BOOTLOADER_BOOT_MODE'
         elsif update_types.include? 'APPLICATION_FIRMWARE'
