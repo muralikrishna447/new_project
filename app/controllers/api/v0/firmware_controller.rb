@@ -277,13 +277,13 @@ module Api
       end
 
       def get_firmware_link(type, version)
-        fname = {
+        file_name = {
           "APPLICATION_FIRMWARE" => "application.bin",
           "BOOTLOADER_FIRMWARE"  => "bootloader.bin",
         }[type]
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
         bucket_name = Rails.application.config.firmware_bucket
-        key_name = "joule/#{type}/#{version}/#{fname}"
+        key_name = "joule/#{type}/#{version}/#{file_name}"
         bucket = AWS::S3::Bucket.new(bucket_name, :client => s3_client)
         o = bucket.objects[key_name]
         o.url_for(:get, {secure: true, expires: LINK_EXPIRE_SECS}).to_s
