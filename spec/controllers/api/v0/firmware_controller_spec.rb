@@ -33,14 +33,12 @@ describe Api::V0::FirmwareController do
       set_version_enabled(v, true)
     end
 
-    @link = 'http://www.foo.com'
     @release_notes_url_1 = "https://www.chefsteps.com/releases/46.11"
     @release_notes = [
       'Adds a display',
       'Ability to reticulate splines',
     ]
     @app_firmware_version = "61"
-    controller.stub(:get_firmware_link).and_return(@link)
     manifest =  {
       "releaseNotesUrl" => @release_notes_url_1,
       "releaseNotes" => @release_notes,
@@ -275,7 +273,7 @@ describe Api::V0::FirmwareController do
     update['bootModeType'].should == 'APPLICATION_BOOT_MODE'
     update['transfer'].length.should == 1
 
-    update['transfer'][0]['url'].should == @link
+    expect(update['transfer'][0]['url']).to include('APPLICATION_FIRMWARE/61/application.bin')
     update['transfer'][0]['type'].should == 'download'
 
   end
