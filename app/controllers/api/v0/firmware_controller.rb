@@ -33,8 +33,8 @@ module Api
           return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify mobile app version'}
         end
 
-        if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil?
-          logger.warn("Must specify appFirmwareVersion and espFirmwareVersion")
+        if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil? || params[:bootloaderVersion].nil?
+          logger.warn("Must specify appFirmwareVersion, espFirmwareVersion, and bootloaderVersion")
           return render_empty_response
         end
 
