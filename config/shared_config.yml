@@ -2,6 +2,8 @@ development:
   env: "development"
   chefsteps_endpoint: "localhost:3000"
   freshsteps_endpoint: "localhost:4000"
+  spree_domain: "localhost"
+  spree_endpoint: "http://localhost:3001"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom:
     api_endpoint: "http://localhost:5000"
@@ -28,6 +30,8 @@ staging:
   env: "staging"
   chefsteps_endpoint: "chocolateyshatner.com"
   freshsteps_endpoint: "d2w4l5nz3qs7iy.cloudfront.net"
+  spree_domain: "spree-staging1.herokuapp.com"
+  spree_endpoint: "https://spree-staging1.herokuapp.com/"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom: &staging_bloom
     api_endpoint: "https://cs-bloom-api-staging.herokuapp.com"
@@ -41,6 +45,8 @@ staging2:
   env: "staging"
   chefsteps_endpoint: "vanillanimoy.com"
   freshsteps_endpoint: "d3874mzg2llbaz.cloudfront.net"
+  spree_domain: "spree-staging1.herokuapp.com"
+  spree_endpoint: "https://spree-staging1.herokuapp.com/"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom:
     <<: *staging_bloom

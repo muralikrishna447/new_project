@@ -177,6 +177,13 @@ module Api
         url
       end
 
+      def spree_sso_url(path)
+        short_lived_token = AuthToken.provide_short_lived(@current_token).to_jwt
+        url = "#{Rails.application.config.shared_config[:spree_endpoint]}/sso?token=#{short_lived_token}"
+        url += "&path=#{path}" if path.present?
+        url
+      end
+
       # Used for SSO with third-party services
       # DOES NOT ACTUALLY REDIRECT
       # Returns a json object with a redirect url
@@ -226,8 +233,10 @@ module Api
           render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
 
         elsif path_uri.host == "www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
-          render_api_response 200, {redirect: chefsteps_sso_url(params[:path])}
+          render_api_response 200, {redrect: chefsteps_sso_url(params[:path])}
 
+        elsif path_uri.host == Rails.application.config.shared_config[:spree_domain]
+          render_api_response 200, {redirect: spree_sso_url(params[:path])}
         else
           return render_api_response 404, {message: "No redirect configured for path [#{path}]."}
         end
