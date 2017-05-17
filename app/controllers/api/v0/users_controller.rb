@@ -119,7 +119,7 @@ module Api
       def make_premium
         [:id, :price].each do |param|
           unless params[param]
-            return render json: {status: 400, message: "Bad Request: #{param} parameter missing."}, status: 400
+            return render_api_response 400, {message: "Bad Request: #{param} parameter missing."}
           end
         end
 
