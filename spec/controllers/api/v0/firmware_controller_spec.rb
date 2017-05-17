@@ -378,6 +378,7 @@ describe Api::V0::FirmwareController do
 
       resp['updates'][1]['type'].should == 'BOOTLOADER_FIRMWARE'
       resp['updates'][1]['bootModeType'].should == nil
+      expect(resp['updates'][1]['transfer'][0]['url']).to include('BOOTLOADER_FIRMWARE/24/bootloader.bin')
 
       resp['updates'][2]['type'].should == 'APPLICATION_FIRMWARE'
       resp['updates'][2]['bootModeType'].should == 'BOOTLOADER_BOOT_MODE'
