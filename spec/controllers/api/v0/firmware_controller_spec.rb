@@ -377,8 +377,8 @@ describe Api::V0::FirmwareController do
       resp['updates'][1]['type'].should == 'BOOTLOADER_FIRMWARE'
       resp['updates'][1]['bootModeType'].should == nil
 
-      resp['updates'][1]['type'].should == 'APPLICATION_FIRMWARE'
-      resp['updates'][1]['bootModeType'].should == 'BOOTLOADER_BOOT_MODE'
+      resp['updates'][2]['type'].should == 'APPLICATION_FIRMWARE'
+      resp['updates'][2]['bootModeType'].should == 'BOOTLOADER_BOOT_MODE'
     end
   end
 end
