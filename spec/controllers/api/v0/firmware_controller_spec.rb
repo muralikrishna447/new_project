@@ -357,7 +357,7 @@ describe Api::V0::FirmwareController do
       set_version_enabled('2.52.0', true)
     end
 
-    it 'should get bootloader' do
+    it 'should get wifi/bootloader/app updates in correct order' do
       request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
       params = {
         'appVersion'=> '2.52.0',
@@ -379,6 +379,27 @@ describe Api::V0::FirmwareController do
 
       resp['updates'][2]['type'].should == 'APPLICATION_FIRMWARE'
       resp['updates'][2]['bootModeType'].should == 'BOOTLOADER_BOOT_MODE'
+    end
+
+    it 'should have correct boot mode if bootloader is up to date' do
+      request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+      params = {
+        'appVersion'=> '2.52.0',
+        'appFirmwareVersion' => '10',
+        'espFirmwareVersion' => '10',
+        'hardwareVersion' => 'JL.p5',
+        'bootloaderVersion' => '24',
+      }
+      post :updates, params
+      response.should be_success
+      resp = JSON.parse(response.body)
+      resp['updates'].length.should == 2
+
+      resp['updates'][0]['type'].should == 'WIFI_FIRMWARE'
+      resp['updates'][0]['bootModeType'].should == nil
+
+      resp['updates'][1]['type'].should == 'APPLICATION_FIRMWARE'
+      resp['updates'][1]['bootModeType'].should == 'APPLICATION_BOOT_MODE'
     end
   end
 end
