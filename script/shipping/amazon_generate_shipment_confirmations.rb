@@ -18,7 +18,7 @@ option_parser = OptionParser.new do |option|
     options[:store] = store
   end
 
-  option.on('-i', '--input INPUT', 'Amazon unshipped order report from Seller Central') do |input|
+  option.on('-i', '--input INPUT', 'Shipments file from Rosti') do |input|
     options[:input] = input
   end
 end
