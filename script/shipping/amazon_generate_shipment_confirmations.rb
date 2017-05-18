@@ -76,9 +76,9 @@ csv_str = CSV.generate(col_sep: "\t") do |output|
   # We ship each item separately, so we need to generate one line
   # per tracking number where the quantity is always 1.
   amazon_shipments.each do |shipment|
+    amazon_order_id = amazon_order_id(shipment.order)
+    amazon_order_item_id = amazon_order_item_id(shipment.order)
     shipment.tracking_numbers.each_index do |i|
-      amazon_order_id = amazon_order_id(shipment.order)
-      amazon_order_item_id = amazon_order_item_id(shipment.order)
       Rails.logger.debug "Adding confirmation for Shopify order with id #{shipment.order.id}, " \
                          "name #{shipment.order.name}, Amazon order with id #{amazon_order_id}, " \
                          "item id #{amazon_order_item_id}, tracking number #{shipment.tracking_numbers[i]}"
