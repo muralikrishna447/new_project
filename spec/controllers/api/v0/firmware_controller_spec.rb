@@ -165,6 +165,14 @@ describe Api::V0::FirmwareController do
     resp['updates'].length.should == 0
   end
 
+  it 'should return no updates if no bootloaderVersion provided' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5',
+                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
+  end
 
   it 'should allow downgrades if beta feature allows it' do
     BetaFeatureService.stub(:user_has_feature).with(anything(), "allow_dfu_downgrade")
