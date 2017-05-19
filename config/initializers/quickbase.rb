@@ -1,5 +1,5 @@
+require 'quickbase_client'
 if ENV["QUICKBASE_USERNAME"].present? && ENV["QUICKBASE_PASSWORD"].present?
-  require 'quickbase_client'
 
   QuickbaseClient = QuickBase::Client.init(
     {
@@ -17,7 +17,7 @@ if ENV["QUICKBASE_USERNAME"].present? && ENV["QUICKBASE_PASSWORD"].present?
     }
   else
     QuickbaseOptions = {
-      units_id: "bmq3andqx",
+      units_id: "bmrihe3d8",
       units_query_id: "10"
     }
   end
