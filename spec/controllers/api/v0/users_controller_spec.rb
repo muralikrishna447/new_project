@@ -12,6 +12,14 @@ describe Api::V0::UsersController do
     @other_token = 'Bearer ' + @other_aa.current_token.to_jwt
     BetaFeatureService.stub(:user_has_feature).with(@other_user, anything()) \
       .and_return(false)
+
+    issued_at = (Time.now.to_f * 1000).to_i
+    service_claim = {
+        iat: issued_at,
+        service: 'CSSpree'
+    }
+    @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+    @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
   end
 
   context 'GET /me' do
@@ -121,6 +129,39 @@ describe Api::V0::UsersController do
   context 'POST /international_joule' do
     it "should add the user to mailchimp" do
       pending "Gotta figure out the mailchimp stuff"
+    end
+  end
+
+  context 'POST /make_premium' do
+    it "makes a valid user premium" do
+      #the user is first NOT premium
+      request.env['HTTP_AUTHORIZATION'] = @token
+      get :me
+      response.code.should == "200"
+      user_info = JSON.parse(response.body)
+      expect(user_info["premium"]).to be_false
+
+      #make the user premium
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      post :make_premium, {id: 100, price: 29}
+      response.code.should == "200"
+
+      #the user should now be premium
+      request.env['HTTP_AUTHORIZATION'] = @token
+      get :me
+      response.code.should == "200"
+      user_info = JSON.parse(response.body)
+      expect(user_info["premium"]).to be_true
+    end
+
+    it "fails when arguments are omitted" do
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      post :make_premium, {price: 29}
+      response.code.should == "400"
+
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      post :make_premium, {id: 100}
+      response.code.should == "400"
     end
   end
 

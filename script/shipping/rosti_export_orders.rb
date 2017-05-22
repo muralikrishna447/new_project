@@ -1,5 +1,4 @@
 require './rails_shim'
-require '../../app/models/shopify/order'
 
 options = {}
 option_parser = OptionParser.new do |option|
@@ -30,7 +29,7 @@ ShopifyAPI::Base.site = "https://#{options[:api_key]}:#{options[:password]}@#{op
 
 Fulfillment::PendingOrderExporter.perform(
   storage: 'stdout',
-  skus: [Shopify::Order::JOULE_SKU],
+  skus: Fulfillment::ROSTI_FULFILLABLE_SKUS,
   open_fulfillment: false,
   trigger_child_job: false,
   quantity: options[:quantity].to_i

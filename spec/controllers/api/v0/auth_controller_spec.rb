@@ -446,6 +446,12 @@ describe Api::V0::AuthController do
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
 
+    it 'handles spree redirect' do
+      get :external_redirect, :path => "https://spree.test.com/"
+      response.code.should == '200'
+      JSON.parse(response.body)['redirect'].should start_with("https://spree.test.com/")
+    end
+
     it 'handles chefsteps redirect' do
       redirect_base = "www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
       token = request.env['HTTP_AUTHORIZATION']
