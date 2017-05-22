@@ -20,7 +20,7 @@ module Fulfillment
       submitted_order_filename = "#{Fulfillment::RostiOrderSubmitter.type}/#{Fulfillment::RostiOrderSubmitter.type}_#{filename_date.strftime('%Y-%m-%d')}_#{export_id}.csv"
 
       params = {
-          skus: [Shopify::Order::JOULE_SKU],
+          skus: Fulfillment::ROSTI_FULFILLABLE_SKUS,
           quantity: max_quantity,
           storage: 's3',
           storage_s3_region: Fulfillment::PendingOrderExporter.s3_region,
@@ -30,7 +30,7 @@ module Fulfillment
           child_job_class: 'Fulfillment::RostiOrderSubmitter',
           child_job_params: {
               notification_email: notification_email,
-              skus: [Shopify::Order::JOULE_SKU],
+              skus: Fulfillment::ROSTI_FULFILLABLE_SKUS,
               search_params: {
                   storage: 's3',
                   storage_s3_region: Fulfillment::PendingOrderExporter.s3_region,

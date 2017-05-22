@@ -17,7 +17,7 @@ namespace :fulfillment do
     max_quantity = args[:max_quantity].to_i
 
     params = {
-      skus: [Shopify::Order::JOULE_SKU],
+      skus: Fulfillment::ROSTI_FULFILLABLE_SKUS,
       search_params: {
         storage: 's3',
         storage_filename: args[:pending_order_filename],
@@ -55,7 +55,7 @@ namespace :fulfillment do
   task :validate_shipping_addresses, [:inline] => :environment do |_t, args|
     args.with_defaults(inline: false)
 
-    skus = [Shopify::Order::JOULE_SKU]
+    skus = Fulfillment::ROSTI_FULFILLABLE_SKUS
     if args[:inline]
       Fulfillment::ShippingAddressValidator.perform(skus)
     else
