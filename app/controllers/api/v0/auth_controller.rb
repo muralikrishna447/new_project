@@ -188,7 +188,7 @@ module Api
         short_lived_token = AuthToken.provide_short_lived(@current_token).to_jwt
         port = path_uri.port.present? ? ":#{path_uri.port}" : ''
         url = "#{path_uri.scheme}://#{path_uri.host}#{port}/sso?token=#{short_lived_token}"
-        url += "&path=#{path_uri.to_s}" if path.present?
+        url += "&path=#{path_uri.to_s}"
         url
       end
 
