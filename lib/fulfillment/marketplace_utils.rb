@@ -76,13 +76,19 @@ module Fulfillment
     # Returns true if the delivery variant was selected for the line item,
     # false otherwise.
     def self.delivery?(line_item)
-      line_item.variant_title == 'Delivery'
+      # TODO this is pretty janky, but good enough for now.
+      # Ideally we look up the variant for the line item and see if its
+      # options include this.
+      line_item.variant_title.include?('Delivery')
     end
 
     # Returns true if the pickup variant was selected for the line item,
     # false otherwise.
     def self.pickup?(line_item)
-      line_item.variant_title == 'Pickup'
+      # TODO this is pretty janky, but good enough for now.
+      # Ideally we look up the variant for the line item and see if its
+      # options include this.
+      line_item.variant_title.include?('Pickup')
     end
 
     # Returns true if the customer opted in to receive SMS reminders
