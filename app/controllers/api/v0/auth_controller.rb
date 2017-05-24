@@ -184,6 +184,14 @@ module Api
         url
       end
 
+      def localhost_spree_sso_url(path_uri)
+        short_lived_token = AuthToken.provide_short_lived(@current_token).to_jwt
+        port = path_uri.port.present? ? ":#{path_uri.port}" : ''
+        url = "#{path_uri.scheme}://#{path_uri.host}#{port}/sso?token=#{short_lived_token}"
+        url += "&path=#{path_uri.to_s}" if path.present?
+        url
+      end
+
       # Used for SSO with third-party services
       # DOES NOT ACTUALLY REDIRECT
       # Returns a json object with a redirect url
@@ -237,6 +245,8 @@ module Api
 
         elsif path_uri.host == Rails.application.config.shared_config[:spree_domain]
           render_api_response 200, {redirect: spree_sso_url(params[:path])}
+        elsif (Rails.env.staging? || Rails.env.staging2?) && path_uri.host == 'localhost'
+          render_api_response 200, {redirect: localhost_spree_sso_url(path_uri)}
         else
           return render_api_response 404, {message: "No redirect configured for path [#{path}]."}
         end
