@@ -6,5 +6,9 @@ class CreateGuideActivities < ActiveRecord::Migration
       t.boolean :autoupdate, default: true
       t.timestamps
     end
+
+    add_index :guide_activities, :guide_id
+    add_index :guide_activities, :activity_id
+
   end
 end

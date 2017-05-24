@@ -3755,6 +3755,20 @@ CREATE INDEX index_gift_certificates_on_token ON gift_certificates USING btree (
 
 
 --
+-- Name: index_guide_activities_on_activity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_guide_activities_on_activity_id ON guide_activities USING btree (activity_id);
+
+
+--
+-- Name: index_guide_activities_on_guide_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_guide_activities_on_guide_id ON guide_activities USING btree (guide_id);
+
+
+--
 -- Name: index_inclusions_on_activity_id_and_course_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
