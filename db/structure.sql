@@ -981,6 +981,7 @@ CREATE TABLE guide_activities (
     id integer NOT NULL,
     guide_id character varying(255),
     activity_id integer,
+    guide_digest character varying(255),
     autoupdate boolean DEFAULT true,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL

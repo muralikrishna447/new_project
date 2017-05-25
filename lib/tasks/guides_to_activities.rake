@@ -21,11 +21,29 @@ def upload_image(image_path)
   result.to_json
 end
 
-def should_process(guide)
-  # No slimmies, activities without images are :( looking
-  return false if ! hero_image(guide)
+def guide_digest(g)
+  Digest::MD5.hexdigest(g.to_json)
+end
+
+def should_process(guide, force = false)
+  if ! hero_image(guide)
+    puts "No hero image, ignoring"
+    return false
+  end
+
   ga = GuideActivity.where(guide_id: guide['id'])[0]
-  return false if ga && ! ga.autoupdate
+  if ga
+    if ! ga.autoupdate
+      puts "Manually edited activity, not overwriting"
+      return false
+    end
+
+    if ! force && ga.guide_digest == guide_digest(guide)
+      puts "Digest hasn't changed, skipping"
+      return false
+    end
+  end
+
   return true
 end
 
@@ -40,8 +58,7 @@ def add_steps(a, g)
 
   g['steps'].each_with_index do |gs, idx|
 
-    title = gs['title']
-    title.gsub! /\.$/, ''
+    title = gs['title'].gsub /\.$/, ''
 
     image = upload_image(gs['noVideoThumbnail'] || gs['image'])
 
@@ -68,9 +85,26 @@ def add_steps(a, g)
   end
 end
 
-def guide_to_activity(manifest, g)
-  puts "------ Processing #{g['title']}"
+def description(guide)
+  <<-EOT
+  #{guide['description']}
+  <div class="flex-center text-center" style="flex-direction: column;">
+    <div class="text-center" style="max-width: 400px; margin-bottom: 11px;">
+      <i>Pick your perfect time and temperature using Joule on Facebook Messenger</i>
+    </div>
+    <div>
+      [sendToMessenger \"Time and temp for #{guide['title']}\"]
+    </div>
+  </div>
+  EOT
+end
+
+def guide_to_activity(manifest, g, force=false)
+
+  digest = guide_digest(g)
+
   ga = GuideActivity.where(guide_id: g['id'])[0]
+
   a = nil
 
   if ga
@@ -83,40 +117,39 @@ def guide_to_activity(manifest, g)
   end
 
   a.title = g['title']
-  a.description = "#{g['description']}<p>Pick your doneness using Joule on Facebook Messenger.
-[sendToMessenger \"Cook #{g['title']}\"]</p>"
+  a.description = description(g)
   a.activity_type = ['Recipe']
   a.difficulty = 'intermediate'
   a.premium = false
   a.include_in_gallery = true
   a.tag_list = get_tags(manifest, g)
+  a.image_id = upload_image(hero_image(g))
 
-  # Even though we might be updating an activity, don't update image every time b/c filepicker has no idempotent
-  # way to do this, and it seems crazy to create a million duplicates.
-  # TODO put this back
-  if ! a.image_id
-    a.image_id = upload_image(hero_image(g))
-  end
-
-  add_steps(a, g)
+  #add_steps(a, g)
 
   a.save!
   ga.guide_id = g['id']
   ga.activity_id = a.id
+
+  ga.guide_digest = digest
   ga.save!
 
   puts "------ Output http://localhost:3000/activities/#{a.slug}"
 end
 
 namespace :activities do
-  task :guides_to_activities => :environment do
+  task :guides_to_activities, [:force] => :environment do |t, args|
+    args.with_defaults(force: false)
     response = HTTParty.get(manifest_url)
     manifest = JSON.parse(response.body)
+
     manifest['guide'].each do |guide|
-      if should_process(guide)
+      puts "------ Considering #{guide['title']}"
+
+      if should_process(guide, args[:force])
         guide_to_activity(manifest, guide)
-        break
       end
+      break
     end
     Rails.cache.clear
   end

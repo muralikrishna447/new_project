@@ -3,6 +3,7 @@ class CreateGuideActivities < ActiveRecord::Migration
     create_table :guide_activities do |t|
       t.string :guide_id
       t.integer :activity_id
+      t.string :guide_digest
       t.boolean :autoupdate, default: true
       t.timestamps
     end
