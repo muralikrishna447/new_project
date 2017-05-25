@@ -53,6 +53,71 @@ def get_tags(manifest, g)
   tags = tags + manifest['collection'].keep_if {|c| c['items'].find {|i| i['id'] == g['id']}}.map { |c| c['title']}.join(', ')
 end
 
+def add_equipment(equipment, line)
+  id = Equipment.where(title: line).first_or_create.id
+  equipment.push({ equipment: { id: id, title: line }})
+end
+
+# Typical case looks like "Egg yolks, 6 oz (160 g), about 11"
+# Do our best to parse that but since it is free text, if something doesn't match up, fall back to putting quantity into
+# notes.
+def add_ingredient(ingredients, line)
+  title, quantityText, note = line.split(',').map(&:strip)
+  quantity, unit = /.*\(([\S]*)\S*([^)]*)\)/.match(quantityText).captures.map(&:strip)
+  if quantity
+    if ! unit
+      unit = 'ea'
+    end
+  else
+    note = [quantityText, note].join(', ')
+  end
+
+  ingredients.push(
+    ingredient: {
+      title: title
+    },
+    display_quantity: quantity,
+    unit: unit,
+    note: note
+  )
+
+  puts 'HELLO'
+  puts line
+  puts ingredients.last
+end
+
+# Guides don't have ingredients and equipment as proper data, they live as plain text
+# in a "helper" field on a step. Nonetheless, they are typically formatted by convention and we
+# can attempt to parse them.
+
+def add_ingredients_and_equipment(a, step)
+  lines = step.split('<br>')
+  equipment = []
+  ingredients = []
+  state = :none
+
+  lines.each do |line|
+    line.strip!
+    if line =~ /equipment/i
+      state = :equipment
+    elsif line =~ /ingredient/i
+      state = :ingredients
+    elsif line.length >= 5
+      case state
+      when :equipment
+        add_equipment(equipment, line)
+      when :ingredients
+        add_ingredient(ingredients, line)
+      end
+    end
+  end
+
+  a.update_equipment_json(equipment)
+  a.update_ingredients_json(ingredients)
+
+  return state != :none
+end
+
 def add_steps(a, g)
   a.steps.destroy_all
 
@@ -60,28 +125,34 @@ def add_steps(a, g)
 
     title = gs['title'].gsub /\.$/, ''
 
-    image = upload_image(gs['noVideoThumbnail'] || gs['image'])
+    #image = upload_image(gs['noVideoThumbnail'] || gs['image'])
 
     description = gs['description']
 
+    handled = false
     if gs['helper']
       description += "<p>#{gs['helper']}</p>"
+
+      handled = add_ingredients_and_equipment(a, gs['helper'])
 
       # Steps with helpers often have garbage images for historical reasons
       image = nil
     end
 
-    if gs['buttonLink']
-      description += "<p class='button-group-inline' style='justify-content: center;'><a class=\"button outline orange\" href=\"#{gs['buttonLink']}\">#{gs['buttonText']}</a>"
-    end
+    if ! handled
 
-    step = Step.create!(
-      step_order: idx,
-      title: gs['title'],
-      directions: description,
-      image_id: image
-    )
-    a.steps.push(step)
+      if gs['buttonLink']
+        description += "<p class='button-group-inline' style='justify-content: center;'><a class=\"button outline orange\" href=\"#{gs['buttonLink']}\">#{gs['buttonText']}</a>"
+      end
+
+      step = Step.create!(
+        step_order: idx,
+        title: title,
+        directions: description,
+        image_id: image
+      )
+      a.steps.push(step)
+    end
   end
 end
 
@@ -125,7 +196,7 @@ def guide_to_activity(manifest, g, force=false)
   a.tag_list = get_tags(manifest, g)
   a.image_id = upload_image(hero_image(g))
 
-  #add_steps(a, g)
+  add_steps(a, g)
 
   a.save!
   ga.guide_id = g['id']
