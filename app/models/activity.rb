@@ -264,6 +264,7 @@ class Activity < ActiveRecord::Base
         unless title.nil? || title.blank?
           title.strip!
           equipment_item = Equipment.where(id: e[:equipment][:id]).first_or_create(title: title)
+          puts "----", equipment_item.inspect, self.inspect
           activity_equipment = ActivityEquipment.create!({
               activity_id: self.id,
               equipment_id: equipment_item.id,
