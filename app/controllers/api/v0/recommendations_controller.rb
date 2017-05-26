@@ -55,7 +55,11 @@ module Api
           # Which isn't considered an error.
           if platform == 'jouleApp' && (slot == 'homeHero' || slot == 'referPage')
             if circulator_owner || connected
-              possible_ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
+              if BetaFeatureService.user_has_feature(current_api_user, 'force_quick_and_easy_ad')
+                possible_ads = Advertisement.where(matchname: 'quickAndEasy').published.all.to_a
+              else
+                possible_ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
+              end
 
               # TODO: remove this hack for bacon ad. We hadn't thought through the problem that an ad
               # could be for a URL to content the app doesn't have yet. In the future, the app should
