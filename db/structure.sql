@@ -980,6 +980,7 @@ ALTER SEQUENCE gift_certificates_id_seq OWNED BY gift_certificates.id;
 CREATE TABLE guide_activities (
     id integer NOT NULL,
     guide_id character varying(255),
+    guide_title character varying(255),
     activity_id integer,
     guide_digest character varying(255),
     autoupdate boolean DEFAULT true,

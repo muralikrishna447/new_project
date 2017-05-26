@@ -1,3 +1,53 @@
+class GuideActivity < ActiveRecord::Base
+  validates_uniqueness_of :guide_id
+  belongs_to :activity
+  attr_accessible :activity_id, :guide_id, :guide_title, :autoupdate, :guide_digest
+
+  def self.create_or_update_from_guide(manifest, guide, force=false)
+
+    ga = GuideActivity.where(guide_id: guide['id'])[0]
+
+    if ! should_process(guide, force)
+      return ga
+    end
+
+    activity = nil
+
+    Activity.transaction do
+
+      if ga
+        # Already exists and allowed to update
+        activity = Activity.find(ga.activity_id)
+      else
+        # First-timer
+        activity = Activity.new
+        ga = GuideActivity.new
+      end
+
+      activity.title = guide['title']
+      activity.description = description(guide)
+      activity.activity_type = ['Recipe']
+      activity.difficulty = 'intermediate'
+      activity.premium = false
+      activity.include_in_gallery = true
+      activity.tag_list = get_tags(manifest, guide)
+      activity.image_id = upload_image(hero_image(guide))
+
+      add_steps(activity, guide)
+
+      activity.save!
+      ga.guide_id = guide['id']
+      ga.guide_title = guide['title']
+      ga.activity_id = activity.id
+
+      ga.guide_digest = guide_digest(guide)
+      ga.save!
+
+      return ga
+    end
+  end
+end
+
 def image_url(path)
   "http://d92f495ogyf88.cloudfront.net/circulator/" + path
 end
@@ -171,52 +221,5 @@ def description(guide)
     </div>
   </div>
   EOT
-end
-
-class GuideActivity < ActiveRecord::Base
-  validates_uniqueness_of :guide_id
-
-  def self.create_or_update_from_guide(manifest, guide, force=false)
-
-    ga = GuideActivity.where(guide_id: guide['id'])[0]
-
-    if ! should_process(guide, force)
-      return ga
-    end
-
-    activity = nil
-
-    Activity.transaction do
-
-      if ga
-        # Already exists and allowed to update
-        activity = Activity.find(ga.activity_id)
-      else
-        # First-timer
-        activity = Activity.new
-        ga = GuideActivity.new
-      end
-
-      activity.title = guide['title']
-      activity.description = description(guide)
-      activity.activity_type = ['Recipe']
-      activity.difficulty = 'intermediate'
-      activity.premium = false
-      activity.include_in_gallery = true
-      activity.tag_list = get_tags(manifest, guide)
-      activity.image_id = upload_image(hero_image(guide))
-
-      add_steps(activity, guide)
-
-      activity.save!
-      ga.guide_id = guide['id']
-      ga.activity_id = activity.id
-
-      ga.guide_digest = guide_digest(guide)
-      ga.save!
-
-      return ga
-    end
-  end
 end
 
