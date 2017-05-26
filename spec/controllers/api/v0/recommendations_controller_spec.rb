@@ -65,7 +65,7 @@ describe Api::V0::RecommendationsController do
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
-    parsed['results'][0]['title'].should eq 'Short on time?'
+    parsed['results'][0]['title'].should eq @quick_n_easy_ad.title
   end
 
   it 'should respond new-skool style with owner ad if known platform set, known slot, and signed in as joule purchaser' do
