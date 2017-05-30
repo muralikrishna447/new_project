@@ -212,14 +212,7 @@ end
 def description(guide)
   <<-EOT
   #{guide['description']}
-  <div class="flex-center text-center" style="flex-direction: column;">
-    <div class="text-center" style="max-width: 400px; margin-bottom: 11px;">
-      <i>Pick your perfect time and temperature using Joule on Facebook Messenger</i>
-    </div>
-    <div>
-      [sendToMessenger \"Time and temp for #{guide['title']}\"]
-    </div>
-  </div>
+  [sendToMessenger \"Time and temp for #{guide['title']}\"]
   EOT
 end
 
