@@ -9,8 +9,10 @@ namespace :activities do
     response = HTTParty.get(manifest_url)
     manifest = JSON.parse(response.body)
 
-    manifest['guide'].first(10).each do |guide|
+    manifest['guide'].each do |guide|
+      next unless guide['slug'] == 'creme-brulee-guide'
       puts "------ Considering #{guide['title']}"
+
 
       ga = GuideActivity::create_or_update_from_guide(manifest, guide, args[:force])
       if ga

@@ -111,26 +111,35 @@ def add_ingredient(ingredients, line)
   # Skip lines that are like "For sauce:"
   return if /:$/.match(line)
 
+  quantity = nil
+  unit = 'a/n'
+
   title, quantityText, note = line.split(',').map(&:strip)
   matches = /.*\(([\S]*)\S*([^)]*)\)/.match(quantityText)
+
   if matches
     quantity = matches[1].strip
-    unit = matches[2].strip
-    if ! unit
-      unit = 'ea'
+    if quantity.present?
+      unit = matches[2].strip
+      if unit.blank?
+        unit = 'ea'
+      end
     end
   else
+    # Can't parse what is in the quantityText so throw it in the note
     note = [quantityText, note || ''].reject(&:blank?).join(', ')
   end
 
-  ingredients.push(
+  i = {
     ingredient: {
       title: title
     },
     display_quantity: quantity,
     unit: unit,
     note: note
-  )
+  }
+
+  ingredients.push(i)
 end
 
 # Guides don't have ingredients and equipment as proper data, they live as plain text
@@ -138,8 +147,10 @@ end
 # can attempt to parse them.
 
 def add_ingredients_and_equipment(a, step)
+  puts "STEP: #{step}"
 
-  lines = step.split('<br>')
+  lines = step.split(/<.?br>|\n/)
+  puts "LINES: ", lines.count
   equipment = []
   ingredients = []
   state = :none
@@ -153,7 +164,7 @@ def add_ingredients_and_equipment(a, step)
       state = :equipment
     elsif line =~ /ingredient/i
       state = :ingredients
-    elsif line.length >= 5
+    elsif line.length >= 4
       case state
       when :equipment
         add_equipment(equipment, line)
