@@ -9,17 +9,14 @@ describe GuideActivity do
       .to_return(:status => 200, :body => '{"url": "FAKEIMAGE.JPG"}', :headers => {})
   end
 
-#TODO
-# tag not inlcuding all-guides
-# http://localhost:3000/activities/basic-chicken-breast ingredients messed up
-
   context 'create_or_update_from_guide' do
-    it 'creates new activity' do
+    it 'creates new activity with expected contents' do
       guide = manifest['guide'].find {|g| g['slug'] == 'creme-brulee-guide'}
       ga = GuideActivity::create_or_update_from_guide(manifest, guide, false)
       expect(ga).not_to be_nil
       expect(ga.guide_id).to eq(guide['id'])
       expect(ga.guide_title).to eq(guide['title'])
+      expect(ga.guide_digest).to eq('ff2093e8b524df918cf2e38cd1b460c0')
       a = Api::ActivitySerializer.new(ga.activity).serializable_object
       expect(a[:title]).to eq(guide['title'])
       expect(a[:url]).to include('cracklin')
@@ -29,6 +26,7 @@ describe GuideActivity do
       expect(a[:tagList]).to include('sous vide')
       expect(a[:tagList]).to include('guide')
       expect(a[:tagList]).to include('convertedguide')
+      expect(a[:tagList]).to include('Rich and Creamy Custards')
       expect(a[:chefstepsGenerated]).to eq(true)
       expect(a[:heroImage]).to eq('FAKEIMAGE.JPG')
       expect(a[:premium]).to eq(false)
@@ -44,6 +42,49 @@ describe GuideActivity do
       expect(a[:steps][0][:title]).to include('Separate')
       expect(a[:steps][0][:directions]).to include('Crack shell')
       expect(a[:steps][0][:image]).to eq('FAKEIMAGE.JPG')
+    end
+
+    it 'doesn\'t do any work on guides with no hero image' do
+      guide = manifest['guide'].find {|g| g['slug'] == 'creme-brulee-guide'}
+      guide = guide.dup
+      guide['landscapeImage'] = guide['image'] = guide['thumbnail'] = nil
+      expect(GuideActivity::create_or_update_from_guide(manifest, guide, false)).to be_nil
+    end
+
+    it 'doesn\'t do any work if GuideActivity exists with autoupdate off' do
+      guide = manifest['guide'].find {|g| g['slug'] == 'creme-brulee-guide'}
+      ga = GuideActivity::create_or_update_from_guide(manifest, guide, false)
+      ga.autoupdate = false
+      ga.save!
+
+      expect(GuideActivity::create_or_update_from_guide(manifest, guide, false)).to be_nil
+    end
+
+    it 'doesn\'t do any work if GuideActivity with same digest already exists' do
+      guide = manifest['guide'].find {|g| g['slug'] == 'creme-brulee-guide'}
+      expect(GuideActivity::create_or_update_from_guide(manifest, guide, false)).to_not be_nil
+      expect(GuideActivity::create_or_update_from_guide(manifest, guide, false)).to be_nil
+    end
+
+    it 'ignores digest check if force is true' do
+      guide = manifest['guide'].find {|g| g['slug'] == 'creme-brulee-guide'}
+      expect(GuideActivity::create_or_update_from_guide(manifest, guide, false)).to_not be_nil
+      expect(GuideActivity::create_or_update_from_guide(manifest, guide, true)).to_not be_nil
+    end
+
+    it 'reuses and updates existing Activity and GuideActivity if one exists but digest has changed' do
+      guide = manifest['guide'].find {|g| g['slug'] == 'creme-brulee-guide'}
+      ga1 = GuideActivity::create_or_update_from_guide(manifest, guide, false)
+
+      guide = guide.dup
+      guide['description'] = 'New description'
+      ga2 = GuideActivity::create_or_update_from_guide(manifest, guide, false)
+
+      expect(ga2).to_not be_nil
+      expect(ga2.guide_digest).to_not eq(ga1.guide_digest)
+      expect(ga2.id).to eq(ga1.id)
+      expect(ga2.activity_id).to eq(ga1.activity_id)
+      expect(ga2.activity.description).to include('New description')
     end
   end
 end

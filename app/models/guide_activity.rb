@@ -8,7 +8,7 @@ class GuideActivity < ActiveRecord::Base
     ga = GuideActivity.where(guide_id: guide['id'])[0]
 
     if ! should_process(guide, force)
-      return ga
+      return nil
     end
 
     activity = nil
