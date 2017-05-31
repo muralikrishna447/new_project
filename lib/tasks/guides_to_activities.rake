@@ -10,16 +10,14 @@ namespace :activities do
     manifest = JSON.parse(response.body)
 
     manifest['guide'].each do |guide|
-      next unless guide['slug'] == 'creme-brulee-guide'
-      puts "------ Considering #{guide['title']}"
-
+      Rails.logger.info  "Considering #{guide['title']}"
 
       ga = GuideActivity::create_or_update_from_guide(manifest, guide, args[:force])
       if ga
         activity = Activity.find(ga.activity_id)
-        puts "------ Output http://localhost:3000/activities/#{activity.slug}"
+        Rails.logger.info  "Output /activities/#{activity.slug}"
       else
-        puts "------ No output guide"
+        Rails.logger.info "No output guide"
       end
 
     end

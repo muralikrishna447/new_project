@@ -73,19 +73,19 @@ end
 
 def should_process(guide, force = false)
   if ! hero_image(guide)
-    puts "No hero image, ignoring"
+    Rails.logger.info "No hero image, ignoring"
     return false
   end
 
   ga = GuideActivity.where(guide_id: guide['id'])[0]
   if ga
     if ! ga.autoupdate
-      puts "Manually edited activity, not overwriting"
+      Rails.logger.info "Manually edited activity, not overwriting"
       return false
     end
 
     if ! force && ga.guide_digest == guide_digest(guide)
-      puts "Digest hasn't changed, skipping"
+      Rails.logger.info  "Digest hasn't changed, skipping"
       return false
     end
   end
@@ -147,10 +147,8 @@ end
 # can attempt to parse them.
 
 def add_ingredients_and_equipment(a, step)
-  puts "STEP: #{step}"
 
   lines = step.split(/<.?br>|\n/)
-  puts "LINES: ", lines.count
   equipment = []
   ingredients = []
   state = :none
