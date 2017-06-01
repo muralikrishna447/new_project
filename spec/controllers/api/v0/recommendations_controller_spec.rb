@@ -68,6 +68,14 @@ describe Api::V0::RecommendationsController do
     parsed['results'][0]['title'].should eq @quick_n_easy_ad.title
   end
 
+  it 'should return something even if not logged in', :focus => true do
+    get :index, {connected: 'true', platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed['results'].count.should eq 1
+    parsed['results'][0]['title'].should eq "All The Things"
+  end
+
   it 'should respond new-skool style with owner ad if known platform set, known slot, and signed in as joule purchaser' do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', joule_purchase_count: 1
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
