@@ -150,8 +150,6 @@ def add_ingredients_and_equipment(a, step)
 
   lines = step.split(/<.?br>|\n/)
 
-  puts "-------", lines
-
   equipment = []
   ingredients = []
   state = :none
