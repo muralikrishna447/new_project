@@ -55,7 +55,7 @@ module Api
           # Which isn't considered an error.
           if platform == 'jouleApp' && (slot == 'homeHero' || slot == 'referPage')
             if circulator_owner || connected
-              if BetaFeatureService.user_has_feature(current_api_user, 'force_quick_and_easy_ad')
+              if circulator_owner && BetaFeatureService.user_has_feature(current_api_user, 'force_quick_and_easy_ad')
                 possible_ads = Advertisement.where(matchname: 'quickAndEasy').published.all.to_a
               else
                 possible_ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
