@@ -21,7 +21,7 @@ module Utils
     weighted_items = []
     total_weight = 0
     items.each do |item|
-      weight = item[weight_field] || 1
+      weight = [item[weight_field], 1].max
       total_weight += weight
       weighted_items.push({item: item, weight: weight})
     end
