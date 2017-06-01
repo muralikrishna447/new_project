@@ -256,6 +256,7 @@ class Activity < ActiveRecord::Base
 
   def update_equipment_json(equipment_attrs)
     # Easiest just to be rid of all of the old join records, we'll make them from scratch
+    equipment.reload()
     equipment.destroy_all()
     equipment.reload()
     if equipment_attrs

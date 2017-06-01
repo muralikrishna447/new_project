@@ -149,9 +149,16 @@ end
 def add_ingredients_and_equipment(a, step)
 
   lines = step.split(/<.?br>|\n/)
+
+  puts "-------", lines
+
   equipment = []
   ingredients = []
   state = :none
+
+  # Guides obviously need SV but that isn't called out in the guide step, since it is implicit.
+  # 'Sous vide setup' is what we've been using on chefsteps.com. It links to /joule.
+  add_equipment(equipment, 'Sous vide setup')
 
   lines.each do |line|
     # Ingredient titles don't render correctly even with sanitized &
