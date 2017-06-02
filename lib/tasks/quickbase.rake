@@ -1,7 +1,8 @@
 namespace :quickbase do
   require 'quickbase_client'
 
-  desc "This task will send a message into the joule log processor with all the serial numbers that exchanges have been
+  desc "
+  This task will send a message into the joule log processor with all the serial numbers that exchanges have been
   initiated on.
   https://github.com/ChefSteps/joule-log-processor#returns-investigation
   There is a 3 day delay on records to allow the return to be processed and sent before pulling the records"
