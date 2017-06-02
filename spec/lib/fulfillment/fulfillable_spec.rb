@@ -95,6 +95,71 @@ describe Fulfillment::Fulfillable do
     end
   end
 
+  describe 'opened_fulfillment_for_line_item' do
+    let(:order) do
+      ShopifyAPI::Order.new(
+        line_items: [line_item],
+        fulfillments: fulfillments
+      )
+    end
+    let(:line_item) { ShopifyAPI::LineItem.new(id: 'my-line-item') }
+    let(:fulfillable) { Fulfillment::Fulfillable.new(order: order, line_items: [line_item]) }
+
+    context 'order has no fulfillments' do
+      let(:fulfillments) { [] }
+      it 'returns nil' do
+        expect(fulfillable.opened_fulfillment_for_line_item(line_item)).to be_nil
+      end
+    end
+
+    context 'line item has no fulfillment' do
+      let(:fulfillments) do
+        [
+          ShopifyAPI::Fulfillment.new(
+            status: 'open',
+            line_items: [
+              ShopifyAPI::LineItem.new(id: 'my-other-line-item')
+            ]
+          )
+        ]
+      end
+      it 'returns nil' do
+        expect(fulfillable.opened_fulfillment_for_line_item(line_item)).to be_nil
+      end
+    end
+
+    context 'line item has multiple fulfillments' do
+      let(:fulfillments) do
+        [
+          ShopifyAPI::Fulfillment.new(status: 'open', line_items: [line_item]),
+          ShopifyAPI::Fulfillment.new(status: 'open', line_items: [line_item])
+        ]
+      end
+      it 'raises error' do
+        expect { fulfillable.opened_fulfillment_for_line_item(line_item) }.to raise_error
+      end
+    end
+
+    context 'line item has single fulfillment' do
+      let(:fulfillment) { ShopifyAPI::Fulfillment.new(status: status, line_items: [line_item]) }
+      let(:fulfillments) { [fulfillment] }
+
+      context 'fulfillment status is open' do
+        let(:status) { 'open' }
+        it 'returns fulfillment' do
+          expect(fulfillable.opened_fulfillment_for_line_item(line_item)).to eq fulfillment
+        end
+      end
+
+      context 'fulfillment status is not open' do
+        let(:status) { 'success' }
+        it 'returns nill' do
+          expect(fulfillable.opened_fulfillment_for_line_item(line_item)).to be_nil
+        end
+      end
+    end
+  end
+
   def stub_open_fulfillment(order_id, line_item_id, qty)
     WebMock
       .stub_request(:post, /test.myshopify.com\/admin\/orders\/#{order_id}\/fulfillments.json/)

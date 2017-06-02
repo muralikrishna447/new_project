@@ -47,8 +47,6 @@ module Fulfillment
       order == other.order && line_items == other.line_items
     end
 
-    private
-
     def opened_fulfillment_for_line_item(line_item)
       return nil unless order.respond_to?(:fulfillments)
       fulfillments = order.fulfillments.select do |fulfillment|
@@ -61,6 +59,8 @@ module Fulfillment
       end
       fulfillments.first
     end
+
+    private
 
     def open_fulfillment_for_line_item(line_item)
       if opened_fulfillment_for_line_item(line_item)
