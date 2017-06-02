@@ -88,4 +88,38 @@ describe GuideActivity do
       expect(ga2.activity.description).to include('New description')
     end
   end
+
+  context 'parse_ingredient' do
+
+    def expect_ingredient(line, quantity, unit, title, note)
+      expect(GuideActivity::parse_ingredient(line))
+        .to eq({title: title, quantity: quantity, unit: unit, note: note})
+    end
+
+    it 'handles case with unitless number' do
+      expect_ingredient('Sweet onion, 1 large', '1', 'ea', 'Sweet onion', 'large')
+    end
+
+    it 'handles full case with parenthesized grams' do
+      expect_ingredient('Egg yolks, 6 oz (160 g), about 11', '160', 'g', 'Egg yolks', 'about 11')
+    end
+
+    it 'handles naked a/n' do
+      expect_ingredient('Cooking oil, a/n', nil, 'a/n', 'Cooking oil', '')
+    end
+
+    it 'handles (optional)' do
+      expect_ingredient('Black pepper, a/n (optional)', nil, 'a/n', 'Black pepper', '(optional)')
+    end
+
+    it 'handles note with no quantity' do
+      expect_ingredient('Pine nuts, about 30', nil, 'a/n', 'Pine nuts', 'about 30')
+    end
+
+    it 'handles extra commas mania' do
+      # These are bad and unusual cases, just make sure we don't lose any info even if a lot ends up in the note
+      expect_ingredient('Stock, such as chicken, beef, or vegetable, 6 oz (170 g)', nil, 'a/n', 'Stock', 'such as chicken, beef, or vegetable, 6 oz (170 g)')
+      expect_ingredient('Dark chocolate, 70%, 6 oz (175 g)', nil, 'a/n', 'Dark chocolate', '70%, 6 oz (175 g)')
+    end
+  end
 end

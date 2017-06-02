@@ -4,12 +4,14 @@ manifest_url = 'https://www.chefsteps.com/api/v0/content_config/manifest?content
 
 
 namespace :activities do
-  task :guides_to_activities, [:force] => :environment do |t, args|
+  task :guides_to_activities, [:force,:only] => :environment do |t, args|
     args.with_defaults(force: false)
     response = HTTParty.get(manifest_url)
     manifest = JSON.parse(response.body)
 
     manifest['guide'].each do |guide|
+      next if args[:only] && ! guide['title'].starts_with?(args[:only])
+
       Rails.logger.info  "Considering #{guide['title']}"
 
       ga = GuideActivity::create_or_update_from_guide(manifest, guide, args[:force])
