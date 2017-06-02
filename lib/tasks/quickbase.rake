@@ -1,5 +1,32 @@
 namespace :quickbase do
+  require 'quickbase_client'
+
   task :generate_report => :environment do
+    if ENV["QUICKBASE_USERNAME"].present? && ENV["QUICKBASE_PASSWORD"].present?
+
+      QuickbaseClient = QuickBase::Client.init(
+        {
+          "username" => (ENV["QUICKBASE_USERNAME"]),
+          "password" => (ENV["QUICKBASE_PASSWORD"]),
+          "appname" => (Rails.env.production? ? "ChefSteps" : "ChefSteps Staging"),
+          "org" => "chefsteps-8265"
+        }
+      )
+
+      if Rails.env.production?
+        QuickbaseOptions = {
+          units_id: "bmg4hpb6i",
+          units_query_id: "10"
+        }
+      else
+        QuickbaseOptions = {
+          units_id: "bmrihe3d8",
+          units_query_id: "10"
+        }
+      end
+    else
+      raise "ERROR - QUICKBASE_USERNAME and QUICKBASE_PASSWORD are missing"
+    end
     started_at = Time.now
     report_name = started_at.strftime("%Y-%m-%d-%H-%M-%S")
     Rails.logger.info "Quickbase:GenerateReport #{report_name} - Starting #{Time.now} on report #{report_name}"
