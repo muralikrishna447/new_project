@@ -32,6 +32,7 @@ class GuideActivity < ActiveRecord::Base
       activity.include_in_gallery = true
       activity.tag_list = get_tags(manifest, guide)
       activity.image_id = upload_image(hero_image(guide))
+      activity.published = true
 
       add_steps(activity, guide)
 
@@ -45,6 +46,59 @@ class GuideActivity < ActiveRecord::Base
 
       return ga
     end
+  end
+
+# Typical case looks like "Egg yolks, 6 oz (160 g), about 11"
+# Do our best to parse that but since it is free text, if something doesn't match up, fall back to putting quantity into
+# notes.
+  def self.parse_ingredient(line)
+    # Skip lines that are like "For sauce:"
+    return if /:$/.match(line)
+
+    quantity = nil
+    unit = 'a/n'
+    extra_note = nil
+
+    # Start by assuming it looks like "Bananas, 500 g, peeled"
+    # Then we'll work on the quantity_text to handle other cases.
+    title, quantity_text, note = line.split(',', 3).map(&:strip)
+
+    # "6 oz (160 g)"
+    matches1 = /.*\((\d+)\s*([^)]*)\)/.match(quantity_text)
+
+    # "1 large"
+    matches2 = /^(\d+)\s+([^%]*)$/.match(quantity_text)
+
+    if matches1
+      quantity = matches1[1].strip
+      if quantity.present?
+        unit = matches1[2].strip
+        if unit.blank?
+          unit = 'ea'
+        end
+      end
+
+    elsif matches2
+      quantity = matches2[1].strip
+      unit = 'ea'
+      extra_note = matches2[2].strip
+
+    else
+      # Can't parse what is in the quantity_text so throw it in the note
+      if quantity_text
+        quantity_text.gsub!(/\s*a\/n\s*/, '')
+        extra_note = quantity_text
+      end
+    end
+
+    note = [extra_note, note || ''].reject(&:blank?).join(', ')
+
+    return {
+      title: title,
+      quantity: quantity,
+      unit: unit,
+      note: note
+    }
   end
 end
 
@@ -104,42 +158,18 @@ def add_equipment(equipment, line)
   equipment.push({ equipment: { id: id, title: line }})
 end
 
-# Typical case looks like "Egg yolks, 6 oz (160 g), about 11"
-# Do our best to parse that but since it is free text, if something doesn't match up, fall back to putting quantity into
-# notes.
 def add_ingredient(ingredients, line)
-  # Skip lines that are like "For sauce:"
-  return if /:$/.match(line)
-
-  quantity = nil
-  unit = 'a/n'
-
-  title, quantityText, note = line.split(',').map(&:strip)
-  matches = /.*\(([\S]*)\S*([^)]*)\)/.match(quantityText)
-
-  if matches
-    quantity = matches[1].strip
-    if quantity.present?
-      unit = matches[2].strip
-      if unit.blank?
-        unit = 'ea'
-      end
-    end
-  else
-    # Can't parse what is in the quantityText so throw it in the note
-    note = [quantityText, note || ''].reject(&:blank?).join(', ')
+  i = GuideActivity::parse_ingredient(line)
+  if i
+    ingredients.push({
+      ingredient: {
+        title: i[:title]
+      },
+      display_quantity: i[:quantity],
+      unit: i[:unit],
+      note: i[:note]
+    })
   end
-
-  i = {
-    ingredient: {
-      title: title
-    },
-    display_quantity: quantity,
-    unit: unit,
-    note: note
-  }
-
-  ingredients.push(i)
 end
 
 # Guides don't have ingredients and equipment as proper data, they live as plain text
