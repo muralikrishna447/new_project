@@ -32,7 +32,6 @@ class GuideActivity < ActiveRecord::Base
       activity.include_in_gallery = true
       activity.tag_list = get_tags(manifest, guide)
       activity.image_id = upload_image(hero_image(guide))
-      activity.published = true
 
       add_steps(activity, guide)
 

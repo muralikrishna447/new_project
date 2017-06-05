@@ -8,6 +8,7 @@ namespace :activities do
     args.with_defaults(force: false)
     response = HTTParty.get(manifest_url)
     manifest = JSON.parse(response.body)
+    pub_date = DateTime.now
 
     manifest['guide'].each do |guide|
       next if args[:only] && ! guide['title'].starts_with?(args[:only])
@@ -17,7 +18,19 @@ namespace :activities do
       ga = GuideActivity::create_or_update_from_guide(manifest, guide, args[:force])
       if ga
         activity = Activity.find(ga.activity_id)
-        Rails.logger.info  "Output /activities/#{activity.slug}"
+        if ! activity.published
+          activity.published = true
+          activity.published_at = pub_date
+          activity.save!
+          Rails.logger.info  "Published /activities/#{activity.slug}"
+
+          # If there a bunch to publish, spread them out in time so they
+          # don't clog the gallery.
+          pub_date = pub_date - 3.days
+        else
+          Rails.logger.info  "Updated /activities/#{activity.slug}"
+        end
+
       else
         Rails.logger.info "No output guide"
       end
