@@ -21,6 +21,7 @@ namespace :activities do
         if ! activity.published
           activity.published = true
           activity.published_at = pub_date
+          activity.first_published_at = DateTime.now
           activity.save!
           Rails.logger.info  "Published /activities/#{activity.slug}"
 
