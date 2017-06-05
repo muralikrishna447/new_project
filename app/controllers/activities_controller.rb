@@ -212,6 +212,12 @@ class ActivitiesController < ApplicationController
                 " and bypass_sanitization was #{@activity.bypass_sanitization}"
               )
 
+              # If there is a GuideActivity corresponding to this, turn off auto-update since
+              # it has now been manually edited.
+              if @activity.guide_activity
+                @activity.guide_activity.update_attribute(:autoupdate, false)
+              end
+
             rescue Exception => e
               puts "--------- EXCEPTION -----------"
               puts $@
