@@ -37,11 +37,13 @@ Fulfillment::AwsQueuePoller.configure(
     aws_region: aws_region,
     task_queue_prefix: task_queue_prefix
 )
-Fulfillment::FbaOrderSubmitter.configure(
-  s3_region: aws_region,
-  s3_bucket: fba_bucket,
+Fulfillment::Fba.configure(
   mws_marketplace_id: 'ATVPDKIKX0DER', # Amazon US marketplace ID
   mws_merchant_id: ENV['MWS_MERCHANT_ID'],
   mws_access_key_id: ENV['MWS_ACCESS_KEY_ID'],
   mws_secret_access_key: ENV['MWS_SECRET_ACCESS_KEY']
+)
+Fulfillment::FbaOrderSubmitter.configure(
+  s3_region: aws_region,
+  s3_bucket: fba_bucket
 )
