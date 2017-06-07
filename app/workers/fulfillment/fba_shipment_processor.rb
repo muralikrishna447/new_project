@@ -1,5 +1,15 @@
+require 'resque/plugins/lock'
+
 module Fulfillment
   class FbaShipmentProcessor
+    extend Resque::Plugins::Lock
+
+    @queue = 'FbaShipmentProcessor'
+
+    def self.lock(*args)
+      'FbaShipmentProcessor'
+    end
+
     # Scans Shopify for open orders looking for those with open fulfillments on
     # FBA-fulfilled SKUs. Syncs fulfillment status from FBA to Shopify and
     # updates tracking/completes fulfillment for each order.
