@@ -1,3 +1,7 @@
+require 'action_view'
+require 'action_view/helpers'
+include ActionView::Helpers::DateHelper
+
 class GuideActivity < ActiveRecord::Base
   validates_uniqueness_of :guide_id
   belongs_to :activity
@@ -25,7 +29,7 @@ class GuideActivity < ActiveRecord::Base
       end
 
       activity.title = guide['title']
-      activity.description = self.description(guide)
+      activity.description = guide['description']
       activity.activity_type = ['Recipe']
       activity.difficulty = 'intermediate'
       activity.premium = false
@@ -215,8 +219,37 @@ class GuideActivity < ActiveRecord::Base
     return state != :none
   end
 
+  def self.create_preheat_step(a, g)
+    p = g['defaultProgram']
+    temp = p['cookingTemperature']
+    title = "Preheat Joule to [c #{temp}]"
+
+    helper = p['helper']
+    helper = helper[0, 1].downcase + helper[1..-1]
+    numFreshTimes = p['freshTimes'].length
+    middleFreshTimeDuration = p['freshTimes'][(numFreshTimes / 2).floor]['duration'].to_i
+    middleFreshTime = ActionView::Helpers::DateHelper.distance_of_time_in_words(middleFreshTimeDuration.minutes)
+
+    directions = "For #{helper}, we recommend cooking at [c #{temp}]. Depending on size, your cooking time will be about #{middleFreshTime}."
+    if numFreshTimes == 1
+      directions = "For #{helper}, we recommend cooking at [c #{temp}] for #{middleFreshTime}."
+    end
+
+    directions = directions + "\nTo find your own perfect time and temperature, use the <a href='https://www.chefsteps.com/joule/app'>Joule App</a> or chat with Joule on Facebook Messenger:"
+    directions = directions + "\n[sendToMessenger \"Time and temp for #{g['title']}\"]"
+
+    step = Step.create!(
+      step_order: 0,
+      title: title,
+      directions: directions,
+    )
+    a.steps.push(step)
+  end
+
   def self.add_steps(a, g)
     a.steps.destroy_all
+
+    self.create_preheat_step(a, g)
 
     g['steps'].each_with_index do |gs, idx|
 
@@ -248,7 +281,7 @@ class GuideActivity < ActiveRecord::Base
         end
 
         step = Step.create!(
-          step_order: idx,
+          step_order: idx + 1,
           title: title,
           directions: description,
           image_id: image
@@ -256,13 +289,6 @@ class GuideActivity < ActiveRecord::Base
         a.steps.push(step)
       end
     end
-  end
-
-  def self.description(guide)
-    <<-EOT
-    #{guide['description']}
-    [sendToMessenger \"Time and temp for #{guide['title']}\"]
-    EOT
   end
 end
 

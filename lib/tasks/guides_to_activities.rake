@@ -18,19 +18,7 @@ namespace :activities do
       ga = GuideActivity::create_or_update_from_guide(manifest, guide, args[:force])
       if ga
         activity = Activity.find(ga.activity_id)
-        if ! activity.published
-          activity.published = true
-          activity.published_at = pub_date
-          activity.first_published_at = DateTime.now
-          activity.save!
-          Rails.logger.info  "Published /activities/#{activity.slug}"
-
-          # If there a bunch to publish, spread them out in time so they
-          # don't clog the gallery.
-          pub_date = pub_date - 3.days
-        else
-          Rails.logger.info  "Updated /activities/#{activity.slug}"
-        end
+        Rails.logger.info  "Output /activities/#{activity.slug}"
 
       else
         Rails.logger.info "No output guide"
