@@ -251,15 +251,16 @@ class GuideActivity < ActiveRecord::Base
 
     self.create_preheat_step(a, g)
 
-    g['steps'].each_with_index do |gs, idx|
+    idx = 1
+
+    g['steps'].each do |gs|
+      handled = false
 
       title = gs['title'].gsub /\.$/, ''
 
       image = self.upload_image(gs['noVideoThumbnail'] || gs['image'])
 
       description = gs['description']
-
-      handled = false
 
       if gs['helper']
         description += "<p>#{gs['helper']}</p>"
@@ -275,6 +276,11 @@ class GuideActivity < ActiveRecord::Base
         handled = true
       end
 
+      # Per Rick, skip the trivet step
+      if title == 'Protect your work surface!'
+        handled = true
+      end
+
       if ! handled
         if gs['buttonLink']
           description += "<p class='button-group-inline' style='justify-content: center;'><a class=\"button outline orange\" href=\"#{gs['buttonLink']}\">#{gs['buttonText']}</a>"
@@ -287,6 +293,8 @@ class GuideActivity < ActiveRecord::Base
           image_id: image
         )
         a.steps.push(step)
+
+        idx = idx + 1
       end
     end
   end
