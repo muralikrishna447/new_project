@@ -40,8 +40,8 @@ module Fulfillment
         end
 
         # Try to find a corresponding fulfillment order for the item in FBA.
-        seller_fulfillment_order_id = Fulfillment::Fba.seller_fulfillment_order_id(fulfillable, item)
-        response = Fulfillment::Fba.fulfillment_order(seller_fulfillment_order_id)
+        seller_fulfillment_order_id = Fulfillment::Fba.seller_fulfillment_order_id(order, fulfillment)
+        response = Fulfillment::Fba.fulfillment_order_by_id(seller_fulfillment_order_id)
         unless response
           Rails.logger.info "FbaShipmentProcessor order with id #{order.id} " \
                             "and line item with id #{item.id} has no FBA fulfillment order " \

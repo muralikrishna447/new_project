@@ -3,81 +3,29 @@ require 'spec_helper'
 describe Fulfillment::Fba do
   describe 'seller_fulfillment_order_id' do
     let(:order_id) { 'my-order-id' }
-    let(:item) { ShopifyAPI::LineItem.new(id: 'my-item-id') }
-    let(:fulfillable) do
-      Fulfillment::Fulfillable.new(
-        order: ShopifyAPI::Order.new(
-          id: order_id,
-          line_items: [item],
-          fulfillments: fulfillments
-        )
-      )
-    end
+    let(:order) { ShopifyAPI::Order.new(id: order_id) }
     let(:fulfillment_id) { 'my-fulfillment-id' }
+    let(:fulfillment) { ShopifyAPI::Fulfillment.new(id: fulfillment_id) }
 
-    context 'order has opened fulfillment for item' do
-      let(:fulfillments) do
-        [
-          ShopifyAPI::Fulfillment.new(
-            id: fulfillment_id,
-            line_items: [item],
-            status: 'open'
-          )
-        ]
-      end
-      it 'returns fulfillment order id' do
-        expect(Fulfillment::Fba.seller_fulfillment_order_id(fulfillable, item)).to eq \
-          "#{order_id}-#{fulfillment_id}"
-      end
-    end
-    context 'order has no opened fulfillment for item' do
-      let(:fulfillments) { [] }
-      it 'raises error' do
-        expect { Fulfillment::Fba.seller_fulfillment_order_id(fulfillable, item) }.to raise_error
-      end
+    it 'returns fulfillment order id' do
+      expect(Fulfillment::Fba.seller_fulfillment_order_id(order, fulfillment)).to eq \
+        "#{order_id}-#{fulfillment_id}"
     end
   end
 
   describe 'displayable_order_id' do
     let(:order_name) { 'my-order-name' }
-    let(:item) { ShopifyAPI::LineItem.new(id: 'my-item-id') }
-    let(:fulfillable) do
-      Fulfillment::Fulfillable.new(
-        order: ShopifyAPI::Order.new(
-          id: 'my-order-id',
-          name: order_name,
-          line_items: [item],
-          fulfillments: fulfillments
-        )
-      )
-    end
+    let(:order) { ShopifyAPI::Order.new(name: order_name) }
     let(:fulfillment_id) { 'my-fulfillment-id' }
+    let(:fulfillment) { ShopifyAPI::Fulfillment.new(id: fulfillment_id) }
 
-    context 'order has opened fulfillment for item' do
-      let(:fulfillments) do
-        [
-          ShopifyAPI::Fulfillment.new(
-            id: fulfillment_id,
-            line_items: [item],
-            status: 'open'
-          )
-        ]
-      end
-      it 'returns displayable order id' do
-        expect(Fulfillment::Fba.displayable_order_id(fulfillable, item)).to eq \
-          "#{order_name}-#{fulfillment_id}"
-      end
-    end
-
-    context 'order has no opened fulfillment for item' do
-      let(:fulfillments) { [] }
-      it 'raises error' do
-        expect { Fulfillment::Fba.displayable_order_id(fulfillable, item) }.to raise_error
-      end
+    it 'returns displayable order id' do
+      expect(Fulfillment::Fba.displayable_order_id(order, fulfillment)).to eq \
+        "#{order_name}-#{fulfillment_id}"
     end
   end
 
-  describe 'fulfillment_order' do
+  describe 'fulfillment_order_by_id' do
     let(:seller_fulfillment_order_id) { 'my-test-id' }
 
     context 'fulfillment order exists' do
@@ -93,7 +41,7 @@ describe Fulfillment::Fba do
       end
 
       it 'returns FBA fulfillment order' do
-        expect(Fulfillment::Fba.fulfillment_order(seller_fulfillment_order_id)).to eq fulfillment_order
+        expect(Fulfillment::Fba.fulfillment_order_by_id(seller_fulfillment_order_id)).to eq fulfillment_order
       end
     end
 
@@ -115,7 +63,7 @@ describe Fulfillment::Fba do
         end
 
         it 'returns nil' do
-          expect(Fulfillment::Fba.fulfillment_order(seller_fulfillment_order_id)).to be_nil
+          expect(Fulfillment::Fba.fulfillment_order_by_id(seller_fulfillment_order_id)).to be_nil
         end
       end
 
@@ -125,7 +73,7 @@ describe Fulfillment::Fba do
         end
 
         it 'raises error' do
-          expect { Fulfillment::Fba.fulfillment_order(seller_fulfillment_order_id) }.to raise_error
+          expect { Fulfillment::Fba.fulfillment_order_by_id(seller_fulfillment_order_id) }.to raise_error
         end
       end
     end
@@ -155,6 +103,13 @@ describe Fulfillment::Fba do
         sku: sku
       )
     end
+    let(:fulfillment) do
+      ShopifyAPI::Fulfillment.new(
+        line_items: [line_item],
+        status: fulfillment_status,
+        quantity: quantity
+      )
+    end
     let(:fulfillable) do
       Fulfillment::Fulfillable.new(
         order: ShopifyAPI::Order.new(
@@ -170,13 +125,7 @@ describe Fulfillment::Fba do
             zip: shipping_zip,
             phone: shipping_phone
           ),
-          fulfillments: [
-            ShopifyAPI::Fulfillment.new(
-              line_items: [line_item],
-              status: 'open',
-              quantity: quantity
-            )
-          ]
+          fulfillments: [fulfillment]
         )
       )
     end
@@ -185,44 +134,56 @@ describe Fulfillment::Fba do
     before do
       Fulfillment::Fba
         .stub(:seller_fulfillment_order_id)
-        .with(fulfillable, line_item)
+        .with(fulfillable, fulfillment)
         .and_return(seller_fulfillment_order_id)
       Fulfillment::Fba
         .stub(:displayable_order_id)
-        .with(fulfillable, line_item)
+        .with(fulfillable, fulfillment)
         .and_return(displayable_order_id)
       MWS::FulfillmentOutboundShipment::Client.stub(:new).and_return(client)
       MWS::FulfillmentInventory::Client.stub(:new)
       Fulfillment::Fba.configure({})
     end
 
-    it 'calls mws client to create fulfillment order' do
-      client.should_receive(:create_fulfillment_order).with(
-        seller_fulfillment_order_id,
-        displayable_order_id,
-        processed_at,
-        Fulfillment::Fba::COMMENT,
-        Fulfillment::Fba::SHIPPING_SPEED,
-        {
-          'Name' => shipping_name,
-          'Line1' => shipping_address1,
-          'City' => shipping_city,
-          'StateOrProvinceCode' => shipping_province_code,
-          'CountryCode' => shipping_country_code,
-          'PostalCode' => shipping_zip,
-          'PhoneNumber' => shipping_phone,
-          'Line2' => shipping_address2,
-          'Line3' => shipping_company
-        },
-        [
+    context 'fulfillment status is open' do
+      let(:fulfillment_status) { 'open' }
+
+      it 'calls mws client to create fulfillment order' do
+        client.should_receive(:create_fulfillment_order).with(
+          seller_fulfillment_order_id,
+          displayable_order_id,
+          processed_at,
+          Fulfillment::Fba::COMMENT,
+          Fulfillment::Fba::SHIPPING_SPEED,
           {
-            'SellerSKU' => line_item.sku,
-            'SellerFulfillmentOrderItemId' => line_item.id,
-            'Quantity' => quantity
-          }
-        ]
-      )
-      Fulfillment::Fba.create_fulfillment_order(fulfillable, line_item)
+            'Name' => shipping_name,
+            'Line1' => shipping_address1,
+            'City' => shipping_city,
+            'StateOrProvinceCode' => shipping_province_code,
+            'CountryCode' => shipping_country_code,
+            'PostalCode' => shipping_zip,
+            'PhoneNumber' => shipping_phone,
+            'Line2' => shipping_address2,
+            'Line3' => shipping_company
+          },
+          [
+            {
+              'SellerSKU' => line_item.sku,
+              'SellerFulfillmentOrderItemId' => line_item.id,
+              'Quantity' => quantity
+            }
+          ]
+        )
+        Fulfillment::Fba.create_fulfillment_order(fulfillable, line_item)
+      end
+    end
+
+    context 'fulfillment status is not open' do
+      let(:fulfillment_status) { 'success' }
+
+      it 'raises error' do
+        expect { Fulfillment::Fba.create_fulfillment_order(fulfillable, line_item) }.to raise_error
+      end
     end
   end
 

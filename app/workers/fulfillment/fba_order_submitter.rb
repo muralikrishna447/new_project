@@ -35,6 +35,8 @@ module Fulfillment
     def self.schema
       [
         'order_id',
+        'line_item_id',
+        'fulfillment_id',
         'seller_fulfillment_order_id',
         'displayable_order_id',
         'displayable_order_date_time',
@@ -48,20 +50,25 @@ module Fulfillment
         'shipping_address_state',
         'shipping_address_country',
         'shipping_address_postal_code',
-        'shipping_address_phone'
+        'shipping_address_phone',
+        'sku',
+        'quantity'
       ]
     end
 
     def self.transform(fulfillable)
       fulfillable.line_items.map do |item|
-        seller_fulfillment_order_id = Fulfillment::Fba.seller_fulfillment_order_id(fulfillable, item)
-        displayable_order_id = Fulfillment::Fba.displayable_order_id(fulfillable, item)
+        fulfillment = opened_fulfillment(fulfillable, item)
+        seller_fulfillment_order_id = Fulfillment::Fba.seller_fulfillment_order_id(fulfillable.order, fulfillment)
+        displayable_order_id = Fulfillment::Fba.displayable_order_id(fulfillable.order, fulfillment)
         quantity = fulfillable.quantity_for_line_item(item)
         Rails.logger.info("FbaOrderSubmitter adding order with id #{fulfillable.order.id} " \
                           "and line item with id #{item.id} and quantity #{quantity} " \
                           "as FBA seller fulfillment order id #{seller_fulfillment_order_id}")
         [
           fulfillable.order.id,
+          item.id,
+          fulfillment.id,
           seller_fulfillment_order_id,
           displayable_order_id,
           fulfillable.order.processed_at,
@@ -95,7 +102,8 @@ module Fulfillment
                   "has sku that is not fulfillable by FBA: #{item.sku}"
           end
 
-          seller_fulfillment_order_id = Fulfillment::Fba.seller_fulfillment_order_id(fulfillable, item)
+          fulfillment = opened_fulfillment(fulfillable, item)
+          seller_fulfillment_order_id = Fulfillment::Fba.seller_fulfillment_order_id(fulfillable.order, fulfillment)
           existing_order = Fulfillment::Fba.fulfillment_order(seller_fulfillment_order_id)
           if existing_order
             submitted_time = existing_order.fetch('FulfillmentOrder').fetch('ReceivedDateTime')
@@ -158,6 +166,17 @@ module Fulfillment
       else
         Resque.enqueue(Fulfillment::PendingOrderExporter, params)
       end
+    end
+
+    private
+
+    def self.opened_fulfillment(fulfillable, item)
+      fulfillment = fulfillable.opened_fulfillment_for_line_item(item)
+      unless fulfillment
+        raise "FbaOrderSubmitter order with id #{fulfillable.order.id} has no " \
+              "open fulfillment for line item with id #{item.id}, expected to find one"
+      end
+      fulfillment
     end
   end
 end

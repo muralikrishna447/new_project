@@ -22,18 +22,18 @@ module Fulfillment
     # combination of the Shopify order ID and the Shopify fulfillment ID.
     # We use the fulfillment ID b/c unlike Rosti we cannot submit the same
     # fulfillment ID multiple times in the case of a fulfillment error.
-    def self.seller_fulfillment_order_id(fulfillable, item)
-      "#{fulfillable.order.id}-#{opened_fulfillment(fulfillable, item).id}"
+    def self.seller_fulfillment_order_id(order, fulfillment)
+      "#{order.id}-#{fulfillment.id}"
     end
 
     # The displayable order ID that is printed on FBA packing slips.
     # Here we use the Shopify order name and the Shopify fulfillment ID.
-    def self.displayable_order_id(fulfillable, item)
-      "#{fulfillable.order.name}-#{opened_fulfillment(fulfillable, item).id}"
+    def self.displayable_order_id(order, fulfillment)
+      "#{order.name}-#{fulfillment.id}"
     end
 
     # Retrieves an FBA fulfillment order by ID.
-    def self.fulfillment_order(seller_fulfillment_order_id)
+    def self.fulfillment_order_by_id(seller_fulfillment_order_id)
       begin
         response = @@outbound_shipment_client.get_fulfillment_order(seller_fulfillment_order_id).parse
       rescue Excon::Errors::BadRequest => e
@@ -53,13 +53,20 @@ module Fulfillment
     COMMENT = 'Thanks for shopping at ChefSteps!'.freeze # Printed on packing slips
     SHIPPING_SPEED = 'Standard'.freeze # The slowest/cheapest option
     def self.create_fulfillment_order(fulfillable, item)
+      fulfillment = fulfillable.opened_fulfillment_for_line_item(item)
+      unless fulfillment
+        raise "Cannot create an FBA fulfillment order for order with id #{fulfillable.order.id} " \
+              "and line item with id #{item.id} because no open fulfillment exists"
+      end
+
+      seller_fulfillment_order_id = seller_fulfillment_order_id(fulfillable, fulfillment)
       Rails.logger.info 'FbaOrderSubmitter creating FBA fulfillment order with ' \
-                         "id #{seller_fulfillment_order_id(fulfillable, item)} " \
-                         "for order with id #{fulfillable.order.id} and line item with id #{item.id}"
+                         "id #{seller_fulfillment_order_id} for order with id " \
+                         "#{fulfillable.order.id} and line item with id #{item.id}"
 
       @@outbound_shipment_client.create_fulfillment_order(
-        seller_fulfillment_order_id(fulfillable, item),
-        displayable_order_id(fulfillable, item),
+        seller_fulfillment_order_id,
+        displayable_order_id(fulfillable, fulfillment),
         fulfillable.order.processed_at,
         COMMENT,
         SHIPPING_SPEED,
@@ -74,7 +81,7 @@ module Fulfillment
       )
 
       Rails.logger.info 'FbaOrderSubmitter successfully created FBA fulfillment order with ' \
-                         "seller_fulfillment_order_id #{seller_fulfillment_order_id(fulfillable, item)} " \
+                         "seller_fulfillment_order_id #{seller_fulfillment_order_id} " \
                          "for order with id #{fulfillable.order.id} and line item with id #{item.id}"
     rescue Excon::Errors::Error => e
       Rails.logger.error 'FbaOrderSubmitter encounted error creating order with ' \
@@ -98,15 +105,6 @@ module Fulfillment
     end
 
     private
-
-    def self.opened_fulfillment(fulfillable, item)
-      fulfillment = fulfillable.opened_fulfillment_for_line_item(item)
-      unless fulfillment
-        raise "No open fulfillment found for order with id #{fulfillable.order.id} " \
-              "and line item with id #{item.id}, expected to find one"
-      end
-      fulfillment
-    end
 
     def self.fba_shipping_address(shopify_shipping_address)
       shipping_address = {

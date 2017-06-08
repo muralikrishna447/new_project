@@ -7,14 +7,21 @@ describe Fulfillment::FbaOrderSubmitter do
       ShopifyAPI::LineItem.new(
         id: 'my-line-item',
         sku: sku,
-        fulfillable_quantity: quantity
+        fulfillable_quantity: quantity,
+        quantity: quantity
       )
     end
     let(:fulfillable) do
       Fulfillment::Fulfillable.new(
         order: ShopifyAPI::Order.new(
           id: 'my-order-id',
-          line_items: [line_item]
+          line_items: [line_item],
+          fulfillments: [
+            ShopifyAPI::Fulfillment.new(
+              status: fulfillment_status,
+              line_items: [line_item]
+            )
+          ]
         ),
         line_items: [line_item]
       )
@@ -24,11 +31,20 @@ describe Fulfillment::FbaOrderSubmitter do
     context 'SKU is fulfillable by FBA' do
       let(:sku) { 'cs30001' }
       let(:seller_fulfillment_order_id) { 'my-order-id' }
+      let(:fulfillment_status) { 'open' }
 
       before :each do
         Fulfillment::Fba
           .stub(:seller_fulfillment_order_id)
           .and_return(seller_fulfillment_order_id)
+      end
+
+      context 'item does not have open fulfillment' do
+        let(:fulfillment_status) { 'success' }
+
+        it 'raises error' do
+          expect { Fulfillment::FbaOrderSubmitter.after_save(fulfillables, {}) }.to raise_error
+        end
       end
 
       context 'FBA fulfillment order exists' do

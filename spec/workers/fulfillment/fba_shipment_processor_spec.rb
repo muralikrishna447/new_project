@@ -34,7 +34,6 @@ describe Fulfillment::FbaShipmentProcessor do
         line_items: line_items
       )
     end
-    let(:fulfillable) { Fulfillment::Fulfillable.new(order: order, line_items: [line_item]) }
 
     context 'item SKU is fulfillable by FBA' do
       let(:sku) { 'cs30001' }
@@ -46,7 +45,7 @@ describe Fulfillment::FbaShipmentProcessor do
         before :each do
           Fulfillment::Fba
             .stub(:seller_fulfillment_order_id)
-            .with(fulfillable, line_item)
+            .with(order, fulfillment)
             .and_return(seller_fulfillment_order_id)
         end
 
@@ -61,7 +60,7 @@ describe Fulfillment::FbaShipmentProcessor do
 
           before :each do
             Fulfillment::Fba
-              .stub(:fulfillment_order)
+              .stub(:fulfillment_order_by_id)
               .with(seller_fulfillment_order_id)
               .and_return(fba_response)
           end
@@ -78,7 +77,7 @@ describe Fulfillment::FbaShipmentProcessor do
               let(:fba_status) { 'RECEIVED' }
               include_examples 'fba_shipment_pending'
             end
-            
+
             context 'FBA status is PLANNING' do
               let(:fba_status) { 'PLANNING' }
               include_examples 'fba_shipment_pending'
@@ -165,7 +164,7 @@ describe Fulfillment::FbaShipmentProcessor do
         context 'item has no FBA fulfillment order' do
           before :each do
             Fulfillment::Fba
-              .stub(:fulfillment_order)
+              .stub(:fulfillment_order_by_id)
               .with(seller_fulfillment_order_id)
               .and_return(nil)
           end
