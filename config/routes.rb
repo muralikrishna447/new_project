@@ -305,6 +305,8 @@ Delve::Application.routes.draw do
         end
       end
 
+      post 'premium/generate_cert', to: 'premium_gift_certificate#generate_cert'
+
       resources :charges, only: [:create] do
         put :redeem, on: :member
       end
