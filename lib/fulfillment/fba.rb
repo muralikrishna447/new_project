@@ -4,18 +4,7 @@ require 'excon'
 module Fulfillment
   module Fba
     def self.configure(params)
-      @@outbound_shipment_client = MWS::FulfillmentOutboundShipment::Client.new(
-        primary_marketplace_id: params[:mws_marketplace_id],
-        merchant_id: params[:mws_merchant_id],
-        aws_access_key_id: params[:mws_access_key_id],
-        aws_secret_access_key: params[:mws_secret_access_key]
-      )
-      @@inventory_client = MWS::FulfillmentInventory::Client.new(
-        primary_marketplace_id: params[:mws_marketplace_id],
-        merchant_id: params[:mws_merchant_id],
-        aws_access_key_id: params[:mws_access_key_id],
-        aws_secret_access_key: params[:mws_secret_access_key]
-      )
+      @@mws_params = params
     end
 
     # Our unique ID for the fulfillment order in FBA. This is a hyphenated
@@ -35,7 +24,7 @@ module Fulfillment
     # Retrieves an FBA fulfillment order by ID.
     def self.fulfillment_order_by_id(seller_fulfillment_order_id)
       begin
-        response = @@outbound_shipment_client.get_fulfillment_order(seller_fulfillment_order_id).parse
+        response = outbound_shipment_client.get_fulfillment_order(seller_fulfillment_order_id).parse
       rescue Excon::Errors::BadRequest => e
         # When a fulfillment order does not exist, MWS returns
         # a 400 bad request. We have to check the error message
@@ -68,7 +57,7 @@ module Fulfillment
                          "id #{seller_fulfillment_order_id} for order with id " \
                          "#{fulfillable.order.id} and line item with id #{item.id}"
 
-      @@outbound_shipment_client.create_fulfillment_order(
+      outbound_shipment_client.create_fulfillment_order(
         seller_fulfillment_order_id,
         displayable_order_id(fulfillable.order, fulfillment),
         fulfillable.order.processed_at,
@@ -97,7 +86,7 @@ module Fulfillment
 
     # Returns in stock (ready to ship) inventory quantity for the specified SKU.
     def self.inventory_for_sku(sku)
-      response = @@inventory_client.list_inventory_supply(seller_skus: [sku]).parse
+      response = inventory_client.list_inventory_supply(seller_skus: [sku]).parse
       supply_list = response.fetch('InventorySupplyList')
 
       return 0 if supply_list.empty?
@@ -109,6 +98,24 @@ module Fulfillment
     end
 
     private
+
+    def self.outbound_shipment_client
+      MWS::FulfillmentOutboundShipment::Client.new(
+        primary_marketplace_id: @@mws_params[:mws_marketplace_id],
+        merchant_id: @@mws_params[:mws_merchant_id],
+        aws_access_key_id: @@mws_params[:mws_access_key_id],
+        aws_secret_access_key: @@mws_params[:mws_secret_access_key]
+      )
+    end
+
+    def self.inventory_client
+      MWS::FulfillmentInventory::Client.new(
+        primary_marketplace_id: @@mws_params[:mws_marketplace_id],
+        merchant_id: @@mws_params[:mws_merchant_id],
+        aws_access_key_id: @@mws_params[:mws_access_key_id],
+        aws_secret_access_key: @@mws_params[:mws_secret_access_key]
+      )
+    end
 
     def self.fba_shipping_address(shopify_shipping_address)
       shipping_address = {
