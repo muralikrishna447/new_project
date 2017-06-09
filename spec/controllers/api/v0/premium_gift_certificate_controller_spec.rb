@@ -1,6 +1,6 @@
 describe Api::V0::PremiumGiftCertificateController do
   before :each do
-    @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
+    @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', premium_member: false, name: 'John Doe', role: 'user'
     issued_at = (Time.now.to_f * 1000).to_i
     service_claim = {
         iat: issued_at,
