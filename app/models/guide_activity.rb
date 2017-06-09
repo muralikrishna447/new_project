@@ -1,3 +1,7 @@
+require 'action_view'
+require 'action_view/helpers'
+include ActionView::Helpers::DateHelper
+
 class GuideActivity < ActiveRecord::Base
   validates_uniqueness_of :guide_id
   belongs_to :activity
@@ -25,7 +29,7 @@ class GuideActivity < ActiveRecord::Base
       end
 
       activity.title = guide['title']
-      activity.description = self.description(guide)
+      activity.description = guide['description']
       activity.activity_type = ['Recipe']
       activity.difficulty = 'intermediate'
       activity.premium = false
@@ -192,6 +196,7 @@ class GuideActivity < ActiveRecord::Base
       # Ingredient titles don't render correctly even with sanitized &
       line = line.strip.gsub(' & ', ' and ')
       line = CGI.unescapeHTML(line)
+      line.gsub!(/<br[^>]*>/, '')
 
       if line =~ /equipment/i
         state = :equipment
@@ -215,18 +220,53 @@ class GuideActivity < ActiveRecord::Base
     return state != :none
   end
 
+  def self.create_preheat_step(a, g)
+    p = g['defaultProgram']
+    temp = p['cookingTemperature']
+    title = "Preheat Joule to [c #{temp}]"
+
+    helper = p['helper']
+    helper = helper[0, 1].downcase + helper[1..-1]
+
+    numFreshTimes = p['freshTimes'].length
+
+    t1 = p['freshTimes'][0]['duration'].to_i
+    t2 = p['freshTimes'][-1]['duration'].to_i
+
+    t1text = ActionView::Helpers::DateHelper.distance_of_time_in_words(t1.minutes)
+    t2text = ActionView::Helpers::DateHelper.distance_of_time_in_words(t2.minutes)
+
+    directions = "For #{helper}, we recommend cooking at [c #{temp}]. Your cooking time will be between #{t1text} and #{t2text} (depending on size)."
+    if numFreshTimes == 1
+      directions = "For #{helper}, we recommend cooking at [c #{temp}] for #{t1text}."
+    end
+
+    directions = directions + "\nTo find your own perfect time and temperature, use the <a href='https://www.chefsteps.com/joule/app'>Joule App</a> or chat with Joule on Facebook Messenger:"
+    directions = directions + "\n[sendToMessenger \"Time and temp for #{g['title']}\"]"
+
+    step = Step.create!(
+      step_order: 0,
+      title: title,
+      directions: directions,
+    )
+    a.steps.push(step)
+  end
+
   def self.add_steps(a, g)
     a.steps.destroy_all
 
-    g['steps'].each_with_index do |gs, idx|
+    self.create_preheat_step(a, g)
+
+    idx = 1
+
+    g['steps'].each do |gs|
+      handled = false
 
       title = gs['title'].gsub /\.$/, ''
 
       image = self.upload_image(gs['noVideoThumbnail'] || gs['image'])
 
       description = gs['description']
-
-      handled = false
 
       if gs['helper']
         description += "<p>#{gs['helper']}</p>"
@@ -242,27 +282,27 @@ class GuideActivity < ActiveRecord::Base
         handled = true
       end
 
+      # Per Rick, skip the trivet step
+      if title == 'Protect your work surface!'
+        handled = true
+      end
+
       if ! handled
         if gs['buttonLink']
           description += "<p class='button-group-inline' style='justify-content: center;'><a class=\"button outline orange\" href=\"#{gs['buttonLink']}\">#{gs['buttonText']}</a>"
         end
 
         step = Step.create!(
-          step_order: idx,
+          step_order: idx + 1,
           title: title,
           directions: description,
           image_id: image
         )
         a.steps.push(step)
+
+        idx = idx + 1
       end
     end
-  end
-
-  def self.description(guide)
-    <<-EOT
-    #{guide['description']}
-    [sendToMessenger \"Time and temp for #{guide['title']}\"]
-    EOT
   end
 end
 

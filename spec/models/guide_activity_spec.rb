@@ -21,7 +21,6 @@ describe GuideActivity do
       expect(a[:title]).to eq(guide['title'])
       expect(a[:url]).to include('cracklin')
       expect(a[:description]).to include("velvety-smooth texture")
-      expect(a[:description]).to include("[sendToMessenger")
       expect(a[:image]).to eq('FAKEIMAGE.JPG')
       expect(a[:tagList]).to include('sous vide')
       expect(a[:tagList]).to include('guide')
@@ -40,9 +39,10 @@ describe GuideActivity do
       expect(a[:equipment][0][:equipment][:title]).to eq('Sous vide setup')
       expect(a[:equipment][1][:equipment][:title]).to eq('Digital scale')
       expect(a[:steps].length).to eq(10)
-      expect(a[:steps][0][:title]).to include('Separate')
-      expect(a[:steps][0][:directions]).to include('Crack shell')
-      expect(a[:steps][0][:image]).to eq('FAKEIMAGE.JPG')
+      expect(a[:steps][0][:directions]).to include('[sendToMessenger')
+      expect(a[:steps][1][:title]).to include('Separate')
+      expect(a[:steps][1][:directions]).to include('Crack shell')
+      expect(a[:steps][1][:image]).to eq('FAKEIMAGE.JPG')
     end
 
     it 'doesn\'t do any work on guides with no hero image' do
