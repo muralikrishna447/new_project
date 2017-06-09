@@ -142,10 +142,22 @@ module Fulfillment
                         "has pending status #{status}, not updating Shopify fulfillment for order with id #{order.id}"
     end
 
+    SHIPPING_ERROR_TAG = 'shipping-error'.freeze
+    SHIPPING_ERROR_MSG_ATTR = 'shipping-error-message'.freeze
     def self.handle_error(fulfillment_order, order, status)
+      # If the order already has the error tag, assume it has already been
+      # processed and move on.
+      return if Shopify::Utils.order_tags(order).include?(SHIPPING_ERROR_TAG)
+
       Rails.logger.warn "FbaShipmentProcessor fulfillment order with id #{fulfillment_order.fetch('SellerFulfillmentOrderId')} " \
                         "has error status #{status}, tagging Shopify order with id #{order.id} for follow up"
-      Shopify::Utils.add_to_order_tags(order, 'shipping-error')
+      Shopify::Utils.add_to_order_tags(order, SHIPPING_ERROR_TAG)
+      order.note_attributes.push(
+        ShopifyAPI::NoteAttribute.new(
+          name: SHIPPING_ERROR_MSG_ATTR,
+          value: "FBA status is #{status}"
+        )
+      )
       Shopify::Utils.send_assert_true(order, :save)
     end
   end

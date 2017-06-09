@@ -31,9 +31,11 @@ describe Fulfillment::FbaShipmentProcessor do
       ShopifyAPI::Order.new(
         id: 'my-order-id',
         fulfillments: [fulfillment],
-        line_items: line_items
+        line_items: line_items,
+        tags: tags
       )
     end
+    let(:tags) { '' }
 
     context 'item SKU is fulfillable by FBA' do
       let(:sku) { 'cs30001' }
@@ -131,11 +133,34 @@ describe Fulfillment::FbaShipmentProcessor do
 
           context 'FBA status is error' do
             shared_examples 'fba_shipment_error' do
-              it 'does not call to_shipment and adds shipment-error tag' do
-                Fulfillment::FbaShipmentProcessor.should_not_receive(:to_shipment)
-                Shopify::Utils.should_receive(:add_to_order_tags).with(order, 'shipping-error')
-                Shopify::Utils.should_receive(:send_assert_true).with(order, :save)
-                Fulfillment::FbaShipmentProcessor.process_order(order)
+              context 'order has shipping-error tag' do
+                let(:tags) { Fulfillment::FbaShipmentProcessor::SHIPPING_ERROR_TAG }
+
+                it 'does not save order' do
+                  Shopify::Utils.should_not_receive(:send_assert_true).with(order, :save)
+                end
+              end
+
+              context 'order does not have shipping-error tag' do
+                let(:tags) { 'some-other-tag' }
+                let(:note_attributes) { double('note_attributes') }
+
+                before :each do
+                  order.stub(:note_attributes).and_return(note_attributes)
+                end
+
+                it 'does not call to_shipment and adds shipment-error tag' do
+                  Fulfillment::FbaShipmentProcessor.should_not_receive(:to_shipment)
+                  Shopify::Utils.should_receive(:add_to_order_tags).with(order, Fulfillment::FbaShipmentProcessor::SHIPPING_ERROR_TAG)
+                  note_attributes.should_receive(:push).with(
+                    ShopifyAPI::NoteAttribute.new(
+                      name: Fulfillment::FbaShipmentProcessor::SHIPPING_ERROR_MSG_ATTR,
+                      value: "FBA status is #{fba_status}"
+                    )
+                  )
+                  Shopify::Utils.should_receive(:send_assert_true).with(order, :save)
+                  Fulfillment::FbaShipmentProcessor.process_order(order)
+                end
               end
             end
 
