@@ -50,7 +50,7 @@ describe Fulfillment::FbaOrderSubmitter do
       context 'FBA fulfillment order exists' do
         before do
           Fulfillment::Fba
-            .stub(:fulfillment_order)
+            .stub(:fulfillment_order_by_id)
             .with(seller_fulfillment_order_id)
             .and_return('FulfillmentOrder' => { 'ReceivedDateTime' => 'submitted-time' })
         end
@@ -65,7 +65,7 @@ describe Fulfillment::FbaOrderSubmitter do
       context 'FBA fulfillment order does not exist' do
         before do
           Fulfillment::Fba
-            .stub(:fulfillment_order)
+            .stub(:fulfillment_order_by_id)
             .with(seller_fulfillment_order_id)
             .and_return(nil)
         end

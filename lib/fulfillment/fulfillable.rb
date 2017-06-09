@@ -60,6 +60,11 @@ module Fulfillment
       fulfillments.first
     end
 
+    def reload!
+      return unless order
+      @order = Shopify::Utils.order_by_id(order.id)
+    end
+
     private
 
     def open_fulfillment_for_line_item(line_item)

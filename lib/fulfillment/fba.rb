@@ -48,6 +48,10 @@ module Fulfillment
       response
     end
 
+    def self.shopify_fulfillment_order(order, fulfillment)
+      fulfillment_order_by_id(seller_fulfillment_order_id(order, fulfillment))
+    end
+
     # Creates a new FBA fulfillment order for the specified Shopify::LineItem
     # the specified Fulfillment::Fulfillable.
     COMMENT = 'Thanks for shopping at ChefSteps!'.freeze # Printed on packing slips
@@ -59,14 +63,14 @@ module Fulfillment
               "and line item with id #{item.id} because no open fulfillment exists"
       end
 
-      seller_fulfillment_order_id = seller_fulfillment_order_id(fulfillable, fulfillment)
+      seller_fulfillment_order_id = seller_fulfillment_order_id(fulfillable.order, fulfillment)
       Rails.logger.info 'FbaOrderSubmitter creating FBA fulfillment order with ' \
                          "id #{seller_fulfillment_order_id} for order with id " \
                          "#{fulfillable.order.id} and line item with id #{item.id}"
 
       @@outbound_shipment_client.create_fulfillment_order(
         seller_fulfillment_order_id,
-        displayable_order_id(fulfillable, fulfillment),
+        displayable_order_id(fulfillable.order, fulfillment),
         fulfillable.order.processed_at,
         COMMENT,
         SHIPPING_SPEED,

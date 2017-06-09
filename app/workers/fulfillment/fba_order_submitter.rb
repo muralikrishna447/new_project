@@ -57,6 +57,7 @@ module Fulfillment
     end
 
     def self.transform(fulfillable)
+      fulfillable.reload!
       fulfillable.line_items.map do |item|
         fulfillment = opened_fulfillment(fulfillable, item)
         seller_fulfillment_order_id = Fulfillment::Fba.seller_fulfillment_order_id(fulfillable.order, fulfillment)
@@ -72,8 +73,9 @@ module Fulfillment
           seller_fulfillment_order_id,
           displayable_order_id,
           fulfillable.order.processed_at,
-          COMMENT,
-          SHIPPING_SPEED,
+          Fulfillment::Fba::COMMENT,
+          Fulfillment::Fba::SHIPPING_SPEED,
+          fulfillable.order.shipping_address.name,
           fulfillable.order.shipping_address.address1,
           fulfillable.order.shipping_address.address2,
           fulfillable.order.shipping_address.company,
@@ -104,7 +106,7 @@ module Fulfillment
 
           fulfillment = opened_fulfillment(fulfillable, item)
           seller_fulfillment_order_id = Fulfillment::Fba.seller_fulfillment_order_id(fulfillable.order, fulfillment)
-          existing_order = Fulfillment::Fba.fulfillment_order(seller_fulfillment_order_id)
+          existing_order = Fulfillment::Fba.fulfillment_order_by_id(seller_fulfillment_order_id)
           if existing_order
             submitted_time = existing_order.fetch('FulfillmentOrder').fetch('ReceivedDateTime')
             Rails.logger.info "FbaOrderSubmitter order with id #{fulfillable.order.id} " \
@@ -128,15 +130,30 @@ module Fulfillment
       Librato.tracker.flush
     end
 
-    def self.submit_orders_to_fba(max_quantity, perform_inline)
+    def self.submit_orders_to_fba(options)
+      raise 'sku is a required option' unless options[:sku]
+      unless Fulfillment::FBA_FULFILLABLE_SKUS.include?(options[:sku])
+        raise "sku #{options[:sku]} is not fulfillable by FBA"
+      end
+
       filename_date = Time.now.in_time_zone('Pacific Time (US & Canada)')
       export_id = SecureRandom.hex
       pending_order_filename = "#{Fulfillment::PendingOrderExporter.type}/fba/#{filename_date.strftime('%Y/%m/%d')}/#{Fulfillment::PendingOrderExporter.type}_#{export_id}.csv"
       submitted_order_filename = "archives/fba/#{Fulfillment::FbaOrderSubmitter.type}/#{Fulfillment::FbaOrderSubmitter.type}_#{filename_date.strftime('%Y-%m-%d')}_#{export_id}.csv"
 
+      if options[:max_quantity]
+        Rails.logger.info "FbaOrderSubmitter using max quantity for sku #{options[:sku]} specifed as option: #{options[:max_quantity]}"
+        max_quantity = options[:max_quantity]
+      else
+        max_quantity = Fulfillment::Fba.inventory_for_sku(options[:sku])
+        Rails.logger.info "FbaOrderSubmitter using max quantity for sku #{options[:sku]} from FBA in-stock inventory: #{max_quantity}"
+      end
+
+      # TODO for now we can only support a single SKU in the export given that
+      # quantity is derived from the SKU-specific inventory available in FBA.
       params = {
-        skus: Fulfillment::FBA_FULFILLABLE_SKUS,
-        quantity: max_quantity, # Ideally this should be derived from current FBA inventory levels
+        skus: [options[:sku]],
+        quantity: max_quantity,
         storage: 's3',
         storage_s3_region: Fulfillment::PendingOrderExporter.s3_region,
         storage_s3_bucket: Fulfillment::PendingOrderExporter.s3_bucket,
@@ -144,7 +161,7 @@ module Fulfillment
         trigger_child_job: true,
         child_job_class: 'Fulfillment::FbaOrderSubmitter',
         child_job_params: {
-          skus: Fulfillment::FBA_FULFILLABLE_SKUS,
+          skus: [options[:sku]],
           search_params: {
             storage: 's3',
             storage_s3_region: Fulfillment::PendingOrderExporter.s3_region,
@@ -152,16 +169,17 @@ module Fulfillment
             storage_filename: pending_order_filename
           },
           open_fulfillment: true,
+          create_fulfillment_orders: true,
           quantity: max_quantity,
           storage: 's3',
-          storage_s3_region: Fulfillment::RostiOrderSubmitter.s3_region,
-          storage_s3_bucket: Fulfillment::RostiOrderSubmitter.s3_bucket,
+          storage_s3_region: Fulfillment::FbaOrderSubmitter.s3_region,
+          storage_s3_bucket: Fulfillment::FbaOrderSubmitter.s3_bucket,
           storage_filename: submitted_order_filename
         }
       }
 
       Rails.logger.info("FbaOrderSubmitter starting with export id #{export_id} and params #{params}")
-      if perform_inline
+      if options[:perform_inline]
         Fulfillment::PendingOrderExporter.perform(params)
       else
         Resque.enqueue(Fulfillment::PendingOrderExporter, params)
