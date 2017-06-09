@@ -196,6 +196,7 @@ class GuideActivity < ActiveRecord::Base
       # Ingredient titles don't render correctly even with sanitized &
       line = line.strip.gsub(' & ', ' and ')
       line = CGI.unescapeHTML(line)
+      line.gsub!(/<br[^>]*>/, '')
 
       if line =~ /equipment/i
         state = :equipment
@@ -226,13 +227,18 @@ class GuideActivity < ActiveRecord::Base
 
     helper = p['helper']
     helper = helper[0, 1].downcase + helper[1..-1]
-    numFreshTimes = p['freshTimes'].length
-    middleFreshTimeDuration = p['freshTimes'][(numFreshTimes / 2).floor]['duration'].to_i
-    middleFreshTime = ActionView::Helpers::DateHelper.distance_of_time_in_words(middleFreshTimeDuration.minutes)
 
-    directions = "For #{helper}, we recommend cooking at [c #{temp}]. Depending on size, your cooking time will be about #{middleFreshTime}."
+    numFreshTimes = p['freshTimes'].length
+
+    t1 = p['freshTimes'][0]['duration'].to_i
+    t2 = p['freshTimes'][-1]['duration'].to_i
+
+    t1text = ActionView::Helpers::DateHelper.distance_of_time_in_words(t1.minutes)
+    t2text = ActionView::Helpers::DateHelper.distance_of_time_in_words(t2.minutes)
+
+    directions = "For #{helper}, we recommend cooking at [c #{temp}]. Your cooking time will be between #{t1text} and #{t2text} (depending on size)."
     if numFreshTimes == 1
-      directions = "For #{helper}, we recommend cooking at [c #{temp}] for #{middleFreshTime}."
+      directions = "For #{helper}, we recommend cooking at [c #{temp}] for #{t1text}."
     end
 
     directions = directions + "\nTo find your own perfect time and temperature, use the <a href='https://www.chefsteps.com/joule/app'>Joule App</a> or chat with Joule on Facebook Messenger:"
