@@ -160,6 +160,34 @@ describe Fulfillment::Fulfillable do
     end
   end
 
+  describe 'reload!' do
+    context 'order is nil' do
+      let(:fulfillable) { Fulfillment::Fulfillable.new }
+      it 'does nothing' do
+        Shopify::Utils.should_not_receive(:order_by_id)
+        fulfillable.reload!
+      end
+    end
+
+    context 'order is not nil' do
+      let(:order_id) { 1 }
+      let(:fulfillable) do
+        Fulfillment::Fulfillable.new(
+          order: ShopifyAPI::Order.new(id: order_id)
+        )
+      end
+      let(:updated_order) do
+        ShopifyAPI::Order.new(id: 999)
+      end
+
+      it 'reloads order' do
+        Shopify::Utils.should_receive(:order_by_id).with(order_id).and_return(updated_order)
+        fulfillable.reload!
+        expect(fulfillable.order).to eq updated_order
+      end
+    end
+  end
+
   def stub_open_fulfillment(order_id, line_item_id, qty)
     WebMock
       .stub_request(:post, /test.myshopify.com\/admin\/orders\/#{order_id}\/fulfillments.json/)

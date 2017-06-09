@@ -57,6 +57,8 @@ module Fulfillment
     end
 
     def self.transform(fulfillable)
+      # We assert below that the fulfillment is open, so reload it here to have
+      # it reflected in the fulfillable's order.
       fulfillable.reload!
       fulfillable.line_items.map do |item|
         fulfillment = opened_fulfillment(fulfillable, item)
