@@ -108,6 +108,9 @@ module Fulfillment
 
           fulfillment = opened_fulfillment(fulfillable, item)
           seller_fulfillment_order_id = Fulfillment::Fba.seller_fulfillment_order_id(fulfillable.order, fulfillment)
+          Rails.logger.info "FbaOrderSubmitter checking if order with id #{fulfillable.order.id} " \
+                            "and seller_fulfillment_order_id  #{seller_fulfillment_order_id} " \
+                            'was already submitted to FBA'
           existing_order = Fulfillment::Fba.fulfillment_order_by_id(seller_fulfillment_order_id)
           if existing_order
             submitted_time = existing_order.fetch('FulfillmentOrder').fetch('ReceivedDateTime')

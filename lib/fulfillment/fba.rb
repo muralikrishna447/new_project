@@ -120,10 +120,10 @@ module Fulfillment
         'PostalCode' => shopify_shipping_address.zip,
         'PhoneNumber' => shopify_shipping_address.phone
       }
-      unless shopify_shipping_address.address2.empty?
+      unless shopify_shipping_address.address2.nil? || shopify_shipping_address.address2.empty?
         shipping_address['Line2'] = shopify_shipping_address.address2
       end
-      unless shopify_shipping_address.company.empty?
+      unless shopify_shipping_address.company.nil? || shopify_shipping_address.company.empty?
         shipping_address['Line3'] = shopify_shipping_address.company
       end
       shipping_address

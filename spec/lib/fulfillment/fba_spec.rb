@@ -110,35 +110,34 @@ describe Fulfillment::Fba do
         quantity: quantity
       )
     end
-    let(:fulfillable) do
-      Fulfillment::Fulfillable.new(
-        order: ShopifyAPI::Order.new(
-          processed_at: processed_at,
-          shipping_address: ShopifyAPI::ShippingAddress.new(
-            name: shipping_name,
-            company: shipping_company,
-            address1: shipping_address1,
-            address2: shipping_address2,
-            city: shipping_city,
-            province_code: shipping_province_code,
-            country_code: shipping_country_code,
-            zip: shipping_zip,
-            phone: shipping_phone
-          ),
-          fulfillments: [fulfillment]
-        )
+    let(:order) do
+      ShopifyAPI::Order.new(
+        processed_at: processed_at,
+        shipping_address: ShopifyAPI::ShippingAddress.new(
+          name: shipping_name,
+          company: shipping_company,
+          address1: shipping_address1,
+          address2: shipping_address2,
+          city: shipping_city,
+          province_code: shipping_province_code,
+          country_code: shipping_country_code,
+          zip: shipping_zip,
+          phone: shipping_phone
+        ),
+        fulfillments: [fulfillment]
       )
     end
+    let(:fulfillable) { Fulfillment::Fulfillable.new(order: order) }
     let(:client) { double('mws_client') }
 
     before do
       Fulfillment::Fba
         .stub(:seller_fulfillment_order_id)
-        .with(fulfillable, fulfillment)
+        .with(order, fulfillment)
         .and_return(seller_fulfillment_order_id)
       Fulfillment::Fba
         .stub(:displayable_order_id)
-        .with(fulfillable, fulfillment)
+        .with(order, fulfillment)
         .and_return(displayable_order_id)
       MWS::FulfillmentOutboundShipment::Client.stub(:new).and_return(client)
       MWS::FulfillmentInventory::Client.stub(:new)
