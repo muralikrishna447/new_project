@@ -40,7 +40,18 @@ namespace :fulfillment do
     end
   end
 
-  task :fba_submit_orders, [:pending_order_filename, :export_id, :max_quantity, :sku, :inline] => :environment do |_t, args|
+  task :fba_export_and_submit_orders, [:sku, :max_quantity, :inline] => :environment do |_t, args|
+    args.with_defaults(inline: false)
+    max_quantity = args[:max_quantity]
+    max_quantity ||= max_quantity.to_i
+    Fulfillment::FbaOrderSubmitter.submit_orders_to_fba(
+      sku: args[:sku],
+      perform_inline: args[:inline],
+      max_quantity: max_quantity
+    )
+  end
+
+  task :fba_submit_orders, [:pending_order_filename, :export_id, :sku, :max_quantity, :inline] => :environment do |_t, args|
     # Normally you would only execute this as a recovery step in case the
     # submission job fails, so you want to take all the quantity in the pending
     # file and run it inline.

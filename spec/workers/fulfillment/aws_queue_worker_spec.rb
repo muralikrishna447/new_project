@@ -88,5 +88,40 @@ describe Fulfillment::AwsQueueWorker do
         Fulfillment::AwsQueueWorker.perform(params)
       end
     end
+
+    context 'fba task and message' do
+      let(:sku) { 'my-fba-sku' }
+      let(:params) do
+        {
+          task: 'submit_orders_to_fba',
+          message: message.to_json
+        }
+      end
+
+      context 'max_quantity is not specified' do
+        let(:message) { { sku: sku } }
+        it 'dispatches FbaOrderSubmitter with nil max_quantity' do
+          Fulfillment::FbaOrderSubmitter.should_receive(:submit_orders_to_fba).with(
+            sku: sku,
+            perform_inline: true,
+            max_quantity: nil
+          )
+          Fulfillment::AwsQueueWorker.perform(params)
+        end
+      end
+
+      context 'max_quantity is specified' do
+        let(:max_quantity) { 5 }
+        let(:message) { { sku: sku, max_quantity: max_quantity } }
+        it 'dispatches FbaOrderSubmitter with specified max_quantity' do
+          Fulfillment::FbaOrderSubmitter.should_receive(:submit_orders_to_fba).with(
+            sku: sku,
+            perform_inline: true,
+            max_quantity: max_quantity
+          )
+          Fulfillment::AwsQueueWorker.perform(params)
+        end
+      end
+    end
   end
 end
