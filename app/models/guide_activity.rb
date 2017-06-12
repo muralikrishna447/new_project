@@ -222,6 +222,11 @@ class GuideActivity < ActiveRecord::Base
 
   def self.create_preheat_step(a, g)
     p = g['defaultProgram']
+    # If there is no default program, pick a middle temp
+    if ! p
+      np = g['programs'].length
+      p = g['programs'][(np / 2).floor]
+    end
     temp = p['cookingTemperature']
     title = "Preheat Joule to [c #{temp}]"
 
