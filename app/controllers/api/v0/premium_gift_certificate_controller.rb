@@ -18,7 +18,7 @@ module Api
           else
             pgc = PremiumGiftCertificate.create!(purchaser_id: params[:user_id], price: params[:price], redeemed: false)
             PremiumGiftCertificateMailer.prepare(params[:email], pgc.token).deliver
-            Rails.cache.write(params[:premium_identifier], 1, expires_in: 1.days)
+            Rails.cache.write(params[:premium_identifier], 1, expires_in: 7.days)
             render_api_response(200, {message: 'Success'})
           end
 
