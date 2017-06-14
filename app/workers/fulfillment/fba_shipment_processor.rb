@@ -20,6 +20,7 @@ module Fulfillment
       end
 
       Librato.increment 'fulfillment.fba.shipment-processor.success', sporadic: true
+      Librato.tracker.flush
     end
 
     # Process a sync for the specified Shopify order. This is read only unless
