@@ -40,6 +40,53 @@ namespace :fulfillment do
     end
   end
 
+  task :fba_export_and_submit_orders, [:sku, :max_quantity, :inline] => :environment do |_t, args|
+    args.with_defaults(inline: false)
+    max_quantity = args[:max_quantity]
+    max_quantity ||= max_quantity.to_i
+    Fulfillment::FbaOrderSubmitter.submit_orders_to_fba(
+      sku: args[:sku],
+      perform_inline: args[:inline],
+      max_quantity: max_quantity
+    )
+  end
+
+  task :fba_submit_orders, [:pending_order_filename, :export_id, :sku, :max_quantity, :inline] => :environment do |_t, args|
+    # Normally you would only execute this as a recovery step in case the
+    # submission job fails, so you want to take all the quantity in the pending
+    # file and run it inline.
+    args.with_defaults(inline: true)
+    Rails.logger.info "FBA order submit rake task starting with args #{args}"
+
+    export_id = args[:export_id]
+    max_quantity = args[:max_quantity].to_i
+    filename_date = Time.now.in_time_zone('Pacific Time (US & Canada)')
+
+    params = {
+      skus: [args[:sku]],
+      search_params: {
+        storage: 's3',
+        storage_filename: args[:pending_order_filename],
+        storage_s3_region: Fulfillment::PendingOrderExporter.s3_region,
+        storage_s3_bucket: Fulfillment::PendingOrderExporter.s3_bucket
+      },
+      open_fulfillment: true,
+      create_fulfillment_orders: true,
+      quantity: max_quantity,
+      storage: 's3',
+      storage_s3_region: Fulfillment::FbaOrderSubmitter.s3_region,
+      storage_s3_bucket: Fulfillment::FbaOrderSubmitter.s3_bucket,
+      storage_filename: "archives/fba/#{Fulfillment::FbaOrderSubmitter.type}/#{Fulfillment::FbaOrderSubmitter.type}_#{filename_date.strftime('%Y-%m-%d')}_#{export_id}.csv"
+    }
+
+    Rails.logger.info "FBA order submit with export id #{export_id} starting with params #{params}"
+    if args[:inline].to_s == 'true'
+      Fulfillment::FbaOrderSubmitter.perform(params)
+    else
+      Resque.enqueue(Fulfillment::FbaOrderSubmitter, params)
+    end
+  end
+
   task :rosti_poll_shipments, [:inline] => :environment do |_t, args|
     args.with_defaults(inline: false)
 
@@ -49,6 +96,18 @@ namespace :fulfillment do
       Fulfillment::RostiShipmentPoller.perform(params)
     else
       Resque.enqueue(Fulfillment::RostiShipmentPoller, params)
+    end
+  end
+
+  task :fba_process_shipments, [:inline] => :environment do |_t, args|
+    args.with_defaults(inline: false)
+
+    params = { complete_fulfillment: true }
+    Rails.logger.info "FBA process shipments task starting with params #{params}"
+    if args[:inline].to_s == 'true'
+      Fulfillment::FbaShipmentProcessor.perform(params)
+    else
+      Resque.enqueue(Fulfillment::FbaShipmentProcessor, params)
     end
   end
 
