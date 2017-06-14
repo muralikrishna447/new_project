@@ -99,6 +99,18 @@ namespace :fulfillment do
     end
   end
 
+  task :fba_process_shipments, [:inline] => :environment do |_t, args|
+    args.with_defaults(inline: false)
+
+    params = { complete_fulfillment: true }
+    Rails.logger.info "FBA process shipments task starting with params #{params}"
+    if args[:inline].to_s == 'true'
+      Fulfillment::FbaShipmentProcessor.perform(params)
+    else
+      Resque.enqueue(Fulfillment::FbaShipmentProcessor, params)
+    end
+  end
+
   task :validate_shipping_addresses, [:inline] => :environment do |_t, args|
     args.with_defaults(inline: false)
 
