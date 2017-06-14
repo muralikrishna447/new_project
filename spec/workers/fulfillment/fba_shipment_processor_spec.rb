@@ -4,7 +4,8 @@ describe Fulfillment::FbaShipmentProcessor do
   describe 'perform' do
     let(:order_1) { ShopifyAPI::Order.new(id: 1) }
     let(:order_2) { ShopifyAPI::Order.new(id: 2) }
-    let(:params) { { my_param: true } }
+    let(:params) { { 'my_param' => true } }
+    let(:symbolized_params) { { my_param: true } }
 
     it 'processes open orders' do
       Shopify::Utils
@@ -12,8 +13,8 @@ describe Fulfillment::FbaShipmentProcessor do
         .with(status: 'open')
         .and_yield(order_1)
         .and_yield(order_2)
-      Fulfillment::FbaShipmentProcessor.should_receive(:process_order).with(order_1, params)
-      Fulfillment::FbaShipmentProcessor.should_receive(:process_order).with(order_2, params)
+      Fulfillment::FbaShipmentProcessor.should_receive(:process_order).with(order_1, symbolized_params)
+      Fulfillment::FbaShipmentProcessor.should_receive(:process_order).with(order_2, symbolized_params)
       Fulfillment::FbaShipmentProcessor.perform(params)
     end
   end

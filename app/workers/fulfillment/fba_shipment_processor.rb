@@ -14,9 +14,10 @@ module Fulfillment
     # FBA-fulfilled SKUs. Syncs fulfillment status from FBA to Shopify and
     # updates tracking/completes fulfillment for each order.
     def self.perform(params)
-      Rails.logger.info "FbaShipmentProcessor starting perform with params #{params}"
+      symbolized_params = params.deep_symbolize_keys
+      Rails.logger.info "FbaShipmentProcessor starting perform with params #{symbolized_params}"
       Shopify::Utils.search_orders_with_each(status: 'open') do |order|
-        process_order(order, params)
+        process_order(order, symbolized_params)
       end
 
       Librato.increment 'fulfillment.fba.shipment-processor.success', sporadic: true
