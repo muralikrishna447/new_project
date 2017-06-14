@@ -3,6 +3,7 @@ class Shopify::Order
   JOULE_SKU = 'cs10001'
   JOULE_WHITE_SKU = 'cs20001'
   ALL_JOULE_SKUS = [JOULE_SKU, JOULE_WHITE_SKU].freeze
+  BIG_CLAMP_SKU = 'cs30001'.freeze
 
   METAFIELD_NAMESPACE = 'chefsteps' # duplicate code!?
   ALL_BUT_JOULE_FULFILLED_METAFIELD_NAME = 'all-but-joule-fulfilled'

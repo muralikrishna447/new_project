@@ -78,6 +78,16 @@ module Fulfillment
       Fulfillment::RostiOrderSubmitter.submit_orders_to_rosti( max_quantity, inline, notification_email )
     end
 
+    def self.dispatch_submit_orders_to_fba(message)
+      Rails.logger.info "AWSQueueWorker dispatch_submit_orders_to_fba with message #{message}"
+
+      message_opts = JSON.parse(message, symbolize_names: true)
+      Fulfillment::FbaOrderSubmitter.submit_orders_to_fba(
+        sku: message_opts[:sku],
+        perform_inline: true,
+        max_quantity: message_opts[:max_quantity]
+      )
+    end
 
     def self.librato_increment(subkey, task_name)
       subkey = 'unknown' if subkey.nil?
