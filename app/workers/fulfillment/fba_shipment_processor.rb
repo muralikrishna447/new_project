@@ -18,6 +18,8 @@ module Fulfillment
       Shopify::Utils.search_orders_with_each(status: 'open') do |order|
         process_order(order, params)
       end
+
+      Librato.increment 'fulfillment.fba.shipment-processor.success', sporadic: true
     end
 
     # Process a sync for the specified Shopify order. This is read only unless
@@ -47,6 +49,7 @@ module Fulfillment
                             "and line item with id #{item.id} has no FBA fulfillment order " \
                             "with id #{seller_fulfillment_order_id}, skipping"
           next
+          Librato.increment 'fulfillment.fba.shipment-processor.lines.skipped.count', sporadic: true
         end
 
         fulfillment_order = response.fetch('FulfillmentOrder')
@@ -54,6 +57,7 @@ module Fulfillment
         Rails.logger.info "FbaShipmentProcessor order with id #{order.id} " \
                           "and line item with id #{item.id} has FBA fulfillment order " \
                           "with id #{seller_fulfillment_order_id} and status #{status}"
+        Librato.increment "fulfillment.fba.shipment-processor.lines.#{status}.count", sporadic: true
 
         # Sync shipment status to Shopify as necessary.
         case status
