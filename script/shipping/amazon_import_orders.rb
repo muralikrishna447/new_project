@@ -123,9 +123,6 @@ def create_shopify_order(row, price_amount, tax_amount)
     # or Shopify will not include tax amounts in the order total.
     total_tax: tax_amount.to_s,
     financial_status: 'paid',
-    # TODO we should add the buyer's email address at some point,
-    # but not for now as it will cause shipment notification emails
-    # to be sent.
     shipping_address: shipping_address,
     source_name: 'amazon-3p-fbm',
     note_attributes: [
@@ -136,6 +133,10 @@ def create_shopify_order(row, price_amount, tax_amount)
       {
         name: 'amazon-order-item-id',
         value: row['order-item-id']
+      },
+      {
+        name: 'amazon-buyer-email',
+        value: row['buyer-email']
       }
     ],
     tags: 'amazon-3p-fbm'
