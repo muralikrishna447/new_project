@@ -83,11 +83,17 @@ csv_str = CSV.generate(col_sep: "\t") do |output|
                          "name #{shipment.order.name}, Amazon order with id #{amazon_order_id}, " \
                          "item id #{amazon_order_item_id}, tracking number #{shipment.tracking_numbers[i]}"
 
+      # Kinda hacky. The shipped on date in PST/PDT is always the
+      # date before what Rosti says it is given the time difference
+      # from CST. Amazon will interpret this date as midnight PST/PDT
+      # and will reject records that have a future shipped on date.
+      # So subtract a day from Rosti's date and we're good to go.
+      us_shipped_on_date = shipment.shipped_on_dates[i] - 1
       output << [
         amazon_order_id,
         amazon_order_item_id,
         1,
-        shipment.shipped_on_dates[i].strftime('%Y-%m-%d'),
+        us_shipped_on_date.strftime('%Y-%m-%d'),
         shipment.tracking_company,
         '', # carrier-name intentionally blank per spec b/c we have carrier-code
         shipment.tracking_numbers[i],
