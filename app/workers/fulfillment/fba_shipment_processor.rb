@@ -14,9 +14,10 @@ module Fulfillment
     # FBA-fulfilled SKUs. Syncs fulfillment status from FBA to Shopify and
     # updates tracking/completes fulfillment for each order.
     def self.perform(params)
-      Rails.logger.info "FbaShipmentProcessor starting perform with params #{params}"
+      symbolized_params = params.deep_symbolize_keys
+      Rails.logger.info "FbaShipmentProcessor starting perform with params #{symbolized_params}"
       Shopify::Utils.search_orders_with_each(status: 'open') do |order|
-        process_order(order, params)
+        process_order(order, symbolized_params)
       end
 
       Librato.increment 'fulfillment.fba.shipment-processor.success', sporadic: true
@@ -74,7 +75,7 @@ module Fulfillment
           Rails.logger.info "FbaShipmentProcessor fulfillment order with id #{seller_fulfillment_order_id} " \
                             "was cancelled, not updating Shopify fulfillment for order with id #{order.id}"
         when 'COMPLETE'
-          shipment = to_shipment(fulfillment_order, order, fulfillment)
+          shipment = to_shipment(response, order, fulfillment)
           shipment.complete! if shipment && params[:complete_fulfillment]
         when 'COMPLETE_PARTIALLED'
           handle_error(fulfillment_order, order, status)
@@ -87,15 +88,17 @@ module Fulfillment
     end
 
     # Translates an FBA fulfillment order to a Fulfillment::Shipment object.
-    def self.to_shipment(fulfillment_order, order, fulfillment)
+    def self.to_shipment(response, order, fulfillment)
       carrier_codes = []
       tracking_numbers = []
+      tracking_urls = []
       all_shipped = true
-      fulfillment_order.fetch('FulfillmentShipment').each_value do |fba_shipment|
+      response.fetch('FulfillmentShipment').each_value do |fba_shipment|
         all_shipped = false unless fba_shipment.fetch('FulfillmentShipmentStatus') == 'SHIPPED'
         fba_shipment.fetch('FulfillmentShipmentPackage').each_value do |fba_package|
           carrier_codes << fba_package.fetch('CarrierCode')
           tracking_numbers << fba_package.fetch('TrackingNumber')
+          tracking_urls << tracking_url(fba_shipment)
         end
       end
 
@@ -105,7 +108,7 @@ module Fulfillment
       # there will just be a single shipment.
       unless all_shipped
         Rails.logger.info "FbaShipmentProcessor not all shipments have shipped for order with id #{order.id} " \
-                          "and fulfillment order with id #{fulfillment_order.fetch('SellerFulfillmentOrderId')}, " \
+                          "and fulfillment order with id #{response.fetch('FulfillmentOrder').fetch('SellerFulfillmentOrderId')}, " \
                           'skipping'
         return nil
       end
@@ -125,7 +128,8 @@ module Fulfillment
         order: order,
         fulfillments: [fulfillment],
         tracking_company: reduce_carrier_codes(carrier_codes),
-        tracking_numbers: tracking_numbers
+        tracking_numbers: tracking_numbers,
+        tracking_urls: tracking_urls
       )
     end
 
@@ -164,6 +168,13 @@ module Fulfillment
         )
       )
       Shopify::Utils.send_assert_true(order, :save)
+    end
+
+    # FBA uses an eclectic mix of carriers for shipping packages and
+    # Shopify does a poor job of guessing the tracking URL. So instead
+    # we use Amazon's shipment tracking website based on the shipment ID.
+    def self.tracking_url(fba_shipment)
+      "https://www.swiship.com/t/#{fba_shipment.fetch('AmazonShipmentId')}"
     end
   end
 end
