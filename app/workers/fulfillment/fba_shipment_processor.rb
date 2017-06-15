@@ -91,12 +91,14 @@ module Fulfillment
     def self.to_shipment(response, order, fulfillment)
       carrier_codes = []
       tracking_numbers = []
+      tracking_urls = []
       all_shipped = true
       response.fetch('FulfillmentShipment').each_value do |fba_shipment|
         all_shipped = false unless fba_shipment.fetch('FulfillmentShipmentStatus') == 'SHIPPED'
         fba_shipment.fetch('FulfillmentShipmentPackage').each_value do |fba_package|
           carrier_codes << fba_package.fetch('CarrierCode')
           tracking_numbers << fba_package.fetch('TrackingNumber')
+          tracking_urls << tracking_url(fba_shipment)
         end
       end
 
@@ -126,7 +128,8 @@ module Fulfillment
         order: order,
         fulfillments: [fulfillment],
         tracking_company: reduce_carrier_codes(carrier_codes),
-        tracking_numbers: tracking_numbers
+        tracking_numbers: tracking_numbers,
+        tracking_urls: tracking_urls
       )
     end
 
@@ -165,6 +168,13 @@ module Fulfillment
         )
       )
       Shopify::Utils.send_assert_true(order, :save)
+    end
+
+    # FBA uses an eclectic mix of carriers for shipping packages and
+    # Shopify does a poor job of guessing the tracking URL. So instead
+    # we use Amazon's shipment tracking website based on the shipment ID.
+    def self.tracking_url(fba_shipment)
+      "https://www.swiship.com/t/#{fba_shipment.fetch('AmazonShipmentId')}"
     end
   end
 end

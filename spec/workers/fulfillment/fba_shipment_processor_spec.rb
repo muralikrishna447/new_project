@@ -234,6 +234,8 @@ describe Fulfillment::FbaShipmentProcessor do
     let(:tracking_number_1) { '111' }
     let(:tracking_number_2) { '222' }
     let(:tracking_number_3) { '333' }
+    let(:amazon_shipment_id_1) { 'my_amazon_shipment_id_1' }
+    let(:amazon_shipment_id_2) { 'my_amazon_shipment_id_2' }
     let(:fba_response) do
       {
         'FulfillmentOrder' => {
@@ -241,6 +243,7 @@ describe Fulfillment::FbaShipmentProcessor do
         },
         'FulfillmentShipment' => {
           '1' => {
+            'AmazonShipmentId' => amazon_shipment_id_1,
             'FulfillmentShipmentStatus' => shipment_status_1,
             'FulfillmentShipmentPackage' => {
               '1' => {
@@ -250,6 +253,7 @@ describe Fulfillment::FbaShipmentProcessor do
             }
           },
           '2' => {
+            'AmazonShipmentId' => amazon_shipment_id_2,
             'FulfillmentShipmentStatus' => shipment_status_2,
             'FulfillmentShipmentPackage' => {
               '1' => {
@@ -278,7 +282,12 @@ describe Fulfillment::FbaShipmentProcessor do
             order: order,
             fulfillments: [fulfillment],
             tracking_company: carrier_code,
-            tracking_numbers: [tracking_number_1, tracking_number_2, tracking_number_3]
+            tracking_numbers: [tracking_number_1, tracking_number_2, tracking_number_3],
+            tracking_urls: [
+              "https://www.swiship.com/t/#{amazon_shipment_id_1}",
+              "https://www.swiship.com/t/#{amazon_shipment_id_2}",
+              "https://www.swiship.com/t/#{amazon_shipment_id_2}"
+            ]
           )
       end
     end
