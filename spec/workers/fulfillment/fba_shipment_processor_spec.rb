@@ -110,7 +110,7 @@ describe Fulfillment::FbaShipmentProcessor do
               it 'calls to_shipment and does not complete fulfillment' do
                 Fulfillment::FbaShipmentProcessor
                   .should_receive(:to_shipment)
-                  .with(fba_fulfillment_order, order, fulfillment)
+                  .with(fba_response, order, fulfillment)
                   .and_return(shipment)
                 shipment.should_not_receive(:complete!)
                 Fulfillment::FbaShipmentProcessor.process_order(order, params)
@@ -124,7 +124,7 @@ describe Fulfillment::FbaShipmentProcessor do
               it 'calls to_shipment and completes fulfillment' do
                 Fulfillment::FbaShipmentProcessor
                   .should_receive(:to_shipment)
-                  .with(fba_fulfillment_order, order, fulfillment)
+                  .with(fba_response, order, fulfillment)
                   .and_return(shipment)
                 shipment.should_receive(:complete!)
                 Fulfillment::FbaShipmentProcessor.process_order(order, params)
@@ -234,9 +234,11 @@ describe Fulfillment::FbaShipmentProcessor do
     let(:tracking_number_1) { '111' }
     let(:tracking_number_2) { '222' }
     let(:tracking_number_3) { '333' }
-    let(:fba_fulfillment_order) do
+    let(:fba_response) do
       {
-        'SellerFulfillmentOrderId' => 'my-fba-order-id',
+        'FulfillmentOrder' => {
+          'SellerFulfillmentOrderId' => 'my-fba-order-id'
+        },
         'FulfillmentShipment' => {
           '1' => {
             'FulfillmentShipmentStatus' => shipment_status_1,
@@ -271,7 +273,7 @@ describe Fulfillment::FbaShipmentProcessor do
     context 'fulfillment shipment status for all shipments is shipped' do
       let(:shipment_status_2) { 'SHIPPED' }
       it 'returns shipment with tracking and the first carrier code' do
-        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_fulfillment_order, order, fulfillment))
+        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_response, order, fulfillment))
           .to eq Fulfillment::Shipment.new(
             order: order,
             fulfillments: [fulfillment],
@@ -284,7 +286,7 @@ describe Fulfillment::FbaShipmentProcessor do
     context 'fulfillment shipment status is not shipped for all shipments' do
       let(:shipment_status_2) { 'PENDING' }
       it 'returns nil' do
-        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_fulfillment_order, order, fulfillment)).to be_nil
+        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_response, order, fulfillment)).to be_nil
       end
     end
   end

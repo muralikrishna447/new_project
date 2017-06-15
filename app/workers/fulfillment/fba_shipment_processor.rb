@@ -75,7 +75,7 @@ module Fulfillment
           Rails.logger.info "FbaShipmentProcessor fulfillment order with id #{seller_fulfillment_order_id} " \
                             "was cancelled, not updating Shopify fulfillment for order with id #{order.id}"
         when 'COMPLETE'
-          shipment = to_shipment(fulfillment_order, order, fulfillment)
+          shipment = to_shipment(response, order, fulfillment)
           shipment.complete! if shipment && params[:complete_fulfillment]
         when 'COMPLETE_PARTIALLED'
           handle_error(fulfillment_order, order, status)
@@ -88,11 +88,11 @@ module Fulfillment
     end
 
     # Translates an FBA fulfillment order to a Fulfillment::Shipment object.
-    def self.to_shipment(fulfillment_order, order, fulfillment)
+    def self.to_shipment(response, order, fulfillment)
       carrier_codes = []
       tracking_numbers = []
       all_shipped = true
-      fulfillment_order.fetch('FulfillmentShipment').each_value do |fba_shipment|
+      response.fetch('FulfillmentShipment').each_value do |fba_shipment|
         all_shipped = false unless fba_shipment.fetch('FulfillmentShipmentStatus') == 'SHIPPED'
         fba_shipment.fetch('FulfillmentShipmentPackage').each_value do |fba_package|
           carrier_codes << fba_package.fetch('CarrierCode')
@@ -106,7 +106,7 @@ module Fulfillment
       # there will just be a single shipment.
       unless all_shipped
         Rails.logger.info "FbaShipmentProcessor not all shipments have shipped for order with id #{order.id} " \
-                          "and fulfillment order with id #{fulfillment_order.fetch('SellerFulfillmentOrderId')}, " \
+                          "and fulfillment order with id #{response.fetch('FulfillmentOrder').fetch('SellerFulfillmentOrderId')}, " \
                           'skipping'
         return nil
       end
