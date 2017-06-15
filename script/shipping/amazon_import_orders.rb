@@ -123,9 +123,6 @@ def create_shopify_order(row, price_amount, tax_amount)
     # or Shopify will not include tax amounts in the order total.
     total_tax: tax_amount.to_s,
     financial_status: 'paid',
-    # TODO we should add the buyer's email address at some point,
-    # but not for now as it will cause shipment notification emails
-    # to be sent.
     shipping_address: shipping_address,
     source_name: 'amazon-3p-fbm',
     note_attributes: [
@@ -136,6 +133,10 @@ def create_shopify_order(row, price_amount, tax_amount)
       {
         name: 'amazon-order-item-id',
         value: row['order-item-id']
+      },
+      {
+        name: 'amazon-buyer-email',
+        value: row['buyer-email']
       }
     ],
     tags: 'amazon-3p-fbm'
@@ -157,5 +158,10 @@ CSV.foreach(options[:input], col_sep: "\t", headers: true) do |row|
                      "price #{price_amount}, tax #{tax_amount}"
 
   order = create_shopify_order(row, price_amount, tax_amount)
+  # It's totally possible that we can get addresses from Amazon
+  # that are invalid according to our rules. Run the validator
+  # right after creating the order so we can grep the standard
+  # error output from this script and correct any problems.
+  Fulfillment::ShippingAddressValidator.validate(order)
   Rails.logger.debug "Created Shopify order with id #{order.id} for Amazon order with id #{row['order-id']}"
 end

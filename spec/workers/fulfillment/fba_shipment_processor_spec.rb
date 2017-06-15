@@ -4,7 +4,8 @@ describe Fulfillment::FbaShipmentProcessor do
   describe 'perform' do
     let(:order_1) { ShopifyAPI::Order.new(id: 1) }
     let(:order_2) { ShopifyAPI::Order.new(id: 2) }
-    let(:params) { { my_param: true } }
+    let(:params) { { 'my_param' => true } }
+    let(:symbolized_params) { { my_param: true } }
 
     it 'processes open orders' do
       Shopify::Utils
@@ -12,8 +13,8 @@ describe Fulfillment::FbaShipmentProcessor do
         .with(status: 'open')
         .and_yield(order_1)
         .and_yield(order_2)
-      Fulfillment::FbaShipmentProcessor.should_receive(:process_order).with(order_1, params)
-      Fulfillment::FbaShipmentProcessor.should_receive(:process_order).with(order_2, params)
+      Fulfillment::FbaShipmentProcessor.should_receive(:process_order).with(order_1, symbolized_params)
+      Fulfillment::FbaShipmentProcessor.should_receive(:process_order).with(order_2, symbolized_params)
       Fulfillment::FbaShipmentProcessor.perform(params)
     end
   end
@@ -109,7 +110,7 @@ describe Fulfillment::FbaShipmentProcessor do
               it 'calls to_shipment and does not complete fulfillment' do
                 Fulfillment::FbaShipmentProcessor
                   .should_receive(:to_shipment)
-                  .with(fba_fulfillment_order, order, fulfillment)
+                  .with(fba_response, order, fulfillment)
                   .and_return(shipment)
                 shipment.should_not_receive(:complete!)
                 Fulfillment::FbaShipmentProcessor.process_order(order, params)
@@ -123,7 +124,7 @@ describe Fulfillment::FbaShipmentProcessor do
               it 'calls to_shipment and completes fulfillment' do
                 Fulfillment::FbaShipmentProcessor
                   .should_receive(:to_shipment)
-                  .with(fba_fulfillment_order, order, fulfillment)
+                  .with(fba_response, order, fulfillment)
                   .and_return(shipment)
                 shipment.should_receive(:complete!)
                 Fulfillment::FbaShipmentProcessor.process_order(order, params)
@@ -233,11 +234,16 @@ describe Fulfillment::FbaShipmentProcessor do
     let(:tracking_number_1) { '111' }
     let(:tracking_number_2) { '222' }
     let(:tracking_number_3) { '333' }
-    let(:fba_fulfillment_order) do
+    let(:amazon_shipment_id_1) { 'my_amazon_shipment_id_1' }
+    let(:amazon_shipment_id_2) { 'my_amazon_shipment_id_2' }
+    let(:fba_response) do
       {
-        'SellerFulfillmentOrderId' => 'my-fba-order-id',
+        'FulfillmentOrder' => {
+          'SellerFulfillmentOrderId' => 'my-fba-order-id'
+        },
         'FulfillmentShipment' => {
           '1' => {
+            'AmazonShipmentId' => amazon_shipment_id_1,
             'FulfillmentShipmentStatus' => shipment_status_1,
             'FulfillmentShipmentPackage' => {
               '1' => {
@@ -247,6 +253,7 @@ describe Fulfillment::FbaShipmentProcessor do
             }
           },
           '2' => {
+            'AmazonShipmentId' => amazon_shipment_id_2,
             'FulfillmentShipmentStatus' => shipment_status_2,
             'FulfillmentShipmentPackage' => {
               '1' => {
@@ -270,12 +277,17 @@ describe Fulfillment::FbaShipmentProcessor do
     context 'fulfillment shipment status for all shipments is shipped' do
       let(:shipment_status_2) { 'SHIPPED' }
       it 'returns shipment with tracking and the first carrier code' do
-        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_fulfillment_order, order, fulfillment))
+        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_response, order, fulfillment))
           .to eq Fulfillment::Shipment.new(
             order: order,
             fulfillments: [fulfillment],
             tracking_company: carrier_code,
-            tracking_numbers: [tracking_number_1, tracking_number_2, tracking_number_3]
+            tracking_numbers: [tracking_number_1, tracking_number_2, tracking_number_3],
+            tracking_urls: [
+              "https://www.swiship.com/t/#{amazon_shipment_id_1}",
+              "https://www.swiship.com/t/#{amazon_shipment_id_2}",
+              "https://www.swiship.com/t/#{amazon_shipment_id_2}"
+            ]
           )
       end
     end
@@ -283,7 +295,7 @@ describe Fulfillment::FbaShipmentProcessor do
     context 'fulfillment shipment status is not shipped for all shipments' do
       let(:shipment_status_2) { 'PENDING' }
       it 'returns nil' do
-        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_fulfillment_order, order, fulfillment)).to be_nil
+        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_response, order, fulfillment)).to be_nil
       end
     end
   end
