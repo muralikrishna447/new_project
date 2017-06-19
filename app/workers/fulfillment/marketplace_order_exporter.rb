@@ -5,14 +5,15 @@ module Fulfillment
     @queue = 'MarketplaceOrderExporter'
 
     def self.perform(params)
-      raise 'vendor is a required param' unless params[:vendor]
+      symbolized_params = params.deep_symbolize_keys
+      raise 'vendor is a required param' unless symbolized_params[:vendor]
 
       export_id = SecureRandom.hex
-      Rails.logger.info "MarketplaceOrderExporter beginning export with id #{export_id} for vendor #{params[:vendor]}"
+      Rails.logger.info "MarketplaceOrderExporter beginning export with id #{export_id} for vendor #{symbolized_params[:vendor]}"
 
-      mail_params = params.merge(export_id: export_id)
+      mail_params = symbolized_params.merge(export_id: export_id)
       begin
-        output = generate_csv_output(params)
+        output = generate_csv_output(symbolized_params)
         mail_params.merge!(
           success: true,
           output: output
@@ -21,7 +22,7 @@ module Fulfillment
         mail_params[:success] = false
         raise e
       ensure
-        if params[:email]
+        if symbolized_params[:email]
           MarketplaceOrderExporterMailer.prepare(mail_params).deliver
         end
       end
