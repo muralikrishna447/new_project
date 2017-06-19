@@ -2,6 +2,8 @@ require 'csv'
 
 module Fulfillment
   class MarketplaceOrderExporter
+    @queue = 'MarketplaceOrderExporter'
+
     def self.perform(params)
       raise 'vendor is a required param' unless params[:vendor]
 
