@@ -79,6 +79,7 @@ module Fulfillment
     # We can only handle ASCII printable characters within codepoints 32-126.
     def self.contains_invalid_char?(prop)
       return false if nil_or_empty?(prop)
+      return true if prop.include?('"')
       prop.each_codepoint { |c| return true if c < 32 || c > 126 }
       false
     end
