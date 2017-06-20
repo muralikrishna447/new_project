@@ -46,6 +46,7 @@ module Fulfillment
         # Try to find a corresponding fulfillment order for the item in FBA.
         seller_fulfillment_order_id = Fulfillment::Fba.seller_fulfillment_order_id(order, fulfillment)
         response = Fulfillment::Fba.fulfillment_order_by_id(seller_fulfillment_order_id)
+        sleep(1) unless Rails.env == 'test' # Cheap throttling workaround
         unless response
           Rails.logger.info "FbaShipmentProcessor order with id #{order.id} " \
                             "and line item with id #{item.id} has no FBA fulfillment order " \
@@ -84,8 +85,6 @@ module Fulfillment
         else
           handle_error(fulfillment_order, order, status)
         end
-
-        sleep(1) unless Rails.env == 'test' # Cheap throttling workaround
       end
     end
 
