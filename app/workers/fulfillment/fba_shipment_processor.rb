@@ -18,6 +18,7 @@ module Fulfillment
       Rails.logger.info "FbaShipmentProcessor starting perform with params #{symbolized_params}"
       Shopify::Utils.search_orders_with_each(status: 'open') do |order|
         process_order(order, symbolized_params)
+        sleep(1) unless Rails.env == 'test' # Cheap throttling workaround
       end
 
       Librato.increment 'fulfillment.fba.shipment-processor.success', sporadic: true
