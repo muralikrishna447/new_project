@@ -23,18 +23,20 @@ module Fulfillment
 
     # Retrieves an FBA fulfillment order by ID.
     def self.fulfillment_order_by_id(seller_fulfillment_order_id)
-      begin
-        response = outbound_shipment_client.get_fulfillment_order(seller_fulfillment_order_id).parse
-      rescue Excon::Errors::BadRequest => e
-        # When a fulfillment order does not exist, MWS returns
-        # a 400 bad request. We have to check the error message
-        # in the response to determine whether the order does not exist
-        # or it really was a bad request. This sucks, but it's the best
-        # option we have available.
-        return nil if e.response.message == "Requested order '#{seller_fulfillment_order_id}' not found"
-        raise e
+      Retriable.retriable tries: 5, base_interval: 1 do
+        begin
+          response = outbound_shipment_client.get_fulfillment_order(seller_fulfillment_order_id).parse
+        rescue Excon::Errors::BadRequest => e
+          # When a fulfillment order does not exist, MWS returns
+          # a 400 bad request. We have to check the error message
+          # in the response to determine whether the order does not exist
+          # or it really was a bad request. This sucks, but it's the best
+          # option we have available.
+          return nil if e.response.message == "Requested order '#{seller_fulfillment_order_id}' not found"
+          raise e
+        end
+        return response
       end
-      response
     end
 
     def self.shopify_fulfillment_order(order, fulfillment)
@@ -57,21 +59,23 @@ module Fulfillment
                          "id #{seller_fulfillment_order_id} for order with id " \
                          "#{fulfillable.order.id} and line item with id #{item.id}"
 
-      outbound_shipment_client.create_fulfillment_order(
-        seller_fulfillment_order_id,
-        displayable_order_id(fulfillable.order, fulfillment),
-        fulfillable.order.processed_at,
-        COMMENT,
-        SHIPPING_SPEED,
-        fba_shipping_address(fulfillable.order.shipping_address),
-        [
-          {
-            'SellerSKU' => item.sku,
-            'SellerFulfillmentOrderItemId' => item.id,
-            'Quantity' => fulfillable.quantity_for_line_item(item)
-          }
-        ]
-      )
+      Retriable.retriable tries: 5, base_interval: 1 do
+        outbound_shipment_client.create_fulfillment_order(
+          seller_fulfillment_order_id,
+          displayable_order_id(fulfillable.order, fulfillment),
+          fulfillable.order.processed_at,
+          COMMENT,
+          SHIPPING_SPEED,
+          fba_shipping_address(fulfillable.order.shipping_address),
+          [
+            {
+              'SellerSKU' => item.sku,
+              'SellerFulfillmentOrderItemId' => item.id,
+              'Quantity' => fulfillable.quantity_for_line_item(item)
+            }
+          ]
+        )
+      end
 
       Rails.logger.info 'FbaOrderSubmitter successfully created FBA fulfillment order with ' \
                          "seller_fulfillment_order_id #{seller_fulfillment_order_id} " \

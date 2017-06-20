@@ -119,6 +119,7 @@ module Fulfillment
                               "was already submitted to FBA at #{submitted_time}, not submitting again"
           elsif job_params[:create_fulfillment_orders]
             Fulfillment::Fba.create_fulfillment_order(fulfillable, item)
+            sleep(1) unless Rails.env == 'test' # Cheap throttling workaround
             fba_orders_created += 1
             fba_quantity_submitted += fulfillable.quantity_for_line_item(item)
           end

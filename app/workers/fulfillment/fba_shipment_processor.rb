@@ -84,6 +84,8 @@ module Fulfillment
         else
           handle_error(fulfillment_order, order, status)
         end
+
+        sleep(1) unless Rails.env == 'test' # Cheap throttling workaround
       end
     end
 
