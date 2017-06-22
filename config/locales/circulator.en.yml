@@ -33,6 +33,6 @@ en:
         message: "Hmm, it looks like Joule got disconnected from WiFi."
         template: "Hmm, it looks like %{joule_name} got disconnected from WiFi."
       circulator_error_stuck_motor:
-        message: "Joule’s motor is stuck. Please ensure a bag isn’t caught inside or around the propeller or shaft. If the problem persists please remove the foot, spin the propeller, and see if there is anything stuck to it."
-        template: "%{joule_name}’s motor is stuck. Please ensure a bag isn’t caught inside or around the propeller or shaft. If the problem persists please remove the foot, spin the propeller, and see if there is anything stuck to it."
+        message: "Joule’s motor is stuck. Please ensure a bag isn’t caught inside or around the propeller or shaft."
+        template: "%{joule_name}’s motor is stuck. Please ensure a bag isn’t caught inside or around the propeller or shaft."
     app_name: "Joule"
