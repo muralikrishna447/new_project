@@ -248,10 +248,14 @@ module Api
           'circulator_address' => circulator.circulator_id,
           'status' => 'posted',
           'endpoint_arn' => token.endpoint_arn,
+          'created_at' => Time.now.iso8601(),
           'ttl' => (Time.now + 120.days).to_i,
         }
         item.update(push_notification.params)
+        save_push_notification_item_to_dynamo(item)
+      end
 
+      def save_push_notification_item_to_dynamo(item)
         @@dynamo_client.put_item({
           table_name: Rails.configuration.dynamodb.push_notifications_table,
           item: item,
