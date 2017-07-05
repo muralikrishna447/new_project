@@ -249,7 +249,7 @@ module Api
           'status' => 'posted',
           'endpoint_arn' => token.endpoint_arn,
           'created_at' => Time.now.iso8601(),
-          'ttl' => (Time.now + 120.days).to_i,
+          'ttl' => (Time.now + 90.days).to_i,
         }
         item.update(push_notification.params)
         save_push_notification_item_to_dynamo(item)
