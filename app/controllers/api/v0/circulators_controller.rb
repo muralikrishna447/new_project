@@ -241,16 +241,20 @@ module Api
       end
 
       def save_push_notification(message_id, user, circulator, token, push_notification)
+        item = {
+          'message_id' => message_id,
+          'user_id' => user.id,
+          'notification_type' => push_notification.notification_type,
+          'circulator_address' => circulator.circulator_id,
+          'status' => 'posted',
+          'endpoint_arn' => token.endpoint_arn,
+          'ttl' => (Time.now + 120.days).to_i,
+        }
+        item.update(push_notification.params)
+
         @@dynamo_client.put_item({
           table_name: Rails.configuration.dynamodb.push_notifications_table,
-          item: {
-            'message_id' => message_id,
-            'user_id' => user.id,
-            'notification_type' => push_notification.notification_type,
-            'circulator_address' => circulator.circulator_id,
-            'status' => 'posted',
-            'ttl' => (Time.now + 120.days).to_i,
-          }
+          item: item,
         })
       end
 
