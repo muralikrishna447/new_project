@@ -9,7 +9,7 @@ module Api
       include Devise::Controllers::Rememberable
       before_filter :ensure_authorized, except: [:create, :log_upload_url, :make_premium]
       before_filter :ensure_authorized_service, only: [:make_premium]
-      LOG_UPLOAD_URL_EXPIRATION = 60*60*24 #Seconds
+      LOG_UPLOAD_URL_EXPIRATION = 60*30 #Seconds
 
       def me
         @user = User.find @user_id_from_token
@@ -75,13 +75,16 @@ module Api
         # We want to be liberal in accepting logs so if someone provides a bad
         # token they end up in the anon bucket
         ensure_authorized(false)
+        prefix = "date"
         if @user_id_from_token
           user_prefix = "user/#{@user_id_from_token}"
         else
           user_prefix = 'anon'
         end
         random_prefix = SecureRandom.hex[0..7]
-        object_key = "#{user_prefix}/#{Time.now.to_a.reverse[4..8].join('/')}-#{random_prefix}-#{request.remote_ip}-#{params[:tag]}"
+        partition = "dt=#{Time.now.to_a.reverse[4..7].join('-')}"
+        # For posterity here is the old key object_key = "#{user_prefix}/#{Time.now.to_a.reverse[4..8].join('/')}-#{random_prefix}-#{request.remote_ip}-#{params[:tag]}"
+        object_key= "#{prefix}/#{partition}/#{user_prefix}/#{Time.now.to_a.reverse[4..8].join('/')}-#{random_prefix}-#{request.remote_ip}"
         Rails.logger.info "Creating log upload url for key [#{object_key}]"
         # We use an old version of the AWS SDK
         s3 = AWS::S3.new(region:'us-west-2')
