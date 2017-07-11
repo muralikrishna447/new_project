@@ -90,39 +90,38 @@ module Fulfillment
 
     # Translates an FBA fulfillment order to a Fulfillment::Shipment object.
     def self.to_shipment(response, order, fulfillment)
+      seller_fulfillment_order_id = response.fetch('FulfillmentOrder').fetch('SellerFulfillmentOrderId')
       carrier_codes = []
       tracking_numbers = []
       tracking_urls = []
-      all_shipped = true
-      response.fetch('FulfillmentShipment').each_value do |fba_shipment|
-        all_shipped = false unless fba_shipment.fetch('FulfillmentShipmentStatus') == 'SHIPPED'
-        fba_shipment.fetch('FulfillmentShipmentPackage').each_value do |fba_package|
+      fba_shipments = response_to_array(response.fetch('FulfillmentShipment').fetch('member'), order)
+      any_shipped = false
+      fba_shipments.each do |fba_shipment|
+        next unless fba_shipment.fetch('FulfillmentShipmentStatus') == 'SHIPPED'
+        any_shipped = true
+        fba_packages = response_to_array(fba_shipment.fetch('FulfillmentShipmentPackage').fetch('member'), order)
+        fba_packages.each do |fba_package|
           carrier_codes << fba_package.fetch('CarrierCode')
           tracking_numbers << fba_package.fetch('TrackingNumber')
           tracking_urls << tracking_url(fba_shipment)
         end
       end
 
-      # Wait until all shipments associated with the fulfillment order have
-      # shipped until we sync back to Shopfiy. It seems very unlikely we'll
-      # encounter any problems with this any time soon given that mostly
-      # there will just be a single shipment.
-      unless all_shipped
-        Rails.logger.info "FbaShipmentProcessor not all shipments have shipped for order with id #{order.id} " \
-                          "and fulfillment order with id #{response.fetch('FulfillmentOrder').fetch('SellerFulfillmentOrderId')}, " \
-                          'skipping'
-        return nil
+      unless any_shipped
+        raise "FulfillmentShipment for order with id #{order.id} and fulfillment order with id " \
+              "#{seller_fulfillment_order_id} has no FulfillmentShipment " \
+              'with status SUCCESS'
       end
 
       # This seems unlikely, but we'd still want to complete fulfillment
       # even if FBA doesn't give us tracking info.
       if carrier_codes.empty?
         Rails.logger.warn "FbaShipmentProcessor carrier codes is empty for order with id #{order.id} " \
-                          "and fulfillment order with id #{fulfillment_order.fetch('SellerFulfillmentOrderId')}"
+                          "and fulfillment order with id #{seller_fulfillment_order_id}"
       end
       if tracking_numbers.empty?
         Rails.logger.warn "FbaShipmentProcessor tracking numbers is empty for order with id #{order.id} " \
-                          "and fulfillment order with id #{fulfillment_order.fetch('SellerFulfillmentOrderId')}"
+                          "and fulfillment order with id #{seller_fulfillment_order_id}"
       end
 
       Fulfillment::Shipment.new(
@@ -176,6 +175,18 @@ module Fulfillment
     # we use Amazon's shipment tracking website based on the shipment ID.
     def self.tracking_url(fba_shipment)
       "https://www.swiship.com/t/#{fba_shipment.fetch('AmazonShipmentId')}"
+    end
+
+    # FulfillentShipment has an array value or hash value depending on
+    # the number of shipments that exist. It is possible for there to be
+    # multiple shipments even for a single quantity line item.
+    # For example, a shipment may be cancelled by FBA in a certain FC
+    # but then ship successfully from another FC.
+    def self.response_to_array(response, order)
+      return [response] if response.is_a?(Hash)
+      return response if response.is_a?(Array)
+
+      raise "FBA response for order with id #{order.id} has unknown member value type #{response.class}: #{response}"
     end
   end
 end

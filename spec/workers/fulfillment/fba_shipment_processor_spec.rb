@@ -230,7 +230,6 @@ describe Fulfillment::FbaShipmentProcessor do
       )
     end
     let(:carrier_code) { 'USPS' }
-    let(:shipment_status_1) { 'SHIPPED' }
     let(:tracking_number_1) { '111' }
     let(:tracking_number_2) { '222' }
     let(:tracking_number_3) { '333' }
@@ -242,30 +241,7 @@ describe Fulfillment::FbaShipmentProcessor do
           'SellerFulfillmentOrderId' => 'my-fba-order-id'
         },
         'FulfillmentShipment' => {
-          '1' => {
-            'AmazonShipmentId' => amazon_shipment_id_1,
-            'FulfillmentShipmentStatus' => shipment_status_1,
-            'FulfillmentShipmentPackage' => {
-              '1' => {
-                'CarrierCode' => carrier_code,
-                'TrackingNumber' => tracking_number_1
-              }
-            }
-          },
-          '2' => {
-            'AmazonShipmentId' => amazon_shipment_id_2,
-            'FulfillmentShipmentStatus' => shipment_status_2,
-            'FulfillmentShipmentPackage' => {
-              '1' => {
-                'CarrierCode' => carrier_code,
-                'TrackingNumber' => tracking_number_2
-              },
-              '2' => {
-                'CarrierCode' => carrier_code,
-                'TrackingNumber' => tracking_number_3
-              }
-            }
-          }
+          'member' => fulfillment_shipment_response
         }
       }
     end
@@ -274,28 +250,140 @@ describe Fulfillment::FbaShipmentProcessor do
       Fulfillment::FbaShipmentProcessor.stub(:reduce_carrier_codes).and_return(carrier_code)
     end
 
-    context 'fulfillment shipment status for all shipments is shipped' do
-      let(:shipment_status_2) { 'SHIPPED' }
-      it 'returns shipment with tracking and the first carrier code' do
+    context 'fulfillment order has one shipment with status SHIPPED' do
+      let(:fulfillment_shipment_response) do
+        [
+          {
+            'AmazonShipmentId' => amazon_shipment_id_1,
+            'FulfillmentShipmentStatus' => 'SHIPPED',
+            'FulfillmentShipmentPackage' => {
+              'member' => {
+                'CarrierCode' => carrier_code,
+                'TrackingNumber' => tracking_number_1
+              }
+            }
+          },
+          {
+            'AmazonShipmentId' => amazon_shipment_id_2,
+            'FulfillmentShipmentStatus' => 'CANCELLED_BY_FULFILLER',
+            'FulfillmentShipmentPackage' => {
+              'member' => {
+                'CarrierCode' => carrier_code,
+                'TrackingNumber' => tracking_number_2
+              }
+            }
+          }
+        ]
+      end
+
+      it 'returns shipment info for shipment with status SHIPPED' do
         expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_response, order, fulfillment))
           .to eq Fulfillment::Shipment.new(
             order: order,
             fulfillments: [fulfillment],
             tracking_company: carrier_code,
-            tracking_numbers: [tracking_number_1, tracking_number_2, tracking_number_3],
+            tracking_numbers: [tracking_number_1],
+            tracking_urls: ["https://www.swiship.com/t/#{amazon_shipment_id_1}"]
+          )
+      end
+    end
+
+    context 'fulfillment order has multiple shipments with status SHIPPED' do
+      let(:fulfillment_shipment_response) do
+        [
+          {
+            'AmazonShipmentId' => amazon_shipment_id_1,
+            'FulfillmentShipmentStatus' => 'SHIPPED',
+            'FulfillmentShipmentPackage' => {
+              'member' => {
+                'CarrierCode' => carrier_code,
+                'TrackingNumber' => tracking_number_1
+              }
+            }
+          },
+          {
+            'AmazonShipmentId' => amazon_shipment_id_2,
+            'FulfillmentShipmentStatus' => 'SHIPPED',
+            'FulfillmentShipmentPackage' => {
+              'member' => {
+                'CarrierCode' => carrier_code,
+                'TrackingNumber' => tracking_number_2
+              }
+            }
+          }
+        ]
+      end
+
+      it 'returns shipment info for all shipments' do
+        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_response, order, fulfillment))
+          .to eq Fulfillment::Shipment.new(
+            order: order,
+            fulfillments: [fulfillment],
+            tracking_company: carrier_code,
+            tracking_numbers: [tracking_number_1, tracking_number_2],
             tracking_urls: [
               "https://www.swiship.com/t/#{amazon_shipment_id_1}",
-              "https://www.swiship.com/t/#{amazon_shipment_id_2}",
               "https://www.swiship.com/t/#{amazon_shipment_id_2}"
             ]
           )
       end
     end
 
-    context 'fulfillment shipment status is not shipped for all shipments' do
-      let(:shipment_status_2) { 'PENDING' }
-      it 'returns nil' do
-        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_response, order, fulfillment)).to be_nil
+    context 'fulfillment order has shipment with status SHIPPED with multiple packages' do
+      let(:fulfillment_shipment_response) do
+        [
+          {
+            'AmazonShipmentId' => amazon_shipment_id_1,
+            'FulfillmentShipmentStatus' => 'SHIPPED',
+            'FulfillmentShipmentPackage' => {
+              'member' => [
+                {
+                  'CarrierCode' => carrier_code,
+                  'TrackingNumber' => tracking_number_1
+                },
+                {
+                  'CarrierCode' => carrier_code,
+                  'TrackingNumber' => tracking_number_2
+                }
+              ]
+            }
+          }
+        ]
+      end
+
+      it 'returns shipment info for all packages' do
+        expect(Fulfillment::FbaShipmentProcessor.to_shipment(fba_response, order, fulfillment))
+          .to eq Fulfillment::Shipment.new(
+            order: order,
+            fulfillments: [fulfillment],
+            tracking_company: carrier_code,
+            tracking_numbers: [tracking_number_1, tracking_number_2],
+            tracking_urls: [
+              # In this case we expect the same tracking URL for each
+              # package as it is all part of the same top-level shipment.
+              "https://www.swiship.com/t/#{amazon_shipment_id_1}",
+              "https://www.swiship.com/t/#{amazon_shipment_id_1}"
+            ]
+          )
+      end
+    end
+
+    context 'fulfillment order has no shipments with status SHIPPED' do
+      let(:fulfillment_shipment_response) do
+        [
+          {
+            'AmazonShipmentId' => amazon_shipment_id_1,
+            'FulfillmentShipmentStatus' => 'CANCELLED_BY_FULFILLER'
+          },
+          {
+            'AmazonShipmentId' => amazon_shipment_id_2,
+            'FulfillmentShipmentStatus' => 'CANCELLED_BY_FULFILLER'
+          }
+        ]
+      end
+
+      it 'raises exception' do
+        expect { Fulfillment::FbaShipmentProcessor.to_shipment(fba_response, order, fulfillment) }.to raise_error
       end
     end
   end
@@ -328,6 +416,30 @@ describe Fulfillment::FbaShipmentProcessor do
     context 'carrier codes is empty' do
       it 'returns nil' do
         expect(Fulfillment::FbaShipmentProcessor.reduce_carrier_codes([])).to be_nil
+      end
+    end
+  end
+
+  describe 'response_to_array' do
+    let(:order) { ShopifyAPI::Order.new(id: 1) }
+    context 'response is a hash' do
+      let(:response) { { 'key' => 'value' } }
+      it 'returns the hash inside an array' do
+        expect(Fulfillment::FbaShipmentProcessor.response_to_array(response, order)).to eq [response]
+      end
+    end
+
+    context 'response is an array' do
+      let(:response) { [{ 'key' => 'value' }] }
+      it 'returns the array' do
+        expect(Fulfillment::FbaShipmentProcessor.response_to_array(response, order)).to eq response
+      end
+    end
+
+    context 'response is not a hash nor array' do
+      let(:response) { 'bad' }
+      it 'raises exception' do
+        expect { Fulfillment::FbaShipmentProcessor.response_to_array(response, order) }.to raise_error
       end
     end
   end
