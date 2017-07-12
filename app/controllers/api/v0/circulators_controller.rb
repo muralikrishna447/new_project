@@ -2,6 +2,8 @@ require_dependency 'beta_feature_service'
 module Api
   module V0
     class CirculatorsController < BaseController
+      @@dynamo_client = Aws::DynamoDB::Client.new(region: 'us-east-1')
+
       before_filter :ensure_authorized, except: [:notify_clients, :admin_notify_clients, :coefficients]
       before_filter :ensure_circulator_owner, only: [:update, :destroy]
       before_filter :ensure_circulator_user, only: [:token]
@@ -129,7 +131,7 @@ module Api
         render_api_response 200
       end
 
-      def publish_notification(circulator, token, push_notification, is_admin_message)
+      def publish_notification(user, circulator, token, push_notification, is_admin_message)
         message = push_notification.message
         notification_type = push_notification.notification_type
         endpoint_arn = token.endpoint_arn
@@ -171,7 +173,10 @@ module Api
 
         logger.info "Publishing #{message.inspect}"
         begin
-          publish_json_message(endpoint_arn, message.to_json)
+          resp = publish_json_message(endpoint_arn, message.to_json)
+          save_push_notification(
+            resp[:message_id], user, circulator, token, push_notification
+          )
         rescue Aws::SNS::Errors::EndpointDisabled
           # NOTE: Clean up any disabled endpoints, since they're
           # likely not useful anymore.  There is a chance that Apple
@@ -227,11 +232,34 @@ module Api
       # it out due to weird interactions between Rspec and AWS)
       def publish_json_message(endpoint_arn, json_str)
         sns = Aws::SNS::Client.new(region: 'us-east-1')
-        sns.publish(
+        r = sns.publish(
           target_arn: endpoint_arn,
           message_structure: 'json',
           message: json_str
         )
+        return r.data
+      end
+
+      def save_push_notification(message_id, user, circulator, token, push_notification)
+        item = {
+          'message_id' => message_id,
+          'user_id' => user.id,
+          'notification_type' => push_notification.notification_type,
+          'circulator_address' => circulator.circulator_id,
+          'status' => 'posted',
+          'endpoint_arn' => token.endpoint_arn,
+          'created_at' => Time.now.iso8601(),
+          'ttl' => (Time.now + 90.days).to_i,
+        }
+        item.update(push_notification.params)
+        save_push_notification_item_to_dynamo(item)
+      end
+
+      def save_push_notification_item_to_dynamo(item)
+        @@dynamo_client.put_item({
+          table_name: Rails.configuration.dynamodb.push_notifications_table,
+          item: item,
+        })
       end
 
       def delete_endpoint(endpoint_arn)
@@ -404,7 +432,7 @@ module Api
             next if token.nil?
             logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
                         " of type #{push_notification.notification_type} token_id=#{token.id} ARN=#{token.endpoint_arn}"
-            publish_notification(circulator, token, push_notification, is_admin_message)
+            publish_notification(owner.user, circulator, token, push_notification, is_admin_message)
           end
         end
 

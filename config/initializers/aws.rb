@@ -18,6 +18,8 @@ Rails.configuration.dynamodb.shipping_address_confirmation_table_name = "shippin
 
 Rails.configuration.dynamodb.random_drop_table_name = "random-drop-winners-#{Rails.env}"
 
+Rails.configuration.dynamodb.push_notifications_table = "push-notifications-#{Rails.env}"
+
 if Rails.env.production?
   Rails.configuration.remote_log_bucket = 'remote-logs-production'
   sns.platform_applications['android'] = 'arn:aws:sns:us-east-1:021963864089:app/GCM/joule-android'

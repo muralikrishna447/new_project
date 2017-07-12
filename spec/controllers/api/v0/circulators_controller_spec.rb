@@ -310,10 +310,12 @@ describe Api::V0::CirculatorsController do
       request.env['HTTP_AUTHORIZATION'] = @service_token
 
       stub_sns_publish()
+      stub_dynamo_save()
       Api::V0::CirculatorsController.any_instance.stub(:delete_endpoint) do |arn|
         @deleted_endpoints << arn
       end
       @published_messages = []
+      @saved_notifications = []
       @deleted_endpoints = []
 
       p = PushNotificationToken.new
@@ -456,6 +458,9 @@ describe Api::V0::CirculatorsController do
           )
           expect(response.code).to eq '200'
           expect(@published_messages.length).to eq 1
+          expect(@saved_notifications.length).to eq 1
+          expect(@saved_notifications[0]["notification_type"]).to eq 'disconnect_while_cooking'
+          expect(@saved_notifications[0]["message_id"]).to_not be_nil
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
           gcm = JSON.parse msg['GCM']
@@ -764,6 +769,13 @@ describe Api::V0::CirculatorsController do
   def stub_sns_publish
     Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |arn, msg|
       @published_messages << {arn: arn, msg: msg}
+      {:message_id => SecureRandom.uuid}
+    end
+  end
+
+  def stub_dynamo_save
+    Api::V0::CirculatorsController.any_instance.stub(:save_push_notification_item_to_dynamo) do |item|
+      @saved_notifications << item
     end
   end
 end

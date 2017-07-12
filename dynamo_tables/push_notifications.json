@@ -1,0 +1,21 @@
+[
+  {
+    "table_name_prefix": "push-notifications",
+    "KeySchema": [
+      {
+        "KeyType": "HASH",
+        "AttributeName": "message_id"
+      }
+    ],
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "message_id",
+        "AttributeType": "S"
+      }
+    ],
+    "ProvisionedThroughput": {
+      "WriteCapacityUnits": 5,
+      "ReadCapacityUnits": 5
+    }
+  }
+]
