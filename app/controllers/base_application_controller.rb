@@ -44,7 +44,7 @@ class BaseApplicationController < ActionController::Base
       location[:country] = 'US' if location[:country].blank?
       cookies['cs_geo'] = {
           :value => location.to_json,
-          :domain => all,
+          :domain => :all,
           :expires => Rails.configuration.geoip.cache_expiry.from_now
       }
     end
