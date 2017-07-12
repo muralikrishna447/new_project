@@ -39,11 +39,12 @@ class BaseApplicationController < ActionController::Base
 
   def detect_country
     unless cookies['cs_geo'].present?
-      location = geolocate_ip(request.ip)
+      location = geolocate_ip
       #default to US so spree has something to work with
       location[:country] = 'US' if location[:country].blank?
       cookies['cs_geo'] = {
           :value => location.to_json,
+          :domain => all,
           :expires => Rails.configuration.geoip.cache_expiry.from_now
       }
     end
