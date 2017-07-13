@@ -74,6 +74,7 @@ Delve::Application.routes.draw do
     post '/users/contacts/invite', to: 'users/contacts#invite'
     post '/users/contacts/gather_friends', to: 'users/contacts#gather_friends'
     post '/users/contacts/email_invite', to: "users/contacts#email_invite"
+    post '/users/delete_geo_cookie', to: 'users#delete_geo_cookie'
   end
 
   get 'users/session_me' => 'users#session_me'
