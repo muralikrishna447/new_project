@@ -1,5 +1,5 @@
 class BaseApplicationController < ActionController::Base
-  before_filter :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user
+  before_filter :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user, :detect_country
 
   def record_uuid_in_new_relic
     ::NewRelic::Agent.add_custom_parameters({ request_id: request.uuid()})
@@ -34,6 +34,19 @@ class BaseApplicationController < ActionController::Base
       else
         Rails.logger.info "[cors] Not setting Access-Control-Allow-Credentials because origin #{request.headers['origin']} does not match host [#{request.headers['host']}]"
       end
+    end
+  end
+
+  def detect_country
+    unless cookies['cs_geo'].present?
+      location = geolocate_ip
+      #default to US so spree has something to work with
+      location[:country] = 'US' if location[:country].blank?
+      cookies['cs_geo'] = {
+          :value => location.to_json,
+          :domain => :all,
+          :expires => Rails.configuration.geoip.cache_expiry.from_now
+      }
     end
   end
 

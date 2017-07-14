@@ -86,11 +86,18 @@ class UsersController < ApplicationController
 
   def set_location
     @ip_address = (cookies[:cs_location] || request.ip)
+    @country = JSON.parse(cookies[:cs_geo])['country']
     if request.post?
       ip_address = "#{params[:ip_address_1]}.#{params[:ip_address_2]}.#{params[:ip_address_3]}.#{params[:ip_address_4]}"
       cookies[:cs_location] = ip_address
-    elsif request.delete?
+      delete_geo_cookie
+    else
       cookies.delete :cs_location
     end
+  end
+
+  def delete_geo_cookie
+    cookies.delete 'cs_geo'
+    redirect_to '/users/set_location'
   end
 end
