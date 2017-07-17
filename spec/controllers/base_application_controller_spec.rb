@@ -82,5 +82,21 @@ describe BaseApplicationController, type: :controller do
       get :show, id: 1
       should_have_no_cors_headers
     end
+
+    it 'should set the cs_geo cookie' do
+      request.env['host'] = @prod_host
+      request.env['origin'] = @prod_origin
+      get :show, id: 1
+      response.cookies['cs_geo'].should_not be_nil
+    end
+
+    it 'should set the cs_geo/country cookie value to US' do
+      request.env['host'] = @prod_host
+      request.env['origin'] = @prod_origin
+      get :show, id: 1
+      cs_geo = JSON.parse(response.cookies['cs_geo'])
+      cs_geo['country'].should == 'US'
+    end
+
   end
 end

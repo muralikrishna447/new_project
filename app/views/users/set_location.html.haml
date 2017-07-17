@@ -3,6 +3,10 @@
   Current IP:
   = @ip_address
 
+%p
+  Current Country:
+  = @country
+
 .form
   %form(action='/users/set_location' method='post')
     %p
@@ -18,6 +22,12 @@
   %form(action='/users/set_location' method='delete')
     %input(type='submit' value="Clear")
 
+%p
+  Delete Then Reset cs_geo Cookie
+%p
+.form
+  %form(action='/users/delete_geo_cookie' id="delete-geo" method='post')
+    %input(type='submit' value="Delete/Reset")
 
 %h3 Interesting IPs
 %ul
@@ -25,3 +35,4 @@
   %li ChefSteps - 199.231.242.34
   %li Bremerton - 76.121.32.10
   %li New Jersey - 128.235.44.252
+  %li Canada - 167.40.79.24
