@@ -13,4 +13,10 @@ module Fulfillment
   FBA_FULFILLABLE_SKUS = [
     Shopify::Order::BIG_CLAMP_SKU
   ].freeze
+
+  # Orders with these tags are not sent for fulfillment.
+  FILTERED_TAGS = [
+    'shipping-hold',
+    Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG
+  ].freeze
 end

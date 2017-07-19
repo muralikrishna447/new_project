@@ -9,13 +9,6 @@ module Fulfillment
     # Orders with this tag are bumped to the top of the output.
     PRIORITY_TAG = 'shipping-priority'
 
-    # Orders with these tags are not included in the output.
-    FILTERED_TAGS = [
-      'shipping-started',
-      'shipping-hold',
-      Fulfillment::ShippingAddressValidator::VALIDATION_ERROR_TAG
-    ]
-
     JOB_LOCK_KEY = 'fulfillment-order-export'
 
     def self.included(base)
@@ -126,7 +119,7 @@ module Fulfillment
       def include_order?(order)
         return false unless Fulfillment::PaymentStatusFilter.payment_captured?(order)
         # Filter out any order that has filtered tags
-        unless (Shopify::Utils.order_tags(order) & FILTERED_TAGS).empty?
+        unless (Shopify::Utils.order_tags(order) & Fulfillment::FILTERED_TAGS).empty?
           Rails.logger.info("CSV order export filtering order with id #{order.id} " \
                             "because it has one or more filtered tags: #{order.tags}")
           return false
