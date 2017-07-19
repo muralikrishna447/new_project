@@ -150,11 +150,6 @@ describe Fulfillment::CSVOrderExporter do
         end
       end
 
-      context 'order has shipping-started tag' do
-        let(:tags) { 'shipping-started' }
-        include_examples 'filtered tag'
-      end
-
       context 'order has shipping-hold tag' do
         let(:tags) { 'shipping-hold' }
         include_examples 'filtered tag'
