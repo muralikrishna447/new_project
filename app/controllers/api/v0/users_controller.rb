@@ -82,9 +82,9 @@ module Api
           user_prefix = 'anon'
         end
         random_prefix = SecureRandom.hex[0..7]
-        partition = "dt=#{Time.now.to_a.reverse[4..7].join('-')}"
+        partition = "dt=#{Time.now.strftime('%Y-%m-%d-%H')}"
         # For posterity here is the old key object_key = "#{user_prefix}/#{Time.now.to_a.reverse[4..8].join('/')}-#{random_prefix}-#{request.remote_ip}-#{params[:tag]}"
-        object_key= "#{prefix}/#{partition}/#{user_prefix}/#{Time.now.to_a.reverse[4..8].join('/')}-#{random_prefix}-#{request.remote_ip}"
+        object_key= "#{prefix}/#{partition}/#{user_prefix}/#{Time.now.strftime('%Y/%m/%d/%H/%M/%S')}-#{random_prefix}-#{request.remote_ip}"
         Rails.logger.info "Creating log upload url for key [#{object_key}]"
         # We use an old version of the AWS SDK
         s3 = AWS::S3.new(region:'us-west-2')
