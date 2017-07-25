@@ -4,6 +4,6 @@ module CsSpree::Api::ShareJoulePromotion
 
 
     # TODO Make the API call
-    
+
   end
 end
