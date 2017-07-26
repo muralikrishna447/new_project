@@ -1,6 +1,7 @@
 development: &development
-  hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'http://localhost:3000' %>
-  api_key: 69dc27f4eeb3f6a919c347623468173462fc27b69dc8ec31
+  hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'https://spree-staging1.herokuapp.com' %>
+  api_key: 7f456934ede08c46637c5a59d9d39e1b1831b3eceeb9bc221
+  basic_auth: Basic ZGVsdmU6ZGVlcGVy
   front_end_live: false
   back_end_live: false
 test: &test
@@ -10,6 +11,7 @@ test: &test
 staging:
   <<: *development
   hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'https://spree-staging1.herokuapp.com' %>
+  api_key: 7f456934ede08c46637c5a59d9d39e1b1831b3eceeb9bc22
   front_end_live: false
   back_end_live: false
 production:
