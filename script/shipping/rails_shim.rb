@@ -42,4 +42,7 @@ module Librato
     end
     mock
   end
+
+  def self.measure(metric, val)
+  end
 end
