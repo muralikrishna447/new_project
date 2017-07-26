@@ -1,0 +1,6 @@
+Feed Processing Summary:
+	Number of records processed		70
+	Number of records successful		69
+
+original-record-number	order-id	order-item-id	error-code	error-type	error-message
+50	112-6032157-8407404		18028	Error	The items in your order cannot be found using order ID 112-6032157-8407404.

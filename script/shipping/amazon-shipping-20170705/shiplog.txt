@@ -1,0 +1,532 @@
+I, [2017-07-06T20:14:00.810442 #90217]  INFO -- : Rosti shipment import processing order number #205107403417, line item id 10791539860, tracking numbers ["738488462273"], serial numbers ["172111694"]
+D, [2017-07-06T20:14:00.810535 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:01.899985 #90217]  INFO -- : Rosti shipment import found order with id 5748277396 for order number #205107403417
+I, [2017-07-06T20:14:01.900075 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962196 because status is success for order with id 5748277396, name #205107403417 and line item with id 10791539860
+I, [2017-07-06T20:14:01.900112 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4842800724 because status is cancelled for order with id 5748277396, name #205107403417 and line item with id 10791539860
+I, [2017-07-06T20:14:01.900153 #90217]  INFO -- : Rosti shipment import processing order number #205107483417, line item id 10801328468, tracking numbers ["738488462284"], serial numbers ["172112627"]
+D, [2017-07-06T20:14:01.900181 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:02.817894 #90217]  INFO -- : Rosti shipment import found order with id 5753525268 for order number #205107483417
+I, [2017-07-06T20:14:02.817976 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962260 because status is success for order with id 5753525268, name #205107483417 and line item with id 10801328468
+I, [2017-07-06T20:14:02.818020 #90217]  INFO -- : Rosti shipment import processing order number #205107490417, line item id 10801724820, tracking numbers ["738488462295"], serial numbers ["172112381"]
+D, [2017-07-06T20:14:02.818045 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:03.700606 #90217]  INFO -- : Rosti shipment import found order with id 5753747796 for order number #205107490417
+I, [2017-07-06T20:14:03.700699 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962324 because status is success for order with id 5753747796, name #205107490417 and line item with id 10801724820
+I, [2017-07-06T20:14:03.700746 #90217]  INFO -- : Rosti shipment import processing order number #205107445417, line item id 10797488468, tracking numbers ["738488462300"], serial numbers ["172113028"]
+D, [2017-07-06T20:14:03.700773 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:04.544603 #90217]  INFO -- : Rosti shipment import found order with id 5751397652 for order number #205107445417
+I, [2017-07-06T20:14:04.544690 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962388 because status is success for order with id 5751397652, name #205107445417 and line item with id 10797488468
+I, [2017-07-06T20:14:04.544737 #90217]  INFO -- : Rosti shipment import processing order number #205107449417, line item id 10797784084, tracking numbers ["738488462310"], serial numbers ["171806499"]
+D, [2017-07-06T20:14:04.544768 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:05.590010 #90217]  INFO -- : Rosti shipment import found order with id 5751548308 for order number #205107449417
+I, [2017-07-06T20:14:05.590102 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962516 because status is success for order with id 5751548308, name #205107449417 and line item with id 10797784084
+I, [2017-07-06T20:14:05.590151 #90217]  INFO -- : Rosti shipment import processing order number #205107451417, line item id 10797817044, tracking numbers ["738488462321"], serial numbers ["170114941"]
+D, [2017-07-06T20:14:05.590179 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:06.531903 #90217]  INFO -- : Rosti shipment import found order with id 5751565140 for order number #205107451417
+I, [2017-07-06T20:14:06.531986 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962580 because status is success for order with id 5751565140, name #205107451417 and line item with id 10797817044
+I, [2017-07-06T20:14:06.532051 #90217]  INFO -- : Rosti shipment import processing order number #205107453417, line item id 10798064532, tracking numbers ["738488462332"], serial numbers ["172001554"]
+D, [2017-07-06T20:14:06.532079 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:07.423849 #90217]  INFO -- : Rosti shipment import found order with id 5751700116 for order number #205107453417
+I, [2017-07-06T20:14:07.423929 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962644 because status is success for order with id 5751700116, name #205107453417 and line item with id 10798064532
+I, [2017-07-06T20:14:07.423976 #90217]  INFO -- : Rosti shipment import processing order number #205107454417, line item id 10798087764, tracking numbers ["738488462343"], serial numbers ["172111824"]
+D, [2017-07-06T20:14:07.424002 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:08.350141 #90217]  INFO -- : Rosti shipment import found order with id 5751714516 for order number #205107454417
+I, [2017-07-06T20:14:08.350221 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962708 because status is success for order with id 5751714516, name #205107454417 and line item with id 10798087764
+I, [2017-07-06T20:14:08.350271 #90217]  INFO -- : Rosti shipment import processing order number #205107460417, line item id 10798453204, tracking numbers ["738488462354"], serial numbers ["172111944"]
+D, [2017-07-06T20:14:08.350295 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:09.369452 #90217]  INFO -- : Rosti shipment import found order with id 5751914900 for order number #205107460417
+I, [2017-07-06T20:14:09.369573 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962836 because status is success for order with id 5751914900, name #205107460417 and line item with id 10798453204
+I, [2017-07-06T20:14:09.369626 #90217]  INFO -- : Rosti shipment import processing order number #205107462417, line item id 10798604948, tracking numbers ["738488462365"], serial numbers ["171906591"]
+D, [2017-07-06T20:14:09.369657 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:10.291542 #90217]  INFO -- : Rosti shipment import found order with id 5751998548 for order number #205107462417
+I, [2017-07-06T20:14:10.291639 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962964 because status is success for order with id 5751998548, name #205107462417 and line item with id 10798604948
+I, [2017-07-06T20:14:10.291697 #90217]  INFO -- : Rosti shipment import processing order number #205107466417, line item id 10798750100, tracking numbers ["738488462376"], serial numbers ["172111406"]
+D, [2017-07-06T20:14:10.291740 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:11.223310 #90217]  INFO -- : Rosti shipment import found order with id 5752079188 for order number #205107466417
+I, [2017-07-06T20:14:11.223422 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963220 because status is success for order with id 5752079188, name #205107466417 and line item with id 10798750100
+I, [2017-07-06T20:14:11.223492 #90217]  INFO -- : Rosti shipment import processing order number #205107469417, line item id 10799114580, tracking numbers ["738488462387"], serial numbers ["172111891"]
+D, [2017-07-06T20:14:11.223539 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:12.137343 #90217]  INFO -- : Rosti shipment import found order with id 5752276500 for order number #205107469417
+I, [2017-07-06T20:14:12.137433 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963348 because status is success for order with id 5752276500, name #205107469417 and line item with id 10799114580
+I, [2017-07-06T20:14:12.137476 #90217]  INFO -- : Rosti shipment import processing order number #205107470417, line item id 10799658196, tracking numbers ["738488462398"], serial numbers ["172113062"]
+D, [2017-07-06T20:14:12.137503 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:13.055601 #90217]  INFO -- : Rosti shipment import found order with id 5752572500 for order number #205107470417
+I, [2017-07-06T20:14:13.055699 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963412 because status is success for order with id 5752572500, name #205107470417 and line item with id 10799658196
+I, [2017-07-06T20:14:13.055747 #90217]  INFO -- : Rosti shipment import processing order number #205107474417, line item id 10800440404, tracking numbers ["738488462402"], serial numbers ["171805065"]
+D, [2017-07-06T20:14:13.055804 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:13.978647 #90217]  INFO -- : Rosti shipment import found order with id 5753011092 for order number #205107474417
+I, [2017-07-06T20:14:13.978748 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963476 because status is success for order with id 5753011092, name #205107474417 and line item with id 10800440404
+I, [2017-07-06T20:14:13.978828 #90217]  INFO -- : Rosti shipment import processing order number #205107477417, line item id 10800820244, tracking numbers ["738488462413"], serial numbers ["171803126"]
+D, [2017-07-06T20:14:13.978860 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:14.913985 #90217]  INFO -- : Rosti shipment import found order with id 5753234964 for order number #205107477417
+I, [2017-07-06T20:14:14.914080 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963668 because status is success for order with id 5753234964, name #205107477417 and line item with id 10800820244
+I, [2017-07-06T20:14:14.914128 #90217]  INFO -- : Rosti shipment import processing order number #205107478417, line item id 10800830484, tracking numbers ["738488462424"], serial numbers ["171804840"]
+D, [2017-07-06T20:14:14.914155 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:15.821758 #90217]  INFO -- : Rosti shipment import found order with id 5753242260 for order number #205107478417
+I, [2017-07-06T20:14:15.821840 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963732 because status is success for order with id 5753242260, name #205107478417 and line item with id 10800830484
+I, [2017-07-06T20:14:15.821882 #90217]  INFO -- : Rosti shipment import processing order number #205107479417, line item id 10800876436, tracking numbers ["738488462435"], serial numbers ["172112378"]
+D, [2017-07-06T20:14:15.821908 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:16.749649 #90217]  INFO -- : Rosti shipment import found order with id 5753269780 for order number #205107479417
+I, [2017-07-06T20:14:16.749747 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963860 because status is success for order with id 5753269780, name #205107479417 and line item with id 10800876436
+I, [2017-07-06T20:14:16.749794 #90217]  INFO -- : Rosti shipment import processing order number #205107480417, line item id 10800897812, tracking numbers ["738488462446"], serial numbers ["172112725"]
+D, [2017-07-06T20:14:16.749825 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:17.614234 #90217]  INFO -- : Rosti shipment import found order with id 5753279892 for order number #205107480417
+I, [2017-07-06T20:14:17.614314 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963924 because status is success for order with id 5753279892, name #205107480417 and line item with id 10800897812
+I, [2017-07-06T20:14:17.614392 #90217]  INFO -- : Rosti shipment import processing order number #205107481417, line item id 10801067988, tracking numbers ["738488462457"], serial numbers ["172111546"]
+D, [2017-07-06T20:14:17.614421 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:18.594577 #90217]  INFO -- : Rosti shipment import found order with id 5753372500 for order number #205107481417
+I, [2017-07-06T20:14:18.595475 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963988 because status is success for order with id 5753372500, name #205107481417 and line item with id 10801067988
+I, [2017-07-06T20:14:18.595529 #90217]  INFO -- : Rosti shipment import processing order number #205107486417, line item id 10801441556, tracking numbers ["738488462468"], serial numbers ["172202612"]
+D, [2017-07-06T20:14:18.595558 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:19.506499 #90217]  INFO -- : Rosti shipment import found order with id 5753590036 for order number #205107486417
+I, [2017-07-06T20:14:19.506583 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964116 because status is success for order with id 5753590036, name #205107486417 and line item with id 10801441556
+I, [2017-07-06T20:14:19.506629 #90217]  INFO -- : Rosti shipment import processing order number #205107495417, line item id 10802288084, tracking numbers ["738488462479"], serial numbers ["171804979"]
+D, [2017-07-06T20:14:19.506656 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:20.426116 #90217]  INFO -- : Rosti shipment import found order with id 5754065748 for order number #205107495417
+I, [2017-07-06T20:14:20.426210 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964436 because status is success for order with id 5754065748, name #205107495417 and line item with id 10802288084
+I, [2017-07-06T20:14:20.426263 #90217]  INFO -- : Rosti shipment import processing order number #205107496417, line item id 10802288148, tracking numbers ["738488462480"], serial numbers ["172001144"]
+D, [2017-07-06T20:14:20.426295 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:21.347807 #90217]  INFO -- : Rosti shipment import found order with id 5754065812 for order number #205107496417
+I, [2017-07-06T20:14:21.347905 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964500 because status is success for order with id 5754065812, name #205107496417 and line item with id 10802288148
+I, [2017-07-06T20:14:21.347959 #90217]  INFO -- : Rosti shipment import processing order number #205107497417, line item id 10802288276, tracking numbers ["738488462490"], serial numbers ["172202881"]
+D, [2017-07-06T20:14:21.347996 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:22.205748 #90217]  INFO -- : Rosti shipment import found order with id 5754065940 for order number #205107497417
+I, [2017-07-06T20:14:22.205860 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964564 because status is success for order with id 5754065940, name #205107497417 and line item with id 10802288276
+I, [2017-07-06T20:14:22.205903 #90217]  INFO -- : Rosti shipment import processing order number #205107498417, line item id 10802288468, tracking numbers ["738488462505"], serial numbers ["172111528"]
+D, [2017-07-06T20:14:22.205928 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:23.193180 #90217]  INFO -- : Rosti shipment import found order with id 5754066068 for order number #205107498417
+I, [2017-07-06T20:14:23.193295 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964628 because status is success for order with id 5754066068, name #205107498417 and line item with id 10802288468
+I, [2017-07-06T20:14:23.193341 #90217]  INFO -- : Rosti shipment import processing order number #205107499417, line item id 10802288532, tracking numbers ["738488462516"], serial numbers ["171805628"]
+D, [2017-07-06T20:14:23.193368 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:24.046611 #90217]  INFO -- : Rosti shipment import found order with id 5754066132 for order number #205107499417
+I, [2017-07-06T20:14:24.046700 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964756 because status is success for order with id 5754066132, name #205107499417 and line item with id 10802288532
+I, [2017-07-06T20:14:24.046781 #90217]  INFO -- : Rosti shipment import processing order number #205107500417, line item id 10802288596, tracking numbers ["738488462527"], serial numbers ["163404695"]
+D, [2017-07-06T20:14:24.046812 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:24.930945 #90217]  INFO -- : Rosti shipment import found order with id 5754066196 for order number #205107500417
+I, [2017-07-06T20:14:24.931036 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964820 because status is success for order with id 5754066196, name #205107500417 and line item with id 10802288596
+I, [2017-07-06T20:14:24.931108 #90217]  INFO -- : Rosti shipment import processing order number #205107501417, line item id 10802288660, tracking numbers ["738488462538"], serial numbers ["171906200"]
+D, [2017-07-06T20:14:24.931135 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:25.956037 #90217]  INFO -- : Rosti shipment import found order with id 5754066260 for order number #205107501417
+I, [2017-07-06T20:14:25.956137 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964884 because status is success for order with id 5754066260, name #205107501417 and line item with id 10802288660
+I, [2017-07-06T20:14:25.956191 #90217]  INFO -- : Rosti shipment import processing order number #205107502417, line item id 10802288980, tracking numbers ["738488462549"], serial numbers ["172112132"]
+D, [2017-07-06T20:14:25.956240 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:26.877235 #90217]  INFO -- : Rosti shipment import found order with id 5754066388 for order number #205107502417
+I, [2017-07-06T20:14:26.877329 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964948 because status is success for order with id 5754066388, name #205107502417 and line item with id 10802288980
+I, [2017-07-06T20:14:26.877380 #90217]  INFO -- : Rosti shipment import processing order number #205107503417, line item id 10802289172, tracking numbers ["738488462550"], serial numbers ["172203628"]
+D, [2017-07-06T20:14:26.877412 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:27.780207 #90217]  INFO -- : Rosti shipment import found order with id 5754066516 for order number #205107503417
+I, [2017-07-06T20:14:27.780304 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965012 because status is success for order with id 5754066516, name #205107503417 and line item with id 10802289172
+I, [2017-07-06T20:14:27.780357 #90217]  INFO -- : Rosti shipment import processing order number #205107504417, line item id 10802289236, tracking numbers ["738488462560"], serial numbers ["172202696"]
+D, [2017-07-06T20:14:27.780389 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:28.720641 #90217]  INFO -- : Rosti shipment import found order with id 5754066580 for order number #205107504417
+I, [2017-07-06T20:14:28.720753 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965076 because status is success for order with id 5754066580, name #205107504417 and line item with id 10802289236
+I, [2017-07-06T20:14:28.720796 #90217]  INFO -- : Rosti shipment import processing order number #205107505417, line item id 10802289428, tracking numbers ["738488462571"], serial numbers ["163405560"]
+D, [2017-07-06T20:14:28.720822 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:29.641623 #90217]  INFO -- : Rosti shipment import found order with id 5754066772 for order number #205107505417
+I, [2017-07-06T20:14:29.641704 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965140 because status is success for order with id 5754066772, name #205107505417 and line item with id 10802289428
+I, [2017-07-06T20:14:29.641746 #90217]  INFO -- : Rosti shipment import processing order number #205107506417, line item id 10802289556, tracking numbers ["738488462582"], serial numbers ["164106562"]
+D, [2017-07-06T20:14:29.641786 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:30.563719 #90217]  INFO -- : Rosti shipment import found order with id 5754066900 for order number #205107506417
+I, [2017-07-06T20:14:30.563817 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965204 because status is success for order with id 5754066900, name #205107506417 and line item with id 10802289556
+I, [2017-07-06T20:14:30.563869 #90217]  INFO -- : Rosti shipment import processing order number #205107507417, line item id 10802289684, tracking numbers ["738488462593"], serial numbers ["172202370"]
+D, [2017-07-06T20:14:30.563917 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:31.488314 #90217]  INFO -- : Rosti shipment import found order with id 5754067028 for order number #205107507417
+I, [2017-07-06T20:14:31.488394 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965268 because status is success for order with id 5754067028, name #205107507417 and line item with id 10802289684
+I, [2017-07-06T20:14:31.488437 #90217]  INFO -- : Rosti shipment import processing order number #205107508417, line item id 10802289812, tracking numbers ["738488462608"], serial numbers ["170114951"]
+D, [2017-07-06T20:14:31.488466 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:32.477469 #90217]  INFO -- : Rosti shipment import found order with id 5754067156 for order number #205107508417
+I, [2017-07-06T20:14:32.477566 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965332 because status is success for order with id 5754067156, name #205107508417 and line item with id 10802289812
+I, [2017-07-06T20:14:32.477635 #90217]  INFO -- : Rosti shipment import processing order number #205107509417, line item id 10802290004, tracking numbers ["738488462619"], serial numbers ["170909934"]
+D, [2017-07-06T20:14:32.477661 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:33.361594 #90217]  INFO -- : Rosti shipment import found order with id 5754067284 for order number #205107509417
+I, [2017-07-06T20:14:33.361689 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965396 because status is success for order with id 5754067284, name #205107509417 and line item with id 10802290004
+I, [2017-07-06T20:14:33.361742 #90217]  INFO -- : Rosti shipment import processing order number #205107510417, line item id 10802290132, tracking numbers ["738488462620"], serial numbers ["171800908"]
+D, [2017-07-06T20:14:33.361774 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:34.222116 #90217]  INFO -- : Rosti shipment import found order with id 5754067412 for order number #205107510417
+I, [2017-07-06T20:14:34.222211 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965460 because status is success for order with id 5754067412, name #205107510417 and line item with id 10802290132
+I, [2017-07-06T20:14:34.222280 #90217]  INFO -- : Rosti shipment import processing order number #205107511417, line item id 10802319508, tracking numbers ["738488462630"], serial numbers ["171608920"]
+D, [2017-07-06T20:14:34.222306 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:35.087651 #90217]  INFO -- : Rosti shipment import found order with id 5754084116 for order number #205107511417
+I, [2017-07-06T20:14:35.087758 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965524 because status is success for order with id 5754084116, name #205107511417 and line item with id 10802319508
+I, [2017-07-06T20:14:35.087806 #90217]  INFO -- : Rosti shipment import processing order number #205107512417, line item id 10802319572, tracking numbers ["738488462641"], serial numbers ["172202675"]
+D, [2017-07-06T20:14:35.087833 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:35.963774 #90217]  INFO -- : Rosti shipment import found order with id 5754084180 for order number #205107512417
+I, [2017-07-06T20:14:35.963878 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965588 because status is success for order with id 5754084180, name #205107512417 and line item with id 10802319572
+I, [2017-07-06T20:14:35.963924 #90217]  INFO -- : Rosti shipment import processing order number #205107513417, line item id 10802319828, tracking numbers ["738488462652"], serial numbers ["172112734"]
+D, [2017-07-06T20:14:35.963952 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:36.912217 #90217]  INFO -- : Rosti shipment import found order with id 5754084372 for order number #205107513417
+I, [2017-07-06T20:14:36.912296 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965652 because status is success for order with id 5754084372, name #205107513417 and line item with id 10802319828
+I, [2017-07-06T20:14:36.912341 #90217]  INFO -- : Rosti shipment import processing order number #205107514417, line item id 10802319892, tracking numbers ["738488462663"], serial numbers ["170211601"]
+D, [2017-07-06T20:14:36.912368 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:37.754892 #90217]  INFO -- : Rosti shipment import found order with id 5754084436 for order number #205107514417
+I, [2017-07-06T20:14:37.754967 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965716 because status is success for order with id 5754084436, name #205107514417 and line item with id 10802319892
+I, [2017-07-06T20:14:37.755007 #90217]  INFO -- : Rosti shipment import processing order number #205107515417, line item id 10802320276, tracking numbers ["738488462674"], serial numbers ["172111715"]
+D, [2017-07-06T20:14:37.755031 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:38.755550 #90217]  INFO -- : Rosti shipment import found order with id 5754084756 for order number #205107515417
+I, [2017-07-06T20:14:38.755634 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965780 because status is success for order with id 5754084756, name #205107515417 and line item with id 10802320276
+I, [2017-07-06T20:14:38.755679 #90217]  INFO -- : Rosti shipment import processing order number #205107516417, line item id 10802320660, tracking numbers ["738488462685"], serial numbers ["172202581"]
+D, [2017-07-06T20:14:38.755706 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:39.675721 #90217]  INFO -- : Rosti shipment import found order with id 5754084948 for order number #205107516417
+I, [2017-07-06T20:14:39.675808 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965844 because status is success for order with id 5754084948, name #205107516417 and line item with id 10802320660
+I, [2017-07-06T20:14:39.675860 #90217]  INFO -- : Rosti shipment import processing order number #205107517417, line item id 10802320724, tracking numbers ["738488462696"], serial numbers ["172001201"]
+D, [2017-07-06T20:14:39.675889 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:40.599164 #90217]  INFO -- : Rosti shipment import found order with id 5754085012 for order number #205107517417
+I, [2017-07-06T20:14:40.599269 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965908 because status is success for order with id 5754085012, name #205107517417 and line item with id 10802320724
+I, [2017-07-06T20:14:40.599313 #90217]  INFO -- : Rosti shipment import processing order number #205107518417, line item id 10802320852, tracking numbers ["738488462700"], serial numbers ["164513407"]
+D, [2017-07-06T20:14:40.599339 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:41.446745 #90217]  INFO -- : Rosti shipment import found order with id 5754085140 for order number #205107518417
+I, [2017-07-06T20:14:41.446808 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845965972 because status is success for order with id 5754085140, name #205107518417 and line item with id 10802320852
+I, [2017-07-06T20:14:41.446851 #90217]  INFO -- : Rosti shipment import processing order number #205107519417, line item id 10802321108, tracking numbers ["738488462711"], serial numbers ["163902594"]
+D, [2017-07-06T20:14:41.446871 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:42.283824 #90217]  INFO -- : Rosti shipment import found order with id 5754085332 for order number #205107519417
+I, [2017-07-06T20:14:42.283918 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966036 because status is success for order with id 5754085332, name #205107519417 and line item with id 10802321108
+I, [2017-07-06T20:14:42.283970 #90217]  INFO -- : Rosti shipment import processing order number #205107520417, line item id 10802321236, tracking numbers ["738488462722"], serial numbers ["172112820"]
+D, [2017-07-06T20:14:42.284001 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:43.143112 #90217]  INFO -- : Rosti shipment import found order with id 5754085460 for order number #205107520417
+I, [2017-07-06T20:14:43.143185 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966100 because status is success for order with id 5754085460, name #205107520417 and line item with id 10802321236
+I, [2017-07-06T20:14:43.143224 #90217]  INFO -- : Rosti shipment import processing order number #205107521417, line item id 10802321300, tracking numbers ["738488462733"], serial numbers ["170114950"]
+D, [2017-07-06T20:14:43.143247 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:44.059599 #90217]  INFO -- : Rosti shipment import found order with id 5754085524 for order number #205107521417
+I, [2017-07-06T20:14:44.059675 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966164 because status is success for order with id 5754085524, name #205107521417 and line item with id 10802321300
+I, [2017-07-06T20:14:44.059719 #90217]  INFO -- : Rosti shipment import processing order number #205107522417, line item id 10802321428, tracking numbers ["738488462744"], serial numbers ["172112722"]
+D, [2017-07-06T20:14:44.059744 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:44.899712 #90217]  INFO -- : Rosti shipment import found order with id 5754085652 for order number #205107522417
+I, [2017-07-06T20:14:44.899821 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966228 because status is success for order with id 5754085652, name #205107522417 and line item with id 10802321428
+I, [2017-07-06T20:14:44.899865 #90217]  INFO -- : Rosti shipment import processing order number #205107523417, line item id 10802321492, tracking numbers ["738488462755"], serial numbers ["172001192"]
+D, [2017-07-06T20:14:44.899891 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:45.761726 #90217]  INFO -- : Rosti shipment import found order with id 5754085716 for order number #205107523417
+I, [2017-07-06T20:14:45.761804 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966292 because status is success for order with id 5754085716, name #205107523417 and line item with id 10802321492
+I, [2017-07-06T20:14:45.761848 #90217]  INFO -- : Rosti shipment import processing order number #205107524417, line item id 10802321620, tracking numbers ["738488462766"], serial numbers ["172112421"]
+D, [2017-07-06T20:14:45.761874 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:46.610299 #90217]  INFO -- : Rosti shipment import found order with id 5754085844 for order number #205107524417
+I, [2017-07-06T20:14:46.610396 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966356 because status is success for order with id 5754085844, name #205107524417 and line item with id 10802321620
+I, [2017-07-06T20:14:46.610450 #90217]  INFO -- : Rosti shipment import processing order number #205107525417, line item id 10802321684, tracking numbers ["738488462777"], serial numbers ["172203820"]
+D, [2017-07-06T20:14:46.610499 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:47.499236 #90217]  INFO -- : Rosti shipment import found order with id 5754085972 for order number #205107525417
+I, [2017-07-06T20:14:47.499335 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966420 because status is success for order with id 5754085972, name #205107525417 and line item with id 10802321684
+I, [2017-07-06T20:14:47.499388 #90217]  INFO -- : Rosti shipment import processing order number #205107526417, line item id 10802321940, tracking numbers ["738488462788"], serial numbers ["172112704"]
+D, [2017-07-06T20:14:47.499420 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:48.386182 #90217]  INFO -- : Rosti shipment import found order with id 5754086036 for order number #205107526417
+I, [2017-07-06T20:14:48.386273 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966484 because status is success for order with id 5754086036, name #205107526417 and line item with id 10802321940
+I, [2017-07-06T20:14:48.386314 #90217]  INFO -- : Rosti shipment import processing order number #205107527417, line item id 10802322196, tracking numbers ["738488462799"], serial numbers ["172203536"]
+D, [2017-07-06T20:14:48.386335 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:49.287156 #90217]  INFO -- : Rosti shipment import found order with id 5754086164 for order number #205107527417
+I, [2017-07-06T20:14:49.287238 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966548 because status is success for order with id 5754086164, name #205107527417 and line item with id 10802322196
+I, [2017-07-06T20:14:49.287284 #90217]  INFO -- : Rosti shipment import processing order number #205107528417, line item id 10802322516, tracking numbers ["738488462803"], serial numbers ["170114894"]
+D, [2017-07-06T20:14:49.287312 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:50.224178 #90217]  INFO -- : Rosti shipment import found order with id 5754086420 for order number #205107528417
+I, [2017-07-06T20:14:50.224261 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966612 because status is success for order with id 5754086420, name #205107528417 and line item with id 10802322516
+I, [2017-07-06T20:14:50.224303 #90217]  INFO -- : Rosti shipment import processing order number #205107529417, line item id 10802322580, tracking numbers ["738488462814"], serial numbers ["170114937"]
+D, [2017-07-06T20:14:50.224329 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:51.149881 #90217]  INFO -- : Rosti shipment import found order with id 5754086484 for order number #205107529417
+I, [2017-07-06T20:14:51.149976 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966676 because status is success for order with id 5754086484, name #205107529417 and line item with id 10802322580
+I, [2017-07-06T20:14:51.150057 #90217]  INFO -- : Rosti shipment import processing order number #205107530417, line item id 10802322708, tracking numbers ["738488462825"], serial numbers ["164106279"]
+D, [2017-07-06T20:14:51.150084 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:52.067986 #90217]  INFO -- : Rosti shipment import found order with id 5754086612 for order number #205107530417
+I, [2017-07-06T20:14:52.068085 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966740 because status is success for order with id 5754086612, name #205107530417 and line item with id 10802322708
+I, [2017-07-06T20:14:52.068138 #90217]  INFO -- : Rosti shipment import processing order number #205107531417, line item id 10802322772, tracking numbers ["738488462836"], serial numbers ["164212130"]
+D, [2017-07-06T20:14:52.068172 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:53.012328 #90217]  INFO -- : Rosti shipment import found order with id 5754086676 for order number #205107531417
+I, [2017-07-06T20:14:53.012435 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966804 because status is success for order with id 5754086676, name #205107531417 and line item with id 10802322772
+I, [2017-07-06T20:14:53.012483 #90217]  INFO -- : Rosti shipment import processing order number #205107532417, line item id 10802322900, tracking numbers ["738488462847"], serial numbers ["164401041"]
+D, [2017-07-06T20:14:53.012514 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:54.069967 #90217]  INFO -- : Rosti shipment import found order with id 5754086804 for order number #205107532417
+I, [2017-07-06T20:14:54.070047 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966868 because status is success for order with id 5754086804, name #205107532417 and line item with id 10802322900
+I, [2017-07-06T20:14:54.070090 #90217]  INFO -- : Rosti shipment import processing order number #205107533417, line item id 10802323028, tracking numbers ["738488462858"], serial numbers ["164508000"]
+D, [2017-07-06T20:14:54.070144 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:54.990025 #90217]  INFO -- : Rosti shipment import found order with id 5754086932 for order number #205107533417
+I, [2017-07-06T20:14:54.990120 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845966996 because status is success for order with id 5754086932, name #205107533417 and line item with id 10802323028
+I, [2017-07-06T20:14:54.990166 #90217]  INFO -- : Rosti shipment import processing order number #205107534417, line item id 10802323092, tracking numbers ["738488462869"], serial numbers ["164206938"]
+D, [2017-07-06T20:14:54.990191 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:55.958822 #90217]  INFO -- : Rosti shipment import found order with id 5754086996 for order number #205107534417
+I, [2017-07-06T20:14:55.958903 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967060 because status is success for order with id 5754086996, name #205107534417 and line item with id 10802323092
+I, [2017-07-06T20:14:55.958947 #90217]  INFO -- : Rosti shipment import processing order number #205107535417, line item id 10802323156, tracking numbers ["738488462870"], serial numbers ["170912142"]
+D, [2017-07-06T20:14:55.958972 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:56.808282 #90217]  INFO -- : Rosti shipment import found order with id 5754087060 for order number #205107535417
+I, [2017-07-06T20:14:56.808378 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967124 because status is success for order with id 5754087060, name #205107535417 and line item with id 10802323156
+I, [2017-07-06T20:14:56.808432 #90217]  INFO -- : Rosti shipment import processing order number #205107536417, line item id 10802323220, tracking numbers ["738488462880"], serial numbers ["172203443"]
+D, [2017-07-06T20:14:56.808465 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:57.807588 #90217]  INFO -- : Rosti shipment import found order with id 5754087124 for order number #205107536417
+I, [2017-07-06T20:14:57.807687 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967188 because status is success for order with id 5754087124, name #205107536417 and line item with id 10802323220
+I, [2017-07-06T20:14:57.807740 #90217]  INFO -- : Rosti shipment import processing order number #205107537417, line item id 10802323284, tracking numbers ["738488462891"], serial numbers ["163404734"]
+D, [2017-07-06T20:14:57.807776 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:58.722754 #90217]  INFO -- : Rosti shipment import found order with id 5754087188 for order number #205107537417
+I, [2017-07-06T20:14:58.722835 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967252 because status is success for order with id 5754087188, name #205107537417 and line item with id 10802323284
+I, [2017-07-06T20:14:58.722891 #90217]  INFO -- : Rosti shipment import processing order number #205107538417, line item id 10802323348, tracking numbers ["738488462906"], serial numbers ["172202746"]
+D, [2017-07-06T20:14:58.722918 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:14:59.620789 #90217]  INFO -- : Rosti shipment import found order with id 5754087252 for order number #205107538417
+I, [2017-07-06T20:14:59.620893 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967316 because status is success for order with id 5754087252, name #205107538417 and line item with id 10802323348
+I, [2017-07-06T20:14:59.620936 #90217]  INFO -- : Rosti shipment import processing order number #205107539417, line item id 10802323732, tracking numbers ["738488462917"], serial numbers ["164106248"]
+D, [2017-07-06T20:14:59.620962 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:00.566800 #90217]  INFO -- : Rosti shipment import found order with id 5754087444 for order number #205107539417
+I, [2017-07-06T20:15:00.566897 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967380 because status is success for order with id 5754087444, name #205107539417 and line item with id 10802323732
+I, [2017-07-06T20:15:00.566971 #90217]  INFO -- : Rosti shipment import processing order number #205107540417, line item id 10802323796, tracking numbers ["738488462928"], serial numbers ["172202409"]
+D, [2017-07-06T20:15:00.567038 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:01.488285 #90217]  INFO -- : Rosti shipment import found order with id 5754087508 for order number #205107540417
+I, [2017-07-06T20:15:01.488363 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967444 because status is success for order with id 5754087508, name #205107540417 and line item with id 10802323796
+I, [2017-07-06T20:15:01.488404 #90217]  INFO -- : Rosti shipment import processing order number #205107541417, line item id 10802323988, tracking numbers ["738488462939"], serial numbers ["170211878"]
+D, [2017-07-06T20:15:01.488430 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:02.410056 #90217]  INFO -- : Rosti shipment import found order with id 5754087700 for order number #205107541417
+I, [2017-07-06T20:15:02.410151 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967508 because status is success for order with id 5754087700, name #205107541417 and line item with id 10802323988
+I, [2017-07-06T20:15:02.410203 #90217]  INFO -- : Rosti shipment import processing order number #205107542417, line item id 10802324180, tracking numbers ["738488462940"], serial numbers ["172202908"]
+D, [2017-07-06T20:15:02.410236 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:03.434299 #90217]  INFO -- : Rosti shipment import found order with id 5754087892 for order number #205107542417
+I, [2017-07-06T20:15:03.434400 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967572 because status is success for order with id 5754087892, name #205107542417 and line item with id 10802324180
+I, [2017-07-06T20:15:03.434457 #90217]  INFO -- : Rosti shipment import processing order number #205107543417, line item id 10802324244, tracking numbers ["738488462950"], serial numbers ["172000919"]
+D, [2017-07-06T20:15:03.434483 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:04.328436 #90217]  INFO -- : Rosti shipment import found order with id 5754087956 for order number #205107543417
+I, [2017-07-06T20:15:04.328532 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967636 because status is success for order with id 5754087956, name #205107543417 and line item with id 10802324244
+I, [2017-07-06T20:15:04.328585 #90217]  INFO -- : Rosti shipment import processing order number #205107544417, line item id 10802324436, tracking numbers ["738488462961"], serial numbers ["172112598"]
+D, [2017-07-06T20:15:04.328633 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:05.294088 #90217]  INFO -- : Rosti shipment import found order with id 5754088148 for order number #205107544417
+I, [2017-07-06T20:15:05.294186 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967700 because status is success for order with id 5754088148, name #205107544417 and line item with id 10802324436
+I, [2017-07-06T20:15:05.294239 #90217]  INFO -- : Rosti shipment import processing order number #205107545417, line item id 10802324692, tracking numbers ["738488462972"], serial numbers ["172112542"]
+D, [2017-07-06T20:15:05.294272 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:06.204750 #90217]  INFO -- : Rosti shipment import found order with id 5754088340 for order number #205107545417
+I, [2017-07-06T20:15:06.204848 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967764 because status is success for order with id 5754088340, name #205107545417 and line item with id 10802324692
+I, [2017-07-06T20:15:06.204901 #90217]  INFO -- : Rosti shipment import processing order number #205107546417, line item id 10802324756, tracking numbers ["738488462983"], serial numbers ["172112492"]
+D, [2017-07-06T20:15:06.204933 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:07.227328 #90217]  INFO -- : Rosti shipment import found order with id 5754088404 for order number #205107546417
+I, [2017-07-06T20:15:07.227435 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967828 because status is success for order with id 5754088404, name #205107546417 and line item with id 10802324756
+I, [2017-07-06T20:15:07.227477 #90217]  INFO -- : Rosti shipment import processing order number #205107547417, line item id 10802324884, tracking numbers ["738488462994"], serial numbers ["172112020"]
+D, [2017-07-06T20:15:07.227502 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:08.246868 #90217]  INFO -- : Rosti shipment import found order with id 5754088532 for order number #205107547417
+I, [2017-07-06T20:15:08.246985 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845967956 because status is success for order with id 5754088532, name #205107547417 and line item with id 10802324884
+I, [2017-07-06T20:15:08.247062 #90217]  INFO -- : Rosti shipment import processing order number #205107548417, line item id 10802325076, tracking numbers ["738488463008"], serial numbers ["164207695"]
+D, [2017-07-06T20:15:08.247101 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:09.122178 #90217]  INFO -- : Rosti shipment import found order with id 5754088660 for order number #205107548417
+I, [2017-07-06T20:15:09.122260 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968020 because status is success for order with id 5754088660, name #205107548417 and line item with id 10802325076
+I, [2017-07-06T20:15:09.122303 #90217]  INFO -- : Rosti shipment import processing order number #205107549417, line item id 10802325140, tracking numbers ["738488463019"], serial numbers ["172111719"]
+D, [2017-07-06T20:15:09.122329 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:10.107043 #90217]  INFO -- : Rosti shipment import found order with id 5754088724 for order number #205107549417
+I, [2017-07-06T20:15:10.107122 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968148 because status is success for order with id 5754088724, name #205107549417 and line item with id 10802325140
+I, [2017-07-06T20:15:10.107168 #90217]  INFO -- : Rosti shipment import processing order number #205107550417, line item id 10802325204, tracking numbers ["738488463020"], serial numbers ["163404339"]
+D, [2017-07-06T20:15:10.107194 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:11.035873 #90217]  INFO -- : Rosti shipment import found order with id 5754088788 for order number #205107550417
+I, [2017-07-06T20:15:11.035984 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968212 because status is success for order with id 5754088788, name #205107550417 and line item with id 10802325204
+I, [2017-07-06T20:15:11.036038 #90217]  INFO -- : Rosti shipment import processing order number #205107551417, line item id 10802325268, tracking numbers ["738488463030"], serial numbers ["170213734"]
+D, [2017-07-06T20:15:11.036087 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:11.946425 #90217]  INFO -- : Rosti shipment import found order with id 5754088852 for order number #205107551417
+I, [2017-07-06T20:15:11.946524 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968276 because status is success for order with id 5754088852, name #205107551417 and line item with id 10802325268
+I, [2017-07-06T20:15:11.946570 #90217]  INFO -- : Rosti shipment import processing order number #205107552417, line item id 10802325460, tracking numbers ["738488463041"], serial numbers ["165201041"]
+D, [2017-07-06T20:15:11.946600 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:12.863434 #90217]  INFO -- : Rosti shipment import found order with id 5754088980 for order number #205107552417
+I, [2017-07-06T20:15:12.863515 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968340 because status is success for order with id 5754088980, name #205107552417 and line item with id 10802325460
+I, [2017-07-06T20:15:12.863560 #90217]  INFO -- : Rosti shipment import processing order number #205107553417, line item id 10802325588, tracking numbers ["738488463052"], serial numbers ["163701610"]
+D, [2017-07-06T20:15:12.863587 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:13.779552 #90217]  INFO -- : Rosti shipment import found order with id 5754089108 for order number #205107553417
+I, [2017-07-06T20:15:13.779650 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968468 because status is success for order with id 5754089108, name #205107553417 and line item with id 10802325588
+I, [2017-07-06T20:15:13.779722 #90217]  INFO -- : Rosti shipment import processing order number #205107554417, line item id 10802325844, tracking numbers ["738488463063"], serial numbers ["172111543"]
+D, [2017-07-06T20:15:13.779750 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:14.643663 #90217]  INFO -- : Rosti shipment import found order with id 5754089236 for order number #205107554417
+I, [2017-07-06T20:15:14.643757 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968532 because status is success for order with id 5754089236, name #205107554417 and line item with id 10802325844
+I, [2017-07-06T20:15:14.643814 #90217]  INFO -- : Rosti shipment import processing order number #205107555417, line item id 10802325908, tracking numbers ["738488463074"], serial numbers ["172112528"]
+D, [2017-07-06T20:15:14.643847 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:15.628743 #90217]  INFO -- : Rosti shipment import found order with id 5754089300 for order number #205107555417
+I, [2017-07-06T20:15:15.628840 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968596 because status is success for order with id 5754089300, name #205107555417 and line item with id 10802325908
+I, [2017-07-06T20:15:15.628893 #90217]  INFO -- : Rosti shipment import processing order number #205107556417, line item id 10802325972, tracking numbers ["738488463085"], serial numbers ["172202933"]
+D, [2017-07-06T20:15:15.628925 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:16.541832 #90217]  INFO -- : Rosti shipment import found order with id 5754089364 for order number #205107556417
+I, [2017-07-06T20:15:16.541944 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968724 because status is success for order with id 5754089364, name #205107556417 and line item with id 10802325972
+I, [2017-07-06T20:15:16.542001 #90217]  INFO -- : Rosti shipment import processing order number #205107557417, line item id 10802326804, tracking numbers ["738488463096"], serial numbers ["163405505"]
+D, [2017-07-06T20:15:16.542029 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:17.413705 #90217]  INFO -- : Rosti shipment import found order with id 5754089812 for order number #205107557417
+I, [2017-07-06T20:15:17.413801 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968916 because status is success for order with id 5754089812, name #205107557417 and line item with id 10802326804
+I, [2017-07-06T20:15:17.413852 #90217]  INFO -- : Rosti shipment import processing order number #205107558417, line item id 10802326932, tracking numbers ["738488463100"], serial numbers ["163506233"]
+D, [2017-07-06T20:15:17.413884 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:18.384106 #90217]  INFO -- : Rosti shipment import found order with id 5754089940 for order number #205107558417
+I, [2017-07-06T20:15:18.384201 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845968980 because status is success for order with id 5754089940, name #205107558417 and line item with id 10802326932
+I, [2017-07-06T20:15:18.384253 #90217]  INFO -- : Rosti shipment import processing order number #205107559417, line item id 10802327124, tracking numbers ["738488463111"], serial numbers ["172202527"]
+D, [2017-07-06T20:15:18.384302 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:19.309067 #90217]  INFO -- : Rosti shipment import found order with id 5754090132 for order number #205107559417
+I, [2017-07-06T20:15:19.309149 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845969044 because status is success for order with id 5754090132, name #205107559417 and line item with id 10802327124
+I, [2017-07-06T20:15:19.309194 #90217]  INFO -- : Rosti shipment import processing order number #205107560417, line item id 10802327380, tracking numbers ["738488463122"], serial numbers ["170212690"]
+D, [2017-07-06T20:15:19.309221 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:20.174605 #90217]  INFO -- : Rosti shipment import found order with id 5754090324 for order number #205107560417
+I, [2017-07-06T20:15:20.174701 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845969108 because status is success for order with id 5754090324, name #205107560417 and line item with id 10802327380
+I, [2017-07-06T20:15:20.174755 #90217]  INFO -- : Rosti shipment import processing order number #205107561417, line item id 10802327636, tracking numbers ["738488463133"], serial numbers ["170114942"]
+D, [2017-07-06T20:15:20.174787 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:21.063097 #90217]  INFO -- : Rosti shipment import found order with id 5754090580 for order number #205107561417
+I, [2017-07-06T20:15:21.063193 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845969172 because status is success for order with id 5754090580, name #205107561417 and line item with id 10802327636
+I, [2017-07-06T20:15:21.063245 #90217]  INFO -- : Rosti shipment import processing order number #205107562417, line item id 10802327700, tracking numbers ["738488463144"], serial numbers ["172203481"]
+D, [2017-07-06T20:15:21.063277 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:22.279142 #90217]  INFO -- : Rosti shipment import found order with id 5754090644 for order number #205107562417
+I, [2017-07-06T20:15:22.279222 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845969236 because status is success for order with id 5754090644, name #205107562417 and line item with id 10802327700
+I, [2017-07-06T20:15:22.279265 #90217]  INFO -- : Rosti shipment import processing order number #205107563417, line item id 10802327892, tracking numbers ["738488463155"], serial numbers ["163405639"]
+D, [2017-07-06T20:15:22.279304 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:23.200343 #90217]  INFO -- : Rosti shipment import found order with id 5754090836 for order number #205107563417
+I, [2017-07-06T20:15:23.200442 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845969300 because status is success for order with id 5754090836, name #205107563417 and line item with id 10802327892
+I, [2017-07-06T20:15:23.200508 #90217]  INFO -- : Rosti shipment import processing order number #205107564417, line item id 10802328020, tracking numbers ["738488463166"], serial numbers ["172203278"]
+D, [2017-07-06T20:15:23.200542 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:24.121466 #90217]  INFO -- : Rosti shipment import found order with id 5754090964 for order number #205107564417
+I, [2017-07-06T20:15:24.121548 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845969364 because status is success for order with id 5754090964, name #205107564417 and line item with id 10802328020
+I, [2017-07-06T20:15:24.121591 #90217]  INFO -- : Rosti shipment import processing order number #205107565417, line item id 10802354132, tracking numbers ["738488463177"], serial numbers ["172202459"]
+D, [2017-07-06T20:15:24.121617 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:24.970814 #90217]  INFO -- : Rosti shipment import found order with id 5754103508 for order number #205107565417
+I, [2017-07-06T20:15:24.970893 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845969428 because status is success for order with id 5754103508, name #205107565417 and line item with id 10802354132
+I, [2017-07-06T20:15:24.970942 #90217]  INFO -- : Rosti shipment import processing order number #205107447417, line item id 10797696532, tracking numbers ["738488463188"], serial numbers ["172113105"]
+D, [2017-07-06T20:15:24.970969 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:25.870223 #90217]  INFO -- : Rosti shipment import found order with id 5751504596 for order number #205107447417
+I, [2017-07-06T20:15:25.870302 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962452 because status is success for order with id 5751504596, name #205107447417 and line item with id 10797696532
+I, [2017-07-06T20:15:25.870348 #90217]  INFO -- : Rosti shipment import processing order number #205107457417, line item id 10798376596, tracking numbers ["738488463199"], serial numbers ["171800631"]
+D, [2017-07-06T20:15:25.870374 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:26.783113 #90217]  INFO -- : Rosti shipment import found order with id 5751869396 for order number #205107457417
+I, [2017-07-06T20:15:26.783194 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962772 because status is success for order with id 5751869396, name #205107457417 and line item with id 10798376596
+I, [2017-07-06T20:15:26.783236 #90217]  INFO -- : Rosti shipment import processing order number #205107461417, line item id 10798588692, tracking numbers ["738488463203"], serial numbers ["172113290"]
+D, [2017-07-06T20:15:26.783262 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:27.703793 #90217]  INFO -- : Rosti shipment import found order with id 5751988948 for order number #205107461417
+I, [2017-07-06T20:15:27.703871 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845962900 because status is success for order with id 5751988948, name #205107461417 and line item with id 10798588692
+I, [2017-07-06T20:15:27.703914 #90217]  INFO -- : Rosti shipment import processing order number #205107463417, line item id 10798636052, tracking numbers ["738488463214"], serial numbers ["171802685"]
+D, [2017-07-06T20:15:27.703940 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:28.620377 #90217]  INFO -- : Rosti shipment import found order with id 5752017108 for order number #205107463417
+I, [2017-07-06T20:15:28.620483 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963028 because status is success for order with id 5752017108, name #205107463417 and line item with id 10798636052
+I, [2017-07-06T20:15:28.620532 #90217]  INFO -- : Rosti shipment import processing order number #205107464417, line item id 10798659540, tracking numbers ["738488463225"], serial numbers ["172112948"]
+D, [2017-07-06T20:15:28.620561 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:29.499441 #90217]  INFO -- : Rosti shipment import found order with id 5752029460 for order number #205107464417
+I, [2017-07-06T20:15:29.499521 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963092 because status is success for order with id 5752029460, name #205107464417 and line item with id 10798659540
+I, [2017-07-06T20:15:29.499568 #90217]  INFO -- : Rosti shipment import processing order number #205107465417, line item id 10798677588, tracking numbers ["738488463236"], serial numbers ["172111438"]
+D, [2017-07-06T20:15:29.499595 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:30.371430 #90217]  INFO -- : Rosti shipment import found order with id 5752037588 for order number #205107465417
+I, [2017-07-06T20:15:30.371510 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963156 because status is success for order with id 5752037588, name #205107465417 and line item with id 10798677588
+I, [2017-07-06T20:15:30.371553 #90217]  INFO -- : Rosti shipment import processing order number #205107468417, line item id 10799114004, tracking numbers ["738488463247"], serial numbers ["171801789"]
+D, [2017-07-06T20:15:30.371579 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:31.289088 #90217]  INFO -- : Rosti shipment import found order with id 5752276180 for order number #205107468417
+I, [2017-07-06T20:15:31.289171 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963284 because status is success for order with id 5752276180, name #205107468417 and line item with id 10799114004
+I, [2017-07-06T20:15:31.289218 #90217]  INFO -- : Rosti shipment import processing order number #205107475417, line item id 10800537428, tracking numbers ["738488463258"], serial numbers ["172112974"]
+D, [2017-07-06T20:15:31.289245 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:32.155469 #90217]  INFO -- : Rosti shipment import found order with id 5753071572 for order number #205107475417
+I, [2017-07-06T20:15:32.155553 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963540 because status is success for order with id 5753071572, name #205107475417 and line item with id 10800537428
+I, [2017-07-06T20:15:32.155596 #90217]  INFO -- : Rosti shipment import processing order number #205107476417, line item id 10800719700, tracking numbers ["738488463269"], serial numbers ["172112561"]
+D, [2017-07-06T20:15:32.155623 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:33.016329 #90217]  INFO -- : Rosti shipment import found order with id 5753177812 for order number #205107476417
+I, [2017-07-06T20:15:33.016413 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845963604 because status is success for order with id 5753177812, name #205107476417 and line item with id 10800719700
+I, [2017-07-06T20:15:33.016455 #90217]  INFO -- : Rosti shipment import processing order number #205107482417, line item id 10801249556, tracking numbers ["738488463270"], serial numbers ["172002189"]
+D, [2017-07-06T20:15:33.016481 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:33.930922 #90217]  INFO -- : Rosti shipment import found order with id 5753476564 for order number #205107482417
+I, [2017-07-06T20:15:33.931003 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964052 because status is success for order with id 5753476564, name #205107482417 and line item with id 10801249556
+I, [2017-07-06T20:15:33.931060 #90217]  INFO -- : Rosti shipment import processing order number #205107487417, line item id 10801570580, tracking numbers ["738488463280"], serial numbers ["172111369"]
+D, [2017-07-06T20:15:33.931088 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:34.827726 #90217]  INFO -- : Rosti shipment import found order with id 5753660692 for order number #205107487417
+I, [2017-07-06T20:15:34.827810 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964180 because status is success for order with id 5753660692, name #205107487417 and line item with id 10801570580
+I, [2017-07-06T20:15:34.827853 #90217]  INFO -- : Rosti shipment import processing order number #205107489417, line item id 10801680980, tracking numbers ["738488463291"], serial numbers ["172111436"]
+D, [2017-07-06T20:15:34.827880 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:35.691155 #90217]  INFO -- : Rosti shipment import found order with id 5753722068 for order number #205107489417
+I, [2017-07-06T20:15:35.691238 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964244 because status is success for order with id 5753722068, name #205107489417 and line item with id 10801680980
+I, [2017-07-06T20:15:35.691285 #90217]  INFO -- : Rosti shipment import processing order number #205107492417, line item id 10801939796, tracking numbers ["738488463306"], serial numbers ["171805060"]
+D, [2017-07-06T20:15:35.691312 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:36.616674 #90217]  INFO -- : Rosti shipment import found order with id 5753868372 for order number #205107492417
+I, [2017-07-06T20:15:36.616757 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964308 because status is success for order with id 5753868372, name #205107492417 and line item with id 10801939796
+I, [2017-07-06T20:15:36.616800 #90217]  INFO -- : Rosti shipment import processing order number #205107494417, line item id 10801998612, tracking numbers ["738488463317"], serial numbers ["172112582"]
+D, [2017-07-06T20:15:36.616826 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:37.640982 #90217]  INFO -- : Rosti shipment import found order with id 5753901588 for order number #205107494417
+I, [2017-07-06T20:15:37.647701 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845964372 because status is success for order with id 5753901588, name #205107494417 and line item with id 10801998612
+I, [2017-07-06T20:15:37.647794 #90217]  INFO -- : Rosti shipment import processing order number #205107566417, line item id 10802376468, tracking numbers ["738488463328"], serial numbers ["171805772"]
+D, [2017-07-06T20:15:37.647826 #90217] DEBUG -- : Shopify search_orders fetching page 1
+I, [2017-07-06T20:15:38.514241 #90217]  INFO -- : Rosti shipment import found order with id 5754116436 for order number #205107566417
+I, [2017-07-06T20:15:38.514332 #90217]  INFO -- : CSV shipment import not including fulfillment with id 4845969492 because status is success for order with id 5754116436, name #205107566417 and line item with id 10802376468
+D, [2017-07-06T20:15:38.514430 #90217] DEBUG -- : Order with id 5748277396, name #205107403417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514459 #90217] DEBUG -- : Order with id 5753525268, name #205107483417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514481 #90217] DEBUG -- : Order with id 5753747796, name #205107490417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514502 #90217] DEBUG -- : Order with id 5751397652, name #205107445417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514540 #90217] DEBUG -- : Order with id 5751548308, name #205107449417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514560 #90217] DEBUG -- : Order with id 5751565140, name #205107451417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514580 #90217] DEBUG -- : Order with id 5751700116, name #205107453417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514611 #90217] DEBUG -- : Order with id 5751714516, name #205107454417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514631 #90217] DEBUG -- : Order with id 5751914900, name #205107460417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514650 #90217] DEBUG -- : Order with id 5751998548, name #205107462417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514685 #90217] DEBUG -- : Order with id 5752079188, name #205107466417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514705 #90217] DEBUG -- : Order with id 5752276500, name #205107469417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514725 #90217] DEBUG -- : Order with id 5752572500, name #205107470417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514744 #90217] DEBUG -- : Order with id 5753011092, name #205107474417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514762 #90217] DEBUG -- : Order with id 5753234964, name #205107477417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514781 #90217] DEBUG -- : Order with id 5753242260, name #205107478417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514820 #90217] DEBUG -- : Order with id 5753269780, name #205107479417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514839 #90217] DEBUG -- : Order with id 5753279892, name #205107480417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514858 #90217] DEBUG -- : Order with id 5753372500, name #205107481417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.514877 #90217] DEBUG -- : Order with id 5753590036, name #205107486417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515050 #90217] DEBUG -- : Order with id 5754103508, name #205107565417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515096 #90217] DEBUG -- : Order with id 5751504596, name #205107447417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515116 #90217] DEBUG -- : Order with id 5751869396, name #205107457417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515134 #90217] DEBUG -- : Order with id 5751988948, name #205107461417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515153 #90217] DEBUG -- : Order with id 5752017108, name #205107463417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515172 #90217] DEBUG -- : Order with id 5752029460, name #205107464417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515191 #90217] DEBUG -- : Order with id 5752037588, name #205107465417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515210 #90217] DEBUG -- : Order with id 5752276180, name #205107468417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515248 #90217] DEBUG -- : Order with id 5753071572, name #205107475417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515267 #90217] DEBUG -- : Order with id 5753177812, name #205107476417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515287 #90217] DEBUG -- : Order with id 5753476564, name #205107482417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515306 #90217] DEBUG -- : Order with id 5753660692, name #205107487417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515325 #90217] DEBUG -- : Order with id 5753722068, name #205107489417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515368 #90217] DEBUG -- : Order with id 5753868372, name #205107492417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515387 #90217] DEBUG -- : Order with id 5753901588, name #205107494417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515405 #90217] DEBUG -- : Order with id 5754116436, name #205107566417 is not an Amazon 3P order, skipping
+D, [2017-07-06T20:15:38.515588 #90217] DEBUG -- : Found 70 Amazon order shipments to confirm
+D, [2017-07-06T20:15:38.515653 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754065748, name #205107495417, Amazon order with id 112-1547960-4465815, item id 62337293580458, tracking number 738488462479
+D, [2017-07-06T20:15:38.522547 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754065812, name #205107496417, Amazon order with id 114-1480230-3273023, item id 20744319062338, tracking number 738488462480
+D, [2017-07-06T20:15:38.522779 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754065940, name #205107497417, Amazon order with id 113-2081397-9788204, item id 00927220529802, tracking number 738488462490
+D, [2017-07-06T20:15:38.522909 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754066068, name #205107498417, Amazon order with id 114-5887293-2146664, item id 39618963886530, tracking number 738488462505
+D, [2017-07-06T20:15:38.523074 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754066132, name #205107499417, Amazon order with id 113-5460115-4507456, item id 52616525874122, tracking number 738488462516
+D, [2017-07-06T20:15:38.523157 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754066196, name #205107500417, Amazon order with id 113-6048845-6747410, item id 11362070157122, tracking number 738488462527
+D, [2017-07-06T20:15:38.523239 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754066260, name #205107501417, Amazon order with id 113-5549680-0299458, item id 20553272329954, tracking number 738488462538
+D, [2017-07-06T20:15:38.523347 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754066388, name #205107502417, Amazon order with id 114-9750868-8251464, item id 48096340131602, tracking number 738488462549
+D, [2017-07-06T20:15:38.523426 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754066516, name #205107503417, Amazon order with id 112-2187782-3168241, item id 33634485063874, tracking number 738488462550
+D, [2017-07-06T20:15:38.523536 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754066580, name #205107504417, Amazon order with id 114-1607996-4556264, item id 62471782535522, tracking number 738488462560
+D, [2017-07-06T20:15:38.523614 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754066772, name #205107505417, Amazon order with id 112-4473704-9137008, item id 47822082401242, tracking number 738488462571
+D, [2017-07-06T20:15:38.523711 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754066900, name #205107506417, Amazon order with id 113-3335519-7836253, item id 26202631970978, tracking number 738488462582
+D, [2017-07-06T20:15:38.523787 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754067028, name #205107507417, Amazon order with id 111-2934868-1012229, item id 21837037053202, tracking number 738488462593
+D, [2017-07-06T20:15:38.523911 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754067156, name #205107508417, Amazon order with id 112-4331347-1668218, item id 38332056459866, tracking number 738488462608
+D, [2017-07-06T20:15:38.523989 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754067284, name #205107509417, Amazon order with id 114-5975543-2800262, item id 01262482785330, tracking number 738488462619
+D, [2017-07-06T20:15:38.524065 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754067412, name #205107510417, Amazon order with id 113-1434615-7295465, item id 64454639269866, tracking number 738488462620
+D, [2017-07-06T20:15:38.524175 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754084116, name #205107511417, Amazon order with id 111-4494171-1143420, item id 54564772961922, tracking number 738488462630
+D, [2017-07-06T20:15:38.524253 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754084180, name #205107512417, Amazon order with id 112-2434135-8871427, item id 30171514826322, tracking number 738488462641
+D, [2017-07-06T20:15:38.524373 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754084372, name #205107513417, Amazon order with id 114-1393348-6355416, item id 56140944812186, tracking number 738488462652
+D, [2017-07-06T20:15:38.524467 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754084436, name #205107514417, Amazon order with id 114-7563265-2184225, item id 35160133743394, tracking number 738488462663
+D, [2017-07-06T20:15:38.524547 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754084756, name #205107515417, Amazon order with id 112-7565569-8330663, item id 66983794888538, tracking number 738488462674
+D, [2017-07-06T20:15:38.524658 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754084948, name #205107516417, Amazon order with id 114-6188568-0041831, item id 16461032793762, tracking number 738488462685
+D, [2017-07-06T20:15:38.524735 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754085012, name #205107517417, Amazon order with id 113-3175199-4745801, item id 00571628279210, tracking number 738488462696
+D, [2017-07-06T20:15:38.524811 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754085140, name #205107518417, Amazon order with id 111-8568436-3969834, item id 21170908184650, tracking number 738488462700
+D, [2017-07-06T20:15:38.524916 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754085332, name #205107519417, Amazon order with id 111-1553071-3533068, item id 21252412063986, tracking number 738488462711
+D, [2017-07-06T20:15:38.524994 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754085460, name #205107520417, Amazon order with id 113-0000046-1513879, item id 40551892577778, tracking number 738488462722
+D, [2017-07-06T20:15:38.525070 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754085524, name #205107521417, Amazon order with id 114-8422066-8713849, item id 45267422962634, tracking number 738488462733
+D, [2017-07-06T20:15:38.525205 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754085652, name #205107522417, Amazon order with id 112-1156302-1456265, item id 25843756373458, tracking number 738488462744
+D, [2017-07-06T20:15:38.525283 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754085716, name #205107523417, Amazon order with id 111-5592535-6063420, item id 38450466080434, tracking number 738488462755
+D, [2017-07-06T20:15:38.525365 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754085844, name #205107524417, Amazon order with id 112-3521283-5701028, item id 22560545664666, tracking number 738488462766
+D, [2017-07-06T20:15:38.525470 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754085972, name #205107525417, Amazon order with id 112-9730988-4453851, item id 60561069480906, tracking number 738488462777
+D, [2017-07-06T20:15:38.525532 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754086036, name #205107526417, Amazon order with id 111-4201343-1247422, item id 60477632683386, tracking number 738488462788
+D, [2017-07-06T20:15:38.525592 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754086164, name #205107527417, Amazon order with id 113-6168501-3646607, item id 58804905678634, tracking number 738488462799
+D, [2017-07-06T20:15:38.525695 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754086420, name #205107528417, Amazon order with id 113-4558707-5410640, item id 18711269079690, tracking number 738488462803
+D, [2017-07-06T20:15:38.525756 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754086484, name #205107529417, Amazon order with id 114-8872691-1429045, item id 42746335455826, tracking number 738488462814
+D, [2017-07-06T20:15:38.525815 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754086612, name #205107530417, Amazon order with id 112-1298707-4131403, item id 61598579870642, tracking number 738488462825
+D, [2017-07-06T20:15:38.525916 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754086676, name #205107531417, Amazon order with id 112-1767689-5461008, item id 35224964804482, tracking number 738488462836
+D, [2017-07-06T20:15:38.525978 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754086804, name #205107532417, Amazon order with id 111-7748964-2209007, item id 05439480535146, tracking number 738488462847
+D, [2017-07-06T20:15:38.526089 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754086932, name #205107533417, Amazon order with id 113-6774685-3355415, item id 66088293644290, tracking number 738488462858
+D, [2017-07-06T20:15:38.526196 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754086996, name #205107534417, Amazon order with id 112-3916371-4733007, item id 68664729977202, tracking number 738488462869
+D, [2017-07-06T20:15:38.526256 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754087060, name #205107535417, Amazon order with id 111-2633053-2257829, item id 42167501739250, tracking number 738488462870
+D, [2017-07-06T20:15:38.526336 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754087124, name #205107536417, Amazon order with id 112-8878277-2321011, item id 33118268181874, tracking number 738488462880
+D, [2017-07-06T20:15:38.526397 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754087188, name #205107537417, Amazon order with id 111-1129213-9665866, item id 01483686413130, tracking number 738488462891
+D, [2017-07-06T20:15:38.526457 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754087252, name #205107538417, Amazon order with id 114-0258133-4034633, item id 62080214654834, tracking number 738488462906
+D, [2017-07-06T20:15:38.526535 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754087444, name #205107539417, Amazon order with id 111-3417500-0643454, item id 47612914354394, tracking number 738488462917
+D, [2017-07-06T20:15:38.526596 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754087508, name #205107540417, Amazon order with id 114-6976675-1621016, item id 67382634133498, tracking number 738488462928
+D, [2017-07-06T20:15:38.526657 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754087700, name #205107541417, Amazon order with id 114-9992130-9841052, item id 36277879140082, tracking number 738488462939
+D, [2017-07-06T20:15:38.526740 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754087892, name #205107542417, Amazon order with id 112-5534727-2456262, item id 51821345512586, tracking number 738488462940
+D, [2017-07-06T20:15:38.526801 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754087956, name #205107543417, Amazon order with id 113-3187147-8585837, item id 08572443444370, tracking number 738488462950
+D, [2017-07-06T20:15:38.526939 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754088148, name #205107544417, Amazon order with id 112-6032157-8407404, item id 08377551321778, tracking number 738488462961
+D, [2017-07-06T20:15:38.527065 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754088340, name #205107545417, Amazon order with id 111-7653384-7163423, item id 41972087521578, tracking number 738488462972
+D, [2017-07-06T20:15:38.527130 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754088404, name #205107546417, Amazon order with id 113-8892198-1657845, item id 32887010774306, tracking number 738488462983
+D, [2017-07-06T20:15:38.527213 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754088532, name #205107547417, Amazon order with id 111-1581032-4561041, item id 59709067157106, tracking number 738488462994
+D, [2017-07-06T20:15:38.527275 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754088660, name #205107548417, Amazon order with id 112-5701350-7321810, item id 55781112589410, tracking number 738488463008
+D, [2017-07-06T20:15:38.527338 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754088724, name #205107549417, Amazon order with id 113-6123511-6910666, item id 57446789264738, tracking number 738488463019
+D, [2017-07-06T20:15:38.527417 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754088788, name #205107550417, Amazon order with id 111-0350808-2383461, item id 17587162878306, tracking number 738488463020
+D, [2017-07-06T20:15:38.527487 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754088852, name #205107551417, Amazon order with id 114-2080815-2852233, item id 43990861865946, tracking number 738488463030
+D, [2017-07-06T20:15:38.527572 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754088980, name #205107552417, Amazon order with id 111-7213266-6296220, item id 35092370183674, tracking number 738488463041
+D, [2017-07-06T20:15:38.527636 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754089108, name #205107553417, Amazon order with id 114-5771098-7385851, item id 22210589444314, tracking number 738488463052
+D, [2017-07-06T20:15:38.527697 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754089236, name #205107554417, Amazon order with id 112-2411480-3131405, item id 00384883225570, tracking number 738488463063
+D, [2017-07-06T20:15:38.527781 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754089300, name #205107555417, Amazon order with id 111-9758372-7220254, item id 37999348989458, tracking number 738488463074
+D, [2017-07-06T20:15:38.527842 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754089364, name #205107556417, Amazon order with id 113-8689968-5965817, item id 42075132748650, tracking number 738488463085
+D, [2017-07-06T20:15:38.527924 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754089812, name #205107557417, Amazon order with id 111-6269388-3096216, item id 48196915344706, tracking number 738488463096
+D, [2017-07-06T20:15:38.528015 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754089940, name #205107558417, Amazon order with id 114-0434012-7533023, item id 59033621152986, tracking number 738488463100
+D, [2017-07-06T20:15:38.528078 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754090132, name #205107559417, Amazon order with id 112-7224266-4840231, item id 04434472891826, tracking number 738488463111
+D, [2017-07-06T20:15:38.528140 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754090324, name #205107560417, Amazon order with id 114-4275216-9557041, item id 68597325770626, tracking number 738488463122
+D, [2017-07-06T20:15:38.528229 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754090580, name #205107561417, Amazon order with id 114-2455666-5489868, item id 69559749036650, tracking number 738488463133
+D, [2017-07-06T20:15:38.528291 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754090644, name #205107562417, Amazon order with id 113-7052565-8589847, item id 29407473407354, tracking number 738488463144
+D, [2017-07-06T20:15:38.528353 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754090836, name #205107563417, Amazon order with id 111-1208210-1683435, item id 64821642898346, tracking number 738488463155
+D, [2017-07-06T20:15:38.528438 #90217] DEBUG -- : Adding confirmation for Shopify order with id 5754090964, name #205107564417, Amazon order with id 113-2846126-9262613, item id 62035703115786, tracking number 738488463166

@@ -1,0 +1,1 @@
+bundle exec ruby amazon_generate_shipment_confirmations.rb --key 86c7cb4d2c51ce5918c613430639dc29 --password 22e04f4a1edb91b91d44b9a819d63539 --store delve --input ./amazon-shipping-20170705/Shipments_131438582356657154.csv > ./amazon-shipping-20170705/confirmation.tsv 2> ./amazon-shipping-20170705/shiplog.txt

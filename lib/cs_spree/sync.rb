@@ -18,7 +18,7 @@ module CsSpree
         #     applies_to_id: Rails.configuration.shopify[:joule_product_id]
         # )
 
-        CsSpree::API::ShareJoulePromotion.ensure(code)
+        CsSpree::API::Promotions.ensure_share_joule(code)
 
         # Don't save user until spree succeeds
         user.referral_code = code

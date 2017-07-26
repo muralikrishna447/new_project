@@ -15,4 +15,8 @@ module CsSpree
   def self.hostname
     CONFIG['hostname']
   end
+
+  def self.api_key
+    CONFIG['api_key']
+  end
 end

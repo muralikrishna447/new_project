@@ -1,5 +1,6 @@
 development: &development
   hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'http://localhost:3000' %>
+  api_key: 69dc27f4eeb3f6a919c347623468173462fc27b69dc8ec31
   front_end_live: false
   back_end_live: false
 test: &test
