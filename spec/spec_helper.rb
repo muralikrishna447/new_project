@@ -83,6 +83,105 @@ Spork.prefork do
       WebMock.stub_request(:post, "http://www.google-analytics.com/collect").
         to_return(:status => 200, :body => "", :headers => {})
 
+      WebMock.stub_request(:get, /.*geoip\.maxmind\.com.*/).
+                           to_return(:status => 200,
+                                     :body => '
+{
+  "city": {
+    "geoname_id": 5809844,
+    "names": {
+      "pt-BR": "Seattle",
+      "ru": "\u0421\u0438\u044d\u0442\u043b",
+      "de": "Seattle",
+      "en": "Seattle",
+      "es": "Seattle",
+      "fr": "Seattle",
+      "ja": "\u30b7\u30a2\u30c8\u30eb"
+    }
+  },
+  "continent": {
+    "code": "NA",
+    "geoname_id": 6255149,
+    "names": {
+      "pt-BR": "Am\u00e9rica do Norte",
+      "ru": "\u0421\u0435\u0432\u0435\u0440\u043d\u0430\u044f \u0410\u043c\u0435\u0440\u0438\u043a\u0430",
+      "zh-CN": "\u5317\u7f8e\u6d32",
+      "de": "Nordamerika",
+      "en": "North America",
+      "es": "Norteam\u00e9rica",
+      "fr": "Am\u00e9rique du Nord",
+      "ja": "\u5317\u30a2\u30e1\u30ea\u30ab"
+    }
+  },
+  "country": {
+    "iso_code": "US",
+    "geoname_id": 6252001,
+    "names": {
+      "es": "Estados Unidos",
+      "fr": "\u00c9tats-Unis",
+      "ja": "\u30a2\u30e1\u30ea\u30ab\u5408\u8846\u56fd",
+      "pt-BR": "Estados Unidos",
+      "ru": "\u0421\u0428\u0410",
+      "zh-CN": "\u7f8e\u56fd",
+      "de": "USA",
+      "en": "United States"
+    }
+  },
+  "location": {
+    "accuracy_radius": 5,
+    "latitude": 47.6381,
+    "longitude": -122.3715,
+    "metro_code": 819,
+    "time_zone": "America\/Los_Angeles"
+  },
+  "maxmind": {
+    "queries_remaining": 548200
+  },
+  "postal": {
+    "code": "98119"
+  },
+  "registered_country": {
+    "iso_code": "US",
+    "geoname_id": 6252001,
+    "names": {
+      "fr": "\u00c9tats-Unis",
+      "ja": "\u30a2\u30e1\u30ea\u30ab\u5408\u8846\u56fd",
+      "pt-BR": "Estados Unidos",
+      "ru": "\u0421\u0428\u0410",
+      "zh-CN": "\u7f8e\u56fd",
+      "de": "USA",
+      "en": "United States",
+      "es": "Estados Unidos"
+    }
+  },
+  "subdivisions": [
+    {
+      "iso_code": "WA",
+      "geoname_id": 5815135,
+      "names": {
+        "en": "Washington",
+        "es": "Washington",
+        "fr": "Washington",
+        "ja": "\u30ef\u30b7\u30f3\u30c8\u30f3\u5dde",
+        "ru": "\u0412\u0430\u0448\u0438\u043d\u0433\u0442\u043e\u043d",
+        "zh-CN": "\u534e\u76db\u987f\u5dde"
+      }
+    }
+  ],
+  "traits": {
+    "autonomous_system_number": 7922,
+    "autonomous_system_organization": "Comcast Cable Communications, LLC",
+    "domain": "comcast.net",
+    "isp": "Comcast Cable",
+    "organization": "Comcast Cable",
+    "ip_address": "174.61.186.99"
+  }
+}',
+                                     :headers => {})
+
+      WebMock.stub_request(:get, /.*spree-staging1\.herokuapp\.com.*/).
+                           to_return(:status => 200, :body => "", :headers => {})
+
       # Adding Webmock, which delightfully alerts you to any live http calls happening during specs,
       # but we already have existing mock strategies for other services, so let them through.
       WebMock.disable_net_connect!(:allow => [/mixpanel/])

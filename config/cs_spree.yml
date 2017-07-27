@@ -5,7 +5,7 @@ development: &development
   front_end_live: false
   back_end_live: false
 test: &test
-  hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'http://localhost:3000' %>
+  hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'https://spree-staging1.herokuapp.com' %>
   front_end_live: false
   back_end_live: false
 staging:
