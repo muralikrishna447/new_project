@@ -1,7 +1,7 @@
 module Api
   module V0
     class PremiumGiftCertificateController < BaseController
-      before_filter :ensure_authorized_service
+      before_filter BaseController.make_service_filter(['CSSpree'])
 
       #This method was added for Spree. When ChefSteps premium is purchased as a gift, Spree calls the method
       #so we don't have to duplicate the code on the Spree side
@@ -30,4 +30,3 @@ module Api
     end
   end
 end
-

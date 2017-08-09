@@ -54,12 +54,14 @@ module Api
       end
     end
 
-    def ensure_authorized_service_or_admin
-      if authorized_service?
-        return true
-      else
-        return authenticate_active_admin_user!
-      end
+    def self.make_service_or_admin_filter(allowed_services)
+      return Proc.new {|controller|
+        if controller.authorized_service?(allowed_services)
+          return true
+        else
+          controller.authenticate_active_admin_user!
+        end
+      }
     end
 
     class AuthorizationError < StandardError
@@ -177,18 +179,19 @@ module Api
       end
     end
 
-    def authorized_service?
-      allowed_services = ['Messaging', 'AdminPushMessaging', 'CSSpree']
+    def authorized_service?(allowed_services)
       request_auth = request.authorization()
       return ExternalServiceTokenChecker.is_authorized(request_auth, allowed_services)
     end
 
-    def ensure_authorized_service
-      if authorized_service?
-        return true
-      else
-        render_unauthorized
-      end
+    def self.make_service_filter(allowed_services)
+      return Proc.new {|controller|
+        if controller.authorized_service?(allowed_services)
+          return true
+        else
+          controller.render_unauthorized
+        end
+      }
     end
 
     def render_api_response status, contents = {}, each_serializer = nil

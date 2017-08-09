@@ -27,7 +27,7 @@ describe Api::Admin::UsersController do
       issued_at = (Time.now.to_f * 1000).to_i
       service_claim = {
         iat: issued_at,
-        service: 'Messaging' # TODO: this is the wrong service here
+        service: 'SupportTool'
       }
       @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
       @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
