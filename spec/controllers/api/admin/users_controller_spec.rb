@@ -15,6 +15,29 @@ describe Api::Admin::UsersController do
       get :show, id: @user_1.id
       response.should_not be_success
     end
+
+    it 'should not authorize request for circulators' do
+      get :circulators, id: @user_1.id
+      response.should_not be_success
+    end
+  end
+
+  context 'not admin but authorized service' do
+    before :each do
+      issued_at = (Time.now.to_f * 1000).to_i
+      service_claim = {
+        iat: issued_at,
+        service: 'Messaging' # TODO: this is the wrong service here
+      }
+      @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+      @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+    end
+
+    it 'should authorize' do
+      get :circulators, id: @user_1.id
+      response.should be_success
+    end
   end
 
   context 'authenticated admin user' do

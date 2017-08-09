@@ -54,6 +54,14 @@ module Api
       end
     end
 
+    def ensure_authorized_service_or_admin
+      if authorized_service?
+        return true
+      else
+        return authenticate_active_admin_user!
+      end
+    end
+
     class AuthorizationError < StandardError
     end
 
@@ -169,10 +177,13 @@ module Api
       end
     end
 
-    def ensure_authorized_service
+    def authorized_service?
       request_auth = request.authorization()
-      is_authorized = ExternalServiceTokenChecker.is_authorized(request_auth)
-      if is_authorized
+      return ExternalServiceTokenChecker.is_authorized(request_auth)
+    end
+
+    def ensure_authorized_service
+      if authorized_service?
         return true
       else
         render_unauthorized
