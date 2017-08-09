@@ -178,8 +178,9 @@ module Api
     end
 
     def authorized_service?
+      allowed_services = ['Messaging', 'AdminPushMessaging', 'CSSpree']
       request_auth = request.authorization()
-      return ExternalServiceTokenChecker.is_authorized(request_auth)
+      return ExternalServiceTokenChecker.is_authorized(request_auth, allowed_services)
     end
 
     def ensure_authorized_service
