@@ -13,11 +13,11 @@ class Rack::Attack
   # Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
   def self.isWhitelisted(req)
     request_auth = req.env["HTTP_AUTHORIZATION"]
-    is_authorized_external_service = ExternalServiceTokenChecker.is_authorized(request_auth)
+    is_authenticated_external_service = ExternalServiceTokenChecker.is_authenticated(request_auth)
     madore_ip = '66.171.190.210'
     market_ip = '199.231.242.34'
     # Requests are allowed if the return value is truthy
-    is_authorized_external_service || req.ip == madore_ip || req.ip == market_ip
+    is_authenticated_external_service || req.ip == madore_ip || req.ip == market_ip
   end
 
   ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|

@@ -328,6 +328,18 @@ describe Api::V0::CirculatorsController do
 
     #'random_drop' && notification_type != 'dynamic_alert'
     describe 'admin_notify_clients' do
+      before :each do
+        issued_at = (Time.now.to_f * 1000).to_i
+
+        service_claim = {
+          iat: issued_at,
+          service: 'AdminPushMessaging'
+        }
+        @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+        @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
+        request.env['HTTP_AUTHORIZATION'] = @service_token
+      end
+
       it 'requires idempotency_key parameter' do
         post(
             :admin_notify_clients,
