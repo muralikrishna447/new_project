@@ -1,5 +1,10 @@
 module ExternalServiceTokenChecker
 
+  MESSAGING_SERVICE = 'Messaging'
+  SPREE_SERVICE = 'CSSpree'
+  ADMIN_PUSH_SERVICE = 'AdminPushMessaging'
+  SUPPORT_SERVICE = 'SupportTool'
+
   class AuthenticationError < StandardError
   end
 

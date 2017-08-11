@@ -1,4 +1,5 @@
 require_dependency 'beta_feature_service'
+require_dependency 'external_service_token_checker'
 module Api
   module V0
     class CirculatorsController < BaseController
@@ -7,8 +8,10 @@ module Api
       before_filter :ensure_authorized, except: [:notify_clients, :admin_notify_clients, :coefficients]
       before_filter :ensure_circulator_owner, only: [:update, :destroy]
       before_filter :ensure_circulator_user, only: [:token]
-      before_filter BaseController.make_service_filter(['Messaging']), only: [:notify_clients]
-      before_filter BaseController.make_service_filter(['AdminPushMessaging']), only: [:admin_notify_clients]
+      before_filter(BaseController.make_service_or_admin_filter(
+        [ExternalServiceTokenChecker::MESSAGING_SERVICE]), only: [:notify_clients])
+      before_filter(BaseController.make_service_or_admin_filter(
+        [ExternalServiceTokenChecker::ADMIN_PUSH_SERVICE]), only: [:admin_notify_clients])
 
       def index
         @user = User.find @user_id_from_token

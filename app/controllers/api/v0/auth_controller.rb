@@ -1,7 +1,8 @@
 module Api
   module V0
     class AuthController < BaseController
-      before_filter BaseController.make_service_filter(['Messaging']), only: [:validate]
+      before_filter(BaseController.make_service_or_admin_filter(
+        [ExternalServiceTokenChecker::MESSAGING_SERVICE]), only: [:validate])
       before_filter :ensure_authorized, only: [:logout, :external_redirect]
 
       def authenticate
