@@ -9,6 +9,7 @@ class CatalogProxy < Rack::Proxy
 
     # @backend_host = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
     @backend_host = 'localhost:7777'
+    # @backend_host = 'https://chefsteps-catalog.herokuapp.com'
 
     @backend_protocol = "http"
     backend_uri = "#{@backend_protocol}://#{@backend_host}"
@@ -23,7 +24,8 @@ class CatalogProxy < Rack::Proxy
       cookie_value = AnalyticsParametizer.cookie_value(req.params, req.cookies, req.referrer)
       Rails.logger.info("CatalogProxy request for path [#{env['REQUEST_URI']}]")
       env["HTTP_HOST"] = @backend_host
-      env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"] = "#{req.fullpath.gsub('/cuts','')}"
+
+      env["REQUEST_PATH"] = env["REQUEST_URI"] = env["PATH_INFO"]
 
       status, headers, body = perform_request(env)
 
