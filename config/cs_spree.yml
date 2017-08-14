@@ -1,0 +1,21 @@
+development: &development
+  hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'https://spree-staging1.herokuapp.com' %>
+  api_key: 7f456934ede08c46637c5a59d9d39e1b1831b3eceeb9bc221
+  basic_auth: Basic ZGVsdmU6ZGVlcGVy
+  front_end_live: false
+  back_end_live: false
+test: &test
+  hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'https://spree-staging1.herokuapp.com' %>
+  front_end_live: false
+  back_end_live: false
+staging:
+  <<: *development
+  hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'https://spree-staging1.herokuapp.com' %>
+  api_key: 7f456934ede08c46637c5a59d9d39e1b1831b3eceeb9bc22
+  front_end_live: false
+  back_end_live: false
+production:
+  <<: *development
+  hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'https://shop.chefsteps.com' %>
+  front_end_live: false
+  back_end_live: false

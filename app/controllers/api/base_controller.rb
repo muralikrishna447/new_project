@@ -169,14 +169,33 @@ module Api
       end
     end
 
-    def ensure_authorized_service
+    def authorized_service?(allowed_services)
       request_auth = request.authorization()
-      is_authorized = ExternalServiceTokenChecker.is_authorized(request_auth)
-      if is_authorized
-        return true
-      else
-        render_unauthorized
-      end
+      return ExternalServiceTokenChecker.is_authorized(request_auth, allowed_services)
+    end
+
+    # NOTE: a Rails filter can be a Proc (instead of a symbol) which
+    # allows for 'compile' time customization. See:
+    # http://api.rubyonrails.org/v2.3/classes/ActionController/Filters/ClassMethods.html
+
+    def self.make_service_or_admin_filter(allowed_services)
+      return Proc.new {|controller|
+        if controller.authorized_service?(allowed_services)
+          return true
+        else
+          controller.authenticate_active_admin_user!
+        end
+      }
+    end
+
+    def self.make_service_filter(allowed_services)
+      return Proc.new {|controller|
+        if controller.authorized_service?(allowed_services)
+          return true
+        else
+          controller.render_unauthorized
+        end
+      }
     end
 
     def render_api_response status, contents = {}, each_serializer = nil
