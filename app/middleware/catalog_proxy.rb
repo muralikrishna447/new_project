@@ -7,9 +7,7 @@ class CatalogProxy < Rack::Proxy
   def initialize(app)
     @app = app
 
-    # @backend_host = Rails.application.config.shared_config[:freshsteps_endpoint] || ENV["FRESHSTEPS_ENDPOINT"]
-    @backend_host = 'localhost:7777'
-    # @backend_host = 'https://chefsteps-catalog.herokuapp.com'
+    @backend_host = Rails.application.config.shared_config[:catalog_endpoint] || ENV["CATALOG_ENDPOINT"]
 
     @backend_protocol = "http"
     backend_uri = "#{@backend_protocol}://#{@backend_host}"
