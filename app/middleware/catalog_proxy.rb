@@ -3,6 +3,11 @@ require "rack-proxy"
 class CatalogProxy < Rack::Proxy
 
   PREFIX = %w(/cuts)
+  HEADERS_TO_FORWARD = %w(
+    Content-Type
+    Content-Length
+    Content-Encoding
+  )
 
   def initialize(app)
     @app = app
@@ -27,19 +32,7 @@ class CatalogProxy < Rack::Proxy
 
       status, headers, body = perform_request(env)
 
-      headers.delete "transfer-encoding"
-      # The rack proxy mutates the http headers in a way which causes the rack
-      # cache layer to crash.  This un-does the mutation.
-      if headers.has_key?('cache-control') && headers['cache-control'].kind_of?(Array)
-        headers['cache-control'] = headers['cache-control'][0]
-      end
-
-      utm_cookie = {
-        :value => cookie_value,
-        :domain => Rails.application.config.cookie_domain
-      }
-      Rack::Utils.set_cookie_header!(headers, 'utm', utm_cookie)
-      [status, headers, body]
+      [status, headers_from_response(headers), body]
     else
       @app.call(env)
     end
@@ -49,5 +42,12 @@ class CatalogProxy < Rack::Proxy
     request = Rack::Request.new(env)
     prefix_match = PREFIX.include?(request.path) || PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")}
     prefix_match
+  end
+
+  def headers_from_response(headers)
+    HEADERS_TO_FORWARD.each_with_object(Rack::Utils::HeaderHash.new) do |header, hash|
+      value = headers[header]
+      hash[header] = value if value
+    end
   end
 end
