@@ -158,7 +158,9 @@ module Delve
         return nil;
       }
     }
+    config.middleware.insert_before ActionDispatch::Static, 'CatalogProxy'
     config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
+
 
     # Coverband
     config.middleware.use Coverband::Middleware
