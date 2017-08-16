@@ -13,7 +13,7 @@ class CatalogProxy < Rack::Proxy
     @app = app
 
     @backend_host = Rails.application.config.shared_config[:catalog_endpoint] || ENV["CATALOG_ENDPOINT"]
-
+    puts "BACKEND_HOST: #{@backend_host}"
     @backend_protocol = "http"
     backend_uri = "#{@backend_protocol}://#{@backend_host}"
     Rails.logger.info("Initializing CatalogProxy with backend: #{backend_uri}")

@@ -18,7 +18,7 @@ production:
   env: "production"
   chefsteps_endpoint: "chefsteps.com"
   freshsteps_endpoint: "d3ro0sksttkvbt.cloudfront.net"
-  catalog_endpoint: "https://chefsteps-catalog.herokuapp.com"
+  catalog_endpoint: "chefsteps-catalog.herokuapp.com"
   segment_write_key: "CohfhzCATDidS52kLILe3ZZ3mVYYgzsP"
   bloom: &production_bloom
     api_endpoint: "https://cs-bloom-api-production.herokuapp.com"
@@ -32,7 +32,7 @@ staging:
   env: "staging"
   chefsteps_endpoint: "chocolateyshatner.com"
   freshsteps_endpoint: "d2w4l5nz3qs7iy.cloudfront.net"
-  catalog_endpoint: "https://chefsteps-catalog.herokuapp.com"
+  catalog_endpoint: "chefsteps-catalog.herokuapp.com"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom: &staging_bloom
     api_endpoint: "https://cs-bloom-api-staging.herokuapp.com"
@@ -46,7 +46,7 @@ staging2:
   env: "staging"
   chefsteps_endpoint: "vanillanimoy.com"
   freshsteps_endpoint: "d3874mzg2llbaz.cloudfront.net"
-  catalog_endpoint: "https://chefsteps-catalog.herokuapp.com"
+  catalog_endpoint: "chefsteps-catalog.herokuapp.com"
   spree_domain: "shop.chocolateyshatner.com"
   spree_endpoint: "https://shop.chocolateyshatner.com/"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
@@ -60,7 +60,7 @@ test:
   env: "test"
   chefsteps_endpoint: "chefsteps-test-endpoint.com"
   freshsteps_endpoint: "test.url"
-  catalog_endpoint: "https://chefsteps-catalog.herokuapp.com"
+  catalog_endpoint: "chefsteps-catalog.herokuapp.com"
   spree_domain: "spree.test.com"
   spree_endpoint: "https://spree.test.com/"
   bloom:
