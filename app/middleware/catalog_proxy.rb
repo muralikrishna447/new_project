@@ -8,6 +8,8 @@ class CatalogProxy < Rack::Proxy
     Content-Length
     Content-Encoding
     Location
+    Authorization
+    Set-Cookie
   )
 
   def initialize(app)
