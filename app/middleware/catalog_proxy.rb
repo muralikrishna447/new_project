@@ -10,6 +10,7 @@ class CatalogProxy < Rack::Proxy
     Location
     Authorization
     Set-Cookie
+    WWW-Authenticate
   )
 
   def initialize(app)
