@@ -82,7 +82,7 @@ module Api
                 images: product_images
               }
             end
-            headers['Cache-Control'] = 'max-age=60, private'
+            headers['Cache-Control'] = 'max-age=3600, private'
             results.to_json
           end
         end
