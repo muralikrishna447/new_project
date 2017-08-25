@@ -16,7 +16,7 @@ module Api
         def show
           sku = params[:id]
           product_sku = get_product_sku(sku)
-          products = get_all_products
+          products = JSON.parse(get_all_products)
           @product = products.select{|p| p[:product_sku] == product_sku}.first
           if @product
             @variant = @product[:variants].select{|variant| variant[:sku] == params[:id]}[0]
@@ -82,7 +82,7 @@ module Api
                 images: product_images
               }
             end
-            results
+            results.to_json
           end
         end
 
