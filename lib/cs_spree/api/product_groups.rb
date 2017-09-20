@@ -2,8 +2,7 @@ module CsSpree::Api::ProductGroups
 
   DEFAULT_US_JOULE_PRODUCT_GROUP = {
     name: 'Joule',
-    description: 'The world’s smallest, smartest, and sexiest sous vide tool, perfect for sous vide novices and veterans alike. iOS or Android required.',
-    currency: 'USD',
+    description: 'The world\'s smallest, smartest, and sexiest sous vide tool, perfect for sous vide novices and veterans alike. iOS or Android required.',
     products: [
       {
         name: 'Joule: Sous Vide By ChefSteps',
@@ -32,10 +31,9 @@ module CsSpree::Api::ProductGroups
 
   DEFAULT_CA_JOULE_PRODUCT_GROUP = {
     name: 'Joule',
-    description: 'The world’s smallest, smartest, and sexiest sous vide tool, perfect for sous vide novices and veterans alike. iOS or Android required.',
+    description: 'The world\'s smallest, smartest, and sexiest sous vide tool, perfect for sous vide novices and veterans alike. iOS or Android required.',
     warning: 'This product may be incompatible with some Bell Canada WiFi Routers',
     additional_description: 'The iOS and Android Applications are only available in English',
-    currency: 'CAD',
     products: [
       {
         label: 'Stainless Steel',
@@ -53,7 +51,6 @@ module CsSpree::Api::ProductGroups
   DEFAULT_US_BIG_CLAMP_PRODUCT_GROUP = {
     name: 'Joule Big Clamp',
     description: 'Works with: Coolers, Cambros, Insulated containers, Any big thing you want to cook in',
-    currency: 'USD',
     products: [
       {
         label: 'Joule Big Clamp',
@@ -70,7 +67,6 @@ module CsSpree::Api::ProductGroups
   DEFAULT_CA_BIG_CLAMP_PRODUCT_GROUP = {
     name: 'Joule Big Clamp',
     description: 'Works with: Coolers, Cambros, Insulated containers, Any big thing you want to cook in',
-    currency: 'CAD',
     products: [
       {
         label: 'Joule Big Clamp',
@@ -85,9 +81,8 @@ module CsSpree::Api::ProductGroups
   }
 
   DEFAULT_US_PREMIUM_PRODUCT_GROUP = {
-    name: 'Joule Big Clamp',
+    name: 'ChefSteps Premium',
     description: 'Works with: Coolers, Cambros, Insulated containers, Any big thing you want to cook in',
-    currency: 'USD',
     products: [
       {
         label: 'ChefSteps Premium',
@@ -102,9 +97,8 @@ module CsSpree::Api::ProductGroups
   }
 
   DEFAULT_CA_PREMIUM_PRODUCT_GROUP = {
-    name: 'Joule Big Clamp',
+    name: 'ChefSteps Premium',
     description: 'Works with: Coolers, Cambros, Insulated containers, Any big thing you want to cook in',
-    currency: 'CAD',
     products: [
       {
         label: 'ChefSteps Premium',
@@ -120,14 +114,22 @@ module CsSpree::Api::ProductGroups
 
   DEFAULT_PRODUCT_GROUPS_BY_COUNTRY = {
     'US' => {
-      joule: DEFAULT_US_JOULE_PRODUCT_GROUP,
-      big_clamp: DEFAULT_US_BIG_CLAMP_PRODUCT_GROUP,
-      premium: DEFAULT_US_PREMIUM_PRODUCT_GROUP,
+      iso2: 'US',
+      currency: 'USD',
+      product_groups: {
+        joule: DEFAULT_US_JOULE_PRODUCT_GROUP,
+        big_clamp: DEFAULT_US_BIG_CLAMP_PRODUCT_GROUP,
+        premium: DEFAULT_US_PREMIUM_PRODUCT_GROUP,
+      }
     },
     'CA' => {
-      joule: DEFAULT_CA_JOULE_PRODUCT_GROUP,
-      big_clamp: DEFAULT_CA_BIG_CLAMP_PRODUCT_GROUP,
-      premium: DEFAULT_CA_PREMIUM_PRODUCT_GROUP,
+      iso2: 'CA',
+      currency: 'CAD',
+      product_groups: {
+        joule: DEFAULT_CA_JOULE_PRODUCT_GROUP,
+        big_clamp: DEFAULT_CA_BIG_CLAMP_PRODUCT_GROUP,
+        premium: DEFAULT_CA_PREMIUM_PRODUCT_GROUP,
+      }
     }
   }
 
@@ -137,7 +139,7 @@ module CsSpree::Api::ProductGroups
 
   def self.for_country(iso2_country_code)
     up_iso2 = iso2_country_code.upcase
-    url_path = "/api/v1/countries/#{up_iso2}/cs_product_groups"
+    url_path = "/api/v1/cs_countries/#{up_iso2}/cs_product_groups"
     begin
       CacheExtensions::fetch_with_rescue(product_groups_cache_key(up_iso2), 1.hour, 1.minute) do
         CsSpree.get_api(url_path)
