@@ -49,7 +49,7 @@ module CsSpree
         raise StandardError.new "#{result.message}:#{result.code}"
       end
 
-      result
+      JSON.parse(result.body)
     end
   end
 

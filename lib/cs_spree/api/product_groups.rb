@@ -13,7 +13,7 @@ module CsSpree::Api::ProductGroups
         compare_to_price: nil,
         orderable: true,
         low_stock: false,
-        status: 'orderable', #backorderable, preorderable  ...?
+        status: 'in_stock', # backorder, preorder
       },
       {
         name: 'Joule White: Sous Vide By ChefSteps',
@@ -24,7 +24,7 @@ module CsSpree::Api::ProductGroups
         compare_to_price: 199.00,
         orderable: true,
         low_stock: false,
-        status: 'orderable', #backorderable, preorderable  ...?
+        status: 'in_stock', # backorder, preorder
       }
     ]
   }
@@ -42,7 +42,7 @@ module CsSpree::Api::ProductGroups
         compare_to_price: nil,
         orderable: true,
         low_stock: false,
-        status: 'orderable', #backorderable, preorderable  ...?
+        status: 'in_stock', # backorder, preorder
       }
     ]
   }
@@ -59,7 +59,7 @@ module CsSpree::Api::ProductGroups
         compare_to_price: nil,
         orderable: true,
         low_stock: false,
-        status: 'orderable', #backorderable, preorderable  ...?
+        status: 'in_stock', # backorder, preorder
       }
     ]
   }
@@ -75,7 +75,7 @@ module CsSpree::Api::ProductGroups
         compare_to_price: nil,
         orderable: true,
         low_stock: false,
-        status: 'orderable', #backorderable, preorderable  ...?
+        status: 'in_stock', # backorder, preorder
       }
     ]
   }
@@ -91,7 +91,7 @@ module CsSpree::Api::ProductGroups
         compare_to_price: nil,
         orderable: true,
         low_stock: false,
-        status: 'orderable', #backorderable, preorderable  ...?
+        status: 'in_stock', # backorder, preorder
       }
     ]
   }
@@ -107,7 +107,7 @@ module CsSpree::Api::ProductGroups
         compare_to_price: nil,
         orderable: true,
         low_stock: false,
-        status: 'orderable', #backorderable, preorderable  ...?
+        status: 'in_stock', # backorder, preorder
       }
     ]
   }
