@@ -98,7 +98,7 @@ module CsSpree::Api::ProductGroups
 
   DEFAULT_CA_PREMIUM_PRODUCT_GROUP = {
     name: 'ChefSteps Premium',
-    description: 'Works with: Coolers, Cambros, Insulated containers, Any big thing you want to cook in',
+    description: 'Access to all the ChefSteps recipes and videos, forever—so you’re always inspired to get cooking.',
     products: [
       {
         label: 'ChefSteps Premium',
