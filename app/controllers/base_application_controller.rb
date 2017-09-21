@@ -140,7 +140,6 @@ class BaseApplicationController < ActionController::Base
       conn.basic_auth(conf.user, conf.license)
       resp = conn.get "/geoip/v2.1/city/#{ip_address}"
       geocode = JSON.parse resp.body
-      puts geocode
 
       if geocode["error"] || !geocode["location"]
         raise GeocodeError.new("Geocoding failed for #{ip_address}")

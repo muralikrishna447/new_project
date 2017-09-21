@@ -35,10 +35,29 @@ module CsSpree
     Rails.logger.error "CsSpree::API #{exception.class}: '#{exception.message}' - #{try} tries in #{elapsed_time} seconds and #{next_interval} seconds until the next try."
   end
 
-  def self.post_api(path, params)
+  def self.get_api(path, params = {})
     Retriable.retriable(:tries => 2, on_retry: RETRY_PROC) do |attempt|
       url = "#{hostname}#{path}"
-      Rails.logger.info "CsSpree::API #{url} with (#{params}) Attempt(#{attempt}) "
+      Rails.logger.info "CsSpree::API GET #{url} with (#{params}) Attempt(#{attempt}) "
+      headers = merge_api_headers 'Content-Type' => 'application/json'
+      result = HTTParty.get(url,
+                             :body => params.to_json,
+                             :headers => headers)
+      Rails.logger.info "CsSpree::API #{url} with (#{params}) Attempt(#{attempt}) -> (#{result.to_json})"
+
+      unless result.success?
+        raise StandardError.new "#{result.message}:#{result.code}"
+      end
+
+      JSON.parse(result.body)
+    end
+  end
+
+
+  def self.post_api(path, params = {})
+    Retriable.retriable(:tries => 2, on_retry: RETRY_PROC) do |attempt|
+      url = "#{hostname}#{path}"
+      Rails.logger.info "CsSpree::API POST #{url} with (#{params}) Attempt(#{attempt}) "
       headers = merge_api_headers 'Content-Type' => 'application/json'
       result = HTTParty.post(url,
                              :body => params.to_json,

@@ -295,6 +295,9 @@ Delve::Application.routes.draw do
         resources :products do
           # match '/product/:product_id', to: 'shopping#product'
         end
+
+        resources :product_groups, only: [:index]
+
         resources :marketplace do
           get :guide_button, on: :collection
           get :guide_button_redirect, on: :collection
