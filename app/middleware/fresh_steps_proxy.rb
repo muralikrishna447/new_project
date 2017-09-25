@@ -7,7 +7,7 @@ class FreshStepsProxy < Rack::Proxy
   # browser-sync was pinging multiple times per second. Although without the proxy, rails returns 406 so
   # it is still doing work. Curious.
 
-  PREFIX = %w(/gallery /classes /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-overview /recommended /market /joule-split /orders /butchers)
+  PREFIX = %w(/gallery /classes /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-staging /joule-overview /recommended /market /joule-split /orders /butchers)
   EXACT = %w(/ /sous-vide /grilling /getpremium /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs /gifting /sso /sign-up /steak-by-joule /gifs /404 /forum-welcome /preorder-sweepstakes /preorder-sweepstakes-legal /components /lamarzocco-ultimate-espresso-kit /getting-started-with-joule /known-issues /food52 /Food52 /voice-control /cooking-challenge /equipment-we-love /opi-submissions /conversational-cooking /joule-one-million-meals)
 
   EXCLUDE = %w(/joule/warranty)
