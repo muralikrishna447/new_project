@@ -287,6 +287,9 @@ Delve::Application.routes.draw do
       get 'content_config/manifest', to: 'content#manifest'
 
       namespace :shopping do
+        get 'countries/intl_enabled', to: 'countries#intl_enabled'
+        get 'countries/enabled_countries', to: 'countries#enabled_countries'
+
         resources :discounts, only: [:show]
         resources :customer_orders, only: [:show] do
           post :update_address, on: :member
