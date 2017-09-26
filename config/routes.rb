@@ -285,6 +285,8 @@ Delve::Application.routes.draw do
       get 'auth/external_redirect_by_key', to: 'auth#external_redirect_by_key'
 
       get 'content_config/manifest', to: 'content#manifest'
+      get 'countries/intl_enabled', to: 'shopping/countries#intl_enabled'
+      get 'countries/enabled_countries', to: 'shopping/countries#enabled_countries'
 
       namespace :shopping do
         resources :discounts, only: [:show]
