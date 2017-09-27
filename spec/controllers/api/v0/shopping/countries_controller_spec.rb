@@ -14,16 +14,10 @@ describe Api::V0::Shopping::CountriesController do
 
   describe 'GET /intl_enabled and /enabled_countries' do
     it "should respond with intl_enabled boolean" do
-      get :intl_enabled
+      get :index
       response.should be_success
       resp = JSON.parse(response.body)
       resp["intl_enabled"].should eq(true)
-    end
-
-    it "should respond with list of countries" do
-      get :enabled_countries
-      response.should be_success
-      resp = JSON.parse(response.body)
       resp["countries"].should eq(["US", "CA", "IT"])
     end
   end
