@@ -1,6 +1,6 @@
 development: &development
   hostname: <%= ENV['CS_SPREE_HOSTNAME'] || 'https://spree-staging1.herokuapp.com' %>
-  api_key: 7f456934ede08c46637c5a59d9d39e1b1831b3eceeb9bc221
+  api_key: bac93156686bb720723fb61e66f465a5d61f37d252a5c639
   basic_auth: Basic ZGVsdmU6ZGVlcGVy
   front_end_live: false
   back_end_live: false
