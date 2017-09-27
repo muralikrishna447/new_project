@@ -91,7 +91,7 @@ Example: adding a bunch of users to groups on production from
 
     add_cmd = subparsers.add_parser('add', help='Add users to groups from csv')
     del_cmd = subparsers.add_parser('del', help='Delete a user group')
-    inf_cmd = subparsers.add_parser('inf', help='Show user group information')
+    inf_cmd = subparsers.add_parser('info', help='Show user group information')
 
     add_cmd.add_argument('group_csv', help='csv file with user info')
     del_cmd.add_argument('group_name', help='Group name to delete')
@@ -106,5 +106,5 @@ Example: adding a bunch of users to groups on production from
         delete_group(table, args)
     elif args.cmd == 'add':
         add_users_to_groups(table, args)
-    elif args.cmd == 'inf':
+    elif args.cmd == 'info':
         show_user_group_information(table, args)
