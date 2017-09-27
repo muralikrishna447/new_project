@@ -47,6 +47,7 @@ def delete_group(table, args):
         sys.exit(0)
 
     for item in items:
+        print("Deleting %s from %s group" % (item['user_id'], item['group_name']))
         table.delete_item(
             Key={
                 'user_id' : item['user_id'],
