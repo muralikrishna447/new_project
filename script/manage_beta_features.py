@@ -55,6 +55,18 @@ def delete_group(table, args):
             }
         )
 
+def show_user_group_information(table, args):
+    resp =table.scan(
+        FilterExpression=Attr('group_name').eq(args.group_name)
+    )
+    items = resp['Items']
+
+    for item in items:
+        print(item)
+
+    print("Group %s has %i members" % (args.group_name, len(items)))
+
+
 if __name__ == '__main__':
     description='Update beta user groups'
     epilog = '''
@@ -80,9 +92,11 @@ Example: adding a bunch of users to groups on production from
 
     add_cmd = subparsers.add_parser('add', help='Add users to groups from csv')
     del_cmd = subparsers.add_parser('del', help='Delete a user group')
+    inf_cmd = subparsers.add_parser('info', help='Show user group information')
 
     add_cmd.add_argument('group_csv', help='csv file with user info')
     del_cmd.add_argument('group_name', help='Group name to delete')
+    inf_cmd.add_argument('group_name', help='Group name to get info for')
 
     args = parser.parse_args()
 
@@ -93,3 +107,5 @@ Example: adding a bunch of users to groups on production from
         delete_group(table, args)
     elif args.cmd == 'add':
         add_users_to_groups(table, args)
+    elif args.cmd == 'info':
+        show_user_group_information(table, args)
