@@ -287,6 +287,8 @@ Delve::Application.routes.draw do
       get 'content_config/manifest', to: 'content#manifest'
 
       namespace :shopping do
+        
+        resources :countries, only: [:index]
         resources :discounts, only: [:show]
         resources :customer_orders, only: [:show] do
           post :update_address, on: :member

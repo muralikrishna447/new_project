@@ -21,12 +21,16 @@ namespace :quickbase do
       if Rails.env.production?
         QuickbaseOptions = {
           units_id: "bmg4hpb6i",
-          units_query_id: "10"
+          units_query_id: "10",
+          returns_id: "bmg4hpbp7",
+          returns_query_id: "26"
         }
       else
         QuickbaseOptions = {
           units_id: "bmrihe3d8",
-          units_query_id: "10"
+          units_query_id: "10",
+          returns_id: "bm4vtkcqs",
+          returns_query_id: "26"
         }
       end
     else
@@ -39,7 +43,7 @@ namespace :quickbase do
     serial_numbers = []
     circulator_addresses_to_gather = []
     Rails.logger.info "Quickbase:GenerateReport #{report_name} - Retrieving records"
-    results = QuickbaseClient.getAllValuesForFields(QuickbaseOptions[:units_id], ['Record ID#',"Date Created","serial_number"], nil, QuickbaseOptions[:units_query_id])
+    results = QuickbaseClient.getAllValuesForFields(QuickbaseOptions[:returns_id], ['Record ID#',"Date Created","Serial Number"], nil, QuickbaseOptions[:returns_query_id])
 
     # results are weird
     # {
@@ -49,11 +53,11 @@ namespace :quickbase do
     # }
     # So you have to loop through and pull the element from the array out of each of the fields.
 
-    Rails.logger.info "Quickbase:GenerateReport #{report_name} - Got #{results["serial_number"].length} records back"
-    count = results["serial_number"].length-1 # Start from 0
+    Rails.logger.info "Quickbase:GenerateReport #{report_name} - Got #{results["Serial Number"].length} records back"
+    count = results["Serial Number"].length-1 # Start from 0
     0.upto(count) do |x|
       record_id = results["Record ID#"][x]
-      serial_number = results["serial_number"][x]
+      serial_number = results["Serial Number"][x]
       created_at = Time.at(results["Date Created"][x].to_f/1000) # Convert time from miliseconds to seconds
       Rails.logger.info "Quickbase:GenerateReport #{report_name} - On #{record_id} (Serial: #{serial_number}) from #{created_at}"
       if serial_number.nil?
@@ -67,7 +71,7 @@ namespace :quickbase do
         Rails.logger.info "Quickbase:GenerateReport #{report_name} - Updating #{record_id} (Serial: #{serial_number}) with \n#{circulator_addresses.join("\n")}"
         QuickbaseClient.addFieldValuePair('records_requested', nil, nil, "1") # Send that we have requested logs for this unit
         QuickbaseClient.addFieldValuePair('Circulator Addresses', nil, nil, circulator_addresses.join("\n")) # Send all circulator addresses up for the unit
-        QuickbaseClient.editRecord(QuickbaseOptions[:units_id], record_id, QuickbaseClient.fvlist)
+        QuickbaseClient.editRecord(QuickbaseOptions[:returns_id], record_id, QuickbaseClient.fvlist)
         Rails.logger.info "Quickbase:GenerateReport #{report_name} - Marked #{record_id} as records_requested"
       end
     end

@@ -63,26 +63,26 @@ module CsSpree::Api::ProductGroups
       }
     ]
   }
-
-  DEFAULT_CA_BIG_CLAMP_PRODUCT_GROUP = {
-    name: 'Joule Big Clamp',
-    description: 'Works with: Coolers, Cambros, Insulated containers, Any big thing you want to cook in',
-    products: [
-      {
-        label: 'Joule Big Clamp',
-        sku: 'cs30001',
-        price: 24.00,
-        compare_to_price: nil,
-        orderable: true,
-        low_stock: false,
-        status: 'in_stock', # backorder, preorder
-      }
-    ]
-  }
+  #
+  # DEFAULT_CA_BIG_CLAMP_PRODUCT_GROUP = {
+  #   name: 'Joule Big Clamp',
+  #   description: 'Works with: Coolers, Cambros, Insulated containers, Any big thing you want to cook in',
+  #   products: [
+  #     {
+  #       label: 'Joule Big Clamp',
+  #       sku: 'cs30001',
+  #       price: 24.00,
+  #       compare_to_price: nil,
+  #       orderable: true,
+  #       low_stock: false,
+  #       status: 'in_stock', # backorder, preorder
+  #     }
+  #   ]
+  # }
 
   DEFAULT_US_PREMIUM_PRODUCT_GROUP = {
     name: 'ChefSteps Premium',
-    description: 'Works with: Coolers, Cambros, Insulated containers, Any big thing you want to cook in',
+    description: 'Access to all the ChefSteps recipes and videos, forever-so you\'re always inspired to get cooking.',
     products: [
       {
         label: 'ChefSteps Premium',
@@ -98,7 +98,7 @@ module CsSpree::Api::ProductGroups
 
   DEFAULT_CA_PREMIUM_PRODUCT_GROUP = {
     name: 'ChefSteps Premium',
-    description: 'Works with: Coolers, Cambros, Insulated containers, Any big thing you want to cook in',
+    description: 'Access to all the ChefSteps recipes and videos, forever-so you\'re always inspired to get cooking.',
     products: [
       {
         label: 'ChefSteps Premium',
@@ -127,7 +127,6 @@ module CsSpree::Api::ProductGroups
       currency: 'CAD',
       product_groups: {
         joule: DEFAULT_CA_JOULE_PRODUCT_GROUP,
-        big_clamp: DEFAULT_CA_BIG_CLAMP_PRODUCT_GROUP,
         premium: DEFAULT_CA_PREMIUM_PRODUCT_GROUP,
       }
     }
