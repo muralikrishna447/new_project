@@ -26,7 +26,7 @@ class LegalController < ApplicationController
       {
         code: "DK",
         name: "Denmark",
-        languages: ["Danish","German"]
+        languages: ["Danish"]
       },
       {
         code: "FI",
@@ -56,7 +56,7 @@ class LegalController < ApplicationController
       {
         code: "NL",
         name: "Netherlands",
-        languages: ["Dutch", "English"]
+        languages: ["Dutch"]
       },
       {
         code: "NO",
@@ -76,7 +76,7 @@ class LegalController < ApplicationController
       {
         code: "CH",
         name: "Switzerland",
-        languages: ["German", "French", "English"]
+        languages: ["German", "French", "Italian"]
       },
       {
         code: "GB",
@@ -85,6 +85,6 @@ class LegalController < ApplicationController
       }
     ]
     @country = @countries.find { |c| c[:code] == @location['country'] }
-
+    @language = params[:language]
   end
 end
