@@ -2,18 +2,20 @@
   #terms
     %h2.pull-left CHEFSTEPS TERMS OF USE
 
-    /
-      %select.pull-right
-        %option Danish
-        %option Dutch
-        %option{:selected => "selected"} English
-        %option Finnish
-        %option French
-        %option German
-        %option Italian
-        %option Norwegian
-        %option Spanish
-        %option Swedish
+    %select.pull-right
+      - @country[:languages].each do |language|
+        %option= language
+    -# %select.pull-right
+    -#   %option Danish
+    -#   %option Dutch
+    -#   %option{:selected => "selected"} English
+    -#   %option Finnish
+    -#   %option French
+    -#   %option German
+    -#   %option Italian
+    -#   %option Norwegian
+    -#   %option Spanish
+    -#   %option Swedish
 
     %p.clearfix
 
