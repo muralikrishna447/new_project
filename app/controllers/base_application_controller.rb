@@ -39,31 +39,14 @@ class BaseApplicationController < ActionController::Base
 
   def detect_country
     unless cookies['cs_geo'].present?
-      # # return if request.fullpath.starts_with?('/api')
-      # return if request.fullpath == '/users/session_me'
-      # # return if request.fullpath == '/viewer.css.map'
-      # return if request.fullpath == '/browser-sync/browser-sync-client.2.7.13.js'
-      # puts "MISSING GEO COOKIE AT PATH: #{request.fullpath}"
-      # location = geolocate_ip
-      # #default to US so spree has something to work with
-      # location[:country] = 'US' if location[:country].blank?
-      # cookies['cs_geo'] = {
-      #     :value => location.to_json,
-      #     :domain => :all,
-      #     :expires => Rails.configuration.geoip.cache_expiry.from_now
-      # }
-
-      puts "MISSING GEO COOKIE"
       location = geolocate_ip
       #default to US so spree has something to work with
-      location[:country] = 'CA'
+      location[:country] = 'US' if location[:country].blank?
       cookies['cs_geo'] = {
           :value => location.to_json,
           :domain => :all,
           :expires => Rails.configuration.geoip.cache_expiry.from_now
       }
-    else
-      puts "FOUND GEO COOKIE #{request.fullpath}: #{cookies['cs_geo']}"
     end
   end
 
