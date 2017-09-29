@@ -25,17 +25,14 @@ module Api
         end
 
         def set_country
-          puts "SETTING THE COUNTRY DUDE"
-          puts "GEO COOKIE: #{cookies[:cs_geo]}"
           location = JSON.parse(cookies[:cs_geo])
-          location[:country] = 'CA'
-          puts "COOKIE: #{location.inspect}"
+          location[:country] = params[:country_code]
           cookies['cs_geo'] = {
             :value => location.to_json,
             :domain => :all,
             :expires => Rails.configuration.geoip.cache_expiry.from_now
           }
-          render_api_response(200, {message: 'Set cookie!'})
+          render_api_response(200, {message: 'Cookie Set'})
         end
 
       end
