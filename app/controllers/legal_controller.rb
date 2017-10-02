@@ -1,16 +1,10 @@
-# IDEAL LABELING
-# For no brainer copy and paste, we should have a legal document for each country + language combination
-
-# Here is an example of labels and corresponding filename on our website:
-# us_english
-# ca_english
-# ca_french
-# be_dutch
-# be_french
-# be_german
-
 class LegalController < ApplicationController
   before_filter :load_vars
+
+  def terms
+    @terms_template = "legal/terms/#{@selected_language.downcase}"
+    @addendums_template = "legal/terms/addendums/#{@country[:code].downcase}_#{@selected_language.downcase}"
+  end
 
   private
   def load_vars
@@ -97,5 +91,7 @@ class LegalController < ApplicationController
     ]
     @country = @countries.find { |c| c[:code] == @location['country'] }
     @language = params[:language]
+    @languages = @country[:languages].map { |e| [e]  }
+    @selected_language = @language ? @language : @languages[0][0]
   end
 end

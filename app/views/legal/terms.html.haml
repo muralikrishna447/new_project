@@ -3,11 +3,14 @@
     %div
       %h2.pull-left CHEFSTEPS TERMS OF USE
 
-      - languages = @country[:languages].map { |e| [e]  }
-      - selected_language = @language ? @language : languages[0][0]
-      - if languages.length > 1
+      -# - languages = @country[:languages].map { |e| [e]  }
+      -# - selected_language = @language ? @language : languages[0][0]
+      - if @languages.length > 1
         .pull-right
-          = select_tag :lang, options_for_select(languages, selected_language), {:onchange => "window.location.href='/terms?language=' + this.value"}
+          = select_tag :lang, options_for_select(@languages, @selected_language), {:onchange => "window.location.href='/terms?language=' + this.value"}
 
     %p.clearfix
-    = render "legal/terms/#{@country[:code].downcase}_#{selected_language.downcase}"
+    %h1 Terms
+    = render @terms_template
+    %h1 Addendums
+    = render @addendums_template
