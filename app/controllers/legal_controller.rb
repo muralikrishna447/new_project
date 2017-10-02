@@ -14,6 +14,10 @@ class LegalController < ApplicationController
     @privacy_policy_template = "legal/privacy_policy/#{@selected_language.downcase}"
   end
 
+  def cookie_policy
+    @cookie_policy_template = "legal/privacy_policy/#{@selected_language.downcase}"
+  end
+
   def eula_android
     @eula_template = "legal/eula_android/#{@selected_language.downcase}"
     @addendums_template = "legal/eula_android/addendums/#{@country[:code].downcase}_#{@selected_language.downcase}"
