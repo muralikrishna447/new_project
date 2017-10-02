@@ -5,8 +5,9 @@
 
       - languages = @country[:languages].map { |e| [e]  }
       - selected_language = @language ? @language : languages[0][0]
-      .pull-right
-        = select_tag :lang, options_for_select(languages, selected_language), {:onchange => "window.location.href='/terms?language=' + this.value"}
+      - if languages.length > 1
+        .pull-right
+          = select_tag :lang, options_for_select(languages, selected_language), {:onchange => "window.location.href='/terms?language=' + this.value"}
 
     %p.clearfix
     = render "legal/terms/#{@country[:code].downcase}_#{selected_language.downcase}"
