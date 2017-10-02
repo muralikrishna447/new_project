@@ -22,7 +22,7 @@ Delve::Application.routes.draw do
   get '/robots.txt' => RobotsTxt
 
   match '/libraries', to: 'legal#libraries'
-  match '/joule/warranty', to: 'home#joule_warranty'
+  # match '/joule/warranty', to: 'home#joule_warranty'
   match '/facebook_optout', to: 'home#facebook_optout'
 
   match '/forum', to: 'bloom#forum'
@@ -47,6 +47,7 @@ Delve::Application.routes.draw do
   get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
   get 'terms' => 'legal#terms', as: 'terms'
   get 'terms' => 'legal#terms', as: 'terms_of_service'
+  match '/joule/warranty', to: 'legal#warranty'
 
   ActiveAdmin.routes(self)
 
