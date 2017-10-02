@@ -1,3 +1,14 @@
+# IDEAL LABELING
+# For no brainer copy and paste, we should have a legal document for each country + language combination
+
+# Here is an example of labels and corresponding filename on our website:
+# us_english
+# ca_english
+# ca_french
+# be_dutch
+# be_french
+# be_german
+
 class LegalController < ApplicationController
   before_filter :load_vars
 
