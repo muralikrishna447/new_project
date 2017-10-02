@@ -1,6 +1,34 @@
 class LegalController < ApplicationController
   before_filter :load_vars
 
+  # Cookie Policy: Specific by language only
+  # Warranty: Specific by country + language combination
+  # Privacy Policy: Specific by country + language combination
+  # EULA: Specific by country + language combination
+  # Terms: Terms specific by language only.  Addendums specific by country + language combination
+
+  # Filename Belgium Example:
+  # Terms_Dutch
+  # Terms_French
+  # Terms_Addendum_BE_Dutch
+  # Terms_Addendum_BE_French
+  # EULA_iOS_Dutch
+  # EULA_Android_Dutch
+  # EULA_iOS_French
+  # EULA_Android_French
+  # EULA_iOS_Addendum_BE_Dutch
+  # EULA_Android_Addendum_BE_Dutch
+  # EULA_iOS_Addendum_BE_French
+  # EULA_Android_Addendum_BE_French
+  # Privacy_Dutch
+  # Privacy_French
+  # Warranty_Dutch
+  # Warranty_French
+  # Cookie_Dutch
+  # Cookie_French
+  # Cookie_Banner_Dutch
+  # Cookie_Banner_French
+
   def terms
     @terms_template = "legal/terms/#{@selected_language.downcase}"
     @addendums_template = "legal/terms/addendums/#{@country[:code].downcase}_#{@selected_language.downcase}"
