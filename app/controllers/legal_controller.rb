@@ -6,6 +6,10 @@ class LegalController < ApplicationController
     @addendums_template = "legal/terms/addendums/#{@country[:code].downcase}_#{@selected_language.downcase}"
   end
 
+  def warranty
+    @warranty_template = "legal/terms/addendums/#{@country[:code].downcase}_#{@selected_language.downcase}"
+  end
+
   private
   def load_vars
     @eula_terms_url = terms_url
