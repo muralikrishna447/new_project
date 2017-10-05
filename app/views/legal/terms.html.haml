@@ -10,7 +10,7 @@
           = select_tag :lang, options_for_select(@languages, @selected_language), {:onchange => "window.location.href='/terms?language=' + this.value"}
 
     %p.clearfix
-    %h1 Terms
+
     = render @terms_template
-    %h1 Addendums
+
     = render @addendums_template

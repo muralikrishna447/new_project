@@ -10,5 +10,5 @@
           = select_tag :lang, options_for_select(@languages, @selected_language), {:onchange => "window.location.href='/terms?language=' + this.value"}
 
     %p.clearfix
-    %h1 Cookie Policy
+
     = render @cookie_policy_template

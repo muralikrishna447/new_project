@@ -10,5 +10,4 @@
           = select_tag :lang, options_for_select(@languages, @selected_language), {:onchange => "window.location.href='/warranty?language=' + this.value"}
 
     %p.clearfix
-    %h1 Privacy Policy
     = render @privacy_policy_template
