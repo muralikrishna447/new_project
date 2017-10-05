@@ -1,7 +1,7 @@
 .container#legal
   #terms
     %div
-      %h2.pull-left EULA ANDROID
+      %h2.pull-left
 
       -# - languages = @country[:languages].map { |e| [e]  }
       -# - selected_language = @language ? @language : languages[0][0]
@@ -10,7 +10,5 @@
           = select_tag :lang, options_for_select(@languages, @selected_language), {:onchange => "window.location.href='/terms?language=' + this.value"}
 
     %p.clearfix
-    %h1 EULA ANDROID
     = render @eula_template
-    %h1 Addendums
     = render @addendums_template
