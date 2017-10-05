@@ -35,7 +35,7 @@ class LegalController < ApplicationController
   end
 
   def warranty
-    @warranty_template = "legal/terms/addendums/#{@country[:code].downcase}_#{@selected_language.downcase}"
+    @warranty_template = "legal/warranty/#{@country[:code].downcase}_#{@selected_language.downcase}"
   end
 
   def privacy_policy
@@ -43,7 +43,7 @@ class LegalController < ApplicationController
   end
 
   def cookie_policy
-    @cookie_policy_template = "legal/privacy_policy/#{@selected_language.downcase}"
+    @cookie_policy_template = "legal/cookie_policy/#{@selected_language.downcase}"
   end
 
   def eula_android
