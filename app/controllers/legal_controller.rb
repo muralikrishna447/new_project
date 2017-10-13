@@ -71,7 +71,7 @@ class LegalController < ApplicationController
       {
         code: "BE",
         name: "Belgium",
-        languages: ["Dutch", "French", "German"]
+        languages: ["Dutch", "French"]
       },
       {
         code: "DK",
