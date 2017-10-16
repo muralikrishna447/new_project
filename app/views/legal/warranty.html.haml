@@ -7,7 +7,7 @@
       -# - selected_language = @language ? @language : languages[0][0]
       - if @languages.length > 1
         .pull-right
-          = select_tag :lang, options_for_select(@languages, @selected_language), {:onchange => "window.location.href='/warranty?language=' + this.value"}
+          = select_tag :lang, options_for_select(@languages, @selected_language), {:onchange => "window.location.href='/joule/warranty?language=' + this.value"}
 
     %p.clearfix
 
