@@ -46,14 +46,9 @@ class LegalController < ApplicationController
     @cookie_policy_template = "legal/cookie_policy/#{@selected_language.downcase}"
   end
 
-  def eula_android
-    @eula_template = "legal/eula_android/#{@selected_language.downcase}"
-    @addendums_template = "legal/eula_android/addendums/#{@country[:code].downcase}_#{@selected_language.downcase}"
-  end
-
-  def eula_ios
-    @eula_template = "legal/eula_ios/#{@selected_language.downcase}"
-    @addendums_template = "legal/eula_ios/addendums/#{@country[:code].downcase}_#{@selected_language.downcase}"
+  def eula
+    @eula_template = "legal/eula/#{@selected_language.downcase}"
+    @addendums_template = "legal/eula/addendums/#{@country[:code].downcase}_#{@selected_language.downcase}"
   end
 
   private
@@ -76,7 +71,7 @@ class LegalController < ApplicationController
       {
         code: "BE",
         name: "Belgium",
-        languages: ["Dutch", "French", "German"]
+        languages: ["Dutch", "French"]
       },
       {
         code: "DK",
