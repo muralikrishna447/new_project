@@ -12,15 +12,55 @@
 
     .cs-nav-right
 
+      //#intl-icon.intl-icon.cs-nav-icon-item.hide-mobile
+      //  .intlFlag(ng-click="dropdown.toggle()")
+      //    %div.flag-icon(ng-class="dropdown.flagIconClass(dropdown.currentCountry.code)")
+      //    .intl-label
+      //      {{dropdown.currentCountry.currency}}
+      //      %span.icon-spanner-down
+      //  #intl-dropdown-menu.dropdown-menu(ng-show='dropdown.showDropdown')
+      //    .dropdown-wrapper
+      //      .dropdown-menu-item(ng-repeat='country in dropdown.internationalData.countries' ng-if="country.code === 'US' || country.code === 'CA'" ng-click='dropdown.selectCountry(country)')
+      //        %div(ng-attr-id="{{country.code}}")
+      //          %span.flag-icon(ng-class="dropdown.flagIconClass(country.code)")>
+      //          {{country.name}}
+      //      .divider
+      //      .dropdown-menu-item(ng-repeat='country in dropdown.internationalData.countries' ng-if="!(country.code === 'US' || country.code === 'CA')"  ng-click='dropdown.selectCountry(country)')
+      //        %div(ng-attr-id="{{country.code}}")
+      //          %span.flag-icon(ng-class="dropdown.flagIconClass(country.code)")>
+      //          {{country.name}}
+
+      //#intl-icon-mobile.intl-icon.hide-desktop.cs-nav-icon-item
+      //  .intlFlag(ng-click="dropdown.toggle()")
+      //    %div.flag-icon(ng-class="dropdown.flagIconClass(dropdown.currentCountry.code)")
+      //    .intl-label
+      //      {{dropdown.currentCountry.currency}}
+      //      %span.icon-spanner-down
+      //  #intl-dropdown-menu-mobile.dropdown-menu-mobile.ng-hide(ng-show='dropdown.showDropdown')
+      //    .dropdown-wrapper-mobile
+      //      .dropdown-menu-item(ng-repeat='country in dropdown.internationalData.countries' ng-if="country.code === 'US' || country.code === 'CA'" ng-click='dropdown.selectCountry(country)')
+      //        %div(ng-attr-id="{{country.code}}")
+      //          %span.flag-icon(ng-class="dropdown.flagIconClass(country.code)")>
+      //          {{country.name}}
+      //      .divider
+      //      .dropdown-menu-item(ng-repeat='country in dropdown.internationalData.countries' ng-if="!(country.code === 'US' || country.code === 'CA')"  ng-click='dropdown.selectCountry(country)')
+      //        %div(ng-attr-id="{{country.code}}")
+      //          %span.flag-icon(ng-class="dropdown.flagIconClass(country.code)")>
+      //          {{country.name}}
+
       %a.cs-nav-item.hide-mobile(href='/gallery')
-        %i.fa.fa-search
+        %span.icon-search
+
+      #cart-icon.cs-nav-icon-item.hide-mobile
+        %a{:href => "https://store.chefsteps.com/cart"}
+          %span.icon-cart
 
       - if current_user
-        .dropdown.dropdown-right.cs-nav-item.hide-mobile(ng-controller='csDropdownController as dropdown')
-          .dropdown-toggle(ng-click='dropdown.toggle($event)')
+        .dropdown.dropdown-right.cs-nav-icon-item.hide-mobile(ng-controller='csDropdownController as dropdown')
+          #profile-dropdown-toggle.dropdown-toggle.profile-image(ng-click='dropdown.toggle($event)')
             - if current_user.image_id.blank?
-              .profile-button
-                Profile
+              //.profile-button
+              %span.icon-profile
             - else
               .cs-nav-profile
                 .profile-image

@@ -369,6 +369,7 @@ module Api
         logger.info "Searching for capabilities for ActorAddress #{aa.id}"
         capability_list = [
           'predictive',
+          'usage_data',
         ]
         cache_key = "aa-capabilities-#{aa.id}"
         return Rails.cache.fetch(cache_key, expires_in: 5.minutes) do

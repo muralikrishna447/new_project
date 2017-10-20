@@ -22,7 +22,7 @@ Delve::Application.routes.draw do
   get '/robots.txt' => RobotsTxt
 
   match '/libraries', to: 'legal#libraries'
-  match '/joule/warranty', to: 'home#joule_warranty'
+  # match '/joule/warranty', to: 'home#joule_warranty'
   match '/facebook_optout', to: 'home#facebook_optout'
 
   match '/forum', to: 'bloom#forum'
@@ -41,12 +41,13 @@ Delve::Application.routes.draw do
   get '/Joule', to: redirect('/joule')
 
   # Legal Documents
-  get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
-  get 'eula-android' => 'legal#eula_android', as: 'eula_android'
+  get 'eula' => 'legal#eula', as: 'eula'
+  get 'cookie-policy' => 'legal#cookie_policy', as: 'cookie_policy'
   get 'privacy' => 'legal#privacy_policy', as: 'privacy'
   get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
   get 'terms' => 'legal#terms', as: 'terms'
   get 'terms' => 'legal#terms', as: 'terms_of_service'
+  match '/joule/warranty', to: 'legal#warranty'
 
   ActiveAdmin.routes(self)
 
