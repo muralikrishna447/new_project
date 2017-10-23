@@ -7,7 +7,7 @@
 %a.cs-nav-item(href='/gallery')
   %span.hide-desktop Search
   Recipes
-
+  
 %a.cs-nav-item(href='/premium')
   Premium
 
@@ -47,11 +47,11 @@
     Profile
 
 - if current_user
-  %a.cs-nav-item.hide-desktop(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/cart")
+  %a.cs-nav-item.hide-desktop(ng-href="https://store.chefsteps.com/cart")
     Cart
 
 - if current_user
-  %a.cs-nav-item.hide-desktop(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/account")
+  %a.cs-nav-item.hide-desktop(ng-href="https://store.chefsteps.com/account")
     Order History
 
 %a.cs-nav-item.hide-desktop(ng-href="/logout" ng-if='authentication.currentUser()')
