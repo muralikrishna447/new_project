@@ -1,0 +1,14 @@
+.container#legal
+  #terms
+    %div
+      %h2.pull-left Cookie Policy
+
+      -# - languages = @country[:languages].map { |e| [e]  }
+      -# - selected_language = @language ? @language : languages[0][0]
+      - if @languages.length > 1
+        .pull-right
+          = select_tag :lang, options_for_select(@languages, @selected_language), {:onchange => "window.location.href='/cookie-policy?language=' + this.value"}
+
+    %p.clearfix
+
+    = render @cookie_policy_template
