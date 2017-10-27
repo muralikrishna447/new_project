@@ -56,7 +56,6 @@ class LegalController < ApplicationController
     @eula_terms_url = terms_url
     @eula_privacy_url = privacy_url
     @location = JSON.parse(cookies['cs_geo'])
-    puts "LOCATION HERE: #{@location}"
     @countries = [
       {
         code: "US",
@@ -135,6 +134,9 @@ class LegalController < ApplicationController
       }
     ]
     @country = @countries.find { |c| c[:code] == @location['country'] }
+    if @country.blank?
+      @country = @countries.find { |c| c[:code] == 'US' }
+    end
     @language = params[:language]
     @languages = @country[:languages].map { |e| [e]  }
     @selected_language = @language ? @language : @languages[0][0]
