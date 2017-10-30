@@ -1,5 +1,0 @@
-development: localhost:6379
-test: localhost:6379
-staging: redis://redistogo:0f6e1b1c43030e30200fd4372eaa617f@barreleye.redistogo.com:10434
-staging2: redis://redistogo:0eda7838ed8de6ded1125f3d050cf6f9@barreleye.redistogo.com:10621
-production: redis://redistogo:db5812f365393a0baf573eaa726f5bb9@barreleye.redistogo.com:10416

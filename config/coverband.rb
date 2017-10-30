@@ -9,7 +9,7 @@ if coverband_enabled
   Coverband.configure do |config|
     config.root              = Dir.pwd
     if defined? Redis
-      config.redis           = Redis.new(url: ENV["REDISTOGO_URL"])
+      config.redis           = Redis.new(url: ENV["REDIS_URL"])
     end
     config.coverage_baseline = baseline
     config.root_paths        = ['/app/'] # /app/ is needed for heroku deployments
