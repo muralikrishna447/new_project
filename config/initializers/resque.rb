@@ -23,8 +23,7 @@ if rails_env == 'test'
   Resque = MockResque
 end
 
-resque_config = YAML.load_file(rails_root + '/config/resque.yml')
-Resque.redis = resque_config[rails_env]
+Resque.redis = ENV['REDIS_URL']
 
 # Configure the Coverband Middleware
 require 'coverband'
