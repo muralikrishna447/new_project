@@ -41,6 +41,8 @@ Delve::Application.routes.draw do
   get '/Joule', to: redirect('/joule')
 
   # Legal Documents
+  get '/eula-ios' => 'legal#eula'
+  get '/eula-android' => 'legal#eula'
   get 'eula' => 'legal#eula', as: 'eula'
   get 'cookie-policy' => 'legal#cookie_policy', as: 'cookie_policy'
   get 'privacy' => 'legal#privacy_policy', as: 'privacy'
