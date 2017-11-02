@@ -9,10 +9,6 @@ module CsSpree
     CONFIG['front_end_live']
   end
 
-  def self.back_end_live?
-    CONFIG['back_end_live']
-  end
-
   def self.hostname
     CONFIG['hostname']
   end
