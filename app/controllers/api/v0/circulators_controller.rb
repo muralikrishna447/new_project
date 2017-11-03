@@ -416,7 +416,8 @@ module Api
 
         # Set notified right away, to avoid duplicate notifications.
         # We still have a small race condition, which could be
-        # eliminated by using the check-and-set method
+        # eliminated by using the check-and-set method, although the
+        # semantics of that method are a bit weird
         # http://www.rubydoc.info/github/mperham/dalli/Dalli/Client#cas-instance_method
         cache_key = notification_cache_key(circulator, idempotency_key)
         if Rails.cache.exist?(cache_key)
