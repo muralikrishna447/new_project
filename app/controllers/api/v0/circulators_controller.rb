@@ -115,7 +115,7 @@ module Api
           return render_api_response 404, {message: "Circulator not found"}
         end
 
-        if notified?(circulator, params[:idempotency_key])
+        if check_and_set_notified(circulator, params[:idempotency_key])
           return render_api_response 200, { message: 'A notification has already '\
                                                      'been sent for circulator with '\
                                                      "id #{circulator.id} and idempotency "\
@@ -208,7 +208,7 @@ module Api
           return render_api_response 400, {message: "You must pass the idempotency_key parameter."}
         end
 
-        if notified?(@circulator, params[:idempotency_key], true)
+        if check_and_set_notified(@circulator, params[:idempotency_key], true)
           return render_api_response 200, { message: 'A notification has already '\
                                                      'been sent for circulator with '\
                                                      "id #{@circulator.id} and idempotency "\
@@ -406,7 +406,7 @@ module Api
         )
       end
 
-      def notified?(circulator, idempotency_key, enforce_idempotency_key=false)
+      def check_and_set_notified(circulator, idempotency_key, enforce_idempotency_key=false)
         unless enforce_idempotency_key
           if idempotency_key.blank?
             logger.info "No idempotency_key was specified, will send notification for circulator with id #{circulator.id}"
@@ -414,11 +414,17 @@ module Api
           end
         end
 
+        # Set notified right away, to avoid duplicate notifications.
+        # We still have a small race condition, which could be
+        # eliminated by using the check-and-set method, although the
+        # semantics of that method are a bit weird
+        # http://www.rubydoc.info/github/mperham/dalli/Dalli/Client#cas-instance_method
         cache_key = notification_cache_key(circulator, idempotency_key)
         if Rails.cache.exist?(cache_key)
           logger.info "Notification cache entry for #{cache_key} found, notification already sent for circulator with id #{circulator.id}"
           return true
         end
+        set_notified(circulator, params[:idempotency_key])
 
         logger.info "No notification cache entry for #{cache_key}, will send notification for circulator with id #{circulator.id}"
         false
@@ -439,8 +445,6 @@ module Api
             publish_notification(owner.user, circulator, token, push_notification, is_admin_message)
           end
         end
-
-        set_notified(circulator, idempotency_key)
       end
 
       def set_notified(circulator, idempotency_key)
