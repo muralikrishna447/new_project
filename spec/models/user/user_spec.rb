@@ -501,4 +501,14 @@ describe User do
       expect(user_to_merge.active_for_authentication?).to be_false
     end
   end
+
+  context "destroy" do
+    let(:user) { Fabricate(:user) }
+
+    it "should not destroy a user" do
+      user.destroy
+      user.reload
+      user.deleted_at.should_not be_blank
+    end
+  end
 end

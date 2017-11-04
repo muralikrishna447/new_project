@@ -37,4 +37,16 @@ describe Users::RegistrationsController do
       expect(response.status).to eq 401
     end
   end
+
+  describe "#destroy" do
+    before do
+      @user = Fabricate(:user)
+      sign_in(@user)
+    end
+
+    it "should redirect a user back to the edit page" do
+      delete :delete
+      response.should redirect_to registrations_edit_path(@user)
+    end
+  end
 end
