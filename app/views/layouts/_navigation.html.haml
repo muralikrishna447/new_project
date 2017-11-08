@@ -52,7 +52,7 @@
         %span.icon-search
 
       #cart-icon.cs-nav-item.cs-nav-icon-item.hide-mobile
-        %a{:href => "https://store.chefsteps.com/cart"}
+        %a{:href => "#{ Rails.application.config.shared_config[:spree_endpoint] }/cart"}
           %span.icon-cart
 
       - if current_user
@@ -71,10 +71,10 @@
                 %a(ng-href="/profiles/{{authentication.currentUser().slug}}")Profile
 
               .dropdown-menu-item
-                %a(ng-href="https://store.chefsteps.com/cart")Cart
+                %a(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/cart")Cart
 
               .dropdown-menu-item
-                %a(ng-href="https://store.chefsteps.com/account")Order History
+                %a(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/account")Order History
 
               .dropdown-menu-item
                 %a(ng-href="/profiles/{{authentication.currentUser().slug}}/edit")Settings
