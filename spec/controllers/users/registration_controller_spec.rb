@@ -40,13 +40,14 @@ describe Users::RegistrationsController do
 
   describe "#destroy" do
     before do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
       @user = Fabricate(:user)
       sign_in(@user)
     end
 
     it "should redirect a user back to the edit page" do
-      delete :delete
-      response.should redirect_to registrations_edit_path(@user)
+      delete :destroy
+      response.should redirect_to root_url
     end
   end
 end

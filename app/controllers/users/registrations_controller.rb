@@ -53,7 +53,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def destroy
     unless request.xhr?
-      render :edit
+      redirect_to root_url, notice: "Not allowed"
     else
       render status: 401, json: {success: false, info: "Not allowed"}
     end
