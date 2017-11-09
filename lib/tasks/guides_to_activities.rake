@@ -23,9 +23,9 @@ namespace :activities do
         else
           Rails.logger.info "No output guide"
         end
-      rescue Exception => e
-        logger.error "Error converting guide #{guide['title']} : #{e.class} #{e}"
-        logger.error e.backtrace.join("\n")
+      rescue StandardError => e
+        Rails.logger.error "Error converting guide #{guide['title']} : #{e.class} #{e}"
+        Rails.logger.error e.backtrace.join("\n")
       end
 
     end
