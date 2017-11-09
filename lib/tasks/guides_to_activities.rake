@@ -15,16 +15,20 @@ namespace :activities do
 
       Rails.logger.info  "Considering #{guide['title']}"
 
-      ga = GuideActivity::create_or_update_from_guide(manifest, guide, args[:force])
-      if ga
-        activity = Activity.find(ga.activity_id)
-        Rails.logger.info  "Output /activities/#{activity.slug}"
-
-      else
-        Rails.logger.info "No output guide"
+      begin
+        ga = GuideActivity::create_or_update_from_guide(manifest, guide, args[:force])
+        if ga
+          activity = Activity.find(ga.activity_id)
+          Rails.logger.info  "Output /activities/#{activity.slug}"
+        else
+          Rails.logger.info "No output guide"
+        end
+      rescue StandardError => e
+        Rails.logger.error "Error converting guide #{guide['title']} : #{e.class} #{e}"
+        Rails.logger.error e.backtrace.join("\n")
       end
 
     end
-    Rails.cache.clear
+
   end
 end
