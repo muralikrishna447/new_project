@@ -25,6 +25,6 @@ namespace :activities do
       end
 
     end
-    Rails.cache.clear
+
   end
 end
