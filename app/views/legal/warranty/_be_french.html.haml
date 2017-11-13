@@ -70,10 +70,14 @@
   %p 1000 Bruxelles
   %p Tel : 02 702 52 00
   %p Fax : 02 808 71 20
-  %p E-mail : contact@consumentenombudsdienst.be / contact@mediationconsommateur.be
-  %p Site Web: www.consumentenombudsdienst.be/nl / http://www.mediationconsommateur.be/fr
+  %p
+    E-mail : contact@consumentenombudsdienst.be /
+    %a{:href => "mailto:contact@mediationconsommateur.be"} contact@mediationconsommateur.be
+  %p
+    Website: www.consumentenombudsdienst.be/nl /
+    %a{:href => "http://www.mediationconsommateur.be/fr"} http://www.mediationconsommateur.be/fr
   %p
     Sur les sites mentionnés ci-dessus, vous trouverez toutes les informations pertinentes concernant le Service de Médiation et le fonctionnement de la procédure extrajudiciaire de règlement des litiges. La Commission européenne met également à la disposition
     des consommateurs de l'UE une plateforme de règlement des litiges en ligne, accessible à l'adresse suivante:
-    = succeed "." do
-      %a{:href => "http://ec.europa.eu/odr"} http://ec.europa.eu/odr
+    %a{:href => "http://ec.europa.eu/odr"} http://ec.europa.eu/odr
+    /.
