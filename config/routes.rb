@@ -290,7 +290,7 @@ Delve::Application.routes.draw do
       get 'content_config/manifest', to: 'content#manifest'
 
       namespace :shopping do
-        
+
         resources :countries, only: [:index]
         resources :discounts, only: [:show]
         resources :customer_orders, only: [:show] do
@@ -336,6 +336,8 @@ Delve::Application.routes.draw do
       resources :cook_history do
         get :find_by_guide, on: :collection
       end
+
+      resources :flags, only: [:index]
     end
   end
 
