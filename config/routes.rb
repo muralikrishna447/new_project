@@ -337,6 +337,8 @@ Delve::Application.routes.draw do
       resources :cook_history do
         get :find_by_guide, on: :collection
       end
+
+      resources :flags, only: [:index]
     end
   end
 
