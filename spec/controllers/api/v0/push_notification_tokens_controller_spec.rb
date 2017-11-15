@@ -59,6 +59,13 @@ describe Api::V0::PushNotificationTokensController do
       response.should be_success
     end
 
+    it 'Registers a token for beta app' do
+      post :create, {:app_name => 'joule-beta',
+        :platform => 'ios',
+        :device_token => 'mehmehmehmeh'}
+      response.should be_success
+    end
+
     it 'Handles duplicate registraction' do
       post :create, {:app_name => 'joule',
         :platform => 'ios',
