@@ -84,6 +84,19 @@ class UsersController < ApplicationController
     @preauth_cookie = cookies[:cs_preauth]
   end
 
+  def preauth_init
+    if ENV['PREAUTH_BYPASS_TOKEN'].nil?
+      render status: 401
+    end
+
+    logger.info "Setting preauth cookie to ENV['PREAUTH_BYPASS_TOKEN']"
+    cookies.permanent[:cs_preauth] = {
+      :value => ENV['PREAUTH_BYPASS_TOKEN'],
+      :domain => :all
+    }
+    redirect_to '/'
+  end
+
   def set_location
     @ip_address = (cookies[:cs_location] || request.ip)
     @country = JSON.parse(cookies[:cs_geo])['country']
