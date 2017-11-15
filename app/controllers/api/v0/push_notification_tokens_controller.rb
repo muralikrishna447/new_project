@@ -27,10 +27,10 @@ module Api
         if token.errors.size > 0
           logger.warn "Errors: [#{token.errors.inspect}]"
           return render_api_response 400, {message: "Validation failed"}
-        end      
+        end
         return render_api_response 200, {}
       end
-    
+
       def destroy
         # Deleting tokens is supported without auth because simple posssessing
         # the token is sufficient.  Both the token provided and any token
@@ -50,10 +50,10 @@ module Api
           delete_token(token)
         end
         return render_api_response 200, {}
-      end  
+      end
 
       private
-      
+
       def create_token(params, arn)
         token_params = {
           app_name: params[:app_name],
@@ -64,7 +64,7 @@ module Api
 
         PushNotificationToken.create(token_params)
       end
-      
+
       def find_and_clean_existing(device_token)
         # Aggressively deletes any possibly conflicting tokens
         existing = PushNotificationToken.where(:device_token => device_token).first
@@ -82,7 +82,7 @@ module Api
 
         return false
       end
-      
+
       def delete_token(token)
         logger.info "Deleting token [#{token.inspect}]"
         # Delete token in DB first since orphan endpoints do not cause problems
@@ -100,7 +100,7 @@ module Api
           token: token,
           custom_user_data: custom_user_data)
       end
-      
+
       def delete_platform_endpoint(endpoint_arn)
         logger.info "Deleting endpoing with arn [#{endpoint_arn}]"
         sns = Aws::SNS::Client.new(region: 'us-east-1')
