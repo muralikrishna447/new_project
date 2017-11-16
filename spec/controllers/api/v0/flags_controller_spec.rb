@@ -5,6 +5,11 @@ describe Api::V0::FlagsController do
       \"bannerText\": \"Use the code BLACKFRIDAY for \$30 off Joule through 11/27 [LINK]\",
       \"bannerLink\": \"https://www.chefsteps.com/joule\",
       \"bannerLinkText\": \"THIS LINK\"
+    },
+    \"CA\": {
+      \"bannerText\": \"Use the code BLACKFRIDAY for \$30 off Joule through 11/27 [LINK]\",
+      \"bannerLink\": \"https://www.chefsteps.com/joule\",
+      \"bannerLinkText\": \"THIS LINK\"
     }
   }"
 
