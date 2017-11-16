@@ -438,7 +438,7 @@ module Api
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
             next if aa.revoked?
-            token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
+            token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => ['joule', 'joule-beta']).first
             next if token.nil?
             logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
                         " of type #{push_notification.notification_type} token_id=#{token.id} ARN=#{token.endpoint_arn}"
