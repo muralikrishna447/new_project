@@ -86,7 +86,7 @@ class UsersController < ApplicationController
 
   def preauth_init
     if ENV['PREAUTH_BYPASS_TOKEN'].nil?
-      render status: 401
+      return render text: 'Unauthorized', status: 401
     end
 
     logger.info "Setting preauth cookie to ENV['PREAUTH_BYPASS_TOKEN']"
@@ -94,7 +94,9 @@ class UsersController < ApplicationController
       :value => ENV['PREAUTH_BYPASS_TOKEN'],
       :domain => :all
     }
-    redirect_to '/'
+    redirect_location = params['redirect_to'] || '/'
+    logger.info "Redirecting to #{redirect_location}"
+    redirect_to redirect_location
   end
 
   def set_location
