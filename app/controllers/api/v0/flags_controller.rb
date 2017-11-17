@@ -7,7 +7,7 @@ module Api
         begin
           flags = JSON.parse(ENV["CS_FLAGS"])
         rescue Exception => e
-          puts "ERROR PARSING FLAGS: #{e}"
+          Rails.logger.error "ERROR PARSING FLAGS: #{e}"
         end
 
         render_api_response 200, { flags: flags }
