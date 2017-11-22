@@ -82,6 +82,7 @@ Delve::Application.routes.draw do
 
   get 'users/session_me' => 'users#session_me'
   get 'users/preauth' => 'users#preauth'
+  get 'users/preauth_init' => 'users#preauth_init'
   get 'users/verify' => 'tokens#verify', as: 'verify'
   match 'users/set_location' => 'users#set_location'
 
@@ -290,7 +291,7 @@ Delve::Application.routes.draw do
       get 'content_config/manifest', to: 'content#manifest'
 
       namespace :shopping do
-        
+
         resources :countries, only: [:index]
         resources :discounts, only: [:show]
         resources :customer_orders, only: [:show] do
@@ -336,6 +337,8 @@ Delve::Application.routes.draw do
       resources :cook_history do
         get :find_by_guide, on: :collection
       end
+
+      resources :flags, only: [:index]
     end
   end
 

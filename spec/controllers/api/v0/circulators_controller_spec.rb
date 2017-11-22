@@ -9,6 +9,7 @@ describe Api::V0::CirculatorsController do
     @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
 
     @user_aa = ActorAddress.create_for_user(@user, client_metadata: "create")
+    @second_user_aa = ActorAddress.create_for_user(@user, client_metadata: "create")
     token = @user_aa.current_token
     request.env['HTTP_AUTHORIZATION'] = token.to_jwt
   end
@@ -510,6 +511,24 @@ describe Api::V0::CirculatorsController do
           expect(@published_messages.length).to eq 1
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
+        end
+
+        it 'should notify both joule-beta and joule apps' do
+          p = PushNotificationToken.new
+          p.actor_address = @second_user_aa
+          p.endpoint_arn = "beta-endpoint-arn"
+          p.app_name ='joule-beta'
+          p.device_token = 'beta-device-token'
+          p.save!
+
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: notification_type
+          )
+          arns = @published_messages.map {|m| m[:arn]}
+          expect(arns.length).to eq 2
+          expect(arns).to include('beta-endpoint-arn')
         end
 
         it 'should notify clients with emoji Joule name' do
