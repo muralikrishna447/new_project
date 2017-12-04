@@ -51,6 +51,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def destroy
+    unless request.xhr?
+      redirect_to root_url, notice: "Not allowed"
+    else
+      render status: 401, json: {success: false, info: "Not allowed"}
+    end
+  end
+
   def complete_registration
     @user = User.new
   end

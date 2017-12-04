@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   has_many :owned_circulators, source: :circulator, through: :circulator_users, conditions: ["circulator_users.owner = ?", true]
 
   has_many :actor_addresses, as: :actor
-  
+
   has_many :joule_cook_history_items
 
   has_many :tf2_redemptions
@@ -283,6 +283,18 @@ class User < ActiveRecord::Base
   def undelete
     logger.info "Setting User #{id} as undeleted at #{Time.current}"
     update_attribute(:deleted_at, nil)
+  end
+
+  # Overwriting destroy/delete methods to have them perform the soft delete.
+  # This should make actually deleting a user impossible.
+  def destroy
+    logger.warn "Something called destroy on User #{id} at #{Time.current}.  Soft Deleting instead."
+    soft_delete
+  end
+
+  def delete
+    logger.warn "Something called delete on User #{id} at #{Time.current}.  Soft Deleting instead."
+    soft_delete
   end
 
   # ensure user account is active
