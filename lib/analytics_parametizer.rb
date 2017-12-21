@@ -51,7 +51,9 @@ class AnalyticsParametizer
         return false
       else
         # if the referrer is not one of our properties then reset is a good idea
-        return !is_our_property?(referrer)
+        is_ours = is_our_property?(referrer)
+        Rails.logger.info "[AnalyticsParametizer] referrer:#{referrer} is_ours:#{is_ours}"
+        return !is_ours
       end
     end
   end
