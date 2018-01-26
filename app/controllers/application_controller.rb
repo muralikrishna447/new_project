@@ -22,7 +22,8 @@ class ApplicationController < BaseApplicationController
     cookie_value = AnalyticsParametizer.cookie_value(params, cookies, referrer)
     cookies[:utm] = {
       :value => cookie_value,
-      :domain => Rails.configuration.cookie_domain
+      :domain => Rails.configuration.cookie_domain,
+      :path => '/'
     }
   end
 
