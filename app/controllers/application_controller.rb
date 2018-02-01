@@ -180,7 +180,8 @@ private
       Gibbon::API.lists.update_member(
         id: Rails.configuration.mailchimp[:list_id],
         email: { email: email },
-        merge_vars: merge_vars
+        merge_vars: merge_vars,
+        replace_interests: false
       )
     rescue Exception => e
       puts "Error adding user: #{email}"
