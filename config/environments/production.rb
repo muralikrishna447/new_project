@@ -103,7 +103,7 @@ Delve::Application.configure do
     :premium_group_id => '8065',
     :joule_group_id => '8069',
     :email_preferences_group_id => '8085',
-    :email_preferences_group_default => ["Recipes & Videos", "Announcements & Product Launches", "Curated Offers", "Research & Usability Surveys"]
+    :email_preferences_group_default => ["Recipes & Videos", "Announcements & Product Launches", "Curated Offers"]
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
   config.middleware.insert_before('Rack::Prerender', 'PreauthEnforcer', [/.*/], [/^\/playground/,/^\/users\/set_location/])
