@@ -74,6 +74,11 @@ module Api
         if existing
           logger.info "Found existing token for actor_address #{@actor_address_from_token.id}"
           if existing.actor_address_id == @actor_address_from_token.id
+            # NOTE: Occasionally a token can get temporarily disabled,
+            # even though it is still valid.  The SNS endpoint will remain
+            # unusable until it is explicitly re-enabled.
+            #
+            # See: https://docs.aws.amazon.com/sns/latest/dg/mobile-platform-endpoint.html
             ensure_platform_endpoint_is_enabled(existing.endpoint_arn)
             return true
           end
@@ -107,7 +112,6 @@ module Api
           custom_user_data: custom_user_data)
       end
 
-      # NOTE: Occasionally an endpoint
       def ensure_platform_endpoint_is_enabled(endpoint_arn)
         logger.info "Checking if endpoint is enabled [#{endpoint_arn}]"
         sns = Aws::SNS::Client.new(region: 'us-east-1')
