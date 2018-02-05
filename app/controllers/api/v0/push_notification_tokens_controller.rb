@@ -5,6 +5,9 @@ module Api
       before_filter :ensure_authorized_or_anonymous, only: [:destroy]
 
       def create
+        token_snippet = params[:device_token][0..10]
+        logger.info "Creating token for user #{@user_id_from_token} #{token_snippet}"
+
         return render_api_response 200, {} if find_and_clean_existing(params[:device_token])
 
         # Orphan SNS endpoints are not a problem so register in SNS first
@@ -69,8 +72,11 @@ module Api
         # Aggressively deletes any possibly conflicting tokens
         existing = PushNotificationToken.where(:device_token => device_token).first
         if existing
-          logger.info "Found existing token #{existing}"
-          return true if existing.actor_address_id == @actor_address_from_token.id
+          logger.info "Found existing token for actor_address #{@actor_address_from_token.id}"
+          if existing.actor_address_id == @actor_address_from_token.id
+            ensure_platform_endpoint_is_enabled(existing.endpoint_arn)
+            return true
+          end
           delete_token(existing)
         end
 
@@ -99,6 +105,20 @@ module Api
           platform_application_arn: platform_application_arn,
           token: token,
           custom_user_data: custom_user_data)
+      end
+
+      # NOTE: Occasionally an endpoint
+      def ensure_platform_endpoint_is_enabled(endpoint_arn)
+        logger.info "Checking if endpoint is enabled [#{endpoint_arn}]"
+        sns = Aws::SNS::Client.new(region: 'us-east-1')
+        attributes = sns.get_endpoint_attributes(endpoint_arn: endpoint_arn).attributes
+        # These are strings... dont' ask me why..
+        if attributes["Enabled"] == "false"
+          logger.info "Endpoint is disabled... reenabling"
+          attributes["Enabled"] = "true"
+          sns.set_endpoint_attributes(endpoint_arn: endpoint_arn, attributes: attributes)
+        end
+        return attributes
       end
 
       def delete_platform_endpoint(endpoint_arn)
