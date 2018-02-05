@@ -114,7 +114,7 @@ module Api
         attributes = sns.get_endpoint_attributes(endpoint_arn: endpoint_arn).attributes
         # These are strings... dont' ask me why..
         if attributes["Enabled"] == "false"
-          logger.info "Endpoint is disabled... reenabling"
+          logger.info "Endpoint #{endpoint_arn} is disabled... reenabling"
           attributes["Enabled"] = "true"
           sns.set_endpoint_attributes(endpoint_arn: endpoint_arn, attributes: attributes)
         end
