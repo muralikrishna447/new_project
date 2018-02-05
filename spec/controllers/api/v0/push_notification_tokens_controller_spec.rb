@@ -49,6 +49,7 @@ describe Api::V0::PushNotificationTokensController do
 
   describe 'create' do
     before :each do
+      mock_sns_enable
       mock_sns_register
     end
 
@@ -128,6 +129,11 @@ describe Api::V0::PushNotificationTokensController do
 
   def mock_sns_deregister
     Api::V0::PushNotificationTokensController.any_instance.stub(:delete_platform_endpoint)
+      .and_return(OpenStruct.new())
+  end
+
+  def mock_sns_enable
+    Api::V0::PushNotificationTokensController.any_instance.stub(:ensure_platform_endpoint_is_enabled)
       .and_return(OpenStruct.new())
   end
 end
