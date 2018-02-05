@@ -5,7 +5,7 @@ module Api
       before_filter :ensure_authorized_or_anonymous, only: [:destroy]
 
       def create
-        logger.info "Creating token for user #{@user_id_from_token} #{params[:device_token]}"
+        logger.info "Creating push notification token for user #{@user_id_from_token} #{params[:device_token]}"
 
         return render_api_response 200, {} if find_and_clean_existing(params[:device_token])
 
