@@ -117,7 +117,7 @@ module Api
         sns = Aws::SNS::Client.new(region: 'us-east-1')
         attributes = sns.get_endpoint_attributes(endpoint_arn: endpoint_arn).attributes
         # These are strings... dont' ask me why..
-        if attributes["Enabled"] == "false"
+        if attributes["Enabled"] != "true"
           logger.info "Endpoint #{endpoint_arn} is disabled... reenabling"
           attributes["Enabled"] = "true"
           sns.set_endpoint_attributes(endpoint_arn: endpoint_arn, attributes: attributes)
