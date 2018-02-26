@@ -1,7 +1,16 @@
 manifest_endpoints:
-  development:
-    default: 'https://api.jouleapp.com/manifests/resources.json?includeSlimGuides=true'
-  staging:
-    default: 'https://d1azuiz827qxpe.cloudfront.net/resources/v2/staging/resources.json'
-  production:
-    default: 'https://d1azuiz827qxpe.cloudfront.net/resources/v2/latest/resources.json'
+  en-US:
+    development:
+      default: 'https://api.jouleapp.com/manifests/resources.json?includeSlimGuides=true&locale=en-GB'
+    staging:
+      default: 'https://d1azuiz827qxpe.cloudfront.net/resources/v2/staging/en-US/resources.json'
+    production:
+      default: 'https://d1azuiz827qxpe.cloudfront.net/resources/v2/production/en-US/resources.json'
+  en-GB:
+    beta_group: 'guides_en_GB'
+    development:
+      default: 'https://api.jouleapp.com/manifests/resources.json?includeSlimGuides=true&locale=en-GB'
+    staging:
+      default: 'https://d1azuiz827qxpe.cloudfront.net/resources/v2/staging/en-GB/resources.json'
+    production:
+      default: 'https://d1azuiz827qxpe.cloudfront.net/resources/v2/production/en-GB/resources.json'
