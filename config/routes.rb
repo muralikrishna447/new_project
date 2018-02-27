@@ -354,5 +354,7 @@ Delve::Application.routes.draw do
   get ':id', to: 'pages#show', constraints: lambda { |r| ! r.url.match(/jasmine/) }
 
   # http://techoctave.com/c7/posts/36-rails-3-0-rescue-from-routing-error-solution
+  match "/joule-vs-anova-sous-vide" => "landing_pages#joule-vs-anova-sous-vide"
+
   match '*a', to: 'errors#routing', constraints: lambda { |r| ! r.url.match(/jasmine/) }
 end
