@@ -1,0 +1,32 @@
+@import 'mixins';
+
+.comparisonTable {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+
+  td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid $dark-gray;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 15px;
+
+    &:nth-child(1){
+      text-align: left;
+      font-weight: 300;
+      color: $dark-gray;
+    }
+  }
+  tr:nth-child(odd) {
+    background: $taupe;
+  }
+  .win {
+    color: $green-bright;
+  }
+  .lose {
+    color: $red;
+  }
+}

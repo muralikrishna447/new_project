@@ -1,0 +1,355 @@
+@import 'mixins';
+
+
+.button {
+  display: inline-block;
+  border: 2px solid $black;
+  color: $black;
+  background-color: transparent;
+  border-radius: 3*$base;
+  box-sizing: border-box;
+  font-size: 18/14*$base;
+  min-height: 3 * $base;
+  line-height: 2*$base;
+  font-weight: bold;
+  font-style: normal;
+  text-align: center;
+  padding: 4px 2*$base 5px;
+  transition-property: background-color, border, color, opacity;
+  transition-duration: 200ms;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  i {
+    line-height: 1;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:hover, &:active, &.active {
+    cursor: pointer;
+    background-color: $black;
+    color: white;
+  }
+  &:disabled, &:disabled:hover {
+    opacity: 0.6!important;
+  }
+}
+
+.button.outline {
+  border: 2px solid $black;
+  background-color: transparent;
+  color: $black;
+  text-decoration: none;
+  &:hover, &:active, &.active {
+    background-color: $black;
+    color: white;
+  }
+
+  &.light {
+    border-color: white;
+    color: white;
+    &:hover, &:active, &.active {
+      background-color: white;
+      color: $black;
+    }
+  }
+
+  &.orange {
+    border-color: $orange;
+    color: $orange;
+    &:hover, &:active, &.active {
+      background-color: $orange;
+      color: white;
+    }
+  }
+
+  &.red {
+    border-color: $red;
+    color: $red;
+    &:hover, &:active, &.active {
+      background-color: $red;
+      color: white;
+    }
+  }
+}
+
+.button.solid {
+  border: 2px solid $black;
+  background-color: $black;
+  color: white;
+  text-decoration: none;
+  &:hover, &:active, &.active {
+	  opacity: 0.8;
+  }
+
+  &.light {
+    border-color: white;
+    background-color: white;
+    color: $black;
+  }
+
+  &.orange {
+    border-color: $orange;
+    background-color: $orange;
+    color: white;
+  }
+
+  &.red {
+    border-color: $red;
+    background-color: $red;
+    color: white;
+  }
+
+  &.text-orange {
+    color: $orange;
+  }
+}
+
+// Button Grouping
+.button-group-inline {
+  display: flex;
+  align-items: center;
+  button, div, span {
+    margin-left: $half-base;
+    margin-right: $half-base;
+  }
+}
+
+// Special Buttons
+.button-underline,
+.button.button-underline {
+  text-decoration: underline;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 3*$base;
+  height: auto;
+  padding: 0;
+  border: none;
+  color: $black;
+  &:hover, &:active, &.active {
+    cursor: pointer;
+    background-color: transparent;
+    color: $black;
+  }
+}
+.theme-light .button.button-underline,
+.theme-gray .button.button-underline {
+  color: $black;
+  &:hover, &:active, &.active {
+    color: $black;
+  }
+}
+.theme-dark .button.button-underline,
+.theme-orange .button.button-underline {
+  color: $white;
+  &:hover, &:active, &.active {
+    color: $white;
+  }
+}
+
+.button.small {
+  min-height: 2.5*$base;
+  line-height: $base;
+  padding: 8px $base 6px;
+}
+
+.button.button-circle {
+  min-width: 3*$base;
+  width: 3*$base;
+  height: 3*$base;
+  border-radius: 1.5*$base;
+  padding-left: 0px;
+  padding-right: 0px;
+  text-align: center;
+}
+
+.button.button-circle-large {
+  min-width: 4.5*$base;
+  width: 4.5*$base;
+  height: 4.5*$base;
+  border-radius: 2.25*$base;
+  padding-left: 0px;
+  padding-right: 0px;
+  transform: scale3d(1,1,1);
+  transition: transform ease 300ms;
+  -webkit-tap-highlight-color: transparent;
+  &:hover, &:active, &.active {
+    transform: scale3d(1.1,1.1,1.1);
+    opacity: 1;
+  }
+  &:focus {
+    outline: 0;
+  }
+}
+
+.button-circle-play {
+  width: 2*$base;
+  height: 2*$base;
+  min-height: none;
+  border-radius: $base;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $black;
+  background-color: $white;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  i {
+    padding-left: 3px;
+    margin: auto;
+  }
+}
+
+.button-circle-play-large {
+  width: 4.5*$base;
+  height: 4.5*$base;
+  border-radius: 3*$base;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $black;
+  background-color: $white;
+  border: none;
+  cursor: pointer;
+  transform: scale3d(1,1,1);
+  transition: transform ease 300ms;
+  -webkit-tap-highlight-color: transparent;
+  i {
+    margin: auto;
+    padding-left: 5px;
+  }
+  .cs-icon-play-dims {
+    width: 25px;
+    height: 25px;
+  }
+  &:hover, &:active, &.active {
+    transform: scale3d(1.1,1.1,1.1);
+  }
+  &:focus {
+    outline: 0;
+  }
+}
+
+.button-circle.button-circle-gray,
+.button.button-circle-facebook,
+.button.button-circle-twitter,
+.button.button-circle-chefsteps {
+  padding:8px;
+  margin: 0 auto;
+  border: 2px solid $gray;
+  background-color: $gray;
+  color: $white;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  &:hover, &:active, &.active {
+    opacity: 0.8;
+  }
+  &.outline {
+    background-color: transparent;
+    border: 2px solid $gray;
+    color: $gray;
+    &:hover, &:active, &.active {
+      border-color: $gray;
+      background-color: $gray;
+      color: $white;
+      opacity: 1;
+    }
+  }
+}
+
+.button.floating-action-button {
+  position: fixed;
+  bottom: 2*$base;
+  right: 2*$base;
+  width: 5*$base;
+  height: 5*$base;
+  padding: 0;
+  border-radius: 2.5*$base;
+  z-index: 400;
+  opacity: 1;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+  transform: scale3d(1,1,1);
+  transition: transform ease 300ms;
+  -webkit-tap-highlight-color: transparent;
+  &:hover, &:active, &.active {
+    transform: scale3d(1.1,1.1,1.1);
+    opacity: 1!important;
+  }
+  &:focus {
+    outline: 0;
+  }
+}
+
+//Special button colors
+.button.button-circle-facebook {background-color: #3b5998; border: #3b5998;
+  &:hover, &:active, &.active {background-color: #3b5998; border-color: #3b5998;}
+  &.outline {color: #3b5998; border-color: #3b5998; background-color: transparent;
+    &:hover, &:active  {background-color:#3b5998; border-color: #3b5998; color: $white;
+    }
+  }
+}
+
+.button.button-circle-twitter {background-color: #1daced; border-color: #1daced;
+  &:hover, &:active, &.active {background-color: #1daced; border-color: #1daced;}
+  &.outline {color: #1daced; border-color: #1daced; background-color: transparent;
+    &:hover, &:active  {background-color:#1daced; border-color: #1daced; color: $white;
+    }
+  }
+}
+
+.button.button-circle-chefsteps {background-color: $orange; border-color: $orange;
+  &:hover, &:active  {background-color: $orange; border-color: $orange;}
+  &.outline {color: $orange; border-color: $orange; background-color: transparent;
+    &:hover, &:active, &.active {background-color:$orange; border-color: $orange; color: $white;
+    }
+  }
+}
+
+.button-circle-container {
+  text-align: center;
+  align-self: center;
+  padding: $half-base;
+  .button-circle-text {
+    font-weight: normal;
+    font-size: 16/14*$base;
+    margin-top: $half-base;
+    color: $gray;
+  }
+}
+
+// Button Groups
+.button-group {
+  display: flex;
+  .button {
+    border-radius: 0px;
+    border-right-width: 0px;
+  }
+  .button:first-of-type {
+    border-radius: 5px 0 0 5px;
+  }
+  .button:last-of-type {
+    border-radius: 0 5px 5px 0;
+    border-right-width: 1px;
+  }
+}
+
+// Button tabs
+.button.button-tab {
+  border-radius: $base $base 0 0;
+  border-bottom: 0;
+  margin-right: 2px;
+}
+
+@media (max-width: 640px){
+  .button {
+    font-size: 16/14*$base;
+  }
+  .button.floating-action-button {
+    bottom: 1.5*$base;
+    right: 1.5*$base;
+  }
+}
