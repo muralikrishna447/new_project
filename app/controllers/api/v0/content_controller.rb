@@ -2,16 +2,15 @@ module Api
   module V0
     class ContentController < BaseController
       before_filter :ensure_authorized_or_anonymous
+      DEFAULT_LOCALE = 'en-US'
 
+      # Unfortunately this method needs to be defined before it is called
       def self.refresh_endpoints(additional_endpoints = nil)
         @@manifest_endpoints = YAML.load_file(Rails.root.join('config', 'content_config.yml'))['manifest_endpoints']
         @@manifest_endpoints.merge!(additional_endpoints) if additional_endpoints
         @@manifest_endpoints
       end
-
       refresh_endpoints
-      DEFAULT_LOCALE = 'en-US'
-
       def manifest
         locale = determine_locale
 
