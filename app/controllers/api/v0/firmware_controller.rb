@@ -17,7 +17,10 @@ module Api
 
       UPDATE_URGENCIES = ['normal', 'critical', 'mandatory']
 
-      HW_VERSION_WHITELIST = ['JL.p5', 'J5']
+      # JL.p5 == J5 These are original US production Joules
+      # J6 These are UL Certified/Canda Joules
+      # J7 These are CE Certified/EU Joules
+      HW_VERSION_WHITELIST = ['JL.p5', 'J5', 'J6', 'J7']
 
       def updates
         # How this currently works
