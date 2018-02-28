@@ -14,10 +14,20 @@
     font-size: 16px;
     padding: 15px;
 
+    @media (max-width: $small-width) {
+      font-size: 12px;
+      line-height: 15px;
+    }
+
     &:nth-child(1){
       text-align: left;
       font-weight: 300;
       color: $dark-gray;
+    }
+    .detail {
+      font-size: 12px;
+      display: block;
+      line-height: 12px;
     }
   }
   tr:nth-child(odd) {
@@ -28,5 +38,95 @@
   }
   .lose {
     color: $red;
+  }
+  .tie {
+    color: $dark-gray;
+  }
+}
+.theme-pale-orange {
+  background-color: $pale-orange;
+}
+#featured-in-comparison {
+  position: relative;
+  @media (min-width: $small-width + 1) {
+    height: 290px;
+  }
+  img {
+    @media (max-width: $small-width) {
+      position: relative;
+      display: block;
+      margin: 0 auto 40px auto;
+      text-align: center;
+
+    }
+
+    @media (min-width: $small-width + 1) {
+      width: 25%;
+      position: absolute;
+
+      &#atk {
+        top: 16px;
+        left: 19%;
+      }
+      &#nyt {
+        top: 154px;
+        left: 19%;
+      }
+      &#cnet {
+        top: 0px;
+        right: 24%;
+        /*@media (max-width: 900px) {*/
+          width: 10%;
+        /*}*/
+      }
+      &#bonappetit {
+        top: 146px;
+        right: 15%;
+      }
+
+    }
+  }
+}
+.getJoule {
+  background: url(https://d3awvtnmmsvyot.cloudfront.net/api/file/TGHuhIjXQquQB4uMtJdv) no-repeat center center fixed;
+  background-size: cover;
+  min-height: 700px;
+}
+.buy-joule-cont {
+  position: absolute;
+  max-width: 320px;
+  width: 100%;
+  top: 15%;
+  padding: 42px 0 0;
+  right: 15%;
+  background: #ff674d;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: center;
+  box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.15);
+
+  .joule-price {
+    background-color: $white;
+    padding: 30px 0;
+  }
+  .buy-joule-title {
+    h2 {
+      font-size: 30px;
+      line-height: 1;
+      text-align: center;
+      color: white;
+    }
+  }
+}
+.joule-cta {
+  text-align: center;
+  h2 {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  a {
+    vertical-align: text-bottom;
+    margin-left: 40px;
+    min-width: 150px;
   }
 }
