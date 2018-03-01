@@ -109,7 +109,8 @@ module Api
           'multi_circ',
           'fbjoule',
           'update_during_pairing',
-          'sqlite'
+          'sqlite',
+          'enable_react_native_alerts'
         ]
         cache_key = "user-capabilities-#{user.id}"
         user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
