@@ -120,6 +120,7 @@
 }
 .joule-cta {
   text-align: center;
+  padding: 0 40px;
   h2 {
     display: inline-block;
     vertical-align: middle;
@@ -128,5 +129,10 @@
     vertical-align: text-bottom;
     margin-left: 40px;
     min-width: 150px;
+  }
+}
+#explanations {
+  img {
+    margin-bottom: 20px;
   }
 }
