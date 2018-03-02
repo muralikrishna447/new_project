@@ -16,7 +16,7 @@ module Api
       }
 
       UPDATE_URGENCIES = ['normal', 'critical', 'mandatory']
-d 
+
       # JL.p5 == J5 These are original US production Joules
       # J6 These are UL Certified/Canda Joules
       # J7 These are CE Certified/EU Joules
