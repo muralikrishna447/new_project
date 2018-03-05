@@ -52,6 +52,8 @@ Delve::Application.routes.draw do
   match '/joule/warranty', to: 'legal#warranty'
   match '/customer-feedback-panel', to: 'home#customer_feedback_panel'
 
+  get '/recipes', to: redirect('/gallery')
+
   ActiveAdmin.routes(self)
 
   # For convenient youtube CTAs
