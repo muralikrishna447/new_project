@@ -22,7 +22,8 @@ class ApplicationController < BaseApplicationController
     cookie_value = AnalyticsParametizer.cookie_value(params, cookies, referrer)
     cookies[:utm] = {
       :value => cookie_value,
-      :domain => Rails.configuration.cookie_domain
+      :domain => Rails.configuration.cookie_domain,
+      :path => '/'
     }
   end
 
@@ -179,7 +180,8 @@ private
       Gibbon::API.lists.update_member(
         id: Rails.configuration.mailchimp[:list_id],
         email: { email: email },
-        merge_vars: merge_vars
+        merge_vars: merge_vars,
+        replace_interests: false
       )
     rescue Exception => e
       puts "Error adding user: #{email}"

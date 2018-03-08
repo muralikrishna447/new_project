@@ -37,17 +37,4 @@
             %span
               |
             = f.submit "Update", class: "btn btn-primary"
-  .row
-    .span6
-      %h3 Cancel My Account
-  .row
-    .span6.horizontal-divider
-  .row
-    .span6
-      .cancel-actions
-        %p Sorry to see you go.
-        = link_to "Go Back", user_profile_path(resource), class: 'uppercase-link'
-        %span
-          |
-        = link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: "uppercase-link brick"
 

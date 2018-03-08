@@ -14,6 +14,7 @@ Rails.configuration.redirect_by_key = {
   'voiceControl' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/231824567-Can-I-use-voice-control-with-Joule-How-do-I-connect-it-to-an-Amazon-Echo-or-Dot-",
   'hardwareTroubleshooting' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/sections/203206487-Hardware-Specs",
   'knownIssues' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/115006043508",
+  'factoryReset' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/222979667-What-is-a-factory-reset-and-how-do-I-perform-one-",
   # if an unrecognized key is provided, we return this fallback url
   # if we use redirect_by_key for anything beyond support, rethink this fallback strategy
   'fallback' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/"
