@@ -1,3 +1,17 @@
+<script>
+  $(function(){
+    console.dir("Loaded... this can take a while in development") // Delete me
+    $(".external").click(function(){
+      ga('send', 'event', {
+        eventCategory: 'Outbound Link',
+        eventAction: 'click',
+        eventLabel: this.href,
+        transport: 'beacon'
+      });
+    })
+  })
+</script>
+
 <div class="component component-standard padded padded-large">
 
   <header>
@@ -240,7 +254,7 @@
       See what the experts have to say.</h2>
     <hr>
     <div id="featured-in-comparison">
-      <a href="https://www.americastestkitchen.com/equipment_reviews/1835-sous-vide-machines-immersion-circulators" target="_blank"><img id="atk" alt="America's test kitchen" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/DR2IChSvSwXQ5INt3kRr "></a>
+      <a class="external" href="https://www.americastestkitchen.com/equipment_reviews/1835-sous-vide-machines-immersion-circulators" target="_blank"><img id="atk" alt="America's test kitchen" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/DR2IChSvSwXQ5INt3kRr "></a>
       <a href="https://www.nytimes.com/2016/11/30/technology/personaltech/two-sous-vide-gadgets-face-off-in-a-kitchen-showdown.html" target="_blank"><img id="nyt" alt="The New York Times" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/7NZ4LMNAQXaW5yPidPVi"></a>
       <a href="https://www.cnet.com/news/smart-home-showdown-anova-precision-cooker-bluetooth-wi-fi-vs-joule/" target="_blank"><img id="cnet" alt="cnet" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/QHQFWL9nQxabMOnc1nRX"></a>
       <a href="https://www.bonappetit.com/story/best-sous-vide-machine-chefsteps-joule" target="_blank"><img id="bonappetit" alt="Bon Appetit" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/bOdmcXbiT2Owhoi8NFWj"></a>
