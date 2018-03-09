@@ -1,0 +1,279 @@
+<script>
+  $(function(){
+    $(".external").click(function(){
+      ga('send', 'event', {
+        eventCategory: this.dataset.category,
+        eventAction: this.dataset.action,
+        eventLabel: this.dataset.label,
+        transport: 'beacon'
+      });
+    })
+  })
+</script>
+
+<div class="component component-standard padded padded-large">
+
+  <header>
+    <div class="row">
+      <div class="col-sm-offset-2 col-xs-12 col-sm-8">
+        <h2 class="text-center">Joule vs. Anova: Side By Side Comparison </h2>
+        <h5 class="text-center">Buying The Best Sous Vide Machine</h5>
+        <p class="text-center">
+          Whether it’s a sous vide machine, a spatula, or a stand mixer, you want the best tools for your kitchen, right? We want you to have the best things too. This guide will help you make the decision about which sous vide is right for you. Let’s take a look at the similarities and differences between Joule Sous Vide by ChefSteps and Anova Precision Cooker.
+        </p>
+        <p class="text-center">
+          Information in this post is accurate as of the date of publication (2/14/2018)
+        </p>
+      </div>
+    </div>
+  </header>
+  <section>
+    <div class="row">
+      <div class="col-xs-12">
+        <table class="comparisonTable">
+          <thead>
+            <tr>
+              <td></td>
+              <td>Joule</td>
+              <td colspan="2">Anova</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td>BLE</td>
+              <td>WiFi</td>
+            </tr>
+          </thead>
+          <tr>
+            <td>Size</td>
+            <td class="win">11" x 1.85” x 1.85”  and 1.3 lb</td>
+            <td class="lose" colspan="2">14.8" x 2.8 x 2.8 and 3.5 lbs</td>
+          </tr>
+          <tr>
+            <td>Water-Heating Power</td>
+            <td class="win">1100 watts</td>
+            <td class="lose">800 watts</td>
+            <td class="lose">900 watts</td>
+          </tr>
+          <tr>
+            <td>Water-Volume Capacity</td>
+            <td class="win">10+ gallons / 40+ liters</td>
+            <td class="lose" colspan="2">4-5 gallons / 15-19 liters</td>
+          </tr>
+          <tr>
+            <td>Water-Level Range</td>
+            <td class="win">Minimum 1.5" — Maximum 8"</td>
+            <td class="lose" colspan="2">Minimum 2.75" — Maximum 6.25"</td>
+          </tr>
+          <tr>
+            <td>
+              Time To Heat Standard 6 Litre Pot
+              <br/>
+              <span class="detail">From 68F (20C) to 149F (65C)</span>
+            </td>
+            <td class="win">18 minutes</td>
+            <td class="lose">26 minutes</td>
+            <td class="lose">24 minutes</td>
+          </tr>
+          <tr>
+            <td>Water-Resistant Design</td>
+            <td class="win"><span class="icon-tick"></span></td>
+            <td class="lose" colspan="2"><span class="icon-x"></span></td>
+          </tr>
+          <tr>
+            <td>Magnetic Bottom</td>
+            <td class="win"><span class="icon-tick"></span></td>
+            <td class="lose" colspan="2"><span class="icon-x"></span></td>
+          </tr>
+          <tr>
+            <td>In-Depth Video Cooking Guides</td>
+            <td class="win"><span class="icon-tick"></span></td>
+            <td class="lose" colspan="2"><span class="icon-x"></span></td>
+          </tr>
+          <tr>
+            <td>Visual Doneness Video Guides</td>
+            <td class="win"><span class="icon-tick"></span></td>
+            <td class="lose" colspan="2"><span class="icon-x"></span></td>
+          </tr>
+          <tr>
+            <td>
+              Conversational Cooking
+              <br/>
+              <span class="detail">Switch Between App, Alexa, & Facebook Messenger</span>
+            </td>
+            <td class="win"><span class="icon-tick"></span></td>
+            <td class="lose" colspan="2"><span class="icon-x"></span></td>
+          </tr>
+          <tr>
+            <td>100+ Cooking Time & Temp Guides</td>
+            <td class="win"><span class="icon-tick"></span></td>
+            <td class="lose" colspan="2"><span class="icon-x"></span></td>
+          </tr>
+          <tr>
+            <td>
+              <span>Cooking Time Calculator</span>
+              <br/>
+              <span class="detail">Based on Thickness & Fresh or Frozen State</span>
+            </td>
+            <td class="win"><span class="icon-tick"></span></td>
+            <td class="lose" colspan="2"><span class="icon-x"></span></td>
+          </tr>
+          <tr>
+            <td>Cook From Anywhere via WiFi</td>
+            <td class="tie"><span class="icon-tick"></span></td>
+            <td class="lose"><span class="icon-x"></span></td>
+            <td class="tie"><span class="icon-tick"></span></td>
+          </tr>
+          <tr>
+            <td>Sous Vide Recipes</td>
+            <td class="tie"><span class="icon-tick"></span></td>
+            <td class="tie" colspan="2"><span class="icon-tick"></span></td>
+          </tr>
+          <tr>
+            <td>Clip Attachment</td>
+            <td class="tie"><span class="icon-tick"></span></td>
+            <td class="tie" colspan="2"><span class="icon-tick"></span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="component component-standard padded padded-large component-text-block theme-pale-orange">
+  <section>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="joule-cta">
+          <h2>Get the Best Sous Vide—Get Joule! </h2>
+          <a onclick="ga('send','event','cta','click','CTA-2');" href="/joule" class="button solid orange">Buy Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<div id="explanations" class="component component-standard padded padded-large">
+  <section>
+    <div class="row padded ">
+      <div class="col-xs-12 col-sm-6">
+        <img src="https://d3awvtnmmsvyot.cloudfront.net/api/file/ynYdXNW3RPG1bvGg61vj" />
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <h2 class="orange">Joule’s small, app-controlled design allows for more cooking space…</h2>
+        <p>
+          Joule is the only sous vide machine completely controlled via an app on your smartphone or tablet. Why?
+          Analog features get in the way of design, performance, and power. There are no bulky display screens
+          and no clunky buttons. It’s not too tall, it’s not too wide, and it doesn’t have any large protrusions—all
+          thanks to the app.
+        </p>
+        <p>
+          Removal of analog controls also allows for Joule’s superior water-volume capacity and water-level range.
+          Without buttons and screens, there’s plenty of room for Joule to accommodate much more water. You can
+          cook in as little as 1.5 inches of water or as much as 8 inches. Joule’s motor is so powerful, it can
+          maintain the temperature of more than 10 gallons of water—double what the other guys can handle. That
+          means you can perfect juicy chicken for two one night, and to-die-for perfect steak for 20 the next.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="row padded">
+      <div class="col-xs-12 col-sm-6">
+        <img src="https://d3awvtnmmsvyot.cloudfront.net/api/file/xUdKhyxRCQlyvCsH5L0Q" />
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <h2 class="orange">Joule is more powerful, so it’s ready to cook when you are.</h2>
+        <p>
+          Not only is Joule capable of bigger cooks, but it has 1100 watts of water-heating power, making it
+          37 percent more powerful than Anova. Whether you just want to get dinner on the table, or you’re
+          excited to start cooking 24-hour ribs, Joule heats up water more efficiently. If time is money, you
+          just saved enough for a trip to the butcher.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="row padded">
+      <div class="col-xs-12 col-sm-6">
+        <img src="https://d3awvtnmmsvyot.cloudfront.net/api/file/itkdLlBcSE0NvohAjl3A" />
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <h2 class="orange">...and better storage.</h2>
+        <p>
+          Joule is designed to be as sleek and storable as possible. If you leave it out in a pot or on a shelf, it becomes an aesthetically pleasing conversation starter. If you want to put Joule away, it easily fits in a shallow drawer or tight vertical space in a cabinet. Joule’s minimal design means it’s not at all cumbersome to handle, yet it still delivers the highest wattage.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="row padded">
+      <div class="col-xs-12 col-sm-6">
+        <img src="https://d3awvtnmmsvyot.cloudfront.net/api/file/vNpMAZIrS2qrVaFwmORs" />
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <h2 class="orange">Joule’s magnetic bottom and water-resistant design ensures worry-free cooking.</h2>
+        <p>
+          There will be times when you leave your sous vide plugged in and circulating while you go about your
+          day. Sous vide machines literally mix water and electricity, so design is critical. That’s why we gave
+          Joule a magnetic bottom and made it water-resistant. The magnet keeps Joule firmly stuck to the bottom
+          of your stainless steel or cast iron pot—so it would be pretty difficult for even the most frisky cat
+          to knock Joule over. Water-resistance? Well that’s just common sense. Joule is the only water-resistant
+          sous vide machine available today. Let that sink in. If it does get knocked over or dropped into water,
+          it’s no big deal—the machine will simply turn off and notify you through the app. If a machine with
+          display screens and buttons get knocked over into a pot of water, it may short-circuit and cease to
+          operate again.
+        </p>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="row padded">
+      <div class="col-xs-12 col-sm-6">
+        <img src="https://d3awvtnmmsvyot.cloudfront.net/api/file/QRUia2LvRkqUteJogFFx" />
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <h2 class="orange">Bigger cooking power means more foodie fun.</h2>
+        <p>
+          While the other guys can only handle 5 gallons, Joule can cook with more than 10 gallons of water. Just
+          use our Big Clamp to attach Joule to your favorite cooler, Cambro, or even a farmhouse sink, and you’re
+          in business. You know what that means? In one easy, hands-free cook, you can make multiple racks of ribs.
+          Burgers for 50. Potato salad for a small army. A entire suckling pig. Enough marinated chicken to last
+          all summer—and with a quick finish on the grill, you will be so happy you did. The coolest part? You
+          don’t need a kitchen. Anywhere there’s a plug, you can cook with Joule. You know you’ve always wanted
+          a portable outdoor kitchen.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="component component-standard padded padded-large component-text-block theme-orange">
+  <section class="text-center">
+    <h2>You don't have take our word for it!
+      <br/>
+      See what the experts have to say.</h2>
+    <hr>
+    <div id="featured-in-comparison">
+      <a data-category="outbound link" data-action="click" data-label="America's Test Kitchen Review" class="external" href="https://www.americastestkitchen.com/equipment_reviews/1835-sous-vide-machines-immersion-circulators" target="_blank"><img id="atk" alt="America's test kitchen" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/DR2IChSvSwXQ5INt3kRr "></a>
+      <a data-category="outbound link" data-action="click" data-label="New York Times Review"  class="external" href="https://www.nytimes.com/2016/11/30/technology/personaltech/two-sous-vide-gadgets-face-off-in-a-kitchen-showdown.html" target="_blank"><img id="nyt" alt="The New York Times" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/7NZ4LMNAQXaW5yPidPVi"></a>
+      <a data-category="outbound link" data-action="click" data-label="Bon Appetit Review"  class="external" href="https://www.cnet.com/news/smart-home-showdown-anova-precision-cooker-bluetooth-wi-fi-vs-joule/" target="_blank"><img id="cnet" alt="cnet" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/QHQFWL9nQxabMOnc1nRX"></a>
+      <a data-category="outbound link" data-action="click" data-label="CNet Review"  class="external" href="https://www.bonappetit.com/story/best-sous-vide-machine-chefsteps-joule" target="_blank"><img id="bonappetit" alt="Bon Appetit" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/bOdmcXbiT2Owhoi8NFWj"></a>
+    </div>
+  </section>
+</div>
+<div class="component component-full component-custom theme-light">
+  <section class="getJoule">
+    <div class="buy-joule-cont">
+      <div class="buy-joule-title">
+        <h2>
+          Get Joule.
+          <br>Get Cooking.<br>
+        </h2>
+      </div>
+      <div class="joule-price">
+        <a onclick="ga('send','event','cta','click','CTA-2');" href="/joule" class="button solid orange">Buy Now!</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<%= render "layouts/footer" %>
