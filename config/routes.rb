@@ -50,6 +50,9 @@ Delve::Application.routes.draw do
   get 'terms' => 'legal#terms', as: 'terms'
   get 'terms' => 'legal#terms', as: 'terms_of_service'
   match '/joule/warranty', to: 'legal#warranty'
+  match '/customer-feedback-panel', to: 'home#customer_feedback_panel'
+
+  get '/recipes', to: redirect('/gallery')
 
   ActiveAdmin.routes(self)
 
