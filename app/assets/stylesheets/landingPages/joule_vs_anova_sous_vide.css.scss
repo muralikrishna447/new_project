@@ -107,6 +107,11 @@
   background: url(https://d3awvtnmmsvyot.cloudfront.net/api/file/TGHuhIjXQquQB4uMtJdv) no-repeat center center fixed;
   background-size: cover;
   min-height: 700px;
+  @media (max-width: $small-width) {
+    background-size: auto;
+    min-height: 320px;
+  }
+
 }
 .buy-joule-cont {
   position: absolute;
@@ -156,6 +161,9 @@
       max-width: 50%;
     }
   }
+}
+.gray-bg {
+  background-color: $taupe;
 }
 #explanations {
   img {

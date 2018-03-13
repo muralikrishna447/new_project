@@ -1,4 +1,5 @@
 /* Uncomment and set these variables to customize the grid. */
+
 .container-fluid {
   margin-right: auto;
   margin-left: auto;
@@ -57,10 +58,6 @@
   flex: 0 0 auto;
   padding-right: 1rem;
   padding-left: 1rem;
-
-  img {
-    max-width: 100%;
-  }
 }
 
 .col-xs {
@@ -318,9 +315,9 @@
   }
 
   .col-sm-6 {
-    -ms-flex-preferred-size: 50%;
-    flex-basis: 50%;
-    max-width: 50%;
+    -ms-flex-preferred-size: 49%;
+    flex-basis: 49%;
+    max-width: 49%;
   }
 
   .col-sm-7 {
