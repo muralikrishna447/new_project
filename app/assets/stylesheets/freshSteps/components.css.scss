@@ -1,0 +1,143 @@
+@import 'mixins';
+
+// Component Widths
+.component-full {
+  width: 100%;
+}
+
+.component-standard {
+  // width: 1080px;
+  // margin: 0 auto;
+  width: 100%;
+  padding-left: calc((100% - #{$standard-width})/2);
+  padding-right: calc((100% - #{$standard-width})/2);
+  box-sizing: border-box;
+}
+
+.component-small {
+  // width: 700px;
+  // margin: 0 auto;
+  width: 100%;
+  padding-left: calc((100% - #{$small-width})/2);
+  padding-right: calc((100% - #{$small-width})/2);
+  box-sizing: border-box;
+}
+
+@media (max-width: $standard-width + 4*$base) {
+  .component-standard {
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+@media (max-width: 700px) {
+  .component-small {
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+// End Component Widths
+
+// Component Style
+.component {
+  box-sizing: border-box;
+  overflow: hidden;
+  display: block;
+  position: relative;
+  .component-content {
+    width: 100%;
+  }
+}
+// End Component Style
+
+// Theme Styles
+.component.theme-light {
+  background-color: white;
+}
+
+.component.theme-dark {
+  background-color: $black;
+  color: white;
+}
+
+.component.theme-gray {
+  background-color: $light-gray;
+}
+
+.component.theme-orange {
+  background-color: $orange;
+  color: white;
+}
+// End Theme Styles
+
+.padded {
+  padding-top: 3*$base;
+  padding-bottom: 3*$base;
+}
+
+.padded-large {
+  padding-top: 6*$base;
+}
+
+@media (max-width: 960px) {
+  .component.padded {
+    padding-top: 2*$base;
+    padding-bottom: 2*$base;
+  }
+
+  .component.padded.padded-large {
+    padding-top: 4*$base;
+  }
+}
+
+// Component Combinations
+.component.theme-light.padded + .component.theme-light.padded {
+  padding-top: 0px;
+}
+
+.component.theme-dark.padded + .component.theme-dark.padded {
+  padding-top: 0px;
+}
+
+.component.theme-orange.padded + .component.theme-orange.padded {
+  padding-top: 0px;
+}
+
+.component.theme-gray.padded + .component.theme-gray.padded {
+  padding-top: 0px;
+}
+
+// Component & Divider combinations
+.component.theme-light.padded + .component.theme-light.component-divider .divider,
+.component.theme-light.component-divider + .component.theme-light.padded {
+  padding-top: 0px;
+}
+
+.component.theme-dark.padded + .component.theme-dark.component-divider .divider,
+.component.theme-dark.component-divider + .component.theme-dark.padded {
+  padding-top: 0px;
+}
+
+.component.theme-orange.padded + .component.theme-orange.component-divider .divider,
+.component.theme-orange.component-divider + .component.theme-orange.padded {
+  padding-top: 0px;
+}
+
+.component.theme-gray.padded + .component.theme-gray.component-divider .divider,
+.component.theme-gray.component-divider + .component.theme-gray.padded {
+  padding-top: 0px;
+}
+
+// End Component Combinations
+
+// Show Component Styles
+.component.component-hidden {
+  display: none;
+}
+
+.component.component-editing {
+  display: block;
+  min-height: 200px;
+}

@@ -81,9 +81,9 @@
 
               .dropdown-menu-item
                 %a(ng-href="/logout")Sign Out
-      - else
-        %a.cs-nav-item.button.small.hide-mobile#nav-login(ng-click="openModal('login')")
-          Sign In
+      / - else
+      /   %a.cs-nav-item.button.small.hide-mobile#nav-login(ng-click="openModal('login')")
+      /     Sign In
 
       %button.cs-nav-item.cs-nav-menu-toggle.lines-btn.hide-desktop(ng-click="nav.showMenu = ! nav.showMenu")
         %span.lines
