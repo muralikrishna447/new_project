@@ -33,14 +33,14 @@
             .page.anim-basic-fade(ng-switch-when="white")
               %h4.text-center What texture would you like your egg white?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity" item-width="300")
-                %video(autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="whiteVideo in whiteVideos" )
+                %video(loop="true" playsinline="true" controls="true" ng-repeat="whiteVideo in whiteVideos" )
                   %source(ng-src="{{trustedVideo(whiteVideo.video.mp4)}}" type="video/mp4")
                   %source(ng-src="{{trustedVideo(whiteVideo.video.webm)}}" type="video/webm")
                   Looks like your browser does not support the video tag.
               .control-group.text-center
                 .controls
                   %a(ng-click="incrementWhite(-1)")
-                    %i.icon-angle-left 
+                    %i.icon-angle-left
                     Runny
                   %input(type="range" ng-model='inputs.perceptual_white_viscosity' min="0" max="13" step=".01")
                   %a(ng-click="incrementWhite(1)")
@@ -54,14 +54,14 @@
             .page.anim-basic-fade(ng-switch-when="yolk")
               %h4.text-center What texture would you like your egg yolk?
               %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1" item-width="300")
-                %video(autoplay="true" loop="true" webkit-playsinline="true" ng-repeat="yolkVideo in yolkVideos" )
+                %video(loop="true" playsinline="true" controls="true" ng-repeat="yolkVideo in yolkVideos" )
                   %source(ng-src="{{trustedVideo(yolkVideo.video.mp4)}}" type="video/mp4")
                   %source(ng-src="{{trustedVideo(yolkVideo.video.webm)}}" type="video/webm")
                   Looks like your browser does not support the video tag.
               .control-group.text-center
                 .controls
                   %a(ng-click="incrementYolk(-1)")
-                    %i.icon-angle-left 
+                    %i.icon-angle-left
                     Runny
                   %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
                   %a(ng-click="incrementYolk(1)")
@@ -118,8 +118,8 @@
               %h4.text-center What (US) size is your egg?
               .section.text-center.egg-size
                 %ul.nav.nav-tabs.underline
-                  %li(  ng-repeat="choice in eggService.sizeChoices" 
-                        ng-click="inputs.circumference = choice['mm']" 
+                  %li(  ng-repeat="choice in eggService.sizeChoices"
+                        ng-click="inputs.circumference = choice['mm']"
                         ng-class="{'active': inputs.circumference == choice['mm']}")
                     %a {{choice['name']}}
 
