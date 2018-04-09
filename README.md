@@ -15,7 +15,7 @@ To set up a new machine:
 - `brew install phantomjs`
 - `brew install postgres`
    - set postgres to open at login per output of previous cmd
-   - it'll be something like, `launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist`
+   - it'll be something like, `brew services start postgresql`
 - `echo 'location' > ~/.curlc`
 - install [rvm](https://rvm.io/)
 - `rvm install ruby 1.9.3` (the version our Gemfile calls for, --with-gcc=clang may be required)
