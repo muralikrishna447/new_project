@@ -1,5 +1,12 @@
 @import mixins
 
+// Importing the FreshSteps styles overrode some of our base styles
+.egg-app
+  h2
+    margin-bottom: 0
+  h3
+    margin-bottom: 0
+
 .egg-bg
   position: fixed
   top: 30px
@@ -131,7 +138,8 @@
 
   .egg-footer
     position: absolute
-    bottom: 0
+    // bottom: 0
+    bottom: -12px
     left: 0
     right: 0
     color: white
