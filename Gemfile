@@ -3,8 +3,8 @@ ruby "2.1.10"
 
 gem 'rake', '< 11.0'
 
-gem 'rails', '3.2.18'
-gem 'railties', '3.2.18'
+gem 'rails', '3.2.22.5'
+gem 'railties'
 gem 'pg'
 
 gem 'unicorn'
