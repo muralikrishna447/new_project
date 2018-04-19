@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 ruby "2.1.10"
 
-gem 'rails', '3.2.16'
-gem 'railties', '3.2.16'
+gem 'rails', '3.2.21'
+gem 'railties', '3.2.21'
 gem 'pg'
 
 gem 'unicorn'
