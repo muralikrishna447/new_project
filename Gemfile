@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 ruby "2.1.10"
 
+gem 'rake', '< 11.0'
+
 gem 'rails', '3.2.21'
 gem 'railties', '3.2.21'
 gem 'pg'
