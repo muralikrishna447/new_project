@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "1.9.3"
+ruby "2.0"
 
 gem 'rails', '3.2.16'
 gem 'railties', '3.2.16'
@@ -157,7 +157,6 @@ group :production do
 end
 
 group :development, :test, :angular do
-  # gem 'heroku'
   gem 'heroku_san'
   gem 'rspec-rails'
   gem 'spork-rails'
@@ -168,7 +167,6 @@ group :development, :test, :angular do
   gem 'database_cleaner'
   gem 'rack-contrib'
   gem 'pry'
-  gem 'binding_of_caller'
   gem 'thin'
   gem 'rails-erd'
   gem 'bullet'
