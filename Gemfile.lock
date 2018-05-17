@@ -103,7 +103,6 @@ GEM
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
     bindata (2.1.0)
-    binding_of_caller (0.6.8)
     bootstrap-sass-rails (2.3.1.1)
       railties (>= 3.1.0)
       sass-rails (>= 3.1.0)
@@ -603,7 +602,6 @@ DEPENDENCIES
   aws-sdk (~> 2)
   aws-sdk-v1
   better_errors
-  binding_of_caller
   bootstrap-sass-rails
   bullet
   cache_digests
@@ -718,7 +716,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-  ruby 1.9.3p551
+   ruby 2.0.0p648
 
 BUNDLED WITH
-   1.14.6
+   1.16.1
