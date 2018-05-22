@@ -296,7 +296,7 @@ describe Api::V0::FirmwareController do
       {:hw_version => 'JL.p4', :enabled => false},
       {:hw_version => 'J5', :enabled => true},
       {:hw_version => 'J6', :enabled => true},
-      {:hw_version => 'J7', :enabled => false},
+      {:hw_version => 'J7', :enabled => true},
     ]
 
     for v in hw_versions
