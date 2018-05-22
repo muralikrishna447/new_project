@@ -19,6 +19,7 @@ To set up a new machine:
 - `echo 'location' > ~/.curlc`
 - install [rvm](https://rvm.io/)
 - `rvm install ruby 1.9.3` (the version our Gemfile calls for, --with-gcc=clang may be required)
+   - If this fails with `Error running 'requirements_osx_brew_install_custom homebrew/versions'`, you might have to do `brew install gcc49`
 - close your shell and reopen it
 - restart your machine if postgres is not running (eg: first install)
 - `git clone https://github.com/ChefSteps/ChefSteps.git`
@@ -27,9 +28,9 @@ To set up a new machine:
 - `bundle`
 - `createuser -l -s -r delve`
 - `rake db:create`
-- install heroku toolbelt (toolbelt.heroku.com)
-- rake copy_production_db (you’ll need your heroku acct/passwd and say yes to creating a new public key)
-- rails s
+- install [heroku toolbelt](https://toolbelt.heroku.com)
+- `rake copy_production_db` (you’ll need your heroku acct/passwd and say yes to creating a new public key)
+- `rails s`
 
 ## Testing
 
