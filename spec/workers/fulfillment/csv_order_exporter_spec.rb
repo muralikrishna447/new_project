@@ -80,6 +80,39 @@ describe Fulfillment::CSVOrderExporter do
             )
           end
         end
+
+        context 'two skus are fulfillable' do
+          let(:sku_2) { 'my_sku_2' }
+          let(:order_1_line_item_1) { ShopifyAPI::LineItem.new(id: 11) }
+          let(:order_1_line_item_2) { ShopifyAPI::LineItem.new(id: 12) }
+
+          it 'creates fulfillable with order and two line items' do
+            exporter
+              .should_receive(:fulfillable_line_item?)
+              .with(order_1, order_1_line_item_1, sku)
+              .once.and_return(true)
+            exporter
+              .should_receive(:fulfillable_line_item?)
+              .with(order_1, order_1_line_item_1, sku_2)
+              .once.and_return(false)
+            exporter
+              .should_receive(:fulfillable_line_item?)
+              .with(order_1, order_1_line_item_2, sku)
+              .once.and_return(false)
+            exporter
+              .should_receive(:fulfillable_line_item?)
+              .with(order_1, order_1_line_item_2, sku_2)
+              .once.and_return(true)
+            expect(exporter.fulfillables([order_1], [sku, sku_2])).to eq(
+              [
+                Fulfillment::Fulfillable.new(
+                  order: order_1,
+                  line_items: [order_1_line_item_1, order_1_line_item_2]
+                )
+              ]
+            )
+          end
+        end
       end
     end
   end
@@ -115,11 +148,6 @@ describe Fulfillment::CSVOrderExporter do
           Fulfillment::FedexShippingAddressValidator.should_not_receive(:valid?)
           expect(exporter.include_order?(order)).to be_false
         end
-      end
-
-      context 'order has shipping-started tag' do
-        let(:tags) { 'shipping-started' }
-        include_examples 'filtered tag'
       end
 
       context 'order has shipping-hold tag' do

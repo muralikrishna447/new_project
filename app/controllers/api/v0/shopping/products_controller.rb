@@ -16,7 +16,7 @@ module Api
         def show
           sku = params[:id]
           product_sku = get_product_sku(sku)
-          products = get_all_products
+          products = JSON.parse(get_all_products)
           @product = products.select{|p| p[:product_sku] == product_sku}.first
           if @product
             @variant = @product[:variants].select{|variant| variant[:sku] == params[:id]}[0]
@@ -67,14 +67,22 @@ module Api
             results = products.map do |product|
               first_variant = get_first_variant(product)
 
+              product_images = product.images.map do |image|
+                {
+                  src: image.src,
+                  variant_ids: image.variant_ids
+                }
+              end
+
               {
                 id: product.id,
                 title: product.title,
                 sku: get_product_sku(first_variant.sku),
-                variants: get_variants(product)
+                variants: get_variants(product),
+                images: product_images
               }
             end
-            results
+            results.to_json
           end
         end
 

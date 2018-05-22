@@ -96,6 +96,9 @@ gem 'rack-attack', '4.3.0'
 gem 'retriable', '2.1.0'
 gem 'resque-lock', '1.1'
 gem 'signifyd'
+gem 'peddler', '1.2.0'
+
+gem 'quickbase_client'
 
 group :test do
   gem 'webmock'

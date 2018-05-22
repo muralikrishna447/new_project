@@ -15,11 +15,10 @@ class ShopifyBatchProcessor
       path = ShopifyAPI::Order.collection_path(:updated_at_min => updated_at_min, :limit => 100, :page => page)
       orders = ShopifyAPI::Order.find(:all, :from => path)
       orders.each do |order_data|
-        order = Shopify::Order.find(order_data.id)    
+        order = Shopify::Order.find(order_data.id)
         order.process!
         orders_processed += 1
       end
-      break
       page += 1
       throw "Page number suspiciously high" if page > 10000
     end while orders.length != 0

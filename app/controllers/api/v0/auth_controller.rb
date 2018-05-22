@@ -1,7 +1,8 @@
 module Api
   module V0
     class AuthController < BaseController
-      before_filter :ensure_authorized_service, only: [:validate]
+      before_filter(BaseController.make_service_or_admin_filter(
+        [ExternalServiceTokenChecker::MESSAGING_SERVICE]), only: [:validate])
       before_filter :ensure_authorized, only: [:logout, :external_redirect]
 
       def authenticate
@@ -9,7 +10,7 @@ module Api
           Librato.increment("api.authenticate_requests")
           unless params.has_key?(:user) && params[:user].has_key?(:email)
             logger.info("User not specified #{params.inspect}")
-            render json: {status: 400, message: 'Bad Request'}, status: 400
+            render_api_response 400, {message: 'Bad Request'}
             return
           end
 
@@ -56,7 +57,7 @@ module Api
                 return render_unauthorized
               else
                 aa.double_increment
-                return render json: {status: 200, message: 'Success.', token: aa.current_token.to_jwt}, status: 200
+                return render_api_response 200, {message: 'Success.', token: aa.current_token.to_jwt}
               end
             else
               logger.info ("No ActorAddress found for token #{token}")
@@ -65,13 +66,13 @@ module Api
           end
 
           aa = ActorAddress.create_for_user(user, client_metadata: params[:client_metadata])
-          render json: {status: 200, message: 'Success.', token: aa.current_token.to_jwt}, status: 200
+          render_api_response 200, { message: 'Success.', token: aa.current_token.to_jwt}
 
         rescue Exception => e
           # TODO - specific issues with the request should be handle as 400
           logger.warn "Authenticate Exception: #{e.class} #{e}"
           logger.error e.backtrace.join("\n")
-          render json: {status: 500, message: 'Internal Server Error'}, status: 500
+          render_api_response 500, {message: 'Internal Server Error'}
         end
       end
 
@@ -177,6 +178,21 @@ module Api
         url
       end
 
+      def spree_sso_url(path)
+        short_lived_token = AuthToken.provide_short_lived(@current_token).to_jwt
+        url = "#{Rails.application.config.shared_config[:spree_endpoint]}/sso?token=#{short_lived_token}"
+        url += "&path=#{path}" if path.present?
+        url
+      end
+
+      def localhost_spree_sso_url(path_uri)
+        short_lived_token = AuthToken.provide_short_lived(@current_token).to_jwt
+        port = path_uri.port.present? ? ":#{path_uri.port}" : ''
+        url = "#{path_uri.scheme}://#{path_uri.host}#{port}/sso?token=#{short_lived_token}"
+        url += "&path=#{path_uri.to_s}"
+        url
+      end
+
       # Used for SSO with third-party services
       # DOES NOT ACTUALLY REDIRECT
       # Returns a json object with a redirect url
@@ -228,6 +244,10 @@ module Api
         elsif path_uri.host == "www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
           render_api_response 200, {redirect: chefsteps_sso_url(params[:path])}
 
+        elsif path_uri.host == Rails.application.config.shared_config[:spree_domain]
+          render_api_response 200, {redirect: spree_sso_url(params[:path])}
+        elsif (Rails.env.staging? || Rails.env.staging2?) && path_uri.host == 'localhost'
+          render_api_response 200, {redirect: localhost_spree_sso_url(path_uri)}
         else
           return render_api_response 404, {message: "No redirect configured for path [#{path}]."}
         end
@@ -292,13 +312,14 @@ module Api
             addressableAddresses: addressable_addresses,
             actorType: aa.actor_type, # this one can probably be in claim
             data: token.claim,
+            capabilities: get_capabilities_for_actor_address(aa),
           }
 
-          render json: resp, status: 200
+          render_api_response 200, resp
         rescue Exception => e
           logger.error "Authenticate Exception: #{e.class} #{e}"
           logger.error e.backtrace.join("\n")
-          render json: {status: 500, message: 'Internal Server Error'}, status: 500
+          render_api_response 500, {message: 'Internal Server Error'}
         end
       end
 
@@ -331,11 +352,40 @@ module Api
         upgraded_token = AuthToken.upgrade_token(token_string)
         if upgraded_token
           Rails.cache.write cache_key, 1, expires_in: 1.days
-          return render json: {status: 200, message: 'Success.', token: upgraded_token.to_jwt}, status: 200
+          return render_api_response 200, {message: 'Success.', token: upgraded_token.to_jwt}
         else
           return render_unauthorized
         end
 
+      end
+
+      private
+
+      def get_capabilities_for_actor_address(aa)
+        # Only circ capabilities for now
+        unless aa.actor_type == 'Circulator'
+          return []
+        end
+        logger.info "Searching for capabilities for ActorAddress #{aa.id}"
+        capability_list = [
+          'predictive',
+          'usage_data',
+        ]
+        cache_key = "aa-capabilities-#{aa.id}"
+        return Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+          circulator = Circulator.includes(:circulator_users) \
+                         .find(aa.actor_id)
+          owners = circulator.circulator_users.select {|cu| cu.owner}
+          if owners.length > 1
+            logger.warn "Unhandled: circulator #{circulator.id} has multiple owners."
+            return []
+          end
+          owner = owners.first.user
+          logger.info "Using capabilities for user #{owner.id} for ActorAddress #{aa.id}"
+          capability_list.select {|c|
+            BetaFeatureService.user_has_feature(owner, c)
+          }
+        end
       end
 
     end

@@ -1,14 +1,17 @@
 require 'aws-sdk'
 require_dependency 'beta_feature_service'
-
+require_dependency 'external_service_token_checker'
 module Api
   module V0
     class UsersController < BaseController
       # Required since this only this controller contains the code to actually
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
-      before_filter :ensure_authorized, except: [:create, :log_upload_url]
-      LOG_UPLOAD_URL_EXPIRATION = 60*60*24 #Seconds
+      before_filter :ensure_authorized, except: [:create, :log_upload_url, :make_premium]
+      before_filter(BaseController.make_service_filter(
+        [ExternalServiceTokenChecker::SPREE_SERVICE]), only: [:make_premium]
+      )
+      LOG_UPLOAD_URL_EXPIRATION = 60*30 #Seconds
 
       def me
         @user = User.find @user_id_from_token
@@ -74,13 +77,16 @@ module Api
         # We want to be liberal in accepting logs so if someone provides a bad
         # token they end up in the anon bucket
         ensure_authorized(false)
+        prefix = "date"
         if @user_id_from_token
           user_prefix = "user/#{@user_id_from_token}"
         else
           user_prefix = 'anon'
         end
         random_prefix = SecureRandom.hex[0..7]
-        object_key = "#{user_prefix}/#{Time.now.to_a.reverse[4..8].join('/')}-#{random_prefix}-#{request.remote_ip}-#{params[:tag]}"
+        partition = "dt=#{Time.now.strftime('%Y-%m-%d-%H')}"
+        # For posterity here is the old key object_key = "#{user_prefix}/#{Time.now.to_a.reverse[4..8].join('/')}-#{random_prefix}-#{request.remote_ip}-#{params[:tag]}"
+        object_key= "#{prefix}/#{partition}/#{user_prefix}/#{Time.now.strftime('%Y/%m/%d/%H/%M/%S')}-#{random_prefix}-#{request.remote_ip}"
         Rails.logger.info "Creating log upload url for key [#{object_key}]"
         # We use an old version of the AWS SDK
         s3 = AWS::S3.new(region:'us-west-2')
@@ -103,11 +109,33 @@ module Api
           'multi_circ',
           'fbjoule',
           'update_during_pairing',
+          'sqlite',
+          'enable_react_native_alerts'
         ]
-        user_capabilities = capability_list.select {|c|
-          BetaFeatureService.user_has_feature(user, c)
-        }
+        cache_key = "user-capabilities-#{user.id}"
+        user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+          capability_list.select {|c|
+            BetaFeatureService.user_has_feature(user, c)
+          }
+        end
         render_api_response 200, {:capabilities => user_capabilities}
+      end
+
+      #API needed for spree, called when a customer purchases ChefSteps premium
+      def make_premium
+        [:id, :price].each do |param|
+          unless params[param]
+            return render_api_response 400, {message: "Bad Request: #{param} parameter missing."}
+          end
+        end
+
+        user = User.find(params[:id])
+        unless user
+          return render_api_response 404, {:message => "User not found"}
+        end
+
+        user.make_premium_member(params[:price].to_f)
+        return render_api_response 200, {:message => "Success"}
       end
 
       private

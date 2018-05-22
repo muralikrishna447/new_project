@@ -4,6 +4,13 @@ describe Api::V0::RecommendationsController do
     @unpub_ad = Fabricate :advertisement, title: "Other Things", image: "{\"url\":\"http://foo/bar\",\"filename\":\"98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"mimetype\":\"image/jpeg\",\"size\":93111,\"key\":\"Vp8xHWW7TRKYRH3FsLBu_98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"container\":\"chefsteps-staging\",\"isWriteable\":true}"
     @non_owner_ad = Fabricate :advertisement, matchname: 'homeHeroNonOwner', published: true, title: "All The Things", image: "{\"url\":\"http://foo/bar\",\"filename\":\"98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"mimetype\":\"image/jpeg\",\"size\":93111,\"key\":\"Vp8xHWW7TRKYRH3FsLBu_98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"container\":\"chefsteps-staging\",\"isWriteable\":true}"
     @owner_ad = Fabricate :advertisement, matchname: 'homeHeroOwner', published: true, title: "Owner All The Things", image: "{\"url\":\"http://foo/bar\",\"filename\":\"98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"mimetype\":\"image/jpeg\",\"size\":93111,\"key\":\"Vp8xHWW7TRKYRH3FsLBu_98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"container\":\"chefsteps-staging\",\"isWriteable\":true}"
+
+    BetaFeatureService.stub(:user_has_feature).with(anything(), anything())
+      .and_return(false)
+
+    @quick_n_easy_ad = Fabricate :advertisement, matchname: 'quickAndEasy',
+                                 published: true, title: 'Short on time?'
+
     @activity = Fabricate :activity, title: 'My New Recipe', published: true, include_in_gallery: true
     @activity.tag_list.add('garlic')
     @activity.save!
@@ -40,6 +47,33 @@ describe Api::V0::RecommendationsController do
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
     parsed['results'][0]['title'].should eq 'Owner All The Things'
+  end
+
+  it 'should respond with quick and easy ad if beta feature enabled' do
+    @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
+
+    BetaFeatureService.stub(:user_has_feature).with(@user, 'force_quick_and_easy_ad')
+      .and_return(true)
+
+    controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+    @circulator = Fabricate :circulator, notes: 'some notes',
+                            circulator_id: '1212121212121212', name: 'my name'
+    @circulator_user = Fabricate :circulator_user, user: @user,
+                                 circulator: @circulator, owner: true
+    sign_in @user
+    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed['results'].count.should eq 1
+    parsed['results'][0]['title'].should eq @quick_n_easy_ad.title
+  end
+
+  it 'should return something even if not logged in' do
+    get :index, {connected: 'true', platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed['results'].count.should eq 1
+    parsed['results'][0]['title'].should eq "Owner All The Things"
   end
 
   it 'should respond new-skool style with owner ad if known platform set, known slot, and signed in as joule purchaser' do

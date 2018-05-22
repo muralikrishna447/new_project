@@ -38,6 +38,7 @@ class Activity < ActiveRecord::Base
   has_many :assemblies, through: :assembly_inclusions
 
   has_one :publishing_schedule
+  has_one :guide_activity
 
   belongs_to :creator, class_name: User, foreign_key: 'creator'
   belongs_to :last_edited_by, class_name: User, foreign_key: 'last_edited_by_id'
@@ -256,6 +257,7 @@ class Activity < ActiveRecord::Base
 
   def update_equipment_json(equipment_attrs)
     # Easiest just to be rid of all of the old join records, we'll make them from scratch
+    equipment.reload()
     equipment.destroy_all()
     equipment.reload()
     if equipment_attrs

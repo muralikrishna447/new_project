@@ -1,0 +1,254 @@
+/* Legal Disclaimer
+ *
+ * These Fonts are licensed only for use on these domains and their subdomains:
+ * chefsteps.com
+ *
+ * It is illegal to download or use them on other websites.
+ *
+ * While the @font-face statements below may be modified by the client, this
+ * disclaimer may not be removed.
+ *
+ * Lineto.com, 2015 */
+
+@font-face {
+  font-family: "Circular";
+  src: url("../fonts/lineto-circular-book.eot");
+  src: url("../fonts/lineto-circular-book.eot?#iefix") format("embedded-opentype"), url("../fonts/lineto-circular-book.woff") format("woff"), url("../fonts/lineto-circular-book.ttf") format("ttf"), url("../fonts/lineto-circular-book.svg#lineto-circular-book") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: "Circular";
+  src: url("../fonts/lineto-circular-bookItalic.eot");
+  src: url("../fonts/lineto-circular-bookItalic.eot?#iefix") format("embedded-opentype"), url("../fonts/lineto-circular-bookItalic.woff") format("woff"), url("../fonts/lineto-circular-bookItalic.ttf") format("ttf"), url("../fonts/lineto-circular-bookItalic.svg#lineto-circular-bookItalic") format("svg");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Circular";
+  src: url("../fonts/lineto-circular-medium.eot");
+  src: url("../fonts/lineto-circular-medium.eot?#iefix") format("embedded-opentype"), url("../fonts/lineto-circular-medium.woff") format("woff"), url("../fonts/lineto-circular-medium.ttf") format("ttf"), url("../fonts/lineto-circular-medium.svg#lineto-circular-medium") format("svg");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Circular";
+  src: url("../fonts/lineto-circular-bold.eot");
+  src: url("../fonts/lineto-circular-bold.eot?#iefix") format("embedded-opentype"), url("../fonts/lineto-circular-bold.woff") format("woff"), url("../fonts/lineto-circular-bold.ttf") format("ttf"), url("../fonts/lineto-circular-bold.svg#lineto-circular-bold") format("svg");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Akkurat";
+  src: url("../fonts/lineto-akkurat-regular.eot");
+  src: url("../fonts/lineto-akkurat-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/lineto-akkurat-regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Akkurat";
+  src: url("../fonts/lineto-akkurat-bold.eot");
+  src: url("../fonts/lineto-akkurat-bold.eot?#iefix") format("embedded-opentype"), url("../fonts/lineto-akkurat-bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+
+* {
+  font-family: Circular;
+  -webkit-font-smoothing: antialiased;
+  -webkit-font-variant-ligatures: common-ligatures; /* for iOS and Safari 6 */
+  font-variant-ligatures: common-ligatures;
+}
+
+
+@import 'mixins';
+
+h1 {
+  font-size: 63/14*$base;
+  line-height: 63/14*$base;
+  font-weight: bold;
+  letter-spacing: -.02em;
+  @include text-margin;
+
+  @media (max-width: $breakpoint-mobile){
+    font-size: 40/14*$base;
+    line-height: 42/14*$base;
+  }
+}
+
+h2 {
+  font-size: 42/14*$base;
+  line-height: 42/14*$base;
+  font-weight: bold;
+  letter-spacing: -.02em;
+  @include text-margin;
+
+  @media (max-width: $breakpoint-mobile){
+    font-size: 32/14*$base;
+    line-height: 35/14*$base;
+  }
+}
+
+h3 {
+  font-size: 32/14*$base;
+  line-height: 35/14*$base;
+  font-weight: bold;
+  letter-spacing: -.02em;
+  @include text-margin;
+
+  @media (max-width: $breakpoint-mobile){
+    font-size: 24/14*$base;
+    line-height: 2*$base;
+  }
+}
+
+h4 {
+  font-size: 21/14*$base;
+  line-height: 2*$base;
+  font-weight: bold;
+  letter-spacing: -.02em;
+  @include text-margin;
+
+  @media (max-width: $breakpoint-tablet){
+    font-size: 18/14*$base;
+    line-height: 24/14*$base;
+  }
+}
+
+h5 {
+  font-size: 20/14*$base;
+  line-height: 2*$base;
+  font-style: italic;
+  font-weight: normal;
+  letter-spacing: -.02em;
+  @include text-margin;
+
+  @media (max-width: $breakpoint-tablet){
+    font-size: 18/14*$base;
+    line-height: 24/14*$base;
+  }
+}
+
+h6 {
+  font-size: 16/14*$base;
+  line-height: 1.5*$base;
+  font-weight: bold;
+  letter-spacing: -.01em;
+  @include text-margin;
+}
+h1, h2, h3, h4, h5, h6 {
+  &.orange {
+    color: $orange;
+  }
+}
+
+body, p {
+  font-size: 18/14*$base;
+  line-height: 2*$base;
+  letter-spacing: -.015em;
+  @include text-margin;
+
+  @media (max-width: $breakpoint-tablet){
+    font-size: 16/14*$base;
+    line-height: 24/14*$base;
+  }
+}
+
+.intro-text {
+  font-size: 20/14*$base;
+  line-height: 2*$base;
+  font-weight: 400;
+  @include text-margin;
+}
+
+small {
+  font-size: 1*$base;
+  line-height: 1.5*$base;
+  font-weight: 400;
+  @include text-margin;
+}
+
+::selection {
+  background: $light-orange;
+}
+
+a:link, a:visited {
+  text-decoration: none;
+  color: inherit;
+}
+
+a:hover, a:active {
+  text-decoration: none;
+}
+
+p a:link, p a:visited, p a:hover, .underline-links a:link, .underline-links a:visited, .underline-links a:hover {
+  text-decoration: underline;
+}
+
+//Lighter color on component paragraph text
+.component-matrix .item-text p,
+.component-feed .item-text p,
+.component-text-block p,
+.component-fifty-fifty p {
+  opacity: 0.85;
+}
+
+//Underline Amination
+.underline-hover {
+  position: relative;
+  display: inline;
+  text-decoration: none!important;
+  white-space: pre-wrap;
+  background-size: 300% 2px;
+  background-position: 100% 97%;
+  background-image: linear-gradient(to right, rgba(67,65,63,1) 40%,rgba(67,65,63,0) 66%); /* W3C */
+  background-repeat: no-repeat no-repeat;
+  transition: background-position 0.1s ease;
+  &:hover {
+    background-position: 0% 97%;
+    transition: background-position 0.3s ease;
+    cursor: pointer;
+  }
+}
+.active .underline-hover {
+  background-position: 0% 97%;
+}
+//Smart Underlines for specific links
+div::selection .underline, .underline-hover::selection {
+  text-shadow: .03em .07em $light-orange, -.03em .07em $light-orange, 0 .03em $light-orange, 0 -.03em $light-orange, .06em .07em $light-orange, -.06em .07em $light-orange, .09em .07em $light-orange, -.09em .07em $light-orange, .12em .07em $light-orange, -.12em .07em $light-orange, .15em .07em $light-orange, -.15em .07em $light-orange;
+}
+.theme-light .underline-hover {
+  text-shadow: .03em .07em $white, -.03em .07em $white, 0 .03em $white, 0 -.03em $white, .06em .07em $white, -.06em .07em $white, .09em .07em $white, -.09em .07em $white, .12em .07em $white, -.12em .07em $white, .15em .07em $white, -.15em .07em $white;
+}
+.theme-gray .underline-hover {
+  text-shadow: 0 .07em $light-gray, 0 .07em $light-gray, .03em .07em $light-gray, -.03em .07em $light-gray, .06em .07em $light-gray, -.06em .07em $light-gray, .09em .07em $light-gray, -.09em .07em $light-gray, .12em .07em $light-gray, -.12em .07em $light-gray, .15em .07em $light-gray, -.15em .07em $light-gray;
+}
+.theme-dark .underline-hover {
+  text-shadow: .03em .07em $black, -.03em .07em $black, 0 .03em $black, 0 -.03em $black, .06em .07em $black, -.06em .07em $black, .09em .07em $black, -.09em .07em $black, .12em .07em $black, -.12em .07em $black, .15em .07em $black, -.15em .07em $black;
+}
+.theme-orange .underline-hover {
+  text-shadow: .03em .07em $orange, -.03em .07em $orange, 0 .03em $orange, 0 -.03em $orange, .06em .07em $orange, -.06em .07em $orange, .09em .07em $orange, -.09em .07em $orange, .12em .07em $orange, -.12em .07em $orange, .15em .07em $orange, -.15em .07em $orange;
+}
+
+// Alignment
+.align-left {
+  text-align: left;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.align-full {
+  text-align: justify;
+}

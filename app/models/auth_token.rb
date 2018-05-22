@@ -1,6 +1,7 @@
 class AuthToken
   attr_reader :claim
 
+  PREFIX = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9'
   def initialize(claim)
     @claim = claim
   end

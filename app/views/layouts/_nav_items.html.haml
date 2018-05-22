@@ -1,11 +1,12 @@
 %a.cs-nav-item.button.hide-desktop(ng-click="openModal('login'); nav.showMenu = false" ng-if='!authentication.currentUser()')
   Sign In
 
-%a.cs-nav-item(href='https://store.chefsteps.com/')
-  Shop
-
 %a.cs-nav-item(href='/joule')
   Joule
+
+%a.cs-nav-item(href='/gallery')
+  %span.hide-desktop Search
+  Recipes
 
 %a.cs-nav-item(href='/premium')
   Premium
@@ -35,11 +36,6 @@
           %a(href="/activities/the-egg-calculator" target="_self")
             Egg Calculator
 
-%a.cs-nav-item(href='/gallery')
-  %span.hide-desktop Search
-  Recipes
-%a.cs-nav-item(href='/classes')
-  Classes
 %a.cs-nav-item(href='https://support.chefsteps.com/')
   Support
 
@@ -51,11 +47,11 @@
     Profile
 
 - if current_user
-  %a.cs-nav-item.hide-desktop(ng-href="https://store.chefsteps.com/cart")
+  %a.cs-nav-item.hide-desktop(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/cart")
     Cart
 
 - if current_user
-  %a.cs-nav-item.hide-desktop(ng-href="https://store.chefsteps.com/account")
+  %a.cs-nav-item.hide-desktop(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/account")
     Order History
 
 %a.cs-nav-item.hide-desktop(ng-href="/logout" ng-if='authentication.currentUser()')

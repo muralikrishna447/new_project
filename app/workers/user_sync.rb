@@ -40,7 +40,15 @@ class UserSync
     joule_counts = get_joule_counts()
 
     if joule_counts[:ever_connected_count] > 0
-      Shopify::Customer.find_or_create_referral_code_for_user @user
+      sync_referral_code_impl(@user)
+    end
+  end
+
+  def sync_referral_code_impl(user)
+    if CsSpree.front_end_live?
+      CsSpree::Sync.ensure_share_joule_code_for_user user
+    else
+      Shopify::Customer.find_or_create_referral_code_for_user user
     end
   end
 
@@ -103,7 +111,7 @@ class UserSync
       merges = {
         JOULES_CONNECTED_MERGE_TAG => joule_counts[:connected_count],
         JOULES_EVER_CONNECTED_MERGE_TAG => joule_counts[:ever_connected_count],
-        REFERRAL_CODE_MERGE_TAG => Shopify::Customer.find_or_create_referral_code_for_user(@user)
+        REFERRAL_CODE_MERGE_TAG => sync_referral_code_impl(@user)
       }
 
       if merges != member_info['merges']

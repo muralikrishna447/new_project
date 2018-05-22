@@ -2,6 +2,9 @@ development:
   env: "development"
   chefsteps_endpoint: "localhost:3000"
   freshsteps_endpoint: "localhost:4000"
+  catalog_endpoint: "localhost:7777"
+  spree_domain: "localhost"
+  spree_endpoint: "http://localhost:3001"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom:
     api_endpoint: "http://localhost:5000"
@@ -9,12 +12,15 @@ development:
     env: "dev"
   facebook: &development_facebook
     app_id: "249352241894051"
-    messenger_endpoint: "messenger.com"
+    messenger_endpoint: "facebook.com"
 
 production:
   env: "production"
   chefsteps_endpoint: "chefsteps.com"
   freshsteps_endpoint: "d3ro0sksttkvbt.cloudfront.net"
+  spree_domain: "shop.chefsteps.com"
+  spree_endpoint: "https://shop.chefsteps.com"
+  catalog_endpoint: "chefsteps-catalog.herokuapp.com"
   segment_write_key: "CohfhzCATDidS52kLILe3ZZ3mVYYgzsP"
   bloom: &production_bloom
     api_endpoint: "https://cs-bloom-api-production.herokuapp.com"
@@ -22,12 +28,15 @@ production:
     env: "production"
   facebook:
     app_id: "380147598730003"
-    messenger_endpoint: "messenger.com"
+    messenger_endpoint: "facebook.com"
 
 staging:
   env: "staging"
   chefsteps_endpoint: "chocolateyshatner.com"
   freshsteps_endpoint: "d2w4l5nz3qs7iy.cloudfront.net"
+  spree_domain: "shop.chocolateyshatner.com"
+  spree_endpoint: "https://shop.chocolateyshatner.com"
+  catalog_endpoint: "chefsteps-catalog.herokuapp.com"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom: &staging_bloom
     api_endpoint: "https://cs-bloom-api-staging.herokuapp.com"
@@ -35,23 +44,29 @@ staging:
     env: "staging"
   facebook: &staging_facebook
     app_id: "642634055780525"
-    messenger_endpoint: "messenger.com"
+    messenger_endpoint: "facebook.com"
 
 staging2:
   env: "staging"
   chefsteps_endpoint: "vanillanimoy.com"
   freshsteps_endpoint: "d3874mzg2llbaz.cloudfront.net"
+  catalog_endpoint: "chefsteps-catalog.herokuapp.com"
+  spree_domain: "shop.chocolateyshatner.com"
+  spree_endpoint: "https://shop.chocolateyshatner.com/"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom:
     <<: *staging_bloom
   facebook:
     <<: *staging_facebook
-    messenger_endpoint: "messenger.com"
+    messenger_endpoint: "facebook.com"
 
 test:
   env: "test"
   chefsteps_endpoint: "chefsteps-test-endpoint.com"
   freshsteps_endpoint: "test.url"
+  catalog_endpoint: "chefsteps-catalog.herokuapp.com"
+  spree_domain: "spree.test.com"
+  spree_endpoint: "https://spree.test.com/"
   bloom:
     api_endpoint: "bloomAPI"
     community_endpoint: "communityAPI"

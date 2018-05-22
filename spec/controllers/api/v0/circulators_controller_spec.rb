@@ -9,6 +9,7 @@ describe Api::V0::CirculatorsController do
     @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
 
     @user_aa = ActorAddress.create_for_user(@user, client_metadata: "create")
+    @second_user_aa = ActorAddress.create_for_user(@user, client_metadata: "create")
     token = @user_aa.current_token
     request.env['HTTP_AUTHORIZATION'] = token.to_jwt
   end
@@ -271,6 +272,32 @@ describe Api::V0::CirculatorsController do
       @circulator.notes.should == 'new notes'
     end
   end
+
+  context 'emoji handling' do
+    before :each do
+      @emoji_user = Fabricate :user, id: 77898, email: 'emoji@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
+      @emoji_name = "Burger\u{1f354}".encode('utf-8')
+      @emoji_notes = "I love \u{1f354}s".encode('utf-8')
+      @emoji_circulator = Fabricate :circulator, notes: @emoji_notes,
+                                    circulator_id: '4545454545454577', name: @emoji_name
+
+      @circulator_user = Fabricate :circulator_user, user: @emoji_user, circulator: @emoji_circulator, owner: true
+      @emoji_user_aa = ActorAddress.create_for_user(@emoji_user, client_metadata: "create")
+      token = @emoji_user_aa.current_token
+      request.env['HTTP_AUTHORIZATION'] = token.to_jwt
+    end
+
+    it 'should list circulators' do
+      get :index
+
+      response.should be_success
+      circulators = JSON.parse(response.body)
+      circulators[0]['name'].should == @emoji_name
+      circulators[0]['notes'].should == @emoji_notes
+    end
+  end
+
+
   context 'notify_clients' do
     before :each do
       issued_at = (Time.now.to_f * 1000).to_i
@@ -284,10 +311,12 @@ describe Api::V0::CirculatorsController do
       request.env['HTTP_AUTHORIZATION'] = @service_token
 
       stub_sns_publish()
+      stub_dynamo_save()
       Api::V0::CirculatorsController.any_instance.stub(:delete_endpoint) do |arn|
         @deleted_endpoints << arn
       end
       @published_messages = []
+      @saved_notifications = []
       @deleted_endpoints = []
 
       p = PushNotificationToken.new
@@ -300,6 +329,18 @@ describe Api::V0::CirculatorsController do
 
     #'random_drop' && notification_type != 'dynamic_alert'
     describe 'admin_notify_clients' do
+      before :each do
+        issued_at = (Time.now.to_f * 1000).to_i
+
+        service_claim = {
+          iat: issued_at,
+          service: 'AdminPushMessaging'
+        }
+        @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+        @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
+        request.env['HTTP_AUTHORIZATION'] = @service_token
+      end
+
       it 'requires idempotency_key parameter' do
         post(
             :admin_notify_clients,
@@ -430,6 +471,9 @@ describe Api::V0::CirculatorsController do
           )
           expect(response.code).to eq '200'
           expect(@published_messages.length).to eq 1
+          expect(@saved_notifications.length).to eq 1
+          expect(@saved_notifications[0]["notification_type"]).to eq 'disconnect_while_cooking'
+          expect(@saved_notifications[0]["message_id"]).to_not be_nil
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
           gcm = JSON.parse msg['GCM']
@@ -467,6 +511,24 @@ describe Api::V0::CirculatorsController do
           expect(@published_messages.length).to eq 1
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
+        end
+
+        it 'should notify both joule-beta and joule apps' do
+          p = PushNotificationToken.new
+          p.actor_address = @second_user_aa
+          p.endpoint_arn = "beta-endpoint-arn"
+          p.app_name ='joule-beta'
+          p.device_token = 'beta-device-token'
+          p.save!
+
+          post(
+            :notify_clients,
+            id: @circulator.circulator_id,
+            notification_type: notification_type
+          )
+          arns = @published_messages.map {|m| m[:arn]}
+          expect(arns.length).to eq 2
+          expect(arns).to include('beta-endpoint-arn')
         end
 
         it 'should notify clients with emoji Joule name' do
@@ -520,10 +582,12 @@ describe Api::V0::CirculatorsController do
         it 'should pass circulator_address in params' do
           post(
             :notify_clients,
+            format: 'json',
             id: @circulator.circulator_id,
             notification_type: 'water_heated',
             notification_params: {
-              joule_name: nil
+              joule_name: nil,
+              feed_id: 123,
             }
           )
           msg = JSON.parse(@published_messages[-1][:msg])
@@ -531,6 +595,32 @@ describe Api::V0::CirculatorsController do
           gcm = JSON.parse msg['GCM']
           expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
           expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
+          expect(apns['aps']['feed_id']).to eq 123
+          expect(gcm['data']['feed_id']).to eq 123
+        end
+
+        it 'should not be able to overwrite reserved fields' do
+          post(
+            :notify_clients,
+            format: 'json',
+            id: @circulator.circulator_id,
+            notification_type: 'water_heated',
+            notification_params: {
+              joule_name: nil,
+              message: 'BAD',
+              alert: 'BAD',
+              sound: 'BAD',
+              title: 'BAD',
+              feed_id: 123,
+            }
+          )
+          msg = JSON.parse(@published_messages[-1][:msg])
+          apns = JSON.parse msg['APNS']
+          gcm = JSON.parse msg['GCM']
+          for k in ['message', 'alert', 'sound', 'title']
+            apns['aps'][k].should_not == 'BAD'
+            gcm['data'][k].should_not == 'BAD'
+          end
         end
 
         it 'should delete token if endpoint disabled' do
@@ -542,6 +632,7 @@ describe Api::V0::CirculatorsController do
           arn = token.endpoint_arn
           post(
             :notify_clients,
+            format: 'json',
             id: @circulator.circulator_id,
             notification_type: notification_type
           )
@@ -566,6 +657,7 @@ describe Api::V0::CirculatorsController do
           it 'does not send notification' do
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -579,6 +671,7 @@ describe Api::V0::CirculatorsController do
           it 'sends notification' do
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -593,6 +686,7 @@ describe Api::V0::CirculatorsController do
             # We should see two notifications in total
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -601,6 +695,7 @@ describe Api::V0::CirculatorsController do
             Timecop.freeze(73.hours)
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -614,6 +709,7 @@ describe Api::V0::CirculatorsController do
           it 'does not send a new notification' do
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -622,6 +718,7 @@ describe Api::V0::CirculatorsController do
             Timecop.freeze(71.hours)
             post(
               :notify_clients,
+              format: 'json',
               id: @circulator.circulator_id,
               notification_type: notification_type,
               idempotency_key: idempotency_key
@@ -703,6 +800,13 @@ describe Api::V0::CirculatorsController do
   def stub_sns_publish
     Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |arn, msg|
       @published_messages << {arn: arn, msg: msg}
+      {:message_id => SecureRandom.uuid}
+    end
+  end
+
+  def stub_dynamo_save
+    Api::V0::CirculatorsController.any_instance.stub(:save_push_notification_item_to_dynamo) do |item|
+      @saved_notifications << item
     end
   end
 end

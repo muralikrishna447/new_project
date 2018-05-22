@@ -11,10 +11,16 @@ module Api
       # identifyCirculator
       VERSION_MAPPING = {
         "APPLICATION_FIRMWARE" => "appFirmwareVersion",
-        "WIFI_FIRMWARE"        => "espFirmwareVersion"
+        "WIFI_FIRMWARE"        => "espFirmwareVersion",
+        "BOOTLOADER_FIRMWARE"  => "bootloaderVersion",
       }
 
       UPDATE_URGENCIES = ['normal', 'critical', 'mandatory']
+
+      # JL.p5 == J5 These are original US production Joules
+      # J6 These are UL Certified/Canda Joules
+      # J7 These are CE Certified/EU Joules
+      HW_VERSION_WHITELIST = ['JL.p5', 'J5', 'J6', 'J7']
 
       def updates
         # How this currently works
@@ -30,13 +36,18 @@ module Api
           return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify mobile app version'}
         end
 
+        if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil? || params[:bootloaderVersion].nil?
+          logger.warn("Must specify appFirmwareVersion, espFirmwareVersion, and bootloaderVersion")
+          return render_empty_response
+        end
+
         unless dfu_capable?(params)
           logger.info("Not DFU capable")
           return render_empty_response
         end
 
         hardware_version = params[:hardwareVersion]
-        if hardware_version != 'JL.p5'
+        if !HW_VERSION_WHITELIST.include? hardware_version
           logger.info("Hardware version does not support DFU: #{hardware_version}")
           return render_empty_response
         end
@@ -80,21 +91,42 @@ module Api
       class ManifestInvalidError < StandardError
       end
 
-      def build_response_from_manifest(user, manifest)
+      def get_version_number(version_string)
+        version_string.match(/s?(\d*)/)[1].to_i # handle staging
+      end
+
+
+      def get_applicable_updates(user, manifest)
         updates = []
+        can_downgrade = BetaFeatureService.user_has_feature(user, 'allow_dfu_downgrade')
+
         manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
-          current_version = params[param_type]
+          current_version = params[param_type] || ""
+          current_version_num = get_version_number(current_version)
+          if current_version_num == 0 # to_i converts unknown patterns to 0
+            logger.warn "No version information provided for #{u['type']}! Returning no updates"
+            return []
+          end
+
+          manifest_version_num = get_version_number(u['version'])
 
           logger.info "#{u['type']}: current [#{current_version}] vs update [#{u['version']}]"
 
-          if current_version == u['version']
+          if current_version_num == manifest_version_num
             logger.info "Correct version for type [#{u['type']}]"
             next
           end
 
+          if (current_version_num > manifest_version_num) && !can_downgrade
+            logger.info "Current version #{current_version_num} > #{manifest_version_num} [#{u['type']}]"
+            next
+          end
+
           if u['type'] == 'APPLICATION_FIRMWARE'
-            u = get_app_firmware_metadata(u)
+            u = get_firmware_metadata(u)
+          elsif u['type'] == 'BOOTLOADER_FIRMWARE'
+            u = get_firmware_metadata(u)
           elsif u['type'] == 'WIFI_FIRMWARE'
             u = get_wifi_firmware_metadata(u)
           end
@@ -105,6 +137,26 @@ module Api
 
           updates << u
         end
+
+        # We always want to apply updates in this order.
+        sort_order = {
+          "WIFI_FIRMWARE"        => 0,
+          "BOOTLOADER_FIRMWARE"  => 1,
+          "APPLICATION_FIRMWARE" => 2,
+        }
+        updates.sort_by! {|u| sort_order[u['type']] }
+        return updates
+      end
+
+      def build_response_from_manifest(user, manifest)
+        updates = get_applicable_updates(user, manifest)
+        update_types = updates.map {|u| u['type'] }
+        if update_types.include? 'BOOTLOADER_FIRMWARE'
+          updates.last['bootModeType'] = 'BOOTLOADER_BOOT_MODE'
+        elsif update_types.include? 'APPLICATION_FIRMWARE'
+          updates.last['bootModeType'] = 'APPLICATION_BOOT_MODE'
+        end
+
 
         if BetaFeatureService.user_has_feature(user, 'manifest_urgency')
           manifest_urgency = manifest['urgency'] || 'normal'
@@ -169,11 +221,9 @@ module Api
         u
       end
 
-      def get_app_firmware_metadata(update)
+      def get_firmware_metadata(update)
         u = update.dup
         link = get_firmware_link(u['type'], u['version'])
-
-        u['bootModeType'] = 'APPLICATION_BOOT_MODE'
 
         u['transfer'] = [
           {
@@ -230,9 +280,13 @@ module Api
       end
 
       def get_firmware_link(type, version)
+        file_name = {
+          "APPLICATION_FIRMWARE" => "application.bin",
+          "BOOTLOADER_FIRMWARE"  => "bootloader.bin",
+        }[type]
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
         bucket_name = Rails.application.config.firmware_bucket
-        key_name = "joule/#{type}/#{version}/application.bin"
+        key_name = "joule/#{type}/#{version}/#{file_name}"
         bucket = AWS::S3::Bucket.new(bucket_name, :client => s3_client)
         o = bucket.objects[key_name]
         o.url_for(:get, {secure: true, expires: LINK_EXPIRE_SECS}).to_s

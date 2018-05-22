@@ -7,8 +7,8 @@ class FreshStepsProxy < Rack::Proxy
   # browser-sync was pinging multiple times per second. Although without the proxy, rails returns 406 so
   # it is still doing work. Curious.
 
-  PREFIX = %w(/gallery /classes /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-overview /recommended /market /joule-split /orders /butchers)
-  EXACT = %w(/ /sous-vide /grilling /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs /gifting /sso /sign-up /steak-by-joule /gifs /404 /forum-welcome /preorder-sweepstakes /preorder-sweepstakes-legal /components /lamarzocco-ultimate-espresso-kit /getting-started-with-joule /known-issues /food52 /Food52 /voice-control /cooking-challenge /equipment-we-love)
+  PREFIX = %w(/gallery /classes /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-staging /joule-overview /recommended /market /joule-split /orders /butchers)
+  EXACT = %w(/ /sous-vide /grilling /getpremium /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs /gifting /sso /sign-up /steak-by-joule /gifs /404 /forum-welcome /preorder-sweepstakes /preorder-sweepstakes-legal /components /lamarzocco-ultimate-espresso-kit /getting-started-with-joule /known-issues /food52 /Food52 /voice-control /cooking-challenge /equipment-we-love /opi-submissions /conversational-cooking /joule-one-million-meals /who-we-are /customer-panel-studies)
 
   EXCLUDE = %w(/joule/warranty)
   SUFFIX = %w(/fork /notify_start_edit /notify_end_edit /as_json /the-egg-calculator /new)
@@ -39,7 +39,8 @@ class FreshStepsProxy < Rack::Proxy
 
       utm_cookie = {
         :value => cookie_value,
-        :domain => Rails.application.config.cookie_domain
+        :domain => Rails.application.config.cookie_domain,
+        :path => '/'
       }
       Rack::Utils.set_cookie_header!(headers, 'utm', utm_cookie)
       [status, headers, body]

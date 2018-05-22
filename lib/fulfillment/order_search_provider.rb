@@ -32,21 +32,23 @@ module Fulfillment
       raise 'search_params.storage is required' unless search_params[:storage]
       storage = Fulfillment::CSVStorageProvider.provider(search_params[:storage])
       rows = CSV.parse(storage.read(search_params), headers: true)
-      orders = []
+
+      # The pending file will have a row for each fulfillable line item, so
+      # we look up the set of unique orders by ID in case there are orders
+      # with multiple SKUs/line items that we are fulfilling.
+      orders_by_id = {}
       rows.each do |row|
         order_id = row['order_id'].to_i
         raise "Row has no order ID: #{row.inspect}" unless order_id
 
-        Rails.logger.debug("Retrieving order from Shopify with id #{order_id}")
-        order = nil
-        Retriable.retriable tries: 3 do
-          order = ShopifyAPI::Order.find(order_id)
+        if orders_by_id[order_id]
+          Rails.logger.debug("Already added order with id #{order_id} to results, skipping")
+        else
+          Rails.logger.debug("Retrieving order from Shopify with id #{order_id}")
+          orders_by_id[order_id] = Shopify::Utils.order_by_id(order_id)
         end
-        raise "Order not found: #{order_id}" unless order
-
-        orders << order
       end
-      orders
+      orders_by_id.values
     end
   end
 end

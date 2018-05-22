@@ -37,4 +37,17 @@ describe Users::RegistrationsController do
       expect(response.status).to eq 401
     end
   end
+
+  describe "#destroy" do
+    before do
+      @request.env["devise.mapping"] = Devise.mappings[:user]
+      @user = Fabricate(:user)
+      sign_in(@user)
+    end
+
+    it "should redirect a user back to the edit page" do
+      delete :destroy
+      response.should redirect_to root_url
+    end
+  end
 end

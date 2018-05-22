@@ -48,6 +48,12 @@ describe Utils do
       expect(Utils.weighted_random_sample(input, :w, 1).count).to eq(1)
     end
 
+    it 'treats a weight of 0 as a minimum weight and doesnt divide by 0' do
+      input = [{m: "a", w: 9999999999}, {m: "b", w: 0}]
+      expect(Utils.weighted_random_sample(input, :w, 1)).to eq([input[0]])
+    end
+
+
     it 'appears to sample correctly' do
       input = [{m: "a", w: 1}, {m: "c", w: 3}, {m: "b", w: 2}]
       output = {}

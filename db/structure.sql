@@ -974,6 +974,41 @@ ALTER SEQUENCE gift_certificates_id_seq OWNED BY gift_certificates.id;
 
 
 --
+-- Name: guide_activities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE guide_activities (
+    id integer NOT NULL,
+    guide_id character varying(255),
+    guide_title character varying(255),
+    activity_id integer,
+    guide_digest character varying(255),
+    autoupdate boolean DEFAULT true,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: guide_activities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE guide_activities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: guide_activities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE guide_activities_id_seq OWNED BY guide_activities.id;
+
+
+--
 -- Name: images; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2603,6 +2638,13 @@ ALTER TABLE ONLY gift_certificates ALTER COLUMN id SET DEFAULT nextval('gift_cer
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY guide_activities ALTER COLUMN id SET DEFAULT nextval('guide_activities_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
 
 
@@ -3070,6 +3112,14 @@ ALTER TABLE ONLY friendly_id_slugs
 
 ALTER TABLE ONLY gift_certificates
     ADD CONSTRAINT gift_certificates_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: guide_activities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY guide_activities
+    ADD CONSTRAINT guide_activities_pkey PRIMARY KEY (id);
 
 
 --
@@ -3707,6 +3757,20 @@ CREATE INDEX index_gift_certificates_on_token ON gift_certificates USING btree (
 
 
 --
+-- Name: index_guide_activities_on_activity_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_guide_activities_on_activity_id ON guide_activities USING btree (activity_id);
+
+
+--
+-- Name: index_guide_activities_on_guide_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_guide_activities_on_guide_id ON guide_activities USING btree (guide_id);
+
+
+--
 -- Name: index_inclusions_on_activity_id_and_course_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3725,6 +3789,13 @@ CREATE INDEX index_inclusions_on_course_id_and_activity_id ON inclusions USING b
 --
 
 CREATE INDEX index_ingredients_on_slug ON ingredients USING btree (slug);
+
+
+--
+-- Name: index_joule_cook_history_items_on_cook_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_joule_cook_history_items_on_cook_id ON joule_cook_history_items USING btree (cook_id);
 
 
 --
@@ -4431,8 +4502,12 @@ INSERT INTO schema_migrations (version) VALUES ('20170105211422');
 
 INSERT INTO schema_migrations (version) VALUES ('20170109173731');
 
+INSERT INTO schema_migrations (version) VALUES ('20170224233915');
+
 INSERT INTO schema_migrations (version) VALUES ('20170228210819');
 
 INSERT INTO schema_migrations (version) VALUES ('20170306212842');
 
 INSERT INTO schema_migrations (version) VALUES ('20170317222144');
+
+INSERT INTO schema_migrations (version) VALUES ('20170522182222');

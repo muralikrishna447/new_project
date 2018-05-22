@@ -6,6 +6,20 @@ describe Api::V0::UsersController do
     @token = 'Bearer ' + @aa.current_token.to_jwt
     BetaFeatureService.stub(:user_has_feature).with(@user, anything()) \
       .and_return(false)
+
+    @other_user = Fabricate :user, id: 101, email: 'janedoe@chefsteps.com', password: '123456', name: 'Jane Doe', role: 'user'
+    @other_aa = ActorAddress.create_for_user @other_user, client_metadata: "test"
+    @other_token = 'Bearer ' + @other_aa.current_token.to_jwt
+    BetaFeatureService.stub(:user_has_feature).with(@other_user, anything()) \
+      .and_return(false)
+
+    issued_at = (Time.now.to_f * 1000).to_i
+    service_claim = {
+        iat: issued_at,
+        service: 'CSSpree'
+    }
+    @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
+    @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
   end
 
   context 'GET /me' do
@@ -118,6 +132,39 @@ describe Api::V0::UsersController do
     end
   end
 
+  context 'POST /make_premium' do
+    it "makes a valid user premium" do
+      #the user is first NOT premium
+      request.env['HTTP_AUTHORIZATION'] = @token
+      get :me
+      response.code.should == "200"
+      user_info = JSON.parse(response.body)
+      expect(user_info["premium"]).to be_false
+
+      #make the user premium
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      post :make_premium, {id: 100, price: 29}
+      response.code.should == "200"
+
+      #the user should now be premium
+      request.env['HTTP_AUTHORIZATION'] = @token
+      get :me
+      response.code.should == "200"
+      user_info = JSON.parse(response.body)
+      expect(user_info["premium"]).to be_true
+    end
+
+    it "fails when arguments are omitted" do
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      post :make_premium, {price: 29}
+      response.code.should == "400"
+
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      post :make_premium, {id: 100}
+      response.code.should == "400"
+    end
+  end
+
   context 'PUT /update' do
     it 'should update a user' do
       request.env['HTTP_AUTHORIZATION'] = @token
@@ -166,6 +213,10 @@ describe Api::V0::UsersController do
   end
 
   context 'GET /capabilities' do
+    before :each do
+      Rails.cache.clear()
+    end
+
     it 'get empty list if no capabilities' do
       request.env['HTTP_AUTHORIZATION'] = @token
       get :capabilities
@@ -179,6 +230,21 @@ describe Api::V0::UsersController do
       get :capabilities
       response.should be_success
       JSON.parse(response.body)['capabilities'].should == ['beta_guides']
+    end
+
+    it 'get capabilities for two users' do
+      request.env['HTTP_AUTHORIZATION'] = @token
+      BetaFeatureService.stub(:user_has_feature).with(@user, 'beta_guides')
+        .and_return(true)
+
+      get :capabilities
+      response.should be_success
+      JSON.parse(response.body)['capabilities'].should == ['beta_guides']
+
+      request.env['HTTP_AUTHORIZATION'] = @other_token
+      get :capabilities
+      response.should be_success
+      JSON.parse(response.body)['capabilities'].should == []
     end
 
     it 'get fbjoule capability' do

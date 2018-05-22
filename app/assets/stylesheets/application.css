@@ -88,4 +88,15 @@
  *= require cs_dropdown
  *= require legal
  *= require tf2_redemptions
+ * DA - These are the one off landing pages that we are building out.
+ *= require landingPages/joule_vs_anova_sous_vide
+ * DA - Importing freshSteps CSS files as a base to build a page off of
+ * These will probably get out of date but shouldn't be more than a
+ * straight copy from the freshSteps components
+ *= require freshSteps/components
+ *= require freshSteps/buttons
+ *= require freshSteps/flexboxgrid
+ *= require freshSteps/typography
+ *= require freshSteps/style
+ *= require customer_feedback_panel
  */

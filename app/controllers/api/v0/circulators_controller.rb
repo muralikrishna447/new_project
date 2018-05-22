@@ -1,11 +1,17 @@
 require_dependency 'beta_feature_service'
+require_dependency 'external_service_token_checker'
 module Api
   module V0
     class CirculatorsController < BaseController
+      @@dynamo_client = Aws::DynamoDB::Client.new(region: 'us-east-1')
+
       before_filter :ensure_authorized, except: [:notify_clients, :admin_notify_clients, :coefficients]
       before_filter :ensure_circulator_owner, only: [:update, :destroy]
       before_filter :ensure_circulator_user, only: [:token]
-      before_filter :ensure_authorized_service, only: [:notify_clients, :admin_notify_clients]
+      before_filter(BaseController.make_service_or_admin_filter(
+        [ExternalServiceTokenChecker::MESSAGING_SERVICE]), only: [:notify_clients])
+      before_filter(BaseController.make_service_or_admin_filter(
+        [ExternalServiceTokenChecker::ADMIN_PUSH_SERVICE]), only: [:admin_notify_clients])
 
       def index
         @user = User.find @user_id_from_token
@@ -109,7 +115,7 @@ module Api
           return render_api_response 404, {message: "Circulator not found"}
         end
 
-        if notified?(circulator, params[:idempotency_key])
+        if check_and_set_notified(circulator, params[:idempotency_key])
           return render_api_response 200, { message: 'A notification has already '\
                                                      'been sent for circulator with '\
                                                      "id #{circulator.id} and idempotency "\
@@ -129,34 +135,29 @@ module Api
         render_api_response 200
       end
 
-      def publish_notification(circulator, token, push_notification, is_admin_message)
+      def publish_notification(user, circulator, token, push_notification, is_admin_message)
         message = push_notification.message
         notification_type = push_notification.notification_type
         endpoint_arn = token.endpoint_arn
         Librato.increment("api.publish_notification_requests")
 
         title = I18n.t("circulator.app_name", raise: true)
+
+        base_params = push_notification.params.merge({
+          notification_type: notification_type,
+          circulator_address: circulator.circulator_id
+        })
+
         gcm_data = {
-          data: {
-            message: message,
-            title: title,
-            notification_type: notification_type,
-            circulator_address: circulator.circulator_id,
-          }
+          data: base_params.merge({message: message, title: title,})
         }
         apns_data = {
-          aps: {
-            alert: message,
-            sound: 'default',
-            notification_type: notification_type,
-            circulator_address: circulator.circulator_id,
-          }
+          aps: base_params.merge({alert: message, sound: 'default'})
         }
 
         if is_admin_message
           #copy additional params into gcm_data and apns_data
-          ["content_available",
-               "headerIcon",
+          ["headerIcon",
                "headerColor",
                "titleString",
                "bodyString",
@@ -168,18 +169,18 @@ module Api
           end
         end
 
-        # NOTE: We *need* to use JSON.generate because to_json has a
-        # bug in it when it comes to higher unicode codepoints.  See:
-        # http://stackoverflow.com/questions/7775597/bug-in-ruby-json-lib-when-handling-4-byte-unicode-emoji
         message = {
-          GCM: JSON.generate(gcm_data),
-          APNS_SANDBOX: JSON.generate(apns_data),
-          APNS: JSON.generate(apns_data)
+          GCM: gcm_data.to_json,
+          APNS_SANDBOX: apns_data.to_json,
+          APNS: apns_data.to_json,
         }
 
         logger.info "Publishing #{message.inspect}"
         begin
-          publish_json_message(endpoint_arn, JSON.generate(message))
+          resp = publish_json_message(endpoint_arn, message.to_json)
+          save_push_notification(
+            resp[:message_id], user, circulator, token, push_notification
+          )
         rescue Aws::SNS::Errors::EndpointDisabled
           # NOTE: Clean up any disabled endpoints, since they're
           # likely not useful anymore.  There is a chance that Apple
@@ -207,7 +208,7 @@ module Api
           return render_api_response 400, {message: "You must pass the idempotency_key parameter."}
         end
 
-        if notified?(@circulator, params[:idempotency_key], true)
+        if check_and_set_notified(@circulator, params[:idempotency_key], true)
           return render_api_response 200, { message: 'A notification has already '\
                                                      'been sent for circulator with '\
                                                      "id #{@circulator.id} and idempotency "\
@@ -235,11 +236,34 @@ module Api
       # it out due to weird interactions between Rspec and AWS)
       def publish_json_message(endpoint_arn, json_str)
         sns = Aws::SNS::Client.new(region: 'us-east-1')
-        sns.publish(
+        r = sns.publish(
           target_arn: endpoint_arn,
           message_structure: 'json',
           message: json_str
         )
+        return r.data
+      end
+
+      def save_push_notification(message_id, user, circulator, token, push_notification)
+        item = {
+          'message_id' => message_id,
+          'user_id' => user.id,
+          'notification_type' => push_notification.notification_type,
+          'circulator_address' => circulator.circulator_id,
+          'status' => 'posted',
+          'endpoint_arn' => token.endpoint_arn,
+          'created_at' => Time.now.iso8601(),
+          'ttl' => (Time.now + 90.days).to_i,
+        }
+        item.update(push_notification.params)
+        save_push_notification_item_to_dynamo(item)
+      end
+
+      def save_push_notification_item_to_dynamo(item)
+        @@dynamo_client.put_item({
+          table_name: Rails.configuration.dynamodb.push_notifications_table,
+          item: item,
+        })
       end
 
       def delete_endpoint(endpoint_arn)
@@ -304,11 +328,12 @@ module Api
       end
 
       class PushNotification
-        attr_reader :notification_type, :message
+        attr_reader :notification_type, :message, :params
 
-        def initialize(notification_type, message)
+        def initialize(notification_type, message, params = nil)
           @notification_type = notification_type
           @message = message
+          @params = params || {}
         end
       end
 
@@ -339,8 +364,14 @@ module Api
           end
         end
 
+        # Other metadata that we want to pass on to the app
+        keys = ['feed_id']
+        additional_params = (params[:notification_params] || {}).select{
+          |k,v| keys.include? k
+        }
+
         return PushNotification.new(
-          notification_type, message
+          notification_type, message, additional_params
         )
       end
 
@@ -375,7 +406,7 @@ module Api
         )
       end
 
-      def notified?(circulator, idempotency_key, enforce_idempotency_key=false)
+      def check_and_set_notified(circulator, idempotency_key, enforce_idempotency_key=false)
         unless enforce_idempotency_key
           if idempotency_key.blank?
             logger.info "No idempotency_key was specified, will send notification for circulator with id #{circulator.id}"
@@ -383,11 +414,17 @@ module Api
           end
         end
 
+        # Set notified right away, to avoid duplicate notifications.
+        # We still have a small race condition, which could be
+        # eliminated by using the check-and-set method, although the
+        # semantics of that method are a bit weird
+        # http://www.rubydoc.info/github/mperham/dalli/Dalli/Client#cas-instance_method
         cache_key = notification_cache_key(circulator, idempotency_key)
         if Rails.cache.exist?(cache_key)
           logger.info "Notification cache entry for #{cache_key} found, notification already sent for circulator with id #{circulator.id}"
           return true
         end
+        set_notified(circulator, params[:idempotency_key])
 
         logger.info "No notification cache entry for #{cache_key}, will send notification for circulator with id #{circulator.id}"
         false
@@ -401,15 +438,13 @@ module Api
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
             next if aa.revoked?
-            token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => 'joule').first
+            token = PushNotificationToken.where(:actor_address_id => aa.id, :app_name => ['joule', 'joule-beta']).first
             next if token.nil?
             logger.info "Publishing notification to user #{owner.user.id} for #{circulator.circulator_id}" \
-                        " of type #{push_notification.notification_type} token #{token.inspect}"
-            publish_notification(circulator, token, push_notification, is_admin_message)
+                        " of type #{push_notification.notification_type} token_id=#{token.id} ARN=#{token.endpoint_arn}"
+            publish_notification(owner.user, circulator, token, push_notification, is_admin_message)
           end
         end
-
-        set_notified(circulator, idempotency_key)
       end
 
       def set_notified(circulator, idempotency_key)

@@ -47,15 +47,20 @@ module Api
           limit = metadata.delete(:limit).to_i || 1
           connected = (metadata.delete(:connected) == 'true')
 
-          circulator_owner = @user_id_from_token && (current_api_user.owned_circulators.count > 0 || current_api_user.joule_purchase_count > 0)
+          is_circulator_owner = @user_id_from_token && (current_api_user.owned_circulators.count > 0 || current_api_user.joule_purchase_count > 0)
 
           ads = []
 
           # These are the only known uses right now. Anything else, we got no recommendations.
           # Which isn't considered an error.
           if platform == 'jouleApp' && (slot == 'homeHero' || slot == 'referPage')
-            if circulator_owner || connected
-              possible_ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
+            if is_circulator_owner || connected
+              if (is_circulator_owner &&
+                  BetaFeatureService.user_has_feature(current_api_user, 'force_quick_and_easy_ad'))
+                possible_ads = Advertisement.where(matchname: 'quickAndEasy').published.all.to_a
+              else
+                possible_ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
+              end
 
               # TODO: remove this hack for bacon ad. We hadn't thought through the problem that an ad
               # could be for a URL to content the app doesn't have yet. In the future, the app should

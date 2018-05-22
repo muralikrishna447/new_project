@@ -27,6 +27,7 @@ describe Fulfillment::FedexShippingAddressValidator do
     let(:too_long) { '123456789012345678901234567890123456' }
     let(:too_short) { '12' }
     let(:invalid_char) { "ABC123\u{00A0}456" } # Non-breaking space, a common bad one
+    let(:double_quote) { 'ABC"1"23' }
 
     context 'shipping address is valid' do
       it 'validate returns is_valid true' do
@@ -82,6 +83,11 @@ describe Fulfillment::FedexShippingAddressValidator do
       include_examples 'invalid'
     end
 
+    context 'order has name with double quote' do
+      let(:name) { double_quote }
+      include_examples 'invalid'
+    end
+
     context 'order has company less than min length' do
       let(:company) { too_short }
       include_examples 'invalid'
@@ -94,6 +100,11 @@ describe Fulfillment::FedexShippingAddressValidator do
 
     context 'order has company with invalid char' do
       let(:company) { invalid_char }
+      include_examples 'invalid'
+    end
+
+    context 'order has company with double quote' do
+      let(:company) { double_quote }
       include_examples 'invalid'
     end
 
@@ -122,6 +133,11 @@ describe Fulfillment::FedexShippingAddressValidator do
       include_examples 'invalid'
     end
 
+    context 'order has address1 with double quote' do
+      let(:address1) { double_quote }
+      include_examples 'invalid'
+    end
+
     context 'order has address2 exceeding max length' do
       let(:address2) { too_long }
       include_examples 'invalid'
@@ -129,6 +145,11 @@ describe Fulfillment::FedexShippingAddressValidator do
 
     context 'order has address2 with invalid char' do
       let(:address2) { invalid_char }
+      include_examples 'invalid'
+    end
+
+    context 'order has address2 with double quote' do
+      let(:address2) { double_quote }
       include_examples 'invalid'
     end
 
@@ -154,6 +175,11 @@ describe Fulfillment::FedexShippingAddressValidator do
 
     context 'order has city with invalid char' do
       let(:city) { invalid_char }
+      include_examples 'invalid'
+    end
+
+    context 'order has city with double quote' do
+      let(:city) { double_quote }
       include_examples 'invalid'
     end
 

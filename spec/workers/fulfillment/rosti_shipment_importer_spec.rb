@@ -50,11 +50,13 @@ describe Fulfillment::RostiShipmentImporter do
     let(:rosti_order_number) { "##{order_name}-#{line_item_id}" }
     let(:serial_number_1) { 'serial_number_1' }
     let(:tracking_number_1) { '123456781234' }
+    let(:shipped_on_date_1) { '2017/05/17' }
     let(:csv_row_1) do
       {
         Fulfillment::RostiShipmentImporter::ROSTI_ORDER_NUMBER_COLUMN => rosti_order_number,
         Fulfillment::RostiShipmentImporter::SERIAL_NUMBER_COLUMN => serial_number_1,
-        Fulfillment::RostiShipmentImporter::TRACKING_NUMBER_COLUMN => tracking_number_1
+        Fulfillment::RostiShipmentImporter::TRACKING_NUMBER_COLUMN => tracking_number_1,
+        Fulfillment::RostiShipmentImporter::SHIPPED_ON_COLUMN => shipped_on_date_1
       }
     end
     let(:csv_rows) { [csv_row_1] }
@@ -90,7 +92,8 @@ describe Fulfillment::RostiShipmentImporter do
                   fulfillments: fulfillments,
                   tracking_company: 'FedEx',
                   tracking_numbers: [tracking_number_1],
-                  serial_numbers: [serial_number_1]
+                  serial_numbers: [serial_number_1],
+                  shipped_on_dates: [Date.parse(shipped_on_date_1)]
                 )
               ]
             )
@@ -100,11 +103,13 @@ describe Fulfillment::RostiShipmentImporter do
         context 'csv has multiple rows for line item' do
           let(:serial_number_2) { 'serial_number_2' }
           let(:tracking_number_2) { '876543218765' }
+          let(:shipped_on_date_2) { '2017/05/18' }
           let(:csv_row_2) do
             {
               Fulfillment::RostiShipmentImporter::ROSTI_ORDER_NUMBER_COLUMN => rosti_order_number,
               Fulfillment::RostiShipmentImporter::SERIAL_NUMBER_COLUMN => serial_number_2,
-              Fulfillment::RostiShipmentImporter::TRACKING_NUMBER_COLUMN => tracking_number_2
+              Fulfillment::RostiShipmentImporter::TRACKING_NUMBER_COLUMN => tracking_number_2,
+              Fulfillment::RostiShipmentImporter::SHIPPED_ON_COLUMN => shipped_on_date_2
             }
           end
           let(:csv_rows) { [csv_row_1, csv_row_2] }
@@ -118,7 +123,8 @@ describe Fulfillment::RostiShipmentImporter do
                   fulfillments: fulfillments,
                   tracking_company: 'FedEx',
                   tracking_numbers: [tracking_number_1, tracking_number_2],
-                  serial_numbers: [serial_number_1, serial_number_2]
+                  serial_numbers: [serial_number_1, serial_number_2],
+                  shipped_on_dates: [Date.parse(shipped_on_date_1), Date.parse(shipped_on_date_2)]
                 )
               ]
             )

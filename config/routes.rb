@@ -22,7 +22,7 @@ Delve::Application.routes.draw do
   get '/robots.txt' => RobotsTxt
 
   match '/libraries', to: 'legal#libraries'
-  match '/joule/warranty', to: 'home#joule_warranty'
+  # match '/joule/warranty', to: 'home#joule_warranty'
   match '/facebook_optout', to: 'home#facebook_optout'
 
   match '/forum', to: 'bloom#forum'
@@ -42,12 +42,18 @@ Delve::Application.routes.draw do
   get '/StovetopSousVide', to: redirect('/activities/cook-sous-vide-tonight-stovetop-method')
 
   # Legal Documents
-  get 'eula-ios' => 'legal#eula_ios', as: 'eula_ios'
-  get 'eula-android' => 'legal#eula_android', as: 'eula_android'
+  get '/eula-ios' => 'legal#eula'
+  get '/eula-android' => 'legal#eula'
+  get 'eula' => 'legal#eula', as: 'eula'
+  get 'cookie-policy' => 'legal#cookie_policy', as: 'cookie_policy'
   get 'privacy' => 'legal#privacy_policy', as: 'privacy'
   get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
   get 'terms' => 'legal#terms', as: 'terms'
   get 'terms' => 'legal#terms', as: 'terms_of_service'
+  match '/joule/warranty', to: 'legal#warranty'
+  match '/customer-feedback-panel', to: 'home#customer_feedback_panel'
+
+  get '/recipes', to: redirect('/gallery')
 
   ActiveAdmin.routes(self)
 
@@ -75,10 +81,12 @@ Delve::Application.routes.draw do
     post '/users/contacts/invite', to: 'users/contacts#invite'
     post '/users/contacts/gather_friends', to: 'users/contacts#gather_friends'
     post '/users/contacts/email_invite', to: "users/contacts#email_invite"
+    post '/users/delete_geo_cookie', to: 'users#delete_geo_cookie'
   end
 
   get 'users/session_me' => 'users#session_me'
   get 'users/preauth' => 'users#preauth'
+  get 'users/preauth_init' => 'users#preauth_init'
   get 'users/verify' => 'tokens#verify', as: 'verify'
   match 'users/set_location' => 'users#set_location'
 
@@ -278,6 +286,8 @@ Delve::Application.routes.draw do
         post :coefficients, on: :collection
       end
 
+      post 'users/make_premium', to: 'users#make_premium'
+
       post 'firmware/updates', to: 'firmware#updates'
       get 'auth/external_redirect', to: 'auth#external_redirect'
       get 'auth/external_redirect_by_key', to: 'auth#external_redirect_by_key'
@@ -285,6 +295,8 @@ Delve::Application.routes.draw do
       get 'content_config/manifest', to: 'content#manifest'
 
       namespace :shopping do
+
+        resources :countries, only: [:index]
         resources :discounts, only: [:show]
         resources :customer_orders, only: [:show] do
           post :update_address, on: :member
@@ -293,6 +305,9 @@ Delve::Application.routes.draw do
         resources :products do
           # match '/product/:product_id', to: 'shopping#product'
         end
+
+        resources :product_groups, only: [:index]
+
         resources :marketplace do
           get :guide_button, on: :collection
           get :guide_button_redirect, on: :collection
@@ -303,6 +318,8 @@ Delve::Application.routes.draw do
           get :add_to_cart, on: :collection
         end
       end
+
+      post 'premium/generate_cert_and_send_email', to: 'premium_gift_certificate#generate_cert_and_send_email'
 
       resources :charges, only: [:create] do
         put :redeem, on: :member
@@ -324,6 +341,8 @@ Delve::Application.routes.draw do
       resources :cook_history do
         get :find_by_guide, on: :collection
       end
+
+      resources :flags, only: [:index]
     end
   end
 
@@ -332,12 +351,15 @@ Delve::Application.routes.draw do
     get "end_clean" => "application#end_clean"
   end
 
+  # Start putting landing_pages here
+  match "/joule-vs-anova-sous-vide" => "landing_pages#joule-vs-anova-sous-vide"
+
   # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
   match '/*path' => 'application#options', :via => :options
 
   # show /pages/vegetarian-sous-vide-recipes also as /vegetarian-sous-vide-recipes
   get ':id', to: 'pages#show', constraints: lambda { |r| ! r.url.match(/jasmine/) }
-
+  
   # http://techoctave.com/c7/posts/36-rails-3-0-rescue-from-routing-error-solution
   match '*a', to: 'errors#routing', constraints: lambda { |r| ! r.url.match(/jasmine/) }
 end

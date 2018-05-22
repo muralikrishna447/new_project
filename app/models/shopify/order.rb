@@ -1,6 +1,9 @@
 class Shopify::Order
   PREMIUM_SKU = 'cs10002'
   JOULE_SKU = 'cs10001'
+  JOULE_WHITE_SKU = 'cs20001'
+  ALL_JOULE_SKUS = [JOULE_SKU, JOULE_WHITE_SKU].freeze
+  BIG_CLAMP_SKU = 'cs30001'.freeze
 
   METAFIELD_NAMESPACE = 'chefsteps' # duplicate code!?
   ALL_BUT_JOULE_FULFILLED_METAFIELD_NAME = 'all-but-joule-fulfilled'
@@ -19,6 +22,7 @@ class Shopify::Order
 
   def user
     return @user unless @user.nil?
+    return nil unless @api_order.respond_to?(:customer)
 
     # TODO - add test coverage for user not found scenarios
     user_id = @api_order.customer.multipass_identifier
@@ -83,7 +87,7 @@ class Shopify::Order
         next
       end
       # Hard code the SKUs for now, we can talk when we have more than two
-      if item.sku == JOULE_SKU
+      if ALL_JOULE_SKUS.include?(item.sku)
         order_contains_joule = true
         # TODO - fix joule_purchase to be idempotent
         user.joule_purchased if user
@@ -107,7 +111,8 @@ class Shopify::Order
     # Sync premium / discount status
     sync_user
     # TODO - figure out how to try to do this only once
-    send_analytics
+    # No customer means Amazon or other imported order for which we don't want to send analytics
+    send_analytics if user
   end
 
 

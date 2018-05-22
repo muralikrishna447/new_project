@@ -1,33 +1,19 @@
 @import 'mixins'
+@import 'cs-font'
+@import 'intlDropdown'
+@import 'flag-icon'
+.main-view
+  padding-top: $nav-height
 
-.button
-  display: inline-block
-  border: 1px solid $black
-  color: $black
-  background-color: transparent
-  border-radius: 42px
-  box-sizing: border-box
-  font-size: 18px
-  height: 42px
-  line-height: 28px
-  font-weight: 500
-  padding: 6px 28px 8px
-  -webkit-transition-property: background-color, border, color, opacity
-  transition-property: background-color, border, color, opacity
-  -webkit-transition-duration: 200ms
-  transition-duration: 200ms
-  &:hover
-    color: $white
-    background-color: $black
+@keyframes nav-fadein
+  0%
+    opacity: 0
 
-.button.small
-  height: 35px
-  line-height: 14px
-  padding: 9px 14px 6px
+  33%
+    opacity: 0
 
-body
-  margin-top: $nav-height
-
+  100%
+    opacity: 1
 
 //Top nav styles
 .cs-nav-container
@@ -35,34 +21,35 @@ body
   width: 100%
   top: 0px
   left: 0px
-  z-index: 9999
+  z-index: 200
+  animation: nav-fadein 1.5s 1
 
   .cs-nav
     height: $nav-height
-    padding: 23px 2*$base
+    padding: 23px (2 * $base)
     box-sizing: border-box
     background-color: $white
-    @include display-flex
-    @include transition(background ease 700ms)
+    display: flex
 
     //Nav Links (center) styling
     .cs-nav-center
-      @include display-flex
+      display: flex
       width: 100%
-      @include justify-content(center)
-      @include align-items(center)
+      justify-content: center
+      align-items: center
 
     //Nav Logo (left) styling
     .cs-nav-left
       position: absolute
       height: $nav-height - 46px
       top: 23px
-      left: 2*$base
+      left: 2 * $base
+
       img
         height: 100%
 
       .logo-color
-        display: block
+        display: inline-block
 
       .logo-white
         display: none
@@ -72,11 +59,16 @@ body
       position: absolute
       height: $nav-height - 46px
       top: 23px
-      right: 2*$base
-      @include display-flex
-      @include align-items(center)
+      right: 2 * $base
+      display: flex
+      align-items: center
+
       .cs-nav-item
         margin: 0 0 0 $base
+        font-weight: 500
+        font-size: 17/14*$base
+        line-height: 14px
+
         &:before
           display: none
 
@@ -84,72 +76,261 @@ body
         margin-right: 0
 
       img
-        width: 2*$base - 2px
-        height: 2*$base - 2px
+        width: 2 * $base - 2px
+        height: 2 * $base - 2px
         border: 2px solid $white
         border-radius: $base
 
-
-
     //Nav item styling
+    .cs-nav-icon-item
+      margin: 0 0 0 (10 / 14 * $base)
+      padding: 0 0 0 (10 / 14 * $base)
+      color: $black
+
+      a
+        color: $black
+
+      &:before
+        display: none
+
+      &:hover
+        color: $black
+
+    #cart-icon span,
+    #profile-dropdown-toggle span
+      font-size: 18 / 14 * $base
+      vertical-align: middle
+
     .cs-nav-item
       position: relative
       margin: 0px $base
       font-weight: 500
-      font-size: 17/14*$base
+      font-size: 17 / 14 * $base
       color: $black
       text-decoration: none
-      @include transition(color ease 300ms)
-      .hide-desktop
+
+      &.button
+        margin: 0 0 0 (28 / 14 * $base)
+
+      &.button.hide-desktop
         display: none
+
       &:before
         content: ""
         position: absolute
         width: 100%
         height: 2px
+        border-radius: 2px
         bottom: -1px
         left: 0
         background-color: $black
-        visibility: hiddenn
-        @include transform(scale3d(0,1,1))
-        @include transition(transform ease 200ms)
+        visibility: hidden
+        transform: scale3d(0, 1, 1)
+        transition: transform ease 200ms
 
       &:hover
         text-decoration: none
         cursor: pointer
+
         &:before
           visibility: visible
-          transform: scale3d(1,1,1)
-
-
+          transform: scale3d(1, 1, 1)
 
     .button
       &:hover
         color: $white
 
+// Ghost Nav Styles
+.nav-ghost
+  margin-top: 0px
+
+  .cs-nav-container
+    margin-top: 0
+    opacity: 1
+    transition: opacity ease 300ms
+    background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.3) 20%, rgba(0, 0, 0, 0) 100%)
+
+    /* FF3.6+
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(20%, rgba(0, 0, 0, 0.3)), color-stop(100%, rgba(0, 0, 0, 0)))
+
+    /* Chrome,Safari4+
+    background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 20%, rgba(0, 0, 0, 0) 100%)
+
+    /* Chrome10+,Safari5.1+
+    background: -o-linear-gradient(top, rgba(0, 0, 0, 0.3) 20%, rgba(0, 0, 0, 0) 100%)
+
+    /* Opera 11.10+
+    background: -ms-linear-gradient(top, rgba(0, 0, 0, 0.3) 20%, rgba(0, 0, 0, 0) 100%)
+
+    /* IE10+
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 20%, rgba(0, 0, 0, 0) 100%)
+
+    /* W3C
+    .cs-nav
+      background-color: transparent
+      color: $white
+
+      .cs-nav-left
+        .logo-color
+          display: none
+
+        .logo-white
+          display: inline-block
+
+      .cs-nav-item
+        color: $white
+
+        &:before
+          background-color: $white
+
+      .button
+        border-color: $white
+
+        &:hover
+          background-color: $white
+          color: $black
+
+    .cs-nav-menu-toggle
+      .lines, .lines::before, .lines::after
+        background-color: $white
+
+  .main-view
+    padding-top: 0px
+
+.nav-sticky
+  .cs-nav-container.nav-transparent
+    .cs-nav
+      background-color: transparent
+      color: $white
+      border-bottom: 0px
+
+      .cs-nav-left
+        .logo-color
+          display: none
+
+        .logo-white
+          display: inline-block
+
+      .cs-nav-item
+        color: $white
+
+        &:before
+          background-color: $white
+
+    .cs-nav-menu-toggle
+      .lines, .lines::before, .lines::after
+        background-color: $white
+
+  .cs-nav-container, .cs-nav-container.nav-fixed
+    position: fixed
+    transform: translate3d(0px, 0px, 0px)
+
+    &.nav-hidden
+      visibility: visible
+
 //Hide hamburger button on desktop
 .cs-nav-menu-toggle
   display: none
 
-
 .hide-desktop
   display: none
+
 .hide-mobile
   display: inherit
 
-@media (max-width: 900px)
+//Scrolled nav styles
+body .cs-nav-container.nav-fixed
+  position: fixed
+  transform: translate3d(0, -$nav-height, 0)
+  transition: transform ease 400ms
 
+  .cs-nav
+    background-color: $white
+    border-bottom: 1px solid $light-gray
+    color: $black
+
+    .cs-nav-item
+      color: $black
+
+      &:before
+        background-color: $black
+
+      &.button
+        border-color: $black
+
+      &.button:hover
+        color: $white
+        background-color: $black
+
+    .cs-nav-left
+      .logo-color
+        display: inline-block
+
+      .logo-white
+        display: none
+
+    .cs-nav-right
+      .cs-nav-menu-toggle
+        .lines, .lines::before, .lines::after
+          background-color: $black
+
+  &.nav-hidden
+    visibility: hidden
+    opacity: 0
+
+  &.nav-visible
+    visibility: visible
+    transform: translate3d(0, 0, 0)
+    transition: transform ease 400ms
+
+  &.nav-visible-add, &.nav-visible-remove
+    visibility: visible
+    opacity: 1
+    transition: transform ease 400ms
+
+  &.nav-show-menu
+    .cs-nav-right
+      .cs-nav-menu-toggle
+        .lines, .lines::before, .lines::after
+          background-color: transparent
+
+        .lines::before, .lines::after
+          background-color: $black
+
+@media (max-width: 1200px)
+  .cs-nav-container
+    .cs-nav
+      .cs-nav-center
+        justify-content: left
+        align-items: left
+        margin-left: 135 / 14 * $base
+
+      .cs-nav-item
+        margin-right: 8 / 14 * $base
+        margin-left: 8 / 14 * $base
+
+      .cs-nav-item
+        margin-left: 8 / 14 * $base
+
+      .cs-nav-item.button
+        margin-left: 14 / 14 * $base
+
+@media (max-width: 950px)
   .hide-desktop
     display: block
-  .hide-mobile
+
+  .hide-mobile, .button.hide-mobile
     display: none
 
   .cs-nav-container
-    z-index: 2147483001
+    z-index: 700
     overflow: hidden
+
     .cs-nav
       z-index: -1
+
       .cs-nav-center
+        text-align: center
         visibility: hidden
         position: absolute
         display: block
@@ -158,14 +339,15 @@ body
         overflow-x: hidden
         overflow-y: scroll
         -webkit-overflow-scrolling: touch
-        @include boxsizing
+        box-sizing: border-box
         top: 0
         left: 0
+        margin: 0
         background-color: transparent
-        padding-top: $nav-height + 3*$base
-        padding-bottom: 4*$base
-        @include transition(background ease 0ms 0ms)
-        @include transition(visibility ease 0ms 400ms)
+        padding-top: $nav-height + 3 * $base
+        padding-bottom: 4 * $base
+        transition: visibility ease 0ms 400ms, background ease 0ms 0ms
+
         &:before
           content: ""
           position: absolute
@@ -177,61 +359,62 @@ body
           border-radius: 100%
           background-color: $white
           opacity: 0
-          @include transform(translate3d(-25%,-55%,0) scale3d(0.4,0.4,0.4))
-          @include transition(transform cubic-bezier(.3,.51,1,1.1) 300ms)
-          @include transition(opacity ease 300ms)
-          -webkit-transform-origin: top right
-          -moz-transform-origin: top right
+          transform: translate3d(-25%, -55%, 0) scale3d(0.4, 0.4, 0.4)
           transform-origin: top right
+          transition: transform cubic-bezier(0.3, 0.51, 1, 1.1) 300ms, opacity ease 300ms
 
         .cs-nav-item
           opacity: 0
           display: block
           width: 100%
-          margin: 0 0 2*$base
-          @include transition(opacity ease 400ms 0ms)
+          margin: 0 0 (2 * $base)
+          transition: opacity ease 400ms 0ms
           text-align: center
-          @include align-items(center)
+          align-items: center
           color: $black
-          .hide-desktop
+
+          i
+            margin-right: $half-base
+
+          &.hide-desktop
             display: inline-block
+
           &.button
             max-width: 200px
-            margin: 0 auto 2*$base
+            margin: 0 auto (2 * $base)
+
             &:hover
               color: $white
+
           &:before
             display: none
 
         hr.cs-nav-item
           width: auto
-          margin: 2*$base
-
+          margin: 2 * $base
 
       .cs-nav-left
         height: $nav-height
         top: 0
         left: 0
-        padding: 23px 2*$base
+        padding: 23px (2 * $base)
         background-color: transparent
         width: 100%
-        @include transition(background-color ease 0ms 0ms)
-        @include boxsizing
+        transition: background-color ease 0ms 0ms
+        box-sizing: border-box
+
         img
           height: $nav-height - 46px
-
+          display: inline-block
 
       .cs-nav-left, .cs-nav-right
-        z-index: 999
-
-
-
+        z-index: 500
 
   //Menu button on mobile
   .cs-nav-menu-toggle
-    @include display-flex
-    @include justify-content(center)
-    @include align-items(center)
+    display: flex
+    justify-content: center
+    align-items: center
     padding: 12px 6px
     cursor: pointer
     user-select: none
@@ -240,126 +423,82 @@ body
     outline: none
     font-size: 6px
     line-height: 20px
+
     .lines, .lines::before, .lines::after
       display: inline-block
-      width: 21px
       height: 2px
       background-color: $black
       border-radius: 1.71429px
-      @include transition(0.3s)
+      transition: 0.3s
 
     .lines::before, .lines::after
       position: absolute
       left: 0
       content: ''
-      @include transform-origin(1.71429px center)
+      transform-origin: 1.71429px center
 
     .lines
       position: relative
+      width: 15px
 
     .lines::before
       top: 7px
+      width: 19px
 
     .lines::after
       top: -7px
-
-
+      width: 21px
 
   //Show menu on mobile
   .cs-nav-container.nav-show-menu
     position: fixed
-    transform: none!important
-    visibility: visible!important
+    transform: none !important
+    visibility: visible !important
     height: 100%
+    z-index: 800
+
     .cs-nav
       .cs-nav-menu-toggle
         .lines
-          background-color: transparent!important
+          background-color: transparent !important
 
         .lines:before, .lines:after
-          @include transform-origin(50% 50%)
+          transform-origin: 50% 50%
           top: 0
+          width: 21px
           background-color: $black
 
         .lines:before
-          @include transform(rotate3d(0, 0, 1, 45deg))
+          transform: rotate3d(0, 0, 1, 45deg)
 
         .lines:after
-          @include transform(rotate3d(0, 0, 1, -45deg))
+          transform: rotate3d(0, 0, 1, -45deg)
 
+      .cs-nav-left
+        .logo-color
+          display: inline-block
 
-      .cs-nav-lef
-        .logo-colordisplay: block
-        .logo-whitdisplay: none
+        .logo-white
+          display: none
 
       .cs-nav-center
         visibility: visible
-        @include transition(visibility ease 0ms 0ms)
-        @include transition(background ease 0ms 400ms)
+        transition: visibility ease 0ms 0ms, background ease 0ms 400ms
         background-color: $white
         overflow-y: scroll
+
         &:before
           opacity: 1
-          @include transform(translate3d(-25%,-20%,0) scale3d(1,1,1))
+          transform: translate3d(-25%, -20%, 0) scale3d(1, 1, 1)
 
         .cs-nav-item
           opacity: 1
-          @include transition(opacity ease 400ms 200ms)
-
+          transition: opacity ease 400ms 200ms
 
       .cs-nav-left
         background-color: $white
-        @include transition(background-color ease 400ms 400ms)
+        transition: background-color ease 400ms 400ms
 
-body .cs-nav-container.nav-fixed
-  position: fixed
-  @include transform(translate3d(0,-$nav-height,0))
-  @include transition(transform ease 400ms)
-  .cs-nav
-    background-color: $white
-    color: $black
-    .cs-nav-item
-      color: $black
-      &:before
-        background-color: $black
-
-      &.button:hover
-        color: $white
-
-
-    .cs-nav-left
-      .logo-color
-        display: block
-
-      .logo-white
-        display: none
-
-
-    .cs-nav-right
-      .cs-nav-menu-toggle
-        .lines, .lines::before, .lines::after
-          background-color: $black
-
-
-
-
-  &.nav-hidden
-    visibility: hidden
-
-  &.nav-visible
-    visibility: visible
-    @include transform(translate3d(0,0,0))
-    @include transition(transform ease 400ms)
-
-  &.nav-visible-add, &.nav-visible-remove
-    visibility: visible
-    @include transition(transform ease 400ms)
-
-  &.nav-show-menu
-    .cs-nav-right
-      .cs-nav-menu-toggle
-        .lines, .lines::before, .lines::after
-          background-color: transparent
-
-        .lines::before, .lines::after
-          background-color: $black
+  .cs-nav-item-active
+    span
+      text-decoration: underline

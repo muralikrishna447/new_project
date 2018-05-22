@@ -13,6 +13,8 @@ module Fulfillment
 
     TRACKING_NUMBER_COLUMN = '[crn]'
 
+    SHIPPED_ON_COLUMN = '[shipped_on]'
+
     def self.configure(params)
       raise 's3_bucket is a required param' unless params[:s3_bucket]
       raise 's3_region is a required param' unless params[:s3_region]
@@ -39,6 +41,7 @@ module Fulfillment
       rosti_order_numbers = Set.new
       fulfillment_tracking_numbers = {}
       fulfillment_serial_numbers = {}
+      fulfillment_shipped_on_dates = {}
       csv_rows.each do |csv_row|
         validate(csv_row)
         rosti_order_number = csv_row[ROSTI_ORDER_NUMBER_COLUMN]
@@ -47,6 +50,8 @@ module Fulfillment
         fulfillment_tracking_numbers[rosti_order_number] << csv_row[TRACKING_NUMBER_COLUMN]
         fulfillment_serial_numbers[rosti_order_number] ||= []
         fulfillment_serial_numbers[rosti_order_number] << csv_row[SERIAL_NUMBER_COLUMN]
+        fulfillment_shipped_on_dates[rosti_order_number] ||= []
+        fulfillment_shipped_on_dates[rosti_order_number] << Date.parse(csv_row[SHIPPED_ON_COLUMN])
       end
 
       shipments = []
@@ -56,6 +61,7 @@ module Fulfillment
         line_item_id = order_number_parts[1].to_i
         tracking_numbers = fulfillment_tracking_numbers[rosti_order_number]
         serial_numbers = fulfillment_serial_numbers[rosti_order_number]
+        shipped_on_dates = fulfillment_shipped_on_dates[rosti_order_number]
         Rails.logger.info("Rosti shipment import processing order number #{order_number}, line item id #{line_item_id}, tracking numbers #{tracking_numbers}, serial numbers #{serial_numbers}")
 
         order = Shopify::Utils.order_by_name(order_number.delete('#'))
@@ -67,7 +73,8 @@ module Fulfillment
           fulfillments: fulfillments(order, [line_item_id]),
           tracking_company: 'FedEx',
           tracking_numbers: tracking_numbers,
-          serial_numbers: serial_numbers
+          serial_numbers: serial_numbers,
+          shipped_on_dates: shipped_on_dates
         )
       end
       shipments
