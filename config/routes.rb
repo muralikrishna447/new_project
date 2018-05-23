@@ -39,6 +39,7 @@ Delve::Application.routes.draw do
   get '/jouleapp', to: redirect('/getting-started-with-joule')
   get '/jewel', to: redirect('/joule')
   get '/Joule', to: redirect('/joule')
+  get '/StovetopSousVide', to: redirect('/activities/cook-sous-vide-tonight-stovetop-method')
 
   # Legal Documents
   get '/eula-ios' => 'legal#eula'
