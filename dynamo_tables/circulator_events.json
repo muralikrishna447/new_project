@@ -1,0 +1,29 @@
+[
+  {
+    "table_name_prefix": "circulator-events",
+    "KeySchema": [
+      {
+        "KeyType": "HASH",
+        "AttributeName": "circulator_id"
+      },
+      {
+        "KeyType": "RANGE",
+        "AttributeName": "cook_id-timestamp"
+      }
+    ],
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "circulator_id",
+        "AttributeType": "N"
+      },
+      {
+        "AttributeName": "cook_id-timestamp",
+        "AttributeType": "S"
+      }
+    ],
+    "ProvisionedThroughput": {
+      "WriteCapacityUnits": 1,
+      "ReadCapacityUnits": 5
+    }
+  }
+]
