@@ -160,7 +160,7 @@ describe StripeOrder do
       stripe3.stub(:status).and_return('failed')
       stripe.stub(:pay).and_return(stripe3)
       Stripe::Order.stub(:create){ raise(Stripe::CardError.new('test', 'test', 'test'))}
-      DeclinedMailer.should_receive(:joule).and_call_original
+      DeclinedMailer.should_receive(:joule).once # and_call_original Call original results in stack overflow in RSpec
       expect { @stripe_circulator_order.send_to_stripe }.to raise_error
     end
 
@@ -171,7 +171,7 @@ describe StripeOrder do
       stripe3.stub(:status).and_return('failed')
       stripe.stub(:pay){ raise(Stripe::CardError.new('test', 'test', 'test'))}
       Stripe::Order.stub(:create).and_return(stripe)
-      DeclinedMailer.should_receive(:joule).and_call_original
+      DeclinedMailer.should_receive(:joule).once # .and_call_original I believe this version of RSpec causes a stack overflow in this usecase
       expect { @stripe_circulator_order.send_to_stripe }.to raise_error
     end
 
