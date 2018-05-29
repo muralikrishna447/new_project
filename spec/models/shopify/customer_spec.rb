@@ -108,6 +108,8 @@ describe Shopify::Customer do
       referral_code = 'sharejoule-xyzzy'
       SecureRandom.stub(:urlsafe_base64).and_return('xyzzy')
       WebMock.stub_request(:post, "https://123:321@test.myshopify.com/admin/discounts.json").
+        with(:body => "{\"discount\":{\"code\":\"#{referral_code}\",\"discount_type\":\"fixed_amount\",\"value\":\"20.00\",\"usage_limit\":5,\"applies_to_resource\":\"product\",\"applies_to_id\":\"99999999\"}}",
+            :headers => {'Accept'=>'*/*', 'Content-Type'=>'application/json', 'User-Agent'=>'ShopifyAPI/4.2.2 ActiveResource/3.2.16 Ruby/1.9.3'}).
         to_return(:status => 200, :body => "", :headers => {})
 
       expect(Shopify::Customer.find_or_create_referral_code_for_user @user).to eq referral_code

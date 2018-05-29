@@ -16,12 +16,7 @@ describe GuideActivity do
       expect(ga).not_to be_nil
       expect(ga.guide_id).to eq(guide['id'])
       expect(ga.guide_title).to eq(guide['title'])
-
-      # Prior to rails 3.2.19 - Ampersands and chars not previously encoded as \u0026 in url query strings
-      # expect(ga.guide_digest).to eq('ff2093e8b524df918cf2e38cd1b460c0')
-
-      expect(ga.guide_digest).to eq('ef36da81cc36122b13de0203a3cf5f68')
-
+      expect(ga.guide_digest).to eq('ff2093e8b524df918cf2e38cd1b460c0')
       a = Api::ActivitySerializer.new(ga.activity).serializable_object
       expect(a[:title]).to eq(guide['title'])
       expect(a[:url]).to include('cracklin')
