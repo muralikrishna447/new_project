@@ -364,7 +364,7 @@ GEM
       jruby-pageant (>= 1.1.1)
     netrc (0.10.3)
     newrelic_route_check (0.0.3)
-    newrelic_rpm (3.12.0.288)
+    newrelic_rpm (5.1.0.344)
     nokogiri (1.5.9)
     nokogumbo (1.2.0)
       nokogiri
@@ -719,4 +719,4 @@ RUBY VERSION
    ruby 2.0.0p648
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
