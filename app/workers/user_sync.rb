@@ -32,8 +32,8 @@ class UserSync
 
   def sync
     sync_mailchimp
-    sync_referral_code
-    sync_shopify
+    # sync_referral_code
+    # sync_shopify
   end
 
   def sync_referral_code
