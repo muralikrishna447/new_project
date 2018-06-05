@@ -139,7 +139,7 @@ describe UserSync do
         @user_sync.sync_mailchimp({joule_data: true})
       end
     end
-    
+
     it 'should not sync if circulator user current circulator count matches non-zero' do
       # 1, 1 in mailchimp
       setup_member_info_with_joule_data(1, 1, @referral_code, 'subscribed')
