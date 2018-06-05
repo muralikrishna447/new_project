@@ -103,6 +103,7 @@
     #rails-flash.hide
       = flash.to_json
 
+    = render 'shared/cookie_consent_banner'
     = render 'layouts/navigation', external: false
     .nav-spacer.noprint
 

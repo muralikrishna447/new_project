@@ -1,0 +1,25 @@
+@import "mixins"
+
+.cookie-banner-container
+  box-sizing: border-box
+  position: fixed
+  bottom: 0
+  left: 0
+  width: 100%
+  z-index: 1000
+  padding: 20px
+  background-color: $dark-gray
+  text-align: center
+
+  .cookie-banner-text
+    color: $white
+
+    a
+      text-decoration: underline !important
+
+  .close
+    padding-left: 20px
+    font-size: 12/14 * $base
+
+.cookie-container-hidden
+  display: none
