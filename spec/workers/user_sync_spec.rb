@@ -14,16 +14,11 @@ describe UserSync do
 
   describe 'sync premium and joule' do
 
-    it 'should sync premium members who purchased joule' do
+    it 'should (now not) sync premium members who purchased joule' do
       setup_member_joule_purchase true
       setup_joule_purchaser
       setup_premium_user
-
-      # TODO - refactor stub method being mindful of parameter order, etc.
-      WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
-        with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"johndoe@chefsteps.com\"},\"merge_vars\":{\"groupings\":[{\"id\":\"test-purchase-group-id\",\"groups\":[\"Premium Member\"]},{\"id\":\"test-joule-group-id\",\"groups\":[\"Joule Purchase\"]}]},\"replace_interests\":false}").
-        to_return(:status => 200, :body => "", :headers => {})
-
+      # Test would fail if POST request was made since it's not stubbed
       @user_sync.sync_mailchimp
     end
 
@@ -71,11 +66,6 @@ describe UserSync do
     def setup_member_premium(in_group)
       setup_member_info(Rails.configuration.mailchimp[:premium_group_id],
         UserSync::PREMIUM_GROUP_NAME, in_group, 'subscribed')
-    end
-
-    def setup_cleaned_member_premium(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:premium_group_id],
-        UserSync::PREMIUM_GROUP_NAME, in_group, 'cleaned')
     end
 
     def setup_premium_user
