@@ -30,7 +30,7 @@ describe UserSync do
 
     it 'should not sync if circulator user current circulator count matches non-zero' do
       # 1, 1 in mailchimp
-      setup_member_info_with_joule_data(1, 1, 'subscribed')
+      setup_member_info_with_joule_data_stub(1, 1, 'subscribed')
 
       # 1, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
@@ -46,7 +46,7 @@ describe UserSync do
       Resque.should_receive(:enqueue).with(UserSync, @user_with_code.id).twice()
 
       # 1, 1 in mailchimp
-      setup_member_info_with_joule_data(1, 1, 'subscribed')
+      setup_member_info_with_joule_data_stub(1, 1, 'subscribed')
 
       # 0, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
@@ -64,8 +64,8 @@ describe UserSync do
     end
 
     def setup_member_premium(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:premium_group_id],
-        UserSync::PREMIUM_GROUP_NAME, in_group, 'subscribed')
+      setup_member_info_stub(Rails.configuration.mailchimp[:premium_group_id],
+                             UserSync::PREMIUM_GROUP_NAME, in_group, 'subscribed')
     end
 
     def setup_premium_user
@@ -76,8 +76,8 @@ describe UserSync do
     end
 
     def setup_member_joule_purchase(in_group)
-      setup_member_info(Rails.configuration.mailchimp[:joule_group_id],
-        UserSync::JOULE_PURCHASE_GROUP_NAME, in_group, 'subscribed')
+      setup_member_info_stub(Rails.configuration.mailchimp[:joule_group_id],
+                             UserSync::JOULE_PURCHASE_GROUP_NAME, in_group, 'subscribed')
     end
 
     def setup_joule_purchaser
@@ -88,7 +88,7 @@ describe UserSync do
     end
   end
 
-  def setup_member_info(group_id, name, in_group, status)
+  def setup_member_info_stub(group_id, name, in_group, status)
     result = {
       :success_count => 1,
       :data => [{"GROUPINGS"=>[{"id"=>group_id, "name"=>"Doesn't matter",
@@ -98,7 +98,7 @@ describe UserSync do
        to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
-  def setup_member_info_with_joule_data(count, ever_count, status)
+  def setup_member_info_with_joule_data_stub(count, ever_count, status)
     result = {
       :success_count => 1,
       :data => [{"GROUPINGS"=>[],
@@ -109,13 +109,13 @@ describe UserSync do
   end
 
 
-  def setup_member_info_not_in_mailchimp
+  def setup_member_info_not_in_mailchimp_stub
     result = {"success_count"=>0, "error_count"=>1, "errors"=>[{"email"=>{"email"=>"a@b.com"}, "error"=>"The id passed does not exist on this list", "code"=>232}], "data"=>[]}
     WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
        to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
-  def setup_member_unsubscribed
+  def setup_member_info_unsubscribed_stub
     result = {"success_count"=>1, "error_count"=>0,
       "errors"=>[], "data"=>[{"email"=>"first@chocolateyshatner.com",
       "status"=>"unsubscribed"}]}
