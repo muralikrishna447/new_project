@@ -139,32 +139,7 @@ describe UserSync do
         @user_sync.sync_mailchimp({joule_data: true})
       end
     end
-
-    context 'CsSpree.front_end_enabled?' do
-      before(:each){
-        CsSpree.should_receive(:front_end_live?).and_return(true)
-      }
-      it 'should sync if circulator user current circulator counts mismatch' do
-        # Should post 1,1
-        stub_mailchimp_post_joule_data(@user.email, 1, 1, @referral_code)
-        Resque.should_receive(:enqueue).with(UserSync, @user.id)
-
-        # Since this is first circulator, we would expect referral code created too
-        CsSpree::Sync.should_receive(:ensure_share_joule_code_for_user).and_return(@referral_code)
-
-        # 0, 0 in mailchimp
-        setup_member_info_with_joule_data(0, 0, '', 'subscribed')
-
-        # 1, 1 current and ever according to db
-        owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
-        cu = CirculatorUser.create! user: @user, circulator: owned_circulator, owner: true
-        cu.run_callbacks(:commit)
-
-        # Fake the resque
-        @user_sync.sync_mailchimp({joule_data: true})
-      end
-    end
-
+    
     it 'should not sync if circulator user current circulator count matches non-zero' do
       # 1, 1 in mailchimp
       setup_member_info_with_joule_data(1, 1, @referral_code, 'subscribed')
