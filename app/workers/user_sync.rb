@@ -31,8 +31,6 @@ class UserSync
 
   def sync
     sync_mailchimp
-    # sync_referral_code
-    # sync_shopify
   end
 
   def sync_mailchimp(options = {premium: true, joule: true, joule_data: true})
