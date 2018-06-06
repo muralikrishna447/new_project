@@ -28,9 +28,12 @@ module CookieConsentHelper
   def intl_user?
     if cookies[:cs_geo].present?
       country = JSON.parse(cookies[:cs_geo])['country']
-      return country == 'US' || country == 'CA'
+      if country.present?
+        return !(['US', 'CA'].include? country)
+      end
     end
 
+    # If no cs_geo cookie, then default to US (not international)
     false
   end
 
