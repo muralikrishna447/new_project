@@ -7,10 +7,10 @@ Renders nothing if the user does not need to see the banner
 
   <div class="cookie-banner-container" id="cookie-container">
     <div class="cookie-banner-text">
-      <%= t("cookie_policy.text", :cookie_policy_href => link_to(t("cookie_policy.cookie_policy_href_label"), cookie_url)).html_safe %>
+      <%= t("cookie_policy.text", :cookie_policy_href => link_to(t("cookie_policy.cookie_policy_href_label"), '/cookie-policy')).html_safe %>
     </div>
 
-    <button type="button" class="close" id="cookie-ok">
+    <button type="button" class="button solid orange cookie-banner-close" id="cookie-ok">
       <%= t("cookie_policy.ok") %>
     </button>
 
