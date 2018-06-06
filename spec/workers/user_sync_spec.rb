@@ -14,18 +14,20 @@ describe UserSync do
 
   describe 'sync premium and joule' do
 
-    it 'should (now not) sync premium members who purchased joule' do
+    it 'should sync premium members who purchased joule' do
       setup_member_joule_purchase true
       setup_joule_purchaser
       setup_premium_user
-      # Test would fail if POST request was made since it's not stubbed
+
+      stub_post = stub_mailchimp_post({'JL_CONN' => 0, 'JL_EVR_CON' => 0, 'PREMSTART' => '2018-03-01'})
       @user_sync.sync_mailchimp
+      WebMock.assert_requested stub_post
     end
 
     it 'should not sync joule owner counts if matching at zero against default merge vars' do
       # Test would fail if POST request was made since it's not stubbed
-      setup_member_premium false
-      @user_sync.sync_mailchimp({joule_data: true})
+      setup_premium_member_info_with_joule_data_stub(0,0,'subscribed')
+      @user_sync.sync_mailchimp
     end
 
     it 'should not sync if circulator user current circulator count matches non-zero' do
@@ -37,7 +39,15 @@ describe UserSync do
       CirculatorUser.create! user: @user_with_code, circulator: owned_circulator, owner: true
 
       # Should not post
-      @user_sync_with_code.sync_mailchimp({joule_data: true})
+      @user_sync_with_code.sync_mailchimp
+    end
+
+    it 'should sync premium status to mailchimp' do
+      setup_member_info_stub('subscribed')
+      stub_post = stub_mailchimp_post({'JL_CONN' => 0, 'JL_EVR_CON' => 0, 'PREMSTART' => '2018-03-01'})
+      setup_premium_user
+      @user_sync.sync_mailchimp
+      WebMock.assert_requested stub_post
     end
 
     it 'should sync if was CirculatorUser but deleted' do
@@ -54,30 +64,25 @@ describe UserSync do
       cu.run_callbacks(:commit)
 
       # Fake the resque
-      @user_sync_with_code.sync_mailchimp({joule_data: true})
+      @user_sync_with_code.sync_mailchimp
 
       # Now disconnect joule
       owned_circulator.destroy!
 
       # Fake the resque
-      @user_sync_with_code.sync_mailchimp({joule_data: true})
-    end
-
-    def setup_member_premium(in_group)
-      setup_member_info_stub(Rails.configuration.mailchimp[:premium_group_id],
-                             UserSync::PREMIUM_GROUP_NAME, in_group, 'subscribed')
+      @user_sync_with_code.sync_mailchimp
     end
 
     def setup_premium_user
       @user.premium_member = true
+      @user.premium_membership_created_at = Date.parse('1st Mar 2018')
       @user.save!
       # since user is read in the constructor need to create a new worker
       @user_sync = UserSync.new(@user_id)
     end
 
     def setup_member_joule_purchase(in_group)
-      setup_member_info_stub(Rails.configuration.mailchimp[:joule_group_id],
-                             UserSync::JOULE_PURCHASE_GROUP_NAME, in_group, 'subscribed')
+      setup_member_info_stub('subscribed')
     end
 
     def setup_joule_purchaser
@@ -88,57 +93,64 @@ describe UserSync do
     end
   end
 
-  def setup_member_info_stub(group_id, name, in_group, status)
+  def setup_member_info_stub(status)
     result = {
       :success_count => 1,
-      :data => [{"GROUPINGS"=>[{"id"=>group_id, "name"=>"Doesn't matter",
-                  "groups"=>[{"name"=>name, "interested"=>in_group}]}],
-                 "status" => status }]}
-    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
+      :data => [{'GROUPINGS' =>[],
+                 'merges' =>{'JL_CONN' =>0, 'JL_EVR_CON' =>0},
+                 'status' => status }]}
+    WebMock.stub_request(:post, 'https://key.api.mailchimp.com/2.0/lists/member-info').
        to_return(:status => 200, :body => result.to_json, :headers => {})
+  end
+
+  def setup_premium_member_info_with_joule_data_stub(count, ever_count, status)
+    result = {
+      :success_count => 1,
+      :data => [{'GROUPINGS' =>[],
+                 'merges' =>{'JL_CONN' =>count, 'JL_EVR_CON' =>ever_count, 'PREMSTART' => '2015-05-05'},
+                 'status' => status }]}
+    WebMock.stub_request(:post, 'https://key.api.mailchimp.com/2.0/lists/member-info').
+      to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
   def setup_member_info_with_joule_data_stub(count, ever_count, status)
     result = {
       :success_count => 1,
-      :data => [{"GROUPINGS"=>[],
-                 "merges"=>{"JL_CONN"=>count, "JL_EVR_CON"=>ever_count},
-                 "status" => status }]}
-    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
+      :data => [{'GROUPINGS' =>[],
+                 'merges' =>{'JL_CONN' =>count, 'JL_EVR_CON' =>ever_count},
+                 'status' => status }]}
+    WebMock.stub_request(:post, 'https://key.api.mailchimp.com/2.0/lists/member-info').
        to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
 
   def setup_member_info_not_in_mailchimp_stub
-    result = {"success_count"=>0, "error_count"=>1, "errors"=>[{"email"=>{"email"=>"a@b.com"}, "error"=>"The id passed does not exist on this list", "code"=>232}], "data"=>[]}
-    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
+    result = {'success_count' =>0, 'error_count' =>1, 'errors' =>[{'email' =>{'email' => 'a@b.com'}, 'error' => 'The id passed does not exist on this list', 'code' =>232}], 'data' =>[]}
+    WebMock.stub_request(:post, 'https://key.api.mailchimp.com/2.0/lists/member-info').
        to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
   def setup_member_info_unsubscribed_stub
-    result = {"success_count"=>1, "error_count"=>0,
-      "errors"=>[], "data"=>[{"email"=>"first@chocolateyshatner.com",
-      "status"=>"unsubscribed"}]}
+    result = {'success_count' =>1, 'error_count' =>0,
+              'errors' =>[], 'data' =>[{'email' => 'first@chocolateyshatner.com',
+                                        'status' => 'unsubscribed'}]}
 
-    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/member-info").
-      with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"emails\":[{\"email\":\"johndoe@chefsteps.com\"}]}").
+    WebMock.stub_request(:post, 'https://key.api.mailchimp.com/2.0/lists/member-info').
+      with(:body => '{"apikey":"test-api-key","id":"test-list-id","emails":[{"email":"johndoe@chefsteps.com"}]}').
       to_return(:status => 200, :body => result.to_json, :headers => {})
   end
 
-  def stub_mailchimp_post(group_id, name)
-    merge_vars = {:groupings => []}
-    body = {:apikey => 'test-api-key', :id => 'test-list-id', :email => {:email => 'johndoe@chefsteps.com'}, :merge_vars => merge_vars, :replace_interests => false}
-    if group_id
-      merge_vars[:groupings] = [{:id => "#{group_id}", :groups => [name]}]
-    end
-    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
+  def stub_mailchimp_post(merge_vars)
+    body = {:apikey => 'test-api-key', :id => 'test-list-id', :email => {:email => 'johndoe@chefsteps.com'}, :replace_interests => false, :merge_vars => merge_vars}
+
+    WebMock.stub_request(:post, 'https://key.api.mailchimp.com/2.0/lists/update-member').
         with(:body => body.to_json).
-        to_return(:status => 200, :body => "", :headers => {})
+        to_return(:status => 200, :body => '', :headers => {})
   end
 
   def stub_mailchimp_post_joule_data(email, count, ever_count)
-    WebMock.stub_request(:post, "https://key.api.mailchimp.com/2.0/lists/update-member").
+    WebMock.stub_request(:post, 'https://key.api.mailchimp.com/2.0/lists/update-member').
       with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"#{email}\"},\"replace_interests\":false,\"merge_vars\":{\"JL_CONN\":#{count},\"JL_EVR_CON\":#{ever_count}}}").
-      to_return(:status => 200, :body => "", :headers => {})
+      to_return(:status => 200, :body => '', :headers => {})
   end
 end
