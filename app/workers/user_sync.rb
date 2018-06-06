@@ -34,7 +34,7 @@ class UserSync
     sync_mailchimp
   end
 
-  def sync_mailchimp(options = {premium: true, joule: true, joule_data: true})
+  def sync_mailchimp
     list_id = Rails.configuration.mailchimp[:list_id]
     member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
     @logger.info member_info.inspect
@@ -95,13 +95,13 @@ class UserSync
       @logger.warn "MAILCHIMP ERROR NO Existing merges, will hopefully not overwrite [#{member_info}]"
       existing_merges = {}
     end
-    sync_merge_fields(existing_merges, options)
+    sync_merge_fields(existing_merges)
   end
 
-  def sync_merge_fields(exsting_merges, options)
+  def sync_merge_fields(exsting_merges)
     update_merges = exsting_merges.dup
-    patch_joule_data(update_merges) if options[:joule_data]
-    patch_premium(update_merges) if options[:premium]
+    patch_joule_data(update_merges)
+    patch_premium(update_merges)
 
     if update_merges != exsting_merges
       @logger.info("MAILCHIMP Sync user #{@user.id} merge fields, #{update_merges.inspect}")
