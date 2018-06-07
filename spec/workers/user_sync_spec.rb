@@ -19,7 +19,7 @@ describe UserSync do
       setup_joule_purchaser
       setup_premium_user
 
-      stub_post = stub_mailchimp_post({'JL_CONN' => 0, 'JL_EVR_CON' => 0, 'PREMSTART' => '2018-03-01'})
+      stub_post = stub_mailchimp_post({'JL_CONN' => 0, 'JL_EVR_CON' => 0, 'GROUPINGS' => [], 'PREMSTART' => '2018-03-01'})
       @user_sync.sync_mailchimp
       WebMock.assert_requested stub_post
     end
@@ -44,7 +44,7 @@ describe UserSync do
 
     it 'should sync premium status to mailchimp' do
       setup_member_info_stub('subscribed')
-      stub_post = stub_mailchimp_post({'JL_CONN' => 0, 'JL_EVR_CON' => 0, 'PREMSTART' => '2018-03-01'})
+      stub_post = stub_mailchimp_post({'JL_CONN' => 0, 'JL_EVR_CON' => 0, 'GROUPINGS' => [], 'PREMSTART' => '2018-03-01'})
       setup_premium_user
       @user_sync.sync_mailchimp
       WebMock.assert_requested stub_post
@@ -150,7 +150,7 @@ describe UserSync do
 
   def stub_mailchimp_post_joule_data(email, count, ever_count)
     WebMock.stub_request(:post, 'https://key.api.mailchimp.com/2.0/lists/update-member').
-      with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"#{email}\"},\"replace_interests\":false,\"merge_vars\":{\"JL_CONN\":#{count},\"JL_EVR_CON\":#{ever_count}}}").
+      with(:body => "{\"apikey\":\"test-api-key\",\"id\":\"test-list-id\",\"email\":{\"email\":\"#{email}\"},\"replace_interests\":false,\"merge_vars\":{\"JL_CONN\":#{count},\"JL_EVR_CON\":#{ever_count},\"GROUPINGS\":[]}}").
       to_return(:status => 200, :body => '', :headers => {})
   end
 end
