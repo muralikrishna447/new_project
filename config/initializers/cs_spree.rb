@@ -1,5 +1,4 @@
 require 'retriable'
-require 'cs_spree/sync'
 
 module CsSpree
 
