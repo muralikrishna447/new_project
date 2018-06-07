@@ -4,16 +4,16 @@ describe CookieConsentHelper, type: :helper do
 
   describe 'is_consent_needed?' do
 
-    context 'intl_user? is false' do
-      let(:intl_user?) {false}
+    context 'country is US' do
+      let(:get_country) {'US'}
 
       it 'returns false' do
         expect(is_consent_needed?).to eq(false)
       end
     end
 
-    context 'intl_user? is true' do
-      let(:intl_user?) {true}
+    context 'country is FR' do
+      let(:get_country) {'FR'}
 
       context 'get_consent_cookie? is accept' do
         let(:get_consent_cookie?) {'accept'}
@@ -31,6 +31,14 @@ describe CookieConsentHelper, type: :helper do
         end
       end
 
+    end
+
+    context 'country is nil' do
+      let(:get_country) {nil}
+
+      it 'returns false' do
+        expect(is_consent_needed?).to eq(false)
+      end
     end
 
   end

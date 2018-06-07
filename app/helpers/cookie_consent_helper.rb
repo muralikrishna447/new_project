@@ -6,6 +6,16 @@
 
 module CookieConsentHelper
 
+  # These countries require explicit consent
+  # This list is EU + EAA
+  # https://en.wikipedia.org/wiki/European_Economic_Area
+  # https://en.wikipedia.org/wiki/Member_state_of_the_European_Union
+  COUNTRIES_THAT_REQUIRE_CONSENT = %w[
+    AT BE BG HR CY CZ DK EE FI FR DE GR HU IE IT
+    LV LT LU MT NL PL PT RO SK SI ES SE GB IS LI
+    GI NO CH
+  ]
+
   def cookie_consent_value_accept
     'accept'
   end
@@ -16,7 +26,12 @@ module CookieConsentHelper
 
   # Returns true if user consent is needed before analytics are enabled, else returns false
   def is_consent_needed?
-    intl_user? and !is_consent_in_cookie?
+    country = get_country
+    COUNTRIES_THAT_REQUIRE_CONSENT.include?(country) and !is_consent_in_cookie?
+  end
+
+  def get_country
+    cookies[:cs_geo].present? && JSON.parse(cookies[:cs_geo])['country']
   end
 
   # Sets the consent cookie to a value that indicates that the user consented
@@ -24,18 +39,6 @@ module CookieConsentHelper
     set_consent_cookie(cookie_consent_value_accept)
   end
 
-  # In Spree, intl_user? is implemented in a separate helper, but that isn't available here
-  def intl_user?
-    if cookies[:cs_geo].present?
-      country = JSON.parse(cookies[:cs_geo])['country']
-      if country.present?
-        return !(['US', 'CA'].include? country)
-      end
-    end
-
-    # If no cs_geo cookie, then default to US (not international)
-    false
-  end
 
   # private methods
 
