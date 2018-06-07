@@ -98,7 +98,12 @@ class UserSync
     sync_merge_fields(existing_merges)
   end
 
+  def rewrite_groupings(existing_merges)
+    existing_merges['GROUPINGS'] = []
+  end
+
   def sync_merge_fields(exsting_merges)
+    rewrite_groupings(exsting_merges)
     update_merges = exsting_merges.dup
     patch_joule_data(update_merges)
     patch_premium(update_merges)
