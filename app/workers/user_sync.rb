@@ -16,7 +16,7 @@ class UserSync
   # Unfortunate limit to merge tag name length
   JOULES_CONNECTED_MERGE_TAG = "JL_CONN"
   JOULES_EVER_CONNECTED_MERGE_TAG = "JL_EVR_CON"
-  REFERRAL_CODE_MERGE_TAG = "REFER_CODE"
+  PREMIUM_STARTED_AT_MERGE_TAG = "PREMSTART"
 
   @queue = :user_sync
 
@@ -32,27 +32,9 @@ class UserSync
 
   def sync
     sync_mailchimp
-    # sync_referral_code
-    # sync_shopify
   end
 
-  def sync_referral_code
-    joule_counts = get_joule_counts()
-
-    if joule_counts[:ever_connected_count] > 0
-      sync_referral_code_impl(@user)
-    end
-  end
-
-  def sync_referral_code_impl(user)
-    if CsSpree.front_end_live?
-      CsSpree::Sync.ensure_share_joule_code_for_user user
-    else
-      Shopify::Customer.find_or_create_referral_code_for_user user
-    end
-  end
-
-  def sync_mailchimp(options = {premium: true, joule: true, joule_data: true})
+  def sync_mailchimp
     list_id = Rails.configuration.mailchimp[:list_id]
     member_info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => @user.email}]})
     @logger.info member_info.inspect
@@ -67,34 +49,80 @@ class UserSync
     member_info = member_info['data'][0]
 
     if member_info['status'] != 'subscribed'
-      @logger.warn "User not subscribed to list, actual status [#{member_info['status']}]"
+      @logger.warn "MAILCHIMP User not subscribed to list, actual status [#{member_info['status']}]"
       return
     end
 
-    # TODO - This is a quick fix that will still remove the user from groups
-    # other than premium and joule purchase
+    existing_merges = member_info['merges']
 
-    groups = []
-    if options[:premium]
-      add_to_group_param(groups, member_info, :premium_group_id, PREMIUM_GROUP_NAME, @user.premium?)
-    end
+    # Example
+    # {
+    # "success_count"=>1,
+    # "error_count"=>0,
+    # "errors"=>[],
+    # "data"=>[{
+    #   "email"=>"chefsteps@example.com",
+    #   "id"=>"053eb345",
+    #   "euid"=>"05ab345",
+    #   "email_type"=>"html",
+    #   "ip_signup"=>nil, "timestamp_signup"=>nil, "ip_opt"=>"54.12.12.133",
+    #   "timestamp_opt"=>"2015-11-26 00:40:45", "member_rating"=>2, "info_changed"=>"2018-04-11 20:23:28",
+    #   "web_id"=>131523589, "leid"=>131523589, "language"=>nil, "list_id"=>"a61ebdcaa6",
+    # "list_name"=>"ChefSteps", "merges"=>{"EMAIL"=>"chefsteps@example.com",
+    # "NAME"=>"Stu", "COUNTRY"=>"United States", "SOURCE"=>"api_standard",
+    # "PREMSTART"=>"2017-11-02", "MRBUYDT"=>"2017-06-01", "MRJBUYDT"=>"2017-06-01",
+    # "MRCBUYDT"=>"", "MRJCONNDT"=>"2017-05-06", "MRJAPPDT"=>"2018-04-02",
+    # "MRRECIPE"=>"Basic Salmon", "JOULSHIPDT"=>"2017-06-01", "MRSKU"=>"cs20001",
+    # "MMERGE15"=>"39", "MMERGE17"=>"1", "MMERGE18"=>"2018-03-11", "MMERGE21"=>"2017-11-01",
+    # "MMERGE23"=>"", "MMERGE10"=>"352492",
+    # "GROUPINGS"=>[
+    # {"id"=>8141, "name"=>"Joule Waitlist", "form_field"=>"hidden", "groups"=>[
+    # {"name"=>"UK", "interested"=>false},
+    # {"name"=>"Canada", "interested"=>false}]},
+    # {"id"=>8145, "name"=>"Survey Panels", "form_field"=>"hidden", "groups"=>[
+    # {"name"=>"Joule Customer Feedback", "interested"=>false}, {"name"=>"Weekly Joule Cook", "interested"=>false},
+    # {"name"=>"Seattle Joule Cook", "interested"=>false}]},
+    # {"id"=>8149, "name"=>"Accessories Waitlist", "form_field"=>"hidden", "groups"=>[
+    # {"name"=>"UK", "interested"=>false}]}]},
+    # "status"=>"subscribed", "timestamp"=>"2015-11-26 00:40:45", "is_gmonkey"=>false,
+    # "lists"=>[{"id"=>"009c78fb86", "status"=>""}],
+    # "geo"=>{"latitude"=>"39.0329000", "longitude"=>"-77.4866000", "gmtoff"=>"-5", "dstoff"=>"-4",
+    # "timezone"=>"America/New_York", "cc"=>"US", "region"=>"VA"},
+    # "clients"=>{"name"=>"Gmail", "icon_url"=>"http://us3.admin.mailchimp.com/images/email-client-icons/gmail.png"},
+    # "static_segments"=>[{"id"=>12309, "name"=>"Welcome Series Complete", "added"=>"2018-02-12 21:02:42"}], "notes"=>[]}]}
 
-    if options[:joule]
-      # This is deprecated b/c it is nearly worthless - it doesn't account for amazon, anonymous purchase, etc
-      add_to_group_param(groups, member_info, :joule_group_id, JOULE_PURCHASE_GROUP_NAME, @user.joule_purchase_count > 0)
+    if existing_merges.nil?
+      @logger.warn "MAILCHIMP ERROR NO Existing merges, will hopefully not overwrite [#{member_info}]"
+      existing_merges = {}
     end
-
-    if options[:premium] || options[:joule]
-      add_to_groups(groups)
-    end
-
-    if options[:joule_data]
-      sync_joule_data(member_info)
-    end
+    sync_merge_fields(existing_merges)
   end
 
-  def sync_shopify
-    Shopify::Customer.sync_user @user
+  def rewrite_groupings(existing_merges)
+    existing_merges['GROUPINGS'] = []
+  end
+
+  def sync_merge_fields(exsting_merges)
+    rewrite_groupings(exsting_merges)
+    update_merges = exsting_merges.dup
+    patch_joule_data(update_merges)
+    patch_premium(update_merges)
+
+    if update_merges != exsting_merges
+      @logger.info("MAILCHIMP Sync user #{@user.id} merge fields, #{update_merges.inspect}")
+      Gibbon::API.lists.update_member(
+        {
+          id: Rails.configuration.mailchimp[:list_id],
+          email: {
+            email: @user.email
+          },
+          replace_interests: false,
+          merge_vars: update_merges
+        }
+      )
+    else
+      @logger.info("MAILCHIMP Sync user #{@user.id} no updates #{update_merges.inspect}")
+    end
   end
 
   def get_joule_counts
@@ -104,89 +132,19 @@ class UserSync
     }
   end
 
-  def sync_joule_data(member_info)
+  def patch_joule_data(update_merges)
     joule_counts = get_joule_counts()
+    update_merges[JOULES_CONNECTED_MERGE_TAG] = joule_counts[:connected_count]
+    update_merges[JOULES_EVER_CONNECTED_MERGE_TAG] = joule_counts[:ever_connected_count]
+  end
 
-    if joule_counts[:ever_connected_count] > 0
-      merges = {
-        JOULES_CONNECTED_MERGE_TAG => joule_counts[:connected_count],
-        JOULES_EVER_CONNECTED_MERGE_TAG => joule_counts[:ever_connected_count],
-        REFERRAL_CODE_MERGE_TAG => sync_referral_code_impl(@user)
-      }
-
-      if merges != member_info['merges']
-
-        @logger.info("Sync user #{@user.id} joule counts, #{merges.inspect}")
-
-        Gibbon::API.lists.update_member(
-          {
-            id: Rails.configuration.mailchimp[:list_id],
-            email: {
-              email: @user.email
-            },
-            replace_interests: false,
-            merge_vars: merges
-          }
-        )
-
+  def patch_premium(update_merges)
+    if @user.premium_membership_created_at.present?
+      premium_start_tag = @user.premium_membership_created_at.strftime('%Y-%m-%d')
+      if premium_start_tag.blank? && @user.premium_member?
+        premium_start_tag = '2000-01-01'
       end
+      update_merges[PREMIUM_STARTED_AT_MERGE_TAG] = premium_start_tag
     end
-  end
-
-  def add_to_group_param(groups, member_info, group_id, group_name, db_value)
-    mailchimp_value = in_mailchimp_group?(member_info, group_id, group_name)
-
-    @logger.info "#{group_name}: Mailchimp [#{mailchimp_value}], ChefSteps [#{db_value}]"
-
-    if mailchimp_value && !db_value
-      msg = "User #{@user.id} is a #{group_name} in mailchimp and not the database"
-      @logger.error msg
-      raise msg
-    end
-
-    if !db_value
-      @logger.info "Not a #{group_name}"
-      return
-    end
-    groups << [group_id, group_name]
-  end
-
-  def add_to_groups (groups)
-    # Note - if more attributes are added to the group then those values will
-    # need to be copied from the initial read request or else they will be
-    # deleted.
-    groupings = groups.collect do |id, name|
-      {id: Rails.configuration.mailchimp[id], groups: [name]}
-    end
-    merge_vars = {
-        groupings: groupings
-    }
-
-    Gibbon::API.lists.update_member(
-      id: Rails.configuration.mailchimp[:list_id],
-      email: { email: @user.email },
-      merge_vars: merge_vars,
-      replace_interests: false
-    )
-  end
-
-  def in_mailchimp_group?(member_info, id, group_name)
-    return false unless member_info
-    return false unless member_info['GROUPINGS']
-
-    group_outer = member_info['GROUPINGS'].find do |e|
-      e['id'] == Rails.configuration.mailchimp[id]
-    end
-    return false unless group_outer
-    return false unless group_outer['groups']
-
-    group_inner = group_outer['groups'].find do |e|
-      e['name'] == group_name
-    end
-    return false if group_inner.nil?
-
-    return true if group_inner["interested"] == true
-
-    return false
   end
 end
