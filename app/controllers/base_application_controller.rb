@@ -91,6 +91,18 @@ class BaseApplicationController < ActionController::Base
       }
     end
 
+    def dummy_location
+      return {
+          country: 'US',
+          long_country: 'United States',
+          latitude: 47.6103,
+          longitude: -122.3341,
+          city: 'Seattle',
+          state: 'WA',
+          zip: '98101'
+      }
+    end
+
     def geolocate_ip(ip_address = nil)
       t1 = Time.now
       metric_suffix = 'hit'
@@ -99,7 +111,7 @@ class BaseApplicationController < ActionController::Base
       logger.info("Geolocating IP: #{ip_address}")
       conf = Rails.configuration.geoip
 
-      return location if ip_address == '127.0.0.1'
+      return dummy_location if ip_address == '127.0.0.1'
 
       begin
         key = "geocode-cache-#{ip_address}"

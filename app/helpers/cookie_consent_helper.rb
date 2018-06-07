@@ -2,7 +2,7 @@
 # This helper exposes APIs to
 #   1) determine if consent is needed
 #   2) set the consent status
-# It must be kept in sync with the equivalent version in ChefSteps/FreshSteps
+# It must be kept in sync with the equivalent version in Spree/FreshSteps
 
 module CookieConsentHelper
 
