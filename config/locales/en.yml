@@ -168,3 +168,7 @@ en:
       twitter_user_name: "Twitter User Name"
       filter: "Filter"
       clear_filters: "Clear Filters"
+  cookie_policy:
+    text: 'By clicking ok on this notice, or continuing to navigate our website without disabling cookies, you agree to our use of tracking technologies.  To learn more or opt out of certain cookies, see our %{cookie_policy_href}.'
+    cookie_policy_href_label: 'Cookie Policy'
+    ok: 'OK'
