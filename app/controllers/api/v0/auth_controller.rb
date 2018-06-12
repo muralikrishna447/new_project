@@ -228,6 +228,15 @@ module Api
           redirect_uri = path_uri.to_s+"##{redirect_params.to_query}"
           render_api_response 200, {redirect: redirect_uri}
 
+        elsif path_uri.host == 'oauth-redirect.googleusercontent.com'
+          aa = ActorAddress.create_for_user(current_api_user, {client_metadata: 'google-action'})
+          token = aa.current_token.to_jwt
+          redirect_params = {state: params[:state],
+            token_type: 'Bearer',
+            access_token: token}
+          redirect_uri = path_uri.to_s+"##{redirect_params.to_query}"
+          render_api_response 200, {redirect: redirect_uri}
+
         elsif path_uri.host == Rails.application.config.shared_config[:facebook][:messenger_endpoint]
           aa = ActorAddress.create_for_user(current_api_user, {client_metadata: 'facebook-messenger'})
           token = aa.current_token.to_jwt
