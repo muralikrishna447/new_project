@@ -516,7 +516,7 @@ describe Api::V0::AuthController do
 
       google_params = redirect.split('#')[1]
       parsed_google_params = CGI::parse(google_params)
-      token_string = parsed_amazon_params['access_token'][0]
+      token_string = parsed_google_params['access_token'][0]
       token = AuthToken.from_string token_string
       address_id = token['a']
       ActorAddress.where(address_id: address_id).first.client_metadata.should == 'google'
