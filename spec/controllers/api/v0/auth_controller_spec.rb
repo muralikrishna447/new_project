@@ -519,7 +519,7 @@ describe Api::V0::AuthController do
       token_string = parsed_google_params['access_token'][0]
       token = AuthToken.from_string token_string
       address_id = token['a']
-      ActorAddress.where(address_id: address_id).first.client_metadata.should == 'google'
+      ActorAddress.where(address_id: address_id).first.client_metadata.should == 'google-action'
     end
 
     it 'returns a proper token for facebook messenger bot' do
