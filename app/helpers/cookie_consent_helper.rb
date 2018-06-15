@@ -47,7 +47,10 @@ module CookieConsentHelper
   private
   def set_consent_cookie(value)
     consent_cookie = get_consent_cookie?
-    consent_cookie = value
+    consent_cookie = {
+        :value => value,
+        :domain => :all
+    }
   end
 
   private
