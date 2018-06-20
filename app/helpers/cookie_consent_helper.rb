@@ -46,8 +46,9 @@ module CookieConsentHelper
 
   private
   def set_consent_cookie(value)
-    consent_cookie = get_consent_cookie?
-    consent_cookie = {
+    # The cookie needs to be set client side, so this function is NOT called when the user clicks the OK button.
+    # See cookie_consent_banner.html.erb for the code that is called when user clicks the OK button
+    cookies.permanent[:analytics_consent] = {
         :value => value,
         :domain => :all
     }
