@@ -16,11 +16,20 @@ Renders nothing if the user does not need to see the banner
 
   </div>
 
-
   <script>
-      $(document).ready(function() {
-          $('#cookie-ok').click(function() {
-              $.cookie('<%= cookie_consent_key %>', '<%= cookie_consent_value_accept %>');
+      $(document).ready(function () {
+          $('#cookie-ok').click(function () {
+
+              var cookieDomain = document.domain;
+              if (cookieDomain.search('shop') >= 0 && cookieDomain.search('.com') >= 0) {
+                  cookieDomain = cookieDomain.replace('shop', ''); // want the cookie in .chefsteps.com, .chocolateyshatner.com, or .vanillanimoy.com
+              }
+
+              $.cookie('<%= cookie_consent_key %>', '<%= cookie_consent_value_accept %>', {
+                  expires: 365 * 20,
+                  path: '/',
+                  domain: cookieDomain
+              });
               $('#cookie-container').addClass('cookie-container-hidden');
           });
       });
