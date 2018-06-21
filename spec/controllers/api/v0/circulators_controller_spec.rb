@@ -144,7 +144,10 @@ describe Api::V0::CirculatorsController do
       result = JSON.parse(response.body)
       result['token'].should_not be_empty
       token = AuthToken.from_string result['token']
-      token['iat'].should == Time.now.to_i
+
+      # See:
+      # https://github.com/travisjeffery/timecop/issues/146
+      (token['iat'] - Time.now.to_i).abs.should <= 2
     end
   end
 
