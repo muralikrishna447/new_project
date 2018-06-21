@@ -187,7 +187,6 @@ group :guard do
   gem 'guard-jasmine'
   gem 'listen'
   gem 'growl'
-  gem 'rb-fsevent'
   gem 'terminal-notifier-guard'
 end
 
