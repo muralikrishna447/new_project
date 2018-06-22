@@ -482,6 +482,7 @@ describe Api::V0::CirculatorsController do
           gcm = JSON.parse msg['GCM']
           expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
           expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
+          expect(gcm['data']['title']).to eq 'Joule'
         end
       end
 

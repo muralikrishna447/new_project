@@ -123,7 +123,7 @@ module Api
         end
 
         begin
-          push_notification = get_push_notification()
+          push_notification = get_push_notification(circulator.circulator_id)
         rescue MissingNotificationError
           return render_api_response 400, {message: "Unknown notification type #{params[:notification_type]}"}
         end
@@ -136,24 +136,10 @@ module Api
       end
 
       def publish_notification(user, circulator, token, push_notification, is_admin_message)
-        message = push_notification.message
-        notification_type = push_notification.notification_type
-        endpoint_arn = token.endpoint_arn
         Librato.increment("api.publish_notification_requests")
 
-        title = I18n.t("circulator.app_name", raise: true)
-
-        base_params = push_notification.params.merge({
-          notification_type: notification_type,
-          circulator_address: circulator.circulator_id
-        })
-
-        gcm_data = {
-          data: base_params.merge({message: message, title: title,})
-        }
-        apns_data = {
-          aps: base_params.merge({alert: message, sound: 'default'})
-        }
+        gcm_data = render_for_gcm(push_notification)
+        apns_data = render_for_apns(push_notification)
 
         if is_admin_message
           #copy additional params into gcm_data and apns_data
@@ -176,6 +162,7 @@ module Api
         }
 
         logger.info "Publishing #{message.inspect}"
+        endpoint_arn = token.endpoint_arn
         begin
           resp = publish_json_message(endpoint_arn, message.to_json)
           save_push_notification(
@@ -337,8 +324,31 @@ module Api
         end
       end
 
+      def render_for_apns(push_notification)
+        return {
+          aps: push_notification.params.merge(
+            {
+              notification_type: push_notification.notification_type,
+              alert: push_notification.message,
+              sound: 'default',
+            }
+          )
+        }
+      end
 
-      def get_push_notification
+      def render_for_gcm(push_notification)
+        return {
+          data: push_notification.params.merge(
+            {
+              notification_type: push_notification.notification_type,
+              message: push_notification.message,
+              title: I18n.t("circulator.app_name", raise: true),
+            }
+          )
+        }
+      end
+
+      def get_push_notification(circulator_address)
         message = nil
         notification_type = params[:notification_type]
         notification_params = (params[:notification_params] || {}).inject({}){|memo,(k,v)|
@@ -369,6 +379,7 @@ module Api
         additional_params = (params[:notification_params] || {}).select{
           |k,v| keys.include? k
         }
+        additional_params[:circulator_address] = circulator_address
 
         return PushNotification.new(
           notification_type, message, additional_params
