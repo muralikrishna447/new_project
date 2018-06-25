@@ -315,51 +315,104 @@ module Api
       end
 
       class PushNotification
-        attr_reader :notification_type, :message, :params
+        attr_reader :notification_type, :message, :params, :is_background, :notification_id
 
-        def initialize(notification_type, message, params = nil)
+        def initialize(notification_type, message: nil, params: nil, is_background: false)
           @notification_type = notification_type
           @message = message
           @params = params || {}
+          @is_background = is_background
+          @notification_id = PushNotification.get_notification_id()
+        end
+
+        ANDROID_MAX_INT = 2147483647
+
+        def self.get_notification_id
+          # This is used for grouping notifications, and also for
+          # letting iOS know we're finished processing background
+          # notifications. For now just use a random number (must be
+          # less than the max value of an integer, on Android).  See:
+          # https://github.com/phonegap/phonegap-plugin-push/blob/master/docs/PAYLOAD.md#notification-id
+          return rand(ANDROID_MAX_INT)
         end
       end
 
       def render_for_apns(push_notification)
+        data = push_notification.params.merge({
+          notification_type: push_notification.notification_type,
+        })
+
+        if push_notification.message
+          data[:alert] = push_notification.message
+          data[:sound] =  'default'
+        end
+
+        if push_notification.is_background
+          data['content-available'.to_sym] = 1
+          data[:notId] = push_notification.notification_id
+        end
+
         return {
-          aps: push_notification.params.merge(
-            {
-              notification_type: push_notification.notification_type,
-              alert: push_notification.message,
-              sound: 'default',
-            }
-          )
+          aps: data
         }
       end
 
       def render_for_gcm(push_notification)
+        data = push_notification.params.merge({
+          notification_type: push_notification.notification_type,
+        })
+
+        if push_notification.message
+          data[:message] = push_notification.message
+          data[:title] = I18n.t("circulator.app_name", raise: true)
+        end
+
+        if push_notification.is_background
+          # GCM requires a string value of '1', APNS requires an integer value of 1
+          data['content-available'.to_sym] = '1'
+          data[:notId] = push_notification.notification_id
+        end
+
         return {
-          data: push_notification.params.merge(
-            {
-              notification_type: push_notification.notification_type,
-              message: push_notification.message,
-              title: I18n.t("circulator.app_name", raise: true),
-            }
-          )
+          data: data
         }
       end
 
       def get_push_notification(circulator_address)
-        message = nil
         notification_type = params[:notification_type]
-        notification_params = (params[:notification_params] || {}).inject({}){|memo,(k,v)|
+
+        # Other metadata that we want to pass on to the app
+        keys = ['feed_id', 'finish_timestamp']
+        additional_params = (params[:notification_params] || {}).select{
+          |k,v| keys.include? k
+        }
+        additional_params[:circulator_address] = circulator_address
+
+        if notification_type == 'timer_updated'
+          return PushNotification.new(
+            notification_type, params: additional_params, is_background: true
+          )
+        end
+
+        message = get_notification_message(notification_type, params[:notification_params])
+        return PushNotification.new(
+          notification_type, message: message, params: additional_params
+        )
+      end
+
+      def get_notification_message(notification_type, notification_params)
+        message = nil
+
+        template_params = (notification_params || {}).inject({}){|memo,(k,v)|
           unless v.nil?
             memo[k.to_sym] = v; memo
           end
           memo
         }
+
         begin
           template = I18n.t("circulator.push.#{notification_type}.template", raise: true)
-          message = template % notification_params
+          message = template % template_params
         rescue I18n::MissingTranslationData
           logger.info "No template found for #{notification_type}, falling back to default"
         rescue KeyError
@@ -373,17 +426,7 @@ module Api
             raise MissingNotificationError.new("Missing notification for #{notification_type}")
           end
         end
-
-        # Other metadata that we want to pass on to the app
-        keys = ['feed_id']
-        additional_params = (params[:notification_params] || {}).select{
-          |k,v| keys.include? k
-        }
-        additional_params[:circulator_address] = circulator_address
-
-        return PushNotification.new(
-          notification_type, message, additional_params
-        )
+        return message
       end
 
       def get_admin_push_notification
@@ -413,7 +456,7 @@ module Api
         }
 
         return PushNotification.new(
-            notification_type, params[:message]
+          notification_type, message: params[:message]
         )
       end
 
@@ -445,6 +488,16 @@ module Api
         owners = circulator.circulator_users.select {|cu| cu.owner}
 
         owners.each do |owner|
+
+          if (
+            push_notification.is_background and
+            !BetaFeatureService.user_has_feature(owner.user, 'background_notifications')
+          )
+            logger.info("Background notifications not enabled for user")
+            next
+          end
+
+
           logger.info "Found circulator owner #{owner.user.id}"
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
