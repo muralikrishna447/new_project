@@ -105,6 +105,7 @@ module Api
 
         # Hardcoding the list of possible capabilities for now.
         capability_list = [
+          'joule_ready',
           'beta_guides',
           'multi_circ',
           'fbjoule',
