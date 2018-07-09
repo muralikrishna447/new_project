@@ -21,8 +21,8 @@ Renders nothing if the user does not need to see the banner
           $('#cookie-ok').click(function () {
 
               var cookieDomain = document.domain;
-              if (cookieDomain.search('shop') >= 0 && cookieDomain.search('.com') >= 0) {
-                  cookieDomain = cookieDomain.replace('shop', ''); // want the cookie in .chefsteps.com, .chocolateyshatner.com, or .vanillanimoy.com
+              if (cookieDomain.search('www') >= 0 && cookieDomain.search('.com') >= 0) {
+                  cookieDomain = cookieDomain.replace('www', ''); // want the cookie in .chefsteps.com, .chocolateyshatner.com, or .vanillanimoy.com
               }
 
               $.cookie('<%= cookie_consent_key %>', '<%= cookie_consent_value_accept %>', {
