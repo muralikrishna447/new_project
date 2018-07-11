@@ -35,7 +35,12 @@ class LegalController < ApplicationController
   end
 
   def warranty
+    render 'legal/warranty/index'
+  end
+
+  def warranty_for_country
     @warranty_template = "legal/warranty/#{@country[:code].downcase}_#{@selected_language.downcase}"
+    render 'legal/warranty/warranty_for_country'
   end
 
   def privacy_policy
@@ -133,7 +138,13 @@ class LegalController < ApplicationController
         languages: ["English"]
       }
     ]
-    @country = @countries.find { |c| c[:code] == @location['country'] }
+    # If path provides a country code, use that over the location
+    requested_country_code = params[:country_code].try(:upcase)
+    if requested_country_code.blank?
+      requested_country_code = @location['country']
+    end
+
+    @country = @countries.find { |c| c[:code] == requested_country_code }
     if @country.blank?
       @country = @countries.find { |c| c[:code] == 'US' }
     end
