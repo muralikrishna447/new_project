@@ -136,6 +136,11 @@ class LegalController < ApplicationController
         code: "GB",
         name: "United Kingdom",
         languages: ["English"]
+      },
+      {
+        code: "EU",
+        name: "Other European Economic Area Countries",
+        languages: ["English"]
       }
     ]
     # If path provides a country code, use that over the location
