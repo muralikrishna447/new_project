@@ -5,7 +5,10 @@ describe Api::V0::ContentController do
   LOCALE_CA = 'en-CA'
 
   before :each do
-    additional_endpoints = {LOCALE_CA => {'production' => {'default' => 'http://ca_manifest_url'}}}
+    additional_endpoints = {
+      LOCALE_CA => {'production' => {'default' => 'http://ca_manifest_url'}},
+      LOCALE_GB => {'beta_group' => 'guides_en_GB','production' => {'default' => 'http://ca_manifest_url'}},
+      }
     @supported_environments = Api::V0::ContentController.refresh_endpoints(additional_endpoints)
   end
 
