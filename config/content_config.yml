@@ -7,7 +7,6 @@ manifest_endpoints:
     production:
       default: 'https://d1azuiz827qxpe.cloudfront.net/resources/v2/production/en-US/resources.json'
   en-GB:
-    beta_group: 'guides_en_GB'
     development:
       default: 'https://api.jouleapp.com/manifests/resources.json?includeSlimGuides=true&locale=en-GB'
     staging:
