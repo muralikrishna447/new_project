@@ -35,7 +35,12 @@ class LegalController < ApplicationController
   end
 
   def warranty
+    render 'legal/warranty/index'
+  end
+
+  def warranty_for_country
     @warranty_template = "legal/warranty/#{@country[:code].downcase}_#{@selected_language.downcase}"
+    render 'legal/warranty/warranty_for_country'
   end
 
   def privacy_policy
@@ -66,74 +71,92 @@ class LegalController < ApplicationController
         code: "CA",
         name: "Canada",
         languages: ["English", "French"]
-      },
-      {
-        code: "BE",
-        name: "Belgium",
-        languages: ["Dutch", "French"]
-      },
-      {
-        code: "DK",
-        name: "Denmark",
-        languages: ["Danish"]
-      },
-      {
-        code: "FI",
-        name: "Finland",
-        languages: ["Finnish", "Swedish"]
-      },
-      {
-        code: "FR",
-        name: "France",
-        languages: ["French"]
-      },
-      {
-        code: "DE",
-        name: "Germany",
-        languages: ["German"]
-      },
-      {
-        code: "IE",
-        name: "Ireland",
-        languages: ["English"]
-      },
-      {
-        code: "IT",
-        name: "Italy",
-        languages: ["Italian"]
-      },
-      {
-        code: "NL",
-        name: "Netherlands",
-        languages: ["Dutch"]
-      },
-      {
-        code: "NO",
-        name: "Norway",
-        languages: ["Norwegian"]
-      },
-      {
-        code: "ES",
-        name: "Spain",
-        languages: ["Spanish"]
-      },
-      {
-        code: "SE",
-        name: "Sweden",
-        languages: ["Swedish"]
-      },
-      {
-        code: "CH",
-        name: "Switzerland",
-        languages: ["German", "French", "Italian"]
-      },
-      {
-        code: "GB",
-        name: "United Kingdom",
-        languages: ["English"]
       }
     ]
-    @country = @countries.find { |c| c[:code] == @location['country'] }
+    if ENV['ENABLE_EU_WARRANTY_PAGES'] == true.to_s
+      @countries = @countries.concat(
+        [
+          {
+            code: "BE",
+            name: "Belgium",
+            languages: ["Dutch", "French"]
+          },
+          {
+            code: "DK",
+            name: "Denmark",
+            languages: ["Danish"]
+          },
+          {
+            code: "FI",
+            name: "Finland",
+            languages: ["Finnish", "Swedish"]
+          },
+          {
+            code: "FR",
+            name: "France",
+            languages: ["French"]
+          },
+          {
+            code: "DE",
+            name: "Germany",
+            languages: ["German"]
+          },
+          {
+            code: "IE",
+            name: "Ireland",
+            languages: ["English"]
+          },
+          {
+            code: "IT",
+            name: "Italy",
+            languages: ["Italian"]
+          },
+          {
+            code: "NL",
+            name: "Netherlands",
+            languages: ["Dutch"]
+          },
+          {
+            code: "NO",
+            name: "Norway",
+            languages: ["Norwegian"]
+          },
+          {
+            code: "ES",
+            name: "Spain",
+            languages: ["Spanish"]
+          },
+          {
+            code: "SE",
+            name: "Sweden",
+            languages: ["Swedish"]
+          },
+          {
+            code: "CH",
+            name: "Switzerland",
+            languages: ["German", "French", "Italian"]
+          },
+          {
+            code: "GB",
+            name: "United Kingdom",
+            languages: ["English"]
+          },
+          {
+            code: "EU",
+            name: "Other European Economic Area Countries",
+            languages: ["English"]
+          }
+        ]
+      )
+    end
+
+    # If path provides a country code, use that over the location
+    requested_country_code = params[:country_code].try(:upcase)
+    if requested_country_code.blank?
+      requested_country_code = @location['country']
+    end
+
+    @country = @countries.find { |c| c[:code] == requested_country_code }
     if @country.blank?
       @country = @countries.find { |c| c[:code] == 'US' }
     end
