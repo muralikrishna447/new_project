@@ -73,6 +73,15 @@ class LegalController < ApplicationController
         languages: ["English", "French"]
       }
     ]
+    if ENV['ENABLE_GB_WARRANTY_PAGE'] == true.to_s
+      @countries.push(
+        {
+          code: "GB",
+          name: "United Kingdom",
+          languages: ["English"]
+        }
+      )
+    end
     if ENV['ENABLE_EU_WARRANTY_PAGES'] == true.to_s
       @countries = @countries.concat(
         [
@@ -135,11 +144,6 @@ class LegalController < ApplicationController
             code: "CH",
             name: "Switzerland",
             languages: ["German", "French", "Italian"]
-          },
-          {
-            code: "GB",
-            name: "United Kingdom",
-            languages: ["English"]
           },
           {
             code: "EU",
