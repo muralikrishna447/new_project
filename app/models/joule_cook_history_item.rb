@@ -21,7 +21,6 @@ class JouleCookHistoryItem < ActiveRecord::Base
   validates :set_point, numericality: true
   validates :cook_id, presence: true
   validates :cook_time, presence: true, if: 'automatic?'
-  validates :guide_id, presence: true, if: 'automatic?'
   validates :program_type, presence: true, if: 'automatic?'
   validates :set_point, presence: true, if: 'automatic?'
   validates :timer_id, presence: true, if: 'automatic?'
