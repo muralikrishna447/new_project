@@ -44,6 +44,6 @@ class JouleCookHistoryItem < ActiveRecord::Base
   end
   
   def guided?
-    !!self.guide_id
+    self.guide_id.present?
   end
 end
