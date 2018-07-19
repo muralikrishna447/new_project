@@ -2,9 +2,6 @@ require 'spec_helper'
 
 describe Api::V0::CookHistoryController do
 
-  
-
-  
   def create_cook_entry (program_type: 'AUTOMATIC', is_guided: true)
     
     entry = {
