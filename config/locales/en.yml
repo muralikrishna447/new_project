@@ -169,6 +169,6 @@ en:
       filter: "Filter"
       clear_filters: "Clear Filters"
   cookie_policy:
-    text: 'By clicking ok on this notice, or continuing to navigate our website without disabling cookies, you agree to the use of tracking technologies by us and our advertising partners.  To learn more, see our %{cookie_policy_href}.'
-    cookie_policy_href_label: 'Cookie Policy'
-    ok: 'OK'
+      text: 'Cookies are delicious—but we and our partners also use them to improve your experience and to create marketing experiences relevant to your interests. By clicking "Okay," you agree to the use of cookies as described in our %{cookie_policy_href}.'
+      cookie_policy_href_label: 'Cookie Policy'
+      ok: 'Okay'

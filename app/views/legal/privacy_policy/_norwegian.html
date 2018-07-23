@@ -1,0 +1,811 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:"Calibri Light";
+	panose-1:2 15 3 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:"Segoe UI";
+	panose-1:2 11 5 2 4 2 4 2 2 3;}
+@font-face
+	{font-family:Garamond;
+	panose-1:2 2 4 4 3 3 1 1 8 3;}
+@font-face
+	{font-family:Circular;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:0in;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+h1
+	{mso-style-link:"Heading 1 Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	page-break-after:avoid;
+	font-size:14.0pt;
+	font-family:"Calibri Light",sans-serif;
+	color:windowtext;
+	font-weight:bold;}
+h2
+	{mso-style-link:"Heading 2 Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;
+	font-weight:bold;}
+h3
+	{mso-style-link:"Heading 3 Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	line-height:30.0pt;
+	font-size:18.5pt;
+	font-family:Circular;
+	color:#262626;
+	font-weight:normal;}
+h4
+	{mso-style-link:"Heading 4 Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	line-height:15.0pt;
+	font-size:13.0pt;
+	font-family:Circular;
+	color:#262626;
+	font-weight:bold;}
+p.MsoCommentText, li.MsoCommentText, div.MsoCommentText
+	{mso-style-link:"Comment Text Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:0in;
+	font-size:10.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{mso-style-link:"Header Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{mso-style-link:"Footer Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+p.MsoListBullet, li.MsoListBullet, div.MsoListBullet
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:.25in;
+	text-indent:-.25in;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+p.MsoListBulletCxSpFirst, li.MsoListBulletCxSpFirst, div.MsoListBulletCxSpFirst
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.25in;
+	margin-bottom:.0001pt;
+	text-indent:-.25in;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+p.MsoListBulletCxSpMiddle, li.MsoListBulletCxSpMiddle, div.MsoListBulletCxSpMiddle
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.25in;
+	margin-bottom:.0001pt;
+	text-indent:-.25in;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+p.MsoListBulletCxSpLast, li.MsoListBulletCxSpLast, div.MsoListBulletCxSpLast
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:.25in;
+	text-indent:-.25in;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+p.MsoTitle, li.MsoTitle, div.MsoTitle
+	{mso-style-link:"Title Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:24.0pt;
+	margin-left:0in;
+	font-size:26.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#323E4F;
+	letter-spacing:.25pt;
+	font-weight:bold;}
+p.MsoTitleCxSpFirst, li.MsoTitleCxSpFirst, div.MsoTitleCxSpFirst
+	{mso-style-link:"Title Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	font-size:26.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#323E4F;
+	letter-spacing:.25pt;
+	font-weight:bold;}
+p.MsoTitleCxSpMiddle, li.MsoTitleCxSpMiddle, div.MsoTitleCxSpMiddle
+	{mso-style-link:"Title Char";
+	margin:0in;
+	margin-bottom:.0001pt;
+	font-size:26.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#323E4F;
+	letter-spacing:.25pt;
+	font-weight:bold;}
+p.MsoTitleCxSpLast, li.MsoTitleCxSpLast, div.MsoTitleCxSpLast
+	{mso-style-link:"Title Char";
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:24.0pt;
+	margin-left:0in;
+	font-size:26.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#323E4F;
+	letter-spacing:.25pt;
+	font-weight:bold;}
+a:link, span.MsoHyperlink
+	{color:#0088CC;
+	text-decoration:none none;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:#954F72;
+	text-decoration:underline;}
+p
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:7.5pt;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;
+	color:#262626;}
+p.MsoCommentSubject, li.MsoCommentSubject, div.MsoCommentSubject
+	{mso-style-link:"Comment Subject Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:0in;
+	font-size:10.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;
+	font-weight:bold;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-link:"Balloon Text Char";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	margin-bottom:.0001pt;
+	font-size:9.0pt;
+	font-family:"Segoe UI",sans-serif;
+	color:#262626;}
+p.MsoRMPane, li.MsoRMPane, div.MsoRMPane
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+p.MsoListParagraph, li.MsoListParagraph, div.MsoListParagraph
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:.5in;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+p.MsoListParagraphCxSpFirst, li.MsoListParagraphCxSpFirst, div.MsoListParagraphCxSpFirst
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+p.MsoListParagraphCxSpMiddle, li.MsoListParagraphCxSpMiddle, div.MsoListParagraphCxSpMiddle
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+p.MsoListParagraphCxSpLast, li.MsoListParagraphCxSpLast, div.MsoListParagraphCxSpLast
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:.5in;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	color:#262626;}
+span.Heading2Char
+	{mso-style-name:"Heading 2 Char";
+	mso-style-link:"Heading 2";
+	font-family:"Calibri",sans-serif;
+	color:#262626;
+	font-weight:bold;}
+span.Heading3Char
+	{mso-style-name:"Heading 3 Char";
+	mso-style-link:"Heading 3";
+	font-family:Circular;}
+span.Heading4Char
+	{mso-style-name:"Heading 4 Char";
+	mso-style-link:"Heading 4";
+	font-family:Circular;
+	font-weight:bold;}
+span.z-TopofFormChar
+	{mso-style-name:"z-Top of Form Char";
+	mso-style-link:"z-Top of Form";
+	font-family:"Arial",sans-serif;
+	display:none;}
+span.z-BottomofFormChar
+	{mso-style-name:"z-Bottom of Form Char";
+	mso-style-link:"z-Bottom of Form";
+	font-family:"Arial",sans-serif;
+	display:none;}
+span.BalloonTextChar
+	{mso-style-name:"Balloon Text Char";
+	mso-style-link:"Balloon Text";
+	font-family:"Segoe UI",sans-serif;}
+span.CommentTextChar
+	{mso-style-name:"Comment Text Char";
+	mso-style-link:"Comment Text";}
+span.CommentSubjectChar
+	{mso-style-name:"Comment Subject Char";
+	mso-style-link:"Comment Subject";
+	font-weight:bold;}
+span.HeaderChar
+	{mso-style-name:"Header Char";
+	mso-style-link:Header;}
+span.FooterChar
+	{mso-style-name:"Footer Char";
+	mso-style-link:Footer;
+	color:#262626;}
+span.zzmpTrailerItem
+	{mso-style-name:zzmpTrailerItem;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;
+	position:relative;
+	top:0pt;
+	letter-spacing:0pt;
+	text-decoration:none none;
+	vertical-align:baseline;}
+span.Mention1
+	{mso-style-name:Mention1;
+	color:#2B579A;
+	background:#E6E6E6;}
+span.TitleChar
+	{mso-style-name:"Title Char";
+	mso-style-link:Title;
+	font-family:"Calibri",sans-serif;
+	color:#323E4F;
+	letter-spacing:.25pt;
+	font-weight:bold;}
+span.Heading1Char
+	{mso-style-name:"Heading 1 Char";
+	mso-style-link:"Heading 1";
+	font-family:"Calibri Light",sans-serif;
+	font-weight:bold;}
+.MsoChpDefault
+	{font-family:"Calibri",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:8.0pt;
+	line-height:107%;}
+ /* Page Definitions */
+ @page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:85.05pt 56.7pt 85.05pt 56.7pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link="#0088CC" vlink="#954F72">
+
+<div class=WordSection1>
+
+<p class=MsoTitle><span lang=NO-BOK>CHEFSTEPS’ PERSONVERNERKLÆRING</span></p>
+
+<p class=MsoNormal><span lang=NO-BOK>Sist oppdatert:  20180717</span></p>
+
+<p class=MsoNormal><span lang=NO-BOK>Denne personvernerklæringen forklarer
+hvordan opplysninger om deg samles inn, brukes og videreformidles av ChefSteps,
+Inc. («ChefSteps», «vi» eller «oss») når du går inn på eller bruker nettsiden
+vår og våre mobilapplikasjoner, våre tilknyttede matlagingsprodukter som f.eks.
+Joule og våre andre produkter og tjenester (samlet kalt &quot;tjenestene&quot;)
+eller når du kommuniserer med oss på annen måte.</span></p>
+
+<p class=MsoNormal><span lang=NO-BOK>Vi kan komme til å endre denne personvernerklæringen
+fra tid til annen.  Hvis vi gjør endringer, vil vi varsle deg ved å endre
+datoen øverst på erklæringen, og vi vil i noen tilfeller gi deg ytterligere
+varsel, f.eks. ved at vi legger ut en meddelelse på hjemmesiden vår eller ved
+at vi sender deg et varsel gjennom våre tjenester.  Vi oppfordrer deg til å
+lese igjennom personvernerklæringen når du går inn på våre tjenester eller
+interagerer med oss på annen måte, slik at du holder deg oppdatert på vår
+informasjonspraksis og valgene som er tilgjengelige for deg.</span></p>
+
+<h1><span lang=NO-BOK>Innsamling av opplysninger</span></h1>
+
+<h2><span lang=NO-BOK>Opplysninger du gis oss</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Vi samler inn opplysninger du gir oss direkte. 
+For eksempel samler vi inn opplysninger når du oppretter en konto, foretar et
+kjøp, melder deg på våre kurs, deltar i de interaktive områdene av tjenestene
+våre, kommuniserer med oss via sosiale nettsteder tilhørende tredjeparter,
+deltar i våre konkurranser, markedsføring, lotterier og undersøkelser, ber om
+kundestøtte eller kommuniserer med oss på annen måte.  Opplysningene vi samler
+inn er navnet ditt, e-postadressen din, telefonnummeret ditt, fakturaadressen,
+forsendelsesadressen, opplysninger du lagrer på våre tjenester, fotografier,
+brukernavn på sosiale medier og alle andre opplysninger du velger å gi oss.  </span></p>
+
+<h2><span lang=NO-BOK>Opplysninger vi samler inn automatisk</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Når du går inn på eller bruker våre
+tjenester samler vi automatisk inn opplysninger om deg og knytter disse til
+opplysninger du gir oss direkte.  Vi samler for eksempel inn: </span></p>
+
+<p class=MsoListBulletCxSpFirst><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><b><span
+lang=NO-BOK>Transaksjonsopplysninger:</span></b><span lang=NO-BOK> Når du
+foretar et kjøp eller en retur, samler vi inn opplysninger om transaksjonen,
+for eksempel opplysninger om kurset eller produktet, transaksjonsbeløpet og
+datoen for kjøpet/returen.  Merk at vi ikke samler inn eller lagrer
+betalingskortopplysninger, for eksempel kredittkortnumre.  Hvis du vil vite mer
+om hvordan disse opplysningene blir samlet inn, behandlet og lagret, kan du
+lese personvernerklæringen og vilkårene til vår betalingsbehandler.</span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><b><span
+lang=NO-BOK>Opplysninger fra nettstedlogg:</span></b><span lang=NO-BOK> Vi
+registrerer opplysninger om din bruk av vårt nettsted, for eksempel
+operativsystemet på datamaskinen din, typen nettleser du bruker, tilgangstider,
+viste sider, din IP-adresse og nettsiden som sendte deg videre til vårt
+nettsted.  </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><b><span
+lang=NO-BOK>Opplysninger samlet inn i forbindelse med din bruk av Joule:</span></b><span
+lang=NO-BOK> Når du parer din Joule med vår mobilapplikasjon for første gang
+oppretter Joule automatisk en kobling til din ChefSteps-konto.  Se «Dine valg»
+nedenfor for informasjon om hvordan du opphever koblingen mellom Joule og din
+ChefSteps-konto.  Når du kobler Joule til et Wi-Fi-nettverk, samler vi inn
+opplysninger om nettverket (for eksempel navn og signalstyrke).  Vi samler inn
+opplysninger om din bruk av Joule, herunder hva du lager, og hvordan du gjør
+det, og om dine matlagings- og oppskriftspreferanser.  Vi samler også inn data
+fra Joules sensorer og komponenter, for eksempel samlet antall
+motoromdreininger, lufttrykk og badetemperatur.  Enkelte tekniske opplysninger
+og opplysninger om bruken blir også lagret på Joule.  Se «Bruk av opplysninger»
+nedenfor for informasjon om hvordan vi bruker disse dataene.  </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><b><span
+lang=NO-BOK>Opplysninger vedrørende din elektroniske enhet:</span></b><span
+lang=NO-BOK> Når du går inn på eller bruker våre mobiltelefonsider eller
+applikasjoner for mobiltelefoner og nettbrett, samler vi inn opplysninger om
+mobiltelefonen, nettbrettet eller annen enhet du bruker, herunder
+maskinvaremodell, operativsystem og versjon, enhetsidentifikatorer,
+opplysninger om mobilnettverket og opplysninger om din bruk av våre Tjenester.
+Når du kobler Joule til vår mobilapplikasjon via Wi-Fi, samler vi også inn
+opplysninger om enhetene du bruker til å styre Joule med.  </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><b><span
+lang=NO-BOK>Stedsopplysninger:</span></b><span lang=NO-BOK> Med ditt samtykke
+samler vi inn opplysninger om hvor du befinner deg når du går inn på eller
+bruker en av våre mobilapplikasjoner som for eksempel for å gjøre det mulig for
+mobilappen å kommunisere med din Joule.  Hvis du vil vite mer om innsamlingen
+av stedsopplysninger og valgene du har, kan du lese «Dine valg» nedenfor.  </span></p>
+
+<p class=MsoListBulletCxSpLast><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><b><span
+lang=NO-BOK>Opplysninger samlet inn gjennom informasjonskapsler og andre
+sporingsteknologier:</span></b><span lang=NO-BOK> Vi og våre
+tjenesteleverandører bruker ulike teknologier, herunder informasjonskapsler og
+web-beacons, til å samle inn opplysninger om deg når du bruker tjenestene våre
+eller sender oss e-post, inkludert opplysninger om din surfe- og kjøpsatferd. 
+Informasjonskapsler er små datafiler som er lagret på harddisken din eller i
+enhetsminnet, og som hjelper oss med å forbedre nettstedet vårt og din
+opplevelse, finne ut hvilke områder og funksjoner på nettstedet som er populære
+og telle besøk.  Web-beacons er elektroniske bilder vi bruker på vårt nettsted
+og i våre e-poster som gjør at vi kan levere informasjonskapsler, telle besøk
+og forstå bruk og kampanjers effektivitet.  Hvis du vil vite mer om
+informasjonskapsler og hvordan de kan deaktiveres, kan du lese vår <a
+href="https://www.chefsteps.com/cookie-policy?language=norwegian">policy</a>
+for informasjonskapsler og besøke <a href="http://www.aboutcookies.org"><span
+style='color:#262626'>www.aboutcookies.org</span></a> Opplysninger vi samler
+inn fra andre kilder</span></p>
+
+<p class=MsoNormal><span lang=NO-BOK>Vi mottar også opplysninger om deg fra
+andre kilder og koble disse sammen med opplysninger vi samler inn om deg.  Hvis
+du oppretter eller logger deg inn på din ChefSteps-konto gjennom et sosialt
+nettsted, eller hvis du knytter din sosiale medier-konto til din ChefSteps-konto,
+får vi for eksempel tilgang til visse opplysninger fra det aktuelle nettstedet,
+som navnet ditt, kontoopplysninger og vennelister i samsvar med
+autorisasjonsprosedyrene for det aktuelle sosiale nettstedet.</span></p>
+
+<h2><span lang=NO-BOK>Bruk av opplysninger</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Vi bruker opplysninger om deg til ulike
+formål knyttet til tjenestene vi leverer til deg, herunder til  </span></p>
+
+<p class=MsoListBulletCxSpFirst><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>å skaffe og levere Tjenestene du ber om, behandle transaksjner og
+sende deg relatert informasjon, inkludert bekreftelser og kvitteringer;</span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>å vedlikeholde og forbedre våre tjenester (for eksempel bruker vi
+diagnosedata fra Joule som hjelp til å forstå hvordan Joule brukes, og til å
+kontrollere at komponenter fungerer slik de skal) </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>å sende deg tekniske varsler, oppdateringer, sikkerhetsvarsler og
+kundestøttemeldinger og administrative meldinger </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>å svare på dine kommentarer, spørsmål og anmodninger og yte
+kundeservice (for eksempel brukes opplysninger om ditt Wi-Fi-nettverk til å
+feilsøke ved tilkoblingsproblemer du rapporterer om når du bruker Joule) </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>å kommunisere med deg om produkter, tjenester, kurs, kvitteringer,
+tilbud, markedsføring, arrangementer og andre nyheter og informasjon vi tror
+vil være av interesse for deg (for informasjon om hvordan man velger bort denne
+kommunikasjonen, se «Dine valg» nedenfor);  </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>å overvåke og analysere trender, bruk og aktiviteter i forbindelse
+med våre tjenester </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>å avdekke, undersøke og forebygge falske transaksjoner og annen
+ulovlig virksomhet og beskytte ChefSteps’ og andres rettigheter, eiendom og
+sikkerhet </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>å tilpasse og forbedre våre tjenester og tilby deg skreddersydd
+reklame, skreddersydd innhold og skreddersydde funksjoner (for eksempel brukes
+informasjon om din bruk av Joule til å sende deg skreddersydde
+oppskriftsforslag);</span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>å legge til rette for konkurranser, lotterier, markedsføring og
+behandle påmeldinger og levere premier</span></p>
+
+<p class=MsoListBulletCxSpLast><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>sammenholdt med opplysninger vi får fra andre, å forstå dine behov
+og gi deg bedre service  </span></p>
+
+<h2><span lang=NO-BOK>Deling av opplysninger</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Vi deler opplysninger om deg som følger
+eller slik det ellers framgår av denne personvernerklæringen, inkludert i
+følgende situasjoner:  </span></p>
+
+<p class=MsoListBulletCxSpFirst><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>Med eksterne leverandører, konsulenter og andre
+tjenesteleverandører som trenger tilgang til slike opplysninger for at de skal
+kunne utføre arbeid på vegne av oss. </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>Når du kjøper produkter fra tredjeparter gjennom oss, deler vi
+opplysninger med leverandørene av disse produktene for å gjennomføre din
+bestilling. </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>Hvis du kobler enheter og tjenester fra tredjeparter til din
+ChefSteps-konto eller våre tjenester, for eksempel ved at du velger å bruke
+Joule eller vår mobilapplikasjon sammen med Amazon Alexa, vil dine opplysninger
+bli delt med disse tredjepartene i henhold til dine instrukser og med ditt
+samtykke. </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>Når du melder deg på og deltar i de interaktive områdene av
+tjenestene våre, vil visse opplysninger om deg bli vist til andre, som navnet
+ditt, bilder, oppskrifter og andre opplysninger du velger å gi. </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>Som svar på en anmodning om opplysninger, hvis vi mener at videreformidling
+er i samsvar med eller påkrevd etter lovgivningen eller en rettslig avgjørelse.
+</span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>Hvis vi mener at dine handlinger er uforenlige med våre
+brukeravtaler eller policyer, eller for å beskytte ChefSteps’ og andres
+rettigheter, eiendom og sikkerhet. </span></p>
+
+<p class=MsoListBulletCxSpMiddle><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>I forbindelse med eller under forhandlinger om, fusjoner, salg av
+selskapsaktiva, finansiering eller oppkjøp fra et annet selskaps side av hele
+eller en del av vår virksomhet. </span></p>
+
+<p class=MsoListBulletCxSpLast><span lang=NO-BOK style='font-family:Symbol'>·<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+lang=NO-BOK>Med ditt samtykke eller etter din instruks.  </span></p>
+
+<p class=MsoNormal><span lang=NO-BOK>Vi deler også aggregerte eller
+anonymiserte opplysninger med tredjeparter.</span></p>
+
+<h2><span lang=NO-BOK>Funksjoner for sosial deling</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Våre tjenester tilbyr funksjoner for
+sosial deling og andre integrerte verktøy (som Facebooks «liker»-knapp).  Ved å
+bruke disse funksjonene kan du dele opplysninger med dine venner eller med
+allmennheten, avhengig av hvilke innstillinger du angir overfor foretaket som
+leverer funksjonen for sosial deling.  Hvis du vil vite mer om formålet med og
+omfanget av innsamlingen og behandlingen av data i forbindelse med funksjoner
+for sosial deling, kan du gå til personvernerklæringene til foretakene som
+leverer disse funksjonene.</span></p>
+
+<h2><span lang=NO-BOK>Reklame- og analysetjenester levert av andre</span><a
+name="_cp_text_1_86"></a></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Vi lar andre levere annonser på vegne av
+oss på Internett og levere analysetjenester. Disse foretakene bruker
+informasjonskapsler, web-beacons og andre teknologier til å samle inn
+opplysninger om din bruk av tjenestene og andre nettsteder, herunder din
+IP-adresse, nettleser, viste sider, tid brukt på sider, hvilke koblinger du
+klikker på, og opplysninger om konverteringsrater. Disse opplysningene brukes
+av ChefSteps og andre for å, blant annet, analysere og spore data, fastslå
+populariteten til et visst innhold, levere annonser og innhold rettet mot dine
+interesser på våre tjenester og andre nettsteder, og få en bedre forståelse av din
+nettaktivitet.  Hvis du vil vite mer om interessebaserte annonser og om hvordan
+du kan velge at opplysninger om din nettsurfing ikke skal brukes i forbindelse
+med atferdsrettet reklame, kan du gå inn på <span class=MsoHyperlink><span
+style='color:#262626'><a
+href="http://www.aboutads.info/choices,%20eller%20hvis%20du%20er%20i%20EU,%20kan%20du%20gå%20inn%20på%20http:/www.youronlinechoices.eu/.%20"><span
+style='color:#262626'>www.aboutads.info/choices, eller hvis du er i EU, kan du
+gå inn på http://www.youronlinechoices.eu/. </span></a></span></span></span></p>
+
+<p class=MsoNormal><span lang=NO-BOK>Vi samarbeider også med eksterne sosiale
+plattformer, som Facebook, om å gi deg annonser som del av en tilpasset
+kampanje.</span></p>
+
+<h2><span lang=NO-BOK>Overføring av opplysninger over landegrenser; Privacy
+Shield</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Ved å gå inn på eller bruke våre tjenester
+eller på annen måte gi oss opplysninger samtykker du til behandling og
+overføring av opplysninger i og til USA og andre land, der du kanskje ikke har
+de samme rettighetene som du har etter lovgivningen i ditt land. Når dette er
+tilfellet, vil vi iverksette hensiktsmessige tiltak for å beskytte
+personopplysningene dine i samsvar med denne personvernerklæringen.</span></p>
+
+<p class=MsoNormal><span lang=NO-BOK>Vi følger rammeverkene EU-US Privacy
+Shield og Swiss-US  Privacy Shield (samlet kalt «Privacy Shield») i forbindelse
+med personopplysninger vi samler inn fra EU og Sveits og overfører til USA. 
+Hvis du vil vite mer om Privacy Shield eller se vår sertifisering, kan du gå
+inn på https://www.privacyshield.gov. Vi forblir ansvarlige etter Privacy
+Shield for alle personopplysninger vi deler med tredjeparter for ekstern behandling
+på våre vegne, som beskrevet i punktet «Deling av opplysninger» over, med
+mindre vi dokumenterer at vi ikke er ansvarlige for hendelsen som ga opphav til
+skaden. Hvis du har spørsmål om vår overholdelse av Privacy Shield, oppfordrer
+vi deg til å kontakte oss på <a href="mailto:info@chefsteps.com"><span
+style='color:#262626'>info@chefsteps.com</span></a>. Du kan også, uten
+omkostninger for deg, sende en klage til <a href="https://www.jamsadr.com"><span
+style='color:#262626'>JAMS</span></a>, vår utpekte Privacy
+Shield-tvisteløsningsleverandør: https://www.jamsadr.com/eu-us-privacy-shield.
+Under visse omstendigheter gir Privacy Shield rett til å kreve saken avgjort
+gjennom bindende voldgift (se <a
+href="https://www.privacyshield.gov/servlet/servlet.FileDownload?file=015t00000004qAg"><span
+style='color:#262626'>Annex I til Privacy Shield Principles</span></a> for
+nærmere opplysninger). Vi er underlagt undersøkelses- og tilsynsmyndigheten U.S
+Federal Trade Commission.</span></p>
+
+<h1><span lang=NO-BOK>Dine valg</span></h1>
+
+<h2><span lang=NO-BOK>Kontoopplysninger</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Du har mulighet til (kostnadsfritt) å få
+innsyn i opplysningene vi har om deg, og å oppdatere, korrigere og slette dine kontoopplysninger
+når som helst ved å logge deg inn på din ChefSteps-konto.  Alternativt kan du
+kontakte oss på <a href="mailto:info@chefsteps.com"><span style='color:#262626'>info@chefsteps.com</span></a>
+og be om opplysninger vi har om deg, eller be om at vi oppdaterer, korrigerer
+eller sletter opplysninger vi har om deg; merk at vi kan kreve at du oppgir
+ytterligere opplysninger for å bekrefte din identitet.  Du kan også i henhold
+til gjeldende personvernlovgivning ha rett til å motsette deg behandling av
+dine opplysninger for legitime formål, begrense bruken og delingen av dine
+opplysninger og oppheve samtykket du har gitt til behandling. Hvis du ønsker å
+utøve noen av disse rettighetene, vennligst kontakt oss på </span><span
+class=MsoHyperlink><span lang=NO-BOK><a href="mailto:info@chefsteps.com">info@chefsteps.com</a></span></span><span
+lang=NO-BOK>.     </span></p>
+
+<h2><span lang=NO-BOK>Joule</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Når din Joule er paret med din
+Chefsteps-konto, kan du når som helst oppheve koblingen ved å koble enheten fra
+via innstillingene på mobiltelefonen eller nettbrettet. Vennligst merk at Joule
+må pares med en ChefSteps-konto for å kunne fungere skikkelig, så hvis Joulen
+din har blitt koblet fra en konto må du knytte den til en ny konto for å kunne
+ha glede av dens funksjoner.</span></p>
+
+<h2><span lang=NO-BOK>Stedsopplysninger</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Når du starter noen av våre
+mobilapplikasjoner for første gang, går inn på visse funksjoner i disse mobilapplikasjonene
+eller besøker en av sidene på vårt nettsted som samler inn stedsopplysninger,
+blir du bedt om å samtykke til at det samles inn stedsopplysninger, for at
+visse funksjoner skal virke.  Hvis du har samtykket til slik innsamling, kan du
+senere stoppe innsamlingen ved å endre innstillingene på enheten din.  Hvis du
+gjør det vil noen av funksjonene til tjenestene våre ikke lenger fungere.</span></p>
+
+<h2><span lang=NO-BOK>Markedsføring fra ChefSteps</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Du kan når som helst velge å ikke motta markedsføring
+fra oss ved å følge instruksjonene i markedsføringshenvendelsene.  Selv om du
+velger bort markedsføring fra oss, kan vi fortsette å sende deg
+ikke-salgsfremmende henvendelser, for eksempel meddelelser om din konto og om
+vårt løpende forretningsforhold.</span></p>
+
+<h2><span lang=NO-BOK>Mobile pushvarsler</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Hvis du har samtykket til det vil vi sende
+deg salgsfremmende og ikke-salgsfremmende pushvarsler på din mobilenhet.  Du
+kan velge å slutte å motta disse meldingene når som helst ved å endre varslingsinnstillingene
+på din mobilenhet.</span></p>
+
+<h2><span lang=NO-BOK>Dataoppbevaring</span></h2>
+
+<h2><span lang=NO-BOK style='font-weight:normal'>Vi lagrer opplysningene vi
+samler inn om deg så lenge som det er nødvendig med tanke på de formål(ene) de
+opprinnelig ble innhentet for eller av andre legitime forretningsmessige
+årsaker, f.eks. for å overholde våre juridiske, regulatoriske eller andre
+rettslige forpliktelser.</span></h2>
+
+<h2><span lang=NO-BOK>&nbsp;</span></h2>
+
+<h2><span lang=NO-BOK>Ytterligere personvernerklæring for Brukere i EØS</span></h2>
+
+<h2><span lang=NO-BOK style='font-weight:normal'>Hvis du er i Det europeiske
+økonomiske samarbeidsområdet (EØS) har du enkelte rettigheter og beskyttelser
+under loven vedrørende behandling av dine personopplysninger.</span></h2>
+
+<h2><span lang=NO-BOK style='font-weight:normal'>&nbsp;</span></h2>
+
+<h2><span lang=NO-BOK>Behandlingsgrunnlag</span></h2>
+
+<h2><span lang=NO-BOK style='font-weight:normal'>Vi behandler personopplysningene
+dine kun i følgende situasjoner:</span></h2>
+
+<h2 style='margin-left:.5in;text-indent:-.25in'><span lang=NO-BOK
+style='font-family:Symbol;font-weight:normal'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=NO-BOK style='font-weight:normal'>Når vi trenger
+personopplysningene dine til å utføre våre ansvarsområder under kontrakten vi
+har med deg (f.eks. levere deg produktene og tjenestene du har bestilt og
+behandle betalingen av disse).</span></h2>
+
+<h2 style='margin-left:.5in;text-indent:-.25in'><span lang=NO-BOK
+style='font-family:Symbol;font-weight:normal'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=NO-BOK style='font-weight:normal'>Når vi har en
+legitim interesse av å behandle dine personopplysninger. Vi behandler for
+eksempel personopplysningene dine for å kommunisere med deg om endringer i
+Tjenestene og til å skaffe, sikre og forbedre Tjenestene våre. </span></h2>
+
+<h2 style='margin-left:.5in;text-indent:-.25in'><span lang=NO-BOK
+style='font-family:Symbol;font-weight:normal'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=NO-BOK style='font-weight:normal'>Når behandling er
+nødvendig for å kunne oppfylle en juridisk forpliktelse.</span></h2>
+
+<h2 style='margin-left:.5in;text-indent:-.25in'><span lang=NO-BOK
+style='font-family:Symbol;font-weight:normal'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span lang=NO-BOK style='font-weight:normal'>Når vi har ditt
+samtykke til å gjøre det.</span></h2>
+
+<h2><span lang=NO-BOK style='font-weight:normal'>&nbsp;</span></h2>
+
+<h2><span lang=NO-BOK>Forespørsler fra de registrerte</span></h2>
+
+<h2><span lang=NO-BOK style='font-weight:normal'>Du har rett til å få tilgang
+til personopplysningene vi har om deg og til å be om at dine personopplysninger
+korrigeres, slettes eller overføres. Du har også rett til å motsette deg eller
+kreve at vi begrenser visse behandlinger. Dersom vår behandling av dine 
+personopplysninger er basert på ditt samtykke, har du når som helst rett til å
+trekke samtykket ditt tilbake hva angår fremtidig behandling. Dersom du ønsker
+å utøve noen av disse rettighetene, kan du logge inn på kontoen din og endre
+den kontoinformasjonen eller <a href="#_Kontakt_oss">kontakte oss</a>.</span></h2>
+
+<h2><span lang=NO-BOK style='font-weight:normal'>&nbsp;</span></h2>
+
+<h2><span lang=NO-BOK>Spørsmål eller klager</span></h2>
+
+<h2><span lang=NO-BOK style='font-weight:normal'>Dersom du er bekymret for
+behandlingen av personopplysningene dine og vi ikke klarer å løse dette, har du
+rett til å klage til datatilsynet i landet du bor. Hvis du er i EØS og ønsker å
+finne kontaktinformasjon til ditt lokale datatilsyn, vennligst se: http://ec.europa.eu/justice/data-protection/article-29/structure/data-protection-authorities/index_en.htm.</span></h2>
+
+<h2><span lang=NO-BOK style='font-weight:normal'>&nbsp;</span></h2>
+
+<h2><a name="_Kontakt_oss"></a><span lang=NO-BOK>Kontakt oss</span></h2>
+
+<p class=MsoNormal><span lang=NO-BOK>Hvis du har spørsmål eller kommentarer
+vedrørende denne personvernerklæringen, kan du kontakte oss på info@chefsteps.com
+eller per brev til: </span></p>
+
+<p class=MsoNormal>ChefSteps, Inc.<br>
+Data Privacy Department<br>
+1501 Pike Place, Suite 300<br>
+Seattle, WA 98101<br>
+USA</p>
+
+</div>
+
+</body>
+
+</html>
