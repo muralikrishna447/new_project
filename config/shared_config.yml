@@ -51,8 +51,8 @@ staging2:
   chefsteps_endpoint: "vanillanimoy.com"
   freshsteps_endpoint: "d3874mzg2llbaz.cloudfront.net"
   catalog_endpoint: "chefsteps-catalog.herokuapp.com"
-  spree_domain: "shop.chocolateyshatner.com"
-  spree_endpoint: "https://shop.chocolateyshatner.com/"
+  spree_domain: "shop.vanillanimoy.com"
+  spree_endpoint: "https://shop.vanillanimoy.com/"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom:
     <<: *staging_bloom

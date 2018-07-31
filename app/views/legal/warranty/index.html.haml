@@ -1,0 +1,11 @@
+.container#legal
+  #terms
+    %div
+      %h2 Joule Warranty
+      %p Choose your country.
+      %ul.warranty-country
+        - @countries.each do |country|
+          %li.warranty-country
+            %a{:href => "/joule/warranty/#{country[:code].upcase}" }
+              = inline_svg "flags/4x3/#{country[:code].downcase}.svg"
+              = country[:name]

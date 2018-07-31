@@ -168,3 +168,7 @@ en:
       twitter_user_name: "Twitter User Name"
       filter: "Filter"
       clear_filters: "Clear Filters"
+  cookie_policy:
+      text: 'Cookies are delicious—but we and our partners also use them to improve your experience and to create marketing experiences relevant to your interests. By clicking "Okay," you agree to the use of cookies as described in our %{cookie_policy_href}.'
+      cookie_policy_href_label: 'Cookie Policy'
+      ok: 'Okay'
