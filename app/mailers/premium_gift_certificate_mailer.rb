@@ -1,6 +1,6 @@
 class PremiumGiftCertificateMailer < ActionMailer::Base
 
-  default from: "info@chefsteps.com"
+  default from: ENV['CS_APPLICATION_MAILER_DEFAULT_FROM'] || 'Team ChefSteps <no-reply@chefsteps.com>'
 
   def prepare(user_email, redeem_token)
     subject = "ChefSteps Premium Gift Certificate"
