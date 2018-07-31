@@ -71,88 +71,78 @@ class LegalController < ApplicationController
         code: "CA",
         name: "Canada",
         languages: ["English", "French"]
-      }
-    ]
-    if ENV['ENABLE_GB_WARRANTY_PAGE'] == true.to_s
-      @countries.push(
-        {
+      },
+      {
           code: "GB",
           name: "United Kingdom",
           languages: ["English"]
-        }
-      )
-    end
-    if ENV['ENABLE_EU_WARRANTY_PAGES'] == true.to_s
-      @countries = @countries.concat(
-        [
-          {
-            code: "BE",
-            name: "Belgium",
-            languages: ["Dutch", "French"]
-          },
-          {
-            code: "DK",
-            name: "Denmark",
-            languages: ["Danish"]
-          },
-          {
-            code: "FI",
-            name: "Finland",
-            languages: ["Finnish", "Swedish"]
-          },
-          {
-            code: "FR",
-            name: "France",
-            languages: ["French"]
-          },
-          {
-            code: "DE",
-            name: "Germany",
-            languages: ["German"]
-          },
-          {
-            code: "IE",
-            name: "Ireland",
-            languages: ["English"]
-          },
-          {
-            code: "IT",
-            name: "Italy",
-            languages: ["Italian"]
-          },
-          {
-            code: "NL",
-            name: "Netherlands",
-            languages: ["Dutch"]
-          },
-          {
-            code: "NO",
-            name: "Norway",
-            languages: ["Norwegian"]
-          },
-          {
-            code: "ES",
-            name: "Spain",
-            languages: ["Spanish"]
-          },
-          {
-            code: "SE",
-            name: "Sweden",
-            languages: ["Swedish"]
-          },
-          {
-            code: "CH",
-            name: "Switzerland",
-            languages: ["German", "French", "Italian"]
-          },
-          {
-            code: "EU",
-            name: "Other European Economic Area Countries",
-            languages: ["English"]
-          }
-        ]
-      )
-    end
+      },
+      {
+          code: "BE",
+          name: "Belgium",
+          languages: ["Dutch", "French"]
+      },
+      {
+          code: "DK",
+          name: "Denmark",
+          languages: ["Danish"]
+      },
+      {
+          code: "FI",
+          name: "Finland",
+          languages: ["Finnish", "Swedish"]
+      },
+      {
+          code: "FR",
+          name: "France",
+          languages: ["French"]
+      },
+      {
+          code: "DE",
+          name: "Germany",
+          languages: ["German"]
+      },
+      {
+          code: "IE",
+          name: "Ireland",
+          languages: ["English"]
+      },
+      {
+          code: "IT",
+          name: "Italy",
+          languages: ["Italian"]
+      },
+      {
+          code: "NL",
+          name: "Netherlands",
+          languages: ["Dutch"]
+      },
+      {
+          code: "NO",
+          name: "Norway",
+          languages: ["Norwegian"]
+      },
+      {
+          code: "ES",
+          name: "Spain",
+          languages: ["Spanish"]
+      },
+      {
+          code: "SE",
+          name: "Sweden",
+          languages: ["Swedish"]
+      },
+      {
+          code: "CH",
+          name: "Switzerland",
+          languages: ["German", "French", "Italian"]
+      },
+      {
+          code: "EU",
+          name: "Other European Economic Area Countries",
+          languages: ["English"]
+      }
+    ]
 
     # If path provides a country code, use that over the location
     requested_country_code = params[:country_code].try(:upcase)
@@ -164,8 +154,16 @@ class LegalController < ApplicationController
     if @country.blank?
       @country = @countries.find { |c| c[:code] == 'US' }
     end
-    @language = params[:language]
+
     @languages = @country[:languages].map { |e| [e]  }
-    @selected_language = @language ? @language : @languages[0][0]
+
+    # language is a query string parameter
+    # If it matches one of the available languages, then we will use that
+    # Otherwise, default to the first entry in languages
+    @selected_language = @country[:languages].find { |e| e == params[:language]}
+    if @selected_language.blank?
+      @selected_language = @country[:languages][0]
+    end
+
   end
 end
