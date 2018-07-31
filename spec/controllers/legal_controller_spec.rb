@@ -49,5 +49,18 @@ describe LegalController do
 
     end
 
+    context 'No geolocation, country requested by query string parameters' do
+
+      it 'renders for each country_code' do
+        countries = ['US', 'CA', 'GB', 'DK', 'FI', 'FR', 'DE', 'IE', 'IT', 'NL', 'NO', 'ES', 'SE', 'CH', 'EU']
+        countries.each { |country|
+          get :cookie_policy, country_code: country
+          expect(response).to be_success
+          expect(response.body).to include("Cookie Policy")
+        }
+      end
+
+    end
+
   end
 end
