@@ -1,4 +1,4 @@
-DOMAIN='staging.chefsteps.com'
+DOMAIN='www.chocolateyshatner.com'
 CDN_DOMAIN = 'https://d2t0ubu4aw4rxn.cloudfront.net'
 
 Delve::Application.configure do
