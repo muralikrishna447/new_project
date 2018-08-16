@@ -21,6 +21,7 @@ describe Api::V0::ContentController do
       BetaFeatureService.stub(:user_has_feature).with(@admin, 'slim_guides').and_return(false)
       BetaFeatureService.stub(:user_has_feature).with(@admin, 'beta_guides').and_return(false)
       BetaFeatureService.stub(:user_has_feature).with(@admin, 'guides_en_GB').and_return(false)
+      BetaFeatureService.stub(:user_has_feature).with(@admin, 'joule_ready').and_return(false)
       token = @user_aa.current_token
       request.env['HTTP_AUTHORIZATION'] = token.to_jwt
       sign_in @admin
@@ -73,6 +74,20 @@ describe Api::V0::ContentController do
       get :manifest, content_env: 'badenv'
       expect(response.status).to eq 404
     end
+
+    it 'logged in user in joule_ready beta' do
+      BetaFeatureService.stub(:user_has_feature).with(@admin, 'joule_ready').and_return(true)
+      get :manifest
+      expect(response.status).to eq 302
+      expect(response.header["Location"]).to eq "https://d1x6fm6y1dz4pl.cloudfront.net/resources/protein_picker/staging/resources.json"
+    end
+
+    it 'supports alternate locale for a logged in user in joule_ready beta' do
+      BetaFeatureService.stub(:user_has_feature).with(@admin, 'joule_ready').and_return(true)
+      get :manifest, locale: LOCALE_GB
+      expect(response.status).to eq 302
+      expect(response.header["Location"]).to eq "https://d1x6fm6y1dz4pl.cloudfront.net/resources/protein_picker/staging/resources.json"
+    end
   end
 
 
@@ -83,6 +98,7 @@ describe Api::V0::ContentController do
       @admin = Fabricate :user, id: 12345, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
       @user_aa = ActorAddress.create_for_user(@admin, client_metadata: "create", actor_type: "User")
       BetaFeatureService.stub(:user_has_feature).with(@admin, 'beta_guides').and_return(false)
+      BetaFeatureService.stub(:user_has_feature).with(@admin, 'joule_ready').and_return(false)
       token = @user_aa.current_token
       request.env['HTTP_AUTHORIZATION'] = token.to_jwt
       sign_in @admin

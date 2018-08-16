@@ -335,6 +335,14 @@ class User < ActiveRecord::Base
     current_redemptions < max_tf2_redemptions
   end
 
+  def send_password_reset_email
+    logger.info "Sending password reset email for: #{self.email}"
+    aa = ActorAddress.create_for_user self, client_metadata: "password_reset"
+    exp = ((Time.now + 1.day).to_f * 1000).to_i
+    token = aa.current_token(exp: exp, restrict_to: 'password reset').to_jwt
+    UserMailer.reset_password(self.email, token).deliver
+  end
+
   private
 
   def merge_properties(user_to_merge)
