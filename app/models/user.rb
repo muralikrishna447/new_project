@@ -427,5 +427,4 @@ class User < ActiveRecord::Base
     logger.info("Merging circulator users into user with id #{id}: #{circulator_users_to_merge.inspect}")
     circulator_users_to_merge.update_all(user_id: id)
   end
-
 end
