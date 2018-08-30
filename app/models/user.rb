@@ -406,4 +406,25 @@ class User < ActiveRecord::Base
     logger.info("Merging circulator users into user with id #{id}: #{circulator_users_to_merge.inspect}")
     circulator_users_to_merge.update_all(user_id: id)
   end
+
+  def capabilities
+    # Hardcoding the list of possible capabilities for now.
+    capability_list = [
+        'joule_ready',
+        'beta_guides',
+        'multi_circ',
+        'fbjoule',
+        'update_during_pairing',
+        'sqlite',
+        'enable_react_native_alerts'
+    ]
+    cache_key = "user-capabilities-#{id}"
+    user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+      capability_list.select {|c|
+        BetaFeatureService.user_has_feature(self, c)
+      }
+    end
+
+    user_capabilities
+  end
 end
