@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Api::V0::UsersController do
 
   before :each do
@@ -46,6 +48,7 @@ describe Api::V0::UsersController do
       result.delete('admin').should == false
       result.delete('joule_purchase_count').should == 0
       result.delete('referral_code').should == nil
+      result.delete('capabilities').should == []
       result.empty?.should == true
     end
 
@@ -71,6 +74,25 @@ describe Api::V0::UsersController do
       get :me
       response.should_not be_success
     end
+
+    context 'user has beta_guides capability' do
+      before :each do
+        Rails.cache.clear()
+      end
+
+      it 'returns beta_guides capability' do
+        request.env['HTTP_AUTHORIZATION'] = @token
+        BetaFeatureService.stub(:user_has_feature).with(@user, 'beta_guides')
+            .and_return(true)
+
+        get :me
+
+        response.code.should == "200"
+        result = JSON.parse(response.body)
+        result['capabilities'].should == ['beta_guides']
+      end
+    end
+
   end
 
   context 'POST /create' do
