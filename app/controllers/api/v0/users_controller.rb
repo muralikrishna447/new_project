@@ -135,7 +135,6 @@ module Api
           render json: {status: 400, message: 'Bad Request: An error occured when trying to create this user.'}, status: 400
         end
       end
-
     end
   end
 end
