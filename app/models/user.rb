@@ -343,6 +343,27 @@ class User < ActiveRecord::Base
     UserMailer.reset_password(self.email, token).deliver
   end
 
+  def capabilities
+    # Hardcoding the list of possible capabilities for now.
+    capability_list = [
+        'joule_ready',
+        'beta_guides',
+        'multi_circ',
+        'fbjoule',
+        'update_during_pairing',
+        'sqlite',
+        'enable_react_native_alerts'
+    ]
+    cache_key = "user-capabilities-#{id}"
+    user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+      capability_list.select {|c|
+        BetaFeatureService.user_has_feature(self, c)
+      }
+    end
+
+    user_capabilities
+  end
+
   private
 
   def merge_properties(user_to_merge)
