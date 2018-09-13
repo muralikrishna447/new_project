@@ -20,20 +20,24 @@ module Api
 
         user = current_api_user
 
+        use_staging = BetaFeatureService.user_has_feature(user, 'beta_guides')
+
         # TODO: Remove this when joule_ready beta is over
         if BetaFeatureService.user_has_feature(user, 'joule_ready')
-          #always use the joule_ready_beta manifest for joule_ready users
-          if Rails.env.development?
-            manifest_env = 'development'
-          else
-            manifest_env = Rails.env.production? ? 'production' : 'staging'
+          jrb_env = use_staging ? 'staging' : params[:content_env]
+          Rails.logger.info "ContentController: Joule Ready Beta user #{user.id} using #{jrb_env} use_staging=#{use_staging}"
+
+          if @@manifest_endpoints[locale][jrb_env] &&
+            @@manifest_endpoints[locale][jrb_env]['joule_ready_beta']
+
+            #Use the joule_ready_beta manifest for joule_ready users
+            target_url = @@manifest_endpoints[locale][jrb_env]['joule_ready_beta']
+            Rails.logger.info "ContentController: Joule Ready Beta user #{user.id} redirecting to joule_ready_beta manifest #{target_url}"
+            return redirect_to target_url, status: 302
           end
-          target_url = @@manifest_endpoints[locale][manifest_env]['joule_ready_beta']
-          Rails.logger.info "ContentController: Joule Ready Beta user #{user.id} redirecting to joule_ready_beta manifest #{target_url}"
-          return redirect_to target_url, status: 302
         end
 
-        if BetaFeatureService.user_has_feature(user, 'beta_guides')
+        if use_staging
           #always use the staging manifest for beta guides users
           Rails.logger.info "ContentController: Beta user #{user.id} redirecting to staging manifest"
           return redirect_to @@manifest_endpoints[locale]['staging']['default'], status: 302
