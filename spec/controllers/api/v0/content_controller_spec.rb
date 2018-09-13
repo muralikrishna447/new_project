@@ -75,19 +75,50 @@ describe Api::V0::ContentController do
       expect(response.status).to eq 404
     end
 
-    it 'logged in user in joule_ready beta' do
+    it 'logged in user in joule_ready beta development' do
       BetaFeatureService.stub(:user_has_feature).with(@admin, 'joule_ready').and_return(true)
-      get :manifest
+      get :manifest, content_env: 'development'
+      expect(response.status).to eq 302
+      expect(response.header["Location"]).to eq "https://d1x6fm6y1dz4pl.cloudfront.net/resources/protein_picker/development/resources.json"
+    end
+
+    it 'logged in user in joule_ready beta staging' do
+      BetaFeatureService.stub(:user_has_feature).with(@admin, 'joule_ready').and_return(true)
+      get :manifest, content_env: 'staging'
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq "https://d1x6fm6y1dz4pl.cloudfront.net/resources/protein_picker/staging/resources.json"
+    end
+
+    it 'logged in user in joule_ready beta production' do
+      BetaFeatureService.stub(:user_has_feature).with(@admin, 'joule_ready').and_return(true)
+      get :manifest, content_env: 'production'
+      expect(response.status).to eq 302
+      expect(response.header["Location"]).to eq "https://d1x6fm6y1dz4pl.cloudfront.net/resources/protein_picker/production/resources.json"
     end
 
     it 'supports alternate locale for a logged in user in joule_ready beta' do
       BetaFeatureService.stub(:user_has_feature).with(@admin, 'joule_ready').and_return(true)
       get :manifest, locale: LOCALE_GB
       expect(response.status).to eq 302
+      expect(response.header["Location"]).to eq "https://d1x6fm6y1dz4pl.cloudfront.net/resources/protein_picker/production/resources.json"
+    end
+
+    it 'logged in user in joule_ready beta and beta_guides no env' do
+      BetaFeatureService.stub(:user_has_feature).with(@admin, 'joule_ready').and_return(true)
+      BetaFeatureService.stub(:user_has_feature).with(@admin, 'beta_guides').and_return(true)
+      get :manifest
+      expect(response.status).to eq 302
       expect(response.header["Location"]).to eq "https://d1x6fm6y1dz4pl.cloudfront.net/resources/protein_picker/staging/resources.json"
     end
+
+    it 'logged in user in joule_ready beta and beta_guides production' do
+      BetaFeatureService.stub(:user_has_feature).with(@admin, 'joule_ready').and_return(true)
+      BetaFeatureService.stub(:user_has_feature).with(@admin, 'beta_guides').and_return(true)
+      get :manifest, content_env: 'production'
+      expect(response.status).to eq 302
+      expect(response.header["Location"]).to eq "https://d1x6fm6y1dz4pl.cloudfront.net/resources/protein_picker/staging/resources.json"
+    end
+
   end
 
 

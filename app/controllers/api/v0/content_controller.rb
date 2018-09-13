@@ -24,7 +24,7 @@ module Api
 
         # TODO: Remove this when joule_ready beta is over
         if BetaFeatureService.user_has_feature(user, 'joule_ready')
-          jrb_env = use_staging ? 'staging' : params[:content_env]
+          jrb_env = use_staging ? 'staging' : (params[:content_env] || 'production')
           Rails.logger.info "ContentController: Joule Ready Beta user #{user.id} using #{jrb_env} use_staging=#{use_staging}"
 
           if @@manifest_endpoints[locale][jrb_env] &&
