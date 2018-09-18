@@ -67,7 +67,7 @@ module Api
         connected = (params.dup.delete(:connected) == 'true')
 
         if @user_id_from_token && BetaFeatureService.user_has_feature(current_api_user, 'joule_ready')
-          return Advertisement.where(matchname: 'jouleReady').published.all.to_a
+          return Advertisement.where(matchname: 'jouleReadyHomeHero').published.all.to_a
         end
 
         if !is_circulator_owner && !connected

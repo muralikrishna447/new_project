@@ -8,7 +8,7 @@ describe Api::V0::RecommendationsController, :focus => true do
     BetaFeatureService.stub(:user_has_feature).with(anything(), anything())
       .and_return(false)
 
-    @joule_ready_ad = Fabricate :advertisement, matchname: 'jouleReady',
+    @joule_ready_ad = Fabricate :advertisement, matchname: 'jouleReadyHomeHero',
                                  published: true, title: 'Sauce time'
 
     @activity = Fabricate :activity, title: 'My New Recipe', published: true, include_in_gallery: true
