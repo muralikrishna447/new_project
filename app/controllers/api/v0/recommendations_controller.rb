@@ -45,35 +45,14 @@ module Api
           slot = metadata.delete(:slot)
           aspect = metadata.delete(:aspect)
           limit = metadata.delete(:limit).to_i || 1
-          connected = (metadata.delete(:connected) == 'true')
-
-          is_circulator_owner = @user_id_from_token && (current_api_user.owned_circulators.count > 0 || current_api_user.joule_purchase_count > 0)
 
           ads = []
 
           # These are the only known uses right now. Anything else, we got no recommendations.
           # Which isn't considered an error.
           if platform == 'jouleApp' && (slot == 'homeHero' || slot == 'referPage')
-            if is_circulator_owner || connected
-              if (is_circulator_owner &&
-                  BetaFeatureService.user_has_feature(current_api_user, 'force_quick_and_easy_ad'))
-                possible_ads = Advertisement.where(matchname: 'quickAndEasy').published.all.to_a
-              else
-                possible_ads = Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
-              end
-
-              # TODO: remove this hack for bacon ad. We hadn't thought through the problem that an ad
-              # could be for a URL to content the app doesn't have yet. In the future, the app should
-              # filter those out or retrieve them in real time.
-              unless version_gte(request.headers['X-Application-Version'], '2.42')
-                possible_ads.delete_if { |ad| ad[:campaign] == 'baconGuideAd' }
-              end
-            else
-              possible_ads = Advertisement.where(matchname: 'homeHeroNonOwner').published.all.to_a
-            end
-
+            possible_ads = eligible_joule_ads
             handle_referral_codes(possible_ads, slot == 'referPage')
-
             ads = Utils.weighted_random_sample(possible_ads, :weight, limit)
           end
 
@@ -82,6 +61,21 @@ module Api
       end
 
       private
+
+      def eligible_joule_ads
+        is_circulator_owner = @user_id_from_token && (current_api_user.owned_circulators.count > 0 || current_api_user.joule_purchase_count > 0)
+        connected = (params.dup.delete(:connected) == 'true')
+
+        if @user_id_from_token && BetaFeatureService.user_has_feature(current_api_user, 'joule_ready')
+          return Advertisement.where(matchname: 'jouleReadyHomeHero').published.all.to_a
+        end
+
+        if !is_circulator_owner && !connected
+          return Advertisement.where(matchname: 'homeHeroNonOwner').published.all.to_a
+        end
+
+        return Advertisement.where(matchname: 'homeHeroOwner').published.all.to_a
+      end
 
       def version_gte(version, min_version)
         return false if version.blank?
