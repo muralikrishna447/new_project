@@ -7,6 +7,8 @@ module Api
 
         def show
           begin
+            raise "CustomerOrdersController deprecated"
+
             @order = ShopifyAPI::Order.find(params[:id])
             customer_multipass_identifier = @order.customer.multipass_identifier
             current_api_user_id = current_api_user.id.to_s
@@ -31,6 +33,7 @@ module Api
         end
 
         def update_address
+          raise "CustomerOrdersController deprecated"
           begin
             order_id = params[:id]
             @order = ShopifyAPI::Order.find(order_id)
@@ -65,6 +68,7 @@ module Api
         end
 
         def confirm_address
+          raise "CustomerOrdersController deprecated"
           order_id = params[:id]
           begin
             order_id = params[:id]

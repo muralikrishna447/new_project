@@ -1,4 +1,5 @@
 class Shopify::Order
+
   PREMIUM_SKU = 'cs10002'
   JOULE_SKU = 'cs10001'
   JOULE_WHITE_SKU = 'cs20001'
@@ -12,10 +13,12 @@ class Shopify::Order
   attr_accessor :api_order
 
   def initialize(api_order)
+    raise "Shopify::Order deprecated"
     @api_order = api_order
   end
 
   def self.find(order_id)
+    raise "Shopify::Order deprecated"
     api_order = ShopifyAPI::Order.find(order_id)
     Shopify::Order.new(api_order)
   end

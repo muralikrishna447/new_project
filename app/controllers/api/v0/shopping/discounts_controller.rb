@@ -6,6 +6,7 @@ module Api
       class DiscountsController < BaseController
 
         def show
+          raise "DiscountsController deprecated"
           begin
             @discount = CacheExtensions::fetch_with_rescue("shopping/discounts/#{params[:id]}", 1.minute, 1.minute) do
               begin

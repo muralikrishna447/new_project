@@ -3,11 +3,14 @@ class Shopify::Customer
   JOULE_PREMIUM_DISCOUNT_TAG = 'joule-premium-discount-eligible'
 
   def initialize(user, shopify_customer)
+    raise "Shopify::Customer deprecated"
+
     @user = user
     @shopify_customer = shopify_customer
   end
 
   def self.find_for_user(user, email_override=nil)
+    raise "Shopify::Customer deprecated"
     email = email_override || user.email
     shopify_customer = ShopifyAPI::Customer.search(:query => "email:\"#{email}\"").first
     if shopify_customer.nil?
@@ -40,6 +43,7 @@ class Shopify::Customer
   end
 
   def self.create_for_user(user)
+    raise "Shopify::Customer deprecated"
     Rails.logger.info "Creating Shopify customer for user [#{user.id}]"
     customer = ShopifyAPI::Customer.create(
       :email => user.email,
@@ -50,6 +54,7 @@ class Shopify::Customer
   end
 
   def self.sync_user(user)
+    raise "Shopify::Customer deprecated"
     Rails.logger.info "Syncing user [#{user.id}] to shopify"
     customer = find_for_user(user)
     if customer.nil?
@@ -65,6 +70,7 @@ class Shopify::Customer
   end
 
   def self.find_or_create_referral_code_for_user(user)
+    raise "Shopify::Customer deprecated"
     if ! user.referral_code
       code = 'sharejoule-' + unique_code { |code| User.unscoped.exists?(referral_code: code) }
 
@@ -137,6 +143,7 @@ class Shopify::Customer
   end
 
   def self.update_email(user, old_email)
+    raise "Shopify::Customer deprecated"
     customer = self.find_for_user(user, old_email)
     customer.update_email(old_email)
   end
