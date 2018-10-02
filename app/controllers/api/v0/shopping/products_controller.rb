@@ -28,11 +28,8 @@ module Api
 
         private
 
-        # Caches products with data in a more convient location (price, sku, variant_id) rather than deeply nested
-        # This flattens the shopify data to make it easier to work with
-        # If we later decide to use variants each having unique skus, this will need to be updated to handle that.
         def get_all_products
-          #removed call to ShopifyApi to retrieve products
+          #removed call to ShopifyApi that was retrieving products
           []
         end
 
