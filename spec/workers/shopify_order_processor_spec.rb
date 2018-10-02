@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+#skipping per Shopify removal
 describe ShopifyOrderProcessor, :skip => 'true' do
   before :each do
     # Toggle enabled to force reload of fixtures

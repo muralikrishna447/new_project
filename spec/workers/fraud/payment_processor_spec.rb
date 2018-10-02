@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+#skipping per Shopify removal
 describe Fraud::PaymentProcessor, :skip => 'true' do
   describe 'perform' do
     let(:order_id) { 1234 }

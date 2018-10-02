@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+#skipping per Shopify removal
 describe Shopify::Customer, :skip => 'true' do
   context 'syncing and retrieving' do
     before(:each) do

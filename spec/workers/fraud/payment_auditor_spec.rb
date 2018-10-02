@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+#skipping per Shopify removal
 describe Fraud::PaymentAuditor, :skip => 'true' do
   describe 'perform' do
     let(:processed_at) { '2017-02-21T16:46:44-08:00' }

@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+#skipping per Shopify removal
 describe Shopify::Order, :skip => 'true' do
   JOULE_ORDER_ID = 4507800
   FREE_JOULE_ORDER_ID = 4507801

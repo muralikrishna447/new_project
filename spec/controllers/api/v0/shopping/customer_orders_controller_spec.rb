@@ -1,3 +1,4 @@
+#skipping per Shopify removal
 describe Api::V0::Shopping::CustomerOrdersController, :skip => 'true' do
 
   before :each do
