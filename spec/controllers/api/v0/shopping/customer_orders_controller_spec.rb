@@ -1,4 +1,6 @@
-xdescribe Api::V0::Shopping::CustomerOrdersController do
+describe Api::V0::Shopping::CustomerOrdersController do
+  skip "Shopify Removal"
+
   before :each do
 
     @user = Fabricate :user, id: 10001, name: 'customer_1', email: 'customer_1@chefsteps.com', role: 'user'
