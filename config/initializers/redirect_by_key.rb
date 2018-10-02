@@ -15,6 +15,8 @@ Rails.configuration.redirect_by_key = {
   'hardwareTroubleshooting' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/sections/203206487-Hardware-Specs",
   'knownIssues' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/115006043508",
   'factoryReset' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/222979667-What-is-a-factory-reset-and-how-do-I-perform-one-",
+  'jouleReadyLearnMore' => "#{Rails.application.config.shared_config[:spree_endpoint]}/collections/joule-ready",
+  'androidLocationPermissions' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/360009480814-I-have-an-Android-Why-am-I-being-asked-to-allow-location-access-",
   # if an unrecognized key is provided, we return this fallback url
   # if we use redirect_by_key for anything beyond support, rethink this fallback strategy
   'fallback' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/"

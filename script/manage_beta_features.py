@@ -60,11 +60,21 @@ def show_user_group_information(table, args):
         FilterExpression=Attr('group_name').eq(args.group_name)
     )
     items = resp['Items']
-
+    group_count = len(items)
     for item in items:
         print(item)
 
-    print("Group %s has %i members" % (args.group_name, len(items)))
+    while 'LastEvaluatedKey' in resp:
+        resp =table.scan(
+            FilterExpression=Attr('group_name').eq(args.group_name),
+            ExclusiveStartKey=resp['LastEvaluatedKey']
+        )
+        items = resp['Items']
+        group_count += len(items)
+        for item in items:
+            print(item)
+
+    print("Group %s has %i members" % (args.group_name, group_count))
 
 
 if __name__ == '__main__':

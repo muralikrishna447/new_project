@@ -1,4 +1,4 @@
-describe Api::V0::RecommendationsController do
+describe Api::V0::RecommendationsController, :focus => true do
 
   before :each do
     @unpub_ad = Fabricate :advertisement, title: "Other Things", image: "{\"url\":\"http://foo/bar\",\"filename\":\"98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"mimetype\":\"image/jpeg\",\"size\":93111,\"key\":\"Vp8xHWW7TRKYRH3FsLBu_98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"container\":\"chefsteps-staging\",\"isWriteable\":true}"
@@ -8,8 +8,8 @@ describe Api::V0::RecommendationsController do
     BetaFeatureService.stub(:user_has_feature).with(anything(), anything())
       .and_return(false)
 
-    @quick_n_easy_ad = Fabricate :advertisement, matchname: 'quickAndEasy',
-                                 published: true, title: 'Short on time?'
+    @joule_ready_ad = Fabricate :advertisement, matchname: 'jouleReadyHomeHero',
+                                 published: true, title: 'Sauce time'
 
     @activity = Fabricate :activity, title: 'My New Recipe', published: true, include_in_gallery: true
     @activity.tag_list.add('garlic')
@@ -49,23 +49,20 @@ describe Api::V0::RecommendationsController do
     parsed['results'][0]['title'].should eq 'Owner All The Things'
   end
 
-  it 'should respond with quick and easy ad if beta feature enabled' do
+  it 'should respond with joule ready ad if beta feature enabled' do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
 
-    BetaFeatureService.stub(:user_has_feature).with(@user, 'force_quick_and_easy_ad')
+    BetaFeatureService.stub(:user_has_feature).with(@user, 'joule_ready')
       .and_return(true)
 
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
-    @circulator = Fabricate :circulator, notes: 'some notes',
-                            circulator_id: '1212121212121212', name: 'my name'
-    @circulator_user = Fabricate :circulator_user, user: @user,
-                                 circulator: @circulator, owner: true
+
     sign_in @user
     get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
-    parsed['results'][0]['title'].should eq @quick_n_easy_ad.title
+    parsed['results'][0]['title'].should eq @joule_ready_ad.title
   end
 
   it 'should return something even if not logged in' do
@@ -176,39 +173,5 @@ describe Api::V0::RecommendationsController do
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 0
-  end
-
-  describe 'bacon hack' do
-    before :each do
-      @bacon_ad = Fabricate :advertisement, matchname: 'homeHeroOwner', published: true, title: "Bacon", url: "/#/guide/2xIIxBtjwAKSMiWIOAOC4i/overview", campaign: "baconGuideAd"
-      @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
-      controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
-
-      sign_in @user
-    end
-
-    it 'should not include bacon if version is not set' do
-      get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
-      response.should be_success
-      parsed = JSON.parse response.body
-      parsed['results'].count.should eq 1
-    end
-
-    it 'should not include bacon if version is too low' do
-      @request.env['X-Application-Version'] = '2.41'
-      get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
-      response.should be_success
-      parsed = JSON.parse response.body
-      parsed['results'].count.should eq 1
-    end
-
-    it 'should  include bacon if version is sufficient' do
-      @request.env['X-Application-Version'] = '2.42'
-      get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
-      response.should be_success
-      parsed = JSON.parse response.body
-      parsed['results'].count.should eq 2
-    end
-
   end
 end
