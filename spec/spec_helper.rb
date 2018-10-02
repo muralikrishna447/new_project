@@ -41,6 +41,7 @@ Spork.prefork do
       config.run_all_when_everything_filtered = true
     end
 
+    config.filter_run_excluding :skip => 'true'
     config.include Devise::TestHelpers, type: :controller
     config.extend ControllerMacros, type: :controller
     config.include Capybara::DSL

@@ -1,5 +1,4 @@
-describe Api::V0::Shopping::CustomerOrdersController do
-  skip "Shopify Removal"
+describe Api::V0::Shopping::CustomerOrdersController, :skip => 'true' do
 
   before :each do
 
