@@ -28,9 +28,63 @@ module Api
 
         private
 
+        # Caches products with data in a more convient location (price, sku, variant_id) rather than deeply nested
+        # This flattens the shopify data to make it easier to work with
+        # If we later decide to use variants each having unique skus, this will need to be updated to handle that.
         def get_all_products
-          #removed call to ShopifyApi that was retrieving products
-          []
+          raise "ShopifyAPI calls deprecated"
+          @products = CacheExtensions::fetch_with_rescue("shopping/products", 1.minute, 1.minute) do
+            page = 1
+            products = []
+            begin
+              count = ShopifyAPI::Product.count
+            rescue Exception => e
+              raise CacheExtensions::TransientFetchError.new(e)
+            end
+
+            if count > 0
+              page += count.divmod(250).first
+              while page > 0
+                begin
+                  page_of_products = ShopifyAPI::Product.all(:params => {:page => page, :limit => 250})
+                rescue Exception => e
+                  raise CacheExtensions::TransientFetchError.new(e)
+                end
+                products += page_of_products
+                page -= 1
+              end
+            end
+
+            products = products.select do |product|
+              first_variant = get_first_variant(product)
+              is_valid = first_variant && first_variant.sku
+              unless is_valid
+                logger.warn "Filtering out product with no variant/sku: #{product.id} #{product.title}"
+              end
+              is_valid
+            end
+
+
+            results = products.map do |product|
+              first_variant = get_first_variant(product)
+
+              product_images = product.images.map do |image|
+                {
+                    src: image.src,
+                    variant_ids: image.variant_ids
+                }
+              end
+
+              {
+                  id: product.id,
+                  title: product.title,
+                  sku: get_product_sku(first_variant.sku),
+                  variants: get_variants(product),
+                  images: product_images
+              }
+            end
+            results.to_json
+          end
         end
 
         def get_product_metafield(product, namespace, key)
