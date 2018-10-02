@@ -33,7 +33,7 @@ describe Api::V0::Shopping::ProductsController do
 
   end
 
-  describe 'GET /products' do
+  describe 'GET /products', :skip => 'true' do
     it "should respond with an array of products" do
       get :index
       response.should be_success
@@ -99,7 +99,7 @@ describe Api::V0::Shopping::ProductsController do
 
   end
 
-  describe 'GET /products/:sku' do
+  describe 'GET /products/:sku', :skip => 'true' do
 
     it "should respond with a product when a sku is provided " do
       get :show, id: 'cs123'
