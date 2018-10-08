@@ -16,8 +16,11 @@ def create_tables_for_env(client, tables, env):
                 AttributeDefinitions=table_def['AttributeDefinitions'],
                 ProvisionedThroughput=table_def['ProvisionedThroughput'],
             )
-        except botocore.exceptions.ClientError:
-            print("  ...table exists")
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == 'ResourceInUseException':
+                print "ERROR: Table already exists"
+            else:
+                print("ERROR: %s" % e)
 
 
 if __name__ == '__main__':

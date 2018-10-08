@@ -103,22 +103,7 @@ module Api
           return render_api_response 404, {:message => "User not found"}
         end
 
-        # Hardcoding the list of possible capabilities for now.
-        capability_list = [
-          'beta_guides',
-          'multi_circ',
-          'fbjoule',
-          'update_during_pairing',
-          'sqlite',
-          'enable_react_native_alerts'
-        ]
-        cache_key = "user-capabilities-#{user.id}"
-        user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
-          capability_list.select {|c|
-            BetaFeatureService.user_has_feature(user, c)
-          }
-        end
-        render_api_response 200, {:capabilities => user_capabilities}
+        render_api_response 200, {:capabilities => user.capabilities}
       end
 
       #API needed for spree, called when a customer purchases ChefSteps premium

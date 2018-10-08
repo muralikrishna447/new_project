@@ -39,6 +39,7 @@ Delve::Application.routes.draw do
   get '/jouleapp', to: redirect('/getting-started-with-joule')
   get '/jewel', to: redirect('/joule')
   get '/Joule', to: redirect('/joule')
+  get '/StovetopSousVide', to: redirect('/activities/cook-sous-vide-tonight-stovetop-method')
 
   # Legal Documents
   get '/eula-ios' => 'legal#eula'
@@ -50,6 +51,7 @@ Delve::Application.routes.draw do
   get 'terms' => 'legal#terms', as: 'terms'
   get 'terms' => 'legal#terms', as: 'terms_of_service'
   match '/joule/warranty', to: 'legal#warranty'
+  match '/joule/warranty/:country_code', to: 'legal#warranty_for_country'
   match '/customer-feedback-panel', to: 'home#customer_feedback_panel'
 
   get '/recipes', to: redirect('/gallery')

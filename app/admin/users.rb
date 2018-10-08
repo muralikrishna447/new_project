@@ -37,9 +37,9 @@ ActiveAdmin.register User do
 
   member_action :reset_password, method: :post do
     @user = User.find(params[:id])
-    email = @user.email
-    User.send_reset_password_instructions({email: email})
-    redirect_to({action: :show}, notice: "Password reset email has been sent to #{email}")
+    logger.info "Admin dashboard: sending password reset email for: #{@user.email}"
+    @user.send_password_reset_email
+    redirect_to({action: :show}, notice: "Password reset email has been sent to #{@user.email}")
   end
 
   member_action :soft_delete, method: :post do

@@ -35,7 +35,12 @@ class LegalController < ApplicationController
   end
 
   def warranty
+    render 'legal/warranty/index'
+  end
+
+  def warranty_for_country
     @warranty_template = "legal/warranty/#{@country[:code].downcase}_#{@selected_language.downcase}"
+    render 'legal/warranty/warranty_for_country'
   end
 
   def privacy_policy
@@ -68,77 +73,97 @@ class LegalController < ApplicationController
         languages: ["English", "French"]
       },
       {
-        code: "BE",
-        name: "Belgium",
-        languages: ["Dutch", "French"]
+          code: "GB",
+          name: "United Kingdom",
+          languages: ["English"]
       },
       {
-        code: "DK",
-        name: "Denmark",
-        languages: ["Danish"]
+          code: "BE",
+          name: "Belgium",
+          languages: ["Dutch", "French"]
       },
       {
-        code: "FI",
-        name: "Finland",
-        languages: ["Finnish", "Swedish"]
+          code: "DK",
+          name: "Denmark",
+          languages: ["Danish"]
       },
       {
-        code: "FR",
-        name: "France",
-        languages: ["French"]
+          code: "FI",
+          name: "Finland",
+          languages: ["Finnish", "Swedish"]
       },
       {
-        code: "DE",
-        name: "Germany",
-        languages: ["German"]
+          code: "FR",
+          name: "France",
+          languages: ["French"]
       },
       {
-        code: "IE",
-        name: "Ireland",
-        languages: ["English"]
+          code: "DE",
+          name: "Germany",
+          languages: ["German"]
       },
       {
-        code: "IT",
-        name: "Italy",
-        languages: ["Italian"]
+          code: "IE",
+          name: "Ireland",
+          languages: ["English"]
       },
       {
-        code: "NL",
-        name: "Netherlands",
-        languages: ["Dutch"]
+          code: "IT",
+          name: "Italy",
+          languages: ["Italian"]
       },
       {
-        code: "NO",
-        name: "Norway",
-        languages: ["Norwegian"]
+          code: "NL",
+          name: "Netherlands",
+          languages: ["Dutch"]
       },
       {
-        code: "ES",
-        name: "Spain",
-        languages: ["Spanish"]
+          code: "NO",
+          name: "Norway",
+          languages: ["Norwegian"]
       },
       {
-        code: "SE",
-        name: "Sweden",
-        languages: ["Swedish"]
+          code: "ES",
+          name: "Spain",
+          languages: ["Spanish"]
       },
       {
-        code: "CH",
-        name: "Switzerland",
-        languages: ["German", "French", "Italian"]
+          code: "SE",
+          name: "Sweden",
+          languages: ["Swedish"]
       },
       {
-        code: "GB",
-        name: "United Kingdom",
-        languages: ["English"]
+          code: "CH",
+          name: "Switzerland",
+          languages: ["German", "French", "Italian"]
+      },
+      {
+          code: "EU",
+          name: "Other European Economic Area Countries",
+          languages: ["English"]
       }
     ]
-    @country = @countries.find { |c| c[:code] == @location['country'] }
+
+    # If path provides a country code, use that over the location
+    requested_country_code = params[:country_code].try(:upcase)
+    if requested_country_code.blank?
+      requested_country_code = @location['country']
+    end
+
+    @country = @countries.find { |c| c[:code] == requested_country_code }
     if @country.blank?
       @country = @countries.find { |c| c[:code] == 'US' }
     end
-    @language = params[:language]
+
     @languages = @country[:languages].map { |e| [e]  }
-    @selected_language = @language ? @language : @languages[0][0]
+
+    # language is a query string parameter
+    # If it matches one of the available languages, then we will use that
+    # Otherwise, default to the first entry in languages
+    @selected_language = @country[:languages].find { |e| e == params[:language]}
+    if @selected_language.blank?
+      @selected_language = @country[:languages][0]
+    end
+
   end
 end

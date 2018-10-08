@@ -2,7 +2,7 @@ class BaseApplicationController < ActionController::Base
   before_filter :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user, :detect_country
 
   def record_uuid_in_new_relic
-    ::NewRelic::Agent.add_custom_parameters({ request_id: request.uuid()})
+    ::NewRelic::Agent.add_custom_attributes({ request_id: request.uuid()})
   end
 
   def cors_set_access_control_headers
@@ -91,6 +91,18 @@ class BaseApplicationController < ActionController::Base
       }
     end
 
+    def dummy_location
+      return {
+          country: 'US',
+          long_country: 'United States',
+          latitude: 47.6103,
+          longitude: -122.3341,
+          city: 'Seattle',
+          state: 'WA',
+          zip: '98101'
+      }
+    end
+
     def geolocate_ip(ip_address = nil)
       t1 = Time.now
       metric_suffix = 'hit'
@@ -99,7 +111,7 @@ class BaseApplicationController < ActionController::Base
       logger.info("Geolocating IP: #{ip_address}")
       conf = Rails.configuration.geoip
 
-      return location if ip_address == '127.0.0.1'
+      return dummy_location if ip_address == '127.0.0.1'
 
       begin
         key = "geocode-cache-#{ip_address}"
@@ -212,13 +224,7 @@ class BaseApplicationController < ActionController::Base
       merge_vars = {
         NAME: user.name,
         SOURCE: source,
-        MMERGE2: long_country,
-        groupings: [
-          {
-            id: Rails.configuration.mailchimp[:email_preferences_group_id],
-            groups: Rails.configuration.mailchimp[:email_preferences_group_default]
-          }
-        ]
+        MMERGE2: long_country
       }
       logger.info "[mailchimp] Subscribing [#{user.email}] to list #{[listname]}, merge_vars: #{merge_vars}"
 

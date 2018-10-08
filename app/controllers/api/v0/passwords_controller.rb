@@ -35,12 +35,7 @@ module Api
         Librato.increment("api.password_send_reset_email_requests")
         @user = User.find_by_email params[:email]
         if @user
-          logger.info "Sending password reset email for: #{@user.email}"
-          aa = ActorAddress.create_for_user @user, client_metadata: "password_reset"
-
-          exp = ((Time.now + 1.day).to_f * 1000).to_i
-          token = aa.current_token(exp: exp, restrict_to: 'password reset').to_jwt
-          UserMailer.reset_password(@user.email, token).deliver
+          @user.send_password_reset_email
           render json: { status: 200, message: 'Success'}, status: 200
         else
           render_unauthorized

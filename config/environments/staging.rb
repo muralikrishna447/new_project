@@ -1,4 +1,4 @@
-DOMAIN='staging.chefsteps.com'
+DOMAIN='www.chocolateyshatner.com'
 CDN_DOMAIN = 'https://d2t0ubu4aw4rxn.cloudfront.net'
 
 Delve::Application.configure do
@@ -99,11 +99,7 @@ Delve::Application.configure do
   #Staging mailchimp
   config.mailchimp = {
     :api_key => '4494fae45457c6a2c4d1f3ba59609353-us12',
-    :list_id => '5f55993b84',
-    :premium_group_id => '757',
-    :joule_group_id => '1481',
-    :email_preferences_group_id => '9505',
-    :email_preferences_group_default => ["Thing 1", "Thing 2"]
+    :list_id => '5f55993b84'
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 

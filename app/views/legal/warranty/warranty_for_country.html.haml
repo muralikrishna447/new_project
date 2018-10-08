@@ -1,0 +1,12 @@
+.container#legal
+  #terms
+    %div
+      %h2.pull-left WARRANTY
+
+      - if @languages.length > 1
+        .pull-right
+          = select_tag :lang, options_for_select(@languages, @selected_language), {:onchange => "window.location.href='/joule/warranty/#{@country[:code]}?language=' + this.value"}
+
+    %p.clearfix
+
+    = render @warranty_template

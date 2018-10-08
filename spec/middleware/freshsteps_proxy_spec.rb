@@ -16,6 +16,7 @@ describe 'freshsteps_proxy' do |variable|
     assert_proxy '/joule/hardware', true
     assert_proxy '/joule-overview', true
     assert_proxy '/joule/warranty', false
+    assert_proxy '/joule/warranty/XY', false
   end
 
   it 'Proxy /gallery' do

@@ -7,10 +7,10 @@ class FreshStepsProxy < Rack::Proxy
   # browser-sync was pinging multiple times per second. Although without the proxy, rails returns 406 so
   # it is still doing work. Curious.
 
-  PREFIX = %w(/gallery /classes /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-staging /joule-overview /recommended /market /joule-split /orders /butchers)
-  EXACT = %w(/ /sous-vide /grilling /getpremium /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs /gifting /sso /sign-up /steak-by-joule /gifs /404 /forum-welcome /preorder-sweepstakes /preorder-sweepstakes-legal /components /lamarzocco-ultimate-espresso-kit /getting-started-with-joule /known-issues /food52 /Food52 /voice-control /cooking-challenge /equipment-we-love /opi-submissions /conversational-cooking /joule-one-million-meals /who-we-are /customer-panel-studies /a-better-way-to-turkey-learn-more)
+  PREFIX_INCLUDE = %w(/gallery /classes /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-staging /joule-overview /recommended /market /joule-split /orders /butchers)
+  EXACT = %w(/ /sous-vide /grilling /getpremium /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs /gifting /sso /sign-up /steak-by-joule /gifs /404 /forum-welcome /preorder-sweepstakes /preorder-sweepstakes-legal /components /lamarzocco-ultimate-espresso-kit /getting-started-with-joule /known-issues /food52 /Food52 /voice-control /cooking-challenge /equipment-we-love /opi-submissions /conversational-cooking /joule-one-million-meals /who-we-are /customer-panel-studies /make-dinner-easy /a-better-way-to-turkey-learn-more)
 
-  EXCLUDE = %w(/joule/warranty)
+  PREFIX_EXCLUDE = %w(/joule/warranty)
   SUFFIX = %w(/fork /notify_start_edit /notify_end_edit /as_json /the-egg-calculator /new)
 
   def initialize(app)
@@ -55,16 +55,28 @@ class FreshStepsProxy < Rack::Proxy
     # Don't proxy explicit requests for .json, those must be API type calls (like old index_as_json.json for mobile app)
     return false if request.path.end_with?('.json')
 
-    prefix_match = PREFIX.include?(request.path) || PREFIX.any?{|prefix| request.path.starts_with?(prefix + "/")}
-    exact_match = EXACT.include?(request.path)
-    exclude_match = EXCLUDE.include?(request.path)
+    # Don't proxy paths that are specifically excluded by prefix
+    return false if prefix_match?(PREFIX_EXCLUDE, request)
 
-    # The logic below will only proxy GET requests with path /activities/:id
-    activity_show_match = request.get? &&
-                          request.path.starts_with?('/activities') &&
-                          request.params['start_in_edit'].blank? &&
-                          !SUFFIX.any?{|suffix| request.path.end_with?(suffix)}
+    # Proxy exact matches, prefix matches, and activities
+    return true if EXACT.include?(request.path)
+    return true if prefix_match?(PREFIX_INCLUDE, request)
+    return true if activity_show_match?(request)
 
-    !exclude_match && (prefix_match || exact_match || activity_show_match)
+    false
+  end
+
+  private
+
+  def prefix_match?(prefixes, request)
+    prefixes.include?(request.path) || prefixes.any?{|prefix| request.path.starts_with?(prefix + "/")}
+  end
+
+  # The logic below will only proxy GET requests with path /activities/:id
+  def activity_show_match?(request)
+    request.get? &&
+      request.path.starts_with?('/activities') &&
+      request.params['start_in_edit'].blank? &&
+      !SUFFIX.any?{|suffix| request.path.end_with?(suffix)}
   end
 end

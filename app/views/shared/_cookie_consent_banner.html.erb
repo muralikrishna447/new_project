@@ -1,0 +1,39 @@
+<%#
+Conditionally renders the cookie consent banner if needed.
+Renders nothing if the user does not need to see the banner
+%>
+
+<% if is_consent_needed? %>
+
+  <div class="cookie-banner-container" id="cookie-container">
+    <div class="cookie-banner-text">
+      <%= t("cookie_policy.text", :cookie_policy_href => link_to(t("cookie_policy.cookie_policy_href_label"), '/cookie-policy')).html_safe %>
+    </div>
+
+    <button type="button" class="button solid orange cookie-banner-button" id="cookie-ok">
+      <%= t("cookie_policy.ok") %>
+    </button>
+
+  </div>
+
+  <script>
+      $(document).ready(function () {
+          $('#cookie-ok').click(function () {
+
+              var cookieDomain = document.domain;
+              if (cookieDomain.search('www') >= 0 && cookieDomain.search('.com') >= 0) {
+                  cookieDomain = cookieDomain.replace('www', ''); // want the cookie in .chefsteps.com, .chocolateyshatner.com, or .vanillanimoy.com
+              }
+
+              $.cookie('<%= cookie_consent_key %>', '<%= cookie_consent_value_accept %>', {
+                  expires: 365 * 20,
+                  path: '/',
+                  domain: cookieDomain
+              });
+              $('#cookie-container').addClass('cookie-container-hidden');
+          });
+      });
+  </script>
+
+
+<% end %>

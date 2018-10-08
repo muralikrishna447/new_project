@@ -144,7 +144,10 @@ describe Api::V0::CirculatorsController do
       result = JSON.parse(response.body)
       result['token'].should_not be_empty
       token = AuthToken.from_string result['token']
-      token['iat'].should == Time.now.to_i
+
+      # See:
+      # https://github.com/travisjeffery/timecop/issues/146
+      (token['iat'] - Time.now.to_i).abs.should <= 2
     end
   end
 
@@ -479,6 +482,7 @@ describe Api::V0::CirculatorsController do
           gcm = JSON.parse msg['GCM']
           expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
           expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
+          expect(gcm['data']['title']).to eq 'Joule'
         end
       end
 
@@ -497,7 +501,42 @@ describe Api::V0::CirculatorsController do
         end
       end
 
+      context 'background notifications' do
+        it 'sends a notification if BetaFeature enabled' do
+          BetaFeatureService.stub(:user_has_feature) \
+            .with(anything(), 'background_notifications').and_return(true)
+          post(
+            :notify_clients,
+            format: 'json',
+            id: @circulator.circulator_id,
+            notification_type: 'timer_updated',
+            notification_params: {
+              finish_timestamp: 1234
+            }
+          )
+          expect(@published_messages.length).to eq 1
+          msg = JSON.parse(@published_messages[0][:msg])
+          apns = JSON.parse msg['APNS']
+          gcm = JSON.parse msg['GCM']
 
+          expect(gcm['data']['content-available']).to eq '1'
+          expect(gcm['data']['finish_timestamp']).to eq 1234
+          expect(apns['aps']['content-available']).to eq 1
+          expect(apns['aps']['notId']).to_not be_nil
+          expect(apns['aps']['notId']).to eq gcm['data']['notId']
+          expect(apns['aps']['finish_timestamp']).to eq 1234
+        end
+
+        it 'does not send a notification if BetaFeature disabled' do
+          post(
+            :notify_clients,
+            format: 'json',
+            id: @circulator.circulator_id,
+            notification_type: 'timer_updated',
+          )
+          expect(@published_messages.length).to eq 0
+        end
+      end
 
       let(:notification_type) { 'water_heated' }
 
