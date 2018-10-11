@@ -5,6 +5,8 @@ class ShopifyBatchProcessor
   # Run less frequently on more
 
   def run(period = DEFAULT_PERIOD)
+    raise "ShopifyBatchProcessor deprecated"
+
     updated_at_min = (Time.now - period).utc.to_s
     Rails.logger.info "Processing shopify orders since #{updated_at_min}"
     page = 1

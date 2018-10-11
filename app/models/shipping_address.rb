@@ -3,6 +3,7 @@ class ShippingAddress < MailingAddress
   @@client = Aws::DynamoDB::Client.new(region: 'us-east-1')
 
   def save_record(order_id,user_id)
+    raise "ShippingAddress model deprecated"
     begin
 
       order = ShopifyAPI::Order.find(order_id)
@@ -27,6 +28,7 @@ class ShippingAddress < MailingAddress
   end
 
   def self.confirm(order_id)
+    raise "ShippingAddress model deprecated"
     item = {
       'orderId' => order_id,
       'createdAt' => DateTime.now.to_i

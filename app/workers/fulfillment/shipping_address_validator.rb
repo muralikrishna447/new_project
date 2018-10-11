@@ -9,6 +9,7 @@ module Fulfillment
     @queue = :ShippingAddressValidator
 
     def self.perform(skus)
+      raise "ShippingAddressValidator deprecated"
       Rails.logger.info("ShippingAddressValidator starting perform with SKUs #{skus}")
       valid_count = 0
       invalid_count = 0
@@ -36,6 +37,7 @@ module Fulfillment
     end
 
     def self.validate(order)
+      raise "ShippingAddressValidator deprecated"
       validation = Fulfillment::FedexShippingAddressValidator.validate(order)
 
       # Clear any previous validation errors if address is now valid.
@@ -58,6 +60,7 @@ module Fulfillment
     end
 
     def self.handled?(order, message)
+      raise "ShippingAddressValidator deprecated"
       has_error_tag = Shopify::Utils.order_tags(order).include?(VALIDATION_ERROR_TAG)
       note = validation_note(order)
       return true if has_error_tag && note && note.attributes[:value] == message
@@ -65,10 +68,12 @@ module Fulfillment
     end
 
     def self.validation_note(order)
+      raise "ShippingAddressValidator deprecated"
       order.note_attributes.select { |attr| attr.attributes[:name] == VALIDATION_MESSAGE_NOTE_KEY }.first
     end
 
     def self.clear_validation_errors(order)
+      raise "ShippingAddressValidator deprecated"
       has_error_tag = Shopify::Utils.order_tags(order).include?(VALIDATION_ERROR_TAG)
       Shopify::Utils.remove_from_order_tags(order, [VALIDATION_ERROR_TAG]) if has_error_tag
       note = validation_note(order)
@@ -84,6 +89,7 @@ module Fulfillment
     end
 
     def self.add_validation_error(order, message)
+      raise "ShippingAddressValidator deprecated"
       Shopify::Utils.add_to_order_tags(order, [VALIDATION_ERROR_TAG])
 
       # Update existing message or add it to array if it doesn't exist.
@@ -101,6 +107,7 @@ module Fulfillment
     end
 
     def self.should_validate?(order, skus)
+      raise "ShippingAddressValidator deprecated"
       if Shopify::Utils.line_items_for_skus(order, skus).empty?
         Rails.logger.info "ShippingAddressValidator order with id #{order.id} " \
                           "has no line items matching skus #{skus}, skipping"

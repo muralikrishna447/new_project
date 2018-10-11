@@ -18,6 +18,7 @@ module Fraud
     @queue = 'PaymentProcessor'
 
     def self.perform(order_id)
+      raise "PaymentProcessor deprecated"
       Rails.logger.info("PaymentProcessor starting perform on order with id #{order_id}")
       order = Shopify::Utils.order_by_id(order_id)
 
@@ -56,6 +57,7 @@ module Fraud
     end
 
     def self.process_capturable_order(order, signifyd_case)
+      raise "PaymentProcessor deprecated"
       fraud_score = signifyd_case['score']
       add_score_to_order(order, fraud_score)
 
@@ -77,6 +79,7 @@ module Fraud
     # Looks up the Signifyd case for the specified Shopify order.
     # Returns nil if the case cannot be found.
     def self.signifyd_case(order)
+      raise "PaymentProcessor deprecated"
       response = nil
       Retriable.retriable tries: 3 do
         begin
@@ -95,6 +98,7 @@ module Fraud
     # Adds the Signifyd score and risk level to the Shopify
     # order risks so it's visible there. Fancy!
     def self.add_score_to_order(order, score)
+      raise "PaymentProcessor deprecated"
       return if order_has_score?(order)
 
       order.note_attributes.push(ShopifyAPI::NoteAttribute.new(
@@ -125,12 +129,14 @@ module Fraud
     end
 
     def self.capture_and_close(order, signifyd_case)
+      raise "PaymentProcessor deprecated"
       capture_payment(order)
       Librato.increment 'fraud.payment-processor.capture.count', sporadic: true
       close_signifyd_case(order, signifyd_case)
     end
 
     def self.close_signifyd_case(order, signifyd_case)
+      raise "PaymentProcessor deprecated"
       case_id = signifyd_case['caseId']
       status = signifyd_case['status']
       if status == 'DISMISSED'
@@ -145,11 +151,13 @@ module Fraud
     end
 
     def self.order_is_new?(order)
+      raise "PaymentProcessor deprecated"
       processed_at = Time.parse(order.processed_at)
       (Time.now - processed_at) <= SIGNIFYD_NOT_FOUND_WINDOW_SECONDS
     end
 
     def self.order_has_score?(order)
+      raise "PaymentProcessor deprecated"
       return true if order.note_attributes.find { |attr| attr.name == SIGNIFYD_SCORE_ATTR_NAME }
       false
     end

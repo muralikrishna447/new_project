@@ -1,4 +1,5 @@
-describe Api::V0::Shopping::DiscountsController do
+#skipping per Shopify removal
+describe Api::V0::Shopping::DiscountsController, :skip => 'true' do
   before :each do
     discounts_data = JSON.parse(ShopifyAPI::Mock::Fixture.find('discounts').data)['discounts']
     WebMock.stub_request(:get, /test.myshopify.com\/admin\/discounts.json/)

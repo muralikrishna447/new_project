@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe Fulfillment::ShippingAddressValidator do
+#skipping per Shopify removal
+describe Fulfillment::ShippingAddressValidator, :skip => 'true' do
   describe 'perform' do
     let(:order) { double('order') }
     let(:skus) { ['my_sku'] }

@@ -32,6 +32,7 @@ module Api
         # This flattens the shopify data to make it easier to work with
         # If we later decide to use variants each having unique skus, this will need to be updated to handle that.
         def get_all_products
+          raise "ShopifyAPI calls deprecated"
           @products = CacheExtensions::fetch_with_rescue("shopping/products", 1.minute, 1.minute) do
             page = 1
             products = []
@@ -69,17 +70,17 @@ module Api
 
               product_images = product.images.map do |image|
                 {
-                  src: image.src,
-                  variant_ids: image.variant_ids
+                    src: image.src,
+                    variant_ids: image.variant_ids
                 }
               end
 
               {
-                id: product.id,
-                title: product.title,
-                sku: get_product_sku(first_variant.sku),
-                variants: get_variants(product),
-                images: product_images
+                  id: product.id,
+                  title: product.title,
+                  sku: get_product_sku(first_variant.sku),
+                  variants: get_variants(product),
+                  images: product_images
               }
             end
             results.to_json

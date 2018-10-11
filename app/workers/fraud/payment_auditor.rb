@@ -5,6 +5,7 @@ module Fraud
     ORDER_EXEMPT_TAG = 'payment-audit-exempt'
 
     def self.perform
+      raise "PaymentAuditor deprecated"
       Rails.logger.info "PaymentAuditor starting perform"
 
       params = {
@@ -31,6 +32,7 @@ module Fraud
     end
 
     def self.auditable?(order)
+      raise "PaymentAuditor deprecated"
       return false if order.cancelled_at
       # There are some very old orders in prod where payment was not captured for
       # the full amount as a way of refunding or discounting the order. This should
