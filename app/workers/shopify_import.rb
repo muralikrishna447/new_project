@@ -5,11 +5,13 @@ class ShopifyImport
   SHOPIFY_ORDER_ID = 'shopify_order_id'
 
   def self.perform(stripe_order_id, skip_address = false, skip_billing = false)
+    raise "ShopifyImport deprecated"
     import_to_shopify(stripe_order_id, skip_address, skip_billing)
     audit_imported_order(stripe_order_id)
   end
 
   def self.import_to_shopify(order_id, skip_address, skip_billing)
+    raise "ShopifyImport deprecated"
     Rails.logger.info "Processing stripe order #{order_id}"
 
     stripe_order = Stripe::Order.retrieve(order_id)
@@ -182,6 +184,7 @@ class ShopifyImport
   end
 
   def self.audit_imported_order(order_id)
+    raise "ShopifyImport deprecated"
     stripe_order = Stripe::Order.retrieve(order_id)
     if stripe_order.status != 'paid'
       Rails.logger.info "Skipping audit as order is not paid"

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe Shopify::Customer do
+#skipping per Shopify removal
+describe Shopify::Customer, :skip => 'true' do
   context 'syncing and retrieving' do
     before(:each) do
       @user = Fabricate(:user, :id => 123, :email => 'me@example.org')

@@ -9,6 +9,8 @@ def create_webhook(endpoint, topic, type)
 end
 
 task :configure_shopify_webhooks, [:endpoint] => :environment do |t, args| #, :endpoint
+  raise "Shopify API calls are deprecated"
+
   endpoint = args[:endpoint]
   puts "=== Current configuration ==="
   webhooks = ShopifyAPI::Webhook.all

@@ -1,4 +1,6 @@
-describe Api::V0::Shopping::CustomerOrdersController do
+#skipping per Shopify removal
+describe Api::V0::Shopping::CustomerOrdersController, :skip => 'true' do
+
   before :each do
 
     @user = Fabricate :user, id: 10001, name: 'customer_1', email: 'customer_1@chefsteps.com', role: 'user'
