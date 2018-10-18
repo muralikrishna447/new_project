@@ -382,7 +382,7 @@ module Api
         notification_type = params[:notification_type]
 
         # Other metadata that we want to pass on to the app
-        keys = ['feed_id', 'finish_timestamp']
+        keys = ['feed_id', 'finish_timestamp', 'joule_name', 'guide_id', 'timer_id']
         additional_params = (params[:notification_params] || {}).select{
           |k,v| keys.include? k
         }

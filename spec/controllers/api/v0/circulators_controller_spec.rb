@@ -511,7 +511,11 @@ describe Api::V0::CirculatorsController do
             id: @circulator.circulator_id,
             notification_type: 'timer_updated',
             notification_params: {
-              finish_timestamp: 1234
+              finish_timestamp: 1234,
+              feed_id: 0001,
+              guide_id: 'guide-id',
+              timer_id: 'timer-id',
+              joule_name: 'joule-name',
             }
           )
           expect(@published_messages.length).to eq 1
@@ -520,11 +524,20 @@ describe Api::V0::CirculatorsController do
           gcm = JSON.parse msg['GCM']
 
           expect(gcm['data']['content-available']).to eq '1'
+          expect(gcm['data']['feed_id']).to eq 0001
           expect(gcm['data']['finish_timestamp']).to eq 1234
+          expect(gcm['data']['guide_id']).to eq 'guide-id'
+          expect(gcm['data']['timer_id']).to eq 'timer-id'
+          expect(gcm['data']['joule_name']).to eq 'joule-name'
+          
           expect(apns['aps']['content-available']).to eq 1
           expect(apns['aps']['notId']).to_not be_nil
           expect(apns['aps']['notId']).to eq gcm['data']['notId']
           expect(apns['aps']['finish_timestamp']).to eq 1234
+          expect(apns['aps']['feed_id']).to eq 0001
+          expect(apns['aps']['guide_id']).to eq 'guide-id'
+          expect(apns['aps']['timer_id']).to eq 'timer-id'
+          expect(apns['aps']['joule_name']).to eq 'joule-name'
         end
 
         it 'does not send a notification if BetaFeature disabled' do
