@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'json'
 
-describe Shipwire::Order do
+describe Shipwire::Order, :skip => 'true' do
   describe 'array_from_json' do
     let(:orders_json) { File.read(Rails.root.join('spec', 'api_responses', 'shipwire_orders_response_multiple.json')) }
     let(:holds) do

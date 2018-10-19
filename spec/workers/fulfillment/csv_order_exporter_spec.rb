@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'fulfillment/order_search_provider'
 
-describe Fulfillment::CSVOrderExporter do
+describe Fulfillment::CSVOrderExporter, :skip => 'true' do
   let(:exporter) { Class.new { include Fulfillment::CSVOrderExporter } }
 
   describe 'fulfillables' do
