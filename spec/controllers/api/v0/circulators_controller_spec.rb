@@ -539,16 +539,6 @@ describe Api::V0::CirculatorsController do
           expect(apns['aps']['timer_id']).to eq 'timer-id'
           expect(apns['aps']['joule_name']).to eq 'joule-name'
         end
-
-        it 'does not send a notification if BetaFeature disabled' do
-          post(
-            :notify_clients,
-            format: 'json',
-            id: @circulator.circulator_id,
-            notification_type: 'timer_updated',
-          )
-          expect(@published_messages.length).to eq 0
-        end
       end
 
       let(:notification_type) { 'water_heated' }

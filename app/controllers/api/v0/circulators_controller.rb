@@ -488,16 +488,6 @@ module Api
         owners = circulator.circulator_users.select {|cu| cu.owner}
 
         owners.each do |owner|
-
-          if (
-            push_notification.is_background and
-            !BetaFeatureService.user_has_feature(owner.user, 'background_notifications')
-          )
-            logger.info("Background notifications not enabled for user")
-            next
-          end
-
-
           logger.info "Found circulator owner #{owner.user.id}"
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"
