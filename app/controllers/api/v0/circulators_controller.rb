@@ -382,7 +382,7 @@ module Api
         notification_type = params[:notification_type]
 
         # Other metadata that we want to pass on to the app
-        keys = ['feed_id', 'finish_timestamp']
+        keys = ['feed_id', 'finish_timestamp', 'joule_name', 'guide_id', 'timer_id']
         additional_params = (params[:notification_params] || {}).select{
           |k,v| keys.include? k
         }
@@ -488,16 +488,6 @@ module Api
         owners = circulator.circulator_users.select {|cu| cu.owner}
 
         owners.each do |owner|
-
-          if (
-            push_notification.is_background and
-            !BetaFeatureService.user_has_feature(owner.user, 'background_notifications')
-          )
-            logger.info("Background notifications not enabled for user")
-            next
-          end
-
-
           logger.info "Found circulator owner #{owner.user.id}"
           owner.user.actor_addresses.each do |aa|
             logger.info "Found actor address #{aa.inspect}"

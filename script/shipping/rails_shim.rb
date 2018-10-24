@@ -29,7 +29,6 @@ for d in directories_to_add
     require file
   }
 end
-require File.join(cs_root, 'app', 'workers', 'fulfillment.rb')
 
 # Stub out no-ops for Librato metrics
 module Librato

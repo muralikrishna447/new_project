@@ -112,6 +112,11 @@ Delve::Application.routes.draw do
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
+  # For universal deep links inside the app
+  match '/.well-known/apple-app-site-association', to: "guides#apple"
+  match '/.well-known/assetlinks.json', to: "guides#google"
+  resources :guides, only: [:show]
+
   # Allow top level access to an activity even if it isn't in a course
   # This will also be the rel=canonical version
   resources :activities, only: [:show, :new] do
@@ -360,7 +365,7 @@ Delve::Application.routes.draw do
 
   # show /pages/vegetarian-sous-vide-recipes also as /vegetarian-sous-vide-recipes
   get ':id', to: 'pages#show', constraints: lambda { |r| ! r.url.match(/jasmine/) }
-  
+
   # http://techoctave.com/c7/posts/36-rails-3-0-rescue-from-routing-error-solution
   match '*a', to: 'errors#routing', constraints: lambda { |r| ! r.url.match(/jasmine/) }
 end

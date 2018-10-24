@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Shopify::Utils do
+describe Shopify::Utils, :skip => 'true' do
   describe 'order_tags' do
     context 'order tags is empty' do
       let(:order) do
