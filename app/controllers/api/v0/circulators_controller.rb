@@ -388,7 +388,7 @@ module Api
         }
         additional_params[:circulator_address] = circulator_address
 
-        if notification_type == 'timer_updated'
+        if ['timer_updated', 'still_preheating'].include?(notification_type)
           return PushNotification.new(
             notification_type, params: additional_params, is_background: true
           )
