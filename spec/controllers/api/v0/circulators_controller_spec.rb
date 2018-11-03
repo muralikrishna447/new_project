@@ -502,9 +502,7 @@ describe Api::V0::CirculatorsController do
       end
 
       context 'background notifications' do
-        it 'sends a notification if BetaFeature enabled' do
-          BetaFeatureService.stub(:user_has_feature) \
-            .with(anything(), 'background_notifications').and_return(true)
+        it 'sends timer_updated as a background notification' do
           post(
             :notify_clients,
             format: 'json',
@@ -538,6 +536,30 @@ describe Api::V0::CirculatorsController do
           expect(apns['aps']['guide_id']).to eq 'guide-id'
           expect(apns['aps']['timer_id']).to eq 'timer-id'
           expect(apns['aps']['joule_name']).to eq 'joule-name'
+        end
+        
+        it 'sends a still_preheating as a background notification' do
+          post(
+            :notify_clients,
+            format: 'json',
+            id: @circulator.circulator_id,
+            notification_type: 'timer_updated',
+            notification_params: {
+              feed_id: 0001,
+            }
+          )
+          expect(@published_messages.length).to eq 1
+          msg = JSON.parse(@published_messages[0][:msg])
+          apns = JSON.parse msg['APNS']
+          gcm = JSON.parse msg['GCM']
+
+          expect(gcm['data']['content-available']).to eq '1'
+          expect(gcm['data']['feed_id']).to eq 0001
+          
+          expect(apns['aps']['content-available']).to eq 1
+          expect(apns['aps']['notId']).to_not be_nil
+          expect(apns['aps']['notId']).to eq gcm['data']['notId']
+          expect(apns['aps']['feed_id']).to eq 0001
         end
       end
 
