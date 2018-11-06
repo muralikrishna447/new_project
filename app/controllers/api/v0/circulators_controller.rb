@@ -382,13 +382,13 @@ module Api
         notification_type = params[:notification_type]
 
         # Other metadata that we want to pass on to the app
-        keys = ['feed_id', 'finish_timestamp', 'joule_name', 'guide_id', 'timer_id']
+        keys = ['feed_id', 'finish_timestamp', 'joule_name', 'guide_id', 'timer_id', 'cook_time']
         additional_params = (params[:notification_params] || {}).select{
           |k,v| keys.include? k
         }
         additional_params[:circulator_address] = circulator_address
 
-        if notification_type == 'timer_updated'
+        if ['timer_updated', 'still_preheating'].include?(notification_type)
           return PushNotification.new(
             notification_type, params: additional_params, is_background: true
           )
