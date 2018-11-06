@@ -545,7 +545,9 @@ describe Api::V0::CirculatorsController do
             id: @circulator.circulator_id,
             notification_type: 'timer_updated',
             notification_params: {
+              cook_time: 60,
               feed_id: 0001,
+              joule_name: 'joule-name',
             }
           )
           expect(@published_messages.length).to eq 1
@@ -555,11 +557,15 @@ describe Api::V0::CirculatorsController do
 
           expect(gcm['data']['content-available']).to eq '1'
           expect(gcm['data']['feed_id']).to eq 0001
+          expect(gcm['data']['cook_time']).to eq 60
+          expect(gcm['data']['joule_name']).to eq 'joule-name'
           
           expect(apns['aps']['content-available']).to eq 1
           expect(apns['aps']['notId']).to_not be_nil
           expect(apns['aps']['notId']).to eq gcm['data']['notId']
+          expect(apns['aps']['cook_time']).to eq 60
           expect(apns['aps']['feed_id']).to eq 0001
+          expect(apns['aps']['joule_name']).to eq 'joule-name'
         end
       end
 
