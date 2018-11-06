@@ -538,12 +538,12 @@ describe Api::V0::CirculatorsController do
           expect(apns['aps']['joule_name']).to eq 'joule-name'
         end
         
-        it 'sends a still_preheating as a background notification' do
+        it 'sends still_preheating as a background notification' do
           post(
             :notify_clients,
             format: 'json',
             id: @circulator.circulator_id,
-            notification_type: 'timer_updated',
+            notification_type: 'still_preheating',
             notification_params: {
               cook_time: 60,
               feed_id: 0001,
@@ -556,8 +556,8 @@ describe Api::V0::CirculatorsController do
           gcm = JSON.parse msg['GCM']
 
           expect(gcm['data']['content-available']).to eq '1'
-          expect(gcm['data']['feed_id']).to eq 0001
           expect(gcm['data']['cook_time']).to eq 60
+          expect(gcm['data']['feed_id']).to eq 0001
           expect(gcm['data']['joule_name']).to eq 'joule-name'
           
           expect(apns['aps']['content-available']).to eq 1
