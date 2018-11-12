@@ -25,4 +25,5 @@ Circulators: <%= circulator_users.count > 0 ? "" : "(none)" %>
     <% end %>
   <% end %>
 <% end %>
+Beta Flags: [<% user.capabilities.each do |cap| %><%= cap %><% end %>]
 ```
