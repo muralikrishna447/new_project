@@ -9,6 +9,7 @@ Premium: <%= user.premium_member %> <%= user.premium_membership_created_at ? '- 
 Joule purchase count: <%= user.joule_purchase_count %>
 Joule WiFi owner count: <%= user.owned_circulators.count %>
 Admin link: https://www.chefsteps.com/admin/users/<%= user.id %>
+Beta Flags: [<%= user.capabilities.join(', ') %>]
 Circulators: <%= circulator_users.count > 0 ? "" : "(none)" %>
 <% circulator_users.each_with_index do |cu, idx| %>
   <% circ = cu.circulator %>
@@ -25,5 +26,4 @@ Circulators: <%= circulator_users.count > 0 ? "" : "(none)" %>
     <% end %>
   <% end %>
 <% end %>
-Beta Flags: [<%= user.capabilities.join(', ') %>]
 ```
