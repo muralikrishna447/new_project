@@ -346,6 +346,7 @@ class User < ActiveRecord::Base
   def capabilities
     # Hardcoding the list of possible capabilities for now.
     capability_list = [
+        'turbo',
         'autostart',
         'joule_ready',
         'beta_guides',
