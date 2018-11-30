@@ -107,6 +107,7 @@ module Api
       def get_applicable_updates(user, manifest)
         updates = []
         can_downgrade = BetaFeatureService.user_has_feature(user, 'allow_dfu_downgrade')
+        hardware_version = params[:hardwareVersion]
 
         manifest["updates"].each do |u|
           param_type = VERSION_MAPPING[u['type']]
@@ -118,7 +119,7 @@ module Api
           end
 
           if !u['supported_hw_ver'].include? hardware_version
-            logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{params[:hardwareVersion]}.  Skipping this update."
+            logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{hardware_version}.  Skipping this update."
             next
           end
 
