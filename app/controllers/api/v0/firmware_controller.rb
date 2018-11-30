@@ -119,7 +119,7 @@ module Api
           end
 
           if !u['supported_hw_ver'].include? hardware_version
-            logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{hardware_version}.  Skipping this update."
+            logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{params[:hardwareVersion]}.  Skipping this update."
             next
           end
 
