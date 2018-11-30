@@ -10,17 +10,25 @@ module Api
       # This maps the FileType enum, to the params returned by
       # identifyCirculator
       VERSION_MAPPING = {
-        "APPLICATION_FIRMWARE" => "appFirmwareVersion",
-        "WIFI_FIRMWARE"        => "espFirmwareVersion",
-        "BOOTLOADER_FIRMWARE"  => "bootloaderVersion",
+        "APPLICATION_FIRMWARE"  => "appFirmwareVersion",
+        "WIFI_FIRMWARE"         => "espFirmwareVersion",
+        "BOOTLOADER_FIRMWARE"   => "bootloaderVersion",
+        "JOULE_ESP32_FIRMWARE"  => "espFirmwareVersion",
       }
 
       UPDATE_URGENCIES = ['normal', 'critical', 'mandatory']
 
-      # JL.p5 == J5 These are original US production Joules
-      # J6 These are UL Certified/Canda Joules
-      # J7 These are CE Certified/EU Joules
-      HW_VERSION_WHITELIST = ['JL.p5', 'J5', 'J6', 'J7']
+      ####################
+      # HARDWARE VERSIONS
+      ####################
+      # JL.p5:  original US production Joule (prototype)
+      # J5:     original US production Joule
+      # J6:     UL Certified/Canda/Costco Joule
+      # J7:     CE Certified/EU Joule
+      # JA:     ESP32 Joule (Joule 1.5), 110-120v
+      # JB:     ESP32 Joule (Joule 1.5), 220-240v
+      ####################
+      HW_VERSION_WHITELIST = ['JL.p5', 'J5', 'J6', 'J7', 'JA', 'JB']
 
       def updates
         # How this currently works
@@ -109,6 +117,11 @@ module Api
             return []
           end
 
+          if !u['supported_hw_ver'].include? hardware_version
+            logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{hardware_version}.  Skipping this update."
+            next
+          end
+
           manifest_version_num = get_version_number(u['version'])
 
           logger.info "#{u['type']}: current [#{current_version}] vs update [#{u['version']}]"
@@ -127,7 +140,7 @@ module Api
             u = get_firmware_metadata(u)
           elsif u['type'] == 'BOOTLOADER_FIRMWARE'
             u = get_firmware_metadata(u)
-          elsif u['type'] == 'WIFI_FIRMWARE'
+          elsif u['type'] == 'WIFI_FIRMWARE' || u['type'] == 'JOULE_ESP32_FIRMWARE'
             u = get_wifi_firmware_metadata(u)
           end
 
@@ -196,23 +209,37 @@ module Api
       def get_wifi_firmware_metadata(update)
         type = update['type'] # should always be WIFI_FIRMWARE
         version = update['version']
-        metadata = get_s3_object_as_json(
-          "joule/#{type}/#{version}/metadata.json"
-        )
+
+        # figure out where to look for metadata.json
+        case type
+        when 'JOULE_ESP32_FIRMWARE'
+          metadata_loc = "joule/#{type}/esp32/joule/#{version}/metadata.json"
+        else # if not specified, treated as an original NRF Joule
+          metadata_loc = "joule/#{type}/#{version}/metadata.json"
+
+        # get the metadata
+        metadata = get_s3_object_as_json(metadata_loc)
         u = update.dup
+
+        if type == 'JOULE_ESP32_FIRMWARE'
+          filename = "esp32/joule/" + metadata['filename']
+        else
+          filename = metadata['filename']
+        end
+
         u['transfer'] = [
           {
             "type"        => "tftp",
             # round-robin choose a TFTP host.  DIY load balancing!
             "host"        => Rails.application.config.tftp_hosts.sample,
-            "filename"    => metadata['filename'],
+            "filename"    => filename,
             "sha256"      => metadata['sha256'],
             "totalBytes"  => metadata['totalBytes'],
           },
           {
             "type"        => "http",
             "host"        => Rails.application.config.firmware_download_host,
-            "filename"    => metadata['filename'],
+            "filename"    => filename,
             "sha256"      => metadata['sha256'],
             "totalBytes"  => metadata['totalBytes'],
           },
