@@ -216,6 +216,7 @@ module Api
           metadata_loc = "joule/#{type}/esp32/joule/#{version}/metadata.json"
         else # if not specified, treated as an original NRF Joule
           metadata_loc = "joule/#{type}/#{version}/metadata.json"
+        end
 
         # get the metadata
         metadata = get_s3_object_as_json(metadata_loc)
