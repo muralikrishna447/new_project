@@ -101,6 +101,22 @@ describe Api::V0::FirmwareController do
       ]
     }
 
+    @supported_joule_esp32_hw_ver = ['JA', 'JB']
+    @joule_esp32_fw_ver = 49
+    joule_esp32_manifest = {
+      "releaseNotesUrl" => @release_notes_url_1,
+      "releaseNotes" => @release_notes,
+      "urgency" => "normal",
+      "updates" =>[
+        {
+          "versionType" => "espFirmwareVersion",
+          "type" => "JOULE_ESP32_FIRMWARE",
+          "version" => "#{@joule_esp32_fw_ver}",
+          "supported_hw_ver" => "#{@supported_joule_esp32_hw_ver}"
+        }
+      ]
+    }
+
     @sha256 = "4a241f2e5bade1cceaa082acb5249497d23ff1b1882badc6cfdb82d6d1c0bcac"
     @filename = "#{@esp_version}.bin"
     esp_metadata = {
@@ -120,6 +136,7 @@ describe Api::V0::FirmwareController do
     mock_s3_json("manifests/2.40.2/manifest", manifest)
     mock_s3_json("manifests/2.48.3/manifest", both_manifest)
     mock_s3_json("manifests/2.49.9/manifest", staging_manifest)
+    mock_s3_json("manifests/2.66.1/manifest", joule_esp32_manifest)
   end
 
   it 'should get manifests for wifi firmware' do
@@ -338,6 +355,37 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
     post :updates
     response.should_not be_success
+  end
+
+  it 'should return Joule ESP32 update for supported hardware versions' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    params = {
+      "type" => "JOULE_ESP32_FIRMWARE",
+      "appVersion" => "2.66.1",
+      "espFirmwareVersion" => "42",
+      "hardwareVersion" => "JA"
+    }
+    post :updates, params
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 1
+
+    resp['updates'][0]['type'].should == 'JOULE_ESP32_FIRMWARE'
+    resp['updates'][0]['version'].should == @joule_esp32_fw_ver
+  end
+
+  it 'should return no updates for unsupported Joule ESP32 hardware version' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    params = {
+      "type" => "JOULE_ESP32_FIRMWARE",
+      "appVersion" => "2.66.1",
+      "espFirmwareVersion" => "42",
+      "hardwareVersion" => "XX"
+    }
+    post :updates, params
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
   end
 
   describe 'bootloader' do
