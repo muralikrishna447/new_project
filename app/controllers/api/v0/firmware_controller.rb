@@ -41,12 +41,21 @@ module Api
 
         app_version = params[:appVersion]
         if app_version.nil?
-          return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify mobile app version'}
+          return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify app version'}
         end
 
-        if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil? || params[:bootloaderVersion].nil?
-          logger.warn("Must specify appFirmwareVersion, espFirmwareVersion, and bootloaderVersion")
-          return render_empty_response
+        type = params[:type]
+        case type
+        when 'JOULE_ESP32_FIRMWARE'
+          if params[:espFirmwareVersion].nil?
+            logger.warn("Must specify espFirmwareVersion for type #{type}")
+            return render_empty_response
+          end
+        else
+          if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil? || params[:bootloaderVersion].nil?
+            logger.warn("Must specify appFirmwareVersion, espFirmwareVersion, and bootloaderVersion for type #{type}")
+            return render_empty_response
+          end
         end
 
         unless dfu_capable?(params)
@@ -118,7 +127,7 @@ module Api
             return []
           end
 
-          if !u['supported_hw_ver'].include? hardware_version
+          if (u.include? 'supported_hw_ver') && (!u['supported_hw_ver'].include? hardware_version)
             logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{hardware_version}.  Skipping this update."
             next
           end
