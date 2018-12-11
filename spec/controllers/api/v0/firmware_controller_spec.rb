@@ -137,7 +137,7 @@ describe Api::V0::FirmwareController do
       "joule/WIFI_FIRMWARE/s#{@esp_version}/metadata.json", esp_metadata
     )
     mock_s3_json(
-      "joule/JOULE_ESP32_FIRMWARE/esp32/joule/#{@joule_esp32_fw_ver}/metadata.json", esp_metadata
+      "joule/JOULE_ESP32_FIRMWARE/#{@joule_esp32_fw_ver}/metadata.json", esp_metadata
     )
     mock_s3_json("manifests/2.41.3/manifest", esp_only_manifest)
     mock_s3_json("manifests/2.41.2/manifest", esp_only_manifest)
