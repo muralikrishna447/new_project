@@ -36,36 +36,33 @@ module Api
         # - Soft device bootloader etc not really supported
 
         # TODO - validate parameters - we're currently plugging them into s3 urls which has to be unsafe
-        # TODO: app should specify android or ios
-        # TODO: need to communicate that app itself needs update
 
         app_version = params[:appVersion]
         if app_version.nil?
           return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify app version'}
         end
 
-        type = params[:type]
-        case type
-        when 'JOULE_ESP32_FIRMWARE'
+        hardware_version = params[:hardwareVersion]
+        if !HW_VERSION_WHITELIST.include? hardware_version
+          logger.info("Hardware version does not support DFU: #{hardware_version}")
+          return render_empty_response
+        end
+
+        case hardware_version
+        when 'JA', 'JB'
           if params[:espFirmwareVersion].nil?
-            logger.warn("Must specify espFirmwareVersion for type #{type}")
+            logger.warn("Must specify espFirmwareVersion for hardwareVersion #{hardware_version}")
             return render_empty_response
           end
         else
           if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil? || params[:bootloaderVersion].nil?
-            logger.warn("Must specify appFirmwareVersion, espFirmwareVersion, and bootloaderVersion for type #{type}")
+            logger.warn("Must specify appFirmwareVersion, espFirmwareVersion, and bootloaderVersion for hardwareVersion #{hardware_version}")
             return render_empty_response
           end
         end
 
         unless dfu_capable?(params)
           logger.info("Not DFU capable")
-          return render_empty_response
-        end
-
-        hardware_version = params[:hardwareVersion]
-        if !HW_VERSION_WHITELIST.include? hardware_version
-          logger.info("Hardware version does not support DFU: #{hardware_version}")
           return render_empty_response
         end
 
@@ -123,7 +120,7 @@ module Api
           current_version = params[param_type] || ""
           current_version_num = get_version_number(current_version)
           if current_version_num == 0 # to_i converts unknown patterns to 0
-            logger.warn "No version information provided for #{u['type']}! Returning no updates"
+            logger.warn "No version information provided for #{u['type']}! Returning no updates."
             return []
           end
 
@@ -137,12 +134,12 @@ module Api
           logger.info "#{u['type']}: current [#{current_version}] vs update [#{u['version']}]"
 
           if current_version_num == manifest_version_num
-            logger.info "Correct version for type [#{u['type']}]"
+            logger.info "Already have correct version for type [#{u['type']}]."
             next
           end
 
           if (current_version_num > manifest_version_num) && !can_downgrade
-            logger.info "Current version #{current_version_num} > #{manifest_version_num} [#{u['type']}]"
+            logger.info "Current version #{current_version_num} > #{manifest_version_num} [#{u['type']}], and user can't downgrade.  Skipping."
             next
           end
 
@@ -217,14 +214,14 @@ module Api
       end
 
       def get_wifi_firmware_metadata(update)
-        type = update['type'] # should always be WIFI_FIRMWARE
+        type = update['type']
         version = update['version']
 
         # figure out where to look for metadata.json
         case type
         when 'JOULE_ESP32_FIRMWARE'
           metadata_loc = "joule/#{type}/esp32/joule/#{version}/metadata.json"
-        else # if not specified, treated as an original NRF Joule
+        else # if not specified, treated as an original nRF/ESP 8266 Joule
           metadata_loc = "joule/#{type}/#{version}/metadata.json"
         end
 
@@ -281,11 +278,14 @@ module Api
         # Sample manifest
         # {
         #  "releaseNotesUrl" : "http://foo.com/release",
-        #  "updates" : [{
-        #   "versionType": "appFirmwareVersion",
-        #   "type": "APPLICATION_FIRMWARE",
-        #   "version": "latest_version"
-        #  }]
+        #   "updates" : [{
+        #     "type": "APPLICATION_FIRMWARE",
+        #     "version": "latest_version"
+        #     "supported_hw_ver" : [
+        #       "JA",
+        #       "JB"
+        #     ]
+        #   }]
         # }
 
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
