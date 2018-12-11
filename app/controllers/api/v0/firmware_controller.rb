@@ -217,23 +217,13 @@ module Api
         type = update['type']
         version = update['version']
 
-        # figure out where to look for metadata.json
-        case type
-        when 'JOULE_ESP32_FIRMWARE'
-          metadata_loc = "joule/#{type}/esp32/joule/#{version}/metadata.json"
-        else # if not specified, treated as an original nRF/ESP 8266 Joule
-          metadata_loc = "joule/#{type}/#{version}/metadata.json"
-        end
+        metadata_loc = "joule/#{type}/#{version}/metadata.json"
 
         # get the metadata
         metadata = get_s3_object_as_json(metadata_loc)
         u = update.dup
 
-        if type == 'JOULE_ESP32_FIRMWARE'
-          filename = "esp32/joule/" + metadata['filename']
-        else
-          filename = metadata['filename']
-        end
+        filename = metadata['filename']
 
         u['transfer'] = [
           {
