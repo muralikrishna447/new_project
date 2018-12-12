@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TurboEstimateCalculator do
     steak_guide_id = '2MH313EsysIOwGcMooSSkk'
-    it 'should return an result hash with the correct fields when valid parameters provided' do
+    it 'should return estimates in the correct fields when valid parameters provided' do
         test_params = {
             guide_id: steak_guide_id,
             set_point: 60,

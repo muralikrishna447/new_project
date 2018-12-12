@@ -36,7 +36,7 @@ describe Api::V0::TurboEstimateController do
             parsed['status'].should eq 401
         end
         
-        it "should respond with status 401 with a message if missing parameters" do
+        it "should respond with status 400 with a message if missing parameters" do
             sign_in_user
             get :show, {
                 guide_id: steak_guide_id,
@@ -45,10 +45,11 @@ describe Api::V0::TurboEstimateController do
                 weight_g: 225,
             }
             parsed = JSON.parse response.body
+            parsed['status'].should eq 400
             parsed['message'].should eq 'missing set_point'
         end
         
-        it "should respond with status 401 with a message if guide not supported" do
+        it "should respond with status 400 with a message if guide not supported" do
             sign_in_user
             get :show, {
                 guide_id: 'some-other-guide',
@@ -57,6 +58,7 @@ describe Api::V0::TurboEstimateController do
                 weight_g: 225,
             }
             parsed = JSON.parse response.body
+            parsed['status'].should eq 400
             parsed['message'].should eq 'no corresponding estimate formula for guide_id: some-other-guide'
         end
     end
