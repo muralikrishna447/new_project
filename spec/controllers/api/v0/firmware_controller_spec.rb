@@ -283,7 +283,7 @@ describe Api::V0::FirmwareController do
   it 'should get no updates if old app version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     post :updates, {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5',
-                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
+                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1', 'bootloaderVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -323,6 +323,8 @@ describe Api::V0::FirmwareController do
       {:hw_version => 'J5', :enabled => true},
       {:hw_version => 'J6', :enabled => true},
       {:hw_version => 'J7', :enabled => true},
+      {:hw_version => 'JA', :enabled => true},
+      {:hw_version => 'JB', :enabled => true},
     ]
 
     for v in hw_versions
@@ -354,7 +356,6 @@ describe Api::V0::FirmwareController do
     set_version_enabled('0.10.0', true)
     post :updates, {'appVersion'=> '0.10.0', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
-    puts response.code
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].should be_empty
@@ -369,7 +370,6 @@ describe Api::V0::FirmwareController do
   it 'should return a Joule ESP32 update for supported hardware versions' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     params = {
-      "type" => "JOULE_ESP32_FIRMWARE",
       "appVersion" => "2.66.1",
       "espFirmwareVersion" => "42",
       "hardwareVersion" => "JA"
@@ -379,13 +379,12 @@ describe Api::V0::FirmwareController do
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 1
     resp['updates'][0]['type'].should == 'JOULE_ESP32_FIRMWARE'
-    resp['updates'][0]['version'].to_i.should === @joule_esp32_fw_ver
+    resp['updates'][0]['version'].to_i.should == @joule_esp32_fw_ver
   end
 
   it 'should return no updates for an unsupported Joule ESP32 hardware version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     params = {
-      "type" => "JOULE_ESP32_FIRMWARE",
       "appVersion" => "2.66.1",
       "espFirmwareVersion" => "42",
       "hardwareVersion" => "XX"
