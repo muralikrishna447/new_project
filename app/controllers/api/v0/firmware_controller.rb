@@ -48,6 +48,7 @@ module Api
           return render_empty_response
         end
 
+        # Make sure we've been supplied with the version numbers we need
         case hardware_version
         when 'JA', 'JB'
           if params[:espFirmwareVersion].nil?
@@ -61,6 +62,7 @@ module Api
           end
         end
 
+        # Ensure app ver is >= 2.41.2
         unless dfu_capable?(params)
           logger.info("Not DFU capable")
           return render_empty_response
@@ -116,17 +118,17 @@ module Api
         hardware_version = params[:hardwareVersion]
 
         manifest["updates"].each do |u|
+          if (u.include? 'supported_hw_ver') && (!u['supported_hw_ver'].include? hardware_version)
+            logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{hardware_version}.  Skipping this update."
+            next
+          end
+
           param_type = VERSION_MAPPING[u['type']]
           current_version = params[param_type] || ""
           current_version_num = get_version_number(current_version)
           if current_version_num == 0 # to_i converts unknown patterns to 0
             logger.warn "No version information provided for #{u['type']}! Returning no updates."
             return []
-          end
-
-          if (u.include? 'supported_hw_ver') && (!u['supported_hw_ver'].include? hardware_version)
-            logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{hardware_version}.  Skipping this update."
-            next
           end
 
           manifest_version_num = get_version_number(u['version'])
