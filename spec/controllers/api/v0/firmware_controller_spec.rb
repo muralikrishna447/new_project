@@ -371,7 +371,7 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     params = {
       "appVersion" => "2.66.1",
-      "espFirmwareVersion" => "42",
+      "appFirmwareVersion" => "42",
       "hardwareVersion" => "JA"
     }
     post :updates, params
@@ -386,8 +386,19 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     params = {
       "appVersion" => "2.66.1",
-      "espFirmwareVersion" => "42",
+      "appFirmwareVersion" => "42",
       "hardwareVersion" => "XX"
+    }
+    post :updates, params
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
+  end
+
+  it 'should return no ESP32 updates if no appFirmwareVersion supplied' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    params = {
+      "appVersion" => "2.66.1",
     }
     post :updates, params
     response.should be_success
