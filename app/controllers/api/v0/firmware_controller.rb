@@ -13,7 +13,7 @@ module Api
         "APPLICATION_FIRMWARE"  => "appFirmwareVersion",
         "WIFI_FIRMWARE"         => "espFirmwareVersion",
         "BOOTLOADER_FIRMWARE"   => "bootloaderVersion",
-        "JOULE_ESP32_FIRMWARE"  => "espFirmwareVersion",
+        "JOULE_ESP32_FIRMWARE"  => "appFirmwareVersion",
       }
 
       UPDATE_URGENCIES = ['normal', 'critical', 'mandatory']
@@ -51,8 +51,8 @@ module Api
         # Make sure we've been supplied with the version numbers we need
         case hardware_version
         when 'JA', 'JB'
-          if params[:espFirmwareVersion].nil?
-            logger.warn("Must specify espFirmwareVersion for hardwareVersion #{hardware_version}")
+          if params[:appFirmwareVersion].nil?
+            logger.warn("Must specify appFirmwareVersion for hardwareVersion #{hardware_version}")
             return render_empty_response
           end
         else
