@@ -2,6 +2,34 @@ require 'spec_helper'
 
 describe TurboEstimateCalculator do
     steak_guide_id = '2MH313EsysIOwGcMooSSkk'
+    
+    steak_expected_outputs = [
+        {
+            input: {
+                guide_id: steak_guide_id,
+                thickness_mm: 25.4,
+                set_point: 55.0,
+                weight_g: 300,
+            },
+            output: {
+                bottom_20_cook_time: 25,
+                top_20_cook_time: 32,
+            }
+        },
+        {
+            input: {
+                guide_id: steak_guide_id,
+                thickness_mm: 50.8,
+                set_point: 55.0,
+                weight_g: 600,
+            },
+            output: {
+                bottom_20_cook_time: 79,
+                top_20_cook_time: 109,
+            }
+        }
+    ]
+    
     it 'should return estimates in the correct fields when valid parameters provided' do
         test_params = {
             guide_id: steak_guide_id,
@@ -67,15 +95,13 @@ describe TurboEstimateCalculator do
         estimate[:error].should eq 'no corresponding estimate formula for guide_id: unknown-guide-id'
     end
     
-    it 'should return correct bounds for the given parameters' do
-        estimate = TurboEstimateCalculator.new({
-            guide_id: steak_guide_id,
-            set_point: 60,
-            thickness_mm: 25.4,
-            weight_g: 225,
-        }).get_estimate
-        # Hardcoded expected bounds, based on math team's expectations
-        estimate[:result][:top_20_cook_time].should eq 32
-        estimate[:result][:bottom_20_cook_time].should eq 24
+    # https://docs.google.com/document/d/11o4V6iu4x0mgdXgNp8xGdJjSrIrZy1FgJRaQBvG5tWg
+    it 'Steak: should return correct bounds for the given parameters provided by the Math team' do
+        steak_expected_outputs.each do |expectation|
+            estimate = TurboEstimateCalculator.new(expectation[:input]).get_estimate
+            # Hardcoded expected bounds, based on math team's expectations
+            estimate[:result][:top_20_cook_time].should eq expectation[:output][:top_20_cook_time]
+            estimate[:result][:bottom_20_cook_time].should eq expectation[:output][:bottom_20_cook_time]
+        end
     end
 end
