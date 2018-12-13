@@ -291,8 +291,8 @@ Delve::Application.routes.draw do
         post :admin_notify_clients, on: :member
         post :coefficients, on: :collection
       end
-      
-      resources :turbo_estimate, only: [:show]
+            
+      get 'turbo_estimate', to: 'turbo_estimate#get_turbo_estimate'
 
       post 'users/make_premium', to: 'users#make_premium'
 

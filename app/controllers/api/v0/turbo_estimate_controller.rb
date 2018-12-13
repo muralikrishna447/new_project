@@ -3,7 +3,7 @@ module Api
     class TurboEstimateController < BaseController
       before_filter :ensure_authorized
 
-      def show
+      def get_turbo_estimate
         estimate = TurboEstimateCalculator.new(params).get_estimate
         
         if estimate[:error]
