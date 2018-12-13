@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V0::TurboEstimateController do
+describe Api::V0::TurboEstimateController, focus: true do
     steak_guide_id = '2MH313EsysIOwGcMooSSkk'
     
     def sign_in_user
@@ -9,10 +9,10 @@ describe Api::V0::TurboEstimateController do
         controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt 
     end
 
-    describe 'SHOW' do
+    describe 'get_turbo_estimate' do
         it "should respond with an estimate result" do
             sign_in_user
-            get :show, {
+            get :get_turbo_estimate, {
                 guide_id: steak_guide_id,
                 set_point: 60,
                 thickness_mm: 25.4,
@@ -26,7 +26,7 @@ describe Api::V0::TurboEstimateController do
         end
         
         it "should respond with 401 if user is not logged in" do
-            get :show, {
+            get :get_turbo_estimate, {
                 guide_id: steak_guide_id,
                 set_point: 60,
                 thickness_mm: 25.4,
@@ -38,7 +38,7 @@ describe Api::V0::TurboEstimateController do
         
         it "should respond with status 400 with a message if missing parameters" do
             sign_in_user
-            get :show, {
+            get :get_turbo_estimate, {
                 guide_id: steak_guide_id,
                 # set_point: 60,
                 thickness_mm: 25.4,
@@ -51,7 +51,7 @@ describe Api::V0::TurboEstimateController do
         
         it "should respond with status 400 with a message if guide not supported" do
             sign_in_user
-            get :show, {
+            get :get_turbo_estimate, {
                 guide_id: 'some-other-guide',
                 set_point: 60,
                 thickness_mm: 25.4,

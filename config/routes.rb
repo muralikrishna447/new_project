@@ -293,6 +293,8 @@ Delve::Application.routes.draw do
       end
       
       resources :turbo_estimate, only: [:show]
+      
+      get 'turbo_estimate', to: 'turbo_estimate#get_turbo_estimate'
 
       post 'users/make_premium', to: 'users#make_premium'
 
