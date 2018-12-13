@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V0::TurboEstimateController, focus: true do
+describe Api::V0::TurboEstimateController do
     steak_guide_id = '2MH313EsysIOwGcMooSSkk'
     
     def sign_in_user
