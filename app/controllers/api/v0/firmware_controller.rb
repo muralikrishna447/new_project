@@ -116,7 +116,7 @@ module Api
         updates = []
         can_downgrade = BetaFeatureService.user_has_feature(user, 'allow_dfu_downgrade')
         hardware_version = params[:hardwareVersion]
-
+        logger.info "### MPTEST ###"
         manifest["updates"].each do |u|
           logger.info "Considering #{u['type']}, version #{u['version']}"
           if (u.include? 'supported_hw_ver') && (!u['supported_hw_ver'].include? hardware_version)
