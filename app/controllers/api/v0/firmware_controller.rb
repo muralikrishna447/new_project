@@ -118,6 +118,7 @@ module Api
         hardware_version = params[:hardwareVersion]
 
         manifest["updates"].each do |u|
+          logger.info "Considering #{u['type']}, version #{u['version']}"
           if (u.include? 'supported_hw_ver') && (!u['supported_hw_ver'].include? hardware_version)
             logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{hardware_version}.  Skipping this update."
             next
@@ -152,10 +153,6 @@ module Api
           elsif u['type'] == 'WIFI_FIRMWARE' || u['type'] == 'JOULE_ESP32_FIRMWARE'
             u = get_wifi_firmware_metadata(u)
           end
-
-          # We used to store the versionType in the manifest, but now
-          # we have a static mapping defined above
-          u.delete('versionType')
 
           updates << u
         end
