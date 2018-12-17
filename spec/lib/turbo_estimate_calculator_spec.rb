@@ -104,4 +104,19 @@ describe TurboEstimateCalculator do
             estimate[:result][:bottom_20_cook_time].should eq expectation[:output][:bottom_20_cook_time]
         end
     end
+    
+    it 'should return the correct test estimate for the unpublished cryo oranges guide' do
+        test_params = {
+            guide_id: "3SI1nKyKQMqGWa2WqqoCEi",
+            set_point: 60,
+            thickness_mm: 25.4,
+            weight_g: 225,
+        }
+        
+        estimate = TurboEstimateCalculator.new(test_params).get_estimate
+        
+        estimate[:error].should eq nil
+        estimate[:result][:top_20_cook_time].should eq 2
+        estimate[:result][:bottom_20_cook_time].should eq 1
+    end
 end

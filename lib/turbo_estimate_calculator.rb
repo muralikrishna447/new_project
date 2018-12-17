@@ -1,6 +1,7 @@
 class TurboEstimateCalculator
 
     @@steak_guide_ids = ["2MH313EsysIOwGcMooSSkk"]
+    @@test_guide_id = "3SI1nKyKQMqGWa2WqqoCEi" # Cryo oranges guide
     
     def initialize(params)
         @guide_id = params[:guide_id]
@@ -20,6 +21,14 @@ class TurboEstimateCalculator
         }
     end
     
+    # Our test guide estimate is used by devs to test the turbo lifecycle in around 2 mintues instead of ~20
+    def get_test_guide_estimate
+        return {
+            top_20_cook_time: 2,
+            bottom_20_cook_time: 1
+        }
+    end
+
     def get_estimate
         # Validation
         if !@guide_id
@@ -31,9 +40,11 @@ class TurboEstimateCalculator
         elsif !@weight_g
             return { error: 'missing weight_g' }
         end
-            
+        
         if @@steak_guide_ids.include?(@guide_id)
             return { result: get_steak_estimate, protein_formula: :steak }
+        elsif @guide_id == @@test_guide_id
+            return { result: get_test_guide_estimate, protein_formula: :test_citrus_reticulata }
         else
             return { error: "no corresponding estimate formula for guide_id: #{@guide_id}" }
         end
