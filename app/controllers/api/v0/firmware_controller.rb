@@ -225,7 +225,17 @@ module Api
         metadata = get_s3_object_as_json(metadata_loc)
         u = update.dup
 
+        # set up the file pathing so we look in the right place for the binary
+        #
+        # we default to the root (which is /tftpboot on the EC2 instance)
+        # for Joule V1 firmware (app, bootloader, wifi),
+        # and prepend any additional folders based on the hardware type
         filename = metadata['filename']
+
+        case type
+        when 'JOULE_ESP32_FIRMWARE'
+          filename = "esp32/joule/#{metadata['filename']}"
+        end
 
         u['transfer'] = [
           {
