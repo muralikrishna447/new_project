@@ -119,6 +119,7 @@ module Api
         logger.info "### MPTEST ###"
         manifest["updates"].each do |u|
           logger.info "Considering #{u['type']}, version #{u['version']}"
+          logger.info "hw ver is #{hardware_version}, supported hw ver is #{u['supported_hw_ver']}"
           if (u.include? 'supported_hw_ver') && (!u['supported_hw_ver'].include? hardware_version)
             logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{hardware_version}.  Skipping this update."
             next
