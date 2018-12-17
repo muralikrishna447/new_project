@@ -669,6 +669,23 @@ describe Api::V0::CirculatorsController do
           expect(gcm['data']['feed_id']).to eq 123
         end
 
+        it 'should pass cook_start_timestamp in params' do
+          post(
+            :notify_clients,
+            format: 'json',
+            id: @circulator.circulator_id,
+            notification_type: 'timer_updated',
+            notification_params: {
+              cook_start_timestamp: 123,
+            }
+          )
+          msg = JSON.parse(@published_messages[-1][:msg])
+          apns = JSON.parse msg['APNS']
+          gcm = JSON.parse msg['GCM']
+          expect(apns['aps']['cook_start_timestamp']).to eq 123
+          expect(gcm['data']['cook_start_timestamp']).to eq 123
+        end
+
         it 'should not be able to overwrite reserved fields' do
           post(
             :notify_clients,
