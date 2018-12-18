@@ -23,7 +23,7 @@ module Api
       ####################
       # JL.p5:  original US production Joule (prototype)
       # J5:     original US production Joule
-      # J6:     UL Certified/Canda/Costco Joule
+      # J6:     UL Certified/Canada/Costco Joule
       # J7:     CE Certified/EU Joule
       # JA:     ESP32 Joule (Joule 1.5), 110-120v
       # JB:     ESP32 Joule (Joule 1.5), 220-240v
@@ -127,7 +127,7 @@ module Api
           current_version = params[param_type] || ""
           current_version_num = get_version_number(current_version)
           if current_version_num == 0 # to_i converts unknown patterns to 0
-            logger.warn "No version information provided for #{u['type']}! Returning no updates."
+            logger.warn "No version information provided for #{u['type']}! Returning no updates"
             return []
           end
 
@@ -215,11 +215,8 @@ module Api
         type = update['type']
         version = update['version']
 
-        metadata_loc = "joule/#{type}/#{version}/metadata.json"
-
         # get the metadata
-        metadata = get_s3_object_as_json(metadata_loc)
-        u = update.dup
+        metadata = get_s3_object_as_json("joule/#{type}/#{version}/metadata.json")
 
         # set up the file pathing so we look in the right place for the binary
         #
@@ -233,6 +230,7 @@ module Api
           filename = "esp32/joule/#{metadata['filename']}"
         end
 
+        u = update.dup
         u['transfer'] = [
           {
             "type"        => "tftp",
