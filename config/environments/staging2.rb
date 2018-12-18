@@ -90,6 +90,11 @@ Delve::Application.configure do
     end
   end
 
+  # Firmware locations
+  config.firmware_bucket = 'chefsteps-firmware-staging'
+  config.tftp_hosts = ['52.203.247.52']
+  config.firmware_download_host = 'dl-test.chefsteps.com'
+
   DISQUS_SHORTNAME = "delvestaging"
 
   AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: '09aead6e71067484d11f3f4ff0b34364' }
