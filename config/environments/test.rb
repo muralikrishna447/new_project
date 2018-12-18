@@ -49,6 +49,11 @@ Delve::Application.configure do
   DISQUS_SHORTNAME = "chefstepstesting"
   ENV["REDIS_URL"] = 'redis://localhost:6379'
 
+  # Firmware locations
+  config.firmware_bucket = 'chefsteps-firmware-staging'
+  config.tftp_hosts = ['52.203.247.52']
+  config.firmware_download_host = 'dl-test.chefsteps.com'
+
   config.filepicker_rails.api_key = "BOGUS_FILEPICKER_KEY"
 
   AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: 'c534846f01761db79637ebedc4bde21a' }

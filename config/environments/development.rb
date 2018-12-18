@@ -67,6 +67,11 @@ Delve::Application.configure do
 
   config.sass.preferred_syntax = :sass
 
+  # Firmware locations
+  config.firmware_bucket = 'chefsteps-firmware-staging'
+  config.tftp_hosts = ['52.203.247.52']
+  config.firmware_download_host = 'dl-test.chefsteps.com'
+
   # DISQUS_SHORTNAME = "delvestaging"
   DISQUS_SHORTNAME = "chefstepsproduction"
 
