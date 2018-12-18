@@ -46,6 +46,7 @@ Delve::Application.routes.draw do
   get '/eula-android' => 'legal#eula'
   get 'eula' => 'legal#eula', as: 'eula'
   get 'cookie-policy' => 'legal#cookie_policy', as: 'cookie_policy'
+  get 'joule-weee-compliance' => 'legal#weee', as: 'joule_weee'
   get 'privacy' => 'legal#privacy_policy', as: 'privacy'
   get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
   get 'terms' => 'legal#terms', as: 'terms'
