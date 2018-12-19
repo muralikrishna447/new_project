@@ -8,6 +8,7 @@ Rails.configuration.redirect_by_key = {
   'dfuProblems' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/225107367-My-firmware-update-keeps-failing-A-little-help-",
   'maximumTemperature' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/214790827-What-is-the-maximum-temperature-Joule-will-reach-",
   'jouleTroubleshooting' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/sections/205090928-Joule-App",
+  'jouleConnectivity' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/sections/205091008-Joule-Connectivity",
   'newSupportRequest' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/requests/new",
   'mySupportRequests' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/requests",
   'ledTrouble' => "https://#{ENV['ZENDESK_DOMAIN']}/hc/en-us/articles/223021708-The-LED-cute-little-light-thingy-on-my-Joule-is-blinking-Why-",
