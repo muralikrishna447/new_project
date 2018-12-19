@@ -85,11 +85,12 @@ module Delve
     config.assets.version = '9'
     config.assets.initialize_on_precompile = false
 
-    config.firmware_bucket = 'chefsteps-firmware-staging'
-    config.tftp_hosts = ['54.88.58.152']
+    # Firmware locations
     # The firmware_download_host must be less than 24 chars, due to
     # restrictions on the firmware.
     config.firmware_download_host = 'dl.chefsteps.com'
+    config.firmware_bucket = 'chefsteps-firmware-production'
+    config.tftp_hosts = ['54.88.58.152']
 
     # We *do* want Rails caching
     unless Rails.env.development? || Rails.env.test?

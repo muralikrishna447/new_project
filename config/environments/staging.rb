@@ -85,6 +85,13 @@ Delve::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
 
+  # Firmware locations
+  # The firmware_download_host must be less than 24 chars, due to
+  # restrictions on the firmware.
+  config.firmware_download_host = 'dl-test.chefsteps.com'
+  config.firmware_bucket = 'chefsteps-firmware-staging'
+  config.tftp_hosts = ['52.203.247.52']
+
   DISQUS_SHORTNAME = "delvestaging"
 
   config.middleware.insert_before ActionDispatch::Static, Rack::Cors, debug: true do
