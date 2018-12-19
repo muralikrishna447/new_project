@@ -50,9 +50,11 @@ Delve::Application.configure do
   ENV["REDIS_URL"] = 'redis://localhost:6379'
 
   # Firmware locations
+  # The firmware_download_host must be less than 24 chars, due to
+  # restrictions on the firmware.
+  config.firmware_download_host = 'dl-test.chefsteps.com'
   config.firmware_bucket = 'chefsteps-firmware-staging'
   config.tftp_hosts = ['52.203.247.52']
-  config.firmware_download_host = 'dl-test.chefsteps.com'
 
   config.filepicker_rails.api_key = "BOGUS_FILEPICKER_KEY"
 

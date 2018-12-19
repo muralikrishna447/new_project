@@ -68,9 +68,11 @@ Delve::Application.configure do
   config.sass.preferred_syntax = :sass
 
   # Firmware locations
+  # The firmware_download_host must be less than 24 chars, due to
+  # restrictions on the firmware.
+  config.firmware_download_host = 'dl-test.chefsteps.com'
   config.firmware_bucket = 'chefsteps-firmware-staging'
   config.tftp_hosts = ['52.203.247.52']
-  config.firmware_download_host = 'dl-test.chefsteps.com'
 
   # DISQUS_SHORTNAME = "delvestaging"
   DISQUS_SHORTNAME = "chefstepsproduction"

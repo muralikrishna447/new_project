@@ -21,8 +21,8 @@ module Api
       ####################
       # HARDWARE VERSIONS
       ####################
-      # JL.p5:  original US production Joule (prototype)
-      # J5:     original US production Joule
+      # JL.p5:  original US production Joule (including prototype)
+      # J5:     original US production Joule (we switched to this when Joule White shipped)
       # J6:     UL Certified/Canada/Costco Joule
       # J7:     CE Certified/EU Joule
       # JA:     ESP32 Joule (Joule 1.5), 110-120v
