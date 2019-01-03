@@ -6,10 +6,6 @@
     %div
       %h2.pull-left Joule WEEE Compliance
 
-      - if @languages.length > 1
-        .pull-right
-          = select_tag :lang, options_for_select(@languages, @selected_language), {:onchange => "window.location.href='/cookie-policy?language=' + this.value"}
-
     %p.clearfix
 
     %p In the United Kingdom, private households may take WEEE to the appropriate municipal disposal authorities, and at seller or producer arranged disposal locations, which can be located via this website: https://www.recyclenow.com/
