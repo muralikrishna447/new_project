@@ -51,6 +51,10 @@ class LegalController < ApplicationController
     @cookie_policy_template = "legal/cookie_policy/#{@selected_language.downcase}"
   end
 
+  def weee
+    render 'legal/weee/index'
+  end
+
   def eula
     @eula_template = "legal/eula/#{@selected_language.downcase}"
     @addendums_template = "legal/eula/addendums/#{@country[:code].downcase}_#{@selected_language.downcase}"

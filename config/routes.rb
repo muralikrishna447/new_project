@@ -50,6 +50,7 @@ Delve::Application.routes.draw do
   get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
   get 'terms' => 'legal#terms', as: 'terms'
   get 'terms' => 'legal#terms', as: 'terms_of_service'
+  match '/joule/weee-compliance', to: 'legal#weee'
   match '/joule/warranty', to: 'legal#warranty'
   match '/joule/warranty/:country_code', to: 'legal#warranty_for_country'
   match '/customer-feedback-panel', to: 'home#customer_feedback_panel'
