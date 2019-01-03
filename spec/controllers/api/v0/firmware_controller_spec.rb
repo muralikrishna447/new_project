@@ -28,7 +28,7 @@ describe Api::V0::FirmwareController do
       .and_return(false)
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'allow_dfu_downgrade')
       .and_return(false)
-    enabled_app_versions = ['2.40.2', '2.41.2', '2.41.3', '2.41.4', '2.48.3', '2.49.9']
+    enabled_app_versions = ['2.40.2', '2.41.2', '2.41.3', '2.41.4', '2.48.3', '2.49.9', '2.66.1']
     for v in enabled_app_versions
       set_version_enabled(v, true)
     end
@@ -101,6 +101,22 @@ describe Api::V0::FirmwareController do
       ]
     }
 
+    @supported_joule_esp32_hw_ver = ['JA', 'JB']
+    @joule_esp32_fw_ver = 49
+    joule_esp32_manifest = {
+      "releaseNotesUrl" => @release_notes_url_1,
+      "releaseNotes" => @release_notes,
+      "urgency" => "normal",
+      "updates" =>[
+        {
+          "versionType" => "espFirmwareVersion",
+          "type" => "JOULE_ESP32_FIRMWARE",
+          "version" => "#{@joule_esp32_fw_ver}",
+          "supported_hw_ver" => "#{@supported_joule_esp32_hw_ver}"
+        }
+      ]
+    }
+
     @sha256 = "4a241f2e5bade1cceaa082acb5249497d23ff1b1882badc6cfdb82d6d1c0bcac"
     @filename = "#{@esp_version}.bin"
     esp_metadata = {
@@ -108,11 +124,20 @@ describe Api::V0::FirmwareController do
       "filename" => @filename,
       "totalBytes" => @totalBytes,
     }
+    esp32_Joule_metadata = {
+      "sha256" => @sha256,
+      "filename" => "#{@joule_esp32_fw_ver}.bin",
+      "totalBytes" => @totalBytes,
+    }
+
     mock_s3_json(
       "joule/WIFI_FIRMWARE/#{@esp_version}/metadata.json", esp_metadata
     )
     mock_s3_json(
       "joule/WIFI_FIRMWARE/s#{@esp_version}/metadata.json", esp_metadata
+    )
+    mock_s3_json(
+      "joule/JOULE_ESP32_FIRMWARE/#{@joule_esp32_fw_ver}/metadata.json", esp_metadata
     )
     mock_s3_json("manifests/2.41.3/manifest", esp_only_manifest)
     mock_s3_json("manifests/2.41.2/manifest", esp_only_manifest)
@@ -120,6 +145,7 @@ describe Api::V0::FirmwareController do
     mock_s3_json("manifests/2.40.2/manifest", manifest)
     mock_s3_json("manifests/2.48.3/manifest", both_manifest)
     mock_s3_json("manifests/2.49.9/manifest", staging_manifest)
+    mock_s3_json("manifests/2.66.1/manifest", joule_esp32_manifest)
   end
 
   it 'should get manifests for wifi firmware' do
@@ -257,7 +283,7 @@ describe Api::V0::FirmwareController do
   it 'should get no updates if old app version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     post :updates, {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5',
-                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
+                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1', 'bootloaderVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -297,6 +323,8 @@ describe Api::V0::FirmwareController do
       {:hw_version => 'J5', :enabled => true},
       {:hw_version => 'J6', :enabled => true},
       {:hw_version => 'J7', :enabled => true},
+      {:hw_version => 'JA', :enabled => true},
+      {:hw_version => 'JB', :enabled => true},
     ]
 
     for v in hw_versions
@@ -328,7 +356,6 @@ describe Api::V0::FirmwareController do
     set_version_enabled('0.10.0', true)
     post :updates, {'appVersion'=> '0.10.0', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
-    puts response.code
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].should be_empty
@@ -338,6 +365,45 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
     post :updates
     response.should_not be_success
+  end
+
+  it 'should return a Joule ESP32 update for supported hardware versions' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    params = {
+      "appVersion" => "2.66.1",
+      "appFirmwareVersion" => "42",
+      "hardwareVersion" => "JA"
+    }
+    post :updates, params
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 1
+    resp['updates'][0]['type'].should == 'JOULE_ESP32_FIRMWARE'
+    resp['updates'][0]['version'].to_i.should == @joule_esp32_fw_ver
+  end
+
+  it 'should return no updates for an unsupported Joule ESP32 hardware version' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    params = {
+      "appVersion" => "2.66.1",
+      "appFirmwareVersion" => "42",
+      "hardwareVersion" => "XX"
+    }
+    post :updates, params
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
+  end
+
+  it 'should return no ESP32 updates if no appFirmwareVersion supplied' do
+    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+    params = {
+      "appVersion" => "2.66.1",
+    }
+    post :updates, params
+    response.should be_success
+    resp = JSON.parse(response.body)
+    resp['updates'].length.should == 0
   end
 
   describe 'bootloader' do

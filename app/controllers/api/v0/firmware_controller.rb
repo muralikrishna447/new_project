@@ -10,17 +10,25 @@ module Api
       # This maps the FileType enum, to the params returned by
       # identifyCirculator
       VERSION_MAPPING = {
-        "APPLICATION_FIRMWARE" => "appFirmwareVersion",
-        "WIFI_FIRMWARE"        => "espFirmwareVersion",
-        "BOOTLOADER_FIRMWARE"  => "bootloaderVersion",
+        "APPLICATION_FIRMWARE"  => "appFirmwareVersion",
+        "WIFI_FIRMWARE"         => "espFirmwareVersion",
+        "BOOTLOADER_FIRMWARE"   => "bootloaderVersion",
+        "JOULE_ESP32_FIRMWARE"  => "appFirmwareVersion",
       }
 
       UPDATE_URGENCIES = ['normal', 'critical', 'mandatory']
 
-      # JL.p5 == J5 These are original US production Joules
-      # J6 These are UL Certified/Canda Joules
-      # J7 These are CE Certified/EU Joules
-      HW_VERSION_WHITELIST = ['JL.p5', 'J5', 'J6', 'J7']
+      ####################
+      # HARDWARE VERSIONS
+      ####################
+      # JL.p5:  original US production Joule (including prototype)
+      # J5:     original US production Joule (we switched to this when Joule White shipped)
+      # J6:     UL Certified/Canada/Costco Joule
+      # J7:     CE Certified/EU Joule
+      # JA:     ESP32 Joule (Joule 1.5), 110-120v
+      # JB:     ESP32 Joule (Joule 1.5), 220-240v
+      ####################
+      HW_VERSION_WHITELIST = ['JL.p5', 'J5', 'J6', 'J7', 'JA', 'JB']
 
       def updates
         # How this currently works
@@ -28,27 +36,35 @@ module Api
         # - Soft device bootloader etc not really supported
 
         # TODO - validate parameters - we're currently plugging them into s3 urls which has to be unsafe
-        # TODO: app should specify android or ios
-        # TODO: need to communicate that app itself needs update
 
         app_version = params[:appVersion]
         if app_version.nil?
-          return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify mobile app version'}
-        end
-
-        if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil? || params[:bootloaderVersion].nil?
-          logger.warn("Must specify appFirmwareVersion, espFirmwareVersion, and bootloaderVersion")
-          return render_empty_response
-        end
-
-        unless dfu_capable?(params)
-          logger.info("Not DFU capable")
-          return render_empty_response
+          return render_api_response 400, {code: 'invalid_request_error', message: 'Must specify app version'}
         end
 
         hardware_version = params[:hardwareVersion]
         if !HW_VERSION_WHITELIST.include? hardware_version
           logger.info("Hardware version does not support DFU: #{hardware_version}")
+          return render_empty_response
+        end
+
+        # Make sure we've been supplied with the version numbers we need
+        case hardware_version
+        when 'JA', 'JB'
+          if params[:appFirmwareVersion].nil?
+            logger.warn("Must specify appFirmwareVersion for hardwareVersion #{hardware_version}")
+            return render_empty_response
+          end
+        else
+          if params[:appFirmwareVersion].nil? || params[:espFirmwareVersion].nil? || params[:bootloaderVersion].nil?
+            logger.warn("Must specify appFirmwareVersion, espFirmwareVersion, and bootloaderVersion for hardwareVersion #{hardware_version}")
+            return render_empty_response
+          end
+        end
+
+        # Ensure app ver is >= 2.41.2
+        unless dfu_capable?(params)
+          logger.info("Not DFU capable")
           return render_empty_response
         end
 
@@ -99,8 +115,14 @@ module Api
       def get_applicable_updates(user, manifest)
         updates = []
         can_downgrade = BetaFeatureService.user_has_feature(user, 'allow_dfu_downgrade')
-
+        hardware_version = params[:hardwareVersion]
         manifest["updates"].each do |u|
+          logger.info "Considering #{u['type']}, version #{u['version']}"
+          if (u.include? 'supported_hw_ver') && (!u['supported_hw_ver'].include? hardware_version)
+            logger.info "Update #{u['type']} supports hardware versions #{u['supported_hw_ver']}, but we're looking for #{hardware_version}.  Skipping this update."
+            next
+          end
+
           param_type = VERSION_MAPPING[u['type']]
           current_version = params[param_type] || ""
           current_version_num = get_version_number(current_version)
@@ -114,12 +136,12 @@ module Api
           logger.info "#{u['type']}: current [#{current_version}] vs update [#{u['version']}]"
 
           if current_version_num == manifest_version_num
-            logger.info "Correct version for type [#{u['type']}]"
+            logger.info "Already have correct version for type [#{u['type']}]."
             next
           end
 
           if (current_version_num > manifest_version_num) && !can_downgrade
-            logger.info "Current version #{current_version_num} > #{manifest_version_num} [#{u['type']}]"
+            logger.info "Current version #{current_version_num} > #{manifest_version_num} [#{u['type']}], and user can't downgrade.  Skipping."
             next
           end
 
@@ -127,13 +149,9 @@ module Api
             u = get_firmware_metadata(u)
           elsif u['type'] == 'BOOTLOADER_FIRMWARE'
             u = get_firmware_metadata(u)
-          elsif u['type'] == 'WIFI_FIRMWARE'
+          elsif u['type'] == 'WIFI_FIRMWARE' || u['type'] == 'JOULE_ESP32_FIRMWARE'
             u = get_wifi_firmware_metadata(u)
           end
-
-          # We used to store the versionType in the manifest, but now
-          # we have a static mapping defined above
-          u.delete('versionType')
 
           updates << u
         end
@@ -194,25 +212,38 @@ module Api
       end
 
       def get_wifi_firmware_metadata(update)
-        type = update['type'] # should always be WIFI_FIRMWARE
+        type = update['type']
         version = update['version']
-        metadata = get_s3_object_as_json(
-          "joule/#{type}/#{version}/metadata.json"
-        )
+
+        # get the metadata
+        metadata = get_s3_object_as_json("joule/#{type}/#{version}/metadata.json")
+
+        # set up the file pathing so we look in the right place for the binary
+        #
+        # we default to the root (which is /tftpboot on the EC2 instance)
+        # for Joule V1 firmware (app, bootloader, wifi),
+        # and prepend any additional folders based on the hardware type
+        filename = metadata['filename']
+
+        case type
+        when 'JOULE_ESP32_FIRMWARE'
+          filename = "esp32/joule/#{metadata['filename']}"
+        end
+
         u = update.dup
         u['transfer'] = [
           {
             "type"        => "tftp",
             # round-robin choose a TFTP host.  DIY load balancing!
             "host"        => Rails.application.config.tftp_hosts.sample,
-            "filename"    => metadata['filename'],
+            "filename"    => filename,
             "sha256"      => metadata['sha256'],
             "totalBytes"  => metadata['totalBytes'],
           },
           {
             "type"        => "http",
             "host"        => Rails.application.config.firmware_download_host,
-            "filename"    => metadata['filename'],
+            "filename"    => filename,
             "sha256"      => metadata['sha256'],
             "totalBytes"  => metadata['totalBytes'],
           },
@@ -243,11 +274,14 @@ module Api
         # Sample manifest
         # {
         #  "releaseNotesUrl" : "http://foo.com/release",
-        #  "updates" : [{
-        #   "versionType": "appFirmwareVersion",
-        #   "type": "APPLICATION_FIRMWARE",
-        #   "version": "latest_version"
-        #  }]
+        #   "updates" : [{
+        #     "type": "APPLICATION_FIRMWARE",
+        #     "version": "latest_version"
+        #     "supported_hw_ver" : [
+        #       "JA",
+        #       "JB"
+        #     ]
+        #   }]
         # }
 
         s3_client = AWS::S3::Client.new(region: 'us-east-1')
