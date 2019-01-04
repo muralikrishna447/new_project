@@ -90,6 +90,13 @@ Delve::Application.configure do
     end
   end
 
+  # Firmware locations
+  # The firmware_download_host must be less than 24 chars, due to
+  # restrictions on the firmware.
+  config.firmware_download_host = 'dl-test.chefsteps.com'
+  config.firmware_bucket = 'chefsteps-firmware-staging'
+  config.tftp_hosts = ['52.203.247.52']
+
   DISQUS_SHORTNAME = "delvestaging"
 
   AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: '09aead6e71067484d11f3f4ff0b34364' }
