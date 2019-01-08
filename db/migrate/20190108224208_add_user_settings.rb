@@ -2,7 +2,7 @@ class AddUserSettings < ActiveRecord::Migration
   def up
 
     create_table :user_settings do |t|
-      t.string :user_id
+      t.integer :user_id
       t.string :locale, default: nil
       t.boolean :has_viewed_turbo_intro, default: nil
       t.string  :preferred_temperature_unit, default: nil, limit: 1
