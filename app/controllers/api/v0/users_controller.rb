@@ -56,6 +56,24 @@ module Api
         end
       end
 
+
+      def update_settings
+        @user = User.find params[:id]
+        if @user_id_from_token == @user.id
+          logger.info "Update_settings for user #{@user.inspect}"
+          logger.info "Updating with: #{params[:settings]}"
+          if @user.update_attributes(params[:user])
+            Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], @user.id)
+            render json: @user.to_json(only: [:id, :name, :slug, :email], methods: :avatar_url), status: 200
+          else
+            render json: {status: 400, message: "Bad Request.  Could not update user with params #{params[:user]}"}, status: 400
+          end
+        else
+          render json: {status: 401, message: 'Unauthorized.', debug: "From token: #{@user_id_from_token}, ID: #{@user.id}"}, status: 401
+        end
+      end
+
+
       def shown_terms
         @user = User.find @user_id_from_token
         @user.was_shown_terms
