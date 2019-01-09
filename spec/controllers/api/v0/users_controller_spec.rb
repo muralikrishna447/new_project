@@ -326,12 +326,43 @@ describe Api::V0::UsersController do
     end
   end
 
+  context '#update_settings :user_id (from Spree)' do
+    it "makes a valid user premium" do
+      #the user is first NOT premium
+      request.env['HTTP_AUTHORIZATION'] = @token
+      get :me
+      response.code.should == "200"
+      user_info = JSON.parse(response.body)
+      settings  = user_info["settings"] || {}
+      expect(settings["truffle_sauce_purchased"]).to be_nil
 
-  context 'POST /settings' do
+      #set the truffle setting
+      request.env['HTTP_AUTHORIZATION'] = @service_token
+      post :update_settings, {id: 100, settings: {:truffle_sauce_purchased => true}}
+      response.code.should == "200"
+
+      #the user should now have truffle
+      request.env['HTTP_AUTHORIZATION'] = @token
+      get :me
+      response.code.should == "200"
+      user_info = JSON.parse(response.body)
+      settings  = user_info["settings"] || {}
+      expect(settings["truffle_sauce_purchased"]).to be_true
+    end
+
+    it "fails when a user token is used" do
+      request.env['HTTP_AUTHORIZATION'] = @token
+      post :update_settings, {id: 100, settings: {:truffle_sauce_purchased => true}}
+      response.code.should == "403"
+    end
+  end
+
+
+  context '#update_my_settings' do
     it 'should return default settings info when a valid token is provided, with no data' do
       request.env['HTTP_AUTHORIZATION'] = @token
 
-      post :update_settings
+      post :update_my_settings
 
       response.code.should == "200"
       result = JSON.parse(response.body)
@@ -351,7 +382,7 @@ describe Api::V0::UsersController do
       @user.create_settings!(preferred_temperature_unit: 'c')
 
       expect {
-        post :update_settings, :settings => {
+        post :update_my_settings, :settings => {
           :has_viewed_turbo_intro => true,
           :preferred_temperature_unit => 'f',
           :country_iso2 => 'CA'
@@ -376,7 +407,7 @@ describe Api::V0::UsersController do
       request.env['HTTP_AUTHORIZATION'] = @token
 
       expect {
-        post :update_settings, :settings => {
+        post :update_my_settings, :settings => {
           :preferred_temperature_unit => 'x'
         }
       }.to_not change {
@@ -390,7 +421,7 @@ describe Api::V0::UsersController do
     end
 
     it 'should not work when a token is missing' do
-      post :update_settings, :settings => {
+      post :update_my_settings, :settings => {
         :has_viewed_turbo_intro => true,
         :preferred_temperature_unit => 'f',
         :country_iso2 => 'CA'

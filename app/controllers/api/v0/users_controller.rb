@@ -7,9 +7,9 @@ module Api
       # Required since this only this controller contains the code to actually
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
-      before_filter :ensure_authorized, except: [:create, :log_upload_url, :make_premium]
+      before_filter :ensure_authorized, except: [:create, :log_upload_url, :make_premium, :update_settings]
       before_filter(BaseController.make_service_filter(
-        [ExternalServiceTokenChecker::SPREE_SERVICE]), only: [:make_premium]
+        [ExternalServiceTokenChecker::SPREE_SERVICE]), only: [:make_premium, :update_settings]
       )
       LOG_UPLOAD_URL_EXPIRATION = 60*30 #Seconds
 
@@ -57,21 +57,14 @@ module Api
       end
 
 
+      # Authenticated by user token (see before_filters)
+      def update_my_settings
+        update_settings_impl(@user_id_from_token, "me")
+      end
+
+      # Authenticated by External Service (see before_filters)
       def update_settings
-        @user = User.find @user_id_from_token
-
-        settings_params = (params[:settings] || {}).slice(*UserSettings::API_FIELDS)
-
-        logger.info "Update_settings for user #{@user.id}"
-        logger.info "Updating with: #{settings_params}"
-
-        settings = @user.settings || @user.build_settings
-
-        if settings.update_attributes(settings_params)
-          render json: settings, serializer: Api::UserSettingsSerializer
-        else
-          render json: {status: 400, message: "Bad Request.  Could not update user settings with params", errors: settings.errors }, status: 400
-        end
+        update_settings_impl(params[:id], "external")
       end
 
 
@@ -143,6 +136,24 @@ module Api
       end
 
       private
+
+      def update_settings_impl(user_id, mode)
+        @user = User.find user_id
+
+        settings_params = (params[:settings] || {}).slice(*UserSettings::API_FIELDS)
+
+        logger.info "Update_settings (#{mode}) for user #{user_id}"
+        logger.info "Updating with: #{settings_params}"
+
+        settings = @user.settings || @user.build_settings
+
+        if settings.update_attributes(settings_params)
+          render json: settings, serializer: Api::UserSettingsSerializer
+        else
+          render json: {status: 400, message: "Bad Request.  Could not update user settings (#{mode}) with params", errors: settings.errors}, status: 400
+        end
+      end
+
       def create_new_user(user, optout, source)
         if user.save
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
