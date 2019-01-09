@@ -348,11 +348,17 @@ describe Api::V0::UsersController do
     it 'should return saved settings info when a valid token is provided, with data' do
       request.env['HTTP_AUTHORIZATION'] = @token
 
-      post :update_settings, :settings => {
-        :has_viewed_turbo_intro => true,
-        :preferred_temperature_unit => 'f',
-        :country_iso2 => 'CA'
-      }
+      @user.create_settings!(preferred_temperature_unit: 'c')
+
+      expect {
+        post :update_settings, :settings => {
+          :has_viewed_turbo_intro => true,
+          :preferred_temperature_unit => 'f',
+          :country_iso2 => 'CA'
+        }
+      }.to change {
+        @user.settings.reload.preferred_temperature_unit
+      }.from('c').to('f')
 
       response.code.should == "200"
       result = JSON.parse(response.body)
@@ -369,8 +375,12 @@ describe Api::V0::UsersController do
     it 'should return saved settings info when a valid token is provided, with data' do
       request.env['HTTP_AUTHORIZATION'] = @token
 
-      post :update_settings, :settings => {
-        :preferred_temperature_unit => 'x'
+      expect {
+        post :update_settings, :settings => {
+          :preferred_temperature_unit => 'x'
+        }
+      }.to_not change {
+        @user.reload.settings
       }
 
       response.code.should == "400"
