@@ -57,8 +57,9 @@ describe Api::V0::UsersController do
       request.env['HTTP_AUTHORIZATION'] = @token
 
       @user.create_settings!({
-                               :has_viewed_turbo_intro => true,
-                               :preferred_temperature_unit => 'c'
+                               :locale => 'en-US',
+                               :preferred_temperature_unit => 'c',
+                               :country_iso2 => 'GB'
                              })
 
       get :me
@@ -82,10 +83,11 @@ describe Api::V0::UsersController do
       result.delete('joule_purchase_count').should == 0
       result.delete('referral_code').should == nil
       result.delete('capabilities').should == []
-      result['settings'].delete('locale').should == nil
-      result['settings'].delete('has_viewed_turbo_intro').should == true
+      result['settings'].delete('locale').should == 'en-US'
+      result['settings'].delete('has_viewed_turbo_intro').should == nil
       result['settings'].delete('preferred_temperature_unit').should == 'c'
       result['settings'].delete('truffle_sauce_purchased').should == nil
+      result['settings'].delete('country_iso2').should == 'GB'
       result.delete('settings').should == {}
 
       result.empty?.should == true
@@ -338,6 +340,7 @@ describe Api::V0::UsersController do
       result.delete('has_viewed_turbo_intro').should == nil
       result.delete('preferred_temperature_unit').should == nil
       result.delete('truffle_sauce_purchased').should == nil
+      result.delete('country_iso2').should == nil
 
       result.empty?.should == true
     end
@@ -347,7 +350,8 @@ describe Api::V0::UsersController do
 
       post :update_settings, :settings => {
         :has_viewed_turbo_intro => true,
-        :preferred_temperature_unit => 'f'
+        :preferred_temperature_unit => 'f',
+        :country_iso2 => 'CA'
       }
 
       response.code.should == "200"
@@ -357,6 +361,7 @@ describe Api::V0::UsersController do
       result.delete('has_viewed_turbo_intro').should == true
       result.delete('preferred_temperature_unit').should == 'f'
       result.delete('truffle_sauce_purchased').should == nil
+      result.delete('country_iso2').should == 'CA'
 
       result.empty?.should == true
     end

@@ -2287,7 +2287,8 @@ ALTER SEQUENCE user_activities_id_seq OWNED BY user_activities.id;
 CREATE TABLE public.user_settings (
     id integer NOT NULL,
     user_id integer,
-    locale character varying(255),
+    locale character varying(6),
+    country_iso2 character varying(2),
     has_viewed_turbo_intro boolean,
     preferred_temperature_unit character varying(1),
     truffle_sauce_purchased boolean,
