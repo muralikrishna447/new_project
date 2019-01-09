@@ -2927,7 +2927,7 @@ ALTER TABLE ONLY user_activities ALTER COLUMN id SET DEFAULT nextval('user_activ
 -- Name: user_settings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.user_settings ALTER COLUMN id SET DEFAULT nextval('public.user_settings_id_seq'::regclass);
+ALTER TABLE ONLY user_settings ALTER COLUMN id SET DEFAULT nextval('user_settings_id_seq'::regclass);
 
 
 --
