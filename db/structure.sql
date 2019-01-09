@@ -2302,7 +2302,6 @@ CREATE TABLE user_settings (
 --
 
 CREATE SEQUENCE user_settings_id_seq
-    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2924,7 +2923,7 @@ ALTER TABLE ONLY user_activities ALTER COLUMN id SET DEFAULT nextval('user_activ
 
 
 --
--- Name: user_settings id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY user_settings ALTER COLUMN id SET DEFAULT nextval('user_settings_id_seq'::regclass);
@@ -3447,7 +3446,7 @@ ALTER TABLE ONLY user_activities
 
 
 --
--- Name: user_settings user_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY user_settings
