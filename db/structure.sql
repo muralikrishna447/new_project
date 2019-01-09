@@ -2284,7 +2284,7 @@ ALTER SEQUENCE user_activities_id_seq OWNED BY user_activities.id;
 -- Name: user_settings; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.user_settings (
+CREATE TABLE user_settings (
     id integer NOT NULL,
     user_id integer,
     locale character varying(6),
@@ -2301,7 +2301,7 @@ CREATE TABLE public.user_settings (
 -- Name: user_settings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.user_settings_id_seq
+CREATE SEQUENCE user_settings_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -2314,7 +2314,7 @@ CREATE SEQUENCE public.user_settings_id_seq
 -- Name: user_settings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.user_settings_id_seq OWNED BY public.user_settings.id;
+ALTER SEQUENCE user_settings_id_seq OWNED BY user_settings.id;
 
 
 --
@@ -3450,7 +3450,7 @@ ALTER TABLE ONLY user_activities
 -- Name: user_settings user_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.user_settings
+ALTER TABLE ONLY user_settings
     ADD CONSTRAINT user_settings_pkey PRIMARY KEY (id);
 
 
@@ -3966,7 +3966,7 @@ CREATE UNIQUE INDEX index_tf2_redemptions_on_redemption_code ON tf2_redemptions 
 -- Name: index_user_settings_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_user_settings_on_user_id ON public.user_settings USING btree (user_id);
+CREATE INDEX index_user_settings_on_user_id ON user_settings USING btree (user_id);
 
 
 --
