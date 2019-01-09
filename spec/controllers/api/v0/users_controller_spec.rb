@@ -388,5 +388,14 @@ describe Api::V0::UsersController do
       result['errors'].should == {'preferred_temperature_unit' => ['is not included in the list']}
 
     end
+
+    it 'should not work when a token is missing' do
+      post :update_settings, :settings => {
+        :has_viewed_turbo_intro => true,
+        :preferred_temperature_unit => 'f',
+        :country_iso2 => 'CA'
+      }
+      response.code.should == "401"
+    end
   end
 end
