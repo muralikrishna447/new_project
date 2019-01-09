@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
 
   has_many :tf2_redemptions
 
-  has_one :settings, class_name: 'UserSettings'
+  has_one :settings, class_name: 'UserSettings', :dependent => :destroy
 
   serialize :viewed_activities, Array
 

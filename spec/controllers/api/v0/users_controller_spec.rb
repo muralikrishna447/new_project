@@ -17,8 +17,8 @@ describe Api::V0::UsersController do
 
     issued_at = (Time.now.to_f * 1000).to_i
     service_claim = {
-        iat: issued_at,
-        service: 'CSSpree'
+      iat: issued_at,
+      service: 'CSSpree'
     }
     @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
     @service_token = JSON::JWT.new(service_claim.as_json).sign(@key.to_s).to_s
@@ -49,8 +49,48 @@ describe Api::V0::UsersController do
       result.delete('joule_purchase_count').should == 0
       result.delete('referral_code').should == nil
       result.delete('capabilities').should == []
+      result.delete('settings').should == nil
       result.empty?.should == true
     end
+
+    it 'should return saved settings as settings when a valid token is provided, with data' do
+      request.env['HTTP_AUTHORIZATION'] = @token
+
+      @user.create_settings!({
+                               :has_viewed_turbo_intro => true,
+                               :preferred_temperature_unit => 'c'
+                             })
+
+      get :me
+
+      response.code.should == "200"
+      result = JSON.parse(response.body)
+
+      # TODO - write a nice utility for this sort of comparison
+      result.delete('id').should == @user.id
+      result.delete('name').should == @user.name
+      result.delete('email').should == @user.email
+      result.delete('slug').should == @user.slug
+      result.delete('avatar_url').should == @user.avatar_url
+      result.delete('needs_special_terms').should == @user.needs_special_terms
+      result.delete('encrypted_bloom_info')
+
+      result.delete('request_id')
+      result.delete('premium').should == false
+      result.delete('used_circulator_discount').should == false
+      result.delete('admin').should == false
+      result.delete('joule_purchase_count').should == 0
+      result.delete('referral_code').should == nil
+      result.delete('capabilities').should == []
+      result['settings'].delete('locale').should == nil
+      result['settings'].delete('has_viewed_turbo_intro').should == true
+      result['settings'].delete('preferred_temperature_unit').should == 'c'
+      result['settings'].delete('truffle_sauce_purchased').should == nil
+      result.delete('settings').should == {}
+
+      result.empty?.should == true
+    end
+
 
     it 'should work with old style auth token' do
       old_style_token = AuthToken.new({'address_id' => @aa.address_id, 'User' => {'id' => @user.id}, 'seq' => @aa.sequence})
@@ -83,7 +123,7 @@ describe Api::V0::UsersController do
       it 'returns beta_guides capability' do
         request.env['HTTP_AUTHORIZATION'] = @token
         BetaFeatureService.stub(:user_has_feature).with(@user, 'beta_guides')
-            .and_return(true)
+          .and_return(true)
 
         get :me
 
@@ -139,8 +179,8 @@ describe Api::V0::UsersController do
     end
 
     it 'should create a user acquisition object' do
-      request.cookies['utm'] = { referrer: 'http://u.ca', utm_campaign: '54-40' }.to_json
-      post :create, user: { name: 'Acquired User', email: 'a@u.ca', password: 'tricksy' }
+      request.cookies['utm'] = {referrer: 'http://u.ca', utm_campaign: '54-40'}.to_json
+      post :create, user: {name: 'Acquired User', email: 'a@u.ca', password: 'tricksy'}
 
       ua = UserAcquisition.find_all_by_utm_campaign('54-40')
       expect(ua.count).to eq(1)
@@ -190,7 +230,7 @@ describe Api::V0::UsersController do
   context 'PUT /update' do
     it 'should update a user' do
       request.env['HTTP_AUTHORIZATION'] = @token
-      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }
+      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com'}
       response.should be_success
       parsed = JSON.parse(response.body)
       expect(parsed['name']).to eq('Joseph Doe')
@@ -198,7 +238,7 @@ describe Api::V0::UsersController do
     end
 
     it 'should not update a user without a valid token' do
-      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }
+      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com'}
       response.should_not be_success
     end
 
@@ -207,7 +247,7 @@ describe Api::V0::UsersController do
       aa = ActorAddress.create_for_user @another_user, client_metadata: "test"
       another_token = 'Bearer ' + aa.current_token.to_jwt
       request.env['HTTP_AUTHORIZATION'] = another_token
-      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com' }
+      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com'}
       response.should_not be_success
     end
   end
@@ -221,7 +261,7 @@ describe Api::V0::UsersController do
     end
 
     it 'should accept invalid auth token' do
-      request.env['HTTP_AUTHORIZATION'] = @token+'gibberish'
+      request.env['HTTP_AUTHORIZATION'] = @token + 'gibberish'
       get :log_upload_url
       response.should be_success
       JSON.parse(response.body)['upload_url'].should_not be_nil
@@ -281,6 +321,57 @@ describe Api::V0::UsersController do
     it 'get return error if not logged in' do
       get :capabilities
       response.code.should == '401'
+    end
+  end
+
+
+  context 'POST /settings' do
+    it 'should return default settings info when a valid token is provided, with no data' do
+      request.env['HTTP_AUTHORIZATION'] = @token
+
+      post :update_settings
+
+      response.code.should == "200"
+      result = JSON.parse(response.body)
+
+      result.delete('locale').should == nil
+      result.delete('has_viewed_turbo_intro').should == nil
+      result.delete('preferred_temperature_unit').should == nil
+      result.delete('truffle_sauce_purchased').should == nil
+
+      result.empty?.should == true
+    end
+
+    it 'should return saved settings info when a valid token is provided, with data' do
+      request.env['HTTP_AUTHORIZATION'] = @token
+
+      post :update_settings, :settings => {
+        :has_viewed_turbo_intro => true,
+        :preferred_temperature_unit => 'f'
+      }
+
+      response.code.should == "200"
+      result = JSON.parse(response.body)
+
+      result.delete('locale').should == nil
+      result.delete('has_viewed_turbo_intro').should == true
+      result.delete('preferred_temperature_unit').should == 'f'
+      result.delete('truffle_sauce_purchased').should == nil
+
+      result.empty?.should == true
+    end
+
+    it 'should return saved settings info when a valid token is provided, with data' do
+      request.env['HTTP_AUTHORIZATION'] = @token
+
+      post :update_settings, :settings => {
+        :preferred_temperature_unit => 'x'
+      }
+
+      response.code.should == "400"
+      result = JSON.parse(response.body)
+      result['errors'].should == {'preferred_temperature_unit' => ['is not included in the list']}
+
     end
   end
 end
