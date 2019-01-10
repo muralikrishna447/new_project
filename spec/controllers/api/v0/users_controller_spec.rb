@@ -33,7 +33,6 @@ describe Api::V0::UsersController do
       response.code.should == "200"
       result = JSON.parse(response.body)
 
-      # TODO - write a nice utility for this sort of comparison
       result.delete('id').should == @user.id
       result.delete('name').should == @user.name
       result.delete('email').should == @user.email
@@ -67,7 +66,6 @@ describe Api::V0::UsersController do
       response.code.should == "200"
       result = JSON.parse(response.body)
 
-      # TODO - write a nice utility for this sort of comparison
       result.delete('id').should == @user.id
       result.delete('name').should == @user.name
       result.delete('email').should == @user.email
@@ -327,7 +325,7 @@ describe Api::V0::UsersController do
   end
 
   context '#update_settings :user_id (from Spree)' do
-    it "makes a valid user premium" do
+    it "notes the truffle sauce purchase" do
       #the user is first NOT premium
       request.env['HTTP_AUTHORIZATION'] = @token
       get :me
