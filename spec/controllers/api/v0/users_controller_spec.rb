@@ -84,7 +84,7 @@ describe Api::V0::UsersController do
       result['settings'].delete('locale').should == 'en-US'
       result['settings'].delete('has_viewed_turbo_intro').should == nil
       result['settings'].delete('preferred_temperature_unit').should == 'c'
-      result['settings'].delete('truffle_sauce_purchased').should == nil
+      result['settings'].delete('has_purchased_truffle_sauce').should == nil
       result['settings'].delete('country_iso2').should == 'GB'
       result.delete('settings').should == {}
 
@@ -332,11 +332,11 @@ describe Api::V0::UsersController do
       response.code.should == "200"
       user_info = JSON.parse(response.body)
       settings  = user_info["settings"] || {}
-      expect(settings["truffle_sauce_purchased"]).to be_nil
+      expect(settings["has_purchased_truffle_sauce"]).to be_nil
 
       #set the truffle setting
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      post :update_settings, {id: 100, settings: {:truffle_sauce_purchased => true}}
+      post :update_settings, {id: 100, settings: {:has_purchased_truffle_sauce => true}}
       response.code.should == "200"
 
       #the user should now have truffle
@@ -345,12 +345,12 @@ describe Api::V0::UsersController do
       response.code.should == "200"
       user_info = JSON.parse(response.body)
       settings  = user_info["settings"] || {}
-      expect(settings["truffle_sauce_purchased"]).to be_true
+      expect(settings["has_purchased_truffle_sauce"]).to be_true
     end
 
     it "fails when a user token is used" do
       request.env['HTTP_AUTHORIZATION'] = @token
-      post :update_settings, {id: 100, settings: {:truffle_sauce_purchased => true}}
+      post :update_settings, {id: 100, settings: {:has_purchased_truffle_sauce => true}}
       response.code.should == "403"
     end
   end
@@ -368,7 +368,7 @@ describe Api::V0::UsersController do
       result.delete('locale').should == nil
       result.delete('has_viewed_turbo_intro').should == nil
       result.delete('preferred_temperature_unit').should == nil
-      result.delete('truffle_sauce_purchased').should == nil
+      result.delete('has_purchased_truffle_sauce').should == nil
       result.delete('country_iso2').should == nil
 
       result.empty?.should == true
@@ -395,7 +395,7 @@ describe Api::V0::UsersController do
       result.delete('locale').should == nil
       result.delete('has_viewed_turbo_intro').should == true
       result.delete('preferred_temperature_unit').should == 'f'
-      result.delete('truffle_sauce_purchased').should == nil
+      result.delete('has_purchased_truffle_sauce').should == nil
       result.delete('country_iso2').should == 'CA'
 
       result.empty?.should == true

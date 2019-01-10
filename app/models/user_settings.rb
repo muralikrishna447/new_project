@@ -9,7 +9,7 @@ class UserSettings < ActiveRecord::Base
     :locale,
     :has_viewed_turbo_intro,
     :preferred_temperature_unit,
-    :truffle_sauce_purchased,
+    :has_purchased_truffle_sauce,
     :country_iso2
   ]
 

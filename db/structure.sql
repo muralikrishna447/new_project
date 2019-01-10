@@ -2291,7 +2291,7 @@ CREATE TABLE user_settings (
     country_iso2 character varying(2),
     has_viewed_turbo_intro boolean,
     preferred_temperature_unit character varying(1),
-    truffle_sauce_purchased boolean,
+    has_purchased_truffle_sauce boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

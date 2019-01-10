@@ -6,7 +6,7 @@ class AddUserSettings < ActiveRecord::Migration
       t.string :country_iso2, default: nil, limit: 2
       t.boolean :has_viewed_turbo_intro, default: nil
       t.string  :preferred_temperature_unit, default: nil, limit: 1
-      t.boolean :truffle_sauce_purchased, default: nil
+      t.boolean :has_purchased_truffle_sauce, default: nil
       t.timestamps
     end
     add_index :user_settings, :user_id, :unique => true
