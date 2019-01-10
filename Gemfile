@@ -34,7 +34,6 @@ gem 'librato-rack'
 
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-access-control-headers'
-gem "rack-timeout"
 gem 'rack-proxy'
 gem 'rack-host-redirect'
 
