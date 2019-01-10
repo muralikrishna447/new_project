@@ -5,12 +5,13 @@ class UserSettings < ActiveRecord::Base
   validates_length_of :country_iso2, :is => 2, :allow_nil => true
   validates_length_of :locale, :maximum => 10, :allow_nil => true
 
+  # List Alphabetically....
   API_FIELDS = [
-    :locale,
-    :has_viewed_turbo_intro,
-    :preferred_temperature_unit,
+    :country_iso2,
     :has_purchased_truffle_sauce,
-    :country_iso2
+    :has_viewed_turbo_intro,
+    :locale,
+    :preferred_temperature_unit,
   ]
 
   attr_accessible *API_FIELDS
