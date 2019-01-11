@@ -430,6 +430,7 @@ GEM
     rack-ssl-enforcer (0.2.6)
     rack-test (0.6.3)
       rack (>= 1.0)
+    rack-timeout (0.1.1)
     rails (3.2.16)
       actionmailer (= 3.2.16)
       actionpack (= 3.2.16)
@@ -679,6 +680,7 @@ DEPENDENCIES
   rack-host-redirect
   rack-proxy
   rack-ssl-enforcer
+  rack-timeout
   rails (= 3.2.16)
   rails-erd
   railties (= 3.2.16)
