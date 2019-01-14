@@ -64,7 +64,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     $scope.water_temp = params.water_temp
 
     $scope.loading = true
-    $http.get("https://gentle-taiga-4435.herokuapp.com/egg_time/", params: params).success((data, status) ->
+    $http.get("https://egg-timer.herokuapp.com/egg_time/", params: params).success((data, status) ->
       $scope.output = data
       $scope.loading = false
       mixpanel.track('Egg Calculated', angular.extend({},  $scope.inputs, {water_temp: $scope.water_temp}, $scope.output))
