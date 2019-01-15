@@ -1,4 +1,8 @@
-worker_processes 3 # amount of unicorn workers to spin up
+CS_UNICORN_WORKER_COUNT = (ENV.fetch('CS_UNICORN_WORKER_COUNT', 3).to_i || 3) # amount of unicorn workers to spin up
+
+puts "CS_UNICORN_WORKER_COUNT=#{CS_UNICORN_WORKER_COUNT}"
+
+worker_processes CS_UNICORN_WORKER_COUNT
 timeout 35         # restarts workers that hang for 35 seconds, 5 seconds longer than heroku timeout
 
 preload_app true
