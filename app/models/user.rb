@@ -73,6 +73,13 @@ class User < ActiveRecord::Base
 
   ROLES = %w[admin contractor moderator collaborator user banned]
 
+  def settings_hash
+    return {} if self.settings.nil?
+    UserSettings::API_FIELDS.reduce({}) do |h, key|
+      h[key] = self.settings[key]
+      h
+    end
+  end
 
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
