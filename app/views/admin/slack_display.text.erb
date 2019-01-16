@@ -10,6 +10,7 @@ Joule purchase count: <%= user.joule_purchase_count %>
 Joule WiFi owner count: <%= user.owned_circulators.count %>
 Admin link: https://www.chefsteps.com/admin/users/<%= user.id %>
 Beta Flags: [<%= user.capabilities.join(', ') %>]
+Settings: <%= JSON.pretty_generate(user.settings_hash) %>
 Circulators: <%= circulator_users.count > 0 ? "" : "(none)" %>
 <% circulator_users.each_with_index do |cu, idx| %>
   <% circ = cu.circulator %>
