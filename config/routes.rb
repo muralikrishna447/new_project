@@ -284,6 +284,8 @@ Delve::Application.routes.draw do
         get :shown_terms, on: :collection
         post :international_joule, on: :collection
         get :log_upload_url, on: :collection
+        post :settings, on: :collection, to: 'users#update_my_settings'
+        post :settings, on: :member, to: 'users#update_settings'
       end
 
       resources :circulators, only: [:index, :create, :update, :destroy] do
