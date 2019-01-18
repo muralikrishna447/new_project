@@ -11,6 +11,9 @@ module Api
       before_filter(BaseController.make_service_filter(
         [ExternalServiceTokenChecker::SPREE_SERVICE]), only: [:make_premium, :update_settings]
       )
+
+      skip_filter :detect_country
+
       LOG_UPLOAD_URL_EXPIRATION = 60*30 #Seconds
 
       def me
