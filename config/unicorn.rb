@@ -32,7 +32,7 @@ after_fork do |server, worker|
     ActiveRecord::Base.establish_connection
 end
 
-backlog_setting = Integer(ENV['CS_UNICORN_BACKLOG'] || 200)
+backlog_setting = Integer(ENV['CS_UNICORN_BACKLOG'] || 1024) # Current CS using default
 
 puts "Unicorn PORT=#{ENV['PORT']} CS_UNICORN_BACKLOG=#{backlog_setting}"
 
