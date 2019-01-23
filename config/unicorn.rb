@@ -10,6 +10,8 @@ GC.respond_to?(:copy_on_write_friendly=) and
   GC.copy_on_write_friendly = true
 
 before_fork do |server, worker|
+  puts "Unicorn before_fork nr=#{worker.nr}"
+
   Signal.trap 'TERM' do
     puts 'Unicorn master intercepting TERM and sending myself QUIT instead'
     Process.kill 'QUIT', Process.pid
@@ -20,6 +22,8 @@ before_fork do |server, worker|
 end
 
 after_fork do |server, worker|
+  puts "Unicorn after_fork nr=#{worker.nr}"
+
   Signal.trap 'TERM' do
     puts 'Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT'
   end
@@ -27,3 +31,9 @@ after_fork do |server, worker|
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.establish_connection
 end
+
+backlog_setting = Integer(ENV['CS_UNICORN_BACKLOG'] || 200)
+
+puts "Unicorn PORT=#{ENV['PORT']} CS_UNICORN_BACKLOG=#{backlog_setting}"
+
+listen ENV['PORT'], :backlog => backlog_setting
