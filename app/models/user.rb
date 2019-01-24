@@ -365,17 +365,12 @@ class User < ActiveRecord::Base
         'sqlite',
         'enable_react_native_alerts'
     ]
-
-    cache_hit = true
     cache_key = "user-capabilities-#{id}"
-    user_capabilities = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
-      cache_hit = false
+    user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
       capability_list.select {|c|
         BetaFeatureService.user_has_feature(self, c)
       }
     end
-
-    logger.info("User:capabilities #{cache_key}: #{cache_hit ? 'CACHE_HIT' : 'CACHE_MISS' }")
 
     user_capabilities
   end
