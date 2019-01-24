@@ -375,6 +375,11 @@ class User < ActiveRecord::Base
     user_capabilities
   end
 
+  def beta_feature_groups
+    return @_beta_feature_groups unless @_beta_feature_groups.nil?
+    @_beta_feature_groups = BetaFeatureService.get_groups_for_user(self)
+  end
+
   private
 
   def merge_properties(user_to_merge)

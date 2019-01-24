@@ -7,7 +7,7 @@ module BetaFeature
     end
 
     def user_has_feature(user, feature_name)
-      groups = get_groups_for_user(user)
+      groups = user.beta_feature_groups
       Rails.logger.info "User #{user.id} belongs to these groups: #{groups}"
 
       if groups.length ==  0
