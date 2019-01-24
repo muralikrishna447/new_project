@@ -81,14 +81,13 @@ module BetaFeature
             ':feature_name' => feature_name
           }
         )
-        items = response.items.map {|i|
+        response.items.map {|i|
           {
             'group_name' => i['group_name'],
             'feature_name' => i['feature_name'],
             'is_enabled' => i['is_enabled'],
           }
         }
-       items
       end
     end
 
