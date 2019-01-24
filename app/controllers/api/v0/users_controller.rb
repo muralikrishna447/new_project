@@ -12,7 +12,7 @@ module Api
         [ExternalServiceTokenChecker::SPREE_SERVICE]), only: [:make_premium, :update_settings]
       )
 
-      skip_filter :detect_country
+      skip_filter :detect_country unless ENV['CS_FORCE_DETECT_COUNTRY']
 
       LOG_UPLOAD_URL_EXPIRATION = 60*30 #Seconds
 
