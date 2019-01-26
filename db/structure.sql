@@ -3864,17 +3864,10 @@ CREATE UNIQUE INDEX index_joule_cook_history_items_on_user_id_and_idempotency_id
 
 
 --
--- Name: index_likes_on_likeable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_likes_on_likeable_type_and_likeable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_likes_on_likeable_id ON public.likes USING btree (likeable_id);
-
-
---
--- Name: index_likes_on_likeable_type; Type: INDEX; Schema: public; Owner: -; Tablespace:
---
-
-CREATE INDEX index_likes_on_likeable_type ON public.likes USING btree (likeable_type);
+CREATE INDEX index_likes_on_likeable_type_and_likeable_id ON likes USING btree (likeable_type, likeable_id);
 
 
 --
