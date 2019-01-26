@@ -29,23 +29,20 @@ describe GuideActivity do
       expect(a[:chefstepsGenerated]).to eq(true)
       expect(a[:heroImage]).to eq('FAKEIMAGE.JPG')
       expect(a[:premium]).to eq(false)
-      ingredients = a[:ingredients].serializable_object
-      expect(ingredients.length).to eq(4)
-      expect(ingredients[0][:title]).to eq('Egg yolks')
-      expect(ingredients[0][:quantity]).to eq(160.0)
-      expect(ingredients[0][:unit]).to eq('g')
-      expect(ingredients[0][:note]).to eq('about 11')
-      equipment = a[:equipment].serializable_object
-      expect(equipment.length).to eq(7)
-      expect(equipment[0][:optional]).to eq(false)
-      expect(equipment[0][:equipment][:title]).to eq('Sous vide setup')
-      expect(equipment[1][:equipment][:title]).to eq('Digital scale')
-      steps = a[:steps].serializable_object
-      expect(steps.length).to eq(10)
-      expect(steps[0][:directions]).to include('[sendToMessenger')
-      expect(steps[1][:title]).to include('Separate')
-      expect(steps[1][:directions]).to include('Crack shell')
-      expect(steps[1][:image]).to eq('FAKEIMAGE.JPG')
+      expect(a[:ingredients].length).to eq(4)
+      expect(a[:ingredients][0][:title]).to eq('Egg yolks')
+      expect(a[:ingredients][0][:quantity]).to eq(160.0)
+      expect(a[:ingredients][0][:unit]).to eq('g')
+      expect(a[:ingredients][0][:note]).to eq('about 11')
+      expect(a[:equipment].length).to eq(7)
+      expect(a[:equipment][0][:optional]).to eq(false)
+      expect(a[:equipment][0][:equipment][:title]).to eq('Sous vide setup')
+      expect(a[:equipment][1][:equipment][:title]).to eq('Digital scale')
+      expect(a[:steps].length).to eq(10)
+      expect(a[:steps][0][:directions]).to include('[sendToMessenger')
+      expect(a[:steps][1][:title]).to include('Separate')
+      expect(a[:steps][1][:directions]).to include('Crack shell')
+      expect(a[:steps][1][:image]).to eq('FAKEIMAGE.JPG')
     end
 
     it 'doesn\'t do any work on guides with no hero image' do

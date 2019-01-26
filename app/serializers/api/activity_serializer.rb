@@ -8,19 +8,19 @@ class Api::ActivitySerializer < ApplicationSerializer
   #has_many :ingredients, serializer: Api::ActivityIngredientSerializer
   attributes :ingredients
   def ingredients
-    ActiveModel::ArraySerializer.new(object.ingredients.includes(:ingredient), each_serializer: Api::ActivityIngredientSerializer)
+    ActiveModel::ArraySerializer.new(object.ingredients.includes(:ingredient), each_serializer: Api::ActivityIngredientSerializer).serializable_object
   end
 
   #has_many :steps, serializer: Api::StepSerializer
   attributes :steps
   def steps
-    ActiveModel::ArraySerializer.new(object.steps.includes(:ingredients => :ingredient), each_serializer: Api::StepSerializer)
+    ActiveModel::ArraySerializer.new(object.steps.includes(:ingredients => :ingredient), each_serializer: Api::StepSerializer).serializable_object
   end
 
   #has_many :equipment, serializer: Api::ActivityEquipmentSerializer
   attributes :equipment
   def equipment
-    ActiveModel::ArraySerializer.new(object.equipment.includes(:equipment), each_serializer: Api::ActivityEquipmentSerializer)
+    ActiveModel::ArraySerializer.new(object.equipment.includes(:equipment), each_serializer: Api::ActivityEquipmentSerializer).serializable_object
   end
 
   def image
