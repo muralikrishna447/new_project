@@ -5,9 +5,23 @@ class Api::ActivitySerializer < ApplicationSerializer
   has_one :creator, serializer: Api::ProfileSerializer
   has_one :source_activity, serializer: Api::ActivityIndexSerializer
 
-  has_many :ingredients, serializer: Api::ActivityIngredientSerializer
-  has_many :steps, serializer: Api::StepSerializer
-  has_many :equipment, serializer: Api::ActivityEquipmentSerializer
+  #has_many :ingredients, serializer: Api::ActivityIngredientSerializer
+  attributes :ingredients
+  def ingredients
+    ActiveModel::ArraySerializer.new(object.ingredients.includes(:ingredient), each_serializer: Api::ActivityIngredientSerializer).serializable_object
+  end
+
+  #has_many :steps, serializer: Api::StepSerializer
+  attributes :steps
+  def steps
+    ActiveModel::ArraySerializer.new(object.steps.includes(:ingredients => :ingredient), each_serializer: Api::StepSerializer).serializable_object
+  end
+
+  #has_many :equipment, serializer: Api::ActivityEquipmentSerializer
+  attributes :equipment
+  def equipment
+    ActiveModel::ArraySerializer.new(object.equipment.includes(:equipment), each_serializer: Api::ActivityEquipmentSerializer).serializable_object
+  end
 
   def image
     filepicker_to_s3_url(object.featured_image)
