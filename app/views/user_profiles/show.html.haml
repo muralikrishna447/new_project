@@ -49,7 +49,7 @@
       .tab-content
         .tab-pane.active#favorites
           - if @user.likes.count > 0
-            - @user.likes.scoped_by_type('Activity').order('created_at DESC').each do |like|
+            - @user.likes.includes(:likeable).scoped_by_type('Activity').order('created_at DESC').each do |like|
               -if like.likeable
                 - likeable_title = capture do
                   = link_to like.likeable.title, like.likeable
@@ -61,7 +61,7 @@
                 See our Recipe Gallery
         .tab-pane#courses
           - if @user.enrollments.any?
-            - @user.enrollments.each do |enrollment|
+            - @user.enrollments.includes(:enrollable).each do |enrollment|
               - case enrollment.enrollable_type
               - when 'Course'
                 - course_title = capture do

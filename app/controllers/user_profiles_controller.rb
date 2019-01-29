@@ -2,6 +2,8 @@ class UserProfilesController < ApplicationController
   expose(:encourage_profile) { Copy.find_by_location('encourage-profile') }
   expose(:user_presenter) { UserPresenter.new(user)}
 
+  TIMELINE_EVENT_LIMIT = 50
+
   def show
     if params[:id] == 'self'
       if ! current_user
@@ -19,7 +21,7 @@ class UserProfilesController < ApplicationController
     @total_recipes = @user_pubbed_recipes.count + @user_unpubbed_recipes.count
     @can_add_recipes = (can? :create, Activity) && @is_current_user
     @show_recipes_tab = (@total_recipes > 0) || (@can_add_recipes)
-    @timeline_events =  @user.events.timeline.find_all { |e| e.trackable.published rescue true }.reject { |e| e.trackable_type == 'Vote'}
+    @timeline_events =  @user.events.where("trackable_type IN ('Activity','Comment', 'Ingredient','Like','Upload')").includes([:user, :trackable]).limit(TIMELINE_EVENT_LIMIT).timeline.find_all { |e| e.trackable.published rescue true }
 
     @user.events.timeline.unviewed.each do |event|
       event.viewed = true
