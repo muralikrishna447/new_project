@@ -117,6 +117,32 @@ describe Api::V0::ActivitiesController do
     end
   end
 
+  context 'GET /activities/:id/likes_by_user' do
+    before :each do
+      @user1 = Fabricate :user, name: 'User 1', email: 'user1@user1.com', password: '123456'
+      @user2 = Fabricate :user, name: 'User 2', email: 'user2@user2.com', password: '123456'
+      @user3 = Fabricate :user, name: 'User 3', email: 'user3@user3.com', password: '123456'
+      @like1 = Fabricate :like, likeable: @activity_published, user: @user1
+      @like2 = Fabricate :like, likeable: @activity_published, user: @user2
+    end
+
+    it 'should return user1s like of an activity' do
+      controller.request.env['HTTP_AUTHORIZATION'] = @user1.valid_website_auth_token.to_jwt
+      get :likes_by_user, id: @activity_published.id
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed).to eq([{"id"=>@like1.id, "userId"=>@user1.id}])
+    end
+
+    it 'should not return any likes of activity' do
+      controller.request.env['HTTP_AUTHORIZATION'] = @user3.valid_website_auth_token.to_jwt
+      get :likes_by_user, id: @activity_published.id
+      response.should be_success
+      parsed = JSON.parse response.body
+      expect(parsed).to eq([])
+    end
+  end
+
   context 'GET activities access rules' do
     context 'no user' do
       it 'published activity' do

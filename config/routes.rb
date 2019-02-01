@@ -257,6 +257,7 @@ Delve::Application.routes.draw do
       match '/validate', to: 'auth#validate', via: [:get, :post, :options]
       resources :activities, only: [:index, :show] do
         get :likes, on: :member
+        get :likes_by_user, on: :member
       end
       resources :components, only: [:index, :show, :create, :update, :destroy]
       resources :ingredients, only: [:index, :show]
