@@ -155,7 +155,7 @@ module Delve
       blacklist: '^/api',
       build_rack_response_from_prerender: lambda { |response, unused| response.header.delete('Status') },
       before_render: lambda { |env|
-        Rails.logger.info("Proxying prerender for: #{env['REQUEST_URI']}");
+        Rails.logger.info("[INFO] [#{env['HTTP_X_REQUEST_ID']}] #{env['REMOTE_ADDR']} #{env['HTTP_X_FORWARDED_FOR']} Proxying prerender for: #{env['REQUEST_URI']}");
         return nil;
       }
     }
