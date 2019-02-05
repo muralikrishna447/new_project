@@ -2,6 +2,8 @@ module Api
   module V0
     class ActivitiesController < BaseController
 
+      before_filter :ensure_authorized, only: [:likes_by_user]
+
       has_scope :sort, default: 'newest' do |controller, scope, value|
         case value
           when "oldest"
@@ -103,7 +105,7 @@ module Api
           cache_key = "activity-#{@activity.id}-v#{cache_revision}-t#{trimmed}"
           logger.info "fetching activity from #{cache_key}"
           metric_suffix = 'hit'
-          serialized = Rails.cache.fetch(cache_key, expires_in: 20.minutes) do
+          serialized = Rails.cache.fetch(cache_key, expires_in: 60.minutes) do
             logger.info "cache miss for #{cache_key}"
             metric_suffix = 'miss'
             Api::ActivitySerializer.new(@activity, except: except) \
@@ -133,6 +135,19 @@ module Api
       def likes
         @activity = Activity.eager_load(:likes).find(params[:id])
         render json: @activity.likes, each_serializer: Api::ActivityLikeSerializer
+      end
+
+      def likes_by_user
+        if @user_id_from_token
+          user = User.find @user_id_from_token
+        end
+
+        if user.present?
+          activity = Activity.find(params[:id])
+          render json: activity.likes.where(:user_id => user.id).to_a, each_serializer: Api::ActivityLikeSerializer
+        else
+          render json: []
+        end
       end
     end
   end
