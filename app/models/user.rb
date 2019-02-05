@@ -359,7 +359,6 @@ class User < ActiveRecord::Base
         'autostart',
         'joule_ready',
         'beta_guides',
-        'fbjoule',
         'update_during_pairing'
     ]
     cache_key = "user-capabilities-#{id}"
