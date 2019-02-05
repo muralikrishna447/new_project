@@ -309,15 +309,6 @@ describe Api::V0::UsersController do
       JSON.parse(response.body)['capabilities'].should == []
     end
 
-    it 'get fbjoule capability' do
-      request.env['HTTP_AUTHORIZATION'] = @token
-      BetaFeatureService.stub(:user_has_feature).with(@user, 'fbjoule')
-        .and_return(true)
-      get :capabilities
-      response.should be_success
-      JSON.parse(response.body)['capabilities'].should == ['fbjoule']
-    end
-
     it 'get return error if not logged in' do
       get :capabilities
       response.code.should == '401'
