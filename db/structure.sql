@@ -3864,6 +3864,13 @@ CREATE UNIQUE INDEX index_joule_cook_history_items_on_user_id_and_idempotency_id
 
 
 --
+-- Name: index_likes_on_likeable_type_and_likeable_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_likes_on_likeable_type_and_likeable_id ON likes USING btree (likeable_type, likeable_id);
+
+
+--
 -- Name: index_premium_gift_certificates_on_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3994,6 +4001,13 @@ CREATE INDEX index_users_on_referral_code ON users USING btree (referral_code);
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (reset_password_token);
+
+
+--
+-- Name: index_users_on_slug; Type: INDEX;  chema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_users_on_slug ON public.users USING btree (slug);
 
 
 --
@@ -4571,3 +4585,7 @@ INSERT INTO schema_migrations (version) VALUES ('20170317222144');
 INSERT INTO schema_migrations (version) VALUES ('20170522182222');
 
 INSERT INTO schema_migrations (version) VALUES ('20190108224208');
+
+INSERT INTO schema_migrations (version) VALUES ('20190125235137');
+
+INSERT INTO schema_migrations (version) VALUES ('20190126001041');
