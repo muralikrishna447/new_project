@@ -359,11 +359,8 @@ class User < ActiveRecord::Base
         'autostart',
         'joule_ready',
         'beta_guides',
-        'multi_circ',
         'fbjoule',
-        'update_during_pairing',
-        'sqlite',
-        'enable_react_native_alerts'
+        'update_during_pairing'
     ]
     cache_key = "user-capabilities-#{id}"
     user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
