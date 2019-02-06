@@ -20,6 +20,28 @@ describe Api::V0::Shopping::ProductGroupsController do
     }
   }
 
+  context 'with failing API requests' do
+    before :each do
+      Rails.cache.clear()
+      WebMock.stub_request(:get, 'https://spree-staging1.herokuapp.com/api/v1/cs_countries/US/cs_product_groups')
+        .to_return(status: 500, body: "Internal Server Error")
+
+      WebMock.stub_request(:get, 'https://spree-staging1.herokuapp.com/api/v1/cs_countries/CA/cs_product_groups')
+        .to_return(status: 400, body: "Bad Request")
+    end
+
+    it "US should respond with ERROR" do
+      get :index, :iso2 => 'US'
+      response.should_not be_success
+    end
+
+    it "CA should respond with ERROR" do
+      get :index, :iso2 => 'CA'
+      response.should_not be_success
+    end
+
+  end
+
   before :each do
     Rails.cache.clear()
     WebMock.stub_request(:get, 'https://spree-staging1.herokuapp.com/api/v1/cs_countries/US/cs_product_groups')
