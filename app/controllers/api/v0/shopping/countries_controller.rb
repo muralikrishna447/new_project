@@ -17,7 +17,7 @@ module Api
               end
             end
             if @countries.nil?
-              render_api_response(404, {message: 'Countries not found.'})
+              render_api_response(500, {message: 'Countries not found via API'})
             else
               render(json: @countries)
             end
