@@ -71,24 +71,21 @@ module BetaFeature
     # Fetches all the feature/group info objects for a given
     # feature_name.
     def get_feature_groups_by_feature_name(feature_name)
-      cache_key = "beta_features_get_feature_groups_by_feature_name(#{feature_name})"
-      Rails.cache.fetch(cache_key, expires_in: 60.minutes) do
-        response = @client.query(
-          table_name: @table_config[:group_features_table],
-          select: "ALL_ATTRIBUTES",
-          key_condition_expression: 'feature_name = :feature_name',
-          expression_attribute_values: {
-            ':feature_name' => feature_name
-          }
-        )
-        response.items.map {|i|
-          {
-            'group_name' => i['group_name'],
-            'feature_name' => i['feature_name'],
-            'is_enabled' => i['is_enabled'],
-          }
+      response = @client.query(
+        table_name: @table_config[:group_features_table],
+        select: "ALL_ATTRIBUTES",
+        key_condition_expression: 'feature_name = :feature_name',
+        expression_attribute_values: {
+          ':feature_name' => feature_name
         }
-      end
+      )
+      response.items.map {|i|
+        {
+          'group_name' => i['group_name'],
+          'feature_name' => i['feature_name'],
+          'is_enabled' => i['is_enabled'],
+        }
+      }
     end
 
     # Fetches and returns a list of groups for a given user.  Returns
