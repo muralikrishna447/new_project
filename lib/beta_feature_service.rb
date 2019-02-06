@@ -7,8 +7,13 @@ module BetaFeature
     end
 
     def user_has_feature(user, feature_name, groups_cache = nil)
-      groups = groups_cache || get_groups_for_user(user)
-      Rails.logger.info "User #{user.id} belongs to these groups: #{groups}"
+      if groups_cache.nil?
+        groups = get_groups_for_user(user)
+        Rails.logger.info "User #{user.id} belongs to these groups: #{groups} (downloaded)"
+      else
+        groups = groups_cache
+        Rails.logger.info "User #{user.id} belongs to these groups: #{groups} (cached)"
+      end 
 
       if groups.length ==  0
         # Saves a DynamoDB call if user doesn't belong to any groups
