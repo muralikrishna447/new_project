@@ -13,7 +13,7 @@ module BetaFeature
       else
         groups = groups_cache
         Rails.logger.info "User #{user.id} belongs to these groups: #{groups} (cached)"
-      end 
+      end
 
       if groups.length ==  0
         # Saves a DynamoDB call if user doesn't belong to any groups

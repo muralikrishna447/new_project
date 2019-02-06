@@ -114,7 +114,7 @@ describe BetaFeatureService do
     expect(is_enabled).to eq(false)
   end
 
-  it 'Uses optional user group cache instead for multiple users in different groups', focus: true do
+  it 'Uses optional user group cache instead for multiple users in different groups' do
     set_user_groups(@user1, ['dev'])
     set_user_groups(@user2, ['reviewer'])
     set_feature_groups(
