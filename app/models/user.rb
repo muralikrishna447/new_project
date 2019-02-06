@@ -363,8 +363,9 @@ class User < ActiveRecord::Base
     ]
     cache_key = "user-capabilities-#{id}"
     user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+      repeated_call_cache = {}
       capability_list.select {|c|
-        BetaFeatureService.user_has_feature(self, c)
+        BetaFeatureService.user_has_feature(self, c, repeated_call_cache)
       }
     end
 

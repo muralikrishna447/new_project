@@ -391,8 +391,9 @@ module Api
           end
           owner = owners.first.user
           logger.info "Using capabilities for user #{owner.id} for ActorAddress #{aa.id}"
+          repeated_call_cache = {}
           capability_list.select {|c|
-            BetaFeatureService.user_has_feature(owner, c)
+            BetaFeatureService.user_has_feature(owner, c, repeated_call_cache)
           }
         end
       end
