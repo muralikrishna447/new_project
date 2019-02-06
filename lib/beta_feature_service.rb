@@ -6,8 +6,8 @@ module BetaFeature
       @table_config = table_config
     end
 
-    def user_has_feature(user, feature_name, repeated_call_cache = {})
-      groups = get_groups_for_user(user, repeated_call_cache)
+    def user_has_feature(user, feature_name, groups_cache = nil)
+      groups = groups_cache || get_groups_for_user(user)
       Rails.logger.info "User #{user.id} belongs to these groups: #{groups}"
 
       if groups.length ==  0
@@ -90,21 +90,16 @@ module BetaFeature
 
     # Fetches and returns a list of groups for a given user.  Returns
     # an empty list if a user is not associated to any groups
-    def get_groups_for_user(user, cache = {})
-      cache_key = "beta_features_get_groups_for_user(#{user.id})"
-      cache.fetch(cache_key) do
-        response = @client.query(
-          table_name: @table_config[:group_associations_table],
-          select: "ALL_ATTRIBUTES",
-          key_condition_expression: 'user_id = :user_id',
-          expression_attribute_values: {
-            ':user_id' => user.id
-          }
-        )
-        groups = response.items.map {|i| i['group_name']}
-        Rails.logger.info "Loaded Groups from DynamoDB for User #{user.id} #{groups}"
-        cache[cache_key] = groups
-      end
+    def get_groups_for_user(user)
+      response = @client.query(
+        table_name: @table_config[:group_associations_table],
+        select: "ALL_ATTRIBUTES",
+        key_condition_expression: 'user_id = :user_id',
+        expression_attribute_values: {
+          ':user_id' => user.id
+        }
+      )
+      response.items.map {|i| i['group_name']}
     end
 
   end
