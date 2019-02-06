@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Api::V0::UsersController, focus: true do
+describe Api::V0::UsersController do
 
   before :each do
     @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
