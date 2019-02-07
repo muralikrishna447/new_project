@@ -114,4 +114,25 @@ describe BetaFeatureService do
     expect(is_enabled).to eq(false)
   end
 
+  it 'Uses optional user group cache instead for multiple users in different groups' do
+    set_user_groups(@user1, ['dev'])
+    set_user_groups(@user2, ['reviewer'])
+    set_feature_groups(
+      'dfu',
+      [
+        {'group_name' => 'dev', 'feature_name' => 'dfu', 'is_enabled' => true},
+        {'group_name' => 'reviewers', 'feature_name' => 'dfu', 'is_enabled' => false},
+      ]
+    )
+    is_enabled = BetaFeatureService.user_has_feature(@user1, 'dfu')
+    expect(is_enabled).to eq(true)
+    is_enabled = BetaFeatureService.user_has_feature(@user2, 'dfu')
+    expect(is_enabled).to eq(false)
+
+    is_enabled = BetaFeatureService.user_has_feature(@user1, 'dfu', ['reviewers'])
+    expect(is_enabled).to eq(false)
+    is_enabled = BetaFeatureService.user_has_feature(@user2, 'dfu', ['dev'])
+    expect(is_enabled).to eq(true)
+  end
+
 end
