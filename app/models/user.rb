@@ -359,16 +359,13 @@ class User < ActiveRecord::Base
         'autostart',
         'joule_ready',
         'beta_guides',
-        'multi_circ',
-        'fbjoule',
-        'update_during_pairing',
-        'sqlite',
-        'enable_react_native_alerts'
+        'update_during_pairing'
     ]
     cache_key = "user-capabilities-#{id}"
     user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+      user_groups_cache = BetaFeatureService.get_groups_for_user(self)
       capability_list.select {|c|
-        BetaFeatureService.user_has_feature(self, c)
+        BetaFeatureService.user_has_feature(self, c, user_groups_cache)
       }
     end
 

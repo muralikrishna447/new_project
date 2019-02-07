@@ -391,8 +391,9 @@ module Api
           end
           owner = owners.first.user
           logger.info "Using capabilities for user #{owner.id} for ActorAddress #{aa.id}"
+          user_groups_cache = BetaFeatureService.get_groups_for_user(owner)
           capability_list.select {|c|
-            BetaFeatureService.user_has_feature(owner, c)
+            BetaFeatureService.user_has_feature(owner, c, user_groups_cache)
           }
         end
       end

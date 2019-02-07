@@ -16,7 +16,11 @@ module Api
                 raise CacheExtensions::TransientFetchError.new(e)
               end
             end
-            render(json: @countries)
+            if @countries.nil?
+              render_api_response(500, {message: 'Countries not found via API'})
+            else
+              render(json: @countries)
+            end
           rescue
             render_api_response(404, {message: 'Countries not found.'})
           end

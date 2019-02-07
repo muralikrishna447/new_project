@@ -130,8 +130,10 @@ describe Api::V0::AuthController do
       @valid_circ_token = @for_circ.current_token.to_jwt
       @invalid_token = 'Bearer Some Bad Token'
 
-      BetaFeatureService.stub(:user_has_feature).with(anything(), anything())
+      BetaFeatureService.stub(:user_has_feature).with(anything, anything, anything)
         .and_return(false)
+      BetaFeatureService.stub(:get_groups_for_user).with(anything)
+        .and_return([])
     end
 
     it 'should validate if provided a valid service token' do
@@ -160,7 +162,7 @@ describe Api::V0::AuthController do
     end
 
     it 'circ should have predictive capability if enabled' do
-      BetaFeatureService.stub(:user_has_feature).with(@user, 'predictive')
+      BetaFeatureService.stub(:user_has_feature).with(@user, 'predictive', anything)
         .and_return(true)
       request.env['HTTP_AUTHORIZATION'] = @service_token
       get :validate, token: @valid_circ_token

@@ -6,14 +6,17 @@ describe Api::V0::UsersController do
     @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
     @aa = ActorAddress.create_for_user @user, client_metadata: "test"
     @token = 'Bearer ' + @aa.current_token.to_jwt
-    BetaFeatureService.stub(:user_has_feature).with(@user, anything()) \
+    BetaFeatureService.stub(:user_has_feature).with(@user, anything, anything)\
       .and_return(false)
 
     @other_user = Fabricate :user, id: 101, email: 'janedoe@chefsteps.com', password: '123456', name: 'Jane Doe', role: 'user'
     @other_aa = ActorAddress.create_for_user @other_user, client_metadata: "test"
     @other_token = 'Bearer ' + @other_aa.current_token.to_jwt
-    BetaFeatureService.stub(:user_has_feature).with(@other_user, anything()) \
+    BetaFeatureService.stub(:user_has_feature).with(@other_user, anything, anything)\
       .and_return(false)
+
+    BetaFeatureService.stub(:get_groups_for_user).with(anything)
+      .and_return([])
 
     issued_at = (Time.now.to_f * 1000).to_i
     service_claim = {
@@ -122,7 +125,7 @@ describe Api::V0::UsersController do
 
       it 'returns beta_guides capability' do
         request.env['HTTP_AUTHORIZATION'] = @token
-        BetaFeatureService.stub(:user_has_feature).with(@user, 'beta_guides')
+        BetaFeatureService.stub(:user_has_feature).with(@user, 'beta_guides', anything)
           .and_return(true)
 
         get :me
@@ -287,7 +290,7 @@ describe Api::V0::UsersController do
 
     it 'get beta_guides capability' do
       request.env['HTTP_AUTHORIZATION'] = @token
-      BetaFeatureService.stub(:user_has_feature).with(@user, 'beta_guides')
+      BetaFeatureService.stub(:user_has_feature).with(@user, 'beta_guides', anything)
         .and_return(true)
       get :capabilities
       response.should be_success
@@ -296,7 +299,7 @@ describe Api::V0::UsersController do
 
     it 'get capabilities for two users' do
       request.env['HTTP_AUTHORIZATION'] = @token
-      BetaFeatureService.stub(:user_has_feature).with(@user, 'beta_guides')
+      BetaFeatureService.stub(:user_has_feature).with(@user, 'beta_guides', anything)
         .and_return(true)
 
       get :capabilities
@@ -307,15 +310,6 @@ describe Api::V0::UsersController do
       get :capabilities
       response.should be_success
       JSON.parse(response.body)['capabilities'].should == []
-    end
-
-    it 'get fbjoule capability' do
-      request.env['HTTP_AUTHORIZATION'] = @token
-      BetaFeatureService.stub(:user_has_feature).with(@user, 'fbjoule')
-        .and_return(true)
-      get :capabilities
-      response.should be_success
-      JSON.parse(response.body)['capabilities'].should == ['fbjoule']
     end
 
     it 'get return error if not logged in' do

@@ -6,9 +6,14 @@ module BetaFeature
       @table_config = table_config
     end
 
-    def user_has_feature(user, feature_name)
-      groups = get_groups_for_user(user)
-      Rails.logger.info "User #{user.id} belongs to these groups: #{groups}"
+    def user_has_feature(user, feature_name, groups_cache = nil)
+      if groups_cache.nil?
+        groups = get_groups_for_user(user)
+        Rails.logger.info "User #{user.id} belongs to these groups: #{groups} (downloaded)"
+      else
+        groups = groups_cache
+        Rails.logger.info "User #{user.id} belongs to these groups: #{groups} (cached)"
+      end
 
       if groups.length ==  0
         # Saves a DynamoDB call if user doesn't belong to any groups
@@ -79,14 +84,13 @@ module BetaFeature
           ':feature_name' => feature_name
         }
       )
-      items = response.items.map {|i|
+      response.items.map {|i|
         {
           'group_name' => i['group_name'],
           'feature_name' => i['feature_name'],
           'is_enabled' => i['is_enabled'],
         }
       }
-      return items
     end
 
     # Fetches and returns a list of groups for a given user.  Returns
@@ -100,8 +104,7 @@ module BetaFeature
           ':user_id' => user.id
         }
       )
-      groups = response.items.map {|i| i['group_name']}
-      return groups
+      response.items.map {|i| i['group_name']}
     end
 
   end
