@@ -132,6 +132,8 @@ describe Api::V0::AuthController do
 
       BetaFeatureService.stub(:user_has_feature).with(anything, anything, anything)
         .and_return(false)
+      BetaFeatureService.stub(:get_groups_for_user).with(anything)
+        .and_return([])
     end
 
     it 'should validate if provided a valid service token' do

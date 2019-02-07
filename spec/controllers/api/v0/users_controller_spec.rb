@@ -15,6 +15,9 @@ describe Api::V0::UsersController do
     BetaFeatureService.stub(:user_has_feature).with(@other_user, anything, anything)\
       .and_return(false)
 
+    BetaFeatureService.stub(:get_groups_for_user).with(anything)
+      .and_return([])
+
     issued_at = (Time.now.to_f * 1000).to_i
     service_claim = {
       iat: issued_at,
