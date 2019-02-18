@@ -20,6 +20,8 @@ class PreauthEnforcer
   def passthrough?(env)
     path = env['REQUEST_PATH']
 
+    return true if ENV['CS_PREAUTH_SUPPRESS'] == 'SUPPRESS' # sometimes we need to test that things work like in production
+
     # Restrictions are always applied first
     @restrictions.each do |restriction|
       if restriction.match(path)
