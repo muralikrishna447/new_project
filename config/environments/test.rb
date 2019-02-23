@@ -75,4 +75,6 @@ Delve::Application.configure do
   ENV['ZENDESK_MAPPED_DOMAIN']     = "imaginary-zendesk.chefsteps.com"
   ENV['ZENDESK_SHARED_SECRET'] = "NOTHINGTOSEEHERE"
 
+  ENV['OAUTH_SECRET'] = "randomstring"
+
 end

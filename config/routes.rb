@@ -253,6 +253,10 @@ Delve::Application.routes.draw do
       match '/authenticate', to: 'auth#authenticate', via: [:post, :options]
       match '/upgrade_token', to: 'auth#upgrade_token', via: [:post, :options]
       match '/authenticate_facebook', to: 'auth#authenticate_facebook', via: [:post, :options]
+      match '/authorize_ge_redirect', to: 'auth#authorize_ge_redirect'
+      match '/authenticate_ge', to: 'auth#authenticate_ge'
+      match '/refresh_ge', to: 'auth#refresh_ge'
+      
       match '/logout', to: 'auth#logout', via: [:post, :options]
       match '/validate', to: 'auth#validate', via: [:get, :post, :options]
       resources :activities, only: [:index, :show] do
