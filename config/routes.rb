@@ -349,11 +349,6 @@ Delve::Application.routes.draw do
 
       match '/*path' => 'base#options', :via => :options
 
-      # match 'activities/', to: 'activities#index', via: [:get, :options]
-      # match 'activities/:id', to: 'activities#show', as: 'activity', via: [:get, :options]
-
-      resources :random_drops, only: [:show]
-
       resources :cook_history do
         get :find_by_guide, on: :collection
       end

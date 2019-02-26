@@ -15,8 +15,6 @@ Rails.configuration.dynamodb.beta_features_table_config = {
 Rails.configuration.dynamodb.shipping_address_update_table_name = "shipping-address-updates-#{Rails.env}"
 Rails.configuration.dynamodb.shipping_address_confirmation_table_name = "shipping-address-confirmations-#{Rails.env}"
 
-Rails.configuration.dynamodb.random_drop_table_name = "random-drop-winners-#{Rails.env}"
-
 Rails.configuration.dynamodb.push_notifications_table = "push-notifications-#{Rails.env}"
 
 if Rails.env.production?
