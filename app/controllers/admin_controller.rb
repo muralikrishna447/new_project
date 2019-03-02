@@ -27,7 +27,7 @@ class AdminController < ApplicationController
     else
       render 'slack_display', json: {
         response_type: "in_channel",
-        text: render_to_string(formats: [:text], template: 'admin/slack_display', layout: false, locals: {user: user, circulator_users: user.circulator_users, tz: "Pacific Time (US & Canada)"})
+        text: render_to_string(formats: [:text], template: 'admin/slack_display', layout: false, locals: {user: user, circulator_users: user.circulator_users.includes([:circulator]), tz: "Pacific Time (US & Canada)"})
       }
     end
   end
