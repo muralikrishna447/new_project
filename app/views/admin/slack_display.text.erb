@@ -8,7 +8,7 @@ Role: <%= user.role %>
 Premium: <%= user.premium_member %> <%= user.premium_membership_created_at ? '- since ' + user.premium_membership_created_at.in_time_zone(tz).to_s : '' %>
 Joule purchase count: <%= user.joule_purchase_count %>
 Joule WiFi owner count: <%= user.owned_circulators.count %>
-Admin link: https://www.chefsteps.com/admin/users/<%= user.id %>
+Admin link: <%= admin_user_url %>
 Beta Flags: [<%= user.capabilities.join(', ') %>]
 Settings: <%= JSON.pretty_generate(user.settings_hash) %>
 Circulators: <%= circulator_users.count > 0 ? "" : "(none)" %>
