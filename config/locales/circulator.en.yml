@@ -35,4 +35,8 @@ en:
       circulator_error_stuck_motor:
         message: "Joule’s motor is stuck. Please ensure a bag isn’t caught inside or around the propeller or shaft."
         template: "%{joule_name}’s motor is stuck. Please ensure a bag isn’t caught inside or around the propeller or shaft."
+      turbo_error_timed_out:
+        message: "Uh-oh! Joule couldn’t start your Turbo cook. We’ll do a standard cook instead."
+        template: "Uh-oh! %{joule_name} couldn’t start your Turbo cook. We’ll do a standard cook instead. Your food will be ready at %{finish_timestamp}."
+
     app_name: "Joule"
