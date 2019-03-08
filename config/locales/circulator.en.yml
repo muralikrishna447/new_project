@@ -35,8 +35,20 @@ en:
       circulator_error_stuck_motor:
         message: "Joule’s motor is stuck. Please ensure a bag isn’t caught inside or around the propeller or shaft."
         template: "%{joule_name}’s motor is stuck. Please ensure a bag isn’t caught inside or around the propeller or shaft."
+      turbo_fallback_notification:
+        message: "Your Turbo cook is almost finished. Really quick—open up the Joule app to make sure your timer has been synced."
+        template: "Your Turbo cook with %{joule_name} is almost finished. Really quick—open up the Joule app to make sure your timer has been synced."
+      turbo_time_finalized:
+        message: "Your Turbo cook is underway."
+        template: "Your Turbo cook with %{joule_name} is underway. Your food will be ready at %{finish_timestamp}."
+      turbo_time_changed:
+        message: "We’ve updated your Turbo cook."
+        template: "We’ve updated your Turbo cook with %{joule_name}. Your food will now be ready at %{finish_timestamp}."
       turbo_error_timed_out:
-        message: "Uh-oh! Joule couldn’t start your Turbo cook. We’ll do a standard cook instead."
-        template: "Uh-oh! %{joule_name} couldn’t start your Turbo cook. We’ll do a standard cook instead. Your food will be ready at %{finish_timestamp}."
+        message: "Uh-oh! Joule couldn't start your Turbo cook. We'll do a standard cook once the water is heated."
+        template: "Uh-oh! %{joule_name} couldn’t start your Turbo cook. We will now cook your food for %{cook_time} once the water is heated."
+      autostart_water_heated:
+        message: "Your water is heated."
+        template: "Your water is heated. Your food will be ready at %{finish_timestamp}."
 
     app_name: "Joule"
