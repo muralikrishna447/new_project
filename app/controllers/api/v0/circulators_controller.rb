@@ -432,7 +432,7 @@ module Api
       def get_admin_push_notification
         notification_type = params[:notification_type]
 
-        if notification_type != 'random_drop' && notification_type != 'dynamic_alert'
+        if notification_type != 'dynamic_alert'
           raise MissingNotificationError.new("Unknown notification type for #{notification_type}")
         end
 

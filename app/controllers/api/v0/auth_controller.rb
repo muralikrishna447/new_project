@@ -3,7 +3,7 @@ module Api
     class AuthController < BaseController
       before_filter(BaseController.make_service_or_admin_filter(
         [ExternalServiceTokenChecker::MESSAGING_SERVICE]), only: [:validate])
-      before_filter :ensure_authorized, only: [:logout, :external_redirect]
+      before_filter :ensure_authorized, only: [:logout, :external_redirect, :authorize_ge_redirect, :refresh_ge]
 
       def authenticate
         begin
@@ -73,6 +73,77 @@ module Api
           logger.warn "Authenticate Exception: #{e.class} #{e}"
           logger.error e.backtrace.join("\n")
           render_api_response 500, {message: 'Internal Server Error'}
+        end
+      end
+
+      def authorize_ge_redirect
+        logger.info "Going to generate authorization url"
+        payload = JWT.encode({
+          unique: Time.now, # Could be used to help prevent replay attacks
+          id: current_api_user.id
+        }, ENV['OAUTH_SECRET'])
+
+        redirect_url = GE::Client.auth_code.authorize_url(:redirect_uri => GE::RedirectURL, access_type: "offline", state: payload)
+        return render_api_response 200, {redirect: redirect_url}
+      end
+
+      def refresh_ge
+        logger.info "Refreshing token for user #{current_api_user.id}"
+        ge_token = current_api_user.oauth_tokens.ge.first
+        unless ge_token
+          logger.error "User #{current_api_user.id} doesn't have a GE Token"
+          return render_api_response 401, {message: 'No GE token to refresh'}
+        end
+        # token = Oauth2::Token.new(GE::Client, ge_token.token, {refresh_token: ge_token.refresh_token, expires_at: ge_token.expires_at})
+
+        params = {:client_id      => GE::Client.id,
+                    :client_secret  => GE::Client.secret,
+                    :grant_type     => 'refresh_token',
+                    :refresh_token  => ge_token.refresh_token}
+        token = GE::Client.get_token(params)
+        ge_token.token = token.token
+        ge_token.token_expires_at = Time.at(token.expires_at)
+        ge_token.refresh_token = token.refresh_token
+        if ge_token.save
+          logger.info "Saved oauth token (#{ge_token.id})."
+          return render_api_response 200, {message: 'Success.', token: ge_token.token, expires_at: ge_token.token_expires_at, refresh_token: ge_token.refresh_token}
+        else
+          logger.error "Error saving oauth record.  #{ge_token.errors.to_sentence}"
+          return render_api_response 500, {message: "Error saving attributes"}
+        end
+      end
+
+      def authenticate_ge
+        logger.info "Received response from the ge server"
+        Librato.increment("api.authenticate_ge_requests")
+        code = params[:code]
+        payload = JWT.decode(params[:state], ENV['OAUTH_SECRET'])
+        user = User.find(payload["id"]) rescue nil
+        begin
+          token = GE::Client.auth_code.get_token(code, :redirect_uri => GE::RedirectURL)
+        rescue OAuth2::Error
+          token = nil
+        end
+
+        if user.blank?
+          logger.error "User from id #{payload} did not match a CS User."
+          return render_api_response 401, {message: 'Invalid user'}
+        end
+        if token.blank?
+          logger.error "Code could not be exchanged for an auth token"
+          return render_api_response 401, {message: 'Invalid token'}
+        end
+        logger.info "Setting user (#{user.id}) attributes"
+        oauth_record = user.oauth_tokens.where(service: "ge").first || OauthToken.new(user_id: user.id, service: "ge")
+        oauth_record.token = token.token
+        oauth_record.token_expires_at = Time.at(token.expires_at)
+        oauth_record.refresh_token = token.refresh_token
+        if oauth_record.save
+          logger.info "Saved oauth token (#{oauth_record.id})."
+          return render_api_response 200, {message: 'Success.', token: oauth_record.token, expires_at: oauth_record.token_expires_at, refresh_token: oauth_record.refresh_token}
+        else
+          logger.error "Error saving oauth record.  #{oauth_record.errors.to_sentence}"
+          return render_api_response 500, {message: "Error saving attributes"}
         end
       end
 

@@ -205,6 +205,77 @@ describe Api::V0::AuthController do
     end
   end
 
+  context 'GET /authorize_ge_redirect' do
+    before do
+      @short_lived_token = AuthToken.provide_short_lived(@aa.current_token).to_jwt
+      controller.request.env['HTTP_AUTHORIZATION'] = "Bearer #{@short_lived_token}"
+    end
+
+    it "should return a redirect" do
+      get :authorize_ge_redirect
+      response.code.should eq("200")
+      response.body.should include("geappliances.com")
+    end
+
+    it "should have the user id encoded in state" do
+      get :authorize_ge_redirect
+      body = JSON.parse(response.body)
+      url = Rack::Utils.parse_nested_query(body["redirect"])
+      decoded = JWT.decode(url["state"], ENV['OAUTH_SECRET'])
+      decoded["id"].should eq(@user.id)
+    end
+  end
+
+  context 'GET /authenticate_ge' do
+    before do
+      GE::Client.stub_chain(:auth_code, :get_token, :token).and_return("ABC123")
+      GE::Client.stub_chain(:auth_code, :get_token, :expires_at).and_return(Time.now)
+      GE::Client.stub_chain(:auth_code, :get_token, :refresh_token).and_return("ZYX999")
+      @state = JWT.encode({
+          unique: Time.now.to_f, # Could be used to help prevent replay attacks
+          id: @user.id
+      }, ENV['OAUTH_SECRET'])
+    end
+
+    it "should return a ge token" do
+      get :authenticate_ge, code: "DEF456", state: @state
+      response.code.should eq("200")
+      body = JSON.parse(response.body)
+      body["message"].should eq("Success.")
+      body["token"].should eq("ABC123")
+    end
+
+    it "should return a ge token if a token already exists for a user" do
+      oauth_token = Fabricate :oauth_token, user_id: @user.id, service: "ge", token: "abc123", token_expires_at: Time.now
+      get :authenticate_ge, code: "DEF456", state: @state
+      response.code.should eq("200")
+      body = JSON.parse(response.body)
+      body["message"].should eq("Success.")
+      body["token"].should eq("ABC123")
+      oauth_token.reload
+      oauth_token.token.should eq("ABC123")
+    end
+
+    it "should return an error if user doesn't exist" do
+      @state = JWT.encode({
+          unique: Time.now.to_f, # Could be used to help prevent replay attacks
+          id: 1 # This is fake
+      }, ENV['OAUTH_SECRET'])
+      get :authenticate_ge, code: "DEF456", state: @state
+      response.code.should eq("401")
+      body = JSON.parse(response.body)
+      body["message"].should eq("Invalid user")
+    end
+
+    it "should return an error if it doesn't receive a token" do
+      GE::Client.stub_chain(:auth_code, :get_token).and_raise(OAuth2::Error.new(OpenStruct.new({error: :invalid_token, error_description: "test"})))
+      get :authenticate_ge, code: "DEF456", state: @state
+      response.code.should eq("401")
+      body = JSON.parse(response.body)
+      body["message"].should eq("Invalid token")
+    end
+  end
+
   context 'POST /authenticate_facebook' do
 
     before :each do

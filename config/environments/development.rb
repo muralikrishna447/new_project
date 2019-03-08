@@ -112,6 +112,9 @@ Delve::Application.configure do
   ENV['ZENDESK_MAPPED_DOMAIN'] = "chefsteps-staging.zendesk.com"
   ENV['ZENDESK_SHARED_SECRET'] = "eGQwqBQT7MuyvLxUKm1940fSrqSMDHqnimWfxlWmkUfNccf2"
   ENV['GA_TRACKING_ID'] = 'UA-34555970-6'
+
+  ENV['OAUTH_SECRET'] = "randomstring"
+
   Librato::Metrics.authenticate(
     ENV['LIBRATO_USER'],
     ENV['LIBRATO_TOKEN'],
