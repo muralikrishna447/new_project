@@ -120,7 +120,7 @@ module Api
         # This is a work around to flash special firmware for beta 2 esp32 Joules
         # and should be removed after the beta 2 period.
         if params[:appFirmwareVersion] == '143' && params[:espFirmwareVersion] == 'v3.1.1'
-          if hardware_version != 'JA' || hardware_version != 'JB'
+          if hardware_version != 'JA' && hardware_version != 'JB'
             # Force flash of this specific firmware version
             u =  {
               'version' => '143-b2-hw-opt',
