@@ -130,6 +130,20 @@ describe Api::V0::FirmwareController do
       "totalBytes" => @totalBytes,
     }
 
+    joule_esp32_b2_hw_option_manifest = {
+      "releaseNotesUrl" => @release_notes_url_1,
+      "releaseNotes" => @release_notes,
+      "urgency" => "normal",
+      "updates" =>[
+        {
+          "versionType" => "espFirmwareVersion",
+          "type" => "JOULE_ESP32_FIRMWARE",
+          "version" => "#{@joule_esp32_fw_ver}",
+          "supported_hw_ver" => "#{@supported_joule_esp32_hw_ver}"
+        }
+      ]
+    }
+
     mock_s3_json(
       "joule/WIFI_FIRMWARE/#{@esp_version}/metadata.json", esp_metadata
     )
@@ -146,6 +160,8 @@ describe Api::V0::FirmwareController do
     mock_s3_json("manifests/2.48.3/manifest", both_manifest)
     mock_s3_json("manifests/2.49.9/manifest", staging_manifest)
     mock_s3_json("manifests/2.66.1/manifest", joule_esp32_manifest)
+
+    mock_s3_json("joule/JOULE_ESP32_FIRMWARE/143-b2-hw-opt/metadata.json", joule_esp32_b2_hw_option_manifest)
   end
 
   it 'should get manifests for wifi firmware' do
@@ -500,6 +516,25 @@ describe Api::V0::FirmwareController do
 
       resp['updates'][1]['type'].should == 'APPLICATION_FIRMWARE'
       resp['updates'][1]['bootModeType'].should == 'APPLICATION_BOOT_MODE'
+    end
+
+
+    # Temp Tests TODO Remove when we clean this special function out
+    it 'should force a specific version if is 143' do
+      request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+      params = {
+        'appVersion'=> '2.52.0',
+        'appFirmwareVersion' => '143',
+        'espFirmwareVersion' => 'v3.1.1',
+        'hardwareVersion' => 'J6',
+        'bootloaderVersion' => 'v3.1.1',
+      }
+      post :updates, params
+      response.should be_success
+      resp = JSON.parse(response.body)
+      resp['updates'].length.should == 1
+      resp['updates'][0]['version'].should == '143-b2-hw-opt'
+      resp['updates'][0]['type'].should == 'JOULE_ESP32_FIRMWARE'
     end
   end
 end
