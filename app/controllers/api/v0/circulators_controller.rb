@@ -342,19 +342,21 @@ module Api
           notification_type: push_notification.notification_type,
         })
 
+        aps = {}
+
         if push_notification.message
-          data[:alert] = push_notification.message
-          data[:sound] =  'default'
+          aps[:alert] = push_notification.message
+          aps[:sound] =  'default'
         end
 
         if push_notification.is_background
-          data['content-available'.to_sym] = 1
+          aps['content-available'.to_sym] = 1
           data[:notId] = push_notification.notification_id
         end
 
-        return {
-          aps: data
-        }
+        return data.merge({
+          aps: aps,
+        })
       end
 
       def render_for_gcm(push_notification)
