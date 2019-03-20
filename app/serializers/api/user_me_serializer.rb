@@ -14,5 +14,5 @@ class Api::UserMeSerializer < ApplicationSerializer
   def admin
     object.admin?
   end
-
+  
 end
