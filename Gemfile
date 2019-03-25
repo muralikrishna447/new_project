@@ -100,6 +100,8 @@ gem 'peddler', '1.2.0'
 
 gem 'quickbase_client'
 
+gem 'ruby-protocol-buffers' # JR QR Codes
+
 group :test do
   gem 'webmock'
   gem 'shopify-mock', :git => 'https://github.com/ChefSteps/shopify-mock', :ref => '74132ae3a471ec29cb85547987c061e3f749fd1b'
@@ -172,6 +174,7 @@ group :development, :test, :angular do
   gem 'bullet'
   gem 'launchy'
   gem 'childprocess', '0.3.6'
+  gem 'rb-readline'
 end
 
 group :development, :angular do
