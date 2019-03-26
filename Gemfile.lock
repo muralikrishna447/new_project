@@ -453,7 +453,6 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.13.0)
     rake (11.2.2)
-    rb-readline (0.5.5)
     rdiscount (1.6.8)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -686,7 +685,6 @@ DEPENDENCIES
   rails (= 3.2.16)
   rails-erd
   railties (= 3.2.16)
-  rb-readline
   rdiscount
   redcarpet
   resque

@@ -19,7 +19,7 @@ class QrCodesController < ApplicationController
     begin
       if base64_encoded_protobuf.present?
         decoded = Base64.decode64 base64_encoded_protobuf
-        code = Proto::JouleReadyQrCode.parse(decoded)
+        code = CsProto::JouleReadyQrCode.parse(decoded)
         Rails.logger.info "QrCodesController#jr:JSON:#{code.to_json}"
 
         # Since all fields are optional we don't have a clean way to see
