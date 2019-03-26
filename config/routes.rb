@@ -57,6 +57,8 @@ Delve::Application.routes.draw do
 
   get '/recipes', to: redirect('/gallery')
 
+  get '/jr/:base64_encoded_protobuf', to: 'qr_codes#jr'
+
   ActiveAdmin.routes(self)
 
   # For convenient youtube CTAs
