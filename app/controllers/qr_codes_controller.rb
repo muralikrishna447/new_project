@@ -28,6 +28,7 @@ class QrCodesController < ApplicationController
           status = :ok
           contents[:incoming] = base64_encoded_protobuf
           contents[:payload] = code
+          contents[:redirect_url] = select_redirect_url(code)
         else
           Rails.logger.error "QrCodesController::jr:no sku and no guideId"
         end
@@ -37,6 +38,24 @@ class QrCodesController < ApplicationController
     end
 
     render json: contents, status: status
+  end
+
+
+  private
+
+  DEFAULT_QR_CODE_REDIRECT = "https://shop.chefsteps.com/?utm_source=QR&utm_medium=QR&utm_campaign=default"
+
+  def select_redirect_url(code)
+    if code.guideId.present?
+      guide_activity = lookup_guide_activity(code.guideId)
+      selected_redirect = guide_url(guide_activity.guide_id) if guide_activity.present?
+    end
+
+    selected_redirect || ENV['DEFAULT_QR_CODE_REDIRECT'] || DEFAULT_QR_CODE_REDIRECT
+  end
+
+  def lookup_guide_activity(guide_id)
+    GuideActivity.where(guide_id: guide_id).first
   end
   #
   # class JouleReadyItemV0 < ProtocolBuffers::Message
