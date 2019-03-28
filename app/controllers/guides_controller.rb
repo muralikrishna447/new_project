@@ -24,7 +24,7 @@ class GuidesController < ApplicationController
 
     # Putting these here for now, though we might want to change it later
     def apple
-        apple_creds = {"applinks" => { "apps" => [], "details" => [{ "appID" => "6PR62W26GL.com.chefsteps.circulator", "paths" => [ "/guides/*"]}] } }
+        apple_creds = {"applinks" => { "apps" => [], "details" => [{ "appID" => "6PR62W26GL.com.chefsteps.circulator", "paths" => [ "/guides/*", "/jr/*"]}] } }
         render(json: apple_creds.to_json)
     end
 
