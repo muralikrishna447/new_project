@@ -5,9 +5,13 @@ class GuidesController < ApplicationController
         if @guide_activity.present?
             logger.info "[GuideController] Matched GuideID #{params[:id]} matched activity #{@guide_activity.activity_id}"
             if @guide_activity.activity_id.present?
-                logger.info "[GuideController] Matched GuideID #{params[:id]} matched activity #{@guide_activity.activity.title}"
-                # This is the norm, where a guide exists and it has an
-                return redirect_to activity_path(@guide_activity.activity)
+                if @guide_activity.activity.published?
+                    logger.info "[GuideController] Matched GuideID #{params[:id]} matched activity #{@guide_activity.activity.title}"
+                    # This is the norm, where a guide exists and it has an
+                    return redirect_to activity_path(@guide_activity.activity)
+                else
+                    return redirect_to "/joule/app"
+                end
             else
                 logger.info "[GuideController] Redirecting to the Joule Ready Landing page"
                 # This is for Joule Ready where an guide exists but there isn't an activity associated with it
@@ -18,7 +22,7 @@ class GuidesController < ApplicationController
             logger.info "[GuideController] Redirecting to the generic app landing page."
             # This is when a guide doesn't exist at all
             # Show them a page telling them to enjoy the wonder of the app
-            return redirect_to "/joule_app_landing"
+            return redirect_to "/joule/app"
         end
     end
 
