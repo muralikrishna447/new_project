@@ -12,11 +12,10 @@ class AdminController < ApplicationController
       return
     end
 
-    user = nil
-    if params[:text].to_i != 0
-      user = User.where(id: params[:text]).first
-    else
+    if params[:text].present? && params[:text].include?('@')
       user = User.where('email iLIKE ?', params[:text]).first
+    else
+      user = User.where(id: params[:text].to_i).first
     end
 
     if ! user
