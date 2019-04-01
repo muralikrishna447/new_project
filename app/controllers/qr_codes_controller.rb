@@ -10,48 +10,39 @@ require 'base64'
 
 class QrCodesController < ApplicationController
   def jr
-    base64_encoded_protobuf = params[:base64_encoded_protobuf]
-    Rails.logger.info "QrCodesController#jr:base64:#{base64_encoded_protobuf}"
-
-    status = :unprocessable_entity
-    contents = {}
+    @qr_base64_encoded_protobuf = params[:base64_encoded_protobuf]
+    Rails.logger.info "QrCodesController#jr:base64:#{@qr_base64_encoded_protobuf}"
 
     begin
-      if base64_encoded_protobuf.present?
-        decoded = Base64.decode64 base64_encoded_protobuf
-        code = CsProto::JouleReadyQrCode.parse(decoded)
-        Rails.logger.info "QrCodesController#jr:JSON:#{code.to_json}"
+      if @qr_base64_encoded_protobuf.present?
+        @qr_decoded = Base64.decode64 @qr_base64_encoded_protobuf
+        @qr_code = CsProto::JouleReadyQrCode.parse(@qr_decoded)
+        Rails.logger.info "QrCodesController#jr:JSON:#{@qr_code.to_json}"
 
         # Since all fields are optional we don't have a clean way to see
         # If this was parsed at all
-        if code.valid? && (code.sku.present? || code.guideId.present?)
-          status = :ok
-          contents[:incoming] = base64_encoded_protobuf
-          contents[:payload] = code
-          contents[:redirect_url] = select_redirect_url(code)
+        if @qr_code.valid? && (@qr_code.sku.present? || @qr_code.guideId.present?)
+          @qr_redirect_url = select_redirect_url(@qr_code)
         else
           Rails.logger.error "QrCodesController::jr:no sku and no guideId"
         end
       end
     rescue StandardError => e
-      Rails.logger.error "QrCodesController::jr #{e.class.name} #{e.message} QrCodesController#jr:#{base64_encoded_protobuf}"
+      Rails.logger.error "QrCodesController::jr #{e.class.name} #{e.message} QrCodesController#jr:#{@qr_base64_encoded_protobuf}"
     end
 
-    render json: contents, status: status
+    redirect_to @qr_redirect_url || ENV['DEFAULT_QR_CODE_REDIRECT'] || DEFAULT_QR_CODE_REDIRECT
   end
 
 
   private
 
-  DEFAULT_QR_CODE_REDIRECT = "https://shop.chefsteps.com/?utm_source=QR&utm_medium=QR&utm_campaign=default"
+  DEFAULT_QR_CODE_REDIRECT = '/joule/app'
 
   def select_redirect_url(code)
     if code.guideId.present?
-      guide_activity = lookup_guide_activity(code.guideId)
-      selected_redirect = guide_url(guide_activity.guide_id) if guide_activity.present?
+      guide_url(code.guideId)
     end
-
-    selected_redirect || ENV['DEFAULT_QR_CODE_REDIRECT'] || DEFAULT_QR_CODE_REDIRECT
   end
 
   def lookup_guide_activity(guide_id)
