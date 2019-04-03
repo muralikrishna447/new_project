@@ -50,7 +50,7 @@ en:
       autostart_water_heated:
         message: "Your water is heated."
         template: "Your water is heated. Your food will be ready in %{cook_time}."
-      autostart_food_ready:
+      cook_finished:
         message: "Your food is ready"
         template: "%{cook_finished_notification}"
 
