@@ -33,11 +33,12 @@ describe Api::V0::CookHistoryController do
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
   end
   
-  def fabricate_unique_cook_history_item
+  def fabricate_unique_cook_history_item(turbo_cook_state = nil)
     @history_item = Fabricate :joule_cook_history_item,
       user_id: @user.id,
       idempotency_id: SecureRandom.uuid,
-      cook_id: SecureRandom.uuid
+      cook_id: SecureRandom.uuid,
+      turbo_cook_state: turbo_cook_state
   end
 
   # GET /api/v0/cook_history
@@ -48,6 +49,17 @@ describe Api::V0::CookHistoryController do
     parsed = JSON.parse response.body
     parsed["cookHistory"].is_a?(Array)
     parsed["cookHistory"].first["externalId"].should == @history_item.external_id
+    parsed["cookHistory"].first["turboCookState"].should be_nil
+  end
+
+  # GET /api/v0/cook_history
+  it "should respond with an array of a user's cook history items" do
+    fabricate_unique_cook_history_item('TURBO_ENABLED')
+    get :index
+    response.should be_success
+    parsed = JSON.parse response.body
+    parsed["cookHistory"].is_a?(Array)
+    parsed["cookHistory"].first["program"]["turboCookState"].should == 'TURBO_ENABLED'
   end
   
   
@@ -180,6 +192,7 @@ describe Api::V0::CookHistoryController do
       response.should be_success
       parsed = JSON.parse response.body
       JouleCookHistoryItem.find_by_external_id(parsed["externalId"]).user.should == @user
+      parsed['turboCookState'] = nil
     end
 
     it 'should not create item with identical user/idempotency_id as existing entry' do
@@ -189,6 +202,15 @@ describe Api::V0::CookHistoryController do
         response.should be_success
       end
       @user_entries.length.should == 2
+    end
+
+    it 'should create a Cook History Item with turbo_cook_state' do
+      payload = create_cook_entry()
+      payload[:turbo_cook_state] = 'TURBO_ENABLED'
+      post :create, { cook_history: create_cook_entry() }
+      response.should be_success
+      parsed = JSON.parse response.body
+      parsed['turboCookState'] = 'TURBO_ENABLED'
     end
     
     describe 'validation' do

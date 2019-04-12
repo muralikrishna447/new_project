@@ -7,6 +7,7 @@ class Api::JouleCookHistoryItemSerializer < ApplicationSerializer
       cookTime: object.cook_time,
       guide: object.guide_id,
       programType: object.program_type,
+      turboCookState: object.turbo_cook_state,
       setPoint: object.set_point,
       cookId: object.cook_id,
       programMetadata: {

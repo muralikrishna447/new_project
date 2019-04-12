@@ -1141,7 +1141,8 @@ CREATE TABLE public.joule_cook_history_items (
     cook_time integer,
     cook_history_item_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    turbo_cook_state character varying(255)
 );
 
 
@@ -4710,4 +4711,6 @@ INSERT INTO schema_migrations (version) VALUES ('20190123202608');
 INSERT INTO schema_migrations (version) VALUES ('20190125235137');
 
 INSERT INTO schema_migrations (version) VALUES ('20190126001041');
+
+INSERT INTO schema_migrations (version) VALUES ('20190412184807');
 
