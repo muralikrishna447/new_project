@@ -9,7 +9,7 @@ class JouleCookHistoryItem < ActiveRecord::Base
   
   attr_accessible :idempotency_id, :start_time, :started_from,
   :cook_time, :guide_id, :program_type, :set_point, :timer_id, :cook_id,
-  :wait_for_preheat, :program_id
+  :wait_for_preheat, :program_id, :turbo_cook_state
   
   belongs_to :user
   

@@ -180,6 +180,7 @@ describe Api::V0::CookHistoryController do
       response.should be_success
       parsed = JSON.parse response.body
       JouleCookHistoryItem.find_by_external_id(parsed["externalId"]).user.should == @user
+      parsed['turboCookState'] = nil
     end
 
     it 'should not create item with identical user/idempotency_id as existing entry' do
@@ -189,6 +190,15 @@ describe Api::V0::CookHistoryController do
         response.should be_success
       end
       @user_entries.length.should == 2
+    end
+
+    it 'should create a Cook History Item with turbo_cook_state' do
+      payload = create_cook_entry()
+      payload[:turbo_cook_state] = 'TURBO_ENABLED'
+      post :create, { cook_history: create_cook_entry() }
+      response.should be_success
+      parsed = JSON.parse response.body
+      parsed['turboCookState'] = 'TURBO_ENABLED'
     end
     
     describe 'validation' do
