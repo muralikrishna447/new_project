@@ -34,3 +34,5 @@ db/schema.rb
 dump.rdb
 .idea
 coverage
+*.iml
+.env.*

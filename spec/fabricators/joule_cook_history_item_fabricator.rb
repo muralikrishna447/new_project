@@ -9,4 +9,5 @@ Fabricator(:joule_cook_history_item) do
   start_time 1483999425792
   started_from "jouleApp"
   timer_id "6cVAqvnbbymQOOOKWUGWgS"
+  turbo_cook_state nil
 end
