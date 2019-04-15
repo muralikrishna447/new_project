@@ -35,3 +35,4 @@ dump.rdb
 .idea
 coverage
 *.iml
+.env.*

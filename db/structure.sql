@@ -3788,6 +3788,13 @@ CREATE INDEX index_box_sort_images_on_question_id ON public.box_sort_images USIN
 
 
 --
+-- Name: index_circulator_users_on_circulator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_circulator_users_on_circulator_id ON public.circulator_users USING btree (circulator_id);
+
+
+--
 -- Name: index_circulator_users_on_deleted_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4714,3 +4721,4 @@ INSERT INTO schema_migrations (version) VALUES ('20190126001041');
 
 INSERT INTO schema_migrations (version) VALUES ('20190412184807');
 
+INSERT INTO schema_migrations (version) VALUES ('20190415183302');
