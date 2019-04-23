@@ -346,7 +346,11 @@ module Api
 
         if push_notification.message
           aps[:alert] = push_notification.message
-          aps[:sound] =  'default'
+          if push_notification.notification_type == 'cook_finished'
+            aps[:sound] =  'www/sounds/timer.caf'
+          else
+            aps[:sound] =  'default'
+          end
         end
 
         if push_notification.is_background
