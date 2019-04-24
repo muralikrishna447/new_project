@@ -1166,6 +1166,34 @@ ALTER SEQUENCE public.joule_cook_history_items_id_seq OWNED BY public.joule_cook
 
 
 --
+-- Name: joule_ready_guide_skus; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.joule_ready_guide_skus (
+    guide_id character varying(255),
+    sku character varying(255),
+    name character varying(255)
+);
+
+
+--
+-- Name: joule_ready_surveys_sent; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.joule_ready_surveys_sent (
+    program_id character varying(255),
+    user_id integer,
+    name character varying(255),
+    email character varying(255),
+    guide_id character varying(255),
+    cook_id character varying(255),
+    sku character varying(255),
+    collector_url character varying(255),
+    email_sent_at timestamp without time zone
+);
+
+
+--
 -- Name: likes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3991,6 +4019,20 @@ CREATE UNIQUE INDEX index_joule_cook_history_items_on_user_id_and_idempotency_id
 
 
 --
+-- Name: index_joule_ready_guide_skus_on_guide_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_joule_ready_guide_skus_on_guide_id ON public.joule_ready_guide_skus USING btree (guide_id);
+
+
+--
+-- Name: index_joule_ready_surveys_sent_on_email_and_guide_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_joule_ready_surveys_sent_on_email_and_guide_id ON public.joule_ready_surveys_sent USING btree (email, guide_id);
+
+
+--
 -- Name: index_likes_on_likeable_type_and_likeable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4722,3 +4764,7 @@ INSERT INTO schema_migrations (version) VALUES ('20190126001041');
 INSERT INTO schema_migrations (version) VALUES ('20190412184807');
 
 INSERT INTO schema_migrations (version) VALUES ('20190415183302');
+
+INSERT INTO schema_migrations (version) VALUES ('20190423172616');
+
+INSERT INTO schema_migrations (version) VALUES ('20190423201327');
