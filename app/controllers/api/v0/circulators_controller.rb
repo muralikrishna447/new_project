@@ -337,6 +337,8 @@ module Api
         end
       end
 
+      COOK_FINISHED = 'cook_finished'
+
       def render_for_apns(push_notification)
         data = push_notification.params.merge({
           notification_type: push_notification.notification_type,
@@ -346,7 +348,7 @@ module Api
 
         if push_notification.message
           aps[:alert] = push_notification.message
-          if push_notification.notification_type == 'cook_finished'
+          if push_notification.notification_type == COOK_FINISHED
             aps[:sound] =  'www/sounds/timer.caf'
           else
             aps[:sound] =  'default'
@@ -371,6 +373,13 @@ module Api
         if push_notification.message
           data[:message] = push_notification.message
           data[:title] = I18n.t("circulator.app_name", raise: true)
+          if push_notification.notification_type == COOK_FINISHED
+            # playSound and soundName are for android versions 7 and below
+            data[:playSound] = true
+            data[:soundName] = 'timer'
+            # android_channel_id is for android 8 and above
+            data[:android_channel_id] = 'Joule'
+          end
         end
 
         if push_notification.is_background
