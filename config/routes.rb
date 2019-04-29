@@ -35,6 +35,7 @@ Delve::Application.routes.draw do
   post '/admin/slack_display', to:'admin#slack_display'
 
   get '/blog', to: redirect('http://blog.chefsteps.com/')
+  get '/shop', to: redirect('https://shop.chefsteps.com/')
   get '/presskit', to: redirect('/press')
   get '/jouleapp', to: redirect('/getting-started-with-joule')
   get '/jewel', to: redirect('/joule')
