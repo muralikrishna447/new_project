@@ -106,10 +106,13 @@ class BaseApplicationController < ActionController::Base
     def geolocate_ip(ip_address = nil)
       t1 = Time.now
       metric_suffix = 'hit'
+      conf = Rails.configuration.geoip
+
       location = null_location()
+      return location unless conf.is_configured
+
       ip_address = ip_address || get_ip_address
       logger.info("Geolocating IP: #{ip_address}")
-      conf = Rails.configuration.geoip
 
       return dummy_location if ip_address == '127.0.0.1'
 
