@@ -491,6 +491,7 @@ GEM
       rspec-mocks (~> 2.13.0)
     ruby-graphviz (1.0.8)
     ruby-hmac (0.4.0)
+    ruby-protocol-buffers (1.6.1)
     safe_yaml (1.0.4)
     sanitize (3.1.2)
       crass (~> 1.0.1)
@@ -691,6 +692,7 @@ DEPENDENCIES
   rest-client
   retriable (= 2.1.0)
   rspec-rails
+  ruby-protocol-buffers
   sanitize
   sass-rails (~> 3.2.3)
   select2-rails

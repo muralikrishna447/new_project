@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package CsProto;
+
+message JouleReadyQrCode {
+  uint32 serialNumber = 1;
+  string guideId = 2;
+  uint32 bestByDateInSeconds = 3;
+  uint32 version = 4;
+  string sku = 5;
+};

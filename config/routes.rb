@@ -35,6 +35,7 @@ Delve::Application.routes.draw do
   post '/admin/slack_display', to:'admin#slack_display'
 
   get '/blog', to: redirect('http://blog.chefsteps.com/')
+  get '/shop', to: redirect('https://shop.chefsteps.com/')
   get '/presskit', to: redirect('/press')
   get '/jouleapp', to: redirect('/getting-started-with-joule')
   get '/jewel', to: redirect('/joule')
@@ -56,6 +57,8 @@ Delve::Application.routes.draw do
   match '/customer-feedback-panel', to: 'home#customer_feedback_panel'
 
   get '/recipes', to: redirect('/gallery')
+
+  get '/jr/:base64_encoded_protobuf', to: 'qr_codes#jr'
 
   ActiveAdmin.routes(self)
 
@@ -269,6 +272,7 @@ Delve::Application.routes.draw do
         post :unlike, on: :collection
       end
       resources :locations, only: [:index]
+      resources :oauth_tokens, only: [:index]
       resources :pages, only: [:index, :show, :create, :update]
       resources :passwords, only: [:update] do
         post :send_reset_email, on: :collection

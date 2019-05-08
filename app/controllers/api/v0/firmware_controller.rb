@@ -116,6 +116,22 @@ module Api
         updates = []
         can_downgrade = BetaFeatureService.user_has_feature(user, 'allow_dfu_downgrade')
         hardware_version = params[:hardwareVersion]
+
+        # This is a work around to flash special firmware for beta 2 esp32 Joules
+        # and should be removed after the beta 2 period.
+        if params[:appFirmwareVersion] == '143' && params[:espFirmwareVersion] == 'v3.1.1'
+          if hardware_version != 'JA' && hardware_version != 'JB'
+            # Force flash of this specific firmware version
+            u =  {
+              'version' => '143-b2-hw-opt',
+              'type' => 'JOULE_ESP32_FIRMWARE',
+            }
+            u = get_wifi_firmware_metadata(u)
+            updates << u
+            return updates
+          end
+        end
+
         manifest["updates"].each do |u|
           logger.info "Considering #{u['type']}, version #{u['version']}"
           if (u.include? 'supported_hw_ver') && (!u['supported_hw_ver'].include? hardware_version)

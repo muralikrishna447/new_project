@@ -52,6 +52,7 @@ describe Api::V0::UsersController do
       result.delete('referral_code').should == nil
       result.delete('capabilities').should == []
       result.delete('settings').should == nil
+      
       result.empty?.should == true
     end
 
@@ -90,10 +91,9 @@ describe Api::V0::UsersController do
       result['settings'].delete('has_purchased_truffle_sauce').should == nil
       result['settings'].delete('country_iso2').should == 'GB'
       result.delete('settings').should == {}
-
+      
       result.empty?.should == true
     end
-
 
     it 'should work with old style auth token' do
       old_style_token = AuthToken.new({'address_id' => @aa.address_id, 'User' => {'id' => @user.id}, 'seq' => @aa.sequence})

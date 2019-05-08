@@ -347,7 +347,7 @@ describe Api::V0::CirculatorsController do
           msg = JSON.parse(@published_messages[0][:msg])
           apns = JSON.parse msg['APNS']
           gcm = JSON.parse msg['GCM']
-          expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
+          expect(apns['circulator_address']).to eq @circulator.circulator_id
           expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
           expect(gcm['data']['title']).to eq 'Joule'
         end
@@ -396,13 +396,13 @@ describe Api::V0::CirculatorsController do
           expect(gcm['data']['joule_name']).to eq 'joule-name'
           
           expect(apns['aps']['content-available']).to eq 1
-          expect(apns['aps']['notId']).to_not be_nil
-          expect(apns['aps']['notId']).to eq gcm['data']['notId']
-          expect(apns['aps']['finish_timestamp']).to eq 1234
-          expect(apns['aps']['feed_id']).to eq 0001
-          expect(apns['aps']['guide_id']).to eq 'guide-id'
-          expect(apns['aps']['timer_id']).to eq 'timer-id'
-          expect(apns['aps']['joule_name']).to eq 'joule-name'
+          expect(apns['notId']).to_not be_nil
+          expect(apns['notId']).to eq gcm['data']['notId']
+          expect(apns['finish_timestamp']).to eq 1234
+          expect(apns['feed_id']).to eq 0001
+          expect(apns['guide_id']).to eq 'guide-id'
+          expect(apns['timer_id']).to eq 'timer-id'
+          expect(apns['joule_name']).to eq 'joule-name'
         end
         
         it 'sends still_preheating as a background notification' do
@@ -428,11 +428,11 @@ describe Api::V0::CirculatorsController do
           expect(gcm['data']['joule_name']).to eq 'joule-name'
           
           expect(apns['aps']['content-available']).to eq 1
-          expect(apns['aps']['notId']).to_not be_nil
-          expect(apns['aps']['notId']).to eq gcm['data']['notId']
-          expect(apns['aps']['cook_time']).to eq 60
-          expect(apns['aps']['feed_id']).to eq 0001
-          expect(apns['aps']['joule_name']).to eq 'joule-name'
+          expect(apns['notId']).to_not be_nil
+          expect(apns['notId']).to eq gcm['data']['notId']
+          expect(apns['cook_time']).to eq 60
+          expect(apns['feed_id']).to eq 0001
+          expect(apns['joule_name']).to eq 'joule-name'
         end
       end
 
@@ -530,9 +530,9 @@ describe Api::V0::CirculatorsController do
           msg = JSON.parse(@published_messages[-1][:msg])
           apns = JSON.parse msg['APNS']
           gcm = JSON.parse msg['GCM']
-          expect(apns['aps']['circulator_address']).to eq @circulator.circulator_id
+          expect(apns['circulator_address']).to eq @circulator.circulator_id
           expect(gcm['data']['circulator_address']).to eq @circulator.circulator_id
-          expect(apns['aps']['feed_id']).to eq 123
+          expect(apns['feed_id']).to eq 123
           expect(gcm['data']['feed_id']).to eq 123
         end
 
@@ -549,7 +549,7 @@ describe Api::V0::CirculatorsController do
           msg = JSON.parse(@published_messages[-1][:msg])
           apns = JSON.parse msg['APNS']
           gcm = JSON.parse msg['GCM']
-          expect(apns['aps']['cook_start_timestamp']).to eq 123
+          expect(apns['cook_start_timestamp']).to eq 123
           expect(gcm['data']['cook_start_timestamp']).to eq 123
         end
 

@@ -337,24 +337,32 @@ module Api
         end
       end
 
+      COOK_FINISHED = 'cook_finished'
+
       def render_for_apns(push_notification)
         data = push_notification.params.merge({
           notification_type: push_notification.notification_type,
         })
 
+        aps = {}
+
         if push_notification.message
-          data[:alert] = push_notification.message
-          data[:sound] =  'default'
+          aps[:alert] = push_notification.message
+          if push_notification.notification_type == COOK_FINISHED
+            aps[:sound] =  'www/sounds/timer.caf'
+          else
+            aps[:sound] =  'default'
+          end
         end
 
         if push_notification.is_background
-          data['content-available'.to_sym] = 1
+          aps['content-available'.to_sym] = 1
           data[:notId] = push_notification.notification_id
         end
 
-        return {
-          aps: data
-        }
+        return data.merge({
+          aps: aps,
+        })
       end
 
       def render_for_gcm(push_notification)
@@ -365,6 +373,13 @@ module Api
         if push_notification.message
           data[:message] = push_notification.message
           data[:title] = I18n.t("circulator.app_name", raise: true)
+          if push_notification.notification_type == COOK_FINISHED
+            # playSound and soundName are for android versions 7 and below
+            data[:playSound] = true
+            data[:soundName] = 'timer'
+            # android_channel_id is for android 8 and above
+            data[:android_channel_id] = 'Joule'
+          end
         end
 
         if push_notification.is_background
@@ -382,7 +397,7 @@ module Api
         notification_type = params[:notification_type]
 
         # Other metadata that we want to pass on to the app
-        keys = ['feed_id', 'finish_timestamp', 'joule_name', 'guide_id', 'timer_id', 'cook_time', 'cook_start_timestamp']
+        keys = ['feed_id', 'finish_timestamp', 'joule_name', 'guide_id', 'timer_id', 'cook_time', 'cook_start_timestamp', 'cook_finished_notification']
         additional_params = (params[:notification_params] || {}).select{
           |k,v| keys.include? k
         }
