@@ -9,21 +9,21 @@ describe Api::V0::LocationsController do
       WebMock.stub_request(:get, /.*geoip.maxmind.com\/geoip\/v2.1\/city.*/) \
         .to_return(:status => 200, :body => JSON.generate(resp), :headers => {})
     end
-    it "geo error should respond with blank location data" do
+    it "geo error should respond with location data defaulted to US" do
       mock_geo({'error' => 'bleh'})
       get :index
       response.should be_success
       location = JSON.parse(response.body)
-      location.should include('country' => nil, 'latitude' => nil, 'longitude' => nil, 'city' => nil, 'state' => nil, 'zip' => nil)
+      location.should include('country' => 'US', 'latitude' => nil, 'longitude' => nil, 'city' => nil, 'state' => nil, 'zip' => nil)
     end
 
-    it "should respond with blank" do
+    it "should respond with blank and defaulted to US" do
       @request.env['REMOTE_ADDR'] = '1.2.3.4'
       mock_geo(Hashie::Mash.new(location: {latitude: 47.5943, longitude: -122.6265}, city: {names: {en: 'Bremerton'}}, subdivisions: [{iso_code: 'WA'}], postal: {code: '98310'}))
       get :index
       response.should be_success
       location = JSON.parse(response.body)
-      location.should include('country' => nil, 'latitude' => nil, 'longitude' => nil, 'city' => nil, 'state' => nil, 'zip' => nil)
+      location.should include('country' => 'US', 'latitude' => nil, 'longitude' => nil, 'city' => nil, 'state' => nil, 'zip' => nil)
     end
 
     it "should respond with location data" do
