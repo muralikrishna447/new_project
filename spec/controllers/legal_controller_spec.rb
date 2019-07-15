@@ -12,17 +12,17 @@ describe LegalController do
 
       it 'renders English when no language specified' do
         get :cookie_policy
-        expect(response.body).to include("CHEFSTEPS COOKIE POLICY")
+        expect(response.body).to include("COOKIE POLICY")
       end
 
       it 'renders English when English specified' do
         get :cookie_policy, language: 'English'
-        expect(response.body).to include("CHEFSTEPS COOKIE POLICY")
+        expect(response.body).to include("COOKIE POLICY")
       end
 
       it 'renders English when invalid language specified' do
         get :cookie_policy, language: 'foobar'
-        expect(response.body).to include("CHEFSTEPS COOKIE POLICY")
+        expect(response.body).to include("COOKIE POLICY")
       end
 
     end
