@@ -1,5 +1,5 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" class="dj_webkit dj_chrome dj_contentbox"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head>
         <!-- NAME: 1 COLUMN -->
         <!--[if gte mso 15]>
         <xml>
@@ -395,233 +395,25 @@
 			line-height:150% !important;
 		}
 
-}</style><style>
-    .mclp-wrapper {
-        padding: 9px;
-    }
-.mc-nav-container {
-    display: flex;
-    transition: all 0.5s ease-out, background 1s ease-out;
-    transition-delay: 0.2s;
-    z-index: 3;
-}
-
-/* BURGER */
-.mc-nav-container .burger-container {
-    position: relative;
-    display: none;
-    float: right;
-    height: 50px;
-    width: 50px;
-    cursor: pointer;
-    transform: rotate(0deg);
-    transition: all 0.3s cubic-bezier(0.4,0.01,0.165,0.99);
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    z-index: 999;
-}
-
-.mc-nav-container .burger-container #burger {
-    width: 18px;
-    height: 8px;
-    position: relative;
-    display: block;
-    margin: -4px auto 0;
-    top: 50%;
-}
-
-.mc-nav-container .burger-container #burger .bar {
-    width: 100%;
-    height: 2px;
-    display: block;
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4,0.01,0.165,0.99);
-    transition-delay: 0s;
-}
-.mc-nav-container .burger-container #burger .bar.topBar {
-    transform: translateY(0) rotate(0deg);
-}
-
-.mc-nav-container .burger-container #burger .bar.midBar {
-    transform: translateY(3px) rotate(0deg);
-    opacity: 1;
-}
-
-.mc-nav-container .burger-container #burger .bar.btmBar {
-    transform: translateY(6px) rotate(0deg);
-}
-
-/* UL MENU */
-.mc-nav-container ul.menu {
-    position: relative;
-    display: block;
-    float: right;
-    margin: 0;
-    padding: 0;
-
-}
-
-.mc-nav-container ul.menu li.menu-item {
-    display: inline-block;
-    padding: 9px 18px;
-}
-.mc-nav-container ul.menu li.menu-item:nth-child(1) {
-    transition-delay: 0.49s;
-}
-.mc-nav-container ul.menu li.menu-item:nth-child(2) {
-    transition-delay: 0.42s;
-}
-.mc-nav-container ul.menu li.menu-item:nth-child(3) {
-    transition-delay: 0.35s;
-}
-.mc-nav-container ul.menu li.menu-item:nth-child(4) {
-    transition-delay: 0.28s;
-}
-.mc-nav-container ul.menu li.menu-item:nth-child(5) {
-    transition-delay: 0.21s;
-}
-.mc-nav-container ul.menu li.menu-item:nth-child(6) {
-    transition-delay: 0.14s;
-}
-.mc-nav-container ul.menu li.menu-item:nth-child(7) {
-    transition-delay: 0.07s;
-}
-
-.mc-nav-container ul.menu li.menu-item a {
-    list-style: none;
-    text-decoration: none;
-    -webkit-font-smoothing: antialiased;
-    word-break: break-all;
-}
-
-@media only screen and (max-width: 40em) {
-    .mclp-wrapper {
-        height: 50px;
-        padding: 0 !important;
-    }
-    .mc-nav-container {
-        height: 50px;
-        line-height: 50px;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .mc-nav-container .burger-container {
-        display: block;
-    }
-    .mc-nav-container ul.menu {
-        position: relative;
-        float: none;
-        text-align: center;
-        padding: 0 48px 0;
-        list-style: none;
-        transform: translateY(-300px);
-        transition: transform 0.3s ease-in, background 0.5s ease-in;
-    }
-
-    .mc-nav-container.menu-opened ul.menu {
-        transform: translateY(0);
-    }
-
-    .mc-nav-container ul.menu li.menu-item {
-        display: block;
-        opacity: 0;
-        margin-top: 5px;
-        transform: translateY(-30px);
-        transition: transform 0.5s cubic-bezier(0.4,0.01,0.165,0.99), opacity 0.6s cubic-bezier(0.4,0.01,0.165,0.99);
-    }
-    .mc-nav-container ul.menu li.menu-item a {
-        display: block;
-        position: relative;
-        font-weight: 100;
-        text-decoration: none;
-        font-size: 24px;
-        line-height: 3em !important;
-        font-weight: 200;
-        width: 100%;
-    }
-    .mc-nav-container.menu-opened {
-        height: 100%;
-        transition: all 0.3s ease-in, background 0.5s ease-in;
-        transition-delay: 0.25s;
-    }
-    .mc-nav-container.menu-opened .burger-container {
-        transform: rotate(90deg);
-    }
-    .mc-nav-container.menu-opened .burger-container #burger .bar {
-        transition: all 0.4s cubic-bezier(0.4,0.01,0.165,0.99);
-        transition-delay: 0.2s;
-    }
-    .mc-nav-container.menu-opened .burger-container #burger .bar.topBar {
-        transform: translateY(5px) rotate(45deg);
-    }
-    .mc-nav-container.menu-opened .burger-container #burger .bar.midBar {
-        transform: translateY(0) rotate(-360deg);
-        opacity: 0;
-    }
-    .mc-nav-container.menu-opened .burger-container #burger .bar.btmBar {
-        transform: translateY(1px) rotate(-45deg);
-    }
-    .mc-nav-container.menu-opened ul.menu li.menu-item {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    .mc-nav-container.menu-opened ul.menu li.menu-item:nth-child(1) {
-        transition-delay: 0.27s;
-    }
-    .mc-nav-container.menu-opened ul.menu li.menu-item:nth-child(2) {
-        transition-delay: 0.34s;
-    }
-    .mc-nav-container.menu-opened ul.menu li.menu-item:nth-child(3) {
-        transition-delay: 0.41s;
-    }
-    .mc-nav-container.menu-opened ul.menu li.menu-item:nth-child(4) {
-        transition-delay: 0.48s;
-    }
-    .mc-nav-container.menu-opened ul.menu li.menu-item:nth-child(5) {
-        transition-delay: 0.55s;
-    }
-    .mc-nav-container.menu-opened ul.menu li.menu-item:nth-child(6) {
-        transition-delay: 0.62s;
-    }
-    .mc-nav-container.menu-opened ul.menu li.menu-item:nth-child(7) {
-        transition-delay: 0.69s;
-    }
-}
-</style>
-<!--[if !mso]><!--><link href="https://fonts.googleapis.com/css?family=Arvo:400,400i,700,700i|Cabin:400,400i,700,700i|Catamaran:400,400i,700,700i|Hind+Guntur:400,400i,700,700i|Karla:400,400i,700,700i|Lato:400,400i,700,700i|Lora:400,400i,700,700i|Merriweather:400,400i,700,700i|Merriweather+Sans:400,400i,700,700i|Noticia+Text:400,400i,700,700i|Open+Sans:400,400i,700,700i|Playfair+Display:400,400i,700,700i|Roboto:400,400i,700,700i|Rubik:400,400i,700,700i|Source+Sans+Pro:400,400i,700,700i|Source+Serif+Pro:400,400i,700,700i|Work+Sans:400,400i,700,700i" rel="stylesheet"><!--<![endif]--><link rel="stylesheet" type="text/css" href="https://us3.admin.mailchimp.com/release/1.1.1a85da8e58f830ff31a49700e62c4610c14e3607a/css/less/template-editor.css">
-                <script type="text/javascript" src="https://us3.admin.mailchimp.com/release/1.1.1a85da8e58f830ff31a49700e62c4610c14e3607a/js/dojo/dojo.js " data-dojo-config="parseOnLoad: true, usePlainJson: true, isDebug: false"></script><script type="text/javascript" src="https://us3.admin.mailchimp.com/release/1.1.1a85da8e58f830ff31a49700e62c4610c14e3607a/js/mojo/mcnpreview.js"></script><script>var _mcVariants = {};</script><script>dojo.require("mojo.neapolitan.Preview");</script><style type="text/css">/* Enable image placeholders */@-moz-document url-prefix(http), url-prefix(file) { img:-moz-broken{-moz-force-broken-image-icon:1; width:24px;height:24px;
-}
 }</style></head>
-    <body class="mcd np">
-        <!--*|IF:MC_PREVIEW_TEXT|*-->
-        <!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">*|MC_PREVIEW_TEXT|*</span><!--<![endif]-->
-        <!--*|END:IF|*-->
+    <body style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FAFAFA;">
+        <!---->
         <center>
-            <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 0;width: 100%;background-color: #FAFAFA;">
                 <tbody><tr>
-                    <td align="center" valign="top" id="bodyCell">
+                    <td align="center" valign="top" id="bodyCell" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 10px;width: 100%;border-top: 0;">
                         <!-- BEGIN TEMPLATE // -->
                         <!--[if (gte mso 9)|(IE)]>
                         <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
                         <tr>
                         <td align="center" valign="top" width="600" style="width:600px;">
                         <![endif]-->
-                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 0;max-width: 600px !important;">
                             <tbody><tr>
-                                <td valign="top" id="templatePreheader" mc:container="preheader_container" mccontainer="preheader_container" class="tpl-container dojoDndContainer dojoDndSource dojoDndTarget"><div class="mojoMcContainerEmptyMessage" style="display: none;">Drop Content Blocks Here</div><div class="mojoMcBlock tpl-block dojoDndItem" id="mojo_neapolitan_preview_McBlock_0" widgetid="mojo_neapolitan_preview_McBlock_0">
-    <div class="editedOverlay" style="display:none" data-dojo-attach-point="editedOverlay">
-        <span data-dojo-attach-point="editType"></span> by: <span class="userName" data-dojo-attach-point="editedBy"></span>
-    </div>
-
-    <!-- Content of the block will get inserted inside of this -->
-    <div data-dojo-attach-point="containerNode"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
+                                <td valign="top" id="templatePreheader" style="background:#fafafa none no-repeat center/cover;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #fafafa;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 9px;padding-bottom: 0px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
     <tbody class="mcnTextBlockOuter">
         <tr>
-            <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
               	<!--[if mso]>
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
@@ -630,10 +422,10 @@
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
                     <tbody><tr>
                         
-                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #666666;">
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #666666;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-family: Helvetica;font-size: 12px;line-height: 150%;text-align: left;">
                         
                             
                         </td>
@@ -650,31 +442,13 @@
             </td>
         </tr>
     </tbody>
-</table></div>
-
-    <div class="tpl-block-controls flex-row">
-        <div class="tpl-block-move flex-auto">
-            <span title="Drag to Reorder" data-dojo-attach-point="sortBtn" class="tpl-block-drag dojoDndHandle freddicon vellip-square"></span>
-        </div>
-        <div class="tpl-block-actions">
-            <a title="Edit Block" href="#" class="tpl-block-edit" data-dojo-attach-point="editBtn"><span class="freddicon edit"></span></a>
-            <a title="Duplicate Block" href="#" class="tpl-block-clone" data-dojo-attach-point="cloneBtn"><span class="freddicon duplicate"></span></a>
-            <a title="Delete Block" href="#" class="tpl-block-delete" data-dojo-attach-point="deleteBtn"><span class="freddicon trash"></span></a>
-        </div>
-    </div>
-</div></td>
+</table></td>
                             </tr>
                             <tr>
-                                <td valign="top" id="templateHeader" mc:container="header_container" mccontainer="header_container" class="tpl-container dojoDndContainer dojoDndSource dojoDndTarget"><div class="mojoMcContainerEmptyMessage" style="display: none;">Drop Content Blocks Here</div><div class="mojoMcBlock tpl-block dojoDndItem" id="mojo_neapolitan_preview_McBlock_1" widgetid="mojo_neapolitan_preview_McBlock_1">
-    <div class="editedOverlay" style="display:none" data-dojo-attach-point="editedOverlay">
-        <span data-dojo-attach-point="editType"></span> by: <span class="userName" data-dojo-attach-point="editedBy"></span>
-    </div>
-
-    <!-- Content of the block will get inserted inside of this -->
-    <div data-dojo-attach-point="containerNode"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
+                                <td valign="top" id="templateHeader" style="background:#ff674d none no-repeat center/cover;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ff674d;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 10px;padding-bottom: 7px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
     <tbody class="mcnTextBlockOuter">
         <tr>
-            <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
               	<!--[if mso]>
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
@@ -683,13 +457,13 @@
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
                     <tbody><tr>
                         
-                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px; text-align: center;">
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;">
                         
                             <center>
-<div style="text-align: center;"><a href="http://chefsteps.com" target="_blank" title="ChefSteps"><img align="none" alt="ChefSteps" height="36" src="https://gallery.mailchimp.com/9f69331c823fb9ca452fe5184/images/e63f6d8c-c61a-4b0b-a633-e764d17f8961.png" style="max-width: 150px; width: 150px; height: 36px; margin: 0px; padding: 0px" width="150"></a></div>
+<div style="text-align: center;"><a href="http://chefsteps.com" target="_blank" title="ChefSteps" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: underline;"><img align="none" alt="ChefSteps" height="36" src="https://gallery.mailchimp.com/9f69331c823fb9ca452fe5184/images/e63f6d8c-c61a-4b0b-a633-e764d17f8961.png" style="max-width: 150px;width: 150px;height: 36px;margin: 0px;padding: 0px;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="150"></a></div>
 </center>
 
                         </td>
@@ -706,37 +480,19 @@
             </td>
         </tr>
     </tbody>
-</table></div>
-
-    <div class="tpl-block-controls flex-row">
-        <div class="tpl-block-move flex-auto">
-            <span title="Drag to Reorder" data-dojo-attach-point="sortBtn" class="tpl-block-drag dojoDndHandle freddicon vellip-square"></span>
-        </div>
-        <div class="tpl-block-actions">
-            <a title="Edit Block" href="#" class="tpl-block-edit" data-dojo-attach-point="editBtn"><span class="freddicon edit"></span></a>
-            <a title="Duplicate Block" href="#" class="tpl-block-clone" data-dojo-attach-point="cloneBtn"><span class="freddicon duplicate"></span></a>
-            <a title="Delete Block" href="#" class="tpl-block-delete" data-dojo-attach-point="deleteBtn"><span class="freddicon trash"></span></a>
-        </div>
-    </div>
-</div></td>
+</table></td>
                             </tr>
                             <tr>
-                                <td valign="top" id="templateBody" mc:container="body_container" mccontainer="body_container" class="tpl-container dojoDndSource dojoDndTarget dojoDndContainer"><div class="mojoMcContainerEmptyMessage" style="display: none;">Drop Content Blocks Here</div><div class="mojoMcBlock tpl-block dojoDndItem" id="mojo_neapolitan_preview_McBlock_2" widgetid="mojo_neapolitan_preview_McBlock_2">
-    <div class="editedOverlay" style="display:none" data-dojo-attach-point="editedOverlay">
-        <span data-dojo-attach-point="editType"></span> by: <span class="userName" data-dojo-attach-point="editedBy"></span>
-    </div>
-
-    <!-- Content of the block will get inserted inside of this -->
-    <div data-dojo-attach-point="containerNode"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width:100%;">
+                                <td valign="top" id="templateBody" style="background:#FFFFFF none no-repeat center/cover;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 2px solid #EAEAEA;padding-top: 0;padding-bottom: 9px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
     <tbody class="mcnImageBlockOuter">
             <tr>
-                <td valign="top" style="padding:0px" class="mcnImageBlockInner">
-                    <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="min-width:100%;">
+                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnImageBlockInner">
+                    <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                         <tbody><tr>
-                            <td class="mcnImageContent" valign="top" style="padding-right: 0px; padding-left: 0px; padding-top: 0; padding-bottom: 0; text-align:center;">
+                            <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                 
                                     
-                                        <img align="center" alt="Joule" src="https://gallery.mailchimp.com/9f69331c823fb9ca452fe5184/images/74d75fe5-04d5-4922-bb77-0cb88426d54c.jpg" width="600" style="max-width:1200px; padding-bottom: 0; display: inline !important; vertical-align: bottom;" class="mcnRetinaImage">
+                                        <img align="center" alt="Joule" src="https://gallery.mailchimp.com/9f69331c823fb9ca452fe5184/images/74d75fe5-04d5-4922-bb77-0cb88426d54c.jpg" width="600" style="max-width: 1200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnRetinaImage">
                                     
                                 
                             </td>
@@ -745,28 +501,10 @@
                 </td>
             </tr>
     </tbody>
-</table></div>
-
-    <div class="tpl-block-controls flex-row">
-        <div class="tpl-block-move flex-auto">
-            <span title="Drag to Reorder" data-dojo-attach-point="sortBtn" class="tpl-block-drag dojoDndHandle freddicon vellip-square"></span>
-        </div>
-        <div class="tpl-block-actions">
-            <a title="Edit Block" href="#" class="tpl-block-edit" data-dojo-attach-point="editBtn"><span class="freddicon edit"></span></a>
-            <a title="Duplicate Block" href="#" class="tpl-block-clone" data-dojo-attach-point="cloneBtn"><span class="freddicon duplicate"></span></a>
-            <a title="Delete Block" href="#" class="tpl-block-delete" data-dojo-attach-point="deleteBtn"><span class="freddicon trash"></span></a>
-        </div>
-    </div>
-</div><div class="mojoMcBlock tpl-block dojoDndItem" id="mojo_neapolitan_preview_McBlock_3" widgetid="mojo_neapolitan_preview_McBlock_3">
-    <div class="editedOverlay" style="display:none" data-dojo-attach-point="editedOverlay">
-        <span data-dojo-attach-point="editType"></span> by: <span class="userName" data-dojo-attach-point="editedBy"></span>
-    </div>
-
-    <!-- Content of the block will get inserted inside of this -->
-    <div data-dojo-attach-point="containerNode"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
     <tbody class="mcnTextBlockOuter">
         <tr>
-            <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
               	<!--[if mso]>
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
@@ -775,17 +513,17 @@
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
                     <tbody><tr>
                         
-                        <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;">
                         
                             <div style="text-align: left;">
-<p dir="ltr"><strong>July, 16th 2019</strong><br>
+<p dir="ltr" style="margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;"><strong>July, 16th 2019</strong><br>
 <strong>JOINT NOTICE TO NON-EU CUSTOMERS</strong><br>
 &nbsp;<br>
 &nbsp;<br>
-Hello! You are receiving this joint notice because you have subscribed ChefSteps’ services or connected products and, according to our records, you are not located in the EU/European Economic Area (EEA).<br>
+Hello! You are receiving this joint notice because you have subscribed to ChefSteps’ services or connected products and, according to our records, you are not located in the EU/European Economic Area (EEA).<br>
 &nbsp;<br>
 ChefSteps and Breville today announced a transaction that will provide you with new opportunities and services for all of ChefSteps’ products.<br>
 &nbsp;<br>
@@ -793,14 +531,14 @@ Breville has acquired certain assets and ongoing operations of ChefSteps, with t
 &nbsp;<br>
 Breville will be supporting the continued operation of your Joule ™ products and is excited about continuing to build the community.<br>
 &nbsp;<br>
-We anticipate that not much will change for you in the short term from a practical standpoint. Breville, like ChefSteps, wishes to provide you with a seamless service experience. The website <a href="http://www.chefsteps.com">www.chefsteps.com</a> will continue to provide information and tools to learn about sous vide cooking, our Joule product, the user forum, recipes etc. that you enjoy.<br>
+We anticipate that not much will change for you in the short term from a practical standpoint. Breville, like ChefSteps, wishes to provide you with a seamless service experience. The website <a href="http://www.chefsteps.com" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">www.chefsteps.com</a> will continue to provide information and tools to learn about sous vide cooking, our Joule product, the user forum, recipes etc. that you enjoy.<br>
 &nbsp;<br>
 We believe this combination is a great thing for you.&nbsp; Breville is as excited about our products and offerings as ChefSteps was, and has ambitions to expand the business in fun and interesting ways<strong>.</strong><br>
 &nbsp;<br>
 With Breville taking over these products and services from ChefSteps, Breville will gain access to your personal data/personal information that ChefSteps has received, such as your first and last name, your postal address(es) for billing and shipping, your telephone number, your email address, financial data (e.g., any retained credit or debit card number), purchase information, including lifestyle and food preferences, and grocery lists, personal details (e.g., date of birth, gender), your IP address, photographs, social media usernames as well as feedback and reviews on the Joule products.<br>
-Like ChefSteps, Breville takes data protection very seriously. Breville will be solely responsible for all data processing. We have therefore posted a revised <a href="https://www.chefsteps.com/privacy">Privacy Policy</a> [<a href="https://www.chefsteps.com/privacy">https://www.chefsteps.com/privacy</a>] and revised <a href="https://www.chefsteps.com/cookie-policy">Cookie Policy</a> [<a href="https://www.chefsteps.com/cookie-policy">https://www.chefsteps.com/cookie-policy</a>] on the website <a href="http://www.chefsteps.com">www.chefsteps.com</a> to reflect this transaction. We encourage you to read these two new policies and come to us with any questions.<br>
+Like ChefSteps, Breville takes data protection very seriously. Breville will be solely responsible for all data processing. We have therefore posted a revised <a href="https://www.chefsteps.com/privacy" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Privacy Policy</a> [<a href="https://www.chefsteps.com/privacy" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">https://www.chefsteps.com/privacy</a>] and revised <a href="https://www.chefsteps.com/cookie-policy" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">Cookie Policy</a> [<a href="https://www.chefsteps.com/cookie-policy" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">https://www.chefsteps.com/cookie-policy</a>] on the website <a href="http://www.chefsteps.com" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">www.chefsteps.com</a> to reflect this transaction. We encourage you to read these two new policies and come to us with any questions.<br>
 &nbsp;<br>
-If you have any questions or comments about this notice, please contact Breville at <a href="mailto:privacy@breville.com">privacy@breville.com</a> or in writing to:<br>
+If you have any questions or comments about this notice, please contact Breville at <a href="mailto:privacy@breville.com" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #007C89;font-weight: normal;text-decoration: underline;">privacy@breville.com</a> or in writing to:<br>
 Breville USA, Inc.<br>
 Att: Data Protection Officer /Legal Department<br>
 19400 S Western Ave.<br>
@@ -822,31 +560,13 @@ Torrance, CA 90501 USA<br>
             </td>
         </tr>
     </tbody>
-</table></div>
-
-    <div class="tpl-block-controls flex-row">
-        <div class="tpl-block-move flex-auto">
-            <span title="Drag to Reorder" data-dojo-attach-point="sortBtn" class="tpl-block-drag dojoDndHandle freddicon vellip-square"></span>
-        </div>
-        <div class="tpl-block-actions">
-            <a title="Edit Block" href="#" class="tpl-block-edit" data-dojo-attach-point="editBtn"><span class="freddicon edit"></span></a>
-            <a title="Duplicate Block" href="#" class="tpl-block-clone" data-dojo-attach-point="cloneBtn"><span class="freddicon duplicate"></span></a>
-            <a title="Delete Block" href="#" class="tpl-block-delete" data-dojo-attach-point="deleteBtn"><span class="freddicon trash"></span></a>
-        </div>
-    </div>
-</div><div class="mojoMcBlock tpl-block dojoDndItem" id="mojo_neapolitan_preview_McBlock_4" widgetid="mojo_neapolitan_preview_McBlock_4">
-    <div class="editedOverlay" style="display:none" data-dojo-attach-point="editedOverlay">
-        <span data-dojo-attach-point="editType"></span> by: <span class="userName" data-dojo-attach-point="editedBy"></span>
-    </div>
-
-    <!-- Content of the block will get inserted inside of this -->
-    <div data-dojo-attach-point="containerNode"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width:100%;">
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;table-layout: fixed !important;">
     <tbody class="mcnDividerBlockOuter">
         <tr>
-            <td class="mcnDividerBlockInner" style="min-width: 100%; padding: 25px 18px;">
-                <table class="mcnDividerContent" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-top: 1px solid #EAEAEA;">
+            <td class="mcnDividerBlockInner" style="min-width: 100%;padding: 25px 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                <table class="mcnDividerContent" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-top: 1px solid #EAEAEA;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                     <tbody><tr>
-                        <td>
+                        <td style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                             <span></span>
                         </td>
                     </tr>
@@ -858,31 +578,13 @@ Torrance, CA 90501 USA<br>
             </td>
         </tr>
     </tbody>
-</table></div>
-
-    <div class="tpl-block-controls flex-row">
-        <div class="tpl-block-move flex-auto">
-            <span title="Drag to Reorder" data-dojo-attach-point="sortBtn" class="tpl-block-drag dojoDndHandle freddicon vellip-square"></span>
-        </div>
-        <div class="tpl-block-actions">
-            <a title="Edit Block" href="#" class="tpl-block-edit" data-dojo-attach-point="editBtn"><span class="freddicon edit"></span></a>
-            <a title="Duplicate Block" href="#" class="tpl-block-clone" data-dojo-attach-point="cloneBtn"><span class="freddicon duplicate"></span></a>
-            <a title="Delete Block" href="#" class="tpl-block-delete" data-dojo-attach-point="deleteBtn"><span class="freddicon trash"></span></a>
-        </div>
-    </div>
-</div></td>
+</table></td>
                             </tr>
                             <tr>
-                                <td valign="top" id="templateFooter" mc:container="footer_container" mccontainer="footer_container" class="tpl-container dojoDndContainer dojoDndSource dojoDndTarget"><div class="mojoMcContainerEmptyMessage" style="display: none;">Drop Content Blocks Here</div><div class="mojoMcBlock tpl-block dojoDndItem" id="mojo_neapolitan_preview_McBlock_5" widgetid="mojo_neapolitan_preview_McBlock_5">
-    <div class="editedOverlay" style="display:none" data-dojo-attach-point="editedOverlay">
-        <span data-dojo-attach-point="editType"></span> by: <span class="userName" data-dojo-attach-point="editedBy"></span>
-    </div>
-
-    <!-- Content of the block will get inserted inside of this -->
-    <div data-dojo-attach-point="containerNode"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width:100%;">
+                                <td valign="top" id="templateFooter" style="background:#f1f1f1 none no-repeat center/cover;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #f1f1f1;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 9px;padding-bottom: 9px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
     <tbody class="mcnTextBlockOuter">
         <tr>
-            <td valign="top" class="mcnTextBlockInner" style="padding-top:9px;">
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
               	<!--[if mso]>
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
@@ -891,12 +593,12 @@ Torrance, CA 90501 USA<br>
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
-                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="mcnTextContentContainer">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
                     <tbody><tr>
                         
-                        <td valign="top" class="mcnTextContent" style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #656565;font-family: Helvetica;font-size: 12px;line-height: 150%;text-align: center;">
                         
-                            <em style="line-height:20.8px">Copyright © *|CURRENT_YEAR|* ChefSteps, All rights reserved.</em><br style="line-height: 20.8px;">
+                            <em style="line-height:20.8px">Copyright © 2019 ChefSteps, All rights reserved.</em><br style="line-height: 20.8px;">
 <br style="line-height: 20.8px;">
 <strong style="line-height:20.8px">Our mailing address is:</strong><br style="line-height: 20.8px;">
 <span style="line-height:20.8px">1501 Pike Place #300</span><br style="line-height: 20.8px;">
@@ -915,37 +617,19 @@ Torrance, CA 90501 USA<br>
             </td>
         </tr>
     </tbody>
-</table></div>
-
-    <div class="tpl-block-controls flex-row">
-        <div class="tpl-block-move flex-auto">
-            <span title="Drag to Reorder" data-dojo-attach-point="sortBtn" class="tpl-block-drag dojoDndHandle freddicon vellip-square"></span>
-        </div>
-        <div class="tpl-block-actions">
-            <a title="Edit Block" href="#" class="tpl-block-edit" data-dojo-attach-point="editBtn"><span class="freddicon edit"></span></a>
-            <a title="Duplicate Block" href="#" class="tpl-block-clone" data-dojo-attach-point="cloneBtn"><span class="freddicon duplicate"></span></a>
-            <a title="Delete Block" href="#" class="tpl-block-delete" data-dojo-attach-point="deleteBtn"><span class="freddicon trash"></span></a>
-        </div>
-    </div>
-</div><div class="mojoMcBlock tpl-block dojoDndItem" id="mojo_neapolitan_preview_McBlock_6" widgetid="mojo_neapolitan_preview_McBlock_6">
-    <div class="editedOverlay" style="display:none" data-dojo-attach-point="editedOverlay">
-        <span data-dojo-attach-point="editType"></span> by: <span class="userName" data-dojo-attach-point="editedBy"></span>
-    </div>
-
-    <!-- Content of the block will get inserted inside of this -->
-    <div data-dojo-attach-point="containerNode"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowBlock" style="min-width:100%;">
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
     <tbody class="mcnFollowBlockOuter">
         <tr>
-            <td align="center" valign="top" style="padding:9px" class="mcnFollowBlockInner">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentContainer" style="min-width:100%;">
+            <td align="center" valign="top" style="padding: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowBlockInner">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentContainer" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
     <tbody><tr>
-        <td align="center" style="padding-left:9px;padding-right:9px;">
-            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width:100%;" class="mcnFollowContent">
+        <td align="center" style="padding-left: 9px;padding-right: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContent">
                 <tbody><tr>
-                    <td align="center" valign="top" style="padding-top:9px; padding-right:9px; padding-left:9px;">
-                        <table align="center" border="0" cellpadding="0" cellspacing="0">
+                    <td align="center" valign="top" style="padding-top: 9px;padding-right: 9px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                             <tbody><tr>
-                                <td align="center" valign="top">
+                                <td align="center" valign="top" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                     <!--[if mso]>
                                     <table align="center" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
@@ -956,22 +640,22 @@ Torrance, CA 90501 USA<br>
                                         <![endif]-->
                                         
                                         
-                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display:inline;">
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
-                                                    <td valign="top" style="padding-right:10px; padding-bottom:9px;" class="mcnFollowContentItemContainer">
-                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem">
+                                                    <td valign="top" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
+                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                             <tbody><tr>
-                                                                <td align="left" valign="middle" style="padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;">
-                                                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="">
+                                                                <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
                                                                             
-                                                                                <td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-                                                                                    <a href="http://www.facebook.com/chefsteps" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/light-facebook-48.png" alt="Facebook" style="display:block;" height="24" width="24" class=""></a>
+                                                                                <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                                    <a href="http://www.facebook.com/chefsteps" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/light-facebook-48.png" alt="Facebook" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
-                                                                                <td align="left" valign="middle" class="mcnFollowTextContent" style="padding-left:5px;">
-                                                                                    <a href="http://www.facebook.com/chefsteps" target="" style="font-family: Arial;font-size: 11px;text-decoration: none;color: #202020;font-weight: normal;">Facebook</a>
+                                                                                <td align="left" valign="middle" class="mcnFollowTextContent" style="padding-left: 5px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                                    <a href="http://www.facebook.com/chefsteps" target="" style="font-family: Arial;font-size: 11px;text-decoration: none;color: #202020;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Facebook</a>
                                                                                 </td>
                                                                             
                                                                         </tr>
@@ -992,22 +676,22 @@ Torrance, CA 90501 USA<br>
                                         <![endif]-->
                                         
                                         
-                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display:inline;">
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
-                                                    <td valign="top" style="padding-right:10px; padding-bottom:9px;" class="mcnFollowContentItemContainer">
-                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem">
+                                                    <td valign="top" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
+                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                             <tbody><tr>
-                                                                <td align="left" valign="middle" style="padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;">
-                                                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="">
+                                                                <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
                                                                             
-                                                                                <td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-                                                                                    <a href="http://www.twitter.com/chefsteps" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/light-twitter-48.png" alt="Twitter" style="display:block;" height="24" width="24" class=""></a>
+                                                                                <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                                    <a href="http://www.twitter.com/chefsteps" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/light-twitter-48.png" alt="Twitter" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
-                                                                                <td align="left" valign="middle" class="mcnFollowTextContent" style="padding-left:5px;">
-                                                                                    <a href="http://www.twitter.com/chefsteps" target="" style="font-family: Arial;font-size: 11px;text-decoration: none;color: #202020;font-weight: normal;">Twitter</a>
+                                                                                <td align="left" valign="middle" class="mcnFollowTextContent" style="padding-left: 5px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                                    <a href="http://www.twitter.com/chefsteps" target="" style="font-family: Arial;font-size: 11px;text-decoration: none;color: #202020;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Twitter</a>
                                                                                 </td>
                                                                             
                                                                         </tr>
@@ -1028,22 +712,22 @@ Torrance, CA 90501 USA<br>
                                         <![endif]-->
                                         
                                         
-                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display:inline;">
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
-                                                    <td valign="top" style="padding-right:10px; padding-bottom:9px;" class="mcnFollowContentItemContainer">
-                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem">
+                                                    <td valign="top" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
+                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                             <tbody><tr>
-                                                                <td align="left" valign="middle" style="padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;">
-                                                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="">
+                                                                <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
                                                                             
-                                                                                <td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-                                                                                    <a href="http://www.chefsteps.com" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/light-link-48.png" alt="Website" style="display:block;" height="24" width="24" class=""></a>
+                                                                                <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                                    <a href="http://www.chefsteps.com" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/light-link-48.png" alt="Website" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
-                                                                                <td align="left" valign="middle" class="mcnFollowTextContent" style="padding-left:5px;">
-                                                                                    <a href="http://www.chefsteps.com" target="" style="font-family: Arial;font-size: 11px;text-decoration: none;color: #202020;font-weight: normal;">Website</a>
+                                                                                <td align="left" valign="middle" class="mcnFollowTextContent" style="padding-left: 5px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                                    <a href="http://www.chefsteps.com" target="" style="font-family: Arial;font-size: 11px;text-decoration: none;color: #202020;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Website</a>
                                                                                 </td>
                                                                             
                                                                         </tr>
@@ -1064,22 +748,22 @@ Torrance, CA 90501 USA<br>
                                         <![endif]-->
                                         
                                         
-                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display:inline;">
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
-                                                    <td valign="top" style="padding-right:10px; padding-bottom:9px;" class="mcnFollowContentItemContainer">
-                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem">
+                                                    <td valign="top" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
+                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                             <tbody><tr>
-                                                                <td align="left" valign="middle" style="padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;">
-                                                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="">
+                                                                <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
                                                                             
-                                                                                <td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-                                                                                    <a href="http://instagram.com/chefsteps" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/light-instagram-48.png" alt="Instagram" style="display:block;" height="24" width="24" class=""></a>
+                                                                                <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                                    <a href="http://instagram.com/chefsteps" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/light-instagram-48.png" alt="Instagram" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
-                                                                                <td align="left" valign="middle" class="mcnFollowTextContent" style="padding-left:5px;">
-                                                                                    <a href="http://instagram.com/chefsteps" target="" style="font-family: Arial;font-size: 11px;text-decoration: none;color: #202020;font-weight: normal;">Instagram</a>
+                                                                                <td align="left" valign="middle" class="mcnFollowTextContent" style="padding-left: 5px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                                    <a href="http://instagram.com/chefsteps" target="" style="font-family: Arial;font-size: 11px;text-decoration: none;color: #202020;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Instagram</a>
                                                                                 </td>
                                                                             
                                                                         </tr>
@@ -1100,22 +784,22 @@ Torrance, CA 90501 USA<br>
                                         <![endif]-->
                                         
                                         
-                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display:inline;">
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                 <tbody><tr>
-                                                    <td valign="top" style="padding-right:0; padding-bottom:9px;" class="mcnFollowContentItemContainer">
-                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem">
+                                                    <td valign="top" style="padding-right: 0;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContentItemContainer">
+                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentItem" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                             <tbody><tr>
-                                                                <td align="left" valign="middle" style="padding-top:5px; padding-right:10px; padding-bottom:5px; padding-left:9px;">
-                                                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="">
+                                                                <td align="left" valign="middle" style="padding-top: 5px;padding-right: 10px;padding-bottom: 5px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                    <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                                                         <tbody><tr>
                                                                             
-                                                                                <td align="center" valign="middle" width="24" class="mcnFollowIconContent">
-                                                                                    <a href="http://www.youtube.com/chefsteps" target="_blank"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/light-youtube-48.png" alt="YouTube" style="display:block;" height="24" width="24" class=""></a>
+                                                                                <td align="center" valign="middle" width="24" class="mcnFollowIconContent" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                                    <a href="http://www.youtube.com/chefsteps" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/light-youtube-48.png" alt="YouTube" style="display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" height="24" width="24" class=""></a>
                                                                                 </td>
                                                                             
                                                                             
-                                                                                <td align="left" valign="middle" class="mcnFollowTextContent" style="padding-left:5px;">
-                                                                                    <a href="http://www.youtube.com/chefsteps" target="" style="font-family: Arial;font-size: 11px;text-decoration: none;color: #202020;font-weight: normal;">YouTube</a>
+                                                                                <td align="left" valign="middle" class="mcnFollowTextContent" style="padding-left: 5px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                                                    <a href="http://www.youtube.com/chefsteps" target="" style="font-family: Arial;font-size: 11px;text-decoration: none;color: #202020;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">YouTube</a>
                                                                                 </td>
                                                                             
                                                                         </tr>
@@ -1148,19 +832,7 @@ Torrance, CA 90501 USA<br>
             </td>
         </tr>
     </tbody>
-</table></div>
-
-    <div class="tpl-block-controls flex-row">
-        <div class="tpl-block-move flex-auto">
-            <span title="Drag to Reorder" data-dojo-attach-point="sortBtn" class="tpl-block-drag dojoDndHandle freddicon vellip-square"></span>
-        </div>
-        <div class="tpl-block-actions">
-            <a title="Edit Block" href="#" class="tpl-block-edit" data-dojo-attach-point="editBtn"><span class="freddicon edit"></span></a>
-            <a title="Duplicate Block" href="#" class="tpl-block-clone" data-dojo-attach-point="cloneBtn"><span class="freddicon duplicate"></span></a>
-            <a title="Delete Block" href="#" class="tpl-block-delete" data-dojo-attach-point="deleteBtn"><span class="freddicon trash"></span></a>
-        </div>
-    </div>
-</div></td>
+</table></td>
                             </tr>
                         </tbody></table>
                         <!--[if (gte mso 9)|(IE)]>
