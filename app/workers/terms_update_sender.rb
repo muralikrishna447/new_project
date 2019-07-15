@@ -6,7 +6,7 @@ class TermsUpdateSender
   def self.perform(email_address, terms_version, is_eu)
     raise 'terms_version param is required' if terms_version.to_s.empty?
 
-    if is_eu?
+    if is_eu
       Rails.logger.info "Starting TermsUpdateSender job for email address #{email_address} and terms version #{terms_version} EU"
       TermsUpdateMailer.prepare_eu(email_address, terms_version).deliver
     else
