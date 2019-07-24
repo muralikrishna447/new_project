@@ -35,4 +35,21 @@ class TermsUpdateMailer < ActionMailer::Base
     headers['X-IDEMPOTENCY'] = "#{subject} #{terms_version}"
     mail(to: email_address, subject: subject)
   end
+
+  def prepare_inquiry_response(email_address, version)
+    raise 'version param is required' if version.to_s.empty?
+
+    Rails.logger.info "Preparing TermsUpdateMailer for email address #{email_address} and version #{version} for inquiry response"
+
+    subject = 'Re: ChefSteps - Breville joint notice and Privacy Policy update.'
+    substitutions = {
+      sub: {
+        '*|SUBJECT|*' => [subject],
+        '*|CURRENT_YEAR|*' => [Time.now.year]
+      }
+    }
+    headers['X-SMTPAPI'] = substitutions.to_json
+    headers['X-IDEMPOTENCY'] = "#{subject} #{version}"
+    mail(to: email_address, subject: subject)
+  end
 end
