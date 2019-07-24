@@ -41,7 +41,7 @@ class TermsUpdateMailer < ActionMailer::Base
 
     Rails.logger.info "Preparing TermsUpdateMailer for email address #{email_address} and version #{version} for inquiry response"
 
-    subject = 'Re: ChefSteps - Breville joint notice and Privacy Policy update.'
+    subject = 'We\'ve received your request! Re: ChefSteps - Breville joint notice and Privacy Policy update.'
     substitutions = {
       sub: {
         '*|SUBJECT|*' => [subject],
