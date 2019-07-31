@@ -1,6 +1,6 @@
 class OptOutIntentMailer < ActionMailer::Base
-  default from: 'Team ChefSteps <jshaffer@chefsteps.com>'
-  #default reply_to: 'Breville Privacy <privacy@breville.com>'
+  default from: 'Team ChefSteps <info@chefsteps.com>'
+  default reply_to: 'Breville Privacy <privacy@breville.com>'
 
   def prepare(email_address, token, version)
     raise 'token is required' if token.to_s.empty?

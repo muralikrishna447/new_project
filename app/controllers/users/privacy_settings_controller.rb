@@ -1,6 +1,9 @@
 class Users::PrivacySettingsController < ApplicationController
+
+  INTENTS = %w(confirm_opt_out decline_opt_out unsubscript).freeze
+
   def update
-    if params['token'].blank?
+    if params['token'].blank? || params['intent'].blank? || !INTENTS.include?(params['intent'])
       handle_invalid
       return
     end
