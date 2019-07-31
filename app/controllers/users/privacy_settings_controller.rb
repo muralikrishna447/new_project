@@ -1,6 +1,5 @@
 class Users::PrivacySettingsController < ApplicationController
-
-  INTENTS = %w(confirm_opt_out decline_opt_out unsubscript).freeze
+  INTENTS = %w(confirm_opt_out decline_opt_out unsubscribe).freeze
 
   def update
     if params['token'].blank? || params['intent'].blank? || !INTENTS.include?(params['intent'])
@@ -16,8 +15,13 @@ class Users::PrivacySettingsController < ApplicationController
     end
 
     aa = ActorAddress.find_for_token(auth_token)
-    if aa && aa.valid_token?(auth_token)
+    if aa && aa.valid_token?(auth_token, 0, OptOutIntentSender::TOKEN_RESTRICTION)
       user = User.find(aa.actor_id)
+      unless user
+        handle_invalid
+        return
+      end
+
       info = {
         user_id: user.id,
         email: user.email,

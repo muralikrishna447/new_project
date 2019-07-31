@@ -3,6 +3,8 @@ require 'aws-sdk'
 class OptOutIntentSender
   @queue = :OptOutIntentSender
 
+  TOKEN_RESTRICTION = 'privacy settings'.freeze
+
   def self.perform(email_address, token, version)
     raise 'token is required' if token.to_s.empty?
     raise 'version param is required' if version.to_s.empty?
@@ -38,7 +40,13 @@ class OptOutIntentSender
 
   def self.create_tokens_for_users(user_list)
     user_list.each do |row|
-      row[:token] = row[:user].valid_website_auth_token.to_jwt if row[:user]
+      row[:token] = create_token_for_user(row[:user])
     end
+  end
+
+  def self.create_token_for_user(user)
+    aa = ActorAddress.create_for_user(user, client_metadata: 'privacy_settings')
+    exp = ((Time.now + 21.day).to_f * 1000).to_i
+    aa.current_token(exp: exp, restrict_to: TOKEN_RESTRICTION).to_jwt
   end
 end
