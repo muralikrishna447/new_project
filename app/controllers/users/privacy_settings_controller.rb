@@ -21,7 +21,8 @@ class Users::PrivacySettingsController < ApplicationController
       info = {
         user_id: user.id,
         email: user.email,
-        intent: params['intent']
+        intent: params['intent'],
+        timestamp: Time.now.utc.iso8601
       }
       Rails.logger.info "PRIVACY_OPTOUT #{info.to_json}"
     else
