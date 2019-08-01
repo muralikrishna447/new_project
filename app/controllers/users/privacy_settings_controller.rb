@@ -1,5 +1,5 @@
 class Users::PrivacySettingsController < ApplicationController
-  INTENTS = %w(confirm_opt_out decline_opt_out unsubscribe).freeze
+  INTENTS = %w(confirm_opt_out decline_opt_out).freeze
 
   def update
     if params['token'].blank? || params['intent'].blank? || !INTENTS.include?(params['intent'])
@@ -28,14 +28,14 @@ class Users::PrivacySettingsController < ApplicationController
         intent: params['intent'],
         timestamp: Time.now.utc.iso8601
       }
-      Rails.logger.info "PRIVACY_OPTOUT #{info.to_json}"
+      Rails.logger.error "PRIVACY_OPTOUT #{info.to_json}"
     else
       handle_invalid
     end
   end
 
   def handle_invalid
-    Rails.logger.info 'PRIVACY_OPTOUT_INVALID'
+    Rails.logger.warn 'PRIVACY_OPTOUT_INVALID'
     render 'invalid'
   end
 end

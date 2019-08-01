@@ -8,7 +8,7 @@ class OptOutIntentMailer < ActionMailer::Base
 
     Rails.logger.info "Preparing OptOutIntentMailer for email address #{email_address} and version #{version}"
 
-    subject = 'test'
+    subject = 'Important: Action required for your opt out request'
     substitutions = {
       sub: {
         '*|SUBJECT|*' => [subject],
