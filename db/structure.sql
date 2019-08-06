@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.11
--- Dumped by pg_dump version 9.6.11
+-- Dumped from database version 9.6.14
+-- Dumped by pg_dump version 11.4
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -12,6 +12,7 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
@@ -598,7 +599,12 @@ CREATE TABLE public.circulators (
     encrypted_secret_key character varying(64),
     name character varying(255),
     last_accessed_at timestamp without time zone,
-    deleted_at timestamp without time zone
+    deleted_at timestamp without time zone,
+    hardware_options integer,
+    hardware_version character varying(255),
+    build_date integer,
+    model_number character varying(255),
+    pcba_revision character varying(255)
 );
 
 
@@ -4768,3 +4774,6 @@ INSERT INTO schema_migrations (version) VALUES ('20190415183302');
 INSERT INTO schema_migrations (version) VALUES ('20190423172616');
 
 INSERT INTO schema_migrations (version) VALUES ('20190423201327');
+
+INSERT INTO schema_migrations (version) VALUES ('20190806055356');
+
