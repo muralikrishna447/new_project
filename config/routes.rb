@@ -103,6 +103,8 @@ Delve::Application.routes.draw do
     end
   end
 
+  post '/generate_hp_url', to: 'chargebee#generate_hp_url'
+
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
   get 'embeddable_signup' => 'home#embeddable_signup', as: 'embeddable_signup'

@@ -102,6 +102,8 @@ gem 'quickbase_client'
 
 gem 'ruby-protocol-buffers' # JR QR Codes
 
+gem 'chargebee', '~>2'
+
 group :test do
   gem 'webmock'
   gem 'shopify-mock', :git => 'https://github.com/ChefSteps/shopify-mock', :ref => '74132ae3a471ec29cb85547987c061e3f749fd1b'
