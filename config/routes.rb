@@ -104,6 +104,7 @@ Delve::Application.routes.draw do
   end
 
   post '/generate_hp_url', to: 'chargebee#generate_hp_url'
+  post '/create_portal_session', to: 'chargebee#create_portal_session'
 
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 

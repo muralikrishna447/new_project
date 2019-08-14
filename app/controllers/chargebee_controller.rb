@@ -26,4 +26,10 @@ class ChargebeeController < ApplicationController
     result = ChargeBee::HostedPage.checkout_new(params)
     render :json => result.hosted_page.to_s
   end
+
+  def create_portal_session
+    customer_id = "431067"
+    result = ChargeBee::PortalSession.create({ :customer => { :id => customer_id } })
+    render :json => result.portal_session.to_s
+  end
 end
