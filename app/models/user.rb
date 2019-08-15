@@ -48,6 +48,8 @@ class User < ActiveRecord::Base
 
   has_one :settings, class_name: 'UserSettings', :dependent => :destroy
 
+  has_many :subscriptions, :dependent => :destroy
+
   serialize :viewed_activities, Array
 
   scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
@@ -101,6 +103,11 @@ class User < ActiveRecord::Base
 
   def profile_complete?
     chef_type.present?
+  end
+
+  def new_premium?
+    # TODO - need to decide if we want to keep the old premium concept around or just delete it
+    Subscription::user_has_premium?(self)
   end
 
   def premium?
