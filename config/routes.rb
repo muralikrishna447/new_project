@@ -103,9 +103,6 @@ Delve::Application.routes.draw do
     end
   end
 
-  post '/generate_hp_url', to: 'chargebee#generate_hp_url'
-  post '/create_portal_session', to: 'chargebee#create_portal_session'
-
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
   get 'embeddable_signup' => 'home#embeddable_signup', as: 'embeddable_signup'
@@ -317,6 +314,9 @@ Delve::Application.routes.draw do
       get 'auth/external_redirect_by_key', to: 'auth#external_redirect_by_key'
 
       get 'content_config/manifest', to: 'content#manifest'
+
+      post '/generate_premium_url', to: 'chargebee#generate_premium_url'
+      post '/create_portal_session', to: 'chargebee#create_portal_session'
 
       namespace :shopping do
 
