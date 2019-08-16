@@ -111,7 +111,8 @@ class User < ActiveRecord::Base
   end
 
   def premium?
-    self.premium_member || admin
+    #self.premium_member || admin
+    new_premium? || admin
   end
 
   def viewed_activities_in_course(course)

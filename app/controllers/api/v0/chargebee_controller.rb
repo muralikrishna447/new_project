@@ -8,7 +8,7 @@ module Api
       def generate_premium_url
         params = {
           :subscription => {
-            :plan_id => ENV['PREMIUM_PLAN_ID'] || 'cbdemo_nuts'
+            :plan_id => Subscription::PREMIUM_PLAN_ID
           },
           :customer => {
             :id => current_api_user.id,

@@ -1,4 +1,7 @@
 class Subscription < ActiveRecord::Base
+  # TODO - do we want to use environment variable for the Plan ID?
+  PREMIUM_PLAN_ID = ENV['PREMIUM_PLAN_ID'] || 'cbdemo_nuts'
+
   belongs_to :user
 
   attr_accessible :plan_id
@@ -12,9 +15,8 @@ class Subscription < ActiveRecord::Base
     self.where(:user_id => user.id).where(:plan_id => plan_id).active
   end
 
-  # TODO - do we want to use environment variable for the Plan ID?
   def self.user_has_premium?(user)
-    self.user_has_subscription?(user, ENV['PREMIUM_PLAN_ID'])
+    self.user_has_subscription?(user, PREMIUM_PLAN_ID)
   end
 
 end
