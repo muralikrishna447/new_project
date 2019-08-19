@@ -8,11 +8,12 @@ class Subscription < ActiveRecord::Base
   attr_accessible :status
 
   validates :status, inclusion: { in: %w(future in_trial active non_renewing paused cancelled) }
+  validates_uniqueness_of :plan_id, scope: :user_id
 
   scope :active, where(:status => ['active', 'in_trial', 'non_renewing'])
 
   def self.user_has_subscription?(user, plan_id)
-    self.where(:user_id => user.id).where(:plan_id => plan_id).active
+    self.where(:user_id => user.id).where(:plan_id => plan_id).active.exists?
   end
 
   def self.user_has_premium?(user)

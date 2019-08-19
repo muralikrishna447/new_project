@@ -25,6 +25,25 @@ module Api
         render_api_response(200, result.portal_session)
       end
 
+      def sync_subscriptions
+        result = ChargeBee::Subscription.list({"customer_id[is]" => current_api_user.id})
+
+        if result
+          result.each do |entry|
+            subscription = Subscription.where(:plan_id => entry.subscription.plan_id).where(:user_id => current_api_user.id).first_or_create! do |sub|
+              sub.user_id = current_api_user.id
+              sub.plan_id = entry.subscription.plan_id
+              sub.status = entry.subscription.status
+            end
+
+            subscription.status = entry.subscription.status
+            subscription.save!
+          end
+        end
+
+        render json: current_api_user, serializer: Api::UserMeSerializer
+      end
+
       private
 
       def render_invalid_chargebee_request(exception = nil)

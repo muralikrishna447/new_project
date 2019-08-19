@@ -9,5 +9,6 @@ class CreateSubscriptionModel < ActiveRecord::Migration
 
     add_index :subscriptions, :user_id
     add_index :subscriptions, :plan_id
+    add_index :subscriptions, [:user_id, :plan_id], unique: true
   end
 end
