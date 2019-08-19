@@ -4,6 +4,7 @@ class CreateSubscriptionModel < ActiveRecord::Migration
       t.integer :user_id
       t.string :plan_id
       t.string :status
+      t.integer :resource_version, :limit => 8
       t.timestamps
     end
 

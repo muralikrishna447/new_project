@@ -7,6 +7,10 @@ class Subscription < ActiveRecord::Base
   attr_accessible :plan_id
   attr_accessible :status
 
+  # For the webhook, to handle out of order messages
+  # https://www.chargebee.com/docs/webhook_settings.html
+  attr_accessible :resource_version
+
   validates :status, inclusion: { in: %w(future in_trial active non_renewing paused cancelled) }
   validates_uniqueness_of :plan_id, scope: :user_id
 

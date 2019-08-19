@@ -2216,6 +2216,7 @@ CREATE TABLE public.subscriptions (
     user_id integer,
     plan_id character varying(255),
     status character varying(255),
+    resource_version bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -4183,6 +4184,13 @@ CREATE INDEX index_subscriptions_on_plan_id ON public.subscriptions USING btree 
 --
 
 CREATE INDEX index_subscriptions_on_user_id ON public.subscriptions USING btree (user_id);
+
+
+--
+-- Name: index_subscriptions_on_user_id_and_plan_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscriptions_on_user_id_and_plan_id ON public.subscriptions USING btree (user_id, plan_id);
 
 
 --
