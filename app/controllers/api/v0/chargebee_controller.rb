@@ -1,7 +1,10 @@
 module Api
   module V0
     class ChargebeeController < BaseController
-      before_filter :ensure_authorized
+      before_filter :ensure_authorized, :except => [:webhook]
+
+      before_filter :webhook_authorize, :only => [:webhook]
+      skip_before_filter :log_current_user, :only => [:webhook]
 
       rescue_from ChargeBee::InvalidRequestError, with: :render_invalid_chargebee_request
 
@@ -30,18 +33,33 @@ module Api
 
         if result
           result.each do |entry|
-            subscription = Subscription.where(:plan_id => entry.subscription.plan_id).where(:user_id => current_api_user.id).first_or_create! do |sub|
-              sub.user_id = current_api_user.id
-              sub.plan_id = entry.subscription.plan_id
-              sub.status = entry.subscription.status
-            end
-
-            subscription.status = entry.subscription.status
-            subscription.save!
+            Subscription.create_or_update_by_params(entry[:subscription], current_api_user.id)
           end
         end
 
         render json: current_api_user, serializer: Api::UserMeSerializer
+      end
+
+      # https://apidocs.chargebee.com/docs/api/events
+      # For now we only want to keep the subscription status in sync with what is in Chargebee
+      def webhook
+        content = params[:content]
+        if content
+          if content[:customer] && content[:customer][:id] && content[:subscription] && content[:subscription][:plan_id]
+            begin
+              Subscription.create_or_update_by_params(content[:subscription], content[:customer][:id])
+              Rails.logger.info("chargebee_controller.webhook - updating event id=#{params[:id]} and event_type=#{params[:event_type]}")
+              render_api_response(200, {})
+            rescue StandardError => error
+              Rails.logger.error("chargebee_controller.webhook - failed event id=#{params[:id]} and event_type=#{params[:event_type]}")
+              Rails.logger.error error.message
+              render_api_response(400, {})
+            end
+          else
+            Rails.logger.info("chargebee_controller.webhook - ignoring event id=#{params[:id]} and event_type=#{params[:event_type]}")
+            render_api_response(200, {})
+          end
+        end
       end
 
       private
@@ -49,6 +67,24 @@ module Api
       def render_invalid_chargebee_request(exception = nil)
         Rails.logger.error("ChargeBee::InvalidRequestError.  current_api_user.id=#{current_api_user.id} exception=#{exception}")
         render_api_response(400, {message: 'Failed to make ChargeBee request'})
+      end
+
+      # Chargebee webhook uses basic authentication
+      def webhook_authorize
+        auth = request.authorization()
+        if auth
+          mode = auth.split(' ').first.downcase
+          key = auth.split(' ').last
+          if mode == 'basic' && key.present? && key == chargebee_webhook_key
+            return true
+          end
+        end
+        render_unauthorized
+        false
+      end
+
+      def chargebee_webhook_key
+        ENV['CHARGEBEE_WEBHOOK_KEY']
       end
 
     end

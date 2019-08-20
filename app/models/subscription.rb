@@ -1,6 +1,5 @@
 class Subscription < ActiveRecord::Base
-  # TODO - do we want to use environment variable for the Plan ID?
-  PREMIUM_PLAN_ID = ENV['PREMIUM_PLAN_ID'] || 'cbdemo_nuts'
+  PREMIUM_PLAN_ID = ENV['PREMIUM_PLAN_ID']
 
   belongs_to :user
 
@@ -22,6 +21,22 @@ class Subscription < ActiveRecord::Base
 
   def self.user_has_premium?(user)
     self.user_has_subscription?(user, PREMIUM_PLAN_ID)
+  end
+
+  def self.create_or_update_by_params(params, user_id)
+    subscription = self.where(:plan_id => params[:plan_id]).where(:user_id => user_id).first_or_create! do |sub|
+      sub.user_id = user_id
+      sub.plan_id = params[:plan_id]
+      sub.status = params[:status]
+      sub.resource_version = params[:resource_version]
+    end
+
+    if params[:resource_version].to_i > subscription.resource_version
+      subscription.status = params[:status]
+    end
+
+    subscription.save!
+    subscription
   end
 
 end
