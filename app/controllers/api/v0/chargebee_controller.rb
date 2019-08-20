@@ -1,10 +1,11 @@
 module Api
   module V0
     class ChargebeeController < BaseController
-      before_filter :ensure_authorized, :except => [:webhook]
+      before_filter :ensure_authorized
 
       before_filter :webhook_authorize, :only => [:webhook]
       skip_before_filter :log_current_user, :only => [:webhook]
+      skip_before_filter :ensure_authorized, :only => [:webhook]
 
       rescue_from ChargeBee::InvalidRequestError, with: :render_invalid_chargebee_request
 
