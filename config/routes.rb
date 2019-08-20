@@ -315,7 +315,7 @@ Delve::Application.routes.draw do
 
       get 'content_config/manifest', to: 'content#manifest'
 
-      namespace :subscription do
+      scope :subscription do
         post '/create_portal_session', to: 'chargebee#create_portal_session'
         post '/generate_premium_url', to: 'chargebee#generate_premium_url'
         post '/sync_subscriptions', to: 'chargebee#sync_subscriptions'
