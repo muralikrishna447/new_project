@@ -9,10 +9,10 @@ module Api
 
       rescue_from ChargeBee::InvalidRequestError, with: :render_invalid_chargebee_request
 
-      def generate_premium_url
-        params = {
+      def generate_checkout_url
+        data = {
           :subscription => {
-            :plan_id => Subscription::PREMIUM_PLAN_ID
+            :plan_id => params[:plan_id] || Subscription::PREMIUM_PLAN_ID
           },
           :customer => {
             :id => current_api_user.id,
@@ -20,7 +20,7 @@ module Api
           }
         }
 
-        result = ChargeBee::HostedPage.checkout_new(params)
+        result = ChargeBee::HostedPage.checkout_new(data)
         render_api_response(200, result.hosted_page)
       end
 

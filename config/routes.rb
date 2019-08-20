@@ -317,7 +317,7 @@ Delve::Application.routes.draw do
 
       scope :path => "/subscription" do
         post '/create_portal_session', to: 'chargebee#create_portal_session'
-        post '/generate_premium_url', to: 'chargebee#generate_premium_url'
+        post '/generate_checkout_url', to: 'chargebee#generate_checkout_url'
         post '/sync_subscriptions', to: 'chargebee#sync_subscriptions'
         post '/webhook', to: 'chargebee#webhook'
       end
