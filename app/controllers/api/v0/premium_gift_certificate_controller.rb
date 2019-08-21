@@ -17,8 +17,11 @@ module Api
           if was_used
             render_api_response(201, {message: 'Already created'})
           else
-            pgc = PremiumGiftCertificate.create!(purchaser_id: params[:user_id], price: params[:price], redeemed: false)
-            PremiumGiftCertificateMailer.prepare(params[:email], pgc.token).deliver
+            quantity = params[:quantity] || 1
+            (1..quantity.to_i).each do
+              pgc = PremiumGiftCertificate.create!(purchaser_id: params[:user_id], price: params[:price], redeemed: false)
+              PremiumGiftCertificateMailer.prepare(params[:email], pgc.token).deliver
+            end
             Rails.cache.write(params[:premium_identifier], 1, expires_in: 7.days)
             render_api_response(200, {message: 'Success'})
           end
