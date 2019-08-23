@@ -47,14 +47,9 @@ module Api
         content = params[:content]
         if content
           if content[:customer] && content[:customer][:id] && content[:subscription] && content[:subscription][:plan_id]
-            begin
-              Subscription.create_or_update_by_params(content[:subscription], content[:customer][:id])
-              Rails.logger.info("chargebee_controller.webhook - updating event id=#{params[:id]} and event_type=#{params[:event_type]}")
-              render_api_response(200, {})
-            rescue StandardError => error
-              Rails.logger.error("chargebee_controller.webhook - failed event id=#{params[:id]} and event_type=#{params[:event_type]}")
-              Rails.logger.error error.message
-              render_api_response(400, {})
+            Subscription.create_or_update_by_params(content[:subscription], content[:customer][:id])
+            Rails.logger.info("chargebee_controller.webhook - updating event id=#{params[:id]} and event_type=#{params[:event_type]}")
+            render_api_response(200, {})
             end
           else
             Rails.logger.info("chargebee_controller.webhook - ignoring event id=#{params[:id]} and event_type=#{params[:event_type]}")
