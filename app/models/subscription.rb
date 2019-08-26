@@ -1,5 +1,5 @@
 class Subscription < ActiveRecord::Base
-  PREMIUM_PLAN_ID = ENV['PREMIUM_PLAN_ID']
+  STUDIO_PLAN_ID = ENV['STUDIO_PLAN_ID']
 
   belongs_to :user
 
@@ -19,8 +19,8 @@ class Subscription < ActiveRecord::Base
     self.where(:user_id => user.id).where(:plan_id => plan_id).active.exists?
   end
 
-  def self.user_has_premium?(user)
-    self.user_has_subscription?(user, PREMIUM_PLAN_ID)
+  def self.user_has_studio?(user)
+    self.user_has_subscription?(user, STUDIO_PLAN_ID)
   end
 
   def self.create_or_update_by_params(params, user_id)

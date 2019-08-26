@@ -12,7 +12,7 @@ module Api
       def generate_checkout_url
         data = {
           :subscription => {
-            :plan_id => params[:plan_id] || Subscription::PREMIUM_PLAN_ID
+            :plan_id => params[:plan_id] || Subscription::STUDIO_PLAN_ID
           },
           :customer => {
             :id => current_api_user.id,

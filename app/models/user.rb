@@ -105,14 +105,12 @@ class User < ActiveRecord::Base
     chef_type.present?
   end
 
-  def new_premium?
-    # TODO - need to decide if we want to keep the old premium concept around or just delete it
-    Subscription::user_has_premium?(self)
+  def studio?
+    Subscription::user_has_studio?(self)
   end
 
   def premium?
-    #self.premium_member || admin
-    new_premium? || admin
+    self.premium_member || admin || self.studio?
   end
 
   def viewed_activities_in_course(course)
