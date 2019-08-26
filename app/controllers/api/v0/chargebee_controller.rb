@@ -1,6 +1,7 @@
 module Api
   module V0
     class ChargebeeController < BaseController
+
       before_filter :ensure_authorized
 
       before_filter :webhook_authorize, :only => [:webhook]
@@ -56,7 +57,6 @@ module Api
             render_api_response(200, {})
           end
         end
-      end
 
       private
 
