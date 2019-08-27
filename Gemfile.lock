@@ -122,6 +122,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    chargebee (2.4.4)
+      json_pure (~> 1.5)
+      rest-client (>= 1.8, < 3.0)
     childprocess (0.3.6)
       ffi (~> 1.0, >= 1.0.6)
     choice (0.1.6)
@@ -607,6 +610,7 @@ DEPENDENCIES
   cache_digests
   cancan
   capybara
+  chargebee (~> 2)
   childprocess (= 0.3.6)
   client_side_validations
   client_side_validations-formtastic

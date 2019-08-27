@@ -48,6 +48,8 @@ class User < ActiveRecord::Base
 
   has_one :settings, class_name: 'UserSettings', :dependent => :destroy
 
+  has_many :subscriptions, :dependent => :destroy
+
   serialize :viewed_activities, Array
 
   scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
@@ -103,8 +105,12 @@ class User < ActiveRecord::Base
     chef_type.present?
   end
 
+  def studio?
+    Subscription::user_has_studio?(self)
+  end
+
   def premium?
-    self.premium_member || admin
+    self.premium_member || admin || self.studio?
   end
 
   def viewed_activities_in_course(course)
