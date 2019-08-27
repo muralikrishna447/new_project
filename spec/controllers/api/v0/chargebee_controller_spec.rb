@@ -57,27 +57,7 @@ describe Api::V0::ChargebeeController do
         response.code.should eq("200")
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be_false
       end
-
-      it 'ignored bad request' do
-        bad_params = {
-            api_version: "v2",
-            content: {
-                customer: {
-                    id: @user.id
-                },
-                subscription: {
-                    resource_version: 1517507544000,
-                    status: "active"
-                }
-            },
-            event_type: "subscription_created",
-            id: "ev___test__5SK0bLNFRFuFaqltU",
-            object: "event"
-        }
-
-        post :webhook, bad_params
-        response.code.should eq("200")
-      end
+      
     end
 
     context 'without authentication' do
