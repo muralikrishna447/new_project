@@ -89,7 +89,7 @@ module Api
       end
 
       def get_applicable_coupon
-        if current_api_user.premium?
+        if Subscription::EXISTING_PREMIUM_COUPON.present? && current_api_user.premium?
           return Subscription::EXISTING_PREMIUM_COUPON
         end
 
