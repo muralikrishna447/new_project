@@ -1,6 +1,8 @@
 class Subscription < ActiveRecord::Base
   STUDIO_PLAN_ID = ENV['STUDIO_PLAN_ID']
 
+  EXISTING_PREMIUM_COUPON = ENV['EXISTING_PREMIUM_COUPON']
+
   belongs_to :user
 
   attr_accessible :plan_id
