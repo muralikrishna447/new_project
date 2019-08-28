@@ -21,6 +21,11 @@ module Api
           }
         }
 
+        coupon = get_applicable_coupon
+        if coupon.present?
+          data[:subscription][:coupon] = coupon
+        end
+
         result = ChargeBee::HostedPage.checkout_new(data)
         render_api_response(200, result.hosted_page)
       end
@@ -81,6 +86,14 @@ module Api
 
       def chargebee_webhook_key
         ENV['CHARGEBEE_WEBHOOK_KEY']
+      end
+
+      def get_applicable_coupon
+        if current_api_user.premium?
+          return Subscription::EXISTING_PREMIUM_COUPON
+        end
+
+        nil
       end
 
     end
