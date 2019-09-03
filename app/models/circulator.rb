@@ -34,7 +34,9 @@ class Circulator < ActiveRecord::Base
     if premium_offer_eligible?
       user = self.circulator_users.first
       price = 0
-      user.make_premium_member(price)
+      if user
+        user.make_premium_member(price)
+      end
     end
   end
 
