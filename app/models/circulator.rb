@@ -17,7 +17,9 @@ class Circulator < ActiveRecord::Base
 
   attr_accessible :notes, :serial_number
 
+  after_create :redeem_new_circulator_offers
   after_destroy :revoke_address
+
 
   private
   def revoke_address
@@ -26,5 +28,18 @@ class Circulator < ActiveRecord::Base
       logger.info "Revoking address #{aa.address_id} [#{aa.inspect}]"
       aa.revoke
     end
+  end
+
+  def redeem_new_circulator_offers
+    if premium_offer_eligible?
+      user = self.circulator_users.first
+      price = 0
+      user.make_premium_member(price)
+    end
+  end
+
+  def premium_offer_eligible?
+    # TODO - how to identify 1.5 SS Joules
+    self.hardware_version = "foo" && self.hardware_options = "bar"
   end
 end
