@@ -41,7 +41,7 @@ class Circulator < ActiveRecord::Base
   end
 
   def premium_offer_eligible?
-    # TODO - how to identify 1.5 SS Joules
-    self.hardware_version = "foo" && self.hardware_options = "bar"
+    # 1.5 SS Joules
+    self.hardware_version = "JA" && ((self.hardware_options & 1) > 0)
   end
 end
