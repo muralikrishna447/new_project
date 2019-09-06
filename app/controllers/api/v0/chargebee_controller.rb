@@ -40,7 +40,7 @@ module Api
 
         if result
           result.each do |entry|
-            Subscription.create_or_update_by_params(entry[:subscription], current_api_user.id)
+            Subscription.create_or_update_by_params(entry.subscription, current_api_user.id)
           end
         end
 
