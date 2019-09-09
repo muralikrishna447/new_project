@@ -26,15 +26,15 @@ class Subscription < ActiveRecord::Base
   end
 
   def self.create_or_update_by_params(params, user_id)
-    subscription = self.where(:plan_id => params.plan_id).where(:user_id => user_id).first_or_create! do |sub|
+    subscription = self.where(:plan_id => params[:plan_id]).where(:user_id => user_id).first_or_create! do |sub|
       sub.user_id = user_id
-      sub.plan_id = params.plan_id
-      sub.status = params.status
-      sub.resource_version = params.resource_version
+      sub.plan_id = params[:plan_id]
+      sub.status = params[:status]
+      sub.resource_version = params[:resource_version]
     end
 
-    if params.resource_version.to_i > subscription.resource_version
-      subscription.status = params.status
+    if params[:resource_version].to_i > subscription.resource_version
+      subscription.status = params[:status]
     end
 
     subscription.save!
