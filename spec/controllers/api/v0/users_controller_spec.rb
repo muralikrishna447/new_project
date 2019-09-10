@@ -53,6 +53,7 @@ describe Api::V0::UsersController do
       result.delete('referral_code').should == nil
       result.delete('capabilities').should == []
       result.delete('settings').should == nil
+      result.delete('subscriptions').should == []
       
       result.empty?.should == true
     end
@@ -93,6 +94,7 @@ describe Api::V0::UsersController do
       result['settings'].delete('has_purchased_truffle_sauce').should == nil
       result['settings'].delete('country_iso2').should == 'GB'
       result.delete('settings').should == {}
+      result.delete('subscriptions').should == []
       
       result.empty?.should == true
     end
