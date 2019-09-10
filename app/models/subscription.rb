@@ -1,7 +1,7 @@
 class Subscription < ActiveRecord::Base
   STUDIO_PLAN_ID = ENV['STUDIO_PLAN_ID']
-
   EXISTING_PREMIUM_COUPON = ENV['EXISTING_PREMIUM_COUPON']
+  ACTIVE_PLAN_STATUSES = ['active', 'in_trial', 'non_renewing']
 
   belongs_to :user
 
@@ -15,7 +15,7 @@ class Subscription < ActiveRecord::Base
   validates :status, inclusion: { in: %w(future in_trial active non_renewing paused cancelled) }
   validates_uniqueness_of :plan_id, scope: :user_id
 
-  scope :active, where(:status => ['active', 'in_trial', 'non_renewing'])
+  scope :active, where(:status => ACTIVE_PLAN_STATUSES)
 
   def self.user_has_subscription?(user, plan_id)
     self.where(:user_id => user.id).where(:plan_id => plan_id).active.exists?
@@ -39,6 +39,10 @@ class Subscription < ActiveRecord::Base
 
     subscription.save!
     subscription
+  end
+
+  def is_active
+    ACTIVE_PLAN_STATUSES.include?(self.status)
   end
 
 end
