@@ -574,7 +574,7 @@ class Activity < ActiveRecord::Base
         audio_clip: step_attr[:audio_clip],
         audio_title: step_attr[:audio_title],
         step_order: idx,
-        hide_number: step_attr[:hide_number],
+        hide_number: step_attr[:hide_number].nil? ?  step_attr[:is_aside] : step_attr[:hide_number], # is_aside hides number by default, if hide_number not explicitly specified
         is_aside: step_attr[:is_aside],
         presentation_hints: step_attr[:presentation_hints],
         extra: step_attr[:extra]
