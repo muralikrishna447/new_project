@@ -135,7 +135,8 @@ CREATE TABLE public.activities (
     vimeo_id character varying(255),
     short_description text,
     first_published_at timestamp without time zone,
-    studio boolean DEFAULT false
+    studio boolean DEFAULT false,
+    byline character varying(255)
 );
 
 
@@ -4852,4 +4853,6 @@ INSERT INTO schema_migrations (version) VALUES ('20190806055356');
 INSERT INTO schema_migrations (version) VALUES ('20190815162014');
 
 INSERT INTO schema_migrations (version) VALUES ('20190909221446');
+
+INSERT INTO schema_migrations (version) VALUES ('20190912222024');
 
