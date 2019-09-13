@@ -132,7 +132,7 @@ class Activity < ActiveRecord::Base
     end
 
     # Display fields
-    attribute :slug, :premium
+    attribute :slug, :premium, :studio
     add_attribute :url do
       activity_path(self)
     end
