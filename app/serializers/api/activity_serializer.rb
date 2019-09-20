@@ -1,6 +1,6 @@
 class Api::ActivitySerializer < ApplicationSerializer
   format_keys :lower_camel
-  attributes :used_in, :id, :title, :description, :image, :youtube_id, :vimeo_id, :url, :likes_count, :yield, :timing
+  attributes :used_in, :id, :title, :byline, :description, :image, :youtube_id, :vimeo_id, :url, :likes_count, :yield, :timing
   attributes :short_description, :tag_list, :chefsteps_generated, :hero_image, :premium
   has_one :creator, serializer: Api::ProfileSerializer
   has_one :source_activity, serializer: Api::ActivityIndexSerializer

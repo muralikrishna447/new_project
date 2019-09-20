@@ -3,7 +3,7 @@ class Activity < ActiveRecord::Base
   include PublishableModel
 
   include ActsAsSanitized
-  sanitize_input :title, :description, :short_description, :timing, :yield, :summary_tweet, :youtube_id, :vimeo_id, :difficulty
+  sanitize_input :title, :description, :short_description, :timing, :yield, :summary_tweet, :youtube_id, :vimeo_id, :difficulty, :byline
 
   acts_as_taggable
   acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}], :dependent => :keep, :on_destroy => true
@@ -73,7 +73,7 @@ class Activity < ActiveRecord::Base
 
   serialize :activity_type, Array
 
-  attr_accessible :activity_type, :title, :youtube_id, :vimeo_id, :yield, :timing, :difficulty, :description, :short_description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
+  attr_accessible :activity_type, :title, :byline, :youtube_id, :vimeo_id, :yield, :timing, :difficulty, :description, :short_description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
   attr_accessible :premium, :studio, :summary_tweet
   attr_protected :first_published_at
