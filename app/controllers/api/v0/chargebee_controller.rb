@@ -60,13 +60,13 @@ module Api
           if content[:customer] && content[:customer][:id] && content[:subscription] && content[:subscription][:plan_id]
             Subscription.create_or_update_by_params(content[:subscription], content[:customer][:id])
             Rails.logger.info("chargebee_controller.webhook - updating event id=#{params[:id]} and event_type=#{params[:event_type]}")
-            render_api_response(200, {})
-            end
           else
             Rails.logger.info("chargebee_controller.webhook - ignoring event id=#{params[:id]} and event_type=#{params[:event_type]}")
-            render_api_response(200, {})
           end
         end
+
+        render_api_response(200, {})
+      end
 
       private
 
