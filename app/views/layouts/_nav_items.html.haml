@@ -1,40 +1,20 @@
 %a.cs-nav-item.button.hide-desktop(ng-click="openModal('login'); nav.showMenu = false" ng-if='!authentication.currentUser()')
   Sign In
 
-%a.cs-nav-item(href='/joule')
-  Joule
+
 
 %a.cs-nav-item(href='/gallery')
   %span.hide-desktop Search
   Recipes
 
+%a.cs-nav-item(href='/studiopass')
+  Studio Pass
+
 %a.cs-nav-item(href='/premium')
   Premium
 
-.cs-nav-item
-  .dropdown(ng-controller='csDropdownController as dropdown')
-    .dropdown-toggle(ng-click='dropdown.toggle($event)')
-      Sous Vide
-    .dropdown-menu(ng-show='dropdown.showMenu')
-      .dropdown-wrapper
-        .dropdown-menu-item
-          %a(href="/sous-vide")
-            All About Sous Vide
-        .dropdown-menu-item
-          %a(href="/activities/sous-vide-time-and-temperature-guide")
-            Time & Temperature Guide
-        .dropdown-menu-item
-          %a(href="/activities/a-complete-guide-to-sous-vide-packaging-safety-sustainability-and-sourcing" target="_self")
-            Complete Guide to Packaging
-        .dropdown-menu-item
-          %a(href="/activities/what-is-sous-vide")
-            What Is Sous Vide?
-        .dropdown-menu-item
-          %a(href="/gallery?tag=Sous%20Vide&generator=chefsteps&published_status=published&difficulty=any&sort=newest&premium=everything")
-            Sous Vide Recipes
-        .dropdown-menu-item
-          %a(href="/activities/the-egg-calculator" target="_self")
-            Egg Calculator
+%a.cs-nav-item(href='/joule')
+  Joule
 
 %a.cs-nav-item(href='https://support.chefsteps.com/')
   Support
@@ -47,8 +27,8 @@
     Profile
 
 - if current_user
-  %a.cs-nav-item.hide-desktop(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/cart")
-    Cart
+  %a.cs-nav-item.hide-desktop(ng-href="/subscriptions")
+    Subscription
 
 - if current_user
   %a.cs-nav-item.hide-desktop(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/account")
