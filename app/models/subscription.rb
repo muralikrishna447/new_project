@@ -26,18 +26,28 @@ class Subscription < ActiveRecord::Base
   end
 
   def self.create_or_update_by_params(params, user_id)
-    subscription = self.where(:plan_id => params[:plan_id]).where(:user_id => user_id).first_or_create! do |sub|
-      sub.user_id = user_id
-      sub.plan_id = params[:plan_id]
-      sub.status = params[:status]
-      sub.resource_version = params[:resource_version]
+    subscription = nil
+    attributes = { :plan_id => params[:plan_id], :user_id => user_id }
+
+    transaction do
+      begin
+        subscription = self.where(attributes).create! do |sub|
+          sub.user_id = user_id
+          sub.plan_id = params[:plan_id]
+          sub.status = params[:status]
+          sub.resource_version = params[:resource_version]
+        end
+      rescue ActiveRecord::RecordNotUnique
+        subscription = self.where(attributes).first!
+      end
+
+      if params[:resource_version].to_i > subscription.resource_version
+        subscription.status = params[:status]
+      end
+
+      subscription.save!
     end
 
-    if params[:resource_version].to_i > subscription.resource_version
-      subscription.status = params[:status]
-    end
-
-    subscription.save!
     subscription
   end
 
