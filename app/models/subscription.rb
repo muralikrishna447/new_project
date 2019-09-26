@@ -31,11 +31,15 @@ class Subscription < ActiveRecord::Base
 
     transaction do
       begin
-        subscription = self.where(attributes).create! do |sub|
-          sub.user_id = user_id
-          sub.plan_id = params[:plan_id]
-          sub.status = params[:status]
-          sub.resource_version = params[:resource_version]
+        subscription = self.where(attributes).first
+
+        unless subscription.present?
+          subscription = self.where(attributes).create! do |sub|
+            sub.user_id = user_id
+            sub.plan_id = params[:plan_id]
+            sub.status = params[:status]
+            sub.resource_version = params[:resource_version]
+          end
         end
       rescue ActiveRecord::RecordNotUnique
         subscription = self.where(attributes).first!
