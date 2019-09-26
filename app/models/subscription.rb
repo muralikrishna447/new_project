@@ -13,7 +13,6 @@ class Subscription < ActiveRecord::Base
   attr_accessible :resource_version
 
   validates :status, inclusion: { in: %w(future in_trial active non_renewing paused cancelled) }
-  validates_uniqueness_of :plan_id, scope: :user_id
 
   scope :active, where(:status => ACTIVE_PLAN_STATUSES)
 
@@ -26,32 +25,24 @@ class Subscription < ActiveRecord::Base
   end
 
   def self.create_or_update_by_params(params, user_id)
-    subscription = nil
     attributes = { :plan_id => params[:plan_id], :user_id => user_id }
 
-    transaction do
-      begin
-        subscription = self.where(attributes).first
-
-        unless subscription.present?
-          subscription = self.where(attributes).create! do |sub|
-            sub.user_id = user_id
-            sub.plan_id = params[:plan_id]
-            sub.status = params[:status]
-            sub.resource_version = params[:resource_version]
-          end
-        end
-      rescue ActiveRecord::RecordNotUnique
-        subscription = self.where(attributes).first!
+    begin
+      subscription = self.where(attributes).first_or_create! do |sub|
+        sub.user_id = user_id
+        sub.plan_id = params[:plan_id]
+        sub.status = params[:status]
+        sub.resource_version = params[:resource_version]
       end
-
-      if params[:resource_version].to_i > subscription.resource_version
-        subscription.status = params[:status]
-      end
-
-      subscription.save!
+    rescue ActiveRecord::RecordNotUnique
+      subscription = self.where(attributes).first!
     end
 
+    if params[:resource_version].to_i > subscription.resource_version
+      subscription.status = params[:status]
+    end
+
+    subscription.save!
     subscription
   end
 
