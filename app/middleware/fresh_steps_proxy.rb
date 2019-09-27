@@ -8,7 +8,7 @@ class FreshStepsProxy < Rack::Proxy
   # it is still doing work. Curious.
 
   PREFIX_INCLUDE = %w(/gallery /classes /logout /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-staging /joule-overview /recommended /market /joule-split /orders /butchers)
-  EXACT = %w(/ /sous-vide /grilling /getpremium /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs /gifting /sso /sign-up /steak-by-joule /gifs /404 /forum-welcome /preorder-sweepstakes /preorder-sweepstakes-legal /components /lamarzocco-ultimate-espresso-kit /getting-started-with-joule /known-issues /food52 /Food52 /voice-control /cooking-challenge /equipment-we-love /opi-submissions /conversational-cooking /joule-one-million-meals /who-we-are /customer-panel-studies /make-dinner-easy /a-better-way-to-turkey-learn-more /turbo /studiopass /subscriptions)
+  EXACT = %w(/ /sous-vide /grilling /getpremium /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs /gifting /sso /sign-up /steak-by-joule /gifs /404 /forum-welcome /preorder-sweepstakes /preorder-sweepstakes-legal /components /lamarzocco-ultimate-espresso-kit /getting-started-with-joule /known-issues /food52 /Food52 /voice-control /cooking-challenge /equipment-we-love /opi-submissions /conversational-cooking /joule-one-million-meals /who-we-are /customer-panel-studies /make-dinner-easy /a-better-way-to-turkey-learn-more /turbo /studiopass /subscriptions /cuts-preview)
 
   PREFIX_EXCLUDE = %w(/joule/warranty /joule/weee-compliance)
   SUFFIX = %w(/fork /notify_start_edit /notify_end_edit /as_json /the-egg-calculator /new)
