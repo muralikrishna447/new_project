@@ -44,6 +44,13 @@
             Yes
           %button.btn(type="button" ng-click="activity.premium = false" ng-class="{active: ! activity.premium}")
             No
+      %h6 Studio Pass Only?
+      .btn-toolbar
+        .btn-group
+          %button.btn(type="button" ng-click="activity.studio = true" ng-class="{active: activity.studio}")
+            Yes
+          %button.btn(type="button" ng-click="activity.studio = false" ng-class="{active: ! activity.studio}")
+            No
 
   %div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
     .modal-header

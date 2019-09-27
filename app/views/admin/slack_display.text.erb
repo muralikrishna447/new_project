@@ -6,6 +6,7 @@ Account created: <%= user.created_at.in_time_zone(tz) %>
 Location: <%= user.location %>
 Role: <%= user.role %>
 Premium: <%= user.premium_member %> <%= user.premium_membership_created_at ? '- since ' + user.premium_membership_created_at.in_time_zone(tz).to_s : '' %>
+Studio Pass: <%= user.studio? %>
 Joule purchase count: <%= user.joule_purchase_count %>
 Joule WiFi owner count: <%= user.owned_circulators.count %>
 Admin link: <%= admin_user_url(user.id) %>
