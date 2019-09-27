@@ -7,8 +7,9 @@
   %span.hide-desktop Search
   Recipes
 
-%a.cs-nav-item(href='/studiopass')
-  Studio Pass
+-if Subscription::IS_STUDIO_LIVE
+  %a.cs-nav-item(href='/studiopass')
+    Studio Pass
 
 %a.cs-nav-item(href='/premium')
   Premium
@@ -26,7 +27,7 @@
   %a.cs-nav-item.hide-desktop(ng-href="/profiles/{{authentication.currentUser().slug}}")
     Profile
 
-- if current_user
+- if current_user && Subscription::IS_STUDIO_LIVE
   %a.cs-nav-item.hide-desktop(ng-href="/subscriptions")
     Subscription
 

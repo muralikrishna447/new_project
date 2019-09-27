@@ -3,6 +3,8 @@ class Subscription < ActiveRecord::Base
   EXISTING_PREMIUM_COUPON = ENV['EXISTING_PREMIUM_COUPON']
   ACTIVE_PLAN_STATUSES = ['active', 'in_trial', 'non_renewing']
 
+  IS_STUDIO_LIVE = ENV['CS_IS_STUDIO_LIVE'] == 'true'
+
   belongs_to :user
 
   attr_accessible :plan_id
