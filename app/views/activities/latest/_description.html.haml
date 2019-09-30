@@ -10,6 +10,11 @@
                                           placeholder="'Click to write main description'" )
 
   %div(ng-if="editMode")
+    %h5 Byline
+    %div.content-activity-short-description(  ng-model="activity.byline"
+                                              cs-contenteditable = "editMode" )
+
+  %div(ng-if="editMode")
     %h5 Short SEO Description (160 chars recommended max.)
     %div.content-activity-short-description(  ng-model="activity.short_description"
                                               cs-contenteditable = "editMode"

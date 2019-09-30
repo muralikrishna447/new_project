@@ -70,14 +70,12 @@
               .dropdown-menu-item
                 %a(ng-href="/profiles/{{authentication.currentUser().slug}}")Profile
 
-              .dropdown-menu-item
-                %a(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/cart")Cart
+              - if Subscription::IS_STUDIO_LIVE
+                .dropdown-menu-item
+                  %a(ng-href="/subscriptions")Subscription
 
               .dropdown-menu-item
                 %a(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/account")Order History
-
-              .dropdown-menu-item
-                %a(ng-href="/profiles/{{authentication.currentUser().slug}}/edit")Settings
 
               .dropdown-menu-item
                 %a(ng-href="/logout")Sign Out

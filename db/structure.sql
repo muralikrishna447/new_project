@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.14
+-- Dumped from database version 11.4
 -- Dumped by pg_dump version 11.4
 
 SET statement_timeout = 0;
@@ -134,7 +134,9 @@ CREATE TABLE public.activities (
     summary_tweet character varying(255),
     vimeo_id character varying(255),
     short_description text,
-    first_published_at timestamp without time zone
+    first_published_at timestamp without time zone,
+    studio boolean DEFAULT false,
+    byline character varying(255)
 );
 
 
@@ -2208,6 +2210,41 @@ ALTER SEQUENCE public.stripe_orders_id_seq OWNED BY public.stripe_orders.id;
 
 
 --
+-- Name: subscriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.subscriptions (
+    id integer NOT NULL,
+    user_id integer,
+    plan_id character varying(255),
+    status character varying(255),
+    resource_version bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.subscriptions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.subscriptions_id_seq OWNED BY public.subscriptions.id;
+
+
+--
 -- Name: taggings; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3027,6 +3064,13 @@ ALTER TABLE ONLY public.stripe_orders ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: subscriptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions ALTER COLUMN id SET DEFAULT nextval('public.subscriptions_id_seq'::regclass);
+
+
+--
 -- Name: taggings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3552,6 +3596,14 @@ ALTER TABLE ONLY public.stripe_orders
 
 
 --
+-- Name: subscriptions subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.subscriptions
+    ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: taggings taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3846,14 +3898,14 @@ CREATE UNIQUE INDEX index_circulator_users_on_user_id_and_circulator_id ON publi
 -- Name: index_circulator_users_unique; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_circulator_users_unique ON public.circulator_users USING btree (user_id, circulator_id, (COALESCE(deleted_at, 'infinity'::timestamp without time zone)));
+CREATE UNIQUE INDEX index_circulator_users_unique ON public.circulator_users USING btree (user_id, circulator_id, COALESCE(deleted_at, 'infinity'::timestamp without time zone));
 
 
 --
 -- Name: index_circulators_on_circulator_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_circulators_on_circulator_id ON public.circulators USING btree (circulator_id, (COALESCE(deleted_at, 'infinity'::timestamp without time zone)));
+CREATE UNIQUE INDEX index_circulators_on_circulator_id ON public.circulators USING btree (circulator_id, COALESCE(deleted_at, 'infinity'::timestamp without time zone));
 
 
 --
@@ -4120,6 +4172,27 @@ CREATE INDEX index_steps_on_activity_id ON public.steps USING btree (activity_id
 --
 
 CREATE INDEX index_steps_on_step_order ON public.steps USING btree (step_order);
+
+
+--
+-- Name: index_subscriptions_on_plan_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_subscriptions_on_plan_id ON public.subscriptions USING btree (plan_id);
+
+
+--
+-- Name: index_subscriptions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_subscriptions_on_user_id ON public.subscriptions USING btree (user_id);
+
+
+--
+-- Name: index_subscriptions_on_user_id_and_plan_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_subscriptions_on_user_id_and_plan_id ON public.subscriptions USING btree (user_id, plan_id);
 
 
 --
@@ -4776,4 +4849,10 @@ INSERT INTO schema_migrations (version) VALUES ('20190423172616');
 INSERT INTO schema_migrations (version) VALUES ('20190423201327');
 
 INSERT INTO schema_migrations (version) VALUES ('20190806055356');
+
+INSERT INTO schema_migrations (version) VALUES ('20190815162014');
+
+INSERT INTO schema_migrations (version) VALUES ('20190909221446');
+
+INSERT INTO schema_migrations (version) VALUES ('20190912222024');
 
