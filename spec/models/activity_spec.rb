@@ -320,7 +320,7 @@ describe Activity, "#update_steps" do
 
   let(:step1) { {title: 'Blend', directions: 'AAA'} }
   let(:step2) { {title: '', directions: 'BBB'} }
-  let(:step3) { {title: '', directions: 'CCC'} }
+  let(:step3) { {title: '', directions: 'CCC', is_aside: true} }
   let(:step4) { {id: 'NEW_9999', title: '', directions: 'DDD'} }
   let(:step5) { {id: 'NEW_8888', title: '', directions: 'EEE'} }
   let(:step_attrs) {[ step1, step2, step3 ] }
@@ -337,6 +337,11 @@ describe Activity, "#update_steps" do
     it "creates steps with specified attributes" do
       activity.steps.first.title.should == 'Blend'
       activity.steps.first.directions.should == 'AAA'
+    end
+
+    it "hides number for asides by default" do
+      activity.steps.first.hide_number.should_not == true
+      activity.steps.last.hide_number.should == true
     end
   end
 

@@ -3,7 +3,7 @@ class Activity < ActiveRecord::Base
   include PublishableModel
 
   include ActsAsSanitized
-  sanitize_input :title, :description, :short_description, :timing, :yield, :summary_tweet, :youtube_id, :vimeo_id, :difficulty
+  sanitize_input :title, :description, :short_description, :timing, :yield, :summary_tweet, :youtube_id, :vimeo_id, :difficulty, :byline
 
   acts_as_taggable
   acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}], :dependent => :keep, :on_destroy => true
@@ -73,9 +73,9 @@ class Activity < ActiveRecord::Base
 
   serialize :activity_type, Array
 
-  attr_accessible :activity_type, :title, :youtube_id, :vimeo_id, :yield, :timing, :difficulty, :description, :short_description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
+  attr_accessible :activity_type, :title, :byline, :youtube_id, :vimeo_id, :yield, :timing, :difficulty, :description, :short_description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
   attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
-  attr_accessible :premium, :summary_tweet
+  attr_accessible :premium, :studio, :summary_tweet
   attr_protected :first_published_at
 
   include PgSearch
@@ -132,7 +132,7 @@ class Activity < ActiveRecord::Base
     end
 
     # Display fields
-    attribute :slug, :premium
+    attribute :slug, :premium, :studio
     add_attribute :url do
       activity_path(self)
     end
@@ -574,7 +574,7 @@ class Activity < ActiveRecord::Base
         audio_clip: step_attr[:audio_clip],
         audio_title: step_attr[:audio_title],
         step_order: idx,
-        hide_number: step_attr[:hide_number],
+        hide_number: step_attr[:hide_number].nil? ?  step_attr[:is_aside] : step_attr[:hide_number], # is_aside hides number by default, if hide_number not explicitly specified
         is_aside: step_attr[:is_aside],
         presentation_hints: step_attr[:presentation_hints],
         extra: step_attr[:extra]
