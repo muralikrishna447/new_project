@@ -34,9 +34,13 @@ class Circulator < ActiveRecord::Base
     if premium_offer_eligible?
       user = self.circulator_users.first
       price = 0
+      Rails.logger.info("redeem_new_circulator_offers - premium eligible - id=#{self.id} hardware_version=#{self.hardware_version} hardware_options=#{self.hardware_options} user.present?=#{user.present?}")
       if user
+        Rails.logger.info("redeem_new_circulator_offers - making user premium - user.id=#{user.id}")
         user.make_premium_member(price)
       end
+    else
+      Rails.logger.info("redeem_new_circulator_offers - not premium eligible - id=#{self.id} hardware_version=#{self.hardware_version} hardware_options=#{self.hardware_options}")
     end
   end
 
