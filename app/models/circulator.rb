@@ -32,7 +32,7 @@ class Circulator < ActiveRecord::Base
 
   def redeem_new_circulator_offers
     if premium_offer_eligible?
-      user = self.circulator_users.first
+      user = self.circulator_users.present? ? self.circulator_users.first.user : nil
       price = 0
       Rails.logger.info("redeem_new_circulator_offers - premium eligible - id=#{self.id} hardware_version=#{self.hardware_version} hardware_options=#{self.hardware_options} user.present?=#{user.present?}")
       if user
