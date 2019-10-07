@@ -17,9 +17,18 @@ class Circulator < ActiveRecord::Base
 
   attr_accessible :notes, :serial_number
 
-  after_create :redeem_new_circulator_offers
   after_destroy :revoke_address
 
+
+  def premium_offer_eligible?
+    is_15_ss = (self.hardware_version == "JA") && ((self.hardware_options & 1) > 0)
+    is_first_activation = Circulator.with_deleted.where(:serial_number => self.serial_number).exists?
+    is_eligible = is_15_ss && is_first_activation
+
+    Rails.logger.info("circulator.premium_offer_eligible? - is_eligible=#{is_eligible} id=#{self.id} hardware_version=#{self.hardware_version} hardware_options=#{self.hardware_options} is_first_activation=#{is_first_activation}")
+
+    is_eligible
+  end
 
   private
   def revoke_address
@@ -30,22 +39,4 @@ class Circulator < ActiveRecord::Base
     end
   end
 
-  def redeem_new_circulator_offers
-    if premium_offer_eligible?
-      user = self.circulator_users.present? ? self.circulator_users.first.user : nil
-      price = 0
-      Rails.logger.info("redeem_new_circulator_offers - premium eligible - id=#{self.id} hardware_version=#{self.hardware_version} hardware_options=#{self.hardware_options} user.present?=#{user.present?}")
-      if user
-        Rails.logger.info("redeem_new_circulator_offers - making user premium - user.id=#{user.id}")
-        user.make_premium_member(price)
-      end
-    else
-      Rails.logger.info("redeem_new_circulator_offers - not premium eligible - id=#{self.id} hardware_version=#{self.hardware_version} hardware_options=#{self.hardware_options}")
-    end
-  end
-
-  def premium_offer_eligible?
-    # 1.5 SS Joules
-    (self.hardware_version == "JA") && ((self.hardware_options & 1) > 0)
-  end
 end
