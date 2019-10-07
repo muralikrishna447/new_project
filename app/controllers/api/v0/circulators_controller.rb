@@ -80,6 +80,13 @@ module Api
             circulatorUser.owner = true
           end
           circulatorUser.save!
+
+          if circulator.premium_offer_eligible?
+            Rails.logger.info("create circulator - make_premium_member - user.id=#{user.id}")
+            price = 0
+            user.make_premium_member(price)
+          end
+
           render json: circulator, serializer: Api::CirculatorSerializer
         end
       end
