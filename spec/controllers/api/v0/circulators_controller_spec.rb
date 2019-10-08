@@ -56,11 +56,11 @@ describe Api::V0::CirculatorsController do
              :name => name,
              :id => '7878787878787878',
              :secret_key => secret_key,
-             :hardware_version => hardware_version,
-             :hardware_options => hardware_options,
-             :build_date => build_date,
-             :pcba_revision => pcba_revision,
-             :model_number => model_number
+             :hardwareVersion => hardware_version,
+             :hardwareOptions => hardware_options,
+             :buildDate => build_date,
+             :pcbaRevision => pcba_revision,
+             :modelNumber => model_number
            }
       )
       now = Time.now
