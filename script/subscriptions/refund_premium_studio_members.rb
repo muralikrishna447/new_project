@@ -58,18 +58,24 @@ refunds.each do |refund|
     next
   end
 
-  STDERR.puts "Refunding invoice number #{refund[:invoice_number]} for user ID #{refund[:user_id]} with amount #{refund[:amount_to_refund].to_s('F')}"
+  # We expect the amount to refund to be already rounded to two digits.
+  # Chargebee expects the amount as cents (integer).
+  chargebee_amount_to_refund = (refund[:amount_to_refund] * BigDecimal.new('100')).to_i
+
+  STDERR.puts "Refunding invoice number #{refund[:invoice_number]} for user ID #{refund[:user_id]} with amount #{chargebee_amount_to_refund}"
   
-  unless options[:dry_run]
-    # We expect the amount to refund to be already rounded to two digits.
-    # Chargebee expects the amount as cents (integer).
-    chargebee_amount_to_refund = (refund[:amount_to_refund] * BigDecimal.new('100')).to_i
-    ChargeBee::Invoice.refund(
-      refund[:invoice_number],
-      refund_amount: chargebee_amount_to_refund,
-      comment: 'This refund is to honor the Studio Pass discount for existing Premium members.',
-      customer_notes: 'This refund is to honor the Studio Pass discount for existing Premium members.',
-      credit_note: { reason_code: 'other' }
-    )
+  next if options[:dry_run]
+
+  response = ChargeBee::Invoice.refund(
+    refund[:invoice_number],
+    refund_amount: chargebee_amount_to_refund,
+    comment: 'This refund is to honor the Studio Pass discount for existing Premium members.',
+    customer_notes: 'This refund is to honor the Studio Pass discount for existing Premium members.',
+    credit_note: { reason_code: 'other' }
+  )
+  if response.transaction.amount != chargebee_amount_to_refund
+    raise "Refund response for invoice number #{refund[:invoice_number]} for user ID #{refund[:user_id]} was #{response.transaction.amount}, expected #{chargebee_amount_to_refund}"
   end
+
+  STDERR.puts "Refunded invoice number #{refund[:invoice_number]} for user ID #{refund[:user_id]} with amount #{chargebee_amount_to_refund}"
 end
