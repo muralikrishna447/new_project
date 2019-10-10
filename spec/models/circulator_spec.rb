@@ -34,4 +34,23 @@ describe Circulator  do
     @circulator.destroy()
     @circulator2 = Fabricate :circulator, serial_number: 'circ123', circulator_id: '123'
   end
+
+  describe 'premium_offer_eligible?' do
+    it 'returns yes for the first activation of 1.5 SS Joule' do
+      circulator = Fabricate :circulator, serial_number: '1', circulator_id: '1', hardware_version: "JA", hardware_options: 1
+      circulator.premium_offer_eligible?.should == true
+    end
+
+    it 'returns no for the second activation of 1.5 SS Joule' do
+      circulator1 = Fabricate :circulator, serial_number: '1', circulator_id: '2', hardware_version: "JA", hardware_options: 1
+      circulator1.destroy()
+      circulator2 = Fabricate :circulator, serial_number: '1', circulator_id: '3', hardware_version: "JA", hardware_options: 1
+      circulator2.premium_offer_eligible?.should == false
+    end
+  end
+
+  it 'returns no for a non-1.5 SS Joule' do
+    circulator = Fabricate :circulator, serial_number: '1', circulator_id: '4', hardware_version: "JA", hardware_options: 0
+    circulator.premium_offer_eligible?.should == false
+  end
 end
