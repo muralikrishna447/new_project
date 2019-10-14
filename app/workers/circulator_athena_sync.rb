@@ -36,7 +36,7 @@ class CirculatorAthenaSync
     Rails.logger.info("CirculatorAthenaSync - serial_numbers.count=#{serial_numbers.count} ")
     Rails.logger.info("CirculatorAthenaSync - start_query_execution params=#{params.inspect}")
 
-    @query_execution_id = client.start_query_execution(params)
+    @query_execution_id = @client.start_query_execution(params)
 
     wait_for_query
     process_query_results
