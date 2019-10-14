@@ -86,17 +86,13 @@ class CirculatorAthenaSync
                                         :hardware_options => row.data[2].var_char_value,
                                         :athena_sync_at => Time.now
                                     })
-
-      # TODO - and maintain redemption state
-
+      
       if circulator.premium_offer_eligible?
         user = circulator.circulator_users.first
         Rails.logger.info("CirculatorAthenaSync - make_premium_member - user.id=#{user.id}")
         price = 0
         user.make_premium_member(price)
       end
-
-
     end
   end
 
