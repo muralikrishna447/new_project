@@ -9,6 +9,7 @@ class CirculatorAthenaSync
     work_group = options[:work_group] || "primary"
     output_location = options[:output_location] || "s3://circulator-athena-sync-query-results"
     limit = options[:limit] || 1000
+    max_wait = options[:max_wait] || 60 # seconds
 
     @client = Aws::Athena::Client.new(
         region: region
@@ -38,19 +39,26 @@ class CirculatorAthenaSync
 
     @query_execution_id = @client.start_query_execution(params)
 
-    wait_for_query
+    wait_for_query(max_wait)
     process_query_results
   end
 
   private
 
-  def self.wait_for_query
+  def self.wait_for_query(max_wait)
     done_status = Set['SUCCEEDED', 'FAILED', 'CANCELLED']
     done = false
+    wait = 0
     while !done
+      if wait > max_wait
+        Rails.logger.info("CirculatorAthenaSync timed out waiting for query_execution_id: #{@query_execution_id}")
+        raise StandardError "CirculatorAthenaSync timed out waiting for query_execution_id: #{@query_execution_id}"
+      end
+
       sleep(1)
       response = @client.get_query_execution({ query_execution_id: @query_execution_id })
       done = done_status.include?(response.query_execution.status.state)
+      wait += 1
     end
   end
 
