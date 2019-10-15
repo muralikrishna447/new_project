@@ -10,12 +10,13 @@ class CirculatorAthenaSync
     output_location = options[:output_location] || "s3://aws-athena-query-results-021963864089-us-east-1"
     limit = options[:limit] || 1000
     timeout = options[:timeout] || 30 # seconds
+    mark_all_as_synced = options[:mark_all_as_synced] || false
 
     @client = Aws::Athena::Client.new(
         region: region
     )
 
-    serial_numbers = Circulator.where(:athena_sync_at => nil).limit(limit).pluck(:serial_number)
+    serial_numbers = Circulator.where(:athena_sync_at => nil).order('updated_at DESC').limit(limit).pluck(:serial_number)
     quoted_serial_numbers = serial_numbers.map {|s| "'#{s}'"}
     query = "select distinct(serial_number), hardware_version, hardware_options "\
               "from identify_circulator_reply "\
@@ -36,10 +37,16 @@ class CirculatorAthenaSync
     Rails.logger.info("CirculatorAthenaSync - start_query_execution params=#{params.inspect}")
 
     response = @client.start_query_execution(params)
+    @query_time = Time.now.utc
     @query_execution_id = response.query_execution_id
 
     wait_for_query(timeout)
     process_query_results
+
+    if mark_all_as_synced
+      Circulator.where(:athena_sync_at => nil).where(:serial_number => serial_numbers).update_all(['athena_sync_at = ?', @query_time])
+    end
+
   end
 
   private
@@ -97,7 +104,7 @@ class CirculatorAthenaSync
       circulator = Circulator.find_by_serial_number!(serial_number)
       circulator.hardware_version = hardware_version
       circulator.hardware_options = hardware_options
-      circulator.athena_sync_at = Time.now
+      circulator.athena_sync_at = @query_time
       circulator.save!
 
       if circulator.premium_offer_eligible?
