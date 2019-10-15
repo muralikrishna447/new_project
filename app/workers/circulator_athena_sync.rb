@@ -51,7 +51,6 @@ class CirculatorAthenaSync
     wait = 0
     while !done
       if wait > max_wait
-        Rails.logger.info("CirculatorAthenaSync timed out waiting for query_execution_id: #{@query_execution_id}")
         raise StandardError "CirculatorAthenaSync timed out waiting for query_execution_id: #{@query_execution_id}"
       end
 
@@ -84,10 +83,16 @@ class CirculatorAthenaSync
   # results => Array<serial_number, hardware_version, hardware_options>
   def self.update_results(results)
     results.each do |row|
-      circulator = Circulator.find_by_serial_number!(row.data[0].var_char_value)
+      serial_number = row.data[0].var_char_value
+      hardware_version = row.data[1].var_char_value
+      hardware_options = row.data[2].var_char_value
+
+      Rails.logger.info("CirculatorAthenaSync - processing result row - serial_number=#{serial_number} hardware_version=#{hardware_version} hardware_options=#{hardware_options}")
+
+      circulator = Circulator.find_by_serial_number!(serial_number)
       circulator.update_attributes!({
-                                        :hardware_version => row.data[1].var_char_value,
-                                        :hardware_options => row.data[2].var_char_value,
+                                        :hardware_version => hardware_version,
+                                        :hardware_options => hardware_options,
                                         :athena_sync_at => Time.now
                                     })
 
