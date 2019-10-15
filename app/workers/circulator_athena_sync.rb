@@ -7,18 +7,19 @@ class CirculatorAthenaSync
     region = options[:region] || 'us-east-1'
     database = options[:database] || "extracted_logs"
     work_group = options[:work_group] || "primary"
-    output_location = options[:output_location] || "s3://circulator-athena-sync-query-results"
+    output_location = options[:output_location] || "s3://aws-athena-query-results-021963864089-us-east-1"
     limit = options[:limit] || 1000
-    max_wait = options[:max_wait] || 60 # seconds
+    timeout = options[:timeout] || 30 # seconds
 
     @client = Aws::Athena::Client.new(
         region: region
     )
 
     serial_numbers = Circulator.where(:athena_sync_at => nil).limit(limit).pluck(:serial_number)
+    quoted_serial_numbers = serial_numbers.map {|s| "'#{s}'"}
     query = "select distinct(serial_number), hardware_version, hardware_options "\
               "from identify_circulator_reply "\
-              "where serial_number in (#{serial_numbers.join(',')}) "\
+              "where serial_number in (#{quoted_serial_numbers.join(',')}) "\
               "limit #{limit}"
     params = {
         query_string: query,
@@ -27,9 +28,6 @@ class CirculatorAthenaSync
         },
         result_configuration: {
             output_location: output_location,
-            encryption_configuration: {
-                encryption_option: "SSE_S3"
-            },
         },
         work_group: work_group,
     }
@@ -37,27 +35,30 @@ class CirculatorAthenaSync
     Rails.logger.info("CirculatorAthenaSync - serial_numbers.count=#{serial_numbers.count} ")
     Rails.logger.info("CirculatorAthenaSync - start_query_execution params=#{params.inspect}")
 
-    @query_execution_id = @client.start_query_execution(params)
+    response = @client.start_query_execution(params)
+    @query_execution_id = response.query_execution_id
 
-    wait_for_query(max_wait)
+    wait_for_query(timeout)
     process_query_results
   end
 
   private
 
-  def self.wait_for_query(max_wait)
+  def self.wait_for_query(timeout)
     done_status = Set['SUCCEEDED', 'FAILED', 'CANCELLED']
     done = false
     wait = 0
     while !done
-      if wait > max_wait
-        raise StandardError "CirculatorAthenaSync timed out waiting for query_execution_id: #{@query_execution_id}"
+      if wait > timeout
+        raise StandardError.new "CirculatorAthenaSync timed out waiting for query_execution_id: #{@query_execution_id}"
       end
 
       sleep(1)
-      response = @client.get_query_execution({ query_execution_id: @query_execution_id })
-      done = done_status.include?(response.query_execution.status.state)
       wait += 1
+
+      response = @client.get_query_execution({ query_execution_id: @query_execution_id })
+      state = response.query_execution.status.state
+      done = done_status.include?(state)
     end
   end
 
@@ -82,6 +83,10 @@ class CirculatorAthenaSync
 
   # results => Array<serial_number, hardware_version, hardware_options>
   def self.update_results(results)
+    if results.count > 0
+      results.shift
+    end
+
     results.each do |row|
       serial_number = row.data[0].var_char_value
       hardware_version = row.data[1].var_char_value
@@ -90,11 +95,10 @@ class CirculatorAthenaSync
       Rails.logger.info("CirculatorAthenaSync - processing result row - serial_number=#{serial_number} hardware_version=#{hardware_version} hardware_options=#{hardware_options}")
 
       circulator = Circulator.find_by_serial_number!(serial_number)
-      circulator.update_attributes!({
-                                        :hardware_version => hardware_version,
-                                        :hardware_options => hardware_options,
-                                        :athena_sync_at => Time.now
-                                    })
+      circulator.hardware_version = hardware_version
+      circulator.hardware_options = hardware_options
+      circulator.athena_sync_at = Time.now
+      circulator.save!
 
       if circulator.premium_offer_eligible?
         user = circulator.circulator_users.first
