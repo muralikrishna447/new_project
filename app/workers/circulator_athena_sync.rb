@@ -11,6 +11,7 @@ class CirculatorAthenaSync
     limit = options[:limit] || 1000
     timeout = options[:timeout] || 30 # seconds
     mark_all_as_synced = options[:mark_all_as_synced] || false
+    @send_emails = options[:send_emails] || false
 
     @client = Aws::Athena::Client.new(
         region: region
@@ -111,7 +112,7 @@ class CirculatorAthenaSync
         user = circulator.circulator_users.first
         Rails.logger.info("CirculatorAthenaSync - make_premium_member - user.id=#{user.id}")
         price = 0
-        user.make_premium_member(price)
+        user.make_premium_member(price, @send_emails)
       end
     end
   end

@@ -155,7 +155,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def make_premium_member(price)
+  def make_premium_member(price, send_welcome_email = false)
     # Not an error b/c we do this on both main and worker, can be
     # racing each other.
     return if self.premium?
@@ -166,6 +166,10 @@ class User < ActiveRecord::Base
     # There are users that already don't pass validation so can't be resaved; not fixing right now
     self.save(validate: false)
     Resque.enqueue(UserSync, self.id)
+
+    if send_welcome_email
+      PremiumWelcomeMailer.prepare(self).deliver
+    end
   end
 
   def remove_premium_membership

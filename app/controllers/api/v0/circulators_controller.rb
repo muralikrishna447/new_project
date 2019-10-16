@@ -84,7 +84,7 @@ module Api
           if circulator.premium_offer_eligible?
             Rails.logger.info("create circulator - make_premium_member - user.id=#{user.id}")
             price = 0
-            user.make_premium_member(price)
+            user.make_premium_member(price, true)
           end
 
           render json: circulator, serializer: Api::CirculatorSerializer
