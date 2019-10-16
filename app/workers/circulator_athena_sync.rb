@@ -111,7 +111,7 @@ class CirculatorAthenaSync
         user = circulator.circulator_users.first
         Rails.logger.info("CirculatorAthenaSync - make_premium_member - user.id=#{user.id}")
         price = 0
-        user.make_premium_member(price)
+        user.make_premium_member(price, true)
       end
     end
   end

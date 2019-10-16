@@ -1,82 +1,64 @@
-<!-- Inliner Build Version 4380b7741bb759d6cb997545f3add21ad48f010b -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
-  <head>
-    <meta name="viewport" content="width=device-width" />
-<!-- IMPORTANT -->
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>*|SUBJECT|*</title>
-<!-- <link rel="stylesheet" type="text/css" href="stylesheets/email.css" /> -->
-  </head>
-  <body class="main" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; background: #edecea; margin: 0; padding: 0;" bgcolor="#edecea"><style type="text/css">
-@media only screen and (max-width: 600px) {
-  .main {
-    background: #fff;
-  }
-  a[class="btn"] {
-    margin-bottom: 10px !important; background-image: none !important;
-  }
-  div[class="column"] {
-    width: auto !important; float: none !important;
-  }
-  table.social div[class="column"] {
-    width: auto !important;
-  }
-}
-</style>
+<%
+  content_for :title, "ChefSteps Premium"
 
-<table class="main-content" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; width: 100%; background: #edecea; margin: 0; padding: 10px 0;" bgcolor="#edecea"><tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;"><td style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;"></td>
-		<td class="container" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; display: block !important; max-width: 600px !important; clear: both !important; margin: 0 auto; padding: 0;">
+  get_started_links = [
+      {
+          title: 'Barbecue',
+          image: 'https://d92f495ogyf88.cloudfront.net/static/barbecue.jpg',
+          link: 'https://www.chefsteps.com/classes/barbecue'
+      },
+      {
+          title: 'Chewy Candy',
+          image: 'https://d92f495ogyf88.cloudfront.net/static/chewy-candy.jpg',
+          link: 'https://www.chefsteps.com/classes/chewy-candy'
+      },
+      {
+          title: 'Coffee',
+          image: 'https://d92f495ogyf88.cloudfront.net/static/coffee.jpg',
+          link: 'https://www.chefsteps.com/classes/coffee/landing'
+      }
+  ]
+%>
 
-			<!-- HEADER -->
-			<div class="head-wrap content" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; border-top-right-radius: 4px; border-top-left-radius: 4px; border-bottom-style: dashed; border-bottom-color: #edecea; border-bottom-width: 1px; max-width: 600px; display: block; background: #fff; margin: 0 auto; padding: 15px 25px;">
-				<table style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; width: 100%; margin: 0; padding: 0;"><tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;"><td style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
-							<a href="http://chefsteps.com" title="ChefSteps" alt="ChefSteps" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #ff674d; margin: 0; padding: 0;"></a><img src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" style="width: 120px; height: auto; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; max-width: 100%; margin: 0; padding: 0;" /></td>
-						<td align="right" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
-							<h6 class="collapse" style="font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; line-height: 1.1; color: #43413f; font-weight: 900; font-size: 12px; text-transform: uppercase; margin: 0; padding: 0;">Welcome!</h6>
-						</td>
-					</tr></table></div>
+<%= render partial: 'mailers/shared/header',
+           locals: {
+               preview_text: 'Hope you’re hungry!',
+               render_joule_logo: false
+           }
+%>
 
-			<!-- You may like to include a Hero Image -->
-			<div class="header-img" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
-				<img src="https://gallery.mailchimp.com/9f69331c823fb9ca452fe5184/images/92da9557-8c18-43ee-99b3-44fa5ebbb86b.jpg" alt="Welcome" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; max-width: 100%; margin: 0; padding: 0;" /></div>
-			<!-- /Hero Image -->
 
-			<!-- BODY -->
-			<div class="body-wrap content" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; max-width: 600px; display: block; background: #fff; margin: 0 auto; padding: 15px;">
-			<table style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; width: 100%; margin: 0; padding: 0;"><tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;"><td style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
-            <br style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;" /><h4 class="align-center no-margin" style="font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; line-height: 1.1; color: #43413f; font-weight: 700; font-size: 23px; text-align: center; margin: 0; padding: 0;" align="center">Thanks!</h4>
-            <p class="align-center no-margin" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: normal; font-size: 14px; line-height: 1.6; color: #43413f; text-align: center; margin: 0; padding: 0;" align="center">We hope you love ChefSteps Premium.</p>
-						<br style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;" /><table class="highlight" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; text-align: center; border-radius: 4px; width: 100%; background: #edecea; margin: 5px 0 15px; padding: 25px 15px;" bgcolor="#edecea"><tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;"><td style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
-									<h6 class="align-center" style="font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; line-height: 1.1; color: #43413f; font-weight: 900; font-size: 12px; text-transform: uppercase; text-align: center; margin: 0 0 15px; padding: 0;" align="center">Sign in with this email address to access your Premium account:</h6>
-									<h5 class="align-center no-margin" style="font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; line-height: 1.1; color: #43413f; font-weight: 900; font-size: 17px; text-align: center; margin: 0; padding: 0;" align="center">*|EMAIL|*</h5>
-								</td>
-							</tr></table><br style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;" /><h4 class="align-center no-margin" style="font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; line-height: 1.1; color: #43413f; font-weight: 700; font-size: 23px; text-align: center; margin: 0; padding: 0;" align="center">Can't stop. Won't stop.</h4>
-						<p class="align-center" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: normal; font-size: 14px; line-height: 1.6; color: #43413f; text-align: center; margin: 0 0 20px; padding: 0;" align="center">Cook everything. Starting now.</p>
-						<p style="text-align: center; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: normal; font-size: 14px; line-height: 1.6; color: #43413f; margin: 0 0 20px; padding: 0;" align="center">
-							<a class="btn" href="https://www.chefsteps.com/gallery?generator=chefsteps&amp;published_status=published&amp;difficulty=any&amp;sort=newest&amp;premium=Only%20Premium" target="_blank" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #FFF; text-decoration: none; width: 80%; max-width: 200px; border-radius: 30px; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; background: #ff674d; margin: 0; padding: 12px 10%;">Let's Go!</a>
-						</p>
+<h1 style="font-family: Helvetica, Arial, sans-serif; line-height: 1.1; color: #43413f; font-weight: 700; font-size: 27px; text-align: center; margin: 25px 0; padding: 0;">
+  Welcome to ChefSteps Premium!
+</h1>
 
-						<br style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;" /><hr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; height: 0; border-top-color: rgba(0, 0, 0, 0.15); border-top-style: dashed; border-bottom-color: rgba(255, 255, 255, 0.3); border-bottom-style: dashed; margin: 0 0 30px; padding: 0; border-width: 1px 0;" /><h4 class="align-center no-margin" style="font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif; line-height: 1.1; color: #43413f; font-weight: 700; font-size: 23px; text-align: center; margin: 0; padding: 0;" align="center">Know someone who loves to cook?</h4>
-						<p class="align-center" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: normal; font-size: 14px; line-height: 1.6; color: #43413f; text-align: center; margin: 0 0 20px; padding: 0;" align="center">Give the gift of smarter cooking.</p>
-						<p style="text-align: center; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-weight: normal; font-size: 14px; line-height: 1.6; color: #43413f; margin: 0 0 20px; padding: 0;" align="center">
-							<a class="btn" href="http://chefsteps.com/premium?utm_source=chefsteps&amp;utm_medium=email&amp;utm_campaign=premium-thankyou-referral#component-id-246" target="_blank" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #FFF; text-decoration: none; width: 80%; max-width: 200px; border-radius: 30px; font-weight: bold; text-align: center; cursor: pointer; display: inline-block; background: #ff674d; margin: 0; padding: 12px 10%;">Gift Premium</a>
-						</p>
 
-					</td>
-				</tr></table></div>
+<p style="font-weight: normal; font-size: 14px; line-height: 1.6; color: #43413f; margin: 0 0 10px;">
+    Hi!
+  To access your Premium account, click the orange button below and sign in with your email address
+  <b><%= @email %></b>.
+</p>
 
-			<!-- FOOTER -->
-			<div class="footer-wrap content" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; border-bottom-right-radius: 4px; border-bottom-left-radius: 4px; max-width: 600px; display: block; background: #383736; margin: 0 auto; padding: 40px;">
-				<table style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; width: 100%; margin: 0; padding: 0;"><tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;"><td align="center" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
-							<a href="http://chefsteps.com" title="ChefSteps" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: rgba(255,255,255,0.5); text-decoration: underline; margin: 0; padding: 0;"><img src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-white.png" style="width: 120px; height: auto; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; max-width: 100%; margin: 0; padding: 0;" alt="{{ shop_name }}" /></a>
-							<br style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;" /><br style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;" /><p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: bold; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0; padding: 0;">Copyright © *|CURRENT_YEAR|* ChefSteps, All rights reserved.</p>
-							<br style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;" /><p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: bold; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0; padding: 0;"><strong style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">Our mailing address is:</strong></p>
-							<p style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; font-size: 10px; font-weight: bold; color: rgba(255,255,255,0.5); line-height: 1.6; margin: 0; padding: 0;">1501 Pike Place<br style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;" />Seattle, WA 98101</p>
-						</td>
-					</tr></table></div>
+<div style="text-align: center; margin-bottom: 30px;">
+  <%= render partial: 'mailers/shared/button',
+             locals: {
+                 url: 'https://www.chefsteps.com/gallery?generator=chefsteps&amp;published_status=published&amp;difficulty=any&amp;sort=newest&amp;premium=Only%20Premium',
+                 text: 'Premium Home'
+             }
+  %>
+</div>
 
-		</td>
-		<td style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;"></td>
-	</tr></table></body>
-</html>
+<div style="text-align: center">
+  <p style="font-weight: bold; font-size: 16px; line-height: 1.6; color: #43413f; margin: 0 0 10px;">
+    Start learning with any of your Premium classes right now:
+  </p>
+
+  <% get_started_links.each do |item| %>
+    <div style="width: 400px; margin: 0 auto;">
+      <a href="<%= item[:link] %>" target="_blank" style="margin:0; padding:0; text-decoration: none;">
+        <img src="<%= item[:image] %>" style="width: 100%; margin-top: 20px; padding: 0; border-radius: 4px;"/>
+      </a>
+    </div>
+  <% end %>
+</div>
+

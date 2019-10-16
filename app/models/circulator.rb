@@ -21,7 +21,7 @@ class Circulator < ActiveRecord::Base
 
 
   def premium_offer_eligible?
-    is_15_ss = (self.hardware_version == "JA") && ((self.hardware_options & 1) > 0)
+    is_15_ss = (self.hardware_version == "JA") && (!self.hardware_options.nil?) && ((self.hardware_options & 1) > 0)
     is_first_activation = !Circulator.with_deleted.where(:serial_number => self.serial_number).where('id != ?', self.id).exists?
     is_eligible = is_15_ss && is_first_activation
 

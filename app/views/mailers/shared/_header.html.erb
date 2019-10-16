@@ -1,0 +1,33 @@
+<%# Render the Header for Emails
+
+    Optional parameters:
+      preview_text: string, if supplied then injects this heading text so email clients that support it will render this as the preview text
+        See https://litmus.com/blog/the-ultimate-guide-to-preview-text-support for information on which email clients support
+      render_joule_logo: boolean, if not supplied will not be rendered
+
+%>
+
+<div class="head-wrap content" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; border-top-right-radius: 4px; border-top-left-radius: 4px; border-bottom-style: dashed; border-bottom-color: #edecea; border-bottom-width: 1px; max-width: 600px; display: block; background: #fff; margin: 0 auto; padding: 15px 25px;">
+  <table style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; width: 100%; margin: 0; padding: 0;">
+    <tr style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
+      <td style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; margin: 0; padding: 0;">
+        <a href="https://www.chefsteps.com/" title="ChefSteps" alt="ChefSteps" style="font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #ff674d; margin: 0; padding: 0;"><img src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" width="120" style="width: 120px; height: auto; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; max-width: 100%; margin: 0; padding: 0;"/></a>
+      </td>
+    </tr>
+  </table>
+
+  <%# hidden preview text %>
+  <% if defined?(preview_text) && preview_text.present? %>
+    <div style="display:none;font-size:1px;color:#333333;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">
+      <%= preview_text %>
+    </div>
+  <% end %>
+
+</div>
+
+
+<% if render_joule_logo %>
+  <div style="width: 100%; text-align: center">
+    <img src="https://d92f495ogyf88.cloudfront.net/static/jouleLogoOrange@4x.png" width="300" style="width: 300px; margin: 30px 0; padding: 0;"/>
+  </div>
+<% end %>
