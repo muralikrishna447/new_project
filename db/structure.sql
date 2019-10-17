@@ -606,7 +606,8 @@ CREATE TABLE public.circulators (
     hardware_version character varying(255),
     build_date integer,
     model_number character varying(255),
-    pcba_revision character varying(255)
+    pcba_revision character varying(255),
+    athena_sync_at timestamp without time zone
 );
 
 
@@ -4855,4 +4856,6 @@ INSERT INTO schema_migrations (version) VALUES ('20190815162014');
 INSERT INTO schema_migrations (version) VALUES ('20190909221446');
 
 INSERT INTO schema_migrations (version) VALUES ('20190912222024');
+
+INSERT INTO schema_migrations (version) VALUES ('20191014223026');
 
