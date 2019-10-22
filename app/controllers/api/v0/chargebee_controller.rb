@@ -11,22 +11,36 @@ module Api
       rescue_from ChargeBee::InvalidRequestError, with: :render_invalid_chargebee_request
 
       def generate_checkout_url
-        data = {
-          :subscription => {
-            :plan_id => params[:plan_id].present? ? params[:plan_id] : Subscription::STUDIO_PLAN_ID
-          },
-          :customer => {
-            :id => current_api_user.id,
-            :email => current_api_user.email
+        if params[:is_gift]
+          data = {
+              :subscription => {
+                  :plan_id => params[:plan_id]
+              },
+              :gifter => {
+                  :customer_id => current_api_user.id,
+              }
           }
-        }
 
-        coupon = get_applicable_coupon
-        if coupon.present?
-          data[:subscription][:coupon] = coupon
+          result = ChargeBee::HostedPage.checkout_gift(data)
+        else
+          data = {
+              :subscription => {
+                  :plan_id => params[:plan_id].present? ? params[:plan_id] : Subscription::STUDIO_PLAN_ID
+              },
+              :customer => {
+                  :id => current_api_user.id,
+                  :email => current_api_user.email
+              }
+          }
+
+          coupon = get_applicable_coupon
+          if coupon.present?
+            data[:subscription][:coupon] = coupon
+          end
+
+          result = ChargeBee::HostedPage.checkout_new(data)
         end
 
-        result = ChargeBee::HostedPage.checkout_new(data)
         render_api_response(200, result.hosted_page)
       end
 
@@ -50,6 +64,23 @@ module Api
         end
 
         render json: current_api_user, serializer: Api::UserMeSerializer
+      end
+
+      def unclaimed_gifts
+        list = ChargeBee::Gift.list({
+                                        "status[is]" => "unclaimed",
+                                        "gift_receiver[email][is]" => current_api_user.email
+                                    })
+        list.each do |entry|
+          Rails.logger.info("#{entry.gift.inspect}")
+          Rails.logger.info("#{entry.subscription.inspect}")
+        end
+
+        render_api_response(200, list)
+      end
+
+      def claim_gifts
+        # TODO
       end
 
       # https://apidocs.chargebee.com/docs/api/events

@@ -319,6 +319,7 @@ Delve::Application.routes.draw do
         post '/create_portal_session', to: 'chargebee#create_portal_session'
         post '/generate_checkout_url', to: 'chargebee#generate_checkout_url'
         post '/sync_subscriptions', to: 'chargebee#sync_subscriptions'
+        get '/unclaimed_gifts', to: 'chargebee#unclaimed_gifts'
         post '/webhook', to: 'chargebee#webhook'
       end
 
