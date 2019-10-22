@@ -49,6 +49,15 @@ module Api
         render_api_response(200, result.portal_session)
       end
 
+      def update_payment_method_session
+        result = ChargeBee::HostedPage.manage_payment_sources({
+                                                                 :customer => {
+                                                                     :id => current_api_user.id
+                                                                 }
+                                                             })
+        render_api_response(200, result.hosted_page)
+      end
+
       def sync_subscriptions
         result = ChargeBee::Subscription.list({"customer_id[is]" => current_api_user.id})
 
@@ -69,18 +78,92 @@ module Api
       def unclaimed_gifts
         list = ChargeBee::Gift.list({
                                         "status[is]" => "unclaimed",
-                                        "gift_receiver[email][is]" => current_api_user.email
+                                        "gift_receiver[email][is]" => current_api_user.email,
+                                        :limit => 3
                                     })
-        list.each do |entry|
-          Rails.logger.info("#{entry.gift.inspect}")
-          Rails.logger.info("#{entry.subscription.inspect}")
+
+        gifts = list.map do |entry|
+          {
+              :subscription => {
+                :id => entry.subscription.id,
+                :plan_id => entry.subscription.plan_id,
+                :plan_quantity => entry.subscription.plan_quantity,
+                :plan_unit_price => entry.subscription.plan_unit_price,
+                :plan_amount => entry.subscription.plan_amount,
+                :currency_code => entry.subscription.currency_code
+              },
+              :gift => {
+                :id => entry.gift.id,
+                :gifter => {
+                  :signature => entry.gift.gifter.signature,
+                  :note => entry.gift.gifter.note
+                }
+              }
+          }
         end
 
-        render_api_response(200, list)
+        render_api_response(200, gifts)
       end
 
+      # Claim the specified gifts for the authenticated user
+      # params[:gifts] => [gift_id1, gift_id2, ...]
       def claim_gifts
-        # TODO
+        if !params[:gift_ids].present? || !params[:gift_ids].kind_of?(Array)
+          render_api_response(400, { message: "Must specify gift_ids" })
+          return
+        end
+
+        gifts = params[:gift_ids].map do |gift_id|
+          result = ChargeBee::Gift.retrieve(gift_id)
+          {
+              :gift => result.gift,
+              :subscription => result.subscription
+          }
+        end
+
+        invalid_gift = gifts.any? do |gift|
+          invalid_email = gift[:gift].gift_receiver.email != current_api_user.email
+          invalid_gift_status = gift[:gift].status != "unclaimed"
+
+          invalid_email || invalid_gift_status
+        end
+
+        if invalid_gift
+          render_api_response(401, { message: "Invalid Gift Provided" })
+          return
+        end
+
+        # create customer if necessary
+        begin
+          ChargeBee::Customer.retrieve(current_api_user.id)
+        rescue ChargeBee::InvalidRequestError => e
+          ChargeBee::Customer.create({
+                                         :id => current_api_user.id,
+                                         :email => current_api_user.email
+                                     })
+        end
+
+        # process gifts -> promotional credits
+        # TODO - implement locking mechanism to ensure 1 claimed gift always results in the promotional credits being applied
+        gifts.each do |gift|
+          result = ChargeBee::Gift.claim(gift[:gift].id)
+          result = ChargeBee::PromotionalCredit.add({
+                                                        :customer_id => current_api_user.id,
+                                                        :amount => gift[:subscription].plan_amount,
+                                                        :currency_code => gift[:subscription].currency_code,
+                                                        :description => "Gift"
+                                                    })
+        end
+
+        render_api_response(200, {})
+      end
+      
+      def create_subscription
+        result = ChargeBee::Subscription.create_for_customer(current_api_user.id,{
+            :plan_id => params[:plan_id].present? ? params[:plan_id] : Subscription::STUDIO_PLAN_ID,
+        })
+
+        render_api_response(200, {})
       end
 
       # https://apidocs.chargebee.com/docs/api/events
