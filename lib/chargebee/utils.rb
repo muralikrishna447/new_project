@@ -2,9 +2,10 @@ require 'chargebee'
 
 module Chargebee
   class Utils
+    STUDIO_PASS_EMPLOYEE_COUPON_ID = ENV['STUDIO_PASS_EMPLOYEE_COUPON_ID']
+
     def self.grant_employee_subscriptions(user_id, email)
-      # TODO should be environment variable
-      grant_employee_subscription(user_id, email, 'chefsteps_studio_pass', 'BREVILLE_EMPLOYEE_DISCOUNT')
+      grant_employee_subscription(user_id, email, 'chefsteps_studio_pass', STUDIO_PASS_EMPLOYEE_COUPON_ID)
     end
 
     # There are absolutely possibilities for timing issues here if
