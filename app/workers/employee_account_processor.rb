@@ -20,7 +20,7 @@ class EmployeeAccountProcessor
     user = User.find(user_id)
     return unless user
 
-    return unless has_employee_email?(user)
+    return unless user_eligible?(user)
 
     Rails.logger.info("EmployeeAccountProcessor user with ID #{user_id} has employee email #{user.email}")
     ConfirmEmployeeMailer.prepare(user.email, create_token_for_user(user)).deliver
