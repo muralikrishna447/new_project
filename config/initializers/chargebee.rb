@@ -58,9 +58,9 @@ module ChargeBee
 end # ~ChargeBee
 
 ChargeBee::Result.class_eval do
-  def gift()
+  def gift
     gift = get(:gift, ChargeBee::Gift,
-               {:gifter => ChargeBee::Gift::Gifter, :gift_receiver => ChargeBee::Gift::GiftReceiver, :gift_timelines => ChargeBee::Gift::GiftTimeline});
-    return gift;
+               {:gifter => ChargeBee::Gift::Gifter, :gift_receiver => ChargeBee::Gift::GiftReceiver, :gift_timelines => ChargeBee::Gift::GiftTimeline})
+    return gift
   end
 end
