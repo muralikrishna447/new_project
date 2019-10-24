@@ -23,7 +23,7 @@ class Users::ConfirmEmployeeController < ApplicationController
 
       # Right now it makes most sense to redirect to the Studio Pass page,
       # which will cause a full page load and the employee should get the subscribed UX.
-      redirect_to "https://#{Rails.application.config.shared_config[:chefsteps_endpoint]}/studiopass"
+      redirect_to "https://www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}/studiopass"
     else
       handle_invalid
     end

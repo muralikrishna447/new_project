@@ -18,6 +18,6 @@ class ConfirmEmployeeMailer < ActionMailer::Base
   end
 
   def base_url
-    "https://#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
+    "https://www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
   end
 end
