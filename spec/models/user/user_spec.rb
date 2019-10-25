@@ -518,4 +518,16 @@ describe User do
       User.count.should eq count
     end
   end
+
+  describe 'create_restricted_token' do
+    let(:user) { Fabricate(:user) }
+    let(:restriction) { 'my_restriction' }
+
+    it 'creates valid roundtrip token' do
+      token = AuthToken.from_string(user.create_restricted_token(restriction, 1.day).to_jwt)
+      aa = ActorAddress.find_for_token(token)
+      expect(aa).not_to be_nil
+      expect(aa.valid_token?(token, 0, restriction)).to be_true
+    end
+  end
 end
