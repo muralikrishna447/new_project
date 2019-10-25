@@ -1,7 +1,7 @@
 require 'chargebee'
 
-module Chargebee
-  class Utils
+module Subscriptions
+  class ChargebeeUtils
     STUDIO_PASS_EMPLOYEE_COUPON_ID = ENV['STUDIO_PASS_EMPLOYEE_COUPON_ID']
 
     def self.grant_employee_subscriptions(user_id, email)
@@ -12,14 +12,6 @@ module Chargebee
     # an employee subscribes separately on the site, but that seems
     # highly unlikely to happen.
     def self.grant_employee_subscription(user_id, email, plan_id, coupon_id)
-      # Chargebee has different APIs to subscribe depending on whether
-      # the customer already exists, so check that now.
-      begin
-        customer_result = ChargeBee::Customer.retrieve(user_id)
-      rescue ChargeBee::InvalidRequestError
-        customer_result = nil
-      end
-
       # If the employee is already subscribed, we do nothing.
       existing_subscriptions = ChargeBee::Subscription.list(
         limit: 1,
@@ -27,6 +19,14 @@ module Chargebee
         'customer_id[is]' => user_id
       )
       return if existing_subscriptions.length > 0
+
+      # Chargebee has different APIs to subscribe depending on whether
+      # the customer already exists, so check that now.
+      begin
+        customer_result = ChargeBee::Customer.retrieve(user_id)
+      rescue ChargeBee::InvalidRequestError
+        customer_result = nil
+      end
 
       subscription = {
         plan_id: plan_id,

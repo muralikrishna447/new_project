@@ -46,9 +46,9 @@ class EmployeeAccountProcessor
     false
   end
 
+  private
+
   def self.create_token_for_user(user)
-    aa = ActorAddress.create_for_user(user, client_metadata: TOKEN_RESTRICTION)
-    exp = ((Time.now + CONFIRM_EMAIL_EXPIRATION).to_f * 1000).to_i
-    aa.current_token(exp: exp, restrict_to: TOKEN_RESTRICTION).to_jwt
+    user.create_restricted_token(TOKEN_RESTRICTION, CONFIRM_EMAIL_EXPIRATION).to_jwt
   end
 end

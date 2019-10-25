@@ -19,7 +19,7 @@ class Users::ConfirmEmployeeController < ApplicationController
       # Ideally we would do this in a background job, but it should be fast
       # and we shouldn't get too many of these requests.
       Rails.logger.info("Granting employee subscriptions to user with ID #{user.id}")
-      Chargebee::Utils.grant_employee_subscriptions(user.id, user.email)
+      Subscriptions::ChargebeeUtils.grant_employee_subscriptions(user.id, user.email)
 
       # Right now it makes most sense to redirect to the Studio Pass page,
       # which will cause a full page load and the employee should get the subscribed UX.
