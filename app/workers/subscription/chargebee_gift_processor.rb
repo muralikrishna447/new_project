@@ -68,7 +68,7 @@ class ChargeBeeGiftProcessor
   end
 
   def self.already_completed?(gift_id)
-    ChargebeeGiftRedemptions.where(:gift_id => gift_id).where(:complete => true).exists?
+    ChargebeeGiftRedemptions.complete.where(:gift_id => gift_id).exists?
   end
 
   def self.claim_gift(gift_id)

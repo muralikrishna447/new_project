@@ -10,6 +10,8 @@ module Api
 
       rescue_from ChargeBee::InvalidRequestError, with: :render_invalid_chargebee_request
 
+      GIFT_CLAIM_LIMIT = 3
+
       def generate_checkout_url
         if params[:is_gift]
           data = {
@@ -79,7 +81,7 @@ module Api
         list = ChargeBee::Gift.list({
                                         "status[is]" => "unclaimed",
                                         "gift_receiver[email][is]" => current_api_user.email,
-                                        :limit => 3
+                                        :limit => GIFT_CLAIM_LIMIT
                                     })
 
         gifts = list.map do |entry|
@@ -106,10 +108,11 @@ module Api
       end
 
       # Claim the specified gifts for the authenticated user
+      # This happens asynchronously via resque job
       # params[:gifts] => [gift_id1, gift_id2, ...]
       def claim_gifts
-        if !params[:gift_ids].present? || !params[:gift_ids].kind_of?(Array)
-          render_api_response(400, { message: "Must specify gift_ids" })
+        unless gift_ids_params_valid?
+          render_api_response(400, { message: "Must specify at most 3 gift_ids" })
           return
         end
 
@@ -154,6 +157,19 @@ module Api
         end
 
         render_api_response(200, {})
+      end
+
+      # params[:gifts] => [gift_id1, gift_id2, ...]
+      def claim_complete
+        unless gift_ids_params_valid?
+          render_api_response(400, { message: "Must specify at most 3 gift_ids" })
+          return
+        end
+
+        complete_count = ChargebeeGiftRedemptions.complete.where(:gift_id => params[:gift_ids]).count
+        complete = complete_count == params[:gift_ids].length
+
+        render_api_response(200, {complete: complete})
       end
       
       def create_subscription
@@ -211,6 +227,10 @@ module Api
         end
 
         nil
+      end
+
+      def gift_ids_params_valid?
+        params[:gift_ids].present? && params[:gift_ids].kind_of?(Array) && params[:gift_ids].length <= GIFT_CLAIM_LIMIT
       end
 
     end
