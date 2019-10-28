@@ -1,7 +1,26 @@
 require 'chargebee'
 require 'resque/plugins/lock'
 
-# Ensure 1 claimed gift always results in the promotional credits being applied
+# This class in conjunction with ChargeBeeGiftWorker are responsible for ensuring
+# that 1 claimed gift always results in the promotional credits being applied
+#
+# This is necessary because (due to the way we are using ChargeBee) there are two steps necessary to redeem a gift:
+#  1) Claim the gift - this can only be done for unclaimed gifts so is a one time process
+#  2) Add the promotional credits to the user's account
+#
+# Both steps are done via an API call to ChargeBee.  It is therefore possible for #1 to succeed but for #2 to fail or not happen.
+#
+# ChargeBeeGiftProcessor does the following
+#   a) Mark this redemption as started in a sql table
+#   b) Claim the Gift with Chargebee
+#   c) Add the promotion credit
+#   d) Mark this redemption as complete in a sql table
+#
+# All of these steps can be re-tried without harm.
+# But, it is NOT safe to have multiple concurrent executions of this job for the same gift_id.
+# Step c (add the promotional credit) has a race condition and could result in multiple promotional credits being added for one gift
+# Because of this, we use the Resque Lock to ensure that only one of these processor jobs can be queued per gift_id at a time
+#
 
 module Subscription
   class ChargeBeeGiftProcessor
@@ -40,8 +59,11 @@ module Subscription
       mark_completed(params[:gift_id])
     end
 
-    def self.mark_started(gift_id)
-      ChargebeeGiftRedemptions.create!(:gift_id => gift_id)
+    def self.mark_started(params)
+      already_strated = ChargebeeGiftRedemptions.create(:gift_id => params[:gift_id], :user_id => params[:user_id], :plan_amount => params[:plan_amount], :currency_code => params[:currency_code])
+      if already_strated
+        Rails.logger.info("ChargeBeeGiftProcessor - gift_id=#{paras[:gift_id]} is already started, will retry it")
+      end
     end
 
     def self.mark_completed(gift_id)

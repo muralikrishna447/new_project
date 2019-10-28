@@ -1,6 +1,6 @@
 require 'resque/plugins/lock'
 
-# Worker to pick up any failed gift redemptions and queue them on the ChargebeeGiftProcessor
+# ChargeBeeGiftWorker picks up any failed gift redemptions and puts them on the ChargebeeGiftProcessor queue
 
 module Subscription
   class ChargeBeeGiftWorker

@@ -556,6 +556,42 @@ ALTER SEQUENCE public.box_sort_images_id_seq OWNED BY public.box_sort_images.id;
 
 
 --
+-- Name: chargebee_gift_redemptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.chargebee_gift_redemptions (
+    id integer NOT NULL,
+    gift_id character varying(255),
+    complete boolean DEFAULT false,
+    user_id integer,
+    plan_amount integer,
+    currency_code character varying(255),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: chargebee_gift_redemptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.chargebee_gift_redemptions_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: chargebee_gift_redemptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.chargebee_gift_redemptions_id_seq OWNED BY public.chargebee_gift_redemptions.id;
+
+
+--
 -- Name: circulator_users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2764,6 +2800,13 @@ ALTER TABLE ONLY public.box_sort_images ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
+-- Name: chargebee_gift_redemptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.chargebee_gift_redemptions ALTER COLUMN id SET DEFAULT nextval('public.chargebee_gift_redemptions_id_seq'::regclass);
+
+
+--
 -- Name: circulator_users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3250,6 +3293,14 @@ ALTER TABLE ONLY public.badges_sashes
 
 ALTER TABLE ONLY public.box_sort_images
     ADD CONSTRAINT box_sort_images_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: chargebee_gift_redemptions chargebee_gift_redemptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.chargebee_gift_redemptions
+    ADD CONSTRAINT chargebee_gift_redemptions_pkey PRIMARY KEY (id);
 
 
 --
@@ -3872,6 +3923,20 @@ CREATE INDEX index_box_sort_images_on_image_order ON public.box_sort_images USIN
 --
 
 CREATE INDEX index_box_sort_images_on_question_id ON public.box_sort_images USING btree (question_id);
+
+
+--
+-- Name: index_chargebee_gift_redemptions_on_complete; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_chargebee_gift_redemptions_on_complete ON public.chargebee_gift_redemptions USING btree (complete);
+
+
+--
+-- Name: index_chargebee_gift_redemptions_on_gift_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_chargebee_gift_redemptions_on_gift_id ON public.chargebee_gift_redemptions USING btree (gift_id);
 
 
 --
@@ -4858,4 +4923,6 @@ INSERT INTO schema_migrations (version) VALUES ('20190909221446');
 INSERT INTO schema_migrations (version) VALUES ('20190912222024');
 
 INSERT INTO schema_migrations (version) VALUES ('20191014223026');
+
+INSERT INTO schema_migrations (version) VALUES ('20191028212012');
 

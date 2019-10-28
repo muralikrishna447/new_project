@@ -9,7 +9,6 @@ class CreateChargebeeGiftRedemptions < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :chargebee_gift_redemptions, :gift_id
     add_index :chargebee_gift_redemptions, :complete
     add_index :chargebee_gift_redemptions, :gift_id, unique: true
   end
