@@ -1,10 +1,11 @@
 class ConfirmEmployeeMailer < ActionMailer::Base
   default from: 'Team ChefSteps <noreply@chefsteps.com>'
+  layout 'mailer'
 
   def prepare(email_address, token)
     raise 'token is required' if token.to_s.empty?
 
-    subject = "You've got Studio Pass"
+    subject = "You're in."
     substitutions = {
       sub: {
         '*|SUBJECT|*' => [subject],
