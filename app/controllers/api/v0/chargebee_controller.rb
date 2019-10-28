@@ -143,46 +143,15 @@ module Api
                                      })
         end
 
-        # TODO - implement locking mechanism for all future steps in this function
-        # to ensure 1 claimed gift always results in the promotional credits being applied
-
         # process gifts -> promotional credits
         gifts.each do |gift|
-          result = ChargeBee::Gift.claim(gift[:gift].id)
-          result = ChargeBee::PromotionalCredit.add({
-                                                        :customer_id => current_api_user.id,
-                                                        :amount => gift[:subscription].plan_amount,
-                                                        :currency_code => gift[:subscription].currency_code,
-                                                        :description => "Gift"
-                                                    })
+          Resque.enqueue(Subscription::ChargeBeeGiftProcessor, {
+             :gift_id => gift[:gift].id,
+             :user_id => current_api_user.id,
+             :plan_amount => gift[:subscription].plan_amount,
+             :currency_code => gift[:subscription].currency_code
+          })
         end
-
-        # TODO - device if we want to do this
-        #
-        # # Update the Gift Receiver(s)
-        # gift_receivers = gifts.map { |g| g[:gift].gift_receiver }.keep_if { |receiver| receiver.customer_id != current_api_user.id }.uniq { |receiver| receiver.customer_id }
-        # gift_receivers.each do |receiver|
-        #   Rails.logger.info("receiver=#{receiver.inspect}")
-        #   result = ChargeBee::Customer.update(receiver.customer_id, {
-        #       :first_name => 'Gift',
-        #       :last_name => 'Recipient',
-        #       :email => '',
-        #       :meta_data => {
-        #           :gift_receiver => receiver # storing this in meta_data just in case it's needed in the future
-        #       }
-        #   })
-        # end
-        #
-        # # Update the Customer object (the one that gets the promotional credits)
-        # meta_data = customer.meta_data || { :gift_receiver_ids => [] }
-        # gift_receiver_ids = gift_receivers.map { |receiver| receiver.customer_id }
-        # meta_data[:gift_receiver_ids] = meta_data[:gift_receiver_ids].append(gift_receiver_ids).uniq
-        #
-        # Rails.logger.info("meta_data=#{meta_data.inspect}")
-        #
-        # result = ChargeBee::Customer.update(current_api_user.id, {
-        #     :meta_data => meta_data
-        # })
 
         render_api_response(200, {})
       end
