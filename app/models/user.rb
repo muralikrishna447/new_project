@@ -266,6 +266,12 @@ class User < ActiveRecord::Base
     aa.current_token(exp: 365.days.from_now.to_i)
   end
 
+  def create_restricted_token(restriction, expires_in_time)
+    aa = ActorAddress.create_for_user(self, client_metadata: restriction)
+    exp = ((Time.now + expires_in_time).to_f * 1000).to_i
+    aa.current_token(exp: exp, restrict_to: restriction)
+  end
+
   def was_shown_terms
     self.update_attribute(:needs_special_terms, false)
   end
