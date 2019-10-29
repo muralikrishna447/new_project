@@ -162,6 +162,7 @@ module Api
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
           subscribe_and_track user, optout, source
           Resque.enqueue(UserSync, @user.id)
+          Resque.enqueue(EmployeeAccountProcessor, @user.id)
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
         else
           logger.warn "create_new_user errors: #{user.errors.inspect}"
