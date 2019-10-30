@@ -148,6 +148,7 @@ module Api
 
         # process gifts -> promotional credits
         gifts.each do |gift|
+          Rails.logger.info("Queuing ChargeBeeGiftProcessor for gift=#{gift.inspect}")
           Resque.enqueue(ChargeBeeWorkers::ChargeBeeGiftProcessor, {
              :gift_id => gift[:gift].id,
              :user_id => current_api_user.id,
