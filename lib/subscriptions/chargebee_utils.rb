@@ -34,13 +34,20 @@ module Subscriptions
       }
       if customer_result.present?
         # Create the subscription for an existing Chargebee Customer
-        ChargeBee::Subscription.create_for_customer(user_id, subscription)
+        response = ChargeBee::Subscription.create_for_customer(user_id, subscription)
       else
         # Create a new Chargebee Customer along with the subscription.
-        ChargeBee::Subscription.create(
+        response = ChargeBee::Subscription.create(
           subscription.merge(customer: { id: user_id, email: email })
         )
       end
+
+      params = {
+        plan_id: plan_id,
+        status: response.subscription.status,
+        resource_version: response.subscription.resource_version
+      }
+      Subscription.create_or_update_by_params(params, user_id)
     end
   end
 end
