@@ -176,6 +176,38 @@ describe Api::V0::ChargebeeController do
           end
         end
       end
+
+      describe 'claim_complete' do
+        before(:each) do
+          ChargebeeGiftRedemptions.create!(:gift_id => '1', :user_id => 1, :plan_amount => 6900, :currency_code => 'USD')
+          ChargebeeGiftRedemptions.create!(:gift_id => '2', :user_id => 1, :plan_amount => 6900, :currency_code => 'USD', :complete => true)
+          ChargebeeGiftRedemptions.create!(:gift_id => '3', :user_id => 1, :plan_amount => 6900, :currency_code => 'USD', :complete => true)
+        end
+
+        it 'rejects requests without gift_ids' do
+          get :claim_complete, {}
+          response.code.should eq("400")
+        end
+
+        it 'rejects requests with two many gift ids' do
+          get :claim_complete, {:gift_ids => ['1', '2', '3', '4', '5']}
+          response.code.should eq("400")
+        end
+
+        it 'returns false if at least one gift is not claimed' do
+          get :claim_complete, {:gift_ids => ['1', '2', '3']}
+          response.code.should eq("200")
+          response_data = JSON.parse(response.body)
+          response_data["complete"].should be_false
+        end
+
+        it 'returns true if all gifts are claimed' do
+          get :claim_complete, {:gift_ids => ['2', '3']}
+          response.code.should eq("200")
+          response_data = JSON.parse(response.body)
+          response_data["complete"].should be_true
+        end
+      end
     end
 
     context 'not authenticated' do

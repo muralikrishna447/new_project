@@ -322,6 +322,7 @@ Delve::Application.routes.draw do
         post '/sync_subscriptions', to: 'chargebee#sync_subscriptions'
         get '/unclaimed_gifts', to: 'chargebee#unclaimed_gifts'
         post '/claim_gifts', to: 'chargebee#claim_gifts'
+        get '/claim_complete', to: 'chargebee#claim_complete'
         post '/create_subscription', to: 'chargebee#create_subscription'
         post '/webhook', to: 'chargebee#webhook'
       end
