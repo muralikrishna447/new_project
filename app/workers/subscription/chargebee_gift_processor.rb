@@ -38,12 +38,14 @@ class ChargeBeeGiftProcessor
   #   :currency_code => 'USD'
   # }
   def self.perform(params)
-    Rails.logger.info("ChargeBeeGiftProcessor starting perform with params=#{params.inspect}")
+    symbolized_params = params.deep_symbolize_keys
 
-    if already_completed?(params[:gift_id])
+    Rails.logger.info("ChargeBeeGiftProcessor starting perform with params=#{symbolized_params.inspect}")
+
+    if already_completed?(symbolized_params[:gift_id])
       Rails.logger.info("ChargeBeeGiftProcessor already completed, skipping processing")
     else
-      process(params)
+      process(symbolized_params)
     end
 
     Librato.increment('ChargeBeeGiftProcessor.success', sporadic: true)
@@ -51,10 +53,15 @@ class ChargeBeeGiftProcessor
   end
 
   def self.process(params)
+    Rails.logger.info('ChargeBeeGiftProcessor.process - started')
     mark_started(params)
+    Rails.logger.info('ChargeBeeGiftProcessor.process - before claim')
     claim_gift(params[:gift_id])
+    Rails.logger.info('ChargeBeeGiftProcessor.process - before promotional credit')
     add_promotional_credit(params[:gift_id], params[:user_id], params[:plan_amount], params[:currency_code])
+    Rails.logger.info('ChargeBeeGiftProcessor.process - before mark complete')
     mark_completed(params[:gift_id])
+    Rails.logger.info('ChargeBeeGiftProcessor.process - completed')
   end
 
   def self.mark_started(params)

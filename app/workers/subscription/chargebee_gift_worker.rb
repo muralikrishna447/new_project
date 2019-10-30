@@ -11,8 +11,11 @@ class ChargeBeeGiftWorker
     'ChargeBeeGiftWorker'
   end
 
-  def self.perform
-    Rails.logger.info('ChargeBeeGiftWorker starting')
+  def self.perform(params)
+    symbolized_params = params.deep_symbolize_keys
+    limit = symbolized_params[:limit] || 100
+
+    Rails.logger.info("ChargeBeeGiftWorker starting with params=#{symbolized_params.inspect}")
 
     pending_count = ChargebeeGiftRedemptions.incomplete.count
     pending_redemptions = ChargebeeGiftRedemptions.incomplete.limit(limit)
@@ -34,14 +37,6 @@ class ChargeBeeGiftWorker
 
     Librato.increment('ChargeBeeGiftWorker.success', sporadic: true)
     Librato.tracker.flush
-  end
-
-  def self.limit
-    if ENV['CS_CHARGEBEEGIFTWORKER_LIMIT'].present?
-      ENV['CS_CHARGEBEEGIFTWORKER_LIMIT'].to_i
-    else
-      100
-    end
   end
 
 end
