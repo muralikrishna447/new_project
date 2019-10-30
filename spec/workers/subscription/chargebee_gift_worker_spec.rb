@@ -27,7 +27,7 @@ describe ChargeBeeGiftWorker do
     end
 
     it 'does nothing' do
-      ChargeBeeGiftWorker.perform
+      ChargeBeeGiftWorker.perform({})
     end
   end
 
@@ -43,7 +43,7 @@ describe ChargeBeeGiftWorker do
     end
 
     it 'queues two jobs' do
-      ChargeBeeGiftWorker.perform
+      ChargeBeeGiftWorker.perform({})
     end
   end
 end
