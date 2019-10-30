@@ -27,17 +27,26 @@ describe Subscriptions::ChargebeeUtils do
       before :each do
         WebMock.stub_request(:get, "https://.chargebee.com/api/v2/customers/#{user_id}").
             to_return(:status => status, :body => body, :headers => {})
+        subscription.should_receive(:status).at_least(:once).and_return('active')
+        subscription.should_receive(:resource_version).at_least(:once).and_return(1)
+        subscription_response.should_receive(:subscription).at_least(:once).and_return(subscription)
       end
 
       let(:list_body) { { list: [] }.to_json }
+      let(:subscription) { double('subscription') }
+      let(:subscription_response) { double('subscription_response') }
 
       context 'customer exists' do
         let(:body) { {}.to_json }
         let(:status) { 200 }
 
         it 'creates subscription for customer' do
-          ChargeBee::Subscription.should_receive(:create_for_customer).with(user_id, { plan_id: plan_id, coupon_ids: [coupon_id] })
+          ChargeBee::Subscription
+            .should_receive(:create_for_customer)
+            .with(user_id, { plan_id: plan_id, coupon_ids: [coupon_id] })
+            .and_return(subscription_response)
           Subscriptions::ChargebeeUtils.grant_employee_subscription(user_id, email, plan_id, coupon_id)
+          expect(Subscription.where(user_id: user_id, plan_id: plan_id).length).to eq(1)
         end
       end
 
@@ -46,8 +55,12 @@ describe Subscriptions::ChargebeeUtils do
         let(:status) { 404 }
 
         it 'creates subscription and customer' do
-          ChargeBee::Subscription.should_receive(:create).with({ plan_id: plan_id, coupon_ids: [coupon_id], customer: { id: user_id, email: email } })
+          ChargeBee::Subscription
+            .should_receive(:create)
+            .with({ plan_id: plan_id, coupon_ids: [coupon_id], customer: { id: user_id, email: email } })
+            .and_return(subscription_response)
           Subscriptions::ChargebeeUtils.grant_employee_subscription(user_id, email, plan_id, coupon_id)
+          expect(Subscription.where(user_id: user_id, plan_id: plan_id).length).to eq(1)
         end
       end
     end
