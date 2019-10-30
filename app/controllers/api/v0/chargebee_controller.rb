@@ -148,7 +148,7 @@ module Api
 
         # process gifts -> promotional credits
         gifts.each do |gift|
-          Resque.enqueue(ChargeBeeGiftProcessor, {
+          Resque.enqueue(ChargeBeeWorkers::ChargeBeeGiftProcessor, {
              :gift_id => gift[:gift].id,
              :user_id => current_api_user.id,
              :plan_amount => gift[:subscription].plan_amount,

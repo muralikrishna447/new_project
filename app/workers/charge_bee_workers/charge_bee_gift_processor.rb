@@ -21,6 +21,7 @@ require 'resque/plugins/lock'
 # Step c (add the promotional credit) has a race condition and could result in multiple promotional credits being added for one gift
 # Because of this, we use the Resque Lock to ensure that only one of these processor jobs can be queued per gift_id at a time
 
+module ChargeBeeWorkers
 class ChargeBeeGiftProcessor
   extend Resque::Plugins::Lock
 
@@ -118,4 +119,4 @@ class ChargeBeeGiftProcessor
     end
   end
 end
-
+end

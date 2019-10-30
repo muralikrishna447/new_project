@@ -2,6 +2,7 @@ require 'resque/plugins/lock'
 
 # ChargeBeeGiftWorker picks up any failed gift redemptions and puts them on the ChargebeeGiftProcessor queue
 
+module ChargeBeeWorkers
 class ChargeBeeGiftWorker
   extend Resque::Plugins::Lock
 
@@ -38,6 +39,6 @@ class ChargeBeeGiftWorker
     Librato.increment('ChargeBeeGiftWorker.success', sporadic: true)
     Librato.tracker.flush
   end
-
+end
 end
 
