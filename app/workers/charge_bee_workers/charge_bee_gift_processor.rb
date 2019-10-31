@@ -73,7 +73,7 @@ class ChargeBeeGiftProcessor
   end
 
   def self.mark_completed(gift_id)
-    gift_redemption = ChargebeeGiftRedemptions.where(:gift_id => gift_id).first
+    gift_redemption = ChargebeeGiftRedemptions.where(:gift_id => gift_id).first!
     gift_redemption.complete = true
     gift_redemption.save!
   end

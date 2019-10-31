@@ -13,7 +13,11 @@ describe ChargeBeeWorkers::ChargeBeeGiftProcessor do
     nil
   }
   let(:credit_list_return) {
-    double('credit_list_return', :any? => [], :next_offset => nil)
+    obj = []
+    obj.define_singleton_method(:next_offset) do
+      nil
+    end
+    obj
   }
   let(:credit_add_return) {
     nil
@@ -69,7 +73,11 @@ describe ChargeBeeWorkers::ChargeBeeGiftProcessor do
       double('promotional_credit', :promotional_credit => credit)
     }
     let(:credit_list_return) {
-      double('credit_list_return', :any? => [promotional_credit], :next_offset => nil)
+      obj = [promotional_credit]
+      obj.define_singleton_method(:next_offset) do
+        nil
+      end
+      obj
     }
 
     before(:each) do
