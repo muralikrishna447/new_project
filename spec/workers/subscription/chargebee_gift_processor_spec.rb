@@ -13,7 +13,7 @@ describe ChargeBeeGiftProcessor do
     nil
   }
   let(:credit_list_return) {
-    double('credit_list_return', :list => [], :next_offset => nil)
+    double('credit_list_return', :any? => [], :next_offset => nil)
   }
   let(:credit_add_return) {
     nil
@@ -65,8 +65,11 @@ describe ChargeBeeGiftProcessor do
     let(:credit) {
       double('credit', :description => "Gift Redemption #{params[:gift_id]}")
     }
+    let(:promotional_credit) {
+      double('promotional_credit', :promotional_credit => credit)
+    }
     let(:credit_list_return) {
-      double('credit_list_return', :list => [credit], :next_offset => nil)
+      double('credit_list_return', :any? => [promotional_credit], :next_offset => nil)
     }
 
     before(:each) do

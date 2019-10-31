@@ -102,8 +102,8 @@ class ChargeBeeGiftProcessor
     # This is the only field we can control to uniquely identify the promotional code
     # which is also returned by the list call.  Unfortunately, the API does not allow us to control the ID
     credit_code = "Gift Redemption #{gift_id}"
-    already_added = result.list.any? do |credit|
-      credit.description == credit_code
+    already_added = result.any? do |credit|
+      credit.promotional_credit.description == credit_code
     end
 
     unless already_added
