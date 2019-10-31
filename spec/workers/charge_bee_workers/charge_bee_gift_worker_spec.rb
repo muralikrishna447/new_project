@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ChargeBeeGiftWorker do
+describe ChargeBeeWorkers::ChargeBeeGiftWorker do
 
   let(:gift1) {
     {
@@ -27,7 +27,7 @@ describe ChargeBeeGiftWorker do
     end
 
     it 'does nothing' do
-      ChargeBeeGiftWorker.perform({})
+      ChargeBeeWorkers::ChargeBeeGiftWorker.perform({})
     end
   end
 
@@ -43,7 +43,7 @@ describe ChargeBeeGiftWorker do
     end
 
     it 'queues two jobs' do
-      ChargeBeeGiftWorker.perform({})
+      ChargeBeeWorkers::ChargeBeeGiftWorker.perform({})
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ChargeBeeGiftProcessor do
+describe ChargeBeeWorkers::ChargeBeeGiftProcessor do
   let(:params) {
     {
       :gift_id => '123',
@@ -31,7 +31,7 @@ describe ChargeBeeGiftProcessor do
 
     context 'clean history (no partial failed attempts)' do
       it 'processes the gift' do
-        ChargeBeeGiftProcessor.process(params)
+        ChargeBeeWorkers::ChargeBeeGiftProcessor.process(params)
         item = ChargebeeGiftRedemptions.find_by_gift_id(params[:gift_id])
         expect(item.complete).to be_true
       end
@@ -43,7 +43,7 @@ describe ChargeBeeGiftProcessor do
       end
 
       it 'processes the gift' do
-        ChargeBeeGiftProcessor.process(params)
+        ChargeBeeWorkers::ChargeBeeGiftProcessor.process(params)
         item = ChargebeeGiftRedemptions.find_by_gift_id(params[:gift_id])
         expect(item.complete).to be_true
       end
@@ -77,7 +77,7 @@ describe ChargeBeeGiftProcessor do
     end
 
     it 'processes the gift' do
-      ChargeBeeGiftProcessor.process(params)
+      ChargeBeeWorkers::ChargeBeeGiftProcessor.process(params)
       item = ChargebeeGiftRedemptions.find_by_gift_id(params[:gift_id])
       expect(item.complete).to be_true
     end
