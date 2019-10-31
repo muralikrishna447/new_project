@@ -66,7 +66,10 @@ class ChargeBeeGiftProcessor
   end
 
   def self.mark_started(params)
-    ChargebeeGiftRedemptions.first_or_create(:gift_id => params[:gift_id], :user_id => params[:user_id], :plan_amount => params[:plan_amount], :currency_code => params[:currency_code])
+    gift = ChargebeeGiftRedemptions.find_by_gift_id(params[:gift_id])
+    unless gift.present?
+      ChargebeeGiftRedemptions.create!(:gift_id => params[:gift_id], :user_id => params[:user_id], :plan_amount => params[:plan_amount], :currency_code => params[:currency_code])
+    end
   end
 
   def self.mark_completed(gift_id)
