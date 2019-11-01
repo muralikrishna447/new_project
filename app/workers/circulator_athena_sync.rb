@@ -83,6 +83,7 @@ class CirculatorAthenaSync
                                            })
       results = response.result_set.rows
       more_results = response.next_token.present?
+      next_token = response.next_token
       Rails.logger.info("CirculatorAthenaSync - get_query_results - results.count=#{results.count} more_results=#{more_results}")
       update_results(results)
     end
