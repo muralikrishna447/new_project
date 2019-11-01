@@ -77,36 +77,39 @@ module Api
         render json: current_api_user, serializer: Api::UserMeSerializer
       end
 
-      def unclaimed_gifts
+      def gifts
         list = ChargeBee::Gift.list({
-                                        "status[is]" => "unclaimed",
+                                        "status[in]" => ["claimed", "unclaimed"],
                                         "gift_receiver[email][is]" => current_api_user.email,
                                         :limit => GIFT_CLAIM_LIMIT
                                     })
 
-        Rails.logger.info("ChargebeeController.unclaimed_gifts found #{list.count} unclaimed gifts for user.id=#{current_api_user.id} and email=#{current_api_user.email}")
+        Rails.logger.info("ChargebeeController.gifts found #{list.count} gifts for user.id=#{current_api_user.id} and email=#{current_api_user.email}")
 
-        gifts = list.map do |entry|
-          {
+        gifts = list.reduce({"claimed" => [], "unclaimed" => []}) do |agg, entry|
+          item = {
               :subscription => {
-                :id => entry.subscription.id,
-                :plan_id => entry.subscription.plan_id,
-                :plan_quantity => entry.subscription.plan_quantity,
-                :plan_unit_price => entry.subscription.plan_unit_price,
-                :plan_amount => entry.subscription.plan_amount,
-                :currency_code => entry.subscription.currency_code
+                  :id => entry.subscription.id,
+                  :plan_id => entry.subscription.plan_id,
+                  :plan_quantity => entry.subscription.plan_quantity,
+                  :plan_unit_price => entry.subscription.plan_unit_price,
+                  :plan_amount => entry.subscription.plan_amount,
+                  :currency_code => entry.subscription.currency_code
               },
               :gift => {
-                :id => entry.gift.id,
-                :gifter => {
-                  :signature => entry.gift.gifter.signature,
-                  :note => entry.gift.gifter.note
-                }
+                  :id => entry.gift.id,
+                  :status => entry.gift.status,
+                  :gifter => {
+                      :signature => entry.gift.gifter.signature,
+                      :note => entry.gift.gifter.note
+                  }
               }
           }
+          agg[entry.gift.status].push(item)
+          agg
         end
 
-        render_api_response(200, gifts)
+        render_api_response(200, {results: gifts})
       end
 
       # Claim the specified gifts for the authenticated user

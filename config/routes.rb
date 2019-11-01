@@ -320,7 +320,7 @@ Delve::Application.routes.draw do
         post '/update_payment_method_session', to: 'chargebee#update_payment_method_session'
         post '/generate_checkout_url', to: 'chargebee#generate_checkout_url'
         post '/sync_subscriptions', to: 'chargebee#sync_subscriptions'
-        get '/unclaimed_gifts', to: 'chargebee#unclaimed_gifts'
+        get '/gifts', to: 'chargebee#gifts'
         post '/claim_gifts', to: 'chargebee#claim_gifts'
         post '/claim_complete', to: 'chargebee#claim_complete'
         post '/create_subscription', to: 'chargebee#create_subscription'

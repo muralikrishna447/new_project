@@ -85,6 +85,12 @@ describe Api::V0::ChargebeeController do
       let(:entry) {
         double('entry', :subscription => subscription, :gift => gift)
       }
+      let(:claimedGift) {
+        double('gift2', :id => 'gift2', :gifter => gifter, :status => 'claimed', :gift_receiver => gift_receiver)
+      }
+      let(:claimedEntry) {
+        double('entry2', :subscription => subscription, :gift => claimedGift)
+      }
 
       before do
         @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
@@ -117,28 +123,36 @@ describe Api::V0::ChargebeeController do
         end
       end
 
-      describe 'unclaimed gifts' do
+      describe 'gifts' do
         it 'returns empty result when no gifts' do
           ChargeBee::Gift.should_receive(:list).and_return([])
 
-          get :unclaimed_gifts
+          get :gifts
 
           response.code.should eq("200")
           response_data = JSON.parse(response.body)
-          response_data["results"].should eq([])
+          response_data["results"]["unclaimed"].should eq([])
+          response_data["results"]["claimed"].should eq([])
         end
 
         it 'returns a list of gifts' do
-          ChargeBee::Gift.should_receive(:list).and_return([entry])
+          ChargeBee::Gift.should_receive(:list).and_return([entry, claimedEntry])
 
-          get :unclaimed_gifts
+          get :gifts
 
           response.code.should eq("200")
           response_data = JSON.parse(response.body)
-          response_data["results"].length.should eq(1)
-          response_data["results"][0]["subscription"]["id"].should eq(subscription.id)
-          response_data["results"][0]["gift"]["id"].should eq(gift.id)
-          response_data["results"][0]["gift"]["gifter"]["signature"].should eq(gifter.signature)
+          response_data["results"]["unclaimed"].length.should eq(1)
+          response_data["results"]["unclaimed"][0]["subscription"]["id"].should eq(subscription.id)
+          response_data["results"]["unclaimed"][0]["gift"]["id"].should eq(gift.id)
+          response_data["results"]["unclaimed"][0]["gift"]["status"].should eq(gift.status)
+          response_data["results"]["unclaimed"][0]["gift"]["gifter"]["signature"].should eq(gifter.signature)
+
+          response_data["results"]["claimed"].length.should eq(1)
+          response_data["results"]["claimed"][0]["subscription"]["id"].should eq(subscription.id)
+          response_data["results"]["claimed"][0]["gift"]["id"].should eq(claimedGift.id)
+          response_data["results"]["claimed"][0]["gift"]["status"].should eq(claimedGift.status)
+          response_data["results"]["claimed"][0]["gift"]["gifter"]["signature"].should eq(gifter.signature)
         end
       end
 
