@@ -19,7 +19,7 @@ describe Subscriptions::ChargebeeUtils do
         ChargeBee::Subscription.should_receive(:create).exactly(0).times
         ChargeBee::Subscription.should_receive(:create_for_customer).exactly(0).times
 
-        Subscriptions::ChargebeeUtils.grant_employee_subscription(user_id, email, plan_id, coupon_id)
+        Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
       end
     end
 
@@ -45,7 +45,7 @@ describe Subscriptions::ChargebeeUtils do
             .should_receive(:create_for_customer)
             .with(user_id, { plan_id: plan_id, coupon_ids: [coupon_id] })
             .and_return(subscription_response)
-          Subscriptions::ChargebeeUtils.grant_employee_subscription(user_id, email, plan_id, coupon_id)
+          Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
           expect(Subscription.where(user_id: user_id, plan_id: plan_id).length).to eq(1)
         end
       end
@@ -59,7 +59,7 @@ describe Subscriptions::ChargebeeUtils do
             .should_receive(:create)
             .with({ plan_id: plan_id, coupon_ids: [coupon_id], customer: { id: user_id, email: email } })
             .and_return(subscription_response)
-          Subscriptions::ChargebeeUtils.grant_employee_subscription(user_id, email, plan_id, coupon_id)
+          Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
           expect(Subscription.where(user_id: user_id, plan_id: plan_id).length).to eq(1)
         end
       end

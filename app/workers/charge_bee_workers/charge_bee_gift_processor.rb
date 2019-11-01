@@ -60,10 +60,14 @@ class ChargeBeeGiftProcessor
     claim_gift(params[:gift_id])
     Rails.logger.info('ChargeBeeGiftProcessor.process - before promotional credit')
     add_promotional_credit(params[:gift_id], params[:user_id], params[:plan_amount], params[:currency_code])
+    Rails.logger.info('ChargeBeeGiftProcessor.process - before create subscription')
+    create_subscription(params[:user_id])
     Rails.logger.info('ChargeBeeGiftProcessor.process - before mark complete')
     mark_completed(params[:gift_id])
     Rails.logger.info('ChargeBeeGiftProcessor.process - completed')
   end
+
+  private
 
   def self.mark_started(params)
     gift = ChargebeeGiftRedemptions.find_by_gift_id(params[:gift_id])
@@ -120,6 +124,11 @@ class ChargeBeeGiftProcessor
     else
       Rails.logger.info("ChargeBeeGiftProcessor - promotional credit already redeemed")
     end
+  end
+
+  def self.create_subscription(user_id)
+    user = User.find_by_id!(user_id)
+    Subscriptions::ChargebeeUtils.create_subscription(user_id, user.email, Subscription::STUDIO_PLAN_ID, nil)
   end
 end
 end
