@@ -84,6 +84,8 @@ module Api
                                         :limit => GIFT_CLAIM_LIMIT
                                     })
 
+        Rails.logger.info("ChargebeeController.unclaimed_gifts found #{list.count} unclaimed gifts for user.id=#{current_api_user.id} and email=#{current_api_user.email}")
+
         gifts = list.map do |entry|
           {
               :subscription => {
@@ -132,6 +134,7 @@ module Api
         end
 
         if invalid_gift
+          Rails.logger.info("ChargebeeController.claim_gifts has invalid_gift gifts=#{gifts.inspect}")
           render_api_response(401, { message: "Invalid Gift Provided" })
           return
         end
@@ -140,6 +143,7 @@ module Api
         begin
           ChargeBee::Customer.retrieve(current_api_user.id)
         rescue ChargeBee::InvalidRequestError => e
+          Rails.logger.info("ChargebeeController.claim_gifts no customer found for user.id=#{current_api_user.id} creating the customer now, e=#{e.inspect}")
           ChargeBee::Customer.create({
                                          :id => current_api_user.id,
                                          :email => current_api_user.email
@@ -174,7 +178,7 @@ module Api
       end
       
       def create_subscription
-        result = ChargeBee::Subscription.create_for_customer(current_api_user.id,{
+        ChargeBee::Subscription.create_for_customer(current_api_user.id,{
             :plan_id => params[:plan_id].present? ? params[:plan_id] : Subscription::STUDIO_PLAN_ID,
         })
 
