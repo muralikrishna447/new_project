@@ -80,16 +80,22 @@ describe Api::V0::ChargebeeController do
         double('gift_receiver', :email => @user.email)
       }
       let(:gift) {
-        double('gift', :id => 'gift1', :gifter => gifter, :status => 'unclaimed', :gift_receiver => gift_receiver)
+        double('gift', :id => 'gift1', :gifter => gifter, :status => 'unclaimed', :gift_receiver => gift_receiver, :gift_timelines => [unclaimed_event])
       }
       let(:entry) {
         double('entry', :subscription => subscription, :gift => gift)
       }
-      let(:claimedGift) {
-        double('gift2', :id => 'gift2', :gifter => gifter, :status => 'claimed', :gift_receiver => gift_receiver)
+      let(:claimed_event) {
+        double('claimed_event', :status => 'claimed', :occurred_at => 1572480084)
       }
-      let(:claimedEntry) {
-        double('entry2', :subscription => subscription, :gift => claimedGift)
+      let(:unclaimed_event) {
+        double('unclaimed_event', :status => 'unclaimed', :occurred_at => 1571862970)
+      }
+      let(:claimed_gift) {
+        double('gift2', :id => 'gift2', :gifter => gifter, :status => 'claimed', :gift_receiver => gift_receiver, :gift_timelines => [unclaimed_event, claimed_event])
+      }
+      let(:claimed_entry) {
+        double('entry2', :subscription => subscription, :gift => claimed_gift)
       }
 
       before do
@@ -136,7 +142,7 @@ describe Api::V0::ChargebeeController do
         end
 
         it 'returns a list of gifts' do
-          ChargeBee::Gift.should_receive(:list).and_return([entry, claimedEntry])
+          ChargeBee::Gift.should_receive(:list).and_return([entry, claimed_entry])
 
           get :gifts
 
@@ -147,12 +153,14 @@ describe Api::V0::ChargebeeController do
           response_data["results"]["unclaimed"][0]["gift"]["id"].should eq(gift.id)
           response_data["results"]["unclaimed"][0]["gift"]["status"].should eq(gift.status)
           response_data["results"]["unclaimed"][0]["gift"]["gifter"]["signature"].should eq(gifter.signature)
+          response_data["results"]["unclaimed"][0]["gift"]["claimed_time"].should be_nil
 
           response_data["results"]["claimed"].length.should eq(1)
           response_data["results"]["claimed"][0]["subscription"]["id"].should eq(subscription.id)
-          response_data["results"]["claimed"][0]["gift"]["id"].should eq(claimedGift.id)
-          response_data["results"]["claimed"][0]["gift"]["status"].should eq(claimedGift.status)
+          response_data["results"]["claimed"][0]["gift"]["id"].should eq(claimed_gift.id)
+          response_data["results"]["claimed"][0]["gift"]["status"].should eq(claimed_gift.status)
           response_data["results"]["claimed"][0]["gift"]["gifter"]["signature"].should eq(gifter.signature)
+          response_data["results"]["claimed"][0]["gift"]["claimed_time"].should eq(claimed_gift.gift_timelines[1].occurred_at * 100)
         end
       end
 

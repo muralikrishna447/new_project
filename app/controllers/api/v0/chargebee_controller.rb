@@ -10,7 +10,7 @@ module Api
 
       rescue_from ChargeBee::InvalidRequestError, with: :render_invalid_chargebee_request
 
-      GIFT_CLAIM_LIMIT = 3
+      GIFT_CLAIM_LIMIT = 30
 
       def generate_checkout_url
         if params[:is_gift]
@@ -86,6 +86,11 @@ module Api
 
         Rails.logger.info("ChargebeeController.gifts found #{list.count} gifts for user.id=#{current_api_user.id} and email=#{current_api_user.email}")
 
+        if list.next_offset.present?
+          Rails.logger.error("ChargebeeController.gifts exceeded limit.  limit=#{GIFT_CLAIM_LIMIT}")
+          Librato.increment("ChargebeeController.gifts.exceeded_limit")
+        end
+
         gifts = list.reduce({"claimed" => [], "unclaimed" => []}) do |agg, entry|
           item = {
               :subscription => {
@@ -102,7 +107,8 @@ module Api
                   :gifter => {
                       :signature => entry.gift.gifter.signature,
                       :note => entry.gift.gifter.note
-                  }
+                  },
+                  :claimed_time => get_claimed_time(entry.gift.gift_timelines)
               }
           }
           agg[entry.gift.status].push(item)
@@ -117,7 +123,7 @@ module Api
       # params[:gifts] => [gift_id1, gift_id2, ...]
       def claim_gifts
         unless gift_ids_params_valid?
-          render_api_response(400, { message: "Must specify at most 3 gift_ids" })
+          render_api_response(400, { message: "Must specify at most #{GIFT_CLAIM_LIMIT} gift_ids" })
           return
         end
 
@@ -170,7 +176,7 @@ module Api
       # params[:gifts] => [gift_id1, gift_id2, ...]
       def claim_complete
         unless gift_ids_params_valid?
-          render_api_response(400, { message: "Must specify at most 3 gift_ids" })
+          render_api_response(400, { message: "Must specify at most #{GIFT_CLAIM_LIMIT} gift_ids" })
           return
         end
 
@@ -239,6 +245,23 @@ module Api
 
       def gift_ids_params_valid?
         params[:gift_ids].present? && params[:gift_ids].kind_of?(Array) && params[:gift_ids].length <= GIFT_CLAIM_LIMIT
+      end
+
+      def get_claimed_time(gift_timeline)
+        unless gift_timeline.kind_of?(Array)
+          return nil
+        end
+
+        claimed = gift_timeline.find do |event|
+          event.status == "claimed"
+        end
+
+        if claimed.present?
+          # make this an epoch value
+          claimed.occurred_at * 1000
+        else
+          nil
+        end
       end
 
     end
