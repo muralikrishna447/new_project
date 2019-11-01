@@ -95,6 +95,7 @@ Delve::Application.routes.draw do
   get 'users/verify' => 'tokens#verify', as: 'verify'
   match 'users/set_location' => 'users#set_location'
   get 'users/update_privacy_settings' => 'users/privacy_settings#update'
+  get 'users/confirm_employee' => 'users/confirm_employee#confirm'
 
   get 'getUser' => 'users#get_user'
   resources :users, only: [:index, :show] do
