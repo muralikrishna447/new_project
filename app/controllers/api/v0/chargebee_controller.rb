@@ -88,7 +88,7 @@ module Api
 
         if list.next_offset.present?
           Rails.logger.error("ChargebeeController.gifts exceeded limit.  limit=#{GIFT_CLAIM_LIMIT}")
-          Librato.increment("ChargebeeController.gifts.exceeded_limit")
+          Librato.increment("ChargebeeController.gifts.exceeded_limit", {})
         end
 
         gifts = list.reduce({"claimed" => [], "unclaimed" => []}) do |agg, entry|
