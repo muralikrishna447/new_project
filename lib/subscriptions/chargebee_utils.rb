@@ -38,7 +38,7 @@ module Subscriptions
         plan_id: plan_id,
       }
       if coupon_id.present?
-        subscription[:coupon_id] = coupon_id
+        subscription[:coupon_ids] = [coupon_id]
       end
 
       if customer_result.present?

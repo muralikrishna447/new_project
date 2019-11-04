@@ -8,7 +8,7 @@ describe Subscriptions::ChargebeeUtils do
     let(:coupon_id) { 'my_coupon_id' }
 
     before :each do
-      WebMock.stub_request(:get, "https://.chargebee.com/api/v2/subscriptions?customer_id%5Bis%5D=#{user_id}&limit=1&plan_id%5Bis%5D=#{plan_id}").
+      WebMock.stub_request(:get, "https://.chargebee.com/api/v2/subscriptions?customer_id%5Bis%5D=#{user_id}&limit=1&plan_id%5Bis%5D=#{plan_id}&status%5Bin%5D=%5B%22active%22,%22in_trial%22,%22non_renewing%22%5D").
         to_return(:status => 200, :body => list_body, :headers => {})
     end
 
