@@ -48,6 +48,8 @@ class User < ActiveRecord::Base
 
   has_one :settings, class_name: 'UserSettings', :dependent => :destroy
 
+  has_many :subscriptions, :dependent => :destroy
+
   serialize :viewed_activities, Array
 
   scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
@@ -103,8 +105,12 @@ class User < ActiveRecord::Base
     chef_type.present?
   end
 
+  def studio?
+    Subscription::user_has_studio?(self)
+  end
+
   def premium?
-    self.premium_member || admin
+    self.premium_member || admin || self.studio?
   end
 
   def viewed_activities_in_course(course)
@@ -149,7 +155,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def make_premium_member(price)
+  def make_premium_member(price, send_welcome_email = false)
     # Not an error b/c we do this on both main and worker, can be
     # racing each other.
     return if self.premium?
@@ -160,6 +166,10 @@ class User < ActiveRecord::Base
     # There are users that already don't pass validation so can't be resaved; not fixing right now
     self.save(validate: false)
     Resque.enqueue(UserSync, self.id)
+
+    if send_welcome_email
+      PremiumWelcomeMailer.prepare(self).deliver
+    end
   end
 
   def remove_premium_membership
@@ -254,6 +264,12 @@ class User < ActiveRecord::Base
     end
 
     aa.current_token(exp: 365.days.from_now.to_i)
+  end
+
+  def create_restricted_token(restriction, expires_in_time)
+    aa = ActorAddress.create_for_user(self, client_metadata: restriction)
+    exp = ((Time.now + expires_in_time).to_f * 1000).to_i
+    aa.current_token(exp: exp, restrict_to: restriction)
   end
 
   def was_shown_terms

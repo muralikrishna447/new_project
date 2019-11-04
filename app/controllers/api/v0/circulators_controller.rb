@@ -46,6 +46,11 @@ module Api
           circulator.last_accessed_at = Time.now.utc
           circulator.serial_number = circ_params[:serial_number]
           circulator.circulator_id = circulator_id
+          circulator.hardware_version = circ_params[:hardwareVersion]
+          circulator.hardware_options = circ_params[:hardwareOptions]
+          circulator.build_date = circ_params[:buildDate]
+          circulator.model_number = circ_params[:modelNumber]
+          circulator.pcba_revision = circ_params[:pcbaRevision]
 
           secret_key = nil
           if circ_params[:secret_key]
@@ -75,6 +80,13 @@ module Api
             circulatorUser.owner = true
           end
           circulatorUser.save!
+
+          if circulator.premium_offer_eligible?
+            Rails.logger.info("create circulator - make_premium_member - user.id=#{user.id}")
+            price = 0
+            user.make_premium_member(price, true)
+          end
+
           render json: circulator, serializer: Api::CirculatorSerializer
         end
       end

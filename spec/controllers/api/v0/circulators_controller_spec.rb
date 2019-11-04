@@ -1,7 +1,7 @@
 describe Api::V0::CirculatorsController do
   before :each do
     @user = Fabricate :user, id: 12345, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
-    @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1212121212121212', name: 'my name'
+    @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1212121212121212', name: 'my name', hardware_version: 'J5', hardware_options: 0, build_date: 1729, pcba_revision: "131", model_number: "300"
     @admin_user = Fabricate :user, email: 'admin@chefsteps.com', password: '123456', name: 'John Doe', role: 'admin'
 
     @aa = ActorAddress.create_for_circulator @circulator
@@ -28,6 +28,11 @@ describe Api::V0::CirculatorsController do
     circulators[0]['notes'].should == 'some notes'
     circulators[0]['secretKey'].should == nil
     circulators[0]['name'].should == 'my name'
+    circulators[0]['hardwareVersion'].should == 'J5'
+    circulators[0]['hardwareOptions'].should == 0
+    circulators[0]['buildDate'].should == 1729
+    circulators[0]['pcbaRevision'].should == "131"
+    circulators[0]['modelNumber'].should == "300"
   end
 
   it 'should create circulator' do
@@ -35,6 +40,11 @@ describe Api::V0::CirculatorsController do
     serial_number = 'abc123'
     notes = 'red one'
     name = 'my name is my name'
+    hardware_version = 'J5'
+    hardware_options = 0
+    build_date = 1729
+    pcba_revision = "131"
+    model_number = "300"
 
     now = nil
     # https://github.com/travisjeffery/timecop/issues/176
@@ -45,7 +55,12 @@ describe Api::V0::CirculatorsController do
              :notes => notes,
              :name => name,
              :id => '7878787878787878',
-             :secret_key => secret_key
+             :secret_key => secret_key,
+             :hardwareVersion => hardware_version,
+             :hardwareOptions => hardware_options,
+             :buildDate => build_date,
+             :pcbaRevision => pcba_revision,
+             :modelNumber => model_number
            }
       )
       now = Time.now
@@ -57,6 +72,11 @@ describe Api::V0::CirculatorsController do
     returnedCirculator['serialNumber'].should == serial_number
     returnedCirculator['notes'].should == notes
     returnedCirculator['name'].should == name
+    returnedCirculator['hardwareVersion'].should == hardware_version
+    returnedCirculator['hardwareOptions'].should == hardware_options
+    returnedCirculator['buildDate'].should == build_date
+    returnedCirculator['pcbaRevision'].should == pcba_revision
+    returnedCirculator['modelNumber'].should == model_number
     returnedCirculator['lastAccessedAt'].should == now.utc.iso8601
     circulator = Circulator.where(circulator_id: returnedCirculator['circulatorId']).first
     circulator.should_not be_nil

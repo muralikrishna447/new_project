@@ -19,6 +19,17 @@ class Circulator < ActiveRecord::Base
 
   after_destroy :revoke_address
 
+
+  def premium_offer_eligible?
+    is_15_ss = (self.hardware_version == "JA") && (!self.hardware_options.nil?) && ((self.hardware_options & 1) > 0)
+    is_first_activation = !Circulator.with_deleted.where(:serial_number => self.serial_number).where('id != ?', self.id).exists?
+    is_eligible = is_15_ss && is_first_activation
+
+    Rails.logger.info("circulator.premium_offer_eligible? - is_eligible=#{is_eligible} id=#{self.id} hardware_version=#{self.hardware_version} hardware_options=#{self.hardware_options} is_first_activation=#{is_first_activation}")
+
+    is_eligible
+  end
+
   private
   def revoke_address
     addresses = ActorAddress.where(actor_type: 'Circulator', actor_id: self.id)
@@ -27,4 +38,5 @@ class Circulator < ActiveRecord::Base
       aa.revoke
     end
   end
+
 end

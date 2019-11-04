@@ -46,12 +46,14 @@ describe Api::V0::UsersController do
 
       result.delete('request_id')
       result.delete('premium').should == false
+      result.delete('studio').should == false
       result.delete('used_circulator_discount').should == false
       result.delete('admin').should == false
       result.delete('joule_purchase_count').should == 0
       result.delete('referral_code').should == nil
       result.delete('capabilities').should == []
       result.delete('settings').should == nil
+      result.delete('subscriptions').should == []
       
       result.empty?.should == true
     end
@@ -80,6 +82,7 @@ describe Api::V0::UsersController do
 
       result.delete('request_id')
       result.delete('premium').should == false
+      result.delete('studio').should == false
       result.delete('used_circulator_discount').should == false
       result.delete('admin').should == false
       result.delete('joule_purchase_count').should == 0
@@ -91,6 +94,7 @@ describe Api::V0::UsersController do
       result['settings'].delete('has_purchased_truffle_sauce').should == nil
       result['settings'].delete('country_iso2').should == 'GB'
       result.delete('settings').should == {}
+      result.delete('subscriptions').should == []
       
       result.empty?.should == true
     end
@@ -142,6 +146,7 @@ describe Api::V0::UsersController do
     it 'should create a user' do
       Resque.should_receive(:enqueue).with(Forum, "initial_user", "bloomAPI", kind_of(Numeric))
       Resque.should_receive(:enqueue).with(UserSync, kind_of(Numeric))
+      Resque.should_receive(:enqueue).with(EmployeeAccountProcessor, kind_of(Numeric))
       post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
       response.should be_success
     end

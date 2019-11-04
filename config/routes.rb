@@ -94,6 +94,8 @@ Delve::Application.routes.draw do
   get 'users/preauth_init' => 'users#preauth_init'
   get 'users/verify' => 'tokens#verify', as: 'verify'
   match 'users/set_location' => 'users#set_location'
+  get 'users/update_privacy_settings' => 'users/privacy_settings#update'
+  get 'users/confirm_employee' => 'users/confirm_employee#confirm'
 
   get 'getUser' => 'users#get_user'
   resources :users, only: [:index, :show] do
@@ -313,6 +315,13 @@ Delve::Application.routes.draw do
       get 'auth/external_redirect_by_key', to: 'auth#external_redirect_by_key'
 
       get 'content_config/manifest', to: 'content#manifest'
+
+      scope :path => "/subscription" do
+        post '/create_portal_session', to: 'chargebee#create_portal_session'
+        post '/generate_checkout_url', to: 'chargebee#generate_checkout_url'
+        post '/sync_subscriptions', to: 'chargebee#sync_subscriptions'
+        post '/webhook', to: 'chargebee#webhook'
+      end
 
       namespace :shopping do
 

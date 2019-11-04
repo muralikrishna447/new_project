@@ -1,0 +1,33 @@
+<%#
+Renders a button
+The VML craziness is so that this will work with Outlook
+https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design
+
+    Required parameters:
+        url: used as href when clicking the button
+        text: string to display in the button
+
+    Optional parameters:
+        button_color: string of the button color; if not defined then defaults to "#ff674d"
+%>
+
+<%
+  unless defined?(button_color)
+    button_color = "#ff674d"
+  end
+%>
+
+<!--[if mso]>
+  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="<%= url %>" style="height:40px;v-text-anchor:middle;min-width:200px;padding:0px 28px" arcsize="75%" stroke="f" fillcolor="<%= button_color %>">
+    <w:anchorlock/>
+    <center>
+<![endif]-->
+<a  href="<%= url %>"
+    style="background-color:<%= button_color %>;border-radius:30px;color:#ffffff;display:inline-block;font-family:sans-serif;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;min-width:200px;padding:0px 28px;-webkit-text-size-adjust:none;"
+    target="_blank">
+  <%= text %>
+</a>
+<!--[if mso]>
+</center>
+</v:roundrect>
+<![endif]-->
