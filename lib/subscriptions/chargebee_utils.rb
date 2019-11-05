@@ -58,10 +58,39 @@ module Subscriptions
       }
       Subscription.create_or_update_by_params(params, user_id)
 
-      # If the subscription is scheduled for cancellation we remove that
-      if response.subscription.status == 'non_renewing'
-        Rails.logger.info("create_subscription - removing scheduled cancellation on subscription.id=#{response.subscription.id}")
-        ChargeBee::Subscription.remove_scheduled_cancellation(response.subscription.id)
+      handle_non_renewing_subscription(response.subscription, response.customer)
+
+      nil
+    end
+
+    def self.calculate_new_term_end(subscription, customer)
+      extra_periods = customer.promotional_credits / subscription.plan_amount # rounds down, so if this results in fractional credits they will remain on the customer's account
+      current_term_end = Time.at(subscription.current_term_end)
+
+      case subscription.billing_period_unit
+      when "year"
+        unit = 1.year
+      when 'month'
+        unit = 1.month
+      else
+        raise NotImplementedError.new("calculate_new_term_end received unsupported billing_period_unit=#{subscription.billing_period_unit} subscription.id=#{subscription.id}")
+      end
+
+      new_term_end = current_term_end + (unit * extra_periods)
+      new_term_end.to_i
+    end
+
+    private
+
+    # If the subscription is non-renewing and the user has promotion credits then we need to extend the term end
+    def self.handle_non_renewing_subscription(subscription, customer)
+      if subscription.status == 'non_renewing' && customer.promotional_credits > 0
+        Rails.logger.info("create_subscription - extending non_renewing subscription.id=#{subscription.id} belonging to customer.id=#{customer.id} has promotional credits=#{customer.promotional_credits}")
+        new_term_ends_at = calculate_new_term_end(subscription, customer)
+        Rails.logger.info("create_subscription - setting terms_ends_at to=#{new_term_ends_at}")
+        ChargeBee::Subscription.change_term_end(subscription.id,{
+            :term_ends_at => new_term_ends_at
+        })
       end
     end
   end
