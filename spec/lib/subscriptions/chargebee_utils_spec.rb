@@ -1,25 +1,62 @@
 require 'spec_helper'
 
 describe Subscriptions::ChargebeeUtils do
-  describe 'grant_employee_subscription' do
+  describe 'create_subscription' do
     let(:user_id) { '1234' }
     let(:email) { 'a@b.com'}
     let(:plan_id) { 'my_plan_id' }
     let(:coupon_id) { 'my_coupon_id' }
 
     before :each do
-      WebMock.stub_request(:get, "https://.chargebee.com/api/v2/subscriptions?customer_id%5Bis%5D=#{user_id}&limit=1&plan_id%5Bis%5D=#{plan_id}&status%5Bin%5D=%5B%22active%22,%22in_trial%22,%22non_renewing%22%5D").
+      WebMock.stub_request(:get, "https://.chargebee.com/api/v2/subscriptions?customer_id%5Bis%5D=#{user_id}&limit=1&plan_id%5Bis%5D=#{plan_id}&status%5Bin%5D=%5B%22active%22,%22in_trial%22,%22non_renewing%22,%22cancelled%22%5D").
         to_return(:status => 200, :body => list_body, :headers => {})
     end
 
-    context 'employee is already subscribed' do
-      let(:list_body) { { list: [{ customer: {} }] }.to_json }
+    context 'user has existing subscription' do
+      let(:subscription) {
+        {
+            status: status,
+            id: 1
+        }
+      }
+      let(:list_body) { { list: [{ customer: customer, subscription: subscription }] }.to_json }
 
-      it 'does not create subscription' do
+      before(:each) {
         ChargeBee::Subscription.should_receive(:create).exactly(0).times
         ChargeBee::Subscription.should_receive(:create_for_customer).exactly(0).times
+      }
 
-        Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
+      context 'active' do
+        let(:status) { 'active'}
+        let(:customer) { {} }
+
+        it 'does not create subscription' do
+          Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
+        end
+      end
+
+      context 'cancelled' do
+        let(:status) { 'cancelled'}
+        let(:customer) { { promotional_credits: 10} }
+        let(:new_term_end) { Time.now.to_i }
+
+        it 'reactivates the subscription' do
+          ChargeBee::Subscription.should_receive(:reactivate).with(subscription[:id], { invoice_immediately: true, billing_cycles: 1}).once
+          Subscriptions::ChargebeeUtils.should_receive(:calculate_new_term_end).and_return(new_term_end)
+          Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
+        end
+      end
+
+      context 'non_renewing' do
+        let(:status) { 'non_renewing'}
+        let(:customer) { { promotional_credits: 10} }
+        let(:new_term_end) { Time.now.to_i }
+
+        it 'extends term' do
+          ChargeBee::Subscription.should_receive(:change_term_end).once
+          Subscriptions::ChargebeeUtils.should_receive(:calculate_new_term_end).and_return(new_term_end)
+          Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
+        end
       end
     end
 
@@ -65,4 +102,46 @@ describe Subscriptions::ChargebeeUtils do
       end
     end
   end
+
+  describe 'calculate_new_term_end' do
+    let(:plan_amount) {
+      10
+    }
+    let(:current_term_end) {
+      (Time.now + 1.month).to_i
+    }
+    let(:subscription) {
+      double('subscription', :plan_amount => plan_amount, :current_term_end => current_term_end, :billing_period_unit => billing_period_unit)
+    }
+
+    context 'billing_period_unit = year' do
+      let(:billing_period_unit) { "year"  }
+
+      it 'adds 1 year' do
+        new_term_end = Subscriptions::ChargebeeUtils.calculate_new_term_end(subscription, plan_amount)
+        expect(new_term_end).should eq((Time.at(current_term_end) + 1.year).to_i)
+      end
+      it 'adds 2 years' do
+        new_term_end = Subscriptions::ChargebeeUtils.calculate_new_term_end(subscription, plan_amount * 2)
+        expect(new_term_end).should eq((Time.at(current_term_end) + 2.years).to_i)
+      end
+      it 'adds 0 years' do
+        new_term_end = Subscriptions::ChargebeeUtils.calculate_new_term_end(subscription, 0)
+        expect(new_term_end).should eq(Time.at(current_term_end).to_i)
+      end
+      it 'handles promotional credits not being multiple of plan_amount' do
+        new_term_end = Subscriptions::ChargebeeUtils.calculate_new_term_end(subscription, plan_amount * 1.5)
+        expect(new_term_end).should eq((Time.at(current_term_end) + 1.year).to_i)
+      end
+    end
+
+    context 'billing_period_unit = month' do
+      let(:billing_period_unit) { "month" }
+      it 'adds 1 month' do
+        new_term_end = Subscriptions::ChargebeeUtils.calculate_new_term_end(subscription, plan_amount)
+        expect(new_term_end).should eq((Time.at(current_term_end) + 1.month).to_i)
+      end
+    end
+  end
+
 end
