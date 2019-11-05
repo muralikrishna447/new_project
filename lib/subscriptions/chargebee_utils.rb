@@ -57,6 +57,12 @@ module Subscriptions
         resource_version: response.subscription.resource_version
       }
       Subscription.create_or_update_by_params(params, user_id)
+
+      # If the subscription is scheduled for cancellation we remove that
+      if response.subscription.status == 'non_renewing'
+        Rails.logger.info("create_subscription - removing scheduled cancellation on subscription.id=#{response.subscription.id}")
+        ChargeBee::Subscription.remove_scheduled_cancellation(response.subscription.id)
+      end
     end
   end
 end
