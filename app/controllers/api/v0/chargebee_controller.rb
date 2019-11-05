@@ -185,14 +185,6 @@ module Api
 
         render_api_response(200, {complete: complete})
       end
-      
-      def create_subscription
-        ChargeBee::Subscription.create_for_customer(current_api_user.id,{
-            :plan_id => params[:plan_id].present? ? params[:plan_id] : Subscription::STUDIO_PLAN_ID,
-        })
-
-        render_api_response(200, {})
-      end
 
       # https://apidocs.chargebee.com/docs/api/events
       # For now we only want to keep the subscription status in sync with what is in Chargebee
