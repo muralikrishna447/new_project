@@ -42,7 +42,6 @@ describe Subscriptions::ChargebeeUtils do
 
         it 'reactivates the subscription' do
           ChargeBee::Subscription.should_receive(:reactivate).with(subscription[:id], { invoice_immediately: true, billing_cycles: 1}).once
-          Subscriptions::ChargebeeUtils.should_receive(:calculate_new_term_end).and_return(new_term_end)
           Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
         end
       end
@@ -53,7 +52,7 @@ describe Subscriptions::ChargebeeUtils do
         let(:new_term_end) { Time.now.to_i }
 
         it 'extends term' do
-          ChargeBee::Subscription.should_receive(:change_term_end).once
+          ChargeBee::Subscription.should_receive(:change_term_end).with(subscription[:id], { term_ends_at: new_term_end }).once
           Subscriptions::ChargebeeUtils.should_receive(:calculate_new_term_end).and_return(new_term_end)
           Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
         end
