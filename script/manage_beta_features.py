@@ -110,7 +110,7 @@ Example: adding a bunch of users to groups on production from
 
     args = parser.parse_args()
 
-    dynamodb = boto3.resource('dynamodb')
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('beta-feature-group-associations-%s' % args.env)
 
     if args.cmd == 'del':
