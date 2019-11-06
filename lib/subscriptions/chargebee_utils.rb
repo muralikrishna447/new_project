@@ -62,8 +62,13 @@ module Subscriptions
       else
         response = existing_subscriptions.first
 
-        handle_cancelled_subscription(response.subscription, response.customer)
-        handle_non_renewing_subscription(response.subscription, response.customer)
+        if subscription.status == 'cancelled'
+          handle_cancelled_subscription(response.subscription, response.customer)
+        end
+
+        if subscription.status == 'non_renewing'
+          handle_non_renewing_subscription(response.subscription, response.customer)
+        end
       end
 
       nil
@@ -90,18 +95,21 @@ module Subscriptions
 
     # If the subscription is cancelled and the user has promotional credits then remove the cancellation
     def self.handle_cancelled_subscription(subscription, customer)
-      if subscription.status == 'cancelled' && customer.promotional_credits > 0
+      if customer.promotional_credits > 0
         Rails.logger.info("create_subscription - reactivating cancelled subscription.id=#{subscription.id} belonging to customer.id=#{customer.id} has promotional credits=#{customer.promotional_credits}")
+
+        # Reactivate makes it non-renewing then we extend the term
         ChargeBee::Subscription.reactivate(subscription.id,{
             :invoice_immediately => true,
             :billing_cycles => 1 # handle_non_renewing_subscription will extend the term date to whatever is
         })
+        handle_non_renewing_subscription(subscription, customer)
       end
     end
 
     # If the subscription is non-renewing and the user has promotional credits then we need to extend the term end
     def self.handle_non_renewing_subscription(subscription, customer)
-      if subscription.status == 'non_renewing' && customer.promotional_credits > 0
+      if customer.promotional_credits > 0
         Rails.logger.info("create_subscription - extending non_renewing subscription.id=#{subscription.id} belonging to customer.id=#{customer.id} has promotional credits=#{customer.promotional_credits}")
         new_term_ends_at = calculate_new_term_end(subscription, customer.promotional_credits)
         if new_term_ends_at != subscription.current_term_end
