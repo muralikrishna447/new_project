@@ -24,7 +24,7 @@ class ChargeBeeGiftWorker
     Rails.logger.info("ChargeBeeGiftWorker found #{pending_count} pending gift redemptions")
 
     pending_redemptions.each do |redemption|
-      Resque.enqueue(ChargeBeeGiftProcessor, {
+      Resque.enqueue(ChargeBeeWorkers::ChargeBeeGiftProcessor, {
           :gift_id => redemption.gift_id,
           :user_id => redemption.user_id,
           :plan_amount => redemption.plan_amount,
