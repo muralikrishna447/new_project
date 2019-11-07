@@ -1,14 +1,19 @@
 require 'spec_helper'
 
 describe ChargeBeeWorkers::ChargeBeeGiftProcessor do
+  let(:user) {
+    Fabricate :user, id: 456, email: 'johndoe@chefsteps.com'
+  }
   let(:params) {
     {
       :gift_id => '123',
-      :user_id => 456,
+      :user_id => user.id,
       :plan_amount => 6900,
       :currency_code => 'USD'
     }
   }
+
+
   let(:gift_claim_return) {
     nil
   }
@@ -26,6 +31,7 @@ describe ChargeBeeWorkers::ChargeBeeGiftProcessor do
   before(:each) do
     ChargeBee::Gift.should_receive(:claim).with(params[:gift_id]).and_return(gift_claim_return)
     ChargeBee::PromotionalCredit.should_receive(:list).and_return(credit_list_return)
+    Subscriptions::ChargebeeUtils.should_receive(:create_subscription).with(user.id, user.email, Subscription::STUDIO_PLAN_ID, nil).and_return(nil)
   end
 
   context 'should add promotional credit' do

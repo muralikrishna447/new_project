@@ -324,7 +324,6 @@ Delve::Application.routes.draw do
         get '/gifts', to: 'chargebee#gifts'
         post '/claim_gifts', to: 'chargebee#claim_gifts'
         post '/claim_complete', to: 'chargebee#claim_complete'
-        post '/create_subscription', to: 'chargebee#create_subscription'
         post '/webhook', to: 'chargebee#webhook'
       end
 

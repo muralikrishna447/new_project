@@ -131,7 +131,12 @@ describe Api::V0::ChargebeeController do
 
       describe 'gifts' do
         it 'returns empty result when no gifts' do
-          ChargeBee::Gift.should_receive(:list).and_return([])
+          list_result = []
+          list_result.define_singleton_method(:next_offset) do
+            nil
+          end
+
+          ChargeBee::Gift.should_receive(:list).and_return(list_result)
 
           get :gifts
 
@@ -142,7 +147,12 @@ describe Api::V0::ChargebeeController do
         end
 
         it 'returns a list of gifts' do
-          ChargeBee::Gift.should_receive(:list).and_return([entry, claimed_entry])
+          list_result = [entry, claimed_entry]
+          list_result.define_singleton_method(:next_offset) do
+            nil
+          end
+
+          ChargeBee::Gift.should_receive(:list).and_return(list_result)
 
           get :gifts
 
@@ -160,7 +170,7 @@ describe Api::V0::ChargebeeController do
           response_data["results"]["claimed"][0]["gift"]["id"].should eq(claimed_gift.id)
           response_data["results"]["claimed"][0]["gift"]["status"].should eq(claimed_gift.status)
           response_data["results"]["claimed"][0]["gift"]["gifter"]["signature"].should eq(gifter.signature)
-          response_data["results"]["claimed"][0]["gift"]["claimed_time"].should eq(claimed_gift.gift_timelines[1].occurred_at * 100)
+          response_data["results"]["claimed"][0]["gift"]["claimed_time"].should eq(claimed_gift.gift_timelines[1].occurred_at * 1000)
         end
       end
 
@@ -212,7 +222,10 @@ describe Api::V0::ChargebeeController do
         end
 
         it 'rejects requests with two many gift ids' do
-          get :claim_complete, {:gift_ids => ['1', '2', '3', '4', '5']}
+          gift_ids = []
+          (0..31).each {|i| gift_ids.push(i.to_s)}
+
+          get :claim_complete, {:gift_ids => gift_ids}
           response.code.should eq("400")
         end
 
