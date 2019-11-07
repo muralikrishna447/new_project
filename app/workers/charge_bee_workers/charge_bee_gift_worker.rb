@@ -13,6 +13,8 @@ class ChargeBeeGiftWorker
   end
 
   def self.perform(params)
+    report_oldest_incomplete
+
     symbolized_params = params.deep_symbolize_keys
     limit = symbolized_params[:limit] || 100
 
@@ -38,6 +40,15 @@ class ChargeBeeGiftWorker
 
     Librato.increment('ChargeBeeGiftWorker.success', sporadic: true)
     Librato.tracker.flush
+  end
+
+  def self.report_oldest_incomplete
+    first_incomplete = ChargebeeGiftRedemptions.complete.first
+    if first_incomplete.present?
+      age = Time.now - first_incomplete.created_at
+      age_in_minutes = age.to_i / 60
+      Librato.measure 'ChargeBeeGiftWorker.first_incomplete.age_in_minutes', age_in_minutes
+    end
   end
 end
 end
