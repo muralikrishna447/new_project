@@ -43,7 +43,7 @@ class ChargeBeeGiftWorker
   end
 
   def self.report_oldest_incomplete
-    first_incomplete = ChargebeeGiftRedemptions.complete.first
+    first_incomplete = ChargebeeGiftRedemptions.incomplete.first
     if first_incomplete.present?
       age = Time.now - first_incomplete.created_at
       age_in_minutes = age.to_i / 60
