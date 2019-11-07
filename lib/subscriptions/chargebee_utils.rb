@@ -62,11 +62,11 @@ module Subscriptions
       else
         response = existing_subscriptions.first
 
-        if subscription.status == 'cancelled'
+        if response.subscription.status == 'cancelled'
           handle_cancelled_subscription(response.subscription, response.customer)
         end
 
-        if subscription.status == 'non_renewing'
+        if response.subscription.status == 'non_renewing'
           handle_non_renewing_subscription(response.subscription, response.customer)
         end
       end
