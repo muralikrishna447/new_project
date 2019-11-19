@@ -2,6 +2,7 @@ class Subscription < ActiveRecord::Base
   STUDIO_PLAN_ID = ENV['STUDIO_PLAN_ID']
   EXISTING_PREMIUM_COUPON = ENV['EXISTING_PREMIUM_COUPON']
   ACTIVE_PLAN_STATUSES = ['active', 'in_trial', 'non_renewing']
+  ACTIVE_OR_CANCELLED_PLAN_STATUSES = Array.new(ACTIVE_PLAN_STATUSES).concat(['cancelled'])
 
   IS_STUDIO_LIVE = ENV['CS_IS_STUDIO_LIVE'] == 'true'
 
