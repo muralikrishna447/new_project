@@ -6,7 +6,6 @@ module Api
     instrument_action :all
 
     skip_before_filter :verify_authenticity_token
-    # before_filter :cors_set_access_control_headers
 
     rescue_from Exception do |exception|
       logger.error exception
