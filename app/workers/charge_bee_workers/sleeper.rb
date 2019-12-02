@@ -1,5 +1,5 @@
 module ChargeBeeWorkers
-  class ChargeBeeGiftProcessor
+  class Sleeper
     @queue = 'sleeper'
 
     def self.perform(params)
