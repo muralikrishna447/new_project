@@ -61,7 +61,10 @@ module Api
       end
 
       def sync_subscriptions
-        result = ChargeBee::Subscription.list({"customer_id[is]" => current_api_user.id})
+        result = ChargeBee::Subscription.list({
+                                                  "customer_id[is]" => current_api_user.id,
+                                                  "status[in]" => Subscription::ACTIVE_PLAN_STATUSES
+                                              })
 
         if result
           result.each do |entry|
