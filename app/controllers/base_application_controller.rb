@@ -1,5 +1,12 @@
+require 'set'
+
 class BaseApplicationController < ActionController::Base
   before_filter :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user, :detect_country
+
+  ALLOWED_ORIGINS = Set['www.chefsteps.com', 'shop.chefsteps.com',
+                        'www.chocolateyshatner.com', 'shop.chocolateyshatner.com',
+                        'www.vanillanimoy.com', 'shop.vanillanimoy.com',
+                        'localhost', 'chefsteps.dev'] # chefsteps.dev is required for testing Facebook auth locally
 
   def record_uuid_in_new_relic
     ::NewRelic::Agent.add_custom_attributes({ request_id: request.uuid()})
@@ -24,15 +31,10 @@ class BaseApplicationController < ActionController::Base
       headers['Access-Control-Allow-Headers'] = '*, X-Requested-With, X-Prototype-Version, X-CSRF-Token, Content-Type, Authorization'
       headers['Access-Control-Max-Age'] = "1728000"
 
-      # host header is not a URI as it doesn't include protocol but it does include a port
-      host_hostname = request.headers['host'].split(':')[0]
-
-      # chefsteps.dev is required for testing Facebook auth locally
-      similar_origin = (origin_hostname == host_hostname || origin_hostname == 'chefsteps.dev')
-      if similar_origin
+      if allowed_origin?(origin_hostname)
         headers['Access-Control-Allow-Credentials'] = 'true'
       else
-        Rails.logger.info "[cors] Not setting Access-Control-Allow-Credentials because origin #{request.headers['origin']} does not match host [#{request.headers['host']}]"
+        Rails.logger.info "[cors] Not setting Access-Control-Allow-Credentials because origin #{origin_hostname} is not allowed"
       end
     end
   end
@@ -278,5 +280,9 @@ class BaseApplicationController < ActionController::Base
       cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"] = {distinct_id: id}.to_json
       id
     end
+  end
+
+  def allowed_origin?(origin)
+    ALLOWED_ORIGINS.include?(origin)
   end
 end
