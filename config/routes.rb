@@ -107,7 +107,7 @@ Delve::Application.routes.draw do
   get 'authenticate-sso' => 'sso#index', as: 'forum_sso'
 
   get 'embeddable_signup' => 'home#embeddable_signup', as: 'embeddable_signup'
-  get 'knife-collection' => 'pages#knife_collection', as: 'knife_collection'
+  get 'knife-collection' => 'pages#knives', as: 'knives'
   get 'sous-vide-collection', to: redirect('/sous-vide')
   get 'mobile-about' => 'pages#mobile_about', as: 'mobile_about'
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
