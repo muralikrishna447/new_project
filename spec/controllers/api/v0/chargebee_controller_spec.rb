@@ -109,6 +109,7 @@ describe Api::V0::ChargebeeController do
         }
 
         it 'calls checkout_gift if params[:is_gift]' do
+          ChargeBee::Customer.should_receive(:retrieve).and_return(@user.id)
           ChargeBee::HostedPage.should_receive(:checkout_gift).and_return(result)
           ChargeBee::HostedPage.should_not_receive(:checkout_new)
 
