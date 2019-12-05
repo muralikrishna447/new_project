@@ -20,6 +20,7 @@ module Api
               },
               :gifter => {
                   :customer_id => current_api_user.id,
+                  :email => current_api_user.email
               }
           }
 
