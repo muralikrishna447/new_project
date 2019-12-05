@@ -14,12 +14,23 @@ module Api
 
       def generate_checkout_url
         if params[:is_gift]
+          # create customer if necessary
+          begin
+            ChargeBee::Customer.retrieve(current_api_user.id)
+          rescue ChargeBee::InvalidRequestError => e
+            Rails.logger.info("ChargebeeController.generate_checkout_url no customer found for user.id=#{current_api_user.id} creating the customer now, e=#{e.inspect}")
+            ChargeBee::Customer.create({
+                                           :id => current_api_user.id,
+                                           :email => current_api_user.email
+                                       })
+          end
+
           data = {
               :subscription => {
                   :plan_id => params[:plan_id]
               },
               :gifter => {
-                  :customer_id => current_api_user.id,
+                  :customer_id => current_api_user.id
               }
           }
 
@@ -61,7 +72,10 @@ module Api
       end
 
       def sync_subscriptions
-        result = ChargeBee::Subscription.list({"customer_id[is]" => current_api_user.id})
+        result = ChargeBee::Subscription.list({
+                                                  "customer_id[is]" => current_api_user.id,
+                                                  "status[in]" => Subscription::ACTIVE_PLAN_STATUSES
+                                              })
 
         if result
           result.each do |entry|
