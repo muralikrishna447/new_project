@@ -18,6 +18,7 @@ module Api
       headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
       headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Origin, Content-Type, Accept, Authorization, Token, cs-referer, X-Application-Version'
       headers['Access-Control-Max-Age'] = "1728000"
+      headers['Access-Control-Allow-Credentials'] = 'false'
       if request.method == 'OPTIONS'
         render :text => '', :content_type => 'text/plain'
       end
