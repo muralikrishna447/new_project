@@ -150,7 +150,7 @@ module Api
         end
 
         invalid_gift = gifts.any? do |gift|
-          invalid_email = gift[:gift].gift_receiver.email != current_api_user.email
+          invalid_email = gift[:gift].gift_receiver.email.downcase != current_api_user.email.downcase
           invalid_gift_status = gift[:gift].status != "unclaimed"
 
           invalid_email || invalid_gift_status
