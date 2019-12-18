@@ -31,10 +31,6 @@ class PagesController < ApplicationController
     end
   end
 
-  def knife_collection
-    # @knife_page = Page.find 'knife-collection'
-  end
-
   def mobile_about
     @mobile_about = Page.find 'mobile-about'
     render layout: false
