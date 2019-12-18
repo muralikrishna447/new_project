@@ -2,14 +2,14 @@ class PagesController < ApplicationController
 
   def show
     @page = Page.find_published(params[:id])
-    if @page.is_promotion && @page.redirect_path
+    if @page.redirect_path.present?
 
       # Keep any url params (utm parameters for example)
       page_params = params.dup
       page_params.delete(:action)
       page_params.delete(:controller)
       page_params.delete(:id)
-      page_params[:discount_id] = @page.discount_id if @page.discount_id.present?
+      page_params[:discount_id] = @page.discount_id if @page.discount_id.present? && @page.is_promotion
 
       uri = URI(@page.redirect_path)
       uri_path = uri.path
