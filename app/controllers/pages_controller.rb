@@ -9,7 +9,7 @@ class PagesController < ApplicationController
       page_params.delete(:action)
       page_params.delete(:controller)
       page_params.delete(:id)
-      page_params[:discount_id] = @page.discount_id if @page.discount_id
+      page_params[:discount_id] = @page.discount_id if @page.discount_id.present?
 
       uri = URI(@page.redirect_path)
       uri_path = uri.path
