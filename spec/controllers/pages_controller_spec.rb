@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe PagesController do
 
   describe 'show' do
@@ -32,6 +34,12 @@ describe PagesController do
 
     it 'redirects promotion if redirect_path is set but code is not set' do
       @page = Fabricate :page, title: 'Test Promotion', published: true, is_promotion: true, redirect_path: '/joule', discount_id: nil
+      get :show, id: @page.slug
+      expect(response).to redirect_to('/joule')
+    end
+
+    it 'redirects a page that is not a promotion' do
+      @page = Fabricate :page, title: 'Test Promotion', published: true, is_promotion: false, redirect_path: '/joule'
       get :show, id: @page.slug
       expect(response).to redirect_to('/joule')
     end
