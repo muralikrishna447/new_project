@@ -208,6 +208,22 @@ describe Api::V0::ChargebeeController do
             response.code.should eq("401")
           end
         end
+
+        context 'with case insensitive email' do
+          let(:gift_receiver) {
+            double('gift_receiver', :email => @user.email.upcase)
+          }
+          it 'allows the request' do
+            ChargeBee::Gift.should_receive(:retrieve).and_return(entry)
+            ChargeBee::Customer.should_receive(:retrieve).and_return(nil)
+            Resque.should_receive(:enqueue).and_return(true)
+            params = {
+                :gift_ids => [gift.id]
+            }
+            post :claim_gifts, params
+            response.code.should eq("200")
+          end
+        end
       end
 
       describe 'claim_complete' do

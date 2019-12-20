@@ -176,7 +176,7 @@ module ApplicationHelper
 
       when 'amzn'
         asin, anchor_text = contents.split(/\s/, 2)
-        link_to anchor_text, "http://www.amazon.com/dp/#{asin}/?tag=delvkitc-20", target: "_blank"
+        link_to anchor_text, "http://www.amazon.com/dp/#{asin}/?tag=chefsteps02-20", target: "_blank"
 
       else
         orig
