@@ -14,20 +14,28 @@ module Api
     end
 
     def cors_set_access_control_headers
-      headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-      headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Origin, Content-Type, Accept, Authorization, Token, cs-referer, X-Application-Version'
-      headers['Access-Control-Max-Age'] = "1728000"
-      if allowed_origin?(origin_hostname)
-        headers['Access-Control-Allow-Origin'] = request.headers['origin']
-        headers['Access-Control-Allow-Credentials'] = 'true'
-      else
-        headers['Access-Control-Allow-Origin'] = '*'
-        headers['Access-Control-Allow-Credentials'] = 'false'
-        Rails.logger.info "[cors] Not setting Access-Control-Allow-Credentials because origin #{origin_hostname} is not allowed"
-      end
+      if request.headers['origin']
+        begin
+          origin_hostname = URI(request.headers['origin']).host
+        rescue URI::InvalidURIError
+          Rails.logger.info "[cors] Invalid origin #{request.headers['origin']} setting no CORS headers"
+          return
+        end
 
-      if request.method == 'OPTIONS'
-        render :text => '', :content_type => 'text/plain'
+        headers['Access-Control-Allow-Origin'] = request.headers['origin']
+        headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+        headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Origin, Content-Type, Accept, Authorization, Token, cs-referer, X-Application-Version'
+        headers['Access-Control-Max-Age'] = "1728000"
+
+        if allowed_origin?(origin_hostname)
+          headers['Access-Control-Allow-Credentials'] = 'true'
+        else
+          Rails.logger.info "[cors] Not setting Access-Control-Allow-Credentials because origin #{origin_hostname} is not allowed"
+        end
+
+        if request.method == 'OPTIONS'
+          render :text => '', :content_type => 'text/plain'
+        end
       end
     end
 
