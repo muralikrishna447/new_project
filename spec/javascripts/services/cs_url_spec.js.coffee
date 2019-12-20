@@ -23,23 +23,23 @@ describe "csUrlService", ->
 
   describe "updateQueryStringParameter", ->
     it "should append a paremeter onto an existing param list", ->
-      expect(urlService.updateQueryStringParameter("http://amazon.com?product=salt", "tag", "delvkitc-20")).toBe("http://amazon.com?product=salt&tag=delvkitc-20")
+      expect(urlService.updateQueryStringParameter("http://amazon.com?product=salt", "tag", "chefsteps02-20")).toBe("http://amazon.com?product=salt&tag=chefsteps02-20")
 
     it "should insert parameters into param list if there is none", ->
-      expect(urlService.updateQueryStringParameter("http://amazon.com", "tag", "delvkitc-20")).toBe("http://amazon.com?tag=delvkitc-20")
+      expect(urlService.updateQueryStringParameter("http://amazon.com", "tag", "chefsteps02-20")).toBe("http://amazon.com?tag=chefsteps02-20")
 
     it "should update a parameter in the param list if there is one", ->
-      expect(urlService.updateQueryStringParameter("http://amazon.com?tag=totally-fake", "tag", "delvkitc-20")).toBe("http://amazon.com?tag=delvkitc-20")
+      expect(urlService.updateQueryStringParameter("http://amazon.com?tag=totally-fake", "tag", "chefsteps02-20")).toBe("http://amazon.com?tag=chefsteps02-20")
 
   describe "fixAffiliateLink", ->
     it "should normalize an amazon product id to an amazon link", ->
-      expect(urlService.fixAffiliateLink(amazonCode)).toBe("http://www.amazon.com/gp/product/B002VECM6S/?tag=delvkitc-20")
+      expect(urlService.fixAffiliateLink(amazonCode)).toBe("http://www.amazon.com/gp/product/B002VECM6S/?tag=chefsteps02-20")
 
     it "should normalize an amazon product url and add affiliate code", ->
-      expect(urlService.fixAffiliateLink(amazonURL)).toBe("http://www.amazon.com/gp/product/B00DHW4HXY/?tag=delvkitc-20")
+      expect(urlService.fixAffiliateLink(amazonURL)).toBe("http://www.amazon.com/gp/product/B00DHW4HXY/?tag=chefsteps02-20")
 
     it "should normalize a bogus amazon affilate code to be the correct one", ->
-      expect(urlService.fixAffiliateLink(bogusAmazonURL)).toBe("http://www.amazon.com/gp/product/B002VECM6S/?tag=delvkitc-20")
+      expect(urlService.fixAffiliateLink(bogusAmazonURL)).toBe("http://www.amazon.com/gp/product/B002VECM6S/?tag=chefsteps02-20")
 
     it "should add an affiliate code to a Mikuni Wild Havest link", ->
       expect(urlService.fixAffiliateLink(mikuniURL)).toBe('http://mikuni.myshopify.com/products/applewood-smoked-ikura-caviar#oid=1003_1')
