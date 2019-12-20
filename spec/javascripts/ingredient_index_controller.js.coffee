@@ -8,9 +8,9 @@ describe "IngredientsIndexController", ->
   # be making.
   urlService =
     updateQueryStringParameter: (uri, key, value) ->
-      "amazon.com?tag=delvkitc-20"
+      "amazon.com?tag=chefsteps02-20"
     fixAffiliateLink: (i) ->
-      "http://www.amazon.com/gp/product/amazon.com?tag=delvkitc-20"
+      "http://www.amazon.com/gp/product/amazon.com?tag=chefsteps02-20"
     urlAsNiceText: (url) ->
       "google.com"
     sortByNiceUrl: (a,b) ->
