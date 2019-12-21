@@ -86,7 +86,7 @@ Delve::Application.configure do
   config.middleware.insert_before ActionDispatch::Static, Rack::Cors, debug: true do
     allow do
       origins '*'
-      resource '/api/v0/*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete]
+      resource '/api/v0/*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete], :credentials => false
     end
   end
 
