@@ -91,6 +91,13 @@ Delve::Application.configure do
       origins '*'
       resource '/api/v0/*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete], :credentials => false
     end
+    allow do
+      origins 'www.chefsteps.com', 'shop.chefsteps.com',
+              'www.chocolateyshatner.com', 'shop.chocolateyshatner.com',
+              'www.vanillanimoy.com', 'shop.vanillanimoy.com',
+              'localhost', 'chefsteps.dev'
+      resource '/api/v0/*', :headers => :any, :methods => [:get, :post, :options, :head, :put, :delete], :credentials => true
+    end
   end
 
   AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: ENV['ALGOLIA_API_KEY'] }
