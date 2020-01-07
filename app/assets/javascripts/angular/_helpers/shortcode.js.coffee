@@ -37,7 +37,7 @@ convertFtoC = (f) ->
             if arg2
               asin = arg1
               anchor_text = arg2
-              "<a href='http://www.amazon.com/dp/#{asin}/?tag=delvkitc-20' target='_blank'>#{anchor_text}</a>"
+              "<a href='http://www.amazon.com/dp/#{asin}/?tag=chefsteps02-20' target='_blank'>#{anchor_text}</a>"
             else
               orig
           when 'view'

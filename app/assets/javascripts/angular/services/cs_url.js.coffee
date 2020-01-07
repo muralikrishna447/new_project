@@ -12,7 +12,7 @@ angular.module('ChefStepsApp').service 'csUrlService', ["$window", ($window) ->
     url = i.product_url
     return unless url
 
-    amzn_tag_value = "delvkitc-20"
+    amzn_tag_value = "chefsteps02-20"
     amzn_tag = "tag=" + amzn_tag_value
     mikuni_tag = '#oid=1003_1'
 
