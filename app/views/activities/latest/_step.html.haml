@@ -63,6 +63,12 @@
                                   creator="activity.creator"
                                   ng-model="step.extra"
                                 placeholder="'Click to add special sauce'")
+        %h5
+          Appliance Instruction
+        .step-content(   cs-contenteditable="getStepOpenForEdit()"
+                                creator="activity.creator"
+                                ng-model="step.appliance_instruction_text"
+                                placeholder="'Click to add appliance instructions'" )
 
     %div(ng-include="'_step_edit_images.html'")
     .step-last-row.noprint(ng-show='((!! step.youtube_id) || (!! step.vimeo_id) || (!! step.image_id))')
