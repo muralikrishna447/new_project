@@ -10,7 +10,7 @@ class Step < ActiveRecord::Base
   serialize :presentation_hints, JSON
 
   include ActsAsSanitized
-  sanitize_input :title, :directions, :image_description, :extra, :youtube_id, :vimeo_id, :image_id, :image_description, :subrecipe_title, :audio_clip, :audio_title, :presentation_hints
+  sanitize_input :title, :directions, :image_description, :extra, :youtube_id, :vimeo_id, :image_id, :image_description, :subrecipe_title, :audio_clip, :audio_title, :presentation_hints, :appliance_instruction_text, :appliance_instruction_image
 
   scope :ordered, order(:step_order)
   scope :activity_id_not_nil, where('activity_id IS NOT NULL')

@@ -577,7 +577,8 @@ class Activity < ActiveRecord::Base
         hide_number: step_attr[:hide_number].nil? ?  step_attr[:is_aside] : step_attr[:hide_number], # is_aside hides number by default, if hide_number not explicitly specified
         is_aside: step_attr[:is_aside],
         presentation_hints: step_attr[:presentation_hints],
-        extra: step_attr[:extra]
+        extra: step_attr[:extra],
+        appliance_instruction_text: step_attr[:appliance_instruction_text]
       )
       step.update_ingredients_json(step_attr[:ingredients])
       step_attr[:id] = step.id
