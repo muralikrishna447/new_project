@@ -578,7 +578,8 @@ class Activity < ActiveRecord::Base
         is_aside: step_attr[:is_aside],
         presentation_hints: step_attr[:presentation_hints],
         extra: step_attr[:extra],
-        appliance_instruction_text: step_attr[:appliance_instruction_text]
+        appliance_instruction_text: step_attr[:appliance_instruction_text],
+        appliance_instruction_image: step_attr[:appliance_instruction_image]
       )
       step.update_ingredients_json(step_attr[:ingredients])
       step_attr[:id] = step.id

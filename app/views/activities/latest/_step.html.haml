@@ -69,6 +69,9 @@
                                 creator="activity.creator"
                                 ng-model="step.appliance_instruction_text"
                                 placeholder="'Click to add appliance instructions'" )
+        %h5
+          Appliance Instruction Image
+          .csfilepicker(ng-model="step.appliance_instruction_image")
 
     %div(ng-include="'_step_edit_images.html'")
     .step-last-row.noprint(ng-show='((!! step.youtube_id) || (!! step.vimeo_id) || (!! step.image_id))')
