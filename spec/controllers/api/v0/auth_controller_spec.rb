@@ -544,7 +544,7 @@ describe Api::V0::AuthController do
       redirect_url.should start_with("https://#{redirect_base}/sso?token=")
       uri = URI.parse(redirect_url)
 
-      query_params = CGI.parse(uri.query)
+      query_params = CGI.parse(uri.query
       short_lived_token = query_params['token'][0]
       short_lived_token.should_not eq(token)
     end
@@ -557,6 +557,7 @@ describe Api::V0::AuthController do
     end
 
     it 'handles redirect by key' do
+      request.env['HTTP_AUTHORIZATION'] = "Bearer #{@zendesk_allowed_aa.current_token.to_jwt}"
       Rails.configuration.redirect_by_key['made_up_test_key'] = "https://#{ENV['ZENDESK_DOMAIN']}"
       get :external_redirect_by_key, :key => "made_up_test_key"
       response.code.should == '200'
