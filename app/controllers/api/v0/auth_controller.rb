@@ -319,7 +319,12 @@ module Api
           render_api_response 200, {redirect: redirect_uri.to_s}
 
         elsif path_uri.host == "#{ENV['ZENDESK_DOMAIN']}" || path_uri.host == "#{ENV['ZENDESK_MAPPED_DOMAIN']}"
-          render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
+          if is_banned_zendesk_sso(current_api_user.email)
+            Librato.increment("api.banned_zendesk_sso")
+            render_unauthorized
+          else
+            render_api_response 200, {redirect: zendesk_sso_url(params[:path])}
+          end
 
         elsif path_uri.host == "www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
           render_api_response 200, {redirect: chefsteps_sso_url(params[:path])}
@@ -467,6 +472,11 @@ module Api
             BetaFeatureService.user_has_feature(owner, c, user_groups_cache)
           }
         end
+      end
+
+      def is_banned_zendesk_sso(email)
+        banned = ["@chefsteps.com", "@breville.com"]
+        banned.any? { |b| email.include?(b)}
       end
 
     end

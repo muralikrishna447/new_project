@@ -5,6 +5,9 @@ describe Api::V0::AuthController do
     @other_user = Fabricate :user, email: 'jane@chefsteps.com', password: 'matter', name: 'Jane'
     @key = OpenSSL::PKey::RSA.new ENV["AUTH_SECRET_KEY"], 'cooksmarter'
     @aa = ActorAddress.create_for_user @user, client_metadata: "cooking_app"
+
+    @non_cs_user = Fabricate :user, email: 'jane@gmail.com', password: 'matter', name: 'Jane'
+    @zendesk_allowed_aa = ActorAddress.create_for_user @non_cs_user, client_metadata: "cooking_app"
     # Make sure no tokens are getting logged!
     Rails.logger.stub(:info) do |log_line|
       contains_token = log_line =~ /eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9/
@@ -514,9 +517,15 @@ describe Api::V0::AuthController do
     end
 
     it 'handles zendesk redirect' do
+      request.env['HTTP_AUTHORIZATION'] = "Bearer #{@zendesk_allowed_aa.current_token.to_jwt}"
       get :external_redirect, :path => "https://#{ENV['ZENDESK_DOMAIN']}"
       response.code.should == '200'
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
+    end
+
+    it 'blocks banned emails sso to zendesk' do
+      get :external_redirect, :path => "https://#{ENV['ZENDESK_DOMAIN']}"
+      response.code.should == '403'
     end
 
     it 'handles spree redirect' do
@@ -541,12 +550,14 @@ describe Api::V0::AuthController do
     end
 
     it 'handles zendesk redirect from mapped domain but still sends JWT to main domain' do
+      request.env['HTTP_AUTHORIZATION'] = "Bearer #{@zendesk_allowed_aa.current_token.to_jwt}"
       get :external_redirect, :path => "https://#{ENV['ZENDESK_MAPPED_DOMAIN']}"
       response.code.should == '200'
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
 
     it 'handles redirect by key' do
+      request.env['HTTP_AUTHORIZATION'] = "Bearer #{@zendesk_allowed_aa.current_token.to_jwt}"
       Rails.configuration.redirect_by_key['made_up_test_key'] = "https://#{ENV['ZENDESK_DOMAIN']}"
       get :external_redirect_by_key, :key => "made_up_test_key"
       response.code.should == '200'
