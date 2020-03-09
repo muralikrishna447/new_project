@@ -544,7 +544,7 @@ describe Api::V0::AuthController do
       redirect_url.should start_with("https://#{redirect_base}/sso?token=")
       uri = URI.parse(redirect_url)
 
-      query_params = CGI.parse(uri.query
+      query_params = CGI.parse(uri.query)
       short_lived_token = query_params['token'][0]
       short_lived_token.should_not eq(token)
     end
