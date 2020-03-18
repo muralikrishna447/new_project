@@ -46,10 +46,3 @@ test: &test
   pool: 5
   username: delve
   password:
-
-staging:
-  <<: *development
-
-angular:
-  <<: *test
-  database: delve_angular

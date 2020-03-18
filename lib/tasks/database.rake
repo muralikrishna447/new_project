@@ -3,6 +3,14 @@ namespace :db do
   namespace :structure do
     desc "Overriding the task db:structure:dump task to remove -i option from pg_dump to make postgres 9.5 compatible"
     task dump: [:environment, :load_config] do
+      # We need to be able to disable schema dumps during the release phase
+      # because it requires pg_dump and some environments have different
+      # versions of Postgres (which is weird in itself) which cause the
+      # schema dump to fail. There's no good reason to do this in a release
+      # phase and instead should be done at development time when we do
+      # a schema change.
+      exit if ENV['DISABLE_DB_STRUCTURE_DUMP'] == 'true'
+
       config = ActiveRecord::Base.configurations[Rails.env]
       set_psql_env(config)
       filename =  File.join(Rails.root, "db", "structure.sql")
