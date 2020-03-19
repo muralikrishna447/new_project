@@ -28,10 +28,10 @@
 <%# render a hero image, such as the Joule logo https://d92f495ogyf88.cloudfront.net/static/jouleLogoOrange@4x.png %>
 <% if defined?(hero_image_url) && hero_image_url.present? %>
   <% if defined?(hero_image_link) && hero_image_link.present? %>
-    <a href="https://www.chefsteps.com/premium" target="_blank">
+    <a href="<%= hero_image_link %>" target="_blank">
   <% end %>
       <div style="width: 100%; text-align: center">
-        <img src="<%= hero_image_url %>" width="600"/>
+        <img src="<%= hero_image_url %>" width="400"/>
       </div>
   <% if defined?(hero_image_link) && hero_image_link.present? %>
     </a>
