@@ -7,6 +7,10 @@ COPY . /app
 WORKDIR /app
 ADD Gemfile /app/
 ADD Gemfile.lock  /app/
+# Make sure bundler is at the exact same version that Gemfile.lock was
+# bundled with. Depending on the versions, the bundle command will fail
+# if its version is different from the version we bundled with.
+RUN gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
 RUN bundle install
 # We precompile assets during the build phase to reduce release times,
 # but we disable asset sync because we don't want to do that until relase
