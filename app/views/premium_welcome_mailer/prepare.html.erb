@@ -3,19 +3,28 @@
 
   get_started_links = [
       {
+          title: 'Oven',
+          image: 'https://d92f495ogyf88.cloudfront.net/static/email/BOV900_Oven_2_a31055f3-6810-4e63-b46f-7bc44b04a4a8.jpg',
+          link: 'https://www.chefsteps.com/classes/countertop-ovens',
+          description: 'The <a href="https://www.chefsteps.com/classes/countertop-ovens" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #ff674d;font-weight: normal;text-decoration: none;">Countertop Ovens Class</a> features 13 articles of scientific insights and practical tips to make the most of this advanced hardware, including understanding <a href="https://www.chefsteps.com/activities/types-of-heat?context=countertop-ovens" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #ff674d;font-weight: normal;text-decoration: none;">types of heat</a>.'
+      },
+      {
+          title: 'Latte Art',
+          image: 'https://d92f495ogyf88.cloudfront.net/static/email/Latte_Art_ee110eeb-0d6d-44eb-8fcf-36156de06d19.jpg',
+          link: 'https://www.chefsteps.com/classes/espresso',
+          description: '<a href="https://www.chefsteps.com/activities/latte-art?context=espresso" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #ff674d;font-weight: normal;text-decoration: none;">Learn the art of the latte</a> in your <a href="https://www.chefsteps.com/classes/espresso" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #ff674d;font-weight: normal;text-decoration: none;">Espresso Class</a>.'
+      },
+      {
           title: 'Barbecue',
-          image: 'https://d92f495ogyf88.cloudfront.net/static/barbecue.jpg',
-          link: 'https://www.chefsteps.com/classes/barbecue'
+          image: 'https://d92f495ogyf88.cloudfront.net/static/email/BBQ_b5926bc9-8568-4aac-a7f4-2a70fede3ed3.jpg',
+          link: 'https://www.chefsteps.com/classes/barbecue',
+          description: '<a href="https://www.chefsteps.com/classes/barbecue" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #ff674d;font-weight: normal;text-decoration: none;">The Barbecue Class</a> has over twenty recipes and the science behind them all, including <a href="https://www.chefsteps.com/activities/barbecue-geekery-myth-busting?context=barbecue" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #ff674d;font-weight: normal;text-decoration: none;">the stall</a>.'
       },
       {
           title: 'Chewy Candy',
-          image: 'https://d92f495ogyf88.cloudfront.net/static/chewy-candy.jpg',
-          link: 'https://www.chefsteps.com/classes/chewy-candy'
-      },
-      {
-          title: 'Coffee',
-          image: 'https://d92f495ogyf88.cloudfront.net/static/coffee.jpg',
-          link: 'https://www.chefsteps.com/classes/coffee/landing'
+          image: 'https://d92f495ogyf88.cloudfront.net/static/email/Chewy_Candy_25dfd570-84fa-4930-a77c-80cd26f569c6.jpg',
+          link: 'https://www.chefsteps.com/classes/chewy-candy',
+          description: '<a href="https://www.chefsteps.com/classes/chewy-candy" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #ff674d;font-weight: normal;text-decoration: none;">Chewy Candy</a> is fun for everyone. Learn about the <a href="https://www.chefsteps.com/activities/confectionery-geekery?context=chewy-candy" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #ff674d;font-weight: normal;text-decoration: none;">science of snap</a>, and make your own <a href="https://www.chefsteps.com/activities/gummy-bears?context=chewy-candy" target="_blank" style="word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #ff674d;font-weight: normal;text-decoration: none;">gummy bears</a>.'
       }
   ]
 %>
@@ -23,7 +32,8 @@
 <%= render partial: 'mailers/shared/header',
            locals: {
                preview_text: 'Hope you’re hungry!',
-               render_joule_logo: false
+               hero_image_url: 'https://d92f495ogyf88.cloudfront.net/static/email/BOV900_Oven_1_a1e88a31-7e04-4528-a655-75d5615be9ff.jpg',
+               hero_image_link: 'https://www.chefsteps.com/premium'
            }
 %>
 
@@ -34,15 +44,13 @@
 
 
 <p style="font-weight: normal; font-size: 14px; line-height: 1.6; color: #43413f; margin: 0 0 10px;">
-    Hi!
-  To access your Premium account, click the orange button below and sign in with your email address
-  <b><%= @email %></b>.
+  You now have access to all ChefSteps Premium classes, a library of cooking knowledge on equipment and techniques created by modern-thinking chefs to help you make the most of your kitchen.  Click the big orange button and sign in with your email address <b><%= @email %></b> to start learning about tools and techniques from the experts.
 </p>
 
 <div style="text-align: center; margin-bottom: 30px;">
   <%= render partial: 'mailers/shared/button',
              locals: {
-                 url: 'https://www.chefsteps.com/gallery?generator=chefsteps&amp;published_status=published&amp;difficulty=any&amp;sort=newest&amp;premium=Only%20Premium',
+                 url: 'https://www.chefsteps.com/premium',
                  text: 'Premium Home'
              }
   %>
@@ -50,14 +58,19 @@
 
 <div style="text-align: center">
   <p style="font-weight: bold; font-size: 16px; line-height: 1.6; color: #43413f; margin: 0 0 10px;">
-    Start learning with any of your Premium classes right now:
+    Start learning with any of your ChefSteps Premium classes right now:
   </p>
 
   <% get_started_links.each do |item| %>
     <div style="width: 400px; margin: 0 auto;">
       <a href="<%= item[:link] %>" target="_blank" style="margin:0; padding:0; text-decoration: none;">
-        <img src="<%= item[:image] %>" style="width: 100%; margin-top: 20px; padding: 0; border-radius: 4px;"/>
+        <img src="<%= item[:image] %>" style="width: 80%; margin-top: 20px; padding: 0; border-radius: 4px;"/>
       </a>
+      <p style="font-weight: normal; font-size: 14px; line-height: 1.6; color: #43413f; margin: 5px 50px 10px 50px;">
+        <% if item[:description] %>
+          <%= item[:description].html_safe %>
+        <% end %>
+      </p>
     </div>
   <% end %>
 </div>
