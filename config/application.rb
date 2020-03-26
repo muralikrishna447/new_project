@@ -20,6 +20,16 @@ end
 
 module Delve
   class Application < Rails::Application
+    # We only want to insert our middleware before ActionDispatch::Static
+    # in environments where config.serve_static_assets is true.
+    # Everywhere else, the correct ordering of the middleware is to insert
+    # before Rack::Lock. Run `rake middleware' to see the current order of
+    # the middleware list if you ever need to update this.
+    def self.middleware_to_insert_before
+      return ActionDispatch::Static if Rails.env.development? || Rails.env.test?
+      Rack::Lock
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -113,12 +123,12 @@ module Delve
     # end
 
     # Primarily to allow fontawesome access from blog/shop/forum in Firefox
-    config.middleware.insert_before ActionDispatch::Static, Rack::AccessControlHeaders, /assets/
+    config.middleware.insert_before Delve::Application.middleware_to_insert_before, Rack::AccessControlHeaders, /assets/
 
 
     # SSL configuration using strict: true so that only specific requests are using ssl.
     # Had to comment this out, it kept sales from actually working.
-    config.middleware.insert_before ActionDispatch::Static, Rack::SslEnforcer, only_environments: ['production', 'staging']
+    config.middleware.insert_before Delve::Application.middleware_to_insert_before, Rack::SslEnforcer, only_environments: ['production', 'staging']
     config.middleware.use Rack::Deflater
 
     # Override the default list of spiders from prerender.io. They specifically don't default to including
@@ -150,7 +160,7 @@ module Delve
     # Order matters here, Prerender.io must come before FreshSteps.
     # PRERENDER_TOKEN is set only on prod heroku env variables. Can still test
     # on staging servers, it just won't cache anything.
-    config.middleware.insert_before ActionDispatch::Static, 'Rack::Prerender', {
+    config.middleware.insert_before Delve::Application.middleware_to_insert_before, 'Rack::Prerender', {
       crawler_user_agents: crawler_user_agents,
       blacklist: '^/api',
       build_rack_response_from_prerender: lambda { |response, unused| response.header.delete('Status') },
@@ -159,8 +169,8 @@ module Delve
         return nil;
       }
     }
-    config.middleware.insert_before ActionDispatch::Static, 'CatalogProxy'
-    config.middleware.insert_before ActionDispatch::Static, 'FreshStepsProxy'
+    config.middleware.insert_before Delve::Application.middleware_to_insert_before, 'CatalogProxy'
+    config.middleware.insert_before Delve::Application.middleware_to_insert_before, 'FreshStepsProxy'
 
 
     # Coverband

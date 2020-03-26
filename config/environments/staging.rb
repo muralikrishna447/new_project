@@ -12,7 +12,7 @@ Delve::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = true
+  config.serve_static_assets = false
   config.static_cache_control = "public, max-age=2592000"
 
   # Compress JavaScripts and CSS
@@ -94,7 +94,7 @@ Delve::Application.configure do
 
   DISQUS_SHORTNAME = "delvestaging"
 
-  config.middleware.insert_before ActionDispatch::Static, Rack::Cors, debug: true do
+  config.middleware.insert_before Delve::Application.middleware_to_insert_before, Rack::Cors, debug: true do
     allow do
       origins 'https://www.chefsteps.com', 'https://shop.chefsteps.com',
               'https://www.chocolateyshatner.com', 'https://shop.chocolateyshatner.com',
