@@ -86,7 +86,7 @@ Delve::Application.configure do
 
   DISQUS_SHORTNAME = "chefstepsproduction"
 
-  config.middleware.insert_before ActionDispatch::Static, Rack::Cors do
+  config.middleware.insert_before Delve::Application.middleware_to_insert_before, Rack::Cors do
     allow do
       origins 'https://www.chefsteps.com', 'https://shop.chefsteps.com',
               'https://www.chocolateyshatner.com', 'https://shop.chocolateyshatner.com',
