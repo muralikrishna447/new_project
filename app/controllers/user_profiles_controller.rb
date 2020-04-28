@@ -1,6 +1,7 @@
 class UserProfilesController < ApplicationController
   expose(:encourage_profile) { Copy.find_by_location('encourage-profile') }
   expose(:user_presenter) { UserPresenter.new(user)}
+  before_action :load_user, only: [:edit, :update]
 
   TIMELINE_EVENT_LIMIT = 50
 
@@ -13,7 +14,7 @@ class UserProfilesController < ApplicationController
       end
       return
     end
-    @user = User.find(params[:id])
+    @user = User.friendly.find(params[:id])
     # @courses = Course.published
     @is_current_user =  (@user == current_user)
     @user_pubbed_recipes = @user.created_activities.published
@@ -30,15 +31,13 @@ class UserProfilesController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
     render_unauthorized unless current_user == @user
   end
 
   def update
-    @user = User.find(params[:id])
     email_before_update = @user.email
     render_unauthorized unless current_user == @user
-    if @user.update_attributes(params[:user])
+    if @user.update_attributes(user_params)
       email_after_update = @user.email
       Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], @user.id)
       if email_after_update != email_before_update
@@ -49,5 +48,18 @@ class UserProfilesController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  private
+
+  def load_user
+    @user = User.friendly.find(params[:id])
+  end
+
+  def user_params
+    params.require(:user).permit(:name, :email, :password, :password_confirmation,:remember_me,
+                                 :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities,
+                                 :signed_up_from, :bio, :image_id, :referred_from, :referrer_id,
+                                 :survey_results, :events_count)
   end
 end

@@ -19,10 +19,9 @@ module Api
           render_api_response 400, { message: "guide_id is required" }
           return
         end
-
         user = User.find(@user_id_from_token)
         results = user.joule_cook_history_items.order('start_time DESC').where(guide_id: guide_id)
-        results = results.limit(limit) if limit.present?
+        results = results.limit(limit.to_i) if limit.present?
         serialized_items = ActiveModel::ArraySerializer.new(results, each_serializer: Api::JouleCookHistoryItemSerializer)
         render_api_response 200, {
           cookHistory: serialized_items
@@ -31,7 +30,7 @@ module Api
 
       def create
         user = User.find(@user_id_from_token)
-        cook_history_item = user.joule_cook_history_items.new(params[:cook_history])
+        cook_history_item = user.joule_cook_history_items.new(joule_cook_history_items_params)
 
         unless cook_history_item.valid?
           render_api_response 422, { errors: cook_history_item.errors }
@@ -111,6 +110,15 @@ module Api
         end
         entries_by_cook_id.values.sort_by{|entry| -entry.id}.first(page_size)
       end
+
+      private
+
+      def joule_cook_history_items_params
+        params.require(:cook_history).permit(:idempotency_id, :start_time, :started_from,
+                                             :cook_time, :guide_id, :program_type, :set_point, :timer_id, :cook_id,
+                                             :wait_for_preheat, :program_id, :turbo_cook_state)
+      end
+
       
     end
   end

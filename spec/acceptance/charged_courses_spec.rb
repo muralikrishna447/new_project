@@ -1,6 +1,6 @@
 require 'spec_helper'
 include AcceptanceMacros
-Capybara.default_wait_time = 15
+Capybara.default_max_wait_time = 15
 
 feature 'charge for classes', pending: true, :js => true do
   let!(:assembly) { Fabricate(:assembly, title: "Clummy", assembly_type: "Course", price: 147.47, published: true ) }

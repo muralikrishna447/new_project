@@ -132,7 +132,7 @@ describe Api::V0::RecommendationsController do
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 2
-    [parsed['results'][0]['url'], parsed['results'][1]['url']] .should include expect_url
+    [parsed['results'][0]['url'], parsed['results'][1]['url']] .should include URI.parse(expect_url).to_s
   end
 
   it 'should include only referral ad and adjust url if user has referral code and slot is referPage' do
@@ -146,7 +146,7 @@ describe Api::V0::RecommendationsController do
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
-    parsed['results'][0]['url'].should eq expect_url
+    parsed['results'][0]['url'].should eq URI.parse(expect_url).to_s
   end
 
   it 'should respond new-skool style with non owner ad if known platform set, known slot, and not owner, purchaser, or connected' do

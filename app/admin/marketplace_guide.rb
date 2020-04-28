@@ -1,4 +1,5 @@
 ActiveAdmin.register MarketplaceGuide do
+  permit_params :guide_id, :url, :button_text, :button_text_line_2, :feature_name
   form partial: 'form'
 
   index do
@@ -6,7 +7,7 @@ ActiveAdmin.register MarketplaceGuide do
     column :url
     column :button_text
     column :button_text_line_2
-    default_actions
+    actions
   end
 
 end

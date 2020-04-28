@@ -25,6 +25,7 @@ class BaseApplicationController < ActionController::Base
         Rails.logger.info "[cors] Invalid origin #{request.headers['origin']} setting no CORS headers"
         return
       end
+      return if origin_hostname.blank?
 
       headers['Access-Control-Allow-Origin'] = request.headers['origin']
       headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'

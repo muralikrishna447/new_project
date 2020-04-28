@@ -13,7 +13,7 @@ Delve::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = false
+  config.serve_static_files = false
   config.static_cache_control = "public, max-age=2592000"
 
   # Compress JavaScripts and CSS
@@ -109,8 +109,8 @@ Delve::Application.configure do
 
   #Staging mailchimp
   config.mailchimp = {
-    :api_key => '4494fae45457c6a2c4d1f3ba59609353-us12',
-    :list_id => '5f55993b84'
+    :api_key => ENV['MAILCHIMP_API_KEY'],
+    :list_id => '739b719346'
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 

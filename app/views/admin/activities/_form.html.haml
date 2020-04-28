@@ -27,7 +27,7 @@
           = check_box_tag :activity_type, type, @activity.activity_type.include?(type), :name => 'activity[activity_type][]'
           = type
     %div#alltags{data: {alltags: ActsAsTaggableOn::Tag.all.map(&:name) }, style: 'clear: both;'}
-    = f.input :tag_list
+    = f.input :tag_list, as: :select, collection: ActsAsTaggableOn::Tag.all.map(&:name), multiple: true
     = f.input :description, label: "Description (Markdown or HTML)"
     = f.input :youtube_id
     %li

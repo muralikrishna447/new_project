@@ -47,7 +47,7 @@ ActiveAdmin.register Activity, as: 'Publishing Schedule' do
     end
   end
 
-  action_item only: :edit do
+  action_item :view, only: [:edit] do
     link_to 'Remove Schedule', admin_publishing_schedule_path(activity), method: :delete
   end
 

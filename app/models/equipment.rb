@@ -4,7 +4,6 @@ class Equipment < ActiveRecord::Base
   has_many :activity_equipment, inverse_of: :equipment, dependent: :destroy
   has_many :activities, through: :activity_equipment, inverse_of: :equipment
 
-  attr_accessible :title, :product_url
 
   scope :search_title, -> title { where('title iLIKE ?', '%' + title + '%') }
   scope :exact_search, -> title { where(title: title) }

@@ -4,6 +4,7 @@
 //= require twitter/bootstrap/popover
 //= require twitter/bootstrap/dropdown
 //= require twitter/bootstrap/tab
+//= require jquery.mjs.nestedSortable
 //= require lodash
 //= require signals
 //= require crossroads
@@ -21,7 +22,7 @@
 //= require base_router
 
 
-//= require select2
+//= require select2-full
 //= require admin/taggable
 
 //= require_tree ./admin

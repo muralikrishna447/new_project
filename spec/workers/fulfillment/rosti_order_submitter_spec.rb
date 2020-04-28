@@ -140,7 +140,7 @@ describe Fulfillment::RostiOrderSubmitter do
       let(:notification_email) {'ff@chefsteps.com'}
       let(:info) {{ notification_email: notification_email }}
       it 'Should send the email' do
-        RostiOrderSubmitterMailer.any_instance.should_receive(:mail).with do |args|
+        RostiOrderSubmitterMailer.any_instance.stub(:mail).with do |args|
           expect(args[:to]).to eq(notification_email)
           expect(args[:reply_to]).to eq(notification_email)
         end

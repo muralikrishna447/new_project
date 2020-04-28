@@ -46,37 +46,34 @@ class Activity < ActiveRecord::Base
 
   validates :title, presence: true
 
-  scope :with_video, where("youtube_id <> '' OR vimeo_id <> ''")
-  scope :recipes, where("activity_type iLIKE '%Recipe%'")
-  scope :techniques, where("activity_type iLIKE '%Technique%'")
-  scope :sciences, where("activity_type iLIKE '%Science%'")
+  scope :with_video, -> { where("youtube_id <> '' OR vimeo_id <> ''") }
+  scope :recipes, -> { where("activity_type iLIKE '%Recipe%'") }
+  scope :techniques, -> { where("activity_type iLIKE '%Technique%'") }
+  scope :sciences, -> { where("activity_type iLIKE '%Science%'") }
   scope :activity_type, -> activity_type { where("activity_type iLIKE ?", '%' + activity_type + '%') }
   scope :difficulty, -> difficulty { where(:difficulty => difficulty) }
-  scope :newest, order('published_at DESC')
-  scope :oldest, order('published_at ASC')
+  scope :newest, -> { order('published_at DESC') }
+  scope :oldest, -> { order('published_at ASC') }
   scope :by_created_at, -> direction { direction == 'desc' ? order('created_at DESC') : order('created_at ASC')}
   scope :by_published_at, -> direction { direction == 'desc' ? order('published_at DESC') : order('published_at ASC')}
   scope :by_updated_at, -> direction { direction == 'desc' ? order('updated_at DESC') : order('updated_at ASC')}
-  scope :randomize, order('random()')
-  scope :include_in_gallery, where(include_in_gallery: true)
-  scope :include_in_feeds, where(include_in_gallery: true)
-  scope :chefsteps_generated, where('creator = ?', 0)
-  scope :any_user_generated, where('creator != ?', 0).where(source_activity_id: nil)
-  scope :not_a_fork, where(source_activity_id: nil)
+  scope :randomize, -> { order('random()') }
+  scope :include_in_gallery, -> { where(include_in_gallery: true) }
+  scope :include_in_feeds, -> { where(include_in_gallery: true) }
+  scope :chefsteps_generated, -> { where('creator = ?', 0) }
+  scope :any_user_generated, -> { where('creator != ?', 0).where(source_activity_id: nil)  }
+  scope :not_a_fork, -> { where(source_activity_id: nil) }
   scope :user_generated, -> user { where('creator = ?', user) }
-  scope :popular, where('likes_count IS NOT NULL').order('likes_count DESC')
+  scope :popular, -> { where('likes_count IS NOT NULL').order('likes_count DESC') }
   scope :by_equipment_title, -> title { joins(:terminal_equipment).where("equipment.title iLIKE ?", '%' + title + '%') }
   scope :by_equipment_titles, -> titles { joins(:terminal_equipment).where("equipment.title iLIKE ANY (array[?])", titles.split(',').map{|a| "%#{a}%"} ) }
-  scope :not_premium, where(premium: false)
+  scope :not_premium, -> { where(premium: false) }
 
   accepts_nested_attributes_for :steps, :equipment, :ingredients, :publishing_schedule
 
   serialize :activity_type, Array
 
-  attr_accessible :activity_type, :title, :byline, :youtube_id, :vimeo_id, :yield, :timing, :difficulty, :description, :short_description, :equipment, :ingredients, :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id, :steps_attributes, :child_activity_ids
-  attr_accessible :source_activity, :source_activity_id, :source_type, :author_notes, :currently_editing_user, :include_in_gallery, :creator
-  attr_accessible :premium, :studio, :summary_tweet
-  attr_protected :first_published_at
+  attr_accessor :used_in, :forks, :upload_count
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -201,7 +198,7 @@ class Activity < ActiveRecord::Base
   after_commit :create_or_update_as_ingredient, :if => :persisted?
   def create_or_update_as_ingredient
     if self.id then
-      i = Ingredient.find_or_create_by_sub_activity_id(self.id)
+      i = Ingredient.find_or_create_by(sub_activity_id: id)
       i.update_attribute(:title, self.title)
     end
   end
@@ -562,7 +559,7 @@ class Activity < ActiveRecord::Base
       if step_id && (step_id.to_i == 0)
         step_id = nil
       end
-      step = steps.find_or_create_by_id(step_id)
+      step = steps.find_or_create_by(id: step_id)
       step.bypass_sanitization = self.creator.blank?
       step.update_attributes(
         title: step_attr[:title],

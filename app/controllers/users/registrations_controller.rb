@@ -24,7 +24,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       render status: 401, json: {success: false, info: "Invalid request."}
       return
     end
-    @user = User.new(params[:user].merge(referred_from: session[:referred_from], referrer_id: session[:referrer_id]))
+    params[:user].merge!(referred_from: session[:referred_from], referrer_id: session[:referrer_id])
+    @user = User.new(user_params)
     if cookies[:viewed_activities]
       @user.viewed_activities = JSON.parse(cookies[:viewed_activities])
     end
@@ -78,5 +79,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       request.referrer
     end
+  end
+
+  private
+
+  def user_params
+    params.require(:user).permit(:name, :email, :password, :password_confirmation,
+                                 :remember_me, :location, :quote, :website, :chef_type, :from_aweber,
+                                 :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from,
+                                 :referrer_id, :survey_results, :events_count)
   end
 end

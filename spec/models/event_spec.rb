@@ -19,7 +19,7 @@ describe Event do
     # Events that should show up in the stream
 
     it 'returns a course enroll item', pending: true do
-
+      fail
     end
 
   end
@@ -45,6 +45,7 @@ describe Event do
       # @event = Fabricate :event, trackable: @unpublished, action: 'enroll', user: @user
       # @event.save_group_type_and_group_name
       # @event.published.should == false
+      fail
     end
   end
 

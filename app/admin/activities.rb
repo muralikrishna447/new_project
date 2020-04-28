@@ -6,6 +6,15 @@ end
 
 ActiveAdmin.register Activity do
   config.sort_order = 'activity_order_asc'
+  before_action :load_activity, only: [:show, :edit, :update, :destroy]
+
+  permit_params :title, :byline, :youtube_id, :vimeo_id, :yield, :timing,
+                :difficulty, :description, :short_description, :equipment, :ingredients,
+                :nesting_level, :transcript, :featured_image_id, :image_id,
+                :steps_attributes, :source_activity, :source_activity_id,
+                :source_type, :author_notes, :currently_editing_user, :include_in_gallery,
+                :creator, :premium, :studio, :summary_tweet, :published, :activity_type => [],
+                :tag_list => [], :child_activity_ids => []
 
   filter :title
   filter :created_at
@@ -17,7 +26,7 @@ ActiveAdmin.register Activity do
 
   menu priority: 2
 
-  action_item only: [:show, :edit] do
+  action_item :view, only: [:show, :edit] do
     link_to_publishable activity, 'View on Site'
   end
 
@@ -27,11 +36,11 @@ ActiveAdmin.register Activity do
 
   form partial: 'form'
 
-  action_item only: [:show, :edit] do
+  action_item :view, only: [:show, :edit] do
     link_to('Edit Step Ingredients', associated_ingredients_admin_activity_path(activity))
   end
 
-  action_item only: [:show, :edit] do
+  action_item :view, only: [:show, :edit] do
     link_to('Versions', versions_admin_activity_path(activity))
   end
 
@@ -50,7 +59,7 @@ ActiveAdmin.register Activity do
     end
     column :published
     column :published_at
-    default_actions
+    actions
   end
 
   controller do
@@ -58,7 +67,7 @@ ActiveAdmin.register Activity do
       equipment_attrs = separate_equipment
       step_attrs = separate_steps
       ingredient_attrs = separate_ingredients
-      @activity = Activity.create(params[:activity])
+      @activity = Activity.create(actitity_params)
       @activity.update_equipment(equipment_attrs)
       @activity.update_steps(step_attrs)
       @activity.update_ingredients(ingredient_attrs)
@@ -67,8 +76,6 @@ ActiveAdmin.register Activity do
     end
 
     def update
-      @activity = Activity.find(params[:id])
-
       @activity.store_revision do
         @activity.update_equipment(separate_equipment)
         @activity.update_steps(separate_steps)
@@ -90,14 +97,27 @@ ActiveAdmin.register Activity do
     def separate_ingredients
       params[:activity].delete(:ingredients)
     end
+
+    def load_activity
+      @activity = Activity.friendly.find(params[:id])
+    end
+
+    def actitity_params
+      params.require(:activity).permit( :title, :byline, :youtube_id, :vimeo_id, :yield, :timing,
+                                       :difficulty, :description, :short_description, :equipment, :ingredients,
+                                       :nesting_level, :transcript, :featured_image_id, :image_id,
+                                       :steps_attributes, :child_activity_ids, :source_activity, :source_activity_id,
+                                       :source_type, :author_notes, :currently_editing_user, :include_in_gallery,
+                                       :creator, :premium, :studio, :summary_tweet, :published, :activity_type => [], :tag_list => [])
+    end
   end
 
   member_action :associated_ingredients, method: :get do
-    @activity = Activity.find(params[:id])
+    @activity = Activity.friendly.find(params[:id])
   end
 
-  member_action :update_associated_ingredients, method: :put do
-    @activity = Activity.find(params[:id])
+  member_action :update_associated_ingredients, method: :patch do
+    @activity = Activity.friendly.find(params[:id])
     @activity.store_revision do
       @activity.update_attributes(steps_attributes:params[:activity][:steps_attributes])
       params[:step_ingredients].each do |id, ingredients|
@@ -110,7 +130,7 @@ ActiveAdmin.register Activity do
   end
 
   member_action :versions, method: :get do
-    @activity = Activity.find(params[:id])
+    @activity = Activity.friendly.find(params[:id])
     @versions = []
     last_rev_num = 0
     if @activity.last_revision()

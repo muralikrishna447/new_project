@@ -31,12 +31,12 @@ describe Api::V0::ChargebeeController do
           id: "ev___test__5SK0bLNFRFuFaqltU",
           object: "event"
         }
-        expect(Subscription.user_has_subscription?(@user, plan_id)).to be_false
+        expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
 
         post :webhook, params
 
         response.code.should eq("200")
-        expect(Subscription.user_has_subscription?(@user, plan_id)).to be_true
+        expect(Subscription.user_has_subscription?(@user, plan_id)).to be true
 
 
         # Cancel the subscription
@@ -46,7 +46,7 @@ describe Api::V0::ChargebeeController do
         post :webhook, params
 
         response.code.should eq("200")
-        expect(Subscription.user_has_subscription?(@user, plan_id)).to be_false
+        expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
 
         # Ignores out of order requests
         params[:content][:subscription][:status] = "active"
@@ -55,7 +55,7 @@ describe Api::V0::ChargebeeController do
         post :webhook, params
 
         response.code.should eq("200")
-        expect(Subscription.user_has_subscription?(@user, plan_id)).to be_false
+        expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
       end
       
     end
@@ -250,14 +250,14 @@ describe Api::V0::ChargebeeController do
           get :claim_complete, {:gift_ids => ['1', '2', '3']}
           response.code.should eq("200")
           response_data = JSON.parse(response.body)
-          response_data["complete"].should be_false
+          response_data["complete"].should be false
         end
 
         it 'returns true if all gifts are claimed' do
           get :claim_complete, {:gift_ids => ['2', '3']}
           response.code.should eq("200")
           response_data = JSON.parse(response.body)
-          response_data["complete"].should be_true
+          response_data["complete"].should be true
         end
       end
     end

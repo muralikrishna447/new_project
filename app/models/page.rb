@@ -3,16 +3,15 @@ require 'json'
 class Page < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
-  attr_accessible :title, :content, :image_id, :primary_path, :short_description, :show_footer, :components_attributes, :is_promotion, :redirect_path, :discount_id
 
-  friendly_id :title, use: [:slugged, :history]
+  friendly_id :title, use: [:slugged, :history, :finders]
 
   validates :title, presence: true
   # validates :content, presence: true
 
   has_many :likes, as: :likeable, dependent: :destroy
 
-  has_many :components, as: :component_parent, order: :position
+  has_many :components, -> { order 'position' }, as: :component_parent
   accepts_nested_attributes_for :components, allow_destroy: true
 
   def featured_image

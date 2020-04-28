@@ -119,7 +119,7 @@ class UserSync
           replace_interests: false,
           merge_vars: update_merges
         }
-      )
+      ) rescue nil
     else
       @logger.info("MAILCHIMP Sync user #{@user.id} no updates #{update_merges.inspect}")
     end

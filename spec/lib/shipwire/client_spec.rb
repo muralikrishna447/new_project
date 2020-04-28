@@ -6,7 +6,7 @@ describe Shipwire::Client do
   let(:base_uri) { 'testshipwire/api/v3' }
   let(:order_number) { '#1288.1' }
   let(:request_uri) do
-    "https://#{username}:#{password}@#{base_uri}/orders?expand=trackings,holds&limit=2&offset=0&orderNo=#{URI.encode(order_number)}"
+    "https://#{base_uri}/orders?expand=trackings,holds&limit=2&offset=0&orderNo=#{URI.encode(order_number)}"
   end
 
   before do
@@ -67,14 +67,16 @@ describe Shipwire::Client do
     else
       body = ''
     end
+
     WebMock
-      .stub_request(:get, request_uri)
-      .with(
-        headers: {
-          'Accept' => 'application/json',
-          'Content-Type' => 'application/json'
-        }
-      )
-      .to_return(status: status, body: body)
+        .stub_request(:get, request_uri)
+        .with(
+            basic_auth: [username, password],
+            headers: {
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            }
+        )
+        .to_return(status: status, body: body)
   end
 end

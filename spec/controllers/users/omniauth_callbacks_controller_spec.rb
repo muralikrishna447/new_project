@@ -7,7 +7,7 @@ describe Users::OmniauthCallbacksController do
     end
 
     context "not xhr" do
-      let(:auth) { stub('auth') }
+      let(:auth) { double('auth') }
 
       before do
         request.env["omniauth.auth"] = auth

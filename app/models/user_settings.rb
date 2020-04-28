@@ -14,6 +14,4 @@ class UserSettings < ActiveRecord::Base
     :preferred_temperature_unit,
   ]
 
-  attr_accessible *API_FIELDS
-
 end

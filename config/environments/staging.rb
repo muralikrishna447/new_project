@@ -12,7 +12,7 @@ Delve::Application.configure do
   config.action_controller.perform_caching = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
-  config.serve_static_assets = false
+  config.serve_static_files = false
   config.static_cache_control = "public, max-age=2592000"
 
   # Compress JavaScripts and CSS
@@ -34,13 +34,12 @@ Delve::Application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
 
-  # See everything in the log (default is :info)
-  # config.log_level = :debug
-  config.logger = ActiveSupport::TaggedLogging.new(Logger.new(STDOUT))
-  config.logger.level = Logger.const_get(ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].upcase : 'INFO')
-  config.logger.formatter = proc do |severity, datetime, progname, msg|
+  config.log_level = (ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].downcase : 'info').to_sym
+  logger = Logger.new(STDOUT)
+  logger.formatter = proc do |severity, datetime, progname, msg|
     "[#{severity}] #{msg}\n"
   end
+  config.logger = ActiveSupport::TaggedLogging.new(logger)
 
   # Prepend all log lines with the following tags
   # config.log_tags = [ :subdomain, :uuid ]
@@ -111,8 +110,8 @@ Delve::Application.configure do
 
   #Staging mailchimp
   config.mailchimp = {
-    :api_key => '4494fae45457c6a2c4d1f3ba59609353-us12',
-    :list_id => '5f55993b84'
+    :api_key => ENV['MAILCHIMP_API_KEY'],
+    :list_id => '739b719346'
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 

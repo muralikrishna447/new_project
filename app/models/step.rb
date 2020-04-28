@@ -4,16 +4,13 @@ class Step < ActiveRecord::Base
 
   has_many :ingredients, class_name: StepIngredient, dependent: :destroy, inverse_of: :step
 
-  attr_accessible :title, :youtube_id, :vimeo_id, :directions, :image_id, :image_description,
-    :ingredient_ids, :activity_id, :step_order, :transcript, :audio_clip, :audio_title, :subrecipe_title, :hide_number, :is_aside, :presentation_hints, :extra, :appliance_instruction_text, :appliance_instruction_image
-
   serialize :presentation_hints, JSON
 
   include ActsAsSanitized
   sanitize_input :title, :directions, :image_description, :extra, :youtube_id, :vimeo_id, :image_id, :image_description, :subrecipe_title, :audio_clip, :audio_title, :presentation_hints, :appliance_instruction_text, :appliance_instruction_image
 
-  scope :ordered, order(:step_order)
-  scope :activity_id_not_nil, where('activity_id IS NOT NULL')
+  scope :ordered, -> { order(:step_order) }
+  scope :activity_id_not_nil, -> { where('activity_id IS NOT NULL') }
 
   default_scope { ordered }
 

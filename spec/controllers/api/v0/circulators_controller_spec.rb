@@ -77,7 +77,7 @@ describe Api::V0::CirculatorsController do
     returnedCirculator['buildDate'].should == build_date
     returnedCirculator['pcbaRevision'].should == pcba_revision
     returnedCirculator['modelNumber'].should == model_number
-    returnedCirculator['lastAccessedAt'].should == now.utc.iso8601
+    returnedCirculator['lastAccessedAt'].to_time.utc.iso8601.should == now.utc.iso8601
     circulator = Circulator.where(circulator_id: returnedCirculator['circulatorId']).first
     circulator.should_not be_nil
     circulator.notes.should == notes
@@ -87,7 +87,7 @@ describe Api::V0::CirculatorsController do
     circulator.last_accessed_at.should == now
 
     circulator_user = CirculatorUser.find_by_circulator_and_user(circulator, @user)
-    circulator_user.owner.should be_true
+    circulator_user.owner.should be true
 
     post :create, circulator: {:serial_number => 'abc123', :notes => 'red one', :id => 'cc78787878787878'}
     response.should be_success
@@ -154,7 +154,7 @@ describe Api::V0::CirculatorsController do
 
     circulator = Circulator.where(circulator_id: returnedCirculator['circulatorId']).first
     circulator_user = CirculatorUser.find_by_circulator_and_user(circulator, @user)
-    circulator_user.owner.should_not be_true
+    circulator_user.owner.should_not be true
   end
 
   it 'should provide a token' do
@@ -197,7 +197,7 @@ describe Api::V0::CirculatorsController do
 
     Circulator.where(circulator_id: @circulator.circulator_id).first.should be_nil
     CirculatorUser.find_by_circulator_and_user(@circulator, @user).should be_nil
-    @aa.reload.revoked?.should be_true
+    @aa.reload.revoked?.should be true
   end
 
   it 'should not delete a circulator that does not exist' do
@@ -335,7 +335,7 @@ describe Api::V0::CirculatorsController do
 
       stub_sns_publish()
       stub_dynamo_save()
-      Api::V0::CirculatorsController.any_instance.stub(:delete_endpoint) do |arn|
+      Api::V0::CirculatorsController.any_instance.stub(:delete_endpoint) do |value, arn|
         @deleted_endpoints << arn
       end
       @published_messages = []
@@ -598,7 +598,7 @@ describe Api::V0::CirculatorsController do
         end
 
         it 'should delete token if endpoint disabled' do
-          Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |arn, msg|
+          Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |value, arn, msg|
             raise Aws::SNS::Errors::EndpointDisabled.new('foo', 'bar')
           end
           token = PushNotificationToken.where(:actor_address_id => @user_aa.id, :app_name => 'joule').first
@@ -772,14 +772,15 @@ describe Api::V0::CirculatorsController do
   private
 
   def stub_sns_publish
-    Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |arn, msg|
+    Api::V0::CirculatorsController.any_instance.stub(:publish_json_message) do |value, arn, msg|
       @published_messages << {arn: arn, msg: msg}
       {:message_id => SecureRandom.uuid}
     end
   end
 
   def stub_dynamo_save
-    Api::V0::CirculatorsController.any_instance.stub(:save_push_notification_item_to_dynamo) do |item|
+    #allow_any_instance_of(Api::V0::CirculatorsController).to receive(:save_push_notification_item_to_dynamo) do |value, item| # we can use this for future rspec version updation
+    Api::V0::CirculatorsController.any_instance.stub(:save_push_notification_item_to_dynamo) do |value, item|
       @saved_notifications << item
     end
   end

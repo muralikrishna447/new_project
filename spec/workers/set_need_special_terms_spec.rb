@@ -9,7 +9,7 @@ describe SetNeedsSpecialTerms do
     aa_two = ActorAddress.create_for_user(@user)
     
     SetNeedsSpecialTerms.perform(@user.email)
-    expect(@user.reload.needs_special_terms).to be_true
+    expect(@user.reload.needs_special_terms).to be true
     
     aa_one.reload.sequence.should == 2
     aa_two.reload.sequence.should == 2
@@ -17,7 +17,7 @@ describe SetNeedsSpecialTerms do
 
   it 'should not crash if no actors exist' do
     SetNeedsSpecialTerms.perform(@user.email)
-    expect(@user.reload.needs_special_terms  ).to be_true
+    expect(@user.reload.needs_special_terms  ).to be true
   end
 
   it 'should raise with invalid email' do

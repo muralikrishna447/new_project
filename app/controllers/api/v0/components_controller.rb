@@ -11,7 +11,7 @@ module Api
 
       def show
         begin
-          @component = Component.find(params[:id])
+          @component = Component.friendly.find(params[:id])
         rescue ActiveRecord::RecordNotFound
           return render_api_response 404, {message: 'Component not found'}
         end

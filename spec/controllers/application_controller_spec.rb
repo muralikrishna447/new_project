@@ -41,8 +41,8 @@ describe ApplicationController do
     end
 
     before do
-      @http = mock :http
-      Net::HTTP.stub!(:new).and_return @http
+      @http = double :http
+      Net::HTTP.stub(:new).and_return @http
     end
 
     it 'sets is_static_render when prerender header is in user agent' do

@@ -13,6 +13,8 @@ end
 ActiveAdmin.register GuideActivity, as: 'Guide Activities' do
   config.sort_order = ''
   config.batch_actions = false
+  permit_params :activity_id, :guide_id, :guide_title, :autoupdate, :guide_digest
+
 
   menu priority: 2
 
@@ -23,7 +25,7 @@ ActiveAdmin.register GuideActivity, as: 'Guide Activities' do
       link_to(ga.activity.title, activity_path(ga.activity))
     end
     column :autoupdate
-    default_actions
+    actions
   end
 
   form do |f|
@@ -33,7 +35,7 @@ ActiveAdmin.register GuideActivity, as: 'Guide Activities' do
       f.input :autoupdate, label: "Autoupdate when guide content changes"
     end
 
-    f.buttons
+    f.actions
   end
 end
 

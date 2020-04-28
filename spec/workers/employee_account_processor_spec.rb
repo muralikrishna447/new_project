@@ -8,7 +8,7 @@ describe EmployeeAccountProcessor do
       let(:email) { 'test@breville.com' }
 
       it 'returns true' do
-        expect(EmployeeAccountProcessor.has_employee_email?(user)).to be_true
+        expect(EmployeeAccountProcessor.has_employee_email?(user)).to be true
       end
     end
 
@@ -16,7 +16,7 @@ describe EmployeeAccountProcessor do
       let(:email) { 'a@b.com' }
 
       it 'returns false' do
-        expect(EmployeeAccountProcessor.has_employee_email?(user)).to be_false
+        expect(EmployeeAccountProcessor.has_employee_email?(user)).to be false
       end
     end
   end

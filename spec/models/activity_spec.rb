@@ -20,7 +20,7 @@ describe Activity do
 
   describe 'changes queue AlgoliaSync' do
     it 'queues algolia on update_attributes' do
-      Resque.should_receive(:enqueue).with(AlgoliaSync, activity.id).at_least(:once)
+      expect(Resque).to receive(:enqueue).with(AlgoliaSync, activity.id).at_least(:once)
       activity.update_attributes(title: "dog")
     end
   end

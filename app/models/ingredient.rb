@@ -3,9 +3,9 @@ class Ingredient < ActiveRecord::Base
   extend FriendlyId
 
   acts_as_taggable
-  acts_as_revisionable
+  acts_as_revisionable :dependent => :keep, :on_destroy => true
 
-  friendly_id :title, use: [:slugged, :history]
+  friendly_id :title, use: [:slugged, :history, :finders]
 
   include ActsAsSanitized
   sanitize_input :title, :product_url
@@ -18,23 +18,15 @@ class Ingredient < ActiveRecord::Base
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :events, as: :trackable, dependent: :destroy
 
-  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :vimeo_id, :text_fields, :tag_list
-
   serialize :text_fields, JSON
-
-  # This is for activities that are used as an ingredient in higher level recipes.
-  # Note the potential for confusion: the has_many activities is for activities
-  # that use this ingredient. The sub_activity_id is for ingredients that *are*
-  # a (nested) activity - which may in turn be used in some activity.
-  attr_accessible :sub_activity_id
 
   scope :search_title, -> title { where('title iLIKE ?', '%' + title + '%') }
   scope :exact_search , -> title { where(title: title) }
-  scope :no_sub_activities, where('sub_activity_id IS NULL')
-  scope :with_image, where('image_id IS NOT NULL')
-  scope :no_image, where('image_id IS NULL')
-  scope :with_purchase_link, where('product_url IS NOT NULL')
-  scope :no_purchase_link, where('product_url IS NULL')
+  scope :no_sub_activities, -> { where('sub_activity_id IS NULL') }
+  scope :with_image, -> { where('image_id IS NOT NULL') }
+  scope :no_image, -> { where('image_id IS NULL') }
+  scope :with_purchase_link, -> { where('product_url IS NOT NULL') }
+  scope :no_purchase_link, -> { where('product_url IS NULL') }
 
   # These don't chain properly with search so doing something simpler for now
   # scope :started, where('CHAR_LENGTH(text_fields) >= 10').joins(:events).where(events: {action: 'edit'}).group('ingredients.id').having("count(DISTINCT(events.user_id)) > 0 AND count(DISTINCT(events.user_id)) < 3")
@@ -42,9 +34,9 @@ class Ingredient < ActiveRecord::Base
 
   MIN_WELL_EDITED_LENGTH = 150
 
-  scope :not_started, where('CHAR_LENGTH(text_fields) < 10')
-  scope :started, where('CHAR_LENGTH(text_fields) > 10 AND CHAR_LENGTH(text_fields) < ?', MIN_WELL_EDITED_LENGTH)
-  scope :well_edited, where('CHAR_LENGTH(text_fields) > ?', MIN_WELL_EDITED_LENGTH)
+  scope :not_started, -> { where('CHAR_LENGTH(text_fields) < 10') }
+  scope :started, -> { where('CHAR_LENGTH(text_fields) > 10 AND CHAR_LENGTH(text_fields) < ?', MIN_WELL_EDITED_LENGTH) }
+  scope :well_edited, -> { where('CHAR_LENGTH(text_fields) > ?', MIN_WELL_EDITED_LENGTH) }
 
   include PgSearch
   multisearchable :against => [:title, :text_fields, :product_url]
@@ -120,8 +112,6 @@ class Ingredient < ActiveRecord::Base
     end
   end
 
-  attr_accessible :title, :product_url, :for_sale, :density, :image_id, :youtube_id, :vimeo_id, :text_fields, :tag_list
-
   def merge_in_useful_details(other)
     self.product_url = other.product_url if self.product_url.to_s == ''
     self.density = other.density if ! self.density
@@ -158,7 +148,7 @@ class Ingredient < ActiveRecord::Base
 
       ingredient.reload
       if (ingredient.activities.count == 0) && (ingredient.steps.count == 0)
-        ingredient.destroy
+        ingredient.delete
       else
         raise "Unexpected dependencies remain for #{ingredient.title} (id: #{ingredient.id})... not deleting"
       end

@@ -124,13 +124,13 @@ describe StripeOrder do
   context 'send_to_stripe' do
     before :each do
       stripe3 = double('stripe', amount: 9999, status: 'failed', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
-      stripe3.stub(:status).and_return('failed')
+      expect(stripe3.status).to eq('failed')
 
       stripe2 = double('stripe', amount: 9999, status: 'paid', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
-      stripe2.stub(:status).and_return('paid')
+      expect(stripe2.status).to eq('paid')
 
       stripe = double('stripe', amount: 9999, status: 'created', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
-      stripe.stub(:status).and_return('created')
+      expect(stripe.status).to eq('created')
       stripe.stub(:pay).and_return(stripe2)
 
 
@@ -159,7 +159,7 @@ describe StripeOrder do
       stripe3 = double('stripe', amount: 9999, status: 'failed', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
       stripe3.stub(:status).and_return('failed')
       stripe.stub(:pay).and_return(stripe3)
-      Stripe::Order.stub(:create){ raise(Stripe::CardError.new('test', 'test', 'test'))}
+      Stripe::Order.stub(:create){ raise(Stripe::CardError.new('test', 'test'))}
       DeclinedMailer.should_receive(:joule).and_call_original
       expect { @stripe_circulator_order.send_to_stripe }.to raise_error
     end
@@ -169,7 +169,7 @@ describe StripeOrder do
       stripe.stub(:status).and_return('created')
       stripe3 = double('stripe', amount: 9999, status: 'failed', items: [ {amount: 10000, description: 'foo', parent: 'cs10001'}])
       stripe3.stub(:status).and_return('failed')
-      stripe.stub(:pay){ raise(Stripe::CardError.new('test', 'test', 'test'))}
+      stripe.stub(:pay){ raise(Stripe::CardError.new('test', 'test'))}
       Stripe::Order.stub(:create).and_return(stripe)
       DeclinedMailer.should_receive(:joule).and_call_original
       expect { @stripe_circulator_order.send_to_stripe }.to raise_error

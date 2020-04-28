@@ -117,7 +117,7 @@ module Api
         logger.info "Received response from the ge server"
         Librato.increment("api.authenticate_ge_requests")
         code = params[:code]
-        payload = JWT.decode(params[:state], ENV['OAUTH_SECRET'])
+        payload = JWT.decode(params[:state], ENV['OAUTH_SECRET']).first
         user = User.find(payload["id"]) rescue nil
         begin
           token = GE::Client.auth_code.get_token(code, :redirect_uri => GE::RedirectURL)

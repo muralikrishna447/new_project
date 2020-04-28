@@ -13,24 +13,23 @@ Delve::Application.routes.draw do
 
   # Redirect old forum.chefsteps.com to new forum
   constraints :subdomain => "forum" do
-    root to: redirect(:subdomain => 'www', :path => "/forum")
-    match "*any", to: redirect(:subdomain => 'www', :path => "/forum")
+    match "*any", to: redirect(:subdomain => 'www', :path => "/forum"), via: [:get, :post, :options]
   end
 
   # One-off routes
-  root to: 'home#new_home'
+  root 'home#new_home'
   get '/robots.txt' => RobotsTxt
 
-  match '/libraries', to: 'legal#libraries'
+  match '/libraries', to: 'legal#libraries', via: [:get, :post, :options]
   # match '/joule/warranty', to: 'home#joule_warranty'
-  match '/facebook_optout', to: 'home#facebook_optout'
+  match '/facebook_optout', to: 'home#facebook_optout', via: [:get, :post, :options]
 
-  match '/forum', to: 'bloom#forum'
-  match '/forum/*path', to: 'bloom#forum'
-  match "/forum/*path" => redirect("/?goto=%{path}")
-  match '/betainvite', to: 'bloom#betainvite'
-  match '/content-discussion/:id', to: 'bloom#content_discussion'
-  match '/content/:id', to: 'bloom#content'
+  match '/forum', to: 'bloom#forum', via: [:get, :post, :options]
+  match '/forum/*path', to: 'bloom#forum', via: [:get, :post, :options]
+  match "/forum/*path" => redirect("/?goto=%{path}"), via: [:get, :post, :options]
+  match '/betainvite', to: 'bloom#betainvite', via: [:get, :post, :options]
+  match '/content-discussion/:id', to: 'bloom#content_discussion', via: [:get, :post, :options]
+  match '/content/:id', to: 'bloom#content', via: [:get, :post, :options]
 
   post '/admin/slack_display', to:'admin#slack_display'
 
@@ -51,19 +50,19 @@ Delve::Application.routes.draw do
   get 'privacy-staging' => 'legal#privacy_policy_staging', as: 'privacy_staging'
   get 'terms' => 'legal#terms', as: 'terms'
   get 'terms' => 'legal#terms', as: 'terms_of_service'
-  match '/joule/weee-compliance', to: 'legal#weee'
-  match '/joule/warranty', to: 'legal#warranty'
-  match '/joule/warranty/:country_code', to: 'legal#warranty_for_country'
-  match '/customer-feedback-panel', to: 'home#customer_feedback_panel'
+  match '/joule/weee-compliance', to: 'legal#weee', via: [:get, :post, :options]
+  match '/joule/warranty', to: 'legal#warranty', via: [:get, :post, :options]
+  match '/joule/warranty/:country_code', to: 'legal#warranty_for_country', via: [:get, :post, :options]
+  match '/customer-feedback-panel', to: 'home#customer_feedback_panel', via: [:get, :post, :options]
 
   get '/recipes', to: redirect('/gallery')
 
-  get '/jr/:base64_encoded_protobuf', to: 'qr_codes#jr'
+  get '/jr/(:base64_encoded_protobuf)', to: 'qr_codes#jr'
 
   ActiveAdmin.routes(self)
 
   # For convenient youtube CTAs
-  match '/coffee', to: redirect { |params, request| "/classes/coffee/landing?#{request.params.to_query}" }
+  match '/coffee', to: redirect { |params, request| "/classes/coffee/landing?#{request.params.to_query}" }, via: [:get, :post, :options]
 
   # Devise / auth
   devise_for :users, controllers: {
@@ -79,10 +78,10 @@ Delve::Application.routes.draw do
     get "sign_out", to: 'users/sessions#destroy'
     get "complete_registration", to: 'users/registrations#complete_registration'
     get 'welcome', to: 'users/registrations#welcome'
-    match '/users/auth/google/callback', to: 'users/omniauth_callbacks#google'
-    match '/users/auth/facebook/callback', to: 'users/omniauth_callbacks#facebook'
+    match '/users/auth/google/callback', to: 'users/omniauth_callbacks#google', via: [:get, :post, :options]
+    match '/users/auth/facebook/callback', to: 'users/omniauth_callbacks#facebook', via: [:get, :post, :options]
     delete '/users/social/disconnect', to: "users/omniauth_callbacks#destroy"
-    match '/users/contacts/google', to: 'users/contacts#google'
+    match '/users/contacts/google', to: 'users/contacts#google', via: [:get, :post, :options]
     post '/users/contacts/invite', to: 'users/contacts#invite'
     post '/users/contacts/gather_friends', to: 'users/contacts#gather_friends'
     post '/users/contacts/email_invite', to: "users/contacts#email_invite"
@@ -93,7 +92,7 @@ Delve::Application.routes.draw do
   get 'users/preauth' => 'users#preauth'
   get 'users/preauth_init' => 'users#preauth_init'
   get 'users/verify' => 'tokens#verify', as: 'verify'
-  match 'users/set_location' => 'users#set_location'
+  match 'users/set_location' => 'users#set_location', via: [:get, :post, :options]
   get 'users/update_privacy_settings' => 'users/privacy_settings#update'
   get 'users/confirm_employee' => 'users/confirm_employee#confirm'
 
@@ -112,14 +111,14 @@ Delve::Application.routes.draw do
   get 'market' => 'pages#market_ribeye', as: 'market_ribeye'
   get 'joule-crawler' => 'pages#joule_crawler', as: 'joule_crawler'
 
-  match '/mp', to: redirect('/classes/spherification')
-  match '/MP', to: redirect('/classes/spherification')
+  match '/mp', to: redirect('/classes/spherification'), via: [:get, :post, :options]
+  match '/MP', to: redirect('/classes/spherification'), via: [:get, :post, :options]
 
   resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
 
   # For universal deep links inside the app
-  match '/.well-known/apple-app-site-association', to: "guides#apple"
-  match '/.well-known/assetlinks.json', to: "guides#google"
+  match '/.well-known/apple-app-site-association', to: "guides#apple", via: [:get, :post, :options]
+  match '/.well-known/assetlinks.json', to: "guides#google", via: [:get, :post, :options]
   resources :guides, only: [:show]
 
   # Allow top level access to an activity even if it isn't in a course
@@ -139,8 +138,8 @@ Delve::Application.routes.draw do
     end
   end
 
-  match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }
-  match '/feed' => 'activities#feedburner_feed', as: :feed
+  match '/base_feed' => 'activities#base_feed', as: :base_feed, :defaults => { :format => 'atom' }, via: [:get, :post, :options]
+  match '/feed' => 'activities#feedburner_feed', as: :feed, via: [:get, :post, :options]
 
   resources :equipment, only: [:index, :update, :destroy] do
     member do
@@ -185,7 +184,7 @@ Delve::Application.routes.draw do
   get 'community-activity' => 'streams#feed', as: 'community_activity'
 
   resources :sitemaps, :only => :show
-  match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml
+  match "/sitemap.xml", :controller => "sitemaps", :action => "show", :format => :xml, via: [:get, :post, :options]
 
   resources :client_views, only: [:show]
   resources :stream_views, only: [:show]
@@ -211,7 +210,7 @@ Delve::Application.routes.draw do
 
   get "/invitations/welcome" => "home#welcome"
 
-  match "/reports/stripe" => "reports#stripe"
+  match "/reports/stripe" => "reports#stripe", via: [:get, :post, :options]
   resources :reports
 
 
@@ -238,8 +237,8 @@ Delve::Application.routes.draw do
   resources :stripe_webhooks, only: [:create]
 
   # resources :components, only: [:index]
-  match '/components', to: 'components#index'
-  match '/components/*path', to: 'components#index'
+  match '/components', to: 'components#index', via: [:get, :post, :options]
+  match '/components/*path', to: 'components#index', via: [:get, :post, :options]
 
   get "/tf2" => "tf2_redemptions#index"
   get "/tf2/redemptions" => "tf2_redemptions#show"
@@ -257,9 +256,9 @@ Delve::Application.routes.draw do
       match '/authenticate', to: 'auth#authenticate', via: [:post, :options]
       match '/upgrade_token', to: 'auth#upgrade_token', via: [:post, :options]
       match '/authenticate_facebook', to: 'auth#authenticate_facebook', via: [:post, :options]
-      match '/authorize_ge_redirect', to: 'auth#authorize_ge_redirect'
-      match '/authenticate_ge', to: 'auth#authenticate_ge'
-      match '/refresh_ge', to: 'auth#refresh_ge'
+      match '/authorize_ge_redirect', to: 'auth#authorize_ge_redirect', via: [:get, :post, :options]
+      match '/authenticate_ge', to: 'auth#authenticate_ge', via: [:get, :post, :options]
+      match '/refresh_ge', to: 'auth#refresh_ge', via: [:get, :post, :options]
       
       match '/logout', to: 'auth#logout', via: [:post, :options]
       match '/validate', to: 'auth#validate', via: [:get, :post, :options]
@@ -285,11 +284,14 @@ Delve::Application.routes.draw do
         get :photos, on: :member
         get :recipes, on: :member
       end
-      resources :push_notification_tokens, only: [:create, :destroy]
+      resources :push_notification_tokens, only: [:create, :destroy], param: :device_token
+
+      # resources :push_notification_tokens, only: [:destroy], param: :device_token
+
       resources :recommendations, only: [:index]
       resources :search, only: [:index]
       resources :users, only: [:index, :create, :update] do
-        get :me, on: :collection
+        match :me, on: :collection, :via => [:options, :get]
         get :capabilities, on: :collection
         get :shown_terms, on: :collection
         post :international_joule, on: :collection
@@ -299,6 +301,8 @@ Delve::Application.routes.draw do
       end
 
       resources :circulators, only: [:index, :create, :update, :destroy] do
+        get :token, on: :collection
+        delete :destroy, on: :collection
         get :token, on: :member
         post :notify_clients, on: :member
         post :admin_notify_clients, on: :member
@@ -379,14 +383,14 @@ Delve::Application.routes.draw do
   end
 
   # Start putting landing_pages here
-  match "/joule-vs-anova-sous-vide" => "landing_pages#joule-vs-anova-sous-vide"
+  match "/joule-vs-anova-sous-vide" => "landing_pages#joule-vs-anova-sous-vide", via: [:get, :post, :options]
 
   # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
   match '/*path' => 'application#options', :via => :options
 
   # show /pages/vegetarian-sous-vide-recipes also as /vegetarian-sous-vide-recipes
-  get ':id', to: 'pages#show', constraints: lambda { |r| ! r.url.match(/jasmine/) }
+  get ':id', to: 'pages#show', constraints: lambda { |r| ! r.url.match(/jasmine/) }, via: [:get, :post, :options]
 
   # http://techoctave.com/c7/posts/36-rails-3-0-rescue-from-routing-error-solution
-  match '*a', to: 'errors#routing', constraints: lambda { |r| ! r.url.match(/jasmine/) }
+  match '*a', to: 'errors#routing', constraints: lambda { |r| ! r.url.match(/jasmine/) }, via: [:get, :post, :options]
 end

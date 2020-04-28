@@ -1,4 +1,4 @@
-window.markdownConverter = new Showdown.converter()
+window.markdownConverter = new showdown.Converter()
 
 @helpers.filter "markdown", ->
   (input) ->

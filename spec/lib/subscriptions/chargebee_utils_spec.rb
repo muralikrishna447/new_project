@@ -8,7 +8,10 @@ describe Subscriptions::ChargebeeUtils do
     let(:coupon_id) { 'my_coupon_id' }
 
     before :each do
-      WebMock.stub_request(:get, "https://.chargebee.com/api/v2/subscriptions?customer_id%5Bis%5D=#{user_id}&limit=1&plan_id%5Bis%5D=#{plan_id}&status%5Bin%5D=%5B%22active%22,%22in_trial%22,%22non_renewing%22,%22cancelled%22%5D").
+      ChargeBee.configure(
+          site: 'test_chefsteps'
+      )
+      WebMock.stub_request(:get, "https://test_chefsteps.chargebee.com/api/v2/subscriptions?customer_id%5Bis%5D=#{user_id}&limit=1&plan_id%5Bis%5D=#{plan_id}&status%5Bin%5D=%5B%22active%22,%22in_trial%22,%22non_renewing%22,%22cancelled%22%5D").
         to_return(:status => 200, :body => list_body, :headers => {})
     end
 
@@ -63,7 +66,7 @@ describe Subscriptions::ChargebeeUtils do
 
     context 'employee is not already subscribed' do
       before :each do
-        WebMock.stub_request(:get, "https://.chargebee.com/api/v2/customers/#{user_id}").
+        WebMock.stub_request(:get, "https://test_chefsteps.chargebee.com/api/v2/customers/#{user_id}").
             to_return(:status => status, :body => body, :headers => {})
         subscription.should_receive(:status).at_least(:once).and_return('active')
         subscription.should_receive(:resource_version).at_least(:once).and_return(1)
@@ -120,19 +123,19 @@ describe Subscriptions::ChargebeeUtils do
 
       it 'adds 1 year' do
         new_term_end = Subscriptions::ChargebeeUtils.calculate_new_term_end(subscription, plan_amount)
-        expect(new_term_end).should eq((Time.at(current_term_end) + 1.year).to_i)
+        expect(new_term_end).to eq((Time.at(current_term_end) + 1.year).to_i)
       end
       it 'adds 2 years' do
         new_term_end = Subscriptions::ChargebeeUtils.calculate_new_term_end(subscription, plan_amount * 2)
-        expect(new_term_end).should eq((Time.at(current_term_end) + 2.years).to_i)
+        expect(new_term_end).to eq((Time.at(current_term_end) + 2.years).to_i)
       end
       it 'adds 0 years' do
         new_term_end = Subscriptions::ChargebeeUtils.calculate_new_term_end(subscription, 0)
-        expect(new_term_end).should eq(Time.at(current_term_end).to_i)
+        expect(new_term_end).to eq(Time.at(current_term_end).to_i)
       end
       it 'handles promotional credits not being multiple of plan_amount' do
         new_term_end = Subscriptions::ChargebeeUtils.calculate_new_term_end(subscription, plan_amount * 1.5)
-        expect(new_term_end).should eq((Time.at(current_term_end) + 1.year).to_i)
+        expect(new_term_end).to eq((Time.at(current_term_end) + 1.year).to_i)
       end
     end
 
@@ -140,7 +143,7 @@ describe Subscriptions::ChargebeeUtils do
       let(:billing_period_unit) { "month" }
       it 'adds 1 month' do
         new_term_end = Subscriptions::ChargebeeUtils.calculate_new_term_end(subscription, plan_amount)
-        expect(new_term_end).should eq((Time.at(current_term_end) + 1.month).to_i)
+        expect(new_term_end).to eq((Time.at(current_term_end) + 1.month).to_i)
       end
     end
   end

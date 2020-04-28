@@ -1,5 +1,15 @@
 ActiveAdmin.register User do
   actions :all, except: [:destroy]
+
+  permit_params :name, :email, :password, :password_confirmation,
+                :remember_me, :location, :quote, :website, :chef_type,
+                :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id,
+                :role, :referred_from, :referrer_id, :premium_member,
+                :premium_membership_created_at, :premium_membership_price, as: :admin
+
+  before_action :load_user, only: [:show, :edit, :update, :reset_password, :merge, :merge_do,
+                                   :soft_delete, :make_premium, :remove_premium, :undelete]
+
   menu parent: 'More'
   filter :email
   filter :name
@@ -9,19 +19,19 @@ ActiveAdmin.register User do
   filter :role
   filter :referred_from
 
-  action_item only: [:show] do
-    link_to('Send Password Reset Email', reset_password_admin_user_path(user), method: :post, confirm: 'Are you sure?')
+  action_item :view, only: [:show] do
+    link_to 'Send Password Reset Email', reset_password_admin_user_path(user), method: :post, data: { confirm: 'Are you sure?' }
   end
 
-  action_item only: [:show] do
+  action_item :view, only: [:show] do
     if user.deleted_at.present?
-      link_to('Undelete User', undelete_admin_user_path(user), method: :post, confirm: 'Are you sure?')
+      link_to('Undelete User', undelete_admin_user_path(user), method: :post, data: { confirm: 'Are you sure?' })
     else
-      link_to('Soft Delete User', soft_delete_admin_user_path(user), method: :post, confirm: 'Are you sure?')
+      link_to('Soft Delete User', soft_delete_admin_user_path(user), method: :post, data: { confirm: 'Are you sure?' })
     end
   end
 
-  action_item only: [:show] do
+  action_item :view, only: [:show] do
     unless user.admin?
       if user.premium?
         link_to('Remove premium membership', remove_premium_admin_user_path(user), method: :post)
@@ -31,37 +41,32 @@ ActiveAdmin.register User do
     end
   end
 
-  action_item only: [:show] do
+  action_item :view, only: [:show] do
     link_to('Merge User', merge_admin_user_path(user))
   end
 
   member_action :reset_password, method: :post do
-    @user = User.find(params[:id])
     logger.info "Admin dashboard: sending password reset email for: #{@user.email}"
     @user.send_password_reset_email
     redirect_to({action: :show}, notice: "Password reset email has been sent to #{@user.email}")
   end
 
   member_action :soft_delete, method: :post do
-    @user = User.find(params[:id])
     @user.soft_delete
     redirect_to({action: :show}, notice: "User has been deleted")
   end
 
   member_action :undelete, method: :post do
-    @user = User.find(params[:id])
     @user.undelete
     redirect_to({action: :show}, notice: "User has been un-deleted")
   end
 
   member_action :remove_premium, method: :post do
-    @user = User.find(params[:id])
     @user.remove_premium_membership
     redirect_to({action: :show}, notice: "User no longer premium member")
   end
 
   member_action :make_premium, method: :post do
-    @user = User.find(params[:id])
     @user.make_premium_member(0)
     redirect_to({action: :show}, notice: "User is now premium member")
   end
@@ -132,6 +137,13 @@ ActiveAdmin.register User do
     def max_csv_records
       30_000
     end
+
+    private
+
+    def load_user
+      @user = User.friendly.find(params[:id])
+    end
+
   end
 
   csv do

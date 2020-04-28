@@ -3,7 +3,6 @@ module Quantity
 
   included do
     before_save :store_quantity
-    attr_accessible :display_quantity
   end
 
   def measurement

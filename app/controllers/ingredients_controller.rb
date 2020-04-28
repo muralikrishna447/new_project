@@ -111,7 +111,7 @@ class IngredientsController < ApplicationController
             raise "Can't change name of ingredient that is a recipe"
           else
             @ingredient.store_revision do
-              @ingredient.update_attributes(params[:ingredient])
+              @ingredient.update_attributes(ingredient_params)
 
               # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
               # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
@@ -151,7 +151,7 @@ class IngredientsController < ApplicationController
 
   def destroy
     authorize! :manage, Ingredient
-    @ingredient = Ingredient.find(params[:id])
+    @ingredient = Ingredient.friendly.find(params[:id])
     respond_to do |format|
       format.json do
         begin
@@ -175,11 +175,11 @@ class IngredientsController < ApplicationController
 
   def show
     @ingredient_id = params[:id]
-    @ingredient = Ingredient.find(params[:id])
+    @ingredient = Ingredient.friendly.find(params[:id])
   end
 
   def get_as_json
-    @ingredient = Ingredient.find(params[:id])
+    @ingredient = Ingredient.friendly.find(params[:id])
     render json: @ingredient
   end
 
@@ -212,4 +212,12 @@ class IngredientsController < ApplicationController
       }
     end
   end
+
+  private
+
+  def ingredient_params
+    params.require(:ingredient).permit(:title, :product_url, :for_sale, :density,
+                                       :image_id, :youtube_id, :vimeo_id, :tag_list, :text_fields => ["description", "alternative names", "culinary uses", "preparation tips", "suggested cooking times and temperatures", "substitutions", "purchasing tips", "storage", "production", "safety", "seasonality", "history", "references"])
+  end
+
 end

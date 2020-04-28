@@ -5,7 +5,7 @@ class Users::SessionsController < Devise::SessionsController
 
   def new
     flash[:notice] = params[:notice] if params[:notice]
-    self.resource = build_resource(nil, :unsafe => true)
+    self.resource = resource_class.new
     clean_up_passwords(resource)
     if params[:email]
       @signin_message = 'Looks like you already have an account!'

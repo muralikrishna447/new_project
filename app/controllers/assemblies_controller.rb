@@ -89,10 +89,10 @@ private
     rescue
       # If they are looking for a course that isn't yet published, take them to a page where
       # they can get on an email list to be notified when it is available.
-      @course = Assembly.find(params[:id])
+      @course = Assembly.friendly.find(params[:id])
       if @course && @course.assembly_type == "Course" && (! @course.published?)
         if current_user && current_user.enrolled?(@course)
-          @assembly = Assembly.find(params[:id])
+          @assembly = Assembly.friendly.find(params[:id])
           # Once verified that coupons are working everywhere, delete the following:
           session[:coupon] = params[:coupon] || session[:coupon]
         else

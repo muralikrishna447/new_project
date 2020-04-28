@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ApplicationHelper, "#is_current_user?" do
-  let(:user) { mock('user') }
+  let(:user) { double('user') }
 
   subject{ helper.is_current_user?(user) }
 
@@ -11,7 +11,7 @@ describe ApplicationHelper, "#is_current_user?" do
   end
 
   context "with different user signed in" do
-    before { helper.stub(:current_user) { mock('other user') } }
+    before { helper.stub(:current_user) { double('other user') } }
     it { subject.should == false}
   end
 

@@ -128,9 +128,6 @@
             %h4= "#{@user.name} joined ChefSteps on"
           %h4= "#{@user.created_at.strftime('%B %-d, %Y')}."
 
-        / - @user.events.timeline.each_with_index do |event, index|
-        /   - direction = index.even? ? 'left' : 'right'
-        /   = render "events/#{event.trackable_type.underscore}/#{event.action}", event: event, direction: direction
 
 = content_for :footer do
   = render 'layouts/footer'
