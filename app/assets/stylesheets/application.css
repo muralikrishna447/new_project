@@ -14,6 +14,7 @@
  *= require twitter/bootstrap-no-sprites
  *= require twitter/bootstrap/_responsive
  *= require jobs
+ *= require custom_bootstrap
 
  *= require redesign
  *= require application/responsiveslides
@@ -36,6 +37,7 @@
  *= require timeline
  *= require annotations
  *= require select2
+ *= require select2-bootstrap
  *= require billboard
  *= require voting
  *= require comments

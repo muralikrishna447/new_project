@@ -1,5 +1,6 @@
 require 'spork'
 require 'webmock/test_unit'
+require 'rspec/collection_matchers'
 
 
 Spork.prefork do
@@ -20,6 +21,8 @@ Spork.prefork do
   require 'rspec/rails'
   require 'rspec/autorun'
 
+  Test::Unit.run = true if defined?(Test::Unit) && Test::Unit.respond_to?(:run=)
+
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
@@ -29,11 +32,13 @@ Spork.prefork do
     config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
     config.use_transactional_fixtures = false
+    config.infer_spec_type_from_file_location!
 
     config.infer_base_class_for_anonymous_controllers = false
 
-    config.treat_symbols_as_metadata_keys_with_true_values = true
-
+    # Deprecation Warnings:
+    # RSpec::Core::Configuration#treat_symbols_as_metadata_keys_with_true_values= is deprecated, it is now set to true as default and setting it to false has no effect.
+    # config.treat_symbols_as_metadata_keys_with_true_values = true
     # Allow focusing on a single spec/context with the :focus tag unless were running in codeship
     unless ENV['CI']
 
@@ -43,7 +48,11 @@ Spork.prefork do
 
     #adding this filter to skip shopify-related specs
     config.filter_run_excluding :skip => 'true'
+    # config.include Devise::Test::ControllerHelpers
+    # config.include Devise::Test::IntegrationHelpers, type: :feature
     config.include Devise::TestHelpers, type: :controller
+    config.include Devise::TestHelpers, type: :view
+    config.include Warden::Test::Helpers
     config.extend ControllerMacros, type: :controller
     config.include Capybara::DSL
     config.include MailerMacros
@@ -207,7 +216,7 @@ Spork.prefork do
   end
 
   Capybara.javascript_driver = :poltergeist
-  Capybara.default_wait_time = 5
+  Capybara.default_max_wait_time = 5
 
   # Shopify test setup
   ShopifyAPI::Mock::Fixture.path = File.join(Rails.root, 'spec', 'shopify', 'fixtures')

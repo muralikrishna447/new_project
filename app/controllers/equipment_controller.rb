@@ -42,7 +42,7 @@ class EquipmentController < ApplicationController
       format.json do
         @equipment = Equipment.find(params[:id])
         begin
-          @equipment.update_attributes(params[:equipment])
+          @equipment.update_attributes(equipment_params)
           head :no_content
         rescue Exception => e
           messages = [] || @equipment.errors.full_messages
@@ -97,6 +97,13 @@ class EquipmentController < ApplicationController
         end
       end
     end
+  end
+
+  private
+
+
+  def equipment_params
+    params.require(:equipment).permit(:title, :product_url)
   end
 
 end

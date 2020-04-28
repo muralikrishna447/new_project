@@ -43,7 +43,7 @@ describe ChargeBeeWorkers::ChargeBeeGiftProcessor do
       it 'processes the gift' do
         ChargeBeeWorkers::ChargeBeeGiftProcessor.process(params)
         item = ChargebeeGiftRedemptions.find_by_gift_id(params[:gift_id])
-        expect(item.complete).to be_true
+        expect(item.complete).to be true
       end
     end
 
@@ -55,7 +55,7 @@ describe ChargeBeeWorkers::ChargeBeeGiftProcessor do
       it 'processes the gift' do
         ChargeBeeWorkers::ChargeBeeGiftProcessor.process(params)
         item = ChargebeeGiftRedemptions.find_by_gift_id(params[:gift_id])
-        expect(item.complete).to be_true
+        expect(item.complete).to be true
       end
     end
 
@@ -66,7 +66,7 @@ describe ChargeBeeWorkers::ChargeBeeGiftProcessor do
     #
     #     ChargeBeeGiftProcessor.process(params)
     #     item = ChargebeeGiftRedemptions.find_by_gift_id(params[:gift_id])
-    #     expect(item.complete).to be_true
+    #     expect(item.complete).to be true
     #   end
     # end
   end
@@ -93,7 +93,7 @@ describe ChargeBeeWorkers::ChargeBeeGiftProcessor do
     it 'processes the gift' do
       ChargeBeeWorkers::ChargeBeeGiftProcessor.process(params)
       item = ChargebeeGiftRedemptions.find_by_gift_id(params[:gift_id])
-      expect(item.complete).to be_true
+      expect(item.complete).to be true
     end
   end
 

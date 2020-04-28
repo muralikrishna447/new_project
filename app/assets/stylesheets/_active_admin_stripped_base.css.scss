@@ -1,32 +1,33 @@
+
 /* Active Admin CSS */
 
 // Partials
 body.active_admin {
-  @import "active_admin/typography";
-  @import "active_admin/header";
+  //@import "active_admin/typography";
+  //@import "active_admin/header";
   @import "active_admin/forms";
-  @import "active_admin/components/comments";
-  @import "active_admin/components/flash_messages";
-  @import "active_admin/components/date_picker";
-  @import "active_admin/components/tables";
-  @import "active_admin/components/batch_actions";
-  @import "active_admin/components/blank_slates";
-  @import "active_admin/components/breadcrumbs";
-  @import "active_admin/components/dropdown_menu";
-  @import "active_admin/components/buttons";
-  @import "active_admin/components/grid";
-  @import "active_admin/components/links";
-  @import "active_admin/components/pagination";
-  @import "active_admin/components/panels";
-  @import "active_admin/components/columns";
-  @import "active_admin/components/scopes";
-  @import "active_admin/components/status_tags";
-  @import "active_admin/components/table_tools";
-  @import "active_admin/pages/dashboard";
-  @import "active_admin/pages/logged_out";
-  @import "active_admin/structure/footer";
-  @import "active_admin/structure/main_structure";
-  @import "active_admin/structure/title_bar";
+  //@import "active_admin/components/comments";
+  //@import "active_admin/components/flash_messages";
+  //@import "active_admin/components/date_picker";
+  //@import "active_admin/components/tables";
+  //@import "active_admin/components/batch_actions";
+  //@import "active_admin/components/blank_slates";
+  //@import "active_admin/components/breadcrumbs";
+  //@import "active_admin/components/dropdown_menu";
+  //@import "active_admin/components/buttons";
+  //@import "active_admin/components/grid";
+  //@import "active_admin/components/links";
+  //@import "active_admin/components/pagination";
+  //@import "active_admin/components/panels";
+  //@import "active_admin/components/columns";
+  //@import "active_admin/components/scopes";
+  //@import "active_admin/components/status_tags";
+  //@import "active_admin/components/table_tools";
+  //@import "active_admin/pages/dashboard";
+  //@import "active_admin/pages/logged_out";
+  //@import "active_admin/structure/footer";
+  //@import "active_admin/structure/main_structure";
+  //@import "active_admin/structure/title_bar";
 }
 
 body.active_admin {
@@ -37,4 +38,88 @@ body.active_admin {
   margin: 0;
   padding: 0;
   color: $text-color;
+}
+
+body {
+  &.active_admin {
+    fieldset label {
+      color: #5E6469;
+    }
+
+    .select2-container {
+      width: 76% !important;
+    }
+
+    form input[type=text] {
+      width: 76%;
+    }
+  }
+
+  &.admin_namespace form {
+    input {
+      &[type=password], &[type=email], &[type=number], &[type=url], &[type=tel], &[type=date], &[type=time] {
+        width: 76%;
+      }
+    }
+
+    textarea {
+      width: 76%;
+    }
+  }
+
+  &.active_admin {
+    .btn-small {
+      padding: 6px 10px;
+    }
+
+    .tab-content {
+      border: 0px;
+    }
+
+    .btn-warning {
+      color: white !important;
+      border-radius: 0;
+      text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
+      background-color: #f9a732 !important;
+      background-image: -moz-linear-gradient(top, #fbb450, #f89406) !important;
+      background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fbb450), to(#f89406)) !important;
+      background-image: -webkit-linear-gradient(top, #fbb450, #f89406) !important;
+      background-image: -o-linear-gradient(top, #fbb450, #f89406) !important;
+      background-image: linear, to bottom, #fbb450, #f89406 !important;
+      background-repeat: repeat-x !important;
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFBB450, endColorstr=#FFF89406, GradientType=0) !important;
+      border-color: #f89406 #f89406 #ad6704 !important;
+      border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) fadein(rgba(0, 0, 0, 0.1), 15%) !important;
+      filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
+    }
+
+    .ingredient-table-div input.quantity {
+      text-align: right;
+      width: 61% !important;
+    }
+
+    form .ui-sortable {
+      input {
+        &[type=text], &[type=password], &[type=email], &[type=number], &[type=url], &[type=tel] {
+          width: 90%;
+          text-align: left;
+        }
+      }
+
+      textarea {
+        width: 90%;
+        text-align: left;
+      }
+    }
+    h1 {
+      font-size: 3em;
+      line-height: 1;
+      margin-bottom: 0.5em;
+    }
+    h3 {
+      font-size: 1.5em;
+      line-height: 1;
+      margin-bottom: 1em;
+    }
+  }
 }

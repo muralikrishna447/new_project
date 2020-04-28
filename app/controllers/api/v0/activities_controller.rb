@@ -50,7 +50,7 @@ module Api
       def show
         t1 = Time.now
         begin
-          @activity = Activity.find(params[:id])
+          @activity = Activity.friendly.find(params[:id])
           @version = params[:version]
           @last_revision = @activity.last_revision()
           cache_revision = @last_revision ? @last_revision.revision : '0'

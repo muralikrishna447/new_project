@@ -36,7 +36,7 @@ class User < ActiveRecord::Base
 
   has_many :circulator_users
   has_many :circulators, through: :circulator_users
-  has_many :owned_circulators, source: :circulator, through: :circulator_users, conditions: ["circulator_users.owner = ?", true]
+  has_many :owned_circulators, -> { where('circulator_users.owner =?', true) }, source: :circulator, through: :circulator_users
 
   has_many :actor_addresses, as: :actor
 
@@ -60,13 +60,6 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
     :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :token_authenticatable, :omniauth_providers => [:google_oauth2]
 
-  attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from, :referrer_id, :survey_results, :events_count
-
-  # This is for active admin, so that it can edit the role (and so normal users can't edit their role)
-  attr_accessible :name, :email, :password, :password_confirmation,
-    :remember_me, :location, :quote, :website, :chef_type, :from_aweber, :viewed_activities, :signed_up_from, :bio, :image_id, :role, :referred_from, :referrer_id, :premium_member, :premium_membership_created_at, :premium_membership_price, as: :admin
-
   attr_accessor :skip_name_validation
 
   validates_presence_of :name, unless: Proc.new {|user| user.skip_name_validation == true}
@@ -76,6 +69,11 @@ class User < ActiveRecord::Base
   serialize :survey_results, ActiveRecord::Coders::NestedHstore
 
   ROLES = %w[admin contractor moderator collaborator user banned]
+
+  WHITELIST_ATTRIBUTES = [:name, :email, :password, :password_confirmation,
+                         :remember_me, :location, :quote, :website, :chef_type, :from_aweber,
+                          :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from,
+                          :referrer_id, :survey_results, :events_count]
 
   def settings_hash
     return {} if self.settings.nil?
@@ -216,9 +214,9 @@ class User < ActiveRecord::Base
   def disconnect_service!(service)
     case service
     when "facebook"
-      update_attributes({facebook_user_id: nil, provider: nil}, without_protection: true)
+      update_attributes({facebook_user_id: nil, provider: nil})
     when "google"
-      update_attributes({google_user_id: nil, google_access_token: nil}, without_protection: true)
+      update_attributes({google_user_id: nil, google_access_token: nil})
     when "twitter"
     else
       raise "Don't Recognize this service! Service was '#{service}'"
@@ -235,10 +233,10 @@ class User < ActiveRecord::Base
       end
       puts "This is the auth for bloom: #{response.body}"
       response.body
-    rescue Faraday::Error::TimeoutError => e
+    rescue Faraday::TimeoutError => e
       logger.warn "Unable to encrypt info for Bloom: #{e}"
       return ''
-    rescue Faraday::Error::ConnectionFailed => e
+    rescue Faraday::ConnectionFailed => e
       logger.warn "Unable to encrypt info for Bloom: #{e}"
       return ''
     end
@@ -367,7 +365,7 @@ class User < ActiveRecord::Base
     aa = ActorAddress.create_for_user self, client_metadata: "password_reset"
     exp = ((Time.now + 1.day).to_f * 1000).to_i
     token = aa.current_token(exp: exp, restrict_to: 'password reset').to_jwt
-    UserMailer.reset_password(self.email, token).deliver
+    UserMailer.reset_password(self.email, token).deliver_now
   end
 
   def capabilities

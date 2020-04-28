@@ -39,60 +39,60 @@ describe BaseApplicationController, type: :controller do
     end
 
     it 'should return no cors headers when origin not specifies' do
-      request.env['host'] = @prod_host
+      request.headers['host'] = @prod_host
       get :show, id: 1
 
       should_have_no_cors_headers
     end
 
     it 'should basic cors headers when origin is specified' do
-      request.env['host'] = @prod_host
-      request.env['origin'] = @prod_different_origin
+      request.headers['host'] = @prod_host
+      request.headers['origin'] = @prod_different_origin
       get :show, id: 1
 
       should_have_cors_headers(@prod_different_origin, false)
     end
 
     it 'should allow credentials for localhost testing' do
-      request.env['host'] = @localhost_host
-      request.env['origin'] = @localhost_origin
+      request.headers['host'] = @localhost_host
+      request.headers['origin'] = @localhost_origin
       get :show, id: 1
 
       should_have_cors_headers(@localhost_origin, true)
     end
 
     it 'should allow credentials with prod origin'  do
-      request.env['host'] = @prod_host
-      request.env['origin'] = @prod_origin
+      request.headers['host'] = @prod_host
+      request.headers['origin'] = @prod_origin
       get :show, id: 1
 
       should_have_cors_headers(@prod_origin, true)
     end
 
     it 'should handle bad origins gracefully' do |variable|
-      request.env['host'] = @prod_host
-      request.env['origin'] = "file://" # this was actually seen in prod
+      request.headers['host'] = @prod_host
+      request.headers['origin'] = "file://" # this was actually seen in prod
       get :show, id: 1
       should_have_no_cors_headers
     end
 
     it 'should handle a gibberish origins gracefully' do |variable|
-      request.env['host'] = @prod_host
-      request.env['origin'] = "sdfw54%&*"
+      request.headers['host'] = @prod_host
+      request.headers['origin'] = "sdfw54%&*"
       get :show, id: 1
       should_have_no_cors_headers
     end
 
     it 'should set the cs_geo cookie' do
-      request.env['host'] = @prod_host
-      request.env['origin'] = @prod_origin
+      request.headers['host'] = @prod_host
+      request.headers['origin'] = @prod_origin
       get :show, id: 1
       response.cookies['cs_geo'].should_not be_nil
     end
 
     it 'should set the cs_geo/country cookie value to US' do
-      request.env['host'] = @prod_host
-      request.env['origin'] = @prod_origin
+      request.headers['host'] = @prod_host
+      request.headers['origin'] = @prod_origin
       get :show, id: 1
       cs_geo = JSON.parse(response.cookies['cs_geo'])
       cs_geo['country'].should == 'US'

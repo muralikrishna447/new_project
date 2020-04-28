@@ -28,14 +28,14 @@ describe Fulfillment::FulfillableStrategy do
         context 'sku matches on line item' do
           let(:line_item_sku) { sku }
           it 'returns true' do
-            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_true
+            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be true
           end
 
           context 'fulfillable quantity is zero' do
             let(:fulfillable_quantity) { 0 }
 
             it 'returns false' do
-              expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_false
+              expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be false
             end
           end
         end
@@ -44,7 +44,7 @@ describe Fulfillment::FulfillableStrategy do
           let(:line_item_sku) { 'another sku' }
 
           it 'returns false' do
-            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_false
+            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be false
           end
         end
       end
@@ -63,7 +63,7 @@ describe Fulfillment::FulfillableStrategy do
           let(:fulfillment_status) { 'open' }
 
           it 'returns false' do
-            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_false
+            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be false
           end
         end
 
@@ -71,7 +71,7 @@ describe Fulfillment::FulfillableStrategy do
           let(:fulfillment_status) { 'success' }
 
           it 'returns false' do
-            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_false
+            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be false
           end
         end
 
@@ -79,7 +79,7 @@ describe Fulfillment::FulfillableStrategy do
           let(:fulfillment_status) { 'cancelled' }
 
           it 'returns true' do
-            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_true
+            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be true
           end
         end
       end
@@ -142,27 +142,27 @@ describe Fulfillment::FulfillableStrategy do
 
         context 'line item is nil' do
           it 'returns false' do
-            expect(exporter.fulfillable_line_item?(order, nil, sku)).to be_false
+            expect(exporter.fulfillable_line_item?(order, nil, sku)).to be false
           end
         end
 
         context 'line item sku does not match' do
           let(:line_item_sku) { 'another sku' }
           it 'returns false' do
-            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_false
+            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be false
           end
         end
 
         context 'order is cancelled' do
           let(:order_cancelled_at) { Time.now.utc.iso8601 }
           it 'returns false' do
-            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_false
+            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be false
           end
         end
 
         context 'line item sku matches' do
           it 'returns true' do
-            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_true
+            expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be true
           end
         end
       end
@@ -177,7 +177,7 @@ describe Fulfillment::FulfillableStrategy do
           ]
         end
         it 'returns false' do
-          expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_false
+          expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be false
         end
       end
 
@@ -191,7 +191,7 @@ describe Fulfillment::FulfillableStrategy do
           ]
         end
         it 'returns true' do
-          expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be_true
+          expect(exporter.fulfillable_line_item?(order, line_item, sku)).to be true
         end
       end
     end

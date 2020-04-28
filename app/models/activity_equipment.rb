@@ -5,14 +5,12 @@ class ActivityEquipment < ActiveRecord::Base
 
   validates :activity_id, presence: true
   validates :equipment_id, presence: true
-  attr_accessible :activity_id, :equipment_id, :optional, :equipment_order
 
   delegate :title, :product_url, :product_url?, to: :equipment
 
-  scope :ordered, order(:equipment_order)
-
-  scope :optional, where(optional: true)
-  scope :required, where(optional: false)
+  scope :ordered, -> { order(:equipment_order) }
+  scope :optional, -> { where(optional: true) }
+  scope :required, -> { where(optional: false) }
 
   default_scope { ordered }
 end

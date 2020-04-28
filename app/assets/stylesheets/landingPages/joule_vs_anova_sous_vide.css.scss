@@ -1,4 +1,4 @@
-@import 'mixins';
+@import 'application/mixins';
 .row {
   &.padded {
     @media (max-width: $small-width) {

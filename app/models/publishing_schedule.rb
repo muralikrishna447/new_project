@@ -1,6 +1,5 @@
 class PublishingSchedule < ActiveRecord::Base
   belongs_to :activity
-  attr_accessible :publish_at, :publish_at_pacific
 
   validates :publish_at, inclusion: { in: (DateTime.now..DateTime.now+1000.years),  message: "must be in future" }
 

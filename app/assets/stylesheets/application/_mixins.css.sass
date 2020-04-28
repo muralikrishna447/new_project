@@ -1,0 +1,518 @@
+// Mixins from FreshSteps
+$nav-height: 76px
+$nav-height-small: 64px
+$base: 14px
+$half-base: 7px
+$orange: rgb(255,103,77)
+$light-orange: #F6A99B
+$pale-orange: #F7DFDD
+$dark-orange: rgb(219,80,69)
+$black: rgb(67,65,63)
+$dark-gray: rgb(122,120,118)
+$gray: rgb(184,182,180)
+$light-gray: rgb(237,236,234)
+$white: rgb(255,255,255)
+$white-transparent: rgba(255,255,255,0.6)
+$black-50: rgba(67,65,63,0.5)
+$black-70: rgba(67,65,63,0.7)
+$red: #d44950
+$green: #29DB91
+$green-bright: #2DA541
+$yellow: #FDC65B
+$blue: #9FBFD8
+$taupe: #EDECEA
+
+//Component Widths
+$small-width: 700px
+$standard-width: 1110px
+
+@mixin text-margin
+  margin-top: 0px
+  margin-bottom: 2*$base
+
+//Common Breakpoints
+$breakpoint-tablet: 961px
+$breakpoint-mobile: 641px
+
+// Mixins
+@import compass/css3/box
+
+=css3-prefix($property, $value)
+  -webkit-#{$property}: #{$value}
+  -moz-#{$property}: #{$value}
+  -ms-#{$property}: #{$value}
+  -o-#{$property}: #{$value}
+  #{$property}: #{$value}
+
+=boxsizing
+  box-sizing: border-box
+  -moz-box-sizing: border-box
+  -webkit-box-sizing: border-box
+  -o-box-sizing: border-box
+
+=contentbox
+  box-sizing: content-box
+  -moz-box-sizing: content-box
+  -webkit-box-sizing: content-box
+  -o-box-sizing: content-box
+
+=box-shadow($c)
+  box-shadow: $c
+  -moz-box-shadow: $c
+  -webkit-box-shadow: $c
+  -o-box-shadow: $c
+
+=any_shadow($c)
+  box-shadow: $c
+  -moz-box-shadow: $c
+  -webkit-box-shadow: $c
+  -o-box-shadow: $c
+
+=shadow
+  box-shadow: 0px 0px 2px #888888
+  -moz-box-shadow: 0px 0px 2px #888888
+  -webkit-box-shadow: 0px 0px 2px #888888
+  -o-box-shadow: 0px 0px 2px #888888
+
+=big-shadow
+  @include any_shadow(0px 0px 15px #333)
+
+=dark-shadow
+  box-shadow: 0px 0px 5px black
+  -moz-box-box-shadow: 0px 0px 5px black
+  -webkit-box-shadow: 0px 0px 5px black
+  -o-box-shadow: 0px 0px 5px black
+
+=annotation-shadow
+  box-shadow: 0px 1px 4px rgba(0,0,0,0.2)
+  -moz-box-box-shadow: 0px 1px 4px rgba(0,0,0,0.2)
+  -webkit-box-shadow: 0px 1px 4px rgba(0,0,0,0.2)
+  -o-box-shadow: 0px 1px 4px rgba(0,0,0,0.2)
+
+=bottom-only-annotation-shadow
+  box-shadow: 2px 4px 4px rgba(0,0,0,0.2)
+  -moz-box-box-shadow: 2px 4px 4px rgba(0,0,0,0.2)
+  -webkit-box-shadow: 2px 4px 4px rgba(0,0,0,0.2)
+  -o-box-shadow: 2px 4px 4px rgba(0,0,0,0.2)
+
+=radius($value)
+  border-radius: $value
+  -moz-border-radius: $value
+  -webkit-border-radius: $value
+  -o-box-border-radius: $value
+
+=transition($value)
+  @include css3-prefix('transition', $value)
+
+=transform($value)
+  @include css3-prefix('transform', $value)
+
+=transform-origin($value)
+  transform-origin: $value
+  -moz-transform-origin: $value
+  -webkit-transform-origin: $value
+  -o-transform-origin: $value
+
+=transition-delay($value)
+  transition-delay: $value
+  -moz-transition-delay: $value
+  -webkit-transition-delay: $value
+  -o-transition-delay: $value
+
+=animation($value)
+  animation: $value
+  -moz-animation: $value
+  -webkit-animation: $value
+  -o-animation: $value
+
+=backface-visibility($value)
+  -moz-backface-visibility: $value
+  -webkit-backface-visibility: $value
+  -o-backface-visibility: $value
+  backface-visibility: $value
+
+=keyframes($name)
+  @-webkit-keyframes #{$name}
+    @content
+  @-moz-keyframes #{$name}
+    @content
+  @-ms-keyframes #{$name}
+    @content
+  @keyframes #{$name}
+    @content
+
+=columncount($value)
+  column-count: $value
+  -moz-column-count: $value
+  -webkit-column-count: $value
+  -o-column-count: $value
+
+=columngap($value)
+  column-gap: $value
+  -moz-column-gap: $value
+  -webkit-column-gap: $value
+  -o-column-gap: $value
+
+=unselectable
+  -webkit-user-select: none /* Chrome/Safari */
+  -moz-user-select: none /* Firefox */
+  -ms-user-select: none /* IE10+ */
+  -o-user-select: none
+  user-select: none
+
+=background-size($value)
+  -webkit-background-size: $value
+  -moz-background-size: $value
+  -o-background-size: $value
+  background-size: $value
+
+=chefsteps-filter($url)
+  background: linear-gradient(rgba(226,95,37,.7), rgba(226,95,37,.7)), url($url) no-repeat top center fixed
+  @include background-size(100%)
+  width: 100%
+  margin-bottom: $baseline * 3
+
+=popover-arrow($top, $left)
+  position: absolute
+  height: 7px
+  width: 7px
+  border-top: 1px solid $orange
+  border-left: 1px solid $orange
+  @include transform(rotate(45deg))
+  top: $top
+  left: $left
+  background: white
+  z-index: 10001
+
+=linear-gradient($fromColor, $toColor)
+  background-color: $toColor
+  background-image: -webkit-gradient(linear, left top, left bottom, from($fromColor), to($toColor))
+  background-image: -webkit-linear-gradient(top, $fromColor, $toColor)
+  background-image:    -moz-linear-gradient(top, $fromColor, $toColor)
+  background-image:     -ms-linear-gradient(top, $fromColor, $toColor)
+  background-image:      -o-linear-gradient(top, $fromColor, $toColor)
+  background-image:         linear-gradient(top, $fromColor, $toColor)
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr='#{$fromColor}', EndColorStr='#{$toColor}')
+
+
+=popover($margin-right)
+  background: white
+  border: 1px solid $offwhite
+  position: absolute
+  top: 60px
+  right: $margin-right
+  float: right
+  width: 200px
+  padding: $baseline
+  background: #fff
+  border: 1px solid $offwhite
+  border-top: 2px solid $orange
+
+=blur($radius: 5px)
+  -webkit-filter: blur($radius)
+  -moz-filter: blur($radius)
+  -ms-filter: blur($radius)
+  -o-filter: blur($radius)
+  filter: blur($radius)
+
+=filter($value)
+  -webkit-filter: $value
+  -moz-filter: $value
+  -ms-filter: $value
+  -o-filter: $value
+  filter: $value
+
+=display-flex
+  display: flex
+  display: -webkit-flex
+  display: -moz-flex
+  display: -o-flex
+
+=display-inline-flex
+  display: inline-flex
+  display: -webkit-inline-flex
+  display: -moz-inline-flex
+  display: -o-inline-flex
+
+=justify-content($x)
+  -webkit-justify-content: $x
+  -moz-justify-content: $x
+  -ms-justify-content: $x
+  -o-justify-content: $x
+  justify-content: $x
+
+=align-items($x)
+  -webkit-align-items: $x
+  -moz-align-items: $x
+  -ms-align-items: $x
+  -o-align-items: $x
+  align-items: $x
+
+=align-content($x)
+  -webkit-align-content: $x
+  -moz-align-content: $x
+  -ms-align-content: $x
+  -o-align-content: $x
+  align-content: $x
+
+=flex-wrap($x)
+  -webkit-flex-wrap: $x
+  -moz-flex-wrap: $x
+  -ms-flex-wrap: $x
+  -o-flex-wrap: $x
+  flex-wrap: $x
+
+=flex-basis($x)
+  -webkit-flex-basis: $x
+  -moz-flex-basis: $x
+  -ms-flex-basis: $x
+  -o-flex-basis: $x
+  flex-basis: $x
+
+=flex($x)
+  -webkit-flex: $x
+  -moz-flex: $x
+  -ms-flex: $x
+  -o-flex: $x
+  flex: $x
+
+=flex-direction($x)
+  -webkit-flex-direction: $x
+  -moz-flex-direction: $x
+  -ms-flex-direction: $x
+  -o-flex-direction: $x
+  flex-direction: $x
+
+=flex-flow($x)
+  -webkit-flex-flow: $x
+  -moz-flex-flow: $x
+  -ms-flex-flow: $x
+  -o-flex-flow: $x
+  flex-flow: $x
+
+=align-self($x)
+  -webkit-align-self: $x
+  -moz-align-self: $x
+  -ms-align-self: $x
+  -o-align-self: $x
+  align-self: $x
+
+=order($x)
+  -webkit-order: $x
+  -moz-order: $x
+  -ms-order: $x
+  -o-order: $x
+  order: $x
+
+=center-only-child
+  @include display-flex
+  @include justify-content(center)
+  @include align-items(center)
+
+
+/* This works on both inputs and spans */
+=editable_text
+  @include boxsizing
+  @include any-shadow(none)
+  background-color: transparent
+  border: none
+  border-radius: 0
+  border-bottom: 1px solid darkgray
+  padding-bottom: 1px
+  outline: none
+
+=card
+  padding: $baseline * 2
+  background: white
+  border-top: 4px solid $orange
+
+=popup-card
+  @include card
+  @include transition(all 300ms ease-in-out)
+  @include dark-shadow
+  position: absolute
+  background-color: white
+
+
+
+/* Typography */
+
+$baseline: 1.2rem /* = 11px/14px */
+
+/* Experimental - establishing standard spacing on horizontal axis */
+$horz-baseline-small: 3px
+$horz-baseline-medium: 9px
+$horz-baseline-large: 13px
+
+
+=gotham-narrow
+  font-family: 'Gotham Narrow SSm A', 'Gotham Narrow SSm B', 'Helvetica Neue'
+  font-weight: 400
+  font-style: normal
+
+=primary-font
+  font-family: 'Circular', 'Helvetica Neue', arial, sans-serif
+
+=primary-font-bold
+  font-family: 'Circular', 'Helvetica Neue', arial, sans-serif
+  font-weight: bold
+
+/* Animations */
+
+
+=anim-basic-fade($time)
+  @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  opacity: 1
+  &.ng-hide-add, &.ng-hide-remove
+    display: block !important
+  &.ng-hide-add.ng-hide-add-active, &.ng-hide-remove.ng-hide-remove-active
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  &.ng-hide
+    opacity: 0
+  &.ng-enter, &.ng-leave, &.ng-move, &.ng-if-enter
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  &.ng-enter, &.ng-leave.ng-leave-active, &.ng-if-enter, &.ng-if-leave.ng-if-leave-active
+    opacity: 0
+  &.ng-leave, &.ng-enter-active, &.ng-if-leave, &.ng-if-enter.ng-if-enter-active
+    opacity: 1
+  &.ng-move
+    opacity: 0.2
+  &.ng-move.ng-move-active
+    opacity: 1
+
+
+=anim-basic-fade2($time)
+  @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  opacity: 1
+  &.ng-hide-add, &.ng-hide-remove
+    display: block !important
+  &.ng-hide-add.ng-hide-add-active, &.ng-hide-remove.ng-hide-remove-active
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  &.ng-hide
+    opacity: 0
+  &.ng-enter, &.ng-leave, &.ng-move, &.ng-if-enter
+    @include transition(all cubic-bezier(0.25, 0.46, 0.45, 0.94) $time)
+  &.ng-enter, &.ng-leave.ng-leave-active, &.ng-if-enter, &.ng-if-leave.ng-if-leave-active
+    opacity: 0
+  &.ng-leave, &.ng-enter-active, &.ng-if-leave, &.ng-if-enter.ng-if-enter-active
+    opacity: 1
+  &.ng-move
+    opacity: 0.2
+  &.ng-move.ng-move-active
+    opacity: 1
+
+/*=anim-slide-down($distance)
+  &.ng-enter
+    @include transition(all 300ms $standard-bezier)
+    opacity: 0
+    margin-top: $distance
+  &.ng-enter-active
+    opacity: 1
+    margin-top: 0px
+  &.ng-hide-add, &.ng-hide-remove
+    @include transition(all 300ms $standard-bez-out)
+    display: block !important
+    opacity: 1
+    margin-top: 0px
+  &.ng-hide
+    margin-top: $distance
+    opacity: 0 */
+
+=anim-slide-left($start, $end)
+  &.ng-enter
+    @include transition(all 200ms $standard-bezier)
+    opacity: 0
+    margin-left: $start
+    &.ng-enter-active
+      opacity: 1
+      margin-left: $end
+  &.ng-leave
+    @include transition(all 200ms $standard-bez-out)
+    opacity: 1
+    margin-left: $end
+    &.ng-leave-active
+      opacity: 0
+      margin-left: $start
+
+=horizontal-center
+  margin-left: auto
+  margin-right: auto
+
+// Aspec Ratios
+
+=aspect-1-1
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 100%
+
+=aspect-3-2
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 66.66%
+
+=aspect-2-1
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 50%
+
+=aspect-16-9
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 56.25%
+
+=aspect-3-1
+  position: relative
+  overflow: hidden
+  &:before
+    content: ''
+    display: block
+    padding-top: 33.33%
+
+=aspect-content
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+
+
+$bounce-bez: cubic-bezier(0.25,0.25,0.325,1.39)
+$standard-bezier: cubic-bezier(.81,0,0,.99)
+$standard-bez-out: cubic-bezier(.29,.04,.02,1)
+$standard-bez-in-out: cubic-bezier(0.42,0,0.58,1)
+
+
+/* Colors */
+$orange: rgb(255,103,77)
+$green: #49c1a4
+$dark-orange: rgb(237,93,77)
+$darker-orange: rgb(219,80,69)
+$light-blue: #0088CC
+$blue: #006DCC
+$blue-opaque: rgba(0,109,204,.8)
+$red: #DA4f49
+$red-opaque: rgba(218,79,73,.8)
+$light-gray: #ccc
+$light-black: rgb(65,65,65)
+$dark-gray: rgb(146, 146, 146)
+$offwhite: #f1f1f1
+$white-opaque: rgba(255,255,255,.3)
+
+
+
+/* Layout */
+$desktop-standard-item-width: 700px
+$aside-width: 289px
+$aside-margin: 44px

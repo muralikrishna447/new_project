@@ -28,7 +28,7 @@ module User::Google
   end
 
   def google_connect(user_options)
-    self.update_attributes({google_user_id: user_options[:google_user_id], google_refresh_token: user_options[:google_refresh_token], google_access_token: user_options[:google_access_token]}, without_protection: true)
+    self.update_attributes({google_user_id: user_options[:google_user_id], google_refresh_token: user_options[:google_refresh_token], google_access_token: user_options[:google_access_token]})
   end
 
   def gather_contacts(google_app_id, google_secret, &block)
@@ -59,7 +59,7 @@ module User::Google
   module ClassMethods
     def google_connect(user_options)
       User.where("users.email = :email OR users.google_user_id = :google_user_id", user_options).
-        first_or_initialize(user_options.merge(password: Devise.friendly_token[0,20]), without_protection: true)
+        first_or_initialize(user_options.merge(password: Devise.friendly_token[0,20]))
     end
 
     # This is some magic shit, here are some links that helped me

@@ -3,8 +3,6 @@ class CirculatorUser < ActiveRecord::Base
   belongs_to :circulator
   belongs_to :user
 
-  attr_accessible :owner, :user, :circulator
-
   after_commit :user_sync
   after_destroy :user_sync
 

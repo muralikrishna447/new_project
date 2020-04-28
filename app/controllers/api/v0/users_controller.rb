@@ -38,7 +38,7 @@ module Api
           Rails.logger.info "DEPRECATED: facebook branch of UsersController#create"
           render_unauthorized
         else
-          @user = User.new(params[:user])
+          @user = User.new(user_params)
           create_new_user(@user, optout, params[:source])
         end
       end
@@ -48,7 +48,7 @@ module Api
         if @user_id_from_token == @user.id
           logger.info "Updating user #{@user.inspect}"
           logger.info "Updating with: #{params[:user]}"
-          if @user.update_attributes(params[:user])
+          if @user.update_attributes(user_params)
             Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], @user.id)
             render json: @user.to_json(only: [:id, :name, :slug, :email], methods: :avatar_url), status: 200
           else
@@ -143,14 +143,13 @@ module Api
       def update_settings_impl(user_id, mode)
         @user = User.find user_id
 
-        settings_params = (params[:settings] || {}).slice(*UserSettings::API_FIELDS)
+        # settings_params = (params[:settings] || {}).slice(*UserSettings::API_FIELDS)
 
         logger.info "Update_settings (#{mode}) for user #{user_id}"
-        logger.info "Updating with: #{settings_params}"
+        logger.info "Updating with: #{user_settings_params}"
 
         settings = @user.settings || @user.build_settings
-
-        if settings.update_attributes(settings_params)
+        if settings.update_attributes(user_settings_params)
           render json: settings, serializer: Api::UserSettingsSerializer
         else
           render json: {status: 400, message: "Bad Request.  Could not update user settings (#{mode}) with params", errors: settings.errors}, status: 400
@@ -169,6 +168,22 @@ module Api
           render json: {status: 400, message: 'Bad Request: An error occured when trying to create this user.'}, status: 400
         end
       end
+
+      def user_params
+        params.require(:user).permit(:name, :email, :password, :password_confirmation,
+                                     :remember_me, :location, :quote, :website, :chef_type, :from_aweber,
+                                     :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from,
+                                     :referrer_id, :survey_results, :events_count)
+      end
+
+      def user_settings_params
+        params.fetch(:settings, {}).permit( :country_iso2,
+                                            :has_purchased_truffle_sauce,
+                                            :has_viewed_turbo_intro,
+                                            :locale,
+                                            :preferred_temperature_unit)
+      end
+
     end
   end
 end

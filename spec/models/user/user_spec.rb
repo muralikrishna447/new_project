@@ -127,7 +127,7 @@ describe User do
     let(:master_user_image_id) { 'Master Image Id' }
     let(:master_user_referred_from) { 'Master Referred From' }
     let(:master_user_referrer_id) { 1 }
-    let(:master_user_survey_results) { { 'master' => true } }
+    let(:master_user_survey_results) { { 'master' => 'true' } }
     let(:master_user_skip_name_validation) { true }
     let(:master_user_viewed_activities) { [[1, 'Master Viewed Activity']] }
     let(:master_user) do
@@ -161,7 +161,7 @@ describe User do
     let(:merged_user_image_id) { 'Merged Image Id' }
     let(:merged_user_referred_from) { 'Merged Referred From' }
     let(:merged_user_referrer_id) { 2 }
-    let(:merged_user_survey_results) { { 'merged' => true } }
+    let(:merged_user_survey_results) { { 'merged' => 'true' } }
     let(:merged_user_skip_name_validation) { true }
     let(:merged_user_viewed_activities) { [[2, 'Merged Viewed Activity']] }
     let(:user_to_merge) do
@@ -237,8 +237,8 @@ describe User do
 
       it 'preserves booleans' do
         master_user.merge(user_to_merge)
-        expect(master_user.from_aweber).to be_true, 'from_aweber'
-        expect(master_user.skip_name_validation).to be_true, 'skip_name_validation'
+        expect(master_user.from_aweber).to be true
+        expect(master_user.skip_name_validation).to be true
       end
     end
 
@@ -252,8 +252,8 @@ describe User do
 
       it 'sets booleans to true' do
         master_user.merge(user_to_merge)
-        expect(master_user.from_aweber).to be_true, 'from_aweber'
-        expect(master_user.skip_name_validation).to be_true, 'skip_name_validation'
+        expect(master_user.from_aweber).to be true
+        expect(master_user.skip_name_validation).to be true
       end
     end
 
@@ -405,10 +405,10 @@ describe User do
         it 'dedupes common likes' do
           master_user.merge(user_to_merge)
           master_user.likes.reload
-          master_user.likes.sort_by!(&:likeable_id)
-          expect(master_user.likes.first.likeable_id).to eq likeable_id_1
-          expect(master_user.likes.second.likeable_id).to eq likeable_id_2
-          expect(master_user.likes.size).to eq 2
+          likes = master_user.likes.sort_by(&:likeable_id)
+          expect(likes.first.likeable_id).to eq likeable_id_1
+          expect(likes.second.likeable_id).to eq likeable_id_2
+          expect(likes.size).to eq 2
         end
       end
 
@@ -488,9 +488,9 @@ describe User do
         it 'dedupes common circulator_users' do
           master_user.merge(user_to_merge)
           master_user.circulator_users.reload
-          master_user.circulator_users.sort_by!(&:circulator_id)
-          expect(master_user.circulator_users.first.circulator_id).to eq circulator_id_1
-          expect(master_user.circulator_users.second.circulator_id).to eq circulator_id_2
+          circulator = master_user.circulator_users.sort_by(&:circulator_id)
+          expect(circulator.first.circulator_id).to eq circulator_id_1
+          expect(circulator.second.circulator_id).to eq circulator_id_2
           expect(master_user.circulator_users.size).to eq 2
         end
       end
@@ -498,7 +498,7 @@ describe User do
 
     it 'soft deletes merged user' do
       master_user.merge(user_to_merge)
-      expect(user_to_merge.active_for_authentication?).to be_false
+      expect(user_to_merge.active_for_authentication?).to be false
     end
   end
 
@@ -527,7 +527,7 @@ describe User do
       token = AuthToken.from_string(user.create_restricted_token(restriction, 1.day).to_jwt)
       aa = ActorAddress.find_for_token(token)
       expect(aa).not_to be_nil
-      expect(aa.valid_token?(token, 0, restriction)).to be_true
+      expect(aa.valid_token?(token, 0, restriction)).to be true
     end
   end
 end

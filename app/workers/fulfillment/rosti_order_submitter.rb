@@ -183,7 +183,7 @@ module Fulfillment
       if email_address
         begin
           info = {email_address: email_address, total_quantity: total_quantity}
-          RostiOrderSubmitterMailer.notification(info).deliver
+          RostiOrderSubmitterMailer.notification(info).deliver_now
           Librato.increment 'fulfillment.rosti.order-submitter.mailer.success', sporadic: true
         rescue StandardError => e
           Librato.increment 'fulfillment.rosti.order-submitter.mailer.error', sporadic: true

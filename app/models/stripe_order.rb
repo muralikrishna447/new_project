@@ -1,6 +1,5 @@
 class StripeOrder < ActiveRecord::Base
-  # This is ephemeral data that is used to get the order correctly into stripe.
-  attr_accessible :idempotency_key, :user_id, :data
+
   serialize :data, JSON
   belongs_to :user
 
@@ -103,10 +102,10 @@ class StripeOrder < ActiveRecord::Base
       Librato.increment("credit_card.declined")
       if data['circulator_sale']
         Rails.logger.error("Stripe Order #{id} - Sending Joule Declined Mail")
-        DeclinedMailer.joule(user).deliver rescue nil
+        DeclinedMailer.joule(user).deliver_now rescue nil
       else
         Rails.logger.error("Stripe Order #{id} - Sending Premium Declined Mail")
-        DeclinedMailer.premium(user).deliver rescue nil
+        DeclinedMailer.premium(user).deliver_now rescue nil
       end
       raise e
     end
@@ -121,10 +120,10 @@ class StripeOrder < ActiveRecord::Base
         Librato.increment("credit_card.declined")
         if data['circulator_sale']
           Rails.logger.error("Stripe Order #{id} - Sending Joule Declined Mail")
-          DeclinedMailer.joule(user).deliver rescue nil
+          DeclinedMailer.joule(user).deliver_now rescue nil
         else
           Rails.logger.error("Stripe Order #{id} - Sending Premium Declined Mail")
-          DeclinedMailer.premium(user).deliver rescue nil
+          DeclinedMailer.premium(user).deliver_now rescue nil
         end
         raise e
       end
@@ -140,7 +139,7 @@ class StripeOrder < ActiveRecord::Base
         self.submitted = true
         self.save
         Rails.logger.info("Stripe Order #{id} - Sending Receipt")
-        GenericReceiptMailer.prepare(self, stripe_charge).deliver rescue nil
+        GenericReceiptMailer.prepare(self, stripe_charge).deliver_now rescue nil
 
         if data['circulator_sale'] && !data['gift']
           Rails.logger.info "Stripe Order #{id} - Incrementing user joule purchase count"
@@ -150,13 +149,13 @@ class StripeOrder < ActiveRecord::Base
         if data['gift']
           Rails.logger.info("Stripe Order #{id} - Sending Gift Receipt")
           pgc = PremiumGiftCertificate.create!(purchaser_id: user.id, price: data['price'], redeemed: false) rescue nil
-          PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver rescue nil
+          PremiumGiftCertificateMailer.prepare(user, pgc.token).deliver_now rescue nil
         end
 
         # Analytics.track mostly good here
 
         if data['circulator_sale']
-          JouleConfirmationMailer.prepare(user).deliver rescue nil
+          JouleConfirmationMailer.prepare(user).deliver_now rescue nil
         end
 
         Rails.logger.info("Stripe Order #{id} - Queueing UserSync")
@@ -173,10 +172,10 @@ class StripeOrder < ActiveRecord::Base
         Librato.increment("credit_card.declined")
         if data['circulator_sale']
           Rails.logger.info("Stripe Order #{id} - Sending Joule declined email")
-          DeclinedMailer.joule(user).deliver rescue nil
+          DeclinedMailer.joule(user).deliver_now rescue nil
         else
           Rails.logger.info("Stripe Order #{id} - Sending Premium declined email")
-          DeclinedMailer.premium(user).deliver rescue nil
+          DeclinedMailer.premium(user).deliver_now rescue nil
         end
         Rails.logger.info("Stripe Order #{id} - Removing premium")
         user.remove_premium_membership

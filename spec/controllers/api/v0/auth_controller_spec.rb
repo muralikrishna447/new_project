@@ -141,7 +141,7 @@ describe Api::V0::AuthController do
       get :validate, token: @valid_token
       response.should be_success
       json_resp = JSON.parse(response.body)
-      expect(json_resp['tokenValid']).to be_true
+      expect(json_resp['tokenValid']).to be true
       expect(json_resp['actorType']).to eq('User')
     end
 
@@ -188,7 +188,7 @@ describe Api::V0::AuthController do
       request.env['HTTP_AUTHORIZATION'] = @service_token
       get :validate, token: @invalid_token
       response.code.should == "400"
-      expect(JSON.parse(response.body)['tokenValid']).to be_false
+      expect(JSON.parse(response.body)['tokenValid']).to be_falsy
     end
   end
 
@@ -221,7 +221,7 @@ describe Api::V0::AuthController do
       get :authorize_ge_redirect
       body = JSON.parse(response.body)
       url = Rack::Utils.parse_nested_query(body["redirect"])
-      decoded = JWT.decode(url["state"], ENV['OAUTH_SECRET'])
+      decoded = JWT.decode(url["state"], ENV['OAUTH_SECRET']).first
       decoded["id"].should eq(@user.id)
     end
   end
@@ -283,16 +283,16 @@ describe Api::V0::AuthController do
       @fake_app_access_token = 'fakeAppAccessToken'
       @fake_user_access_token = 'fakeUserAccessToken'
 
-      oauth = mock(:oauth, get_app_access_token: @fake_app_access_token)
-      Koala::Facebook::OAuth.stub!(:new).and_return(oauth)
+      oauth = double(:oauth, get_app_access_token: @fake_app_access_token)
+      Koala::Facebook::OAuth.stub(:new).and_return(oauth)
 
       # Mock Koala::Facebook::API App Access
-      Koala::Facebook::API.stub!(:new).with(@fake_app_access_token)
+      Koala::Facebook::API.stub(:new).with(@fake_app_access_token)
       @fb = Koala::Facebook::API.new(@fake_app_access_token)
 
 
       # Mock Koala::Facebook::API for User Graph Info
-      Koala::Facebook::API.stub!(:new).with(@fake_user_access_token)
+      Koala::Facebook::API.stub(:new).with(@fake_user_access_token)
       @fb_user_api = Koala::Facebook::API.new(@fake_user_access_token)
 
     end
@@ -320,9 +320,10 @@ describe Api::V0::AuthController do
         user_id: '6789'
       }
       post :authenticate_facebook, {user:user}
+      response_body = JSON.parse(response.body)
       expect(response.code).to eq("200")
-      expect(response.body['token']).not_to be_empty
-      expect(response.body['newUser']).to be_true
+      expect(response_body['token']).not_to be_empty
+      expect(response_body['newUser']).to be true
     end
 
     it 'should return a token for an existing user connecting with Facebook' do
@@ -446,7 +447,7 @@ describe Api::V0::AuthController do
     #   post :authenticate_facebook, {user:user}
     #   expect(response.code).to eq("401")
     #   expect(response.body['user']).not_to be_empty
-    #   expect(response.body['newUser']).to be_false
+    #   expect(response.body['newUser']).to be false
     # end
 
     it 'should not create a second actor address with the same unique key when a user logs in twice' do

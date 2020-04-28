@@ -1,5 +1,4 @@
 class PrivateToken < ActiveRecord::Base
-  attr_accessible :token
 
   def self.token
     PrivateToken.exists? && PrivateToken.first.token

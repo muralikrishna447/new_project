@@ -1,5 +1,6 @@
 ActiveAdmin.register Setting do
   menu priority: 3
+  permit_params :footer_image, :premium_membership_price
 
   form :partial => "form"
 

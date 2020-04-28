@@ -8,16 +8,9 @@ class Subscription < ActiveRecord::Base
 
   belongs_to :user
 
-  attr_accessible :plan_id
-  attr_accessible :status
-
-  # For the webhook, to handle out of order messages
-  # https://www.chargebee.com/docs/webhook_settings.html
-  attr_accessible :resource_version
-
   validates :status, inclusion: { in: %w(future in_trial active non_renewing paused cancelled) }
 
-  scope :active, where(:status => ACTIVE_PLAN_STATUSES)
+  scope :active, -> { where(:status => ACTIVE_PLAN_STATUSES) }
 
   def self.user_has_subscription?(user, plan_id)
     self.where(:user_id => user.id).where(:plan_id => plan_id).active.exists?

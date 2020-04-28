@@ -31,7 +31,7 @@ describe User::Facebook do
     let!(:user) { Fabricate.build(:user, name: '', password: '') }
 
     it "assigns provider" do
-      user.assign_from_facebook(auth).provider.should == :facebook
+      user.assign_from_facebook(auth).provider.should == 'facebook'
     end
 
     it "assigns uid" do

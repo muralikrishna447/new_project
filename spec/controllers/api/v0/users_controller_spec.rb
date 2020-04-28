@@ -190,7 +190,7 @@ describe Api::V0::UsersController do
       request.cookies['utm'] = {referrer: 'http://u.ca', utm_campaign: '54-40'}.to_json
       post :create, user: {name: 'Acquired User', email: 'a@u.ca', password: 'tricksy'}
 
-      ua = UserAcquisition.find_all_by_utm_campaign('54-40')
+      ua = UserAcquisition.where(utm_campaign: '54-40')
       expect(ua.count).to eq(1)
       expect(ua.first.referrer).to eq('http://u.ca')
     end
@@ -198,7 +198,7 @@ describe Api::V0::UsersController do
 
   context 'POST /international_joule' do
     it "should add the user to mailchimp" do
-      pending "Gotta figure out the mailchimp stuff"
+      skip "Gotta figure out the mailchimp stuff"
     end
   end
 
@@ -209,7 +209,7 @@ describe Api::V0::UsersController do
       get :me
       response.code.should == "200"
       user_info = JSON.parse(response.body)
-      expect(user_info["premium"]).to be_false
+      expect(user_info["premium"]).to be false
 
       #make the user premium
       request.env['HTTP_AUTHORIZATION'] = @service_token
@@ -221,7 +221,7 @@ describe Api::V0::UsersController do
       get :me
       response.code.should == "200"
       user_info = JSON.parse(response.body)
-      expect(user_info["premium"]).to be_true
+      expect(user_info["premium"]).to be true
     end
 
     it "fails when arguments are omitted" do
@@ -344,7 +344,7 @@ describe Api::V0::UsersController do
       response.code.should == "200"
       user_info = JSON.parse(response.body)
       settings  = user_info["settings"] || {}
-      expect(settings["has_purchased_truffle_sauce"]).to be_true
+      expect(settings["has_purchased_truffle_sauce"]).to be true
     end
 
     it "fails when a user token is used" do

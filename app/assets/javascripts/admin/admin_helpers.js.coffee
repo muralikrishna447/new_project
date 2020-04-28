@@ -222,14 +222,14 @@ $ ->
   $('#make-live-right').click ->
     restoreVersion($('#select-right').val())
 
-  $('#preview-left').load ->
+  $('#preview-left').on 'load', ->
     cw = $(this).get(0).contentWindow
     cw.expandSteps()
     #$(this).height(cw.document.body.scrollHeight)
     scheduleDiff()
     $('#loading-left').fadeOut()
 
-  $('#preview-right').load ->
+  $('#preview-right').on 'load', ->
     cw = $(this).get(0).contentWindow
     cw.expandSteps()
     #$(this).height(cw.document.body.scrollHeight)

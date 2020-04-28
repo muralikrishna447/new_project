@@ -15,7 +15,7 @@ describe Shopify::PaymentCapturer do
       let(:cancelled_at) { Time.now.utc.iso8601.to_s }
       let(:financial_status) { 'whatever' }
       it 'returns false' do
-        expect(capturer.capturable?(order)).to be_false
+        expect(capturer.capturable?(order)).to be false
       end
     end
 
@@ -23,7 +23,7 @@ describe Shopify::PaymentCapturer do
       let(:cancelled_at) { nil }
       let(:financial_status) { 'authorized' }
       it 'returns true' do
-        expect(capturer.capturable?(order)).to be_true
+        expect(capturer.capturable?(order)).to be true
       end
     end
 
@@ -31,7 +31,7 @@ describe Shopify::PaymentCapturer do
       let(:cancelled_at) { nil }
       let(:financial_status) { 'partially_paid' }
       it 'returns true' do
-        expect(capturer.capturable?(order)).to be_true
+        expect(capturer.capturable?(order)).to be true
       end
     end
 
@@ -39,7 +39,7 @@ describe Shopify::PaymentCapturer do
       let(:cancelled_at) { nil }
       let(:financial_status) { 'paid' }
       it 'returns false' do
-        expect(capturer.capturable?(order)).to be_false
+        expect(capturer.capturable?(order)).to be false
       end
     end
   end
@@ -160,7 +160,7 @@ describe Shopify::PaymentCapturer do
       let(:gateway) { 'my_gateway' }
       let(:status) { 'success' }
       it 'returns false' do
-        expect(capturer.successful_cc_auth?(transaction)).to be_false
+        expect(capturer.successful_cc_auth?(transaction)).to be false
       end
     end
 
@@ -170,7 +170,7 @@ describe Shopify::PaymentCapturer do
       context 'gateway is gift_card' do
         let(:gateway) { 'gift_card' }
         it 'returns false' do
-          expect(capturer.successful_cc_auth?(transaction)).to be_false
+          expect(capturer.successful_cc_auth?(transaction)).to be false
         end
       end
 
@@ -179,14 +179,14 @@ describe Shopify::PaymentCapturer do
         context 'status is success' do
           let(:status) { 'success' }
           it 'returns true' do
-            expect(capturer.successful_cc_auth?(transaction)).to be_true
+            expect(capturer.successful_cc_auth?(transaction)).to be true
           end
         end
 
         context 'transaction status is not success' do
           let(:status) { 'failure' }
           it 'returns false' do
-            expect(capturer.successful_cc_auth?(transaction)).to be_false
+            expect(capturer.successful_cc_auth?(transaction)).to be false
           end
         end
       end

@@ -38,18 +38,18 @@ describe Fulfillment::FedexShippingAddressValidator do
       end
 
       it 'valid? returns true' do
-        expect(Fulfillment::FedexShippingAddressValidator.validate(order)).to be_true
+        expect(Fulfillment::FedexShippingAddressValidator.validate(order)).to be_truthy
       end
     end
 
     shared_examples 'invalid' do
       it 'validate returns validation with message' do
         validation = Fulfillment::FedexShippingAddressValidator.validate(order)
-        expect(validation[:is_valid]).to be_false
+        expect(validation[:is_valid]).to be false
         expect(validation[:messages]).not_to be_empty
       end
       it 'valid? returns false' do
-        expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be_false
+        expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be false
       end
     end
 
@@ -242,7 +242,7 @@ describe Fulfillment::FedexShippingAddressValidator do
         it 'returns false' do
           po_boxes.each do |po_box|
             order.shipping_address.address1 = po_box
-            expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be_false, po_box
+            expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be false
           end
         end
       end
@@ -251,7 +251,7 @@ describe Fulfillment::FedexShippingAddressValidator do
         it 'returns false' do
           po_boxes.each do |po_box|
             order.shipping_address.address2 = po_box
-            expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be_false, po_box
+            expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be false
           end
         end
       end
@@ -261,7 +261,7 @@ describe Fulfillment::FedexShippingAddressValidator do
       it 'returns false' do
         Fulfillment::FedexShippingAddressValidator::US_MILITARY_STATES.each do |state|
           order.shipping_address.province_code = state
-          expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be_false, state
+          expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be false
         end
       end
     end
@@ -270,7 +270,7 @@ describe Fulfillment::FedexShippingAddressValidator do
       it 'returns false' do
         Fulfillment::FedexShippingAddressValidator::US_TERRITORY_STATES.each do |state|
           order.shipping_address.province_code = state
-          expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be_false, state
+          expect(Fulfillment::FedexShippingAddressValidator.valid?(order)).to be false
         end
       end
     end

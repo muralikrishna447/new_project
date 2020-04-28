@@ -25,10 +25,11 @@ feature 'timeline' do
   end
 
   scenario 'enrolling into a published course shows up in timeline', pending: true do
-
+    fail
   end
 
   scenario 'enrolling into a unpublished courses does not show up in timeline', pending: true do
+    fail
   end
 
 end

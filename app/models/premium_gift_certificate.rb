@@ -1,6 +1,6 @@
 class PremiumGiftCertificate < ActiveRecord::Base
-  attr_accessible :purchaser_id, :price, :sales_tax, :redeemed
-  belongs_to :user, foreign_key: :purchaser_id, inverse_of: :premium_gift_certificates
+
+  belongs_to :user, foreign_key: :purchaser_id#, inverse_of: :premium_gift_certificates
 
   scope :free_gifts, -> { where(price: 0) }
   scope :unredeemed, -> { where(redeemed: false) }

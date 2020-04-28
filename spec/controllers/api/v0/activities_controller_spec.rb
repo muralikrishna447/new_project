@@ -105,7 +105,7 @@ describe Api::V0::ActivitiesController do
       response.should be_success
       parsed = JSON.parse response.body
       ids = parsed.map{|user| user['userId']}
-      expect(ids.include?(@user1.id)).to be_true
+      expect(ids.include?(@user1.id)).to be true
     end
 
     it 'should not return users who did not like an activity' do
@@ -113,7 +113,7 @@ describe Api::V0::ActivitiesController do
       response.should be_success
       parsed = JSON.parse response.body
       ids = parsed.map{|user| user['id']}
-      expect(ids.include?(@user2.id)).to be_false
+      expect(ids.include?(@user2.id)).to be false
     end
   end
 
@@ -328,10 +328,8 @@ describe Api::V0::ActivitiesController do
   end
 
   context 'versions' do
-
     before :each do
       @revisable_activity = Fabricate :activity, title: 'Revisable Activity', description: 'This is version 1', published: true, id: 5
-
       @activity_v1 = ActsAsRevisionable::RevisionRecord.new(@revisable_activity)
       @activity_v1.save
 

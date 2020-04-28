@@ -180,7 +180,7 @@ module Api
     def self.make_service_or_admin_filter(allowed_services)
       return Proc.new {|controller|
         if controller.authorized_service?(allowed_services)
-          return true
+           true
         else
           controller.authenticate_active_admin_user!
         end
@@ -190,7 +190,7 @@ module Api
     def self.make_service_filter(allowed_services)
       return Proc.new {|controller|
         if controller.authorized_service?(allowed_services)
-          return true
+          true
         else
           controller.render_unauthorized
         end
@@ -198,12 +198,13 @@ module Api
     end
 
     def render_api_response status, contents = {}, each_serializer = nil
-
-      if contents.kind_of?(Array)
+      if contents.kind_of?(Array) || contents.kind_of?(ActiveRecord::Relation)
         # This gets the JSON structure but doesn't convert to string yet
         contents = ActiveModel::ArraySerializer.new(contents, each_serializer: each_serializer).as_json
         # Wrap array in an object so we can add the request_id and status
         contents = {results: contents}
+      elsif contents.is_a?(ActiveRecord::Base)
+        contents = contents.attributes
       end
 
       contents[:request_id] = request.uuid()

@@ -5,7 +5,6 @@ include ActionView::Helpers::DateHelper
 class GuideActivity < ActiveRecord::Base
   validates_uniqueness_of :guide_id
   belongs_to :activity
-  attr_accessible :activity_id, :guide_id, :guide_title, :autoupdate, :guide_digest
 
   def self.create_or_update_from_guide(manifest, guide, force=false)
 

@@ -1,9 +1,8 @@
 class Assembly < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
-  friendly_id :title, use: [:slugged, :history]
-  attr_accessible :description, :image_id, :prereg_image_id, :title, :youtube_id, :vimeo_id, :slug, :assembly_type, :assembly_inclusions_attributes, :badge_id, :show_prereg_page_in_index, :short_description, :upload_copy, :buy_box_extra_bullets, :preview_copy, :testimonial_copy, :prereg_email_list_id, :description_alt, :premium
-  has_many :assembly_inclusions, :order => "position ASC", dependent: :destroy
+  friendly_id :title, use: [:slugged, :history, :finders]
+  has_many :assembly_inclusions, -> { order 'position asc' }, dependent: :destroy
   has_many :activities, through: :assembly_inclusions, source: :includable, source_type: 'Activity'
   has_many :pages, through: :assembly_inclusions, source: :includable, source_type: 'Page'
   has_many :assignments, through: :assembly_inclusions, source: :includable, source_type: 'Assignment'
@@ -16,11 +15,11 @@ class Assembly < ActiveRecord::Base
 
   has_many :gift_certificates, inverse_of: :assembly
 
-  scope :published, where(published: true)
-  scope :projects, where(assembly_type: 'Project')
-  scope :recipe_developments, where(assembly_type: 'Recipe Development')
-  scope :pubbed_courses, where(assembly_type: 'Course', published: true)
-  scope :prereg_courses, where(assembly_type: 'Course', published: false, show_prereg_page_in_index: true)
+  scope :published, -> { where(published: true) }
+  scope :projects,  -> { where(assembly_type: 'Project') }
+  scope :recipe_developments, -> { where(assembly_type: 'Recipe Development') }
+  scope :pubbed_courses, -> { where(assembly_type: 'Course', published: true) }
+  scope :prereg_courses, -> { where(assembly_type: 'Course', published: false, show_prereg_page_in_index: true) }
 
   accepts_nested_attributes_for :assembly_inclusions, allow_destroy: true
 

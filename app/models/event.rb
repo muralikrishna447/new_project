@@ -1,13 +1,12 @@
 class Event < ActiveRecord::Base
-  attr_accessible :action, :user_id, :trackable, :trackable_id, :trackable_type, :viewed
 
   belongs_to :user, counter_cache: true
   belongs_to :trackable, polymorphic: true
 
   # default_scope includes(:user).order('created_at DESC')
-  scope :timeline, where('action <> ?', 'show').order('created_at DESC')
-  scope :unviewed, where(viewed: false)
-  scope :published, where(published: true)
+  scope :timeline, -> { where('action <> ?', 'show').order('created_at DESC')  }
+  scope :unviewed, -> { where(viewed: false) }
+  scope :published, -> { where(published: true) }
 
   validates_presence_of :trackable_id, :trackable_type, :action
 

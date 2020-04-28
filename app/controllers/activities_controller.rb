@@ -9,12 +9,12 @@ class ActivitiesController < ApplicationController
   after_filter :track_iphone_app_activity
 
   def maybe_redirect_activity
-    @activity = Activity.find params[:id]
+    @activity = Activity.friendly.find params[:id]
 
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the activity_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    if request.path != activity_path(@activity) && params[:course_id].nil?
+      if request.path != activity_path(@activity) && params[:course_id].nil?
       # Wish I could just do params: params but that creates ugly urls
       redir_params = {}
       redir_params[:version] = params[:version] if defined? params[:version]
@@ -41,9 +41,9 @@ class ActivitiesController < ApplicationController
   # cases and we need to untangle what info should be passed into what view and then set up a way
   #
   def add_extra_json_info
-    @activity[:used_in] = @activity.used_in_activities.published
-    @activity[:forks] = @activity.published_variations
-    @activity[:upload_count] = @activity.uploads.count
+    @activity.used_in = @activity.used_in_activities.published
+    @activity.forks = @activity.published_variations
+    @activity.upload_count = @activity.uploads.count
 
     # Hide secret circulator machine code field unless there is a special param in the request or requester is admin
     unless params[:param_info] == "a9a77bd9f" || current_admin?
@@ -185,14 +185,14 @@ class ActivitiesController < ApplicationController
             begin
               @activity.last_edited_by = current_user
               @activity.bypass_sanitization = (current_user && current_user.role == "admin")
-              equip = params[:activity].delete(:equipment)
+              equip = params.delete(:equipment)
               ingredients = params[:activity].delete(:ingredients)
               steps = params.delete(:steps)
               # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
               # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
               tags = params.delete(:tags)
               @activity.tag_list = tags.map { |t| t[:name]} if tags
-              @activity.attributes = params[:activity]
+              @activity.attributes = actitity_params
               @activity.save!
 
               @activity.update_equipment_json(equip)
@@ -271,6 +271,15 @@ class ActivitiesController < ApplicationController
     if from_ios_app?
       mixpanel.track(mixpanel_anonymous_id, '[iOS App] Activty Viewed', {slug: @activity.slug, title: @activity.title, context: "iOS App"})
     end
+  end
+
+  def actitity_params
+    params.require(:activity).permit( :title, :byline, :youtube_id, :vimeo_id, :yield, :timing,
+                                      :difficulty, :description, :short_description, :equipment, :ingredients,
+                                      :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id,
+                                      :steps_attributes, :child_activity_ids, :source_activity, :source_activity_id,
+                                      :source_type, :author_notes, :currently_editing_user, :include_in_gallery,
+                                      :creator, :premium, :studio, :summary_tweet, :published, :activity_type => [])
   end
 
 end

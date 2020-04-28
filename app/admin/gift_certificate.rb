@@ -1,5 +1,6 @@
 ActiveAdmin.register PremiumGiftCertificate do
   remove_filter :user
+  includes :user
 
   scope("Redeemed") { |scope| scope.where(redeemed: true) }
   scope("Not Redeemed") { |scope| scope.where(redeemed: false) }

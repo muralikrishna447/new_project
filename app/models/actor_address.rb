@@ -49,13 +49,12 @@ class ActorAddress < ActiveRecord::Base
         address_id = opts[:address_id]
         # TODO -clean up exceptions and bubble up to API level
         unless address_id.length == 16
-          throw Error.new ("Invalid address_id length [#{address_id.length}] - length must be 16 hex chars")
+          raise ArgumentError.new ("Invalid address_id length [#{address_id.length}] - length must be 16 hex chars")
         end
 
         unless address_id =~ /^[0-9a-f]+$/
           throw Error.new ("Invalid address_id [#{address_id}] contains non-hex characters")
         end
-
         aa.address_id = address_id
       else
         hashid = SEQUENCE_GENERATED_ADDRESS_PREFIX + @@hashids.encode(aa.id)

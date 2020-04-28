@@ -1,5 +1,6 @@
 ActiveAdmin.register Enrollment do
-  filter :enrollable, as: :select, :collection => proc { Assembly.pubbed_courses }
+  includes :user
+  filter :enrollable_id, collection: proc {  Assembly.pubbed_courses }, as: :select
   menu parent: 'Assemblies'
 
   form :partial => "form"
