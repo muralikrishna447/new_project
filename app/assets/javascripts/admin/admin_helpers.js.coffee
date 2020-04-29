@@ -212,7 +212,7 @@ scheduleDiff = ->
 $ ->
 
   $('.preview-group select').on "change", (event) ->
-    activity_path = $('#urls').data('activity_path') + "&version=" + $(this).val()
+    activity_path = $('#urls').data('activity-path') + "&version=" + $(this).val()
     $(this).closest('.preview-group').find('.preview').attr("src", activity_path)
     $(this).closest('.preview-group').find('.loading-indicator').fadeIn()
 
