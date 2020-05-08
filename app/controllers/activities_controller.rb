@@ -186,7 +186,7 @@ class ActivitiesController < ApplicationController
               @activity.last_edited_by = current_user
               @activity.bypass_sanitization = (current_user && current_user.role == "admin")
               equip = params.delete(:equipment)
-              ingredients = params[:activity].delete(:ingredients)
+              ingredients = params.delete(:ingredients)
               steps = params.delete(:steps)
               # Why on earth are tags and steps not root wrapped but equipment and ingredients are?
               # I'm not sure where this happens, but maybe using the angular restful resources plugin would help.
