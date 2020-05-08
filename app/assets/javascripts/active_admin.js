@@ -1,5 +1,5 @@
 //= require active_admin/base
-//= require twitter/bootstrap/typeahead
+//= require typeahead.js
 //= require twitter/bootstrap/tooltip
 //= require twitter/bootstrap/popover
 //= require twitter/bootstrap/dropdown
