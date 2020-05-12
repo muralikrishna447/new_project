@@ -40,7 +40,7 @@ gem 'rack-host-redirect'
 gem 'pg_search'                             # Postgres text search
 gem 'acts-as-taggable-on'                   # Taggable models
 gem 'kaminari'                              # Pagination
-gem 'select2-rails'                         # Select 2
+gem 'select2-rails', '3.5.2'                         # Select 2
 gem 'gravatar_image_tag'
 gem 'httparty'
 gem 'rest-client'

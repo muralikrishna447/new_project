@@ -1,5 +1,5 @@
 //= require active_admin/base
-//= require typeahead.js
+//= require typeahead
 //= require twitter/bootstrap/tooltip
 //= require twitter/bootstrap/popover
 //= require twitter/bootstrap/dropdown
@@ -22,7 +22,7 @@
 //= require base_router
 
 
-//= require select2-full
+//= require select2
 //= require admin/taggable
 
 //= require_tree ./admin
