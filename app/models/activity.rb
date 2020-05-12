@@ -1,6 +1,7 @@
 class Activity < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
+  include ActsAsRevisionable
 
   include ActsAsSanitized
   sanitize_input :title, :description, :short_description, :timing, :yield, :summary_tweet, :youtube_id, :vimeo_id, :difficulty, :byline

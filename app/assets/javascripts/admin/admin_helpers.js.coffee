@@ -165,7 +165,7 @@ $ ->
     setupFilepickerDropPanes()
 
 restoreVersion = (version) ->
-  path = $('#urls').data('restore_version_admin_activity_path') + "?version=" + version
+  path = $('#urls').data('restore-version-admin-activity-path') + "?version=" + version
   window.location = path
 
 cleanText = (htmlString) ->

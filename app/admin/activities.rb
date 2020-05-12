@@ -144,7 +144,7 @@ ActiveAdmin.register Activity do
   end
 
   member_action :restore_version, method: :get do
-    @activity = Activity.find(params[:id])
+    @activity = Activity.friendly.find(params[:id])
     @version = params[:version]
     @activity.restore_revision!(@version)
     redirect_to({action: :show}, notice: "Version #{@version} has been restored and is the new version #{@activity.last_revision().revision + 1}")

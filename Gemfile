@@ -44,7 +44,7 @@ gem 'select2-rails', '3.5.2'                         # Select 2
 gem 'gravatar_image_tag'
 gem 'httparty'
 gem 'rest-client'
-gem 'acts_as_revisionable'
+# gem 'acts_as_revisionable'
 # gem 'coffee-filter'  ref : https://github.com/paulnicholson/coffee-filter
 # gem 'client_side_validations'
 # gem 'client_side_validations-formtastic'

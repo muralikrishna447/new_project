@@ -82,8 +82,6 @@ GEM
       tzinfo (~> 1.1)
     acts-as-taggable-on (4.0.0)
       activerecord (>= 4.0)
-    acts_as_revisionable (1.2.2)
-      activerecord (>= 2.3.9)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     aggregate (0.2.2)
@@ -851,7 +849,6 @@ DEPENDENCIES
   activeadmin
   activerecord-deprecated_finders
   acts-as-taggable-on
-  acts_as_revisionable
   algoliasearch-rails
   analytics-ruby
   angularjs-rails

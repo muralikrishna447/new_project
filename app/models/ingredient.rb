@@ -1,6 +1,7 @@
 class Ingredient < ActiveRecord::Base
   include CaseInsensitiveTitle
   extend FriendlyId
+  include ActsAsRevisionable
 
   acts_as_taggable
   acts_as_revisionable :dependent => :keep, :on_destroy => true
