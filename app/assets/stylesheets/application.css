@@ -37,7 +37,6 @@
  *= require timeline
  *= require annotations
  *= require select2
- *= require select2-bootstrap
  *= require billboard
  *= require voting
  *= require comments

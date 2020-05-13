@@ -165,7 +165,7 @@ $ ->
     setupFilepickerDropPanes()
 
 restoreVersion = (version) ->
-  path = $('#urls').data('restore_version_admin_activity_path') + "?version=" + version
+  path = $('#urls').data('restore-version-admin-activity-path') + "?version=" + version
   window.location = path
 
 cleanText = (htmlString) ->
@@ -212,7 +212,7 @@ scheduleDiff = ->
 $ ->
 
   $('.preview-group select').on "change", (event) ->
-    activity_path = $('#urls').data('activity_path') + "&version=" + $(this).val()
+    activity_path = $('#urls').data('activity-path') + "&version=" + $(this).val()
     $(this).closest('.preview-group').find('.preview').attr("src", activity_path)
     $(this).closest('.preview-group').find('.loading-indicator').fadeIn()
 

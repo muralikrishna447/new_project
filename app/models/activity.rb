@@ -1,6 +1,7 @@
 class Activity < ActiveRecord::Base
   extend FriendlyId
   include PublishableModel
+  include ActsAsRevisionable
 
   include ActsAsSanitized
   sanitize_input :title, :description, :short_description, :timing, :yield, :summary_tweet, :youtube_id, :vimeo_id, :difficulty, :byline
@@ -540,6 +541,7 @@ class Activity < ActiveRecord::Base
     equipment_attrs.each_with_index do |equipment_attr, idx|
       equipment_item = Equipment.find_or_create_by_title(equipment_attr[:title])
       activity_equipment = equipment.find_or_create_by_equipment_id_and_activity_id(equipment_item.id, self.id)
+      equipment_attr[:optional] = 'true' if equipment_attr[:optional] == ''
       activity_equipment.update_attributes(
         optional: equipment_attr[:optional] || false,
         equipment_order: idx
