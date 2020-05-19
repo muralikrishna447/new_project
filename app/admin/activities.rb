@@ -40,9 +40,11 @@ ActiveAdmin.register Activity do
     link_to('Edit Step Ingredients', associated_ingredients_admin_activity_path(activity))
   end
 
-  action_item :view, only: [:show, :edit] do
-    link_to('Versions', versions_admin_activity_path(activity))
-  end
+  # Version history is broken and viewing revisions can cause steps
+  # to be deleted, removing this for now.
+  # action_item :view, only: [:show, :edit] do
+  #   link_to('Versions', versions_admin_activity_path(activity))
+  # end
 
 
   index do
@@ -129,25 +131,29 @@ ActiveAdmin.register Activity do
     redirect_to({action: :show}, notice: "Step's ingredients updated")
   end
 
-  member_action :versions, method: :get do
-    @activity = Activity.friendly.find(params[:id])
-    @versions = []
-    last_rev_num = 0
-    if @activity.last_revision()
-      last_rev_num = @activity.last_revision().revision
-        @versions = last_rev_num.downto(1).map do |r|
-          rev = @activity.restore_revision(r)
-          version_popup_entry(r, rev)
-        end
-    end
-    @versions.unshift(version_popup_entry(last_rev_num + 1, @activity))
-  end
+  # Version history is broken and viewing revisions can cause steps
+  # to be deleted, removing this for now.
+  # member_action :versions, method: :get do
+  #   @activity = Activity.friendly.find(params[:id])
+  #   @versions = []
+  #   last_rev_num = 0
+  #   if @activity.last_revision()
+  #     last_rev_num = @activity.last_revision().revision
+  #       @versions = last_rev_num.downto(1).map do |r|
+  #         rev = @activity.restore_revision(r)
+  #         version_popup_entry(r, rev)
+  #       end
+  #   end
+  #   @versions.unshift(version_popup_entry(last_rev_num + 1, @activity))
+  # end
 
-  member_action :restore_version, method: :get do
-    @activity = Activity.friendly.find(params[:id])
-    @version = params[:version]
-    @activity.restore_revision!(@version)
-    redirect_to({action: :show}, notice: "Version #{@version} has been restored and is the new version #{@activity.last_revision().revision + 1}")
-  end
+  # Version history is broken and viewing revisions can cause steps
+  # to be deleted, removing this for now.
+  # member_action :restore_version, method: :get do
+  #   @activity = Activity.friendly.find(params[:id])
+  #   @version = params[:version]
+  #   @activity.restore_revision!(@version)
+  #   redirect_to({action: :show}, notice: "Version #{@version} has been restored and is the new version #{@activity.last_revision().revision + 1}")
+  # end
 end
 
