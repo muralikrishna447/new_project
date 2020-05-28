@@ -4,7 +4,6 @@
 //= require carousel
 //= require handlebars
 //= require jquery.knob
-//= require jquery.ui
 //= require jquery.ui.touch-punch
 //= require jquery.shapeshift
 //= require twitter/bootstrap/dropdown
