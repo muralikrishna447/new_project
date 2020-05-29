@@ -35,7 +35,7 @@ module Api
       private
       def set_component_params
         # Allows the api to accept params[:page][:component] and updates it to something rails prefers for nested associations
-        page_params = params[:page]
+        page_params = params[:page].to_unsafe_h.with_indifferent_access
         if page_params[:components]
           converted_components = []
           page_params[:components].each do |component|
@@ -44,11 +44,7 @@ module Api
           page_params[:components_attributes] = converted_components
           page_params.delete :components
         end
-        params.require(:page).permit(:title, :content, :image_id, :primary_path, :short_description,
-                                     :show_footer, :is_promotion, :redirect_path, :discount_id,
-                                     components_attributes: [:id, :component_type, :meta, :name,
-                                                             :component_parent_type, :component_parent_id,
-                                                             :position, :slug, :_destroy])
+        page_params.deep_transform_keys! { |key| key.to_s.underscore }.delete_if { |_k, v| v.nil? || v.blank? }
       end
 
       def underscore_key(k)
