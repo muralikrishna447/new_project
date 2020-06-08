@@ -46,7 +46,7 @@ class Activity < ActiveRecord::Base
   belongs_to :currently_editing_user, class_name: User, foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
-  validates :promote_order,:numericality => { greater_than_or_equal_to: 1, message: "Order should be greater than or equal to 1"}, if: ->{self.is_promoted.present?}
+  validates :promote_order, :numericality => { greater_than_or_equal_to: 1, message: "Order should be greater than or equal to 1"}, if: -> { promoted? }
 
   scope :with_video, -> { where("youtube_id <> '' OR vimeo_id <> ''") }
   scope :recipes, -> { where("activity_type iLIKE '%Recipe%'") }
@@ -77,6 +77,14 @@ class Activity < ActiveRecord::Base
 
   attr_accessor :used_in, :forks, :upload_count, :is_promoted
 
+  after_initialize do
+    self.is_promoted = if new_record?
+                         '1'
+                       else
+                         promote_order ? '1' : '0'
+                       end
+  end
+
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
@@ -100,8 +108,11 @@ class Activity < ActiveRecord::Base
   after_save :queue_algolia_sync
 
   def set_promote_order
-    byebug
-    self.promote_order = nil unless self.is_promoted.present?
+    self.promote_order = nil unless promoted?
+  end
+
+  def promoted?
+    is_promoted.to_i.positive?
   end
 
   def queue_algolia_sync
