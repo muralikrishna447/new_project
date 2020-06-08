@@ -19,6 +19,8 @@
     = f.input :include_in_gallery, as: :boolean
     = f.input :premium, label: "Premium Only"
     = f.input :published
+    = f.input :is_promoted, as: :boolean
+    = f.input :promote_order, label: "Promoted order"
     = f.input :title
     %li
       = f.label "Activity Type", class: "label"

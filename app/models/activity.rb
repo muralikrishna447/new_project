@@ -46,6 +46,7 @@ class Activity < ActiveRecord::Base
   belongs_to :currently_editing_user, class_name: User, foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
+  validates :promote_order,:numericality => { greater_than_or_equal_to: 1, message: "Order should be greater than or equal to 1"}, if: ->{self.is_promoted.present?}
 
   scope :with_video, -> { where("youtube_id <> '' OR vimeo_id <> ''") }
   scope :recipes, -> { where("activity_type iLIKE '%Recipe%'") }
@@ -74,7 +75,7 @@ class Activity < ActiveRecord::Base
 
   serialize :activity_type, Array
 
-  attr_accessor :used_in, :forks, :upload_count
+  attr_accessor :used_in, :forks, :upload_count, :is_promoted
 
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -95,7 +96,14 @@ class Activity < ActiveRecord::Base
   # algolia HTTP calls, taking up to 15 seconds. Queue to resque instead.
   # Leaving auto_remove on for simplicity since it is rare. Not using their enqueue
   # mechanism b/c it doesn't trigger reliably on a tags-only change b/c it is too clever.
+  before_save :set_promote_order
   after_save :queue_algolia_sync
+
+  def set_promote_order
+    byebug
+    self.promote_order = nil unless self.is_promoted.present?
+  end
+
   def queue_algolia_sync
     Resque.enqueue(AlgoliaSync, id)
   end
@@ -158,6 +166,7 @@ class Activity < ActiveRecord::Base
 
     # Sort fields
     attribute :likes_count
+    attribute :promote_order
     add_attribute :date do
       published ? published_at : created_at
     end
@@ -170,10 +179,16 @@ class Activity < ActiveRecord::Base
     end
     add_slave "ChefStepsPopular", per_environment: true do
     end
+    add_slave "ChefStepsPromoted", per_environment: true do
+    end
   end
 
   def has_title
     title.present?
+  end
+
+  def has_promoted
+    promote_order.present?
   end
 
   def has_video
