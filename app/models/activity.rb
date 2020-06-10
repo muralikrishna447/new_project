@@ -77,14 +77,6 @@ class Activity < ActiveRecord::Base
 
   attr_accessor :used_in, :forks, :upload_count, :is_promoted
 
-  after_initialize do
-    self.is_promoted = if new_record?
-                         '1'
-                       else
-                         promote_order ? '1' : '0'
-                       end
-  end
-
   include PgSearch
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
@@ -198,7 +190,7 @@ class Activity < ActiveRecord::Base
     title.present?
   end
 
-  def has_promoted
+  def has_promoted?
     promote_order.present?
   end
 
