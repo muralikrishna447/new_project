@@ -19,8 +19,8 @@
     = f.input :include_in_gallery, as: :boolean
     = f.input :premium, label: "Premium Only"
     = f.input :published
-    = f.input :is_promoted, as: :boolean
-    = f.input :promote_order, label: "Promoted order"
+    = f.input :is_promoted, as: :boolean, input_html: { checked: @activity.has_promoted? }
+    = f.input :promote_order, label: "Promoted order", wrapper_html: { class: @activity.has_promoted? ? '' : 'hide' }, input_html: { min: 1 }
     = f.input :title
     %li
       = f.label "Activity Type", class: "label"

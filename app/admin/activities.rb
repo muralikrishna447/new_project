@@ -59,7 +59,7 @@ ActiveAdmin.register Activity do
     end
     column :published
     column :is_promoted do |activity|
-      activity.has_promoted ? "Yes" : "No"
+      activity.has_promoted? ? "Yes" : "No"
     end
     column :published_at
     actions
