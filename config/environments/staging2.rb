@@ -105,7 +105,7 @@ Delve::Application.configure do
 
   DISQUS_SHORTNAME = "delvestaging"
 
-  AlgoliaSearch.configuration = { application_id: 'JGV2ODT81S', api_key: '09aead6e71067484d11f3f4ff0b34364' }
+  AlgoliaSearch.configuration = {application_id: 'JGV2ODT81S', api_key: '93b00b78b1e3b97226e57f334bba4457'}
 
   #Staging mailchimp
   config.mailchimp = {
