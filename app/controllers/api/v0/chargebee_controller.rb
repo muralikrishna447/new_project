@@ -74,7 +74,7 @@ module Api
       def sync_subscriptions
         result = ChargeBee::Subscription.list({
                                                   "customer_id[is]" => current_api_user.id,
-                                                  "status[in]" => Subscription::ACTIVE_PLAN_STATUSES
+                                                  "status[in]" => Subscription::ACTIVE_OR_CANCELLED_PLAN_STATUSES
                                               })
 
         if result
