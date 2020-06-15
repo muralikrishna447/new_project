@@ -84,7 +84,7 @@ describe Subscriptions::ChargebeeUtils do
         it 'creates subscription for customer' do
           ChargeBee::Subscription
             .should_receive(:create_for_customer)
-            .with(user_id, { plan_id: plan_id, coupon_ids: [coupon_id] })
+            .with(user_id, { plan_id: plan_id, trial_end: '0', coupon_ids: [coupon_id] })
             .and_return(subscription_response)
           Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
           expect(Subscription.where(user_id: user_id, plan_id: plan_id).length).to eq(1)
@@ -98,7 +98,7 @@ describe Subscriptions::ChargebeeUtils do
         it 'creates subscription and customer' do
           ChargeBee::Subscription
             .should_receive(:create)
-            .with({ plan_id: plan_id, coupon_ids: [coupon_id], customer: { id: user_id, email: email } })
+            .with({ plan_id: plan_id, trial_end: '0', coupon_ids: [coupon_id], customer: { id: user_id, email: email } })
             .and_return(subscription_response)
           Subscriptions::ChargebeeUtils.create_subscription(user_id, email, plan_id, coupon_id)
           expect(Subscription.where(user_id: user_id, plan_id: plan_id).length).to eq(1)
