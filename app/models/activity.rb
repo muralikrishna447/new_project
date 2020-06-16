@@ -194,6 +194,10 @@ class Activity < ActiveRecord::Base
     promote_order.present?
   end
 
+  def promoted
+    has_promoted? ? "Yes" : "No"
+  end
+
   def has_video
     youtube_id.present? || vimeo_id.present?
   end
