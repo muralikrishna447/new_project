@@ -69,6 +69,89 @@ describe Api::V0::ChargebeeController do
   end
 
   context 'APIs' do
+
+    context 'Studio Pass with authentication' do
+      plan_id = 'StudioTestPlan'
+      let(:active_subscription) {
+        double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"active", :resource_version=>1591801241502, :object=>"subscription"})
+      }
+      let(:active1_subscription) {
+        double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"active", :resource_version=>1591801241501, :object=>"subscription"})
+      }
+      let(:cancelled_subscription) {
+        double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"cancelled", :resource_version=>1591801241503, :object=>"subscription"})
+      }
+      let(:entry_active) {
+        double('entry', :subscription => active_subscription)
+      }
+
+      let(:higher_version_entry_cancelled) {
+        double('entry', :subscription => cancelled_subscription)
+      }
+
+      let(:lower_version_entry_active) {
+        double('entry', :subscription => active1_subscription)
+      }
+
+      before do
+        @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
+        controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
+      end
+
+      describe 'sync_subscriptions' do
+        before do
+          BetaFeatureService.stub(:user_has_feature).with(anything, anything, anything).and_return(false)
+          BetaFeatureService.stub(:get_groups_for_user).with(anything).and_return([])
+        end
+        it 'return empty result when no subscription' do
+          ChargeBee::Subscription.should_receive(:list).and_return([])
+          get :sync_subscriptions
+          expect(response.code).to eq("200")
+          response_data = JSON.parse(response.body)
+          response_data["subscriptions"].should eq([])
+        end
+
+        it 'return status as active for subscribed user' do
+          ChargeBee::Subscription.should_receive(:list).and_return([entry_active])
+          get :sync_subscriptions
+          expect(response.code).to eq("200")
+          response_data = JSON.parse(response.body)
+          expect(response_data["subscriptions"].length).to be 1
+          expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
+          expect(response_data["subscriptions"][0]['status']).to eq('active')
+          expect(response_data["subscriptions"][0]['is_active']).to be_truthy
+        end
+        it 'return status as cancelled for unsubscribed user' do
+          ChargeBee::Subscription.should_receive(:list).and_return([higher_version_entry_cancelled])
+          get :sync_subscriptions
+          expect(response.code).to eq("200")
+          response_data = JSON.parse(response.body)
+          expect(response_data["subscriptions"].length).to be 1
+          expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
+          expect(response_data["subscriptions"][0]['status']).to eq('cancelled')
+          expect(response_data["subscriptions"][0]['is_active']).to be_falsey
+        end
+        it 'Only latest resource_version record should get updated' do
+          ChargeBee::Subscription.should_receive(:list).and_return([lower_version_entry_active, higher_version_entry_cancelled])
+          get :sync_subscriptions
+          expect(response.code).to eq("200")
+          response_data = JSON.parse(response.body)
+          expect(response_data["subscriptions"].length).to be 1
+          expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
+          expect(response_data["subscriptions"][0]['status']).to eq('cancelled')
+          expect(response_data["subscriptions"][0]['is_active']).to be_falsey
+        end
+      end
+
+    end
+
+    context 'Studio Pass without authentication' do
+      it 'rejects unauthenticated requests' do
+        get :sync_subscriptions
+        expect(response.code).to eq("401")
+      end
+    end
+
     context 'authenticated' do
       let(:subscription) {
         double('subscription', :id => 'subscription1', :plan_id => 'test', :plan_quantity => 1, :plan_unit_price => 6900, :plan_amount => 6900, :currency_code => 'USD')
