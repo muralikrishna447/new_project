@@ -106,4 +106,135 @@ describe Api::V0::PagesController do
     puts page
     page['components'].count.should eq(2)
   end
+
+  describe 'Json Data' do
+    before(:each) do
+      Component.delete_all
+      @page = Fabricate :page, title: 'Fresh Page'
+      @data = JSON.parse(File.read("#{Rails.root}/spec/fixtures/sample_page_component_data.json"))
+    end
+
+    it 'should create a page with components' do
+      post :update, id: @page.id, page: @data
+      page = JSON.parse(response.body)
+      response.should be_success
+      page['components'].count.should eq(@data['components'].count)
+      page['title'].should eq(@data['title'])
+      @page.components.map(&:component_type).compact.should_not be_blank
+    end
+
+    it 'should check component meta key as camelcase' do
+      post :update, id: @page.id, page: @data
+      response.should be_success
+      @page.components[1].meta['items'].first['content'].keys.should eq(@data['components'][1]['meta']['items'].first['content'].keys)
+      @page.components[5].meta['items'].first['content'].keys.should eq(@data['components'][5]['meta']['items'].first['content'].keys)
+      hero_component_data = @page.components.where(component_type: 'hero').first.meta['items'][0]['content']
+      hero_component_data['youtubeId'].should_not be_blank
+      @page.components[5].meta['items'].first['content'].values.should eq(@data['components'][5]['meta']['items'].first['content'].values)
+      return_keys = %w[title description image url buttonMessage heroType alignType]
+      request_component = @data['components'][1]['meta']['items'].first['content']
+      hero_component_data.select{|k, _v| return_keys.include? k}.values.should eq(request_component.select{|k, _v| return_keys.include? k}.values)
+
+      post :update, id: @page.id, page: @data.deep_transform_keys{ |key| key.to_s.underscore }
+      page = JSON.parse(response.body)
+      response.should be_success
+      page['components'][1]['meta']['items'].first['content'].keys.should_not eq(@data['components'][1]['meta']['items'].first['content'].keys)
+    end
+
+    it 'should check all components meta data values' do
+      post :update, id: @page.id, page: @data
+      response.should be_success
+      @page.components.length.times.each do |index|
+        verify_big_data(
+            @page.components[index].meta,
+            @data['components'][index]['meta']
+        )
+      end
+    end
+
+    it 'should accept only page & components whitelisted attributes' do
+      @data['invalid_column'] = 'test'
+      @data['components'][0]['invalid_column'] = 'test'
+      @data['components'][6]['invalid_column'] = 'unwanted'
+      post :update, id: @page.id, page: @data
+      response.should be_success
+      page = JSON.parse(response.body)
+      page['shortDescription'].should eq(@data['shortDescription'])
+      @page.components.length.times.each do |index|
+        verify_big_data(
+            @page.components[index].meta,
+            @data['components'][index]['meta']
+        )
+      end
+    end
+
+    it 'should accept component meta data with all keys and value as given' do
+      @data['components'][0]['meta']['NewKey'] = 'Test'
+      @data['components'][0]['meta']['new_key'] = 'test'
+      @data['components'][1]['meta']['items'][0]['content']['NewContent'] = 'First Recipe'
+      @data['components'][1]['meta']['items'][0]['content']['new_content'] = 'Second Recipe'
+      post :update, id: @page.id, page: @data
+      response.should be_success
+      @page.components[0].meta['NewKey'].should eq(@data['components'][0]['meta']['NewKey'])
+      @page.components[0].meta['new_key'].should eq(@data['components'][0]['meta']['new_key'])
+      @page.components[1].meta['items'][0]['content']['NewContent'].should eq(@data['components'][1]['meta']['items'][0]['content']['NewContent'])
+      @page.components[1].meta['items'][0]['content']['new_content'].should eq(@data['components'][1]['meta']['items'][0]['content']['new_content'])
+    end
+
+    it 'should accept component destroy key' do
+      @data['components'][0]['_destroy'] = true
+      post :update, id: @page.id, page: @data
+      response.should be_success
+      page = JSON.parse(response.body)
+      page['components'].count.should eq(@data['components'].count - 1 )
+    end
+
+    it 'should check components meta data minimum properties' do
+      post :update, id: @page.id, page: @data
+      response.should be_success
+      @page.components.map(&:meta).should_not be_blank
+      @page.components.map(&:meta).compact.count.should eq(@data['components'].map{|c| c['meta']}.compact.count)
+      @page.components.where(component_type: 'banner').last.meta['items'][0]['content']['customButton'].keys.should eq(%w[type theme title url])
+    end
+
+    it 'should return error for component type blank' do
+      @data['components'] << { 'id': '', "componentType": nil }
+      post :update, id: @page.id, page: @data
+      response.should_not be_success
+      response.code.should == '500'
+    end
+
+    it 'should return 404 for pages not found by id' do
+      post :update, id: 122, page: @data
+      response.should_not be_success
+    end
+
+    it 'should not update a page if components do not exist' do
+      @data['components'] << { id: 1111, position: 20 }
+      post :update, id: @page.id, page: @data
+      response.should_not be_success
+    end
+  end
+
+  private
+
+  def verify_big_data(response, request)
+    case request.class.name
+    when 'String'
+      request.should eq response
+    when 'Fixnum', 'TrueClass', 'FalseClass'
+      request.to_s.should eq response.to_s
+    when 'Hash'
+      request.each_pair do |key, _|
+        verify_big_data(response[key], request[key])
+      end
+    when 'Array'
+      request.length.times.each do |index|
+        verify_big_data(response[index], request[index])
+      end
+    else
+      raise 'Invalid data'
+    end
+  end
+
 end

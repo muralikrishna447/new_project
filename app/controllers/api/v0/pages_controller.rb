@@ -35,20 +35,21 @@ module Api
       private
       def set_component_params
         # Allows the api to accept params[:page][:component] and updates it to something rails prefers for nested associations
-        page_params = params[:page]
+        page_params = params[:page].to_unsafe_h.with_indifferent_access
         if page_params[:components]
           converted_components = []
           page_params[:components].each do |component|
-            converted_components << convert_hash_keys(component)
+            converted_components << convert_hash_keys(component).slice(:id, :component_type, :name,
+                                                                       :component_parent_type, :component_parent_id,
+                                                                       :position, :slug, :meta, :_destroy)
           end
           page_params[:components_attributes] = converted_components
           page_params.delete :components
         end
-        params.require(:page).permit(:title, :content, :image_id, :primary_path, :short_description,
-                                     :show_footer, :is_promotion, :redirect_path, :discount_id,
-                                     components_attributes: [:id, :component_type, :meta, :name,
-                                                             :component_parent_type, :component_parent_id,
-                                                             :position, :slug, :_destroy])
+        page_params.transform_keys! { |key| key.to_s.underscore }.slice(:title, :content, :image_id, :primary_path,
+                                                                        :short_description, :show_footer,
+                                                                        :is_promotion,:redirect_path, :discount_id,
+                                                                        :components_attributes)
       end
 
       def underscore_key(k)
@@ -65,7 +66,7 @@ module Api
             value.map { |v| convert_hash_keys(v) }
             # or `value.map(&method(:convert_hash_keys))`
           when Hash
-            Hash[value.map { |k, v| [underscore_key(k), convert_hash_keys(v)] }]
+            Hash[value.map { |k, v| [underscore_key(k), convert_hash_keys(v)] }].with_indifferent_access
           else
             value
         end

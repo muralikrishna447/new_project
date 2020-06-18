@@ -14,6 +14,8 @@
 //=require ingredient_parser
 //=require_tree  ./angular
 //= require jquery-ui
+//= require jquery-ui/widgets/draggable
+//= require jquery-ui/widgets/droppable
 //= require mobile_detect
 //= require twitter/bootstrap
 //= require swipe

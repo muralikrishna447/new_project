@@ -1,0 +1,715 @@
+{
+
+    "title":"Recipes, videos, and tools for the curious home cook",
+    "shortDescription":"Explore the whys and hows of cooking techniques like sous vide, grilling, baking and more. Plus get Joule, the smallest, most powerful sous vide tool.",
+    "isPromotion":false,
+    "discountId":"",
+    "redirectPath":"",
+    "featuredImageUrl":"",
+    "components":[
+        {
+            "id":"",
+            "componentType":"banner",
+            "meta":{
+                "items":[
+                    {
+                        "content":{
+                            "type":"Madlib"
+                        }
+                    }
+                ],
+                "showTo":"everyone"
+            },
+            "name":"",
+            "slug":"--846",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":0
+        },
+        {
+            "id":"",
+            "componentType":"hero",
+            "meta":{
+                "nav":"ghost",
+                "size":"full",
+                "items":[
+                    {
+                        "content":{
+                            "title":"Welcome to ChefSteps",
+                            "description":"Recipes, techniques, videos and practical science to help you cook.",
+                            "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/DTrT2FBTm5JPSezYEQHg",
+                            "buttonMessage":"See the Recipe",
+                            "url":"/activities/family-meal-korean-barbecue",
+                            "descriptionCharLimit":"",
+                            "heightType":"standard",
+                            "heroType":"standard",
+                            "backgroundVideo":true,
+                            "customButton":{
+                                "type":"standard",
+                                "theme":"solid orange",
+                                "title":"Get into the studio",
+                                "signedOutTitle":"Not signed in",
+                                "signedInTitle":"Signed in",
+                                "sku":"cs10001",
+                                "showPrice":true,
+                                "url":"/studiopass"
+                            },
+                            "youtubeId":"6bwAs3XKzyA",
+                            "alignType":"center",
+                            "slides":[
+                                {
+                                    "title":"Have You Tried<br> Joule Ready?",
+                                    "description":"We made incredible sauces for sous vide cooking so you can have a delicious dinner any night of the week.",
+                                    "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/lfNCHHvSomP9yAoHDK04",
+                                    "buttonMessage":"See the Recipe",
+                                    "url":"",
+                                    "descriptionCharLimit":200,
+                                    "heightType":"standard",
+                                    "heroType":"standard",
+                                    "alignType":"center",
+                                    "theme":"light",
+                                    "vimeoId":"",
+                                    "customButton":{
+                                        "type":"standard",
+                                        "theme":"solid orange",
+                                        "title":"Shop the sauces",
+                                        "url":"https://shop.chefsteps.com/collections/joule-ready"
+                                    }
+                                },
+                                {
+                                    "title":"Perfect Food,<br> Every Time",
+                                    "description":"Joule makes it easy to cook incredible food the whole family will love.",
+                                    "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/XARavAESgqugb3LiQxaD",
+                                    "buttonMessage":"See the Recipe",
+                                    "url":"",
+                                    "descriptionCharLimit":200,
+                                    "heightType":"standard",
+                                    "heroType":"standard",
+                                    "alignType":"center",
+                                    "theme":"light",
+                                    "customButton":{
+                                        "type":"standard",
+                                        "theme":"solid orange",
+                                        "title":"Get Joule",
+                                        "url":"/joule"
+                                    }
+                                }
+                            ],
+                            "slideInterval":5000,
+                            "slideHeight":"tall",
+                            "hideOverlay":true,
+                            "vimeoId":""
+                        }
+                    }
+                ],
+                "theme":"light",
+                "showTo":"everyone",
+                "experiment":{
+                    "variationCount":2
+                }
+            },
+            "name":"home one",
+            "slug":"home-one--5",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":2
+        },
+        {
+            "id":"",
+            "componentType":"text-block",
+            "meta":{
+                "size":"small",
+                "items":[
+                    {
+                        "content":{
+                            "description":"<h3 class=\" align-center\">Welcome to ChefSteps.</h3><p class=\"align-left\"></p><p class=\"align-left\"></p><p class=\"align-left\">We’re a team of chefs, writers, and video professionals who love cooking and the science behind it. In our Pike Place Market kitchen studio we approach cooking with both deep knowledge of traditional methods and with minds open to exploration. We’re creating new recipes, developing new techniques, and documenting it all to help you cook as you never have before. </p><div><p class=\"align-left\"></p></div>",
+                            "customButton":{
+                                "type":"standard",
+                                "theme":"solid orange",
+                                "title":"Join the Studio",
+                                "url":"/studiopass"
+                            }
+                        }
+                    }
+                ],
+                "theme":"light",
+                "showTo":"everyone",
+                "experiment":{
+                    "variationCount":2
+                }
+            },
+            "name":"",
+            "slug":"--846",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":3
+        },
+        {
+            "id":"",
+            "componentType":"header",
+            "meta":{
+                "rows":"1",
+                "size":"full",
+                "items":[
+                    {
+                        "content":{
+                            "header":"Here’s the Latest...",
+                            "title":"The latest from the kitchen studio.",
+                            "subtitle":"Recipes, videos, and articles to keep you cooking."
+                        }
+                    }
+                ],
+                "theme":"gray",
+                "columns":"1",
+                "content":{
+                    "title":"Here’s the Latest..."
+                },
+                "experiment":{
+                    "variationCount":2
+                },
+                "itemTypeName":"Header"
+            },
+            "name":"home three",
+            "slug":"home-three--7",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":4
+        },
+        {
+            "id":"",
+            "componentType":"feed",
+            "meta":{
+                "rows":"3",
+                "size":"standard",
+                "items":[
+                    {
+                        "content":{
+                            "title":"",
+                            "image":"",
+                            "description":"",
+                            "url":""
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"",
+                            "image":"",
+                            "description":"",
+                            "url":""
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"",
+                            "image":"",
+                            "description":"",
+                            "url":""
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"",
+                            "image":"",
+                            "description":"",
+                            "url":""
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"",
+                            "image":"",
+                            "description":"",
+                            "url":""
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"",
+                            "image":"",
+                            "description":"",
+                            "url":""
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"",
+                            "image":"",
+                            "description":"",
+                            "url":""
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"",
+                            "image":"",
+                            "description":"",
+                            "url":""
+                        }
+                    }
+                ],
+                "theme":"gray",
+                "columns":"2",
+                "feedType":"activity",
+                "experiment":{
+                    "variationCount":2
+                },
+                "searchQuery":"studiopass",
+                "itemTypeName":"List",
+                "descriptionCharLimit":"130"
+            },
+            "name":"home four",
+            "slug":"home-four--7",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":5
+        },
+        {
+            "id":"",
+            "componentType":"text-block",
+            "meta":{
+                "size":"small",
+                "items":[
+                    {
+                        "content":{
+                            "customButton":{
+                                "type":"standard",
+                                "theme":"solid orange",
+                                "url":"/gallery",
+                                "title":"Explore more recipes"
+                            }
+                        }
+                    }
+                ],
+                "theme":"gray",
+                "showTo":"everyone",
+                "experiment":{
+                    "variationCount":2
+                }
+            },
+            "name":"",
+            "slug":"--846",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":6
+        },
+        {
+            "id":"",
+            "componentType":"hero",
+            "meta":{
+                "rows":"1",
+                "size":"full",
+                "items":[
+                    {
+                        "content":{
+                            "title":"Cooking is science.",
+                            "description":"Good cooks should know something about the Maillard reaction, electromagnetic waves, and the way that proline-rich proteins bond with polyphenols. \n\nDon’t worry. This isn’t that dream where you walk into the chemistry final and realize you have never attended a day of class. It's cooking. Let us make it easy for you.",
+                            "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/5qYYNCRFQbWNffFhqlBi",
+                            "buttonMessage":"See the Recipe",
+                            "url":"",
+                            "descriptionCharLimit":200,
+                            "heightType":"short",
+                            "heroType":"standard",
+                            "viewerType":"",
+                            "numItems":1,
+                            "items":"",
+                            "subtitle":"Subtitle",
+                            "activity_type":"",
+                            "premium":false,
+                            "alignType":"left",
+                            "customButton":{
+                                "type":"standard",
+                                "theme":"button-underline",
+                                "title":"",
+                                "url":""
+                            },
+                            "hideOverlay":false
+                        }
+                    }
+                ],
+                "theme":"light",
+                "showTo":"everyone",
+                "columns":"1",
+                "experiment":{
+                    "variationCount":2
+                },
+                "itemTypeName":"Media",
+                "descriptionCharLimit":"200"
+            },
+            "name":"home seven",
+            "slug":"home-seven--7",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":7
+        },
+        {
+            "id":"",
+            "componentType":"matrix",
+            "meta":{
+                "rows":"1",
+                "size":"standard",
+                "items":[
+                    {
+                        "content":{
+                            "title":"Electromagnetic Waves",
+                            "description":"Essentially, microwaves cook by producing electromagnetic waves that force polarized water molecules within the food to oscillate.",
+                            "image":"https://www.filepicker.io/api/file/GkCrc34lSQyGKvNWdKnv",
+                            "buttonMessage":"See the Recipe",
+                            "url":"/activities/making-the-most-of-your-microwave",
+                            "descriptionCharLimit":200,
+                            "activity_type":[
+                                "Recipe",
+                                "Technique",
+                                "Science"
+                            ],
+                            "premium":false,
+                            "has_video":false,
+                            "imageType":"image/jpeg"
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"Understanding pectin",
+                            "description":"When a hot fruit purée containing enough dissolved pectin is cooled and the right conditions are met, the long pectin molecules will begin to link together to form a three-dimensional mesh.",
+                            "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/HAmjeeRuS02EzKmsNxoR",
+                            "buttonMessage":"See the Recipe",
+                            "url":"https://www.chefsteps.com/activities/science-of-pectin",
+                            "descriptionCharLimit":200,
+                            "activity_type":[
+                                "Recipe"
+                            ],
+                            "premium":false,
+                            "has_video":true,
+                            "imageType":"image/jpeg"
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"Sous Vide Time and Temperature Guide",
+                            "description":"Our development kitchen has tested these times and temps to a T and put together all of our favorite options.",
+                            "image":"https://www.filepicker.io/api/file/rfZ04UqSiXzVd491a5Qc",
+                            "buttonMessage":"See the Recipe",
+                            "url":"/activities/sous-vide-time-and-temperature-guide",
+                            "descriptionCharLimit":200,
+                            "activity_type":[
+                                "Science"
+                            ],
+                            "premium":false,
+                            "has_video":false,
+                            "imageType":""
+                        }
+                    }
+                ],
+                "theme":"light",
+                "columns":"3",
+                "experiment":{
+                    "variationCount":2
+                },
+                "itemTypeName":"Media",
+                "descriptionCharLimit":"196"
+            },
+            "name":"home eight",
+            "slug":"home-eight--7",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":8
+        },
+        {
+            "id":"",
+            "componentType":"banner",
+            "meta":{
+                "size":"small",
+                "items":[
+                    {
+                        "content":{
+                            "heightType":"short",
+                            "type":"Text",
+                            "title":"There’s more where those came from.",
+                            "customButton":{
+                                "type":"standard",
+                                "theme":"solid orange",
+                                "title":"See the science.",
+                                "url":"https://www.chefsteps.com/gallery?generator=chefsteps&published_status=published&difficulty=any&sort=relevance&search_all=science&premium=everything"
+                            },
+                            "description":""
+                        }
+                    }
+                ],
+                "theme":"light",
+                "showTo":"everyone",
+                "experiment":{
+                    "variationCount":2
+                }
+            },
+            "name":"",
+            "slug":"--846",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":9
+        },
+        {
+            "id":"",
+            "componentType":"hero",
+            "meta":{
+                "nav":"ghost",
+                "rows":"1",
+                "size":"full",
+                "items":[
+                    {
+                        "content":{
+                            "title":"Become a ChefSteps Studio Pass Member.",
+                            "description":"For only $69 a year you have access to the chefs, exclusive infographics, scientific insights, and recipes. Be part of the action.",
+                            "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/tuQAfWeZTB6n1Yjfhtqd",
+                            "buttonMessage":"",
+                            "url":"/activities/what-is-sous-vide",
+                            "descriptionCharLimit":200,
+                            "heightType":"standard",
+                            "heroType":"standard",
+                            "has_video":true,
+                            "imageType":"image/jpeg",
+                            "alignType":"right",
+                            "customButton":{
+                                "type":"standard",
+                                "theme":"solid orange",
+                                "title":"Learn more",
+                                "url":"/studiopass"
+                            }
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"Pick a Joule to Match Your Style",
+                            "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/RMugi92TRVSoqfOI4kCt",
+                            "description":"All Joules are made with the same power and durability. Get our flagship Joule Stainless, or get it for less with Joule White.",
+                            "url":"/joule",
+                            "buttonMessage":"",
+                            "has_video":false,
+                            "imageType":"image/jpeg"
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"More Than 100 Cooking Guides",
+                            "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/RxAmN5UvShuPr9oqJjMA",
+                            "description":"In addition to Visual Doneness guides for our most popular proteins, desserts, and veggies, the Joule app has over 100 times and temps for everything from bison to goat.",
+                            "url":"/joule/app",
+                            "buttonMessage":"",
+                            "has_video":false,
+                            "imageType":"image/jpeg"
+                        }
+                    }
+                ],
+                "theme":"light",
+                "showTo":"non-studio",
+                "columns":"1",
+                "feedType":"activity",
+                "experiment":{
+                    "variationCount":2
+                },
+                "itemTypeName":"Media",
+                "descriptionCharLimit":"210"
+            },
+            "name":"home two",
+            "slug":"home-two--2",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":10
+        },
+        {
+            "id":"",
+            "componentType":"header",
+            "meta":{
+                "size":"small",
+                "items":[
+                    {
+                        "content":{
+                            "title":"ChefSteps has classes",
+                            "subtitle":"Whipping siphons. Spherification. Microgreens. ChefSteps has the culinary information you need to master your cooking tools."
+                        }
+                    }
+                ],
+                "theme":"light",
+                "showTo":"everyone",
+                "experiment":{
+                    "variationCount":2
+                }
+            },
+            "name":"classes header",
+            "slug":"classes-header--13",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":11
+        },
+        {
+            "id":"",
+            "componentType":"matrix",
+            "meta":{
+                "rows":"1",
+                "size":"standard",
+                "items":[
+                    {
+                        "content":{
+                            "title":"Spherification",
+                            "description":"The technique was pioneered by Ferran Adrià at el Bulli in 2003, who spherified melon juice to give it the appearance and texture of caviar.",
+                            "image":"https://www.filepicker.io/api/file/sCwhFd3XRMiH5HAm47ZG",
+                            "buttonMessage":"See the Recipe",
+                            "url":"/classes/spherification",
+                            "descriptionCharLimit":200,
+                            "activity_type":[
+                                "Technique",
+                                "Recipe"
+                            ],
+                            "premium":false
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"Chewy Candy",
+                            "description":"Prepare to fall hard for this intricately textured homemade candy—exactly like the stuff you savored as a kid, only super-fresh and imbued with all the tender care you put into making it.",
+                            "image":"https://www.filepicker.io/api/file/tN0FCf7GRwSNcTx0T9L6",
+                            "buttonMessage":"See the Recipe",
+                            "url":"/classes/chewy-candy",
+                            "descriptionCharLimit":200,
+                            "activity_type":[
+                                "Recipe"
+                            ],
+                            "premium":false
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"Knife Sharpening",
+                            "description":"In this class, learn how to maintain one of your kitchen’s most essential tools.",
+                            "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/XVytcZfQbaLRHdgstLw7",
+                            "buttonMessage":"See the Recipe",
+                            "url":"/classes/knife-sharpening",
+                            "descriptionCharLimit":200,
+                            "activity_type":"",
+                            "premium":false
+                        }
+                    }
+                ],
+                "theme":"light",
+                "showTo":"everyone",
+                "columns":"3",
+                "experiment":{
+                    "variationCount":2
+                },
+                "itemTypeName":"Media",
+                "descriptionCharLimit":"200"
+            },
+            "name":"classes",
+            "slug":"classes--9",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":12
+        },
+        {
+            "id":"",
+            "componentType":"hero",
+            "meta":{
+                "size":"full",
+                "items":[
+                    {
+                        "content":{
+                            "title":"We’re a part of Breville.",
+                            "description":"Now we can focus on doing what we’ve always loved to do: cook, test, and give the best food to you.",
+                            "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/XhR3G6TdR3WmdO8wJWn0",
+                            "buttonMessage":"See the Recipe",
+                            "url":"",
+                            "descriptionCharLimit":200,
+                            "heightType":"short",
+                            "heroType":"standard",
+                            "slideHeight":"standard",
+                            "slides":[
+                                {
+                                    "title":"",
+                                    "description":"",
+                                    "image":"",
+                                    "buttonMessage":"See the Recipe",
+                                    "url":"",
+                                    "descriptionCharLimit":200,
+                                    "heightType":"standard",
+                                    "heroType":"standard",
+                                    "alignType":"center"
+                                }
+                            ],
+                            "type":"Text",
+                            "alignType":"center"
+                        }
+                    }
+                ],
+                "theme":"dark",
+                "showTo":"everyone",
+                "experiment":{
+                    "variationCount":2
+                }
+            },
+            "name":"home bottom",
+            "slug":"home-bottom--6",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":13
+        },
+        {
+            "id":"",
+            "componentType":"matrix",
+            "meta":{
+                "rows":"1",
+                "size":"standard",
+                "items":[
+                    {
+                        "content":{
+                            "title":"ChefSteps",
+                            "description":"<h4>Free</h4>\nInspiring videos and free recipes. <br/><br/><br/><br/>\nChefSteps email newsletter.<br/><br/>",
+                            "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/O8HYNuYwRGawh6dwvMzj",
+                            "buttonMessage":"See the Recipe",
+                            "url":"",
+                            "descriptionCharLimit":200,
+                            "activity_type":"",
+                            "premium":false,
+                            "imageType":"image/jpeg"
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"ChefSteps Premium",
+                            "description":"<h4>Included with select products.</h4>\nAccess to ChefSteps in-depth Premium cooking classes.<br/><br/><br/>\nChefSteps email newsletter.<br/><br/><br/>",
+                            "image":"https://www.filepicker.io/api/file/y8LCPisST6TOk1duStp6",
+                            "buttonMessage":"See the Recipe",
+                            "url":"",
+                            "descriptionCharLimit":200,
+                            "activity_type":"",
+                            "premium":false
+                        }
+                    },
+                    {
+                        "content":{
+                            "title":"ChefSteps Studio Pass",
+                            "description":"<h4>Annual subscription—$69/yr</h4>\nAccess to all ChefSteps in-depth Premium cooking classes and Studio Pass recipes. <br/><br/>\nExclusive ChefSteps Studio Pass email newsletter.<br/><br/>\nComments and questions on classes and all recipes answered by the ChefSteps kitchen team.<br/><br/>\nAccess to members-only offers and discounts on hardware and ingredients.<br/><br/>\nMembers-only ChefSteps Studio Pass videos in which the kitchen team explains the hows and whys of culinary science and demonstrates cooking techniques.<br/><br/>\nExclusive behind-the-scenes videos and cooking tips from the kitchen team.<br/><br/>",
+                            "image":"https://d3awvtnmmsvyot.cloudfront.net/api/file/9v2qDhJGREyj0dlOPyqM",
+                            "buttonMessage":"See the Recipe",
+                            "url":"/studiopass",
+                            "descriptionCharLimit":200,
+                            "activity_type":"",
+                            "premium":false,
+                            "imageType":"image/jpeg"
+                        }
+                    }
+                ],
+                "theme":"dark",
+                "showTo":"everyone",
+                "columns":"3",
+                "experiment":{
+                    "variationCount":2
+                },
+                "itemTypeName":"Media",
+                "descriptionCharLimit":"1000"
+            },
+            "name":"",
+            "slug":"--847",
+            "componentParentType":"Page",
+            "componentParentId":"fresh-page",
+            "position":14
+        }
+    ]
+}
