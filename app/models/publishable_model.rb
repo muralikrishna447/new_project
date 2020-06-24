@@ -9,7 +9,7 @@ module PublishableModel
 
   module ClassMethods
     def find_published(id, token=nil, admin=false)
-      scope = (PrivateToken.valid?(token) || admin) ? scoped : published
+      scope = (PrivateToken.valid?(token) || admin) ? all : published
       scope.friendly.find(id)
     end
   end

@@ -1,4 +1,4 @@
-class ActivityEquipment < ActiveRecord::Base
+class ActivityEquipment < ApplicationRecord
 
   belongs_to :activity, touch: true, inverse_of: :equipment
   belongs_to :equipment, inverse_of: :activity_equipment

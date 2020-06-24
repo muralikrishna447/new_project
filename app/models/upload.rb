@@ -1,4 +1,4 @@
-class Upload < ActiveRecord::Base
+class Upload < ApplicationRecord
   extend FriendlyId
   friendly_id :title, use: [:slugged, :history]
 

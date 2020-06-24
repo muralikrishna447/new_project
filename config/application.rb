@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
 require 'rails/all'
 
@@ -10,6 +10,14 @@ Bundler.require(*Rails.groups)
 
 module Delve
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.2
+
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
+    #
     # We only want to insert our middleware before ActionDispatch::Static
     # in environments where config.serve_static_assets is true.
     # Everywhere else, the correct ordering of the middleware is to insert
@@ -20,6 +28,7 @@ module Delve
       Rack::Runtime
     end
 
+    config.enable_dependency_loading = true
     config.autoload_paths << Rails.root.join('lib')
 
     # Only load the plugins named here, in the order given (default is alphabetical).
@@ -137,7 +146,7 @@ module Delve
     # Order matters here, Prerender.io must come before FreshSteps.
     # PRERENDER_TOKEN is set only on prod heroku env variables. Can still test
     # on staging servers, it just won't cache anything.
-    config.middleware.insert_before Delve::Application.middleware_to_insert_before, 'Rack::Prerender', {
+    config.middleware.insert_before Delve::Application.middleware_to_insert_before, Rack::Prerender, {
       crawler_user_agents: crawler_user_agents,
       blacklist: '^/api',
       build_rack_response_from_prerender: lambda { |response, unused| response.header.delete('Status') },
@@ -146,14 +155,10 @@ module Delve
         return nil;
       }
     }
-    config.middleware.insert_before Delve::Application.middleware_to_insert_before, 'CatalogProxy'
-    config.middleware.insert_before Delve::Application.middleware_to_insert_before, 'FreshStepsProxy'
-
 
     # Coverband
     config.middleware.use Coverband::Middleware
 
-    config.active_record.raise_in_transactional_callbacks = true
     # Prefix each log line with a per-request UUID
     config.log_tags = [:uuid ]
 
@@ -169,10 +174,6 @@ module Delve
     # (4) Spoof your user agent to be googlebot and load any page
     if Rails.env.development?
       ENV["PRERENDER_SERVICE_URL"] = "http://localhost:1337"
-    end
-
-    if Rails.env.staging? || Rails.env.staging2?
-        config.middleware.insert_before('Rack::Prerender', 'PreauthEnforcer', [/^\/loaderio/, /^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/, /^\/password/, /^\/sso/, /^\/guides/, /^\/\.well-known/, /^\/admin\/slack_display\.json/])
     end
 
     # In development set to staging unless explicitely overridden

@@ -2,7 +2,7 @@ module Api
   module V0
     module Shopping
       class CountriesController < BaseController
-        before_filter :ensure_authorized_or_anonymous
+        before_action :ensure_authorized_or_anonymous
 
         def index
           begin

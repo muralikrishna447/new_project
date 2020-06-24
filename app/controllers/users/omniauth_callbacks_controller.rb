@@ -1,7 +1,6 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   include Devise::Controllers::Rememberable
 
-  skip_before_filter :authenticate_cors_user
 
   def facebook
     unless request.xhr?

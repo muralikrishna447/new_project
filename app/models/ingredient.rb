@@ -1,7 +1,7 @@
-class Ingredient < ActiveRecord::Base
+class Ingredient < ApplicationRecord
   include CaseInsensitiveTitle
-  extend FriendlyId
   include ActsAsRevisionable
+  extend FriendlyId
 
   acts_as_taggable
   acts_as_revisionable :dependent => :keep, :on_destroy => true
@@ -39,7 +39,7 @@ class Ingredient < ActiveRecord::Base
   scope :started, -> { where('CHAR_LENGTH(text_fields) > 10 AND CHAR_LENGTH(text_fields) < ?', MIN_WELL_EDITED_LENGTH) }
   scope :well_edited, -> { where('CHAR_LENGTH(text_fields) > ?', MIN_WELL_EDITED_LENGTH) }
 
-  include PgSearch
+  include PgSearch::Model
   multisearchable :against => [:title, :text_fields, :product_url]
 
   # Letters are the weighting
@@ -75,9 +75,9 @@ class Ingredient < ActiveRecord::Base
 
   def self.find_or_create_by_subactivity_or_ingredient_title(title)
     title.strip!
-    sub_act = Activity.find_by_title(title)
+    sub_act = Activity.find_by(title: title)
     if sub_act != nil
-      return find_or_create_by_sub_activity_id(sub_act.id)
+      return find_or_create_by(sub_activity_id: sub_act.id)
     end
     find_or_create_by_title(title)
   end

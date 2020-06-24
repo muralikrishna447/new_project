@@ -5,7 +5,7 @@ class PagesController < ApplicationController
     if @page.redirect_path.present?
 
       # Keep any url params (utm parameters for example)
-      page_params = params.dup
+      page_params = params.dup.to_unsafe_h
       page_params.delete(:action)
       page_params.delete(:controller)
       page_params.delete(:id)

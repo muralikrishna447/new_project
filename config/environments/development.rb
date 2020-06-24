@@ -15,8 +15,8 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
-  # Show full error reports and disable caching
-  config.consider_all_requests_local       = true
+  # Show full error reports.
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
@@ -38,11 +38,11 @@ Rails.application.configure do
 
   # Heroku provides this for us in staging/prod, but timestamps are
   # useful in development
-  logger = Logger.new(STDOUT)
+  logger = ActiveSupport::Logger.new(STDOUT)
   logger.formatter = proc do |severity, datetime, progname, msg|
     "#{datetime.strftime("%Y-%m-%dT%H:%M:%S.%L")} #{severity} - #{msg}\n"
   end
-  config.logger = logger
+  config.logger = ActiveSupport::TaggedLogging.new(logger)
 
   # Uncomment the following line to get request IDs in the log message
   #config.logger = ActiveSupport::TaggedLogging.new(logger)
@@ -136,4 +136,20 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # New Code
+  # Store uploaded files on the local file system (see config/storage.yml for options)
+  config.active_storage.service = :local
+
+  config.action_mailer.perform_caching = false
+
+  # Highlight code that triggered database queries in logs.
+  config.active_record.verbose_query_logs = true
+
+  # Suppress logger output for asset requests.
+  config.assets.quiet = true
+
+  # Use an evented file watcher to asynchronously detect changes in source code,
+  # routes, locales, etc. This feature depends on the listen gem.
+  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 end

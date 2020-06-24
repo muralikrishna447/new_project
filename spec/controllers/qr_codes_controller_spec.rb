@@ -13,7 +13,7 @@ describe QrCodesController do
     context 'with invalid QR encoding' do
       let(:base64_encoded_protobuf) {'ASDASDS'}
       it "should show an error" do
-        expect {get :jr, base64_encoded_protobuf: base64_encoded_protobuf}.to_not raise_error
+        expect {get :jr, params: {base64_encoded_protobuf: base64_encoded_protobuf}}.to_not raise_error
         expect(response.status).to eq 302
         expect(response.location).to eq 'http://test.host/joule/app'
       end
@@ -21,7 +21,7 @@ describe QrCodesController do
     context 'with valid v0 QR code' do
       let(:base64_encoded_protobuf) {'CHsSBkFCQ1hZWhiAgMfnBQ=='}
       it "should show an error" do
-        expect {get :jr, base64_encoded_protobuf: base64_encoded_protobuf}.to_not raise_error
+        expect {get :jr, params: {base64_encoded_protobuf: base64_encoded_protobuf}}.to_not raise_error
         expect(response.status).to eq 302
         expect(response.location).to eq 'http://test.host/guides/ABCXYZ'
         expect(assigns(:qr_code).serialNumber).to eq 123
@@ -32,7 +32,7 @@ describe QrCodesController do
     context 'with valid v1 QR code' do
       let(:base64_encoded_protobuf) {'CHsSBkFCQ1hZWhiAgMfnBSABKgdjczQwMDAx'}
       it "should show an error" do
-        expect {get :jr, base64_encoded_protobuf: base64_encoded_protobuf}.to_not raise_error
+        expect {get :jr, params: {base64_encoded_protobuf: base64_encoded_protobuf}}.to_not raise_error
         expect(response.status).to eq 302
         expect(response.location).to eq 'http://test.host/guides/ABCXYZ'
         expect(assigns(:qr_code).version).to eq 1

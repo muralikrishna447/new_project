@@ -5,7 +5,7 @@ module Api
     module Shopping
       class ProductsController < BaseController
         PREMIUM_DISCOUNT_TAG = 'premium-discount'
-        before_filter :ensure_authorized_or_anonymous
+        before_action :ensure_authorized_or_anonymous
 
         def index
           get_all_products

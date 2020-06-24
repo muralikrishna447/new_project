@@ -1,4 +1,4 @@
-class ActivityEquipmentJoinTable < ActiveRecord::Migration
+class ActivityEquipmentJoinTable < ActiveRecord::Migration[5.2]
   def change
     create_table :activity_equipment do |t|
       t.integer :activity_id, null: false

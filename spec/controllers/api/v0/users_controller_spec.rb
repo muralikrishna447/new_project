@@ -147,48 +147,48 @@ describe Api::V0::UsersController do
       Resque.should_receive(:enqueue).with(Forum, "initial_user", "bloomAPI", kind_of(Numeric))
       Resque.should_receive(:enqueue).with(UserSync, kind_of(Numeric))
       Resque.should_receive(:enqueue).with(EmployeeAccountProcessor, kind_of(Numeric))
-      post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      post :create, params: {user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}}
       response.should be_success
     end
 
     it 'should call email signup' do
       Api::BaseController.any_instance.should_receive(:email_list_signup)
-      post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      post :create, params: {user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}}
       response.should be_success
     end
 
     it 'should not call email signup if the user opts out' do
       Api::BaseController.any_instance.should_not_receive(:email_list_signup)
-      post :create, optout: "true", user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      post :create, params: {optout: "true", user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}}
       response.should be_success
     end
 
     it 'should not create a user if required fields are missing' do
-      post :create, user: {email: "newuser@chefsteps.com", password: "newUserPassword"}
+      post :create, params: {user: {email: "newuser@chefsteps.com", password: "newUserPassword"}}
       response.should_not be_success
     end
 
     it 'should respond with an error if user already exists' do
-      post :create, user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
-      post :create, user: {name: "Another New User", email: "newuser@chefsteps.com", password: "newUserPassword"}
+      post :create, params: {user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}}
+      post :create, params: {user: {name: "Another New User", email: "newuser@chefsteps.com", password: "newUserPassword"}}
       response.should_not be_success
     end
 
     it 'should create a new Facebook user' do
-      post :create, user: {name: "New Facebook User", email: "newfb@user.com", password: "newUserPassword", provider: "facebook"}
+      post :create, params: {user: {name: "New Facebook User", email: "newfb@user.com", password: "newUserPassword", provider: "facebook"}}
       response.code.should == "403"
     end
 
     it 'should connect an existing Facebook user' do
-      post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
+      post :create, params: {user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}}
       response.code.should == "403"
-      post :create, user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}
+      post :create, params: {user: {name: "Existing Facebook User", email: "existingfb@user.com", password: "newUserPassword", provider: "facebook"}}
       response.code.should == "403"
     end
 
     it 'should create a user acquisition object' do
       request.cookies['utm'] = {referrer: 'http://u.ca', utm_campaign: '54-40'}.to_json
-      post :create, user: {name: 'Acquired User', email: 'a@u.ca', password: 'tricksy'}
+      post :create, params: {user: {name: 'Acquired User', email: 'a@u.ca', password: 'tricksy'}}
 
       ua = UserAcquisition.where(utm_campaign: '54-40')
       expect(ua.count).to eq(1)
@@ -213,7 +213,7 @@ describe Api::V0::UsersController do
 
       #make the user premium
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      post :make_premium, {id: 100, price: 29}
+      post :make_premium, params: {id: 100, price: 29}
       response.code.should == "200"
 
       #the user should now be premium
@@ -226,11 +226,11 @@ describe Api::V0::UsersController do
 
     it "fails when arguments are omitted" do
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      post :make_premium, {price: 29}
+      post :make_premium, params: {price: 29}
       response.code.should == "400"
 
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      post :make_premium, {id: 100}
+      post :make_premium, params: {id: 100}
       response.code.should == "400"
     end
   end
@@ -238,7 +238,7 @@ describe Api::V0::UsersController do
   context 'PUT /update' do
     it 'should update a user' do
       request.env['HTTP_AUTHORIZATION'] = @token
-      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com'}
+      put :update, params: {id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com'}}
       response.should be_success
       parsed = JSON.parse(response.body)
       expect(parsed['name']).to eq('Joseph Doe')
@@ -246,7 +246,7 @@ describe Api::V0::UsersController do
     end
 
     it 'should not update a user without a valid token' do
-      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com'}
+      put :update, params: {id: 100, params: {user: {name: 'Joseph Doe', email: 'mynewemail@user.com'}}}
       response.should_not be_success
     end
 
@@ -255,7 +255,7 @@ describe Api::V0::UsersController do
       aa = ActorAddress.create_for_user @another_user, client_metadata: "test"
       another_token = 'Bearer ' + aa.current_token.to_jwt
       request.env['HTTP_AUTHORIZATION'] = another_token
-      put :update, id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com'}
+      put :update, params: {id: 100, user: {name: 'Joseph Doe', email: 'mynewemail@user.com'}}
       response.should_not be_success
     end
   end
@@ -335,7 +335,7 @@ describe Api::V0::UsersController do
 
       #set the truffle setting
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      post :update_settings, {id: 100, settings: {:has_purchased_truffle_sauce => true}}
+      post :update_settings, params: {id: 100, settings: {:has_purchased_truffle_sauce => true}}
       response.code.should == "200"
 
       #the user should now have truffle
@@ -349,7 +349,7 @@ describe Api::V0::UsersController do
 
     it "fails when a user token is used" do
       request.env['HTTP_AUTHORIZATION'] = @token
-      post :update_settings, {id: 100, settings: {:has_purchased_truffle_sauce => true}}
+      post :update_settings, params: {id: 100, settings: {:has_purchased_truffle_sauce => true}}
       response.code.should == "403"
     end
   end
@@ -379,11 +379,11 @@ describe Api::V0::UsersController do
       @user.create_settings!(preferred_temperature_unit: 'c')
 
       expect {
-        post :update_my_settings, :settings => {
-          :has_viewed_turbo_intro => true,
-          :preferred_temperature_unit => 'f',
-          :country_iso2 => 'CA'
-        }
+        post :update_my_settings, params: {:settings => {
+            :has_viewed_turbo_intro => true,
+            :preferred_temperature_unit => 'f',
+            :country_iso2 => 'CA'
+        }}
       }.to change {
         @user.settings.reload.preferred_temperature_unit
       }.from('c').to('f')
@@ -404,9 +404,9 @@ describe Api::V0::UsersController do
       request.env['HTTP_AUTHORIZATION'] = @token
 
       expect {
-        post :update_my_settings, :settings => {
-          :preferred_temperature_unit => 'x'
-        }
+        post :update_my_settings, params: {:settings => {
+            :preferred_temperature_unit => 'x'
+        }}
       }.to_not change {
         @user.reload.settings
       }
@@ -418,11 +418,11 @@ describe Api::V0::UsersController do
     end
 
     it 'should not work when a token is missing' do
-      post :update_my_settings, :settings => {
-        :has_viewed_turbo_intro => true,
-        :preferred_temperature_unit => 'f',
-        :country_iso2 => 'CA'
-      }
+      post :update_my_settings, params: {:settings => {
+          :has_viewed_turbo_intro => true,
+          :preferred_temperature_unit => 'f',
+          :country_iso2 => 'CA'
+      }}
       response.code.should == "401"
     end
   end

@@ -1,4 +1,4 @@
-class AddActsAsRevisionable < ActiveRecord::Migration
+class AddActsAsRevisionable < ActiveRecord::Migration[5.2]
   def up
     ActsAsRevisionable::RevisionRecord.create_table
   end

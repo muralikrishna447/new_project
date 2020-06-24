@@ -1,4 +1,4 @@
-class AddAnswerCountsToQuestions < ActiveRecord::Migration
+class AddAnswerCountsToQuestions < ActiveRecord::Migration[5.2]
   def change
     add_column :questions, :answer_count, :integer, default: 0
     add_column :questions, :correct_answer_count, :integer, default: 0

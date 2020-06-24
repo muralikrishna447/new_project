@@ -1,4 +1,4 @@
-class CreateBoxSortImage < ActiveRecord::Migration
+class CreateBoxSortImage < ActiveRecord::Migration[5.2]
   def change
     create_table :box_sort_images do |t|
       t.integer :question_id, null: false

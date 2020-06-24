@@ -27,50 +27,50 @@ describe Api::V0::ContentController do
     end
 
     it 'supports development environment for a logged in user' do
-      get :manifest, content_env: 'development'
+      get :manifest,  params: {content_env: 'development'}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_US]['development']['default']
     end
 
     it 'supports staging environment for a logged in user' do
-      get :manifest, content_env: 'staging'
+      get :manifest,  params: {content_env: 'staging'}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_US]['staging']['default']
     end
 
     it 'supports production environment for a logged in user' do
-      get :manifest, content_env: 'production'
+      get :manifest,  params: {content_env: 'production'}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_US]['production']['default']
     end
 
     it 'ignores locale for a logged in user not in beta group' do
-      get :manifest, content_env: 'production',  locale: LOCALE_GB
+      get :manifest,  params: {content_env: 'production', locale: LOCALE_GB}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_US]['production']['default']
     end
 
     it 'supports alternate locale for a logged in user in beta group' do
       BetaFeatureService.stub(:user_has_feature).with(@admin, 'guides_en_GB').and_return(true)
-      get :manifest, content_env: 'production',  locale: LOCALE_GB
+      get :manifest,  params: {content_env: 'production', locale: LOCALE_GB}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_GB]['production']['default']
     end
 
     it 'supports alternate locale for logged in user when no beta group is required' do
-      get :manifest, content_env: 'production', locale: LOCALE_CA
+      get :manifest,  params: {content_env: 'production', locale: LOCALE_CA}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_CA]['production']['default']
     end
 
     it 'returns default when locale is not supported and user is logged in' do
-      get :manifest, content_env: 'production', locale: 'en-AU'
+      get :manifest,  params: {content_env: 'production', locale: 'en-AU'}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_US]['production']['default']
     end
 
     it '404s on bad environment' do
-      get :manifest, content_env: 'badenv'
+      get :manifest,  params: {content_env: 'badenv'}
       expect(response.status).to eq 404
     end
   end
@@ -89,7 +89,7 @@ describe Api::V0::ContentController do
     end
 
     it '404s on bad environment' do
-      get :manifest, content_env: 'badenv'
+      get :manifest,  params: {content_env: 'badenv'}
       expect(response.status).to eq 404
     end
   end
@@ -98,27 +98,27 @@ describe Api::V0::ContentController do
 
 
     it 'only supports production environment for anonymous user' do
-      get :manifest, content_env: 'development'
+      get :manifest,  params: {content_env: 'development'}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_US]['production']['default']
 
-      get :manifest, content_env: 'staging'
+      get :manifest,  params: {content_env: 'staging'}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_US]['production']['default']
 
-      get :manifest, content_env: 'beta'
+      get :manifest,  params: {content_env: 'beta'}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_US]['production']['default']
     end
 
     it 'supports alternate locale when no beta group is required' do
-      get :manifest, content_env: 'production', locale: LOCALE_CA
+      get :manifest,  params: {content_env: 'production', locale: LOCALE_CA}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_CA]['production']['default']
     end
 
     it 'returns default when locale is not supported' do
-      get :manifest, content_env: 'production', locale: 'en-AU'
+      get :manifest,  params: {content_env: 'production', locale: 'en-AU'}
       expect(response.status).to eq 302
       expect(response.header["Location"]).to eq @supported_environments[LOCALE_US]['production']['default']
     end

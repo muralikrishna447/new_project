@@ -1,4 +1,4 @@
-class AddClassPremiumFlag < ActiveRecord::Migration
+class AddClassPremiumFlag < ActiveRecord::Migration[5.2]
   def up
     add_column :assemblies, :premium, :boolean, default: false
     Assembly.all.each do |a|

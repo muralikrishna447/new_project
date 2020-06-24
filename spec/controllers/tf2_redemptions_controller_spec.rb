@@ -35,7 +35,7 @@ describe Tf2RedemptionsController do
 
     it "should set the message if the param is passed in" do
       sign_in @user
-      get :show, message: "Test"
+      get :show, params: {message: "Test"}
       expect(assigns(:message)).to eq "Test"
     end
   end

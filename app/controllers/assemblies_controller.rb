@@ -1,5 +1,5 @@
 class AssembliesController < ApplicationController
-  before_filter :load_assembly, except: [:index, :redeem, :redeem_index]
+  before_action :load_assembly, except: [:index, :redeem, :redeem_index]
 
   # Commenting out for now until we figure out what to do for Projects
 
@@ -74,7 +74,7 @@ class AssembliesController < ApplicationController
 
     logger.info("Creating enrollment, user: #{current_user.slug}, assembly: #{@assembly.slug}")
     @enrollment = Enrollment.create!(user_id: current_user.id, enrollable: @assembly)
-    render nothing: true
+    head :ok
   end
 
 

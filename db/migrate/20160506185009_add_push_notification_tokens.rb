@@ -1,4 +1,4 @@
-class AddPushNotificationTokens < ActiveRecord::Migration
+class AddPushNotificationTokens < ActiveRecord::Migration[5.2]
   def change
     create_table :push_notification_tokens do |t|
       t.integer :actor_address_id

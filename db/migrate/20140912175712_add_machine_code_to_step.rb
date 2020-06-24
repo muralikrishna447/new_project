@@ -1,4 +1,4 @@
-class AddMachineCodeToStep < ActiveRecord::Migration
+class AddMachineCodeToStep < ActiveRecord::Migration[5.2]
   def change
     add_column :steps, :extra, :text
   end

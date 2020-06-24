@@ -1,4 +1,4 @@
-class FixIngredientIndexing < ActiveRecord::Migration
+class FixIngredientIndexing < ActiveRecord::Migration[5.2]
   def up
     # These were useless and creating an unwanted uniqueness constraint
     remove_index(:activity_ingredients, [:activity_id, :ingredient_id])

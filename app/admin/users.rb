@@ -133,7 +133,6 @@ ActiveAdmin.register User do
   end
 
   controller do
-    with_role :admin
     def max_csv_records
       30_000
     end

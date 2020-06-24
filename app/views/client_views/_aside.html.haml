@@ -10,5 +10,5 @@
     %img(ng-src="{{stepImageURL(step, 840)}}" alt="{{stepImageDescription(step)}}" title="{{stepImageDescription(step)}}")
 .aside-text(  cs-contenteditable="getStepOpenForEdit()"
               ng-model="step.directions"
-              creator="activity.creator"
+              creator="activity.user"
               placeholder="'Click to write aside directions'" )

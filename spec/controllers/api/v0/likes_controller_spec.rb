@@ -9,7 +9,7 @@ describe Api::V0::LikesController do
 
   # POST /api/v0/likes
   it 'should create a like' do
-    post :create, { likeable_type: 'Activity', likeable_id: @activity.id}
+    post :create, params: { likeable_type: 'Activity', likeable_id: @activity.id}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['likeable_type'].should eq('Activity')
@@ -20,7 +20,7 @@ describe Api::V0::LikesController do
   # DELETE /api/v0/likes
   it 'should delete a like' do
     @like = Fabricate :like, id:9999, likeable_id: 'Activity', likeable_id: @activity.id, user_id: @user.id
-    delete :destroy, id: @like.id
+    delete :destroy, params: {id: @like.id}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['likeable_type'].should eq('Activity')

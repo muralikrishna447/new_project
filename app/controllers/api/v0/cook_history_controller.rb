@@ -1,7 +1,7 @@
 module Api
   module V0
     class CookHistoryController < BaseController
-      before_filter :ensure_authorized
+      before_action :ensure_authorized
 
       def index
         serialized_items = ActiveModel::ArraySerializer.new(

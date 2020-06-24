@@ -1,2 +1,2 @@
-class MarketplaceGuide < ActiveRecord::Base
+class MarketplaceGuide < ApplicationRecord
 end

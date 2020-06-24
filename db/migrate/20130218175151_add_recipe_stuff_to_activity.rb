@@ -3,7 +3,7 @@
 # this migration dependend on, and by the time we got it figured out, the production database was in a half-modified
 # state that this now has to account for.
 
-class AddRecipeStuffToActivity < ActiveRecord::Migration
+class AddRecipeStuffToActivity < ActiveRecord::Migration[5.2]
   def change
     # This fails if there is no activity ingredients table
     # drop_table  :activity_ingredients

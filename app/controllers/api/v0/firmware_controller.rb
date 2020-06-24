@@ -3,7 +3,7 @@ require 'semverse'
 module Api
   module V0
     class FirmwareController < BaseController
-      before_filter :ensure_authorized
+      before_action :ensure_authorized
 
       LINK_EXPIRE_SECS = 60 * 60
 

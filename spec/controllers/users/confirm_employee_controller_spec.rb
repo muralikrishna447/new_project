@@ -6,7 +6,7 @@ describe Users::ConfirmEmployeeController do
       let(:token) { 'ABC123'}
 
       it 'renders invalid' do
-        get :confirm, { token: token }
+        get :confirm, params: { token: token }
         expect(response).to render_template(:invalid)
       end
     end
@@ -16,7 +16,7 @@ describe Users::ConfirmEmployeeController do
       let(:token) { user.create_restricted_token('bad_restriction', 1.day).to_jwt }
 
       it 'renders invalid' do
-        get :confirm, { token: token }
+        get :confirm, params: { token: token }
         expect(response).to render_template(:invalid)
       end
     end
@@ -30,7 +30,7 @@ describe Users::ConfirmEmployeeController do
       end
 
       it 'grants employee subscriptions' do
-        get :confirm, { token: token }
+        get :confirm, params: { token: token }
         expect(response).to redirect_to("https://www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}/studiopass")
       end
     end

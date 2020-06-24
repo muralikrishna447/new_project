@@ -5,12 +5,12 @@ module Api
     class CirculatorsController < BaseController
       @@dynamo_client = Aws::DynamoDB::Client.new(region: 'us-east-1')
 
-      before_filter :ensure_authorized, except: [:notify_clients, :admin_notify_clients, :coefficients]
-      before_filter :ensure_circulator_owner, only: [:update, :destroy]
-      before_filter :ensure_circulator_user, only: [:token]
-      before_filter(BaseController.make_service_or_admin_filter(
+      before_action :ensure_authorized, except: [:notify_clients, :admin_notify_clients, :coefficients]
+      before_action :ensure_circulator_owner, only: [:update, :destroy]
+      before_action :ensure_circulator_user, only: [:token]
+      before_action(BaseController.make_service_or_admin_filter(
         [ExternalServiceTokenChecker::MESSAGING_SERVICE]), only: [:notify_clients])
-      before_filter(BaseController.make_service_or_admin_filter(
+      before_action(BaseController.make_service_or_admin_filter(
         [ExternalServiceTokenChecker::ADMIN_PUSH_SERVICE]), only: [:admin_notify_clients])
 
       def index
@@ -76,9 +76,7 @@ module Api
             return render_api_response 400, {message: "Invalid parameters"}
           end
           circulatorUser = CirculatorUser.new user: user, circulator: circulator
-          unless params[:owner] == false
-            circulatorUser.owner = true
-          end
+          circulatorUser.owner = true unless params[:owner] == false
           circulatorUser.save!
 
           if circulator.premium_offer_eligible?
@@ -149,7 +147,6 @@ module Api
 
       def publish_notification(user, circulator, token, push_notification, is_admin_message)
         Librato.increment("api.publish_notification_requests")
-
         gcm_data = render_for_gcm(push_notification)
         apns_data = render_for_apns(push_notification)
 
@@ -254,7 +251,7 @@ module Api
           'created_at' => Time.now.iso8601(),
           'ttl' => (Time.now + 90.days).to_i,
         }
-        item.update(push_notification.params)
+        item.update(push_notification.params.class == ActionController::Parameters ? push_notification.params.to_unsafe_h : push_notification.params)
         save_push_notification_item_to_dynamo(item)
       end
 
@@ -422,6 +419,7 @@ module Api
         end
 
         message = get_notification_message(notification_type, params[:notification_params])
+
         return PushNotification.new(
           notification_type, message: message, params: additional_params
         )
@@ -430,8 +428,8 @@ module Api
       def get_notification_message(notification_type, notification_params)
         message = nil
 
-        template_params = (notification_params || {}).inject({}){|memo,(k,v)|
-          unless v.nil?
+        template_params = (notification_params.try(:to_unsafe_h) || {}).inject({}){|memo,(k,v)|
+          unless v.blank?
             memo[k.to_sym] = v; memo
           end
           memo

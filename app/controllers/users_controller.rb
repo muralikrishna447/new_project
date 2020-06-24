@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :set_analytics_cookie, only: [:session_me]
+  skip_before_action :set_analytics_cookie, only: [:session_me]
 
   def show
     @user = User.find(params[:id])

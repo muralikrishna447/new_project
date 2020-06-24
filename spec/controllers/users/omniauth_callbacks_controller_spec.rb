@@ -43,7 +43,7 @@ describe Users::OmniauthCallbacksController do
 
       context "user does not exist" do
         it "should return a json" do
-          xhr :get, :facebook, {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}
+          get :facebook, params: {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}, xhr: true
           response.status.should be 200
           response.body.should include "test@example.com"
           response.body.should include "\"new_user\":true"
@@ -51,13 +51,13 @@ describe Users::OmniauthCallbacksController do
         end
 
         it "should be a new sign up" do
-          xhr :get, :facebook, {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}
+          get :facebook, params: {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}, xhr: true
           assigns(:new_signup).should be true
         end
 
         it "should do email signup" do
           Users::OmniauthCallbacksController.any_instance.should_receive(:email_list_signup)
-          xhr :get, :facebook, {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}
+          get :facebook, params: {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}, xhr: true
         end
       end
 
@@ -67,7 +67,7 @@ describe Users::OmniauthCallbacksController do
         end
 
         it "should return a json" do
-          xhr :get, :facebook, {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}
+          get :facebook, params: {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}, xhr: true
           response.status.should be 200
           response.body.should include "test@example.com"
           response.body.should include "\"new_user\":false"
@@ -75,7 +75,7 @@ describe Users::OmniauthCallbacksController do
         end
 
         it "should not be a new_signup" do
-          xhr :get, :facebook, {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}
+          get :facebook, params: {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}, xhr: true
           assigns(:new_signup).should be false
         end
       end
@@ -87,12 +87,12 @@ describe Users::OmniauthCallbacksController do
         end
 
         it "should update the user with the facebook_user_id" do
-          xhr :get, :facebook, {user: {provider: "facebook", user_id: "123", email: "facebook@example.com", name: "Test User"}}
+          get :facebook, params: {user: {provider: "facebook", user_id: "123", email: "facebook@example.com", name: "Test User"}}, xhr: true
           expect(@user.reload.facebook_user_id).to eq "123"
         end
 
         it "should not update the user email" do
-          xhr :get, :facebook, {user: {provider: "facebook", user_id: "123", email: "facebook@example.com", name: "Test User"}}
+          get :facebook, params: {user: {provider: "facebook", user_id: "123", email: "facebook@example.com", name: "Test User"}}, xhr: true
           expect(@user.reload.email).to eq "not_facebook@example.com"
           expect(@user.reload.email).to_not eq "facebook@example.com"
         end

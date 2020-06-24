@@ -1,4 +1,4 @@
-class AddUniqueConstraintToCirculators < ActiveRecord::Migration
+class AddUniqueConstraintToCirculators < ActiveRecord::Migration[5.2]
   def change
     add_column :circulators, :deleted_at, :datetime
     add_index :circulators, :deleted_at

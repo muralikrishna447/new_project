@@ -1,8 +1,8 @@
 module Api
   module V0
     class PushNotificationTokensController < BaseController
-      before_filter :ensure_authorized, only: [:create]
-      before_filter :ensure_authorized_or_anonymous, only: [:destroy]
+      before_action :ensure_authorized, only: [:create]
+      before_action :ensure_authorized_or_anonymous, only: [:destroy]
 
       def create
         logger.info "Creating push notification token for user #{@user_id_from_token} #{params[:device_token]}"

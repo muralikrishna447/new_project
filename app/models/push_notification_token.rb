@@ -1,4 +1,4 @@
-class PushNotificationToken < ActiveRecord::Base
+class PushNotificationToken < ApplicationRecord
   # states
 
   belongs_to :actor_address

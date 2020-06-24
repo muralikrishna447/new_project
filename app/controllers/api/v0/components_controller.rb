@@ -2,7 +2,7 @@ module Api
   module V0
     class ComponentsController < BaseController
 
-      before_filter :authenticate_active_admin_user!, only: [:index, :create, :update, :destroy]
+      before_action :authenticate_active_admin_user!, only: [:index, :create, :update, :destroy]
 
       def index
         @components = Component.all
@@ -19,7 +19,7 @@ module Api
       end
 
       def create
-        component_params = convert_hash_keys(params[:component])
+        component_params = convert_hash_keys(params[:component].to_unsafe_h)
         @component = Component.new(component_params)
         if @component.save
           render json: @component, serializer: Api::ComponentSerializer
@@ -28,7 +28,7 @@ module Api
 
       def update
         @component = Component.find(params[:id])
-        component_params = convert_hash_keys(params[:component])
+        component_params = convert_hash_keys(params[:component].to_unsafe_h)
         if @component.update_attributes(component_params)
           render json: @component, serializer: Api::ComponentSerializer
         end
@@ -37,7 +37,7 @@ module Api
       def destroy
         @component = Component.find(params[:id])
         if @component.destroy
-          render nothing: true, status: 200
+          head :ok
         end
       end
 
@@ -52,13 +52,13 @@ module Api
 
       def convert_hash_keys(value)
         case value
-          when Array
-            value.map { |v| convert_hash_keys(v) }
-            # or `value.map(&method(:convert_hash_keys))`
-          when Hash
-            Hash[value.map { |k, v| [underscore_key(k), convert_hash_keys(v)] }]
-          else
-            value
+        when Array
+          value.map { |v| convert_hash_keys(v) }
+          # or `value.map(&method(:convert_hash_keys))`
+        when ActiveSupport::HashWithIndifferentAccess
+          Hash[value.map { |k, v| [underscore_key(k), convert_hash_keys(v)] }]
+        else
+          value
         end
       end
 

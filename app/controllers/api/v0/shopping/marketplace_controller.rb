@@ -2,7 +2,7 @@ module Api
   module V0
     module Shopping
       class MarketplaceController < BaseController
-        before_filter :ensure_authorized_or_anonymous
+        before_action :ensure_authorized_or_anonymous
 
         @@marketplace_guides = HashWithIndifferentAccess.new
 

@@ -1,4 +1,4 @@
-class CreateActorAddresses < ActiveRecord::Migration
+class CreateActorAddresses < ActiveRecord::Migration[5.2]
   def change
     # each row represents
     create_table :actor_addresses do |t|

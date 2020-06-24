@@ -27,7 +27,7 @@ describe Api::V0::PremiumGiftCertificateController do
     end
 
     it 'should create a certificate' do
-      post :generate_cert_and_send_email, { premium_identifier: Time.now.to_i, user_id: @user.id, price: 29, email: 'johndoe@chefsteps.com'}
+      post :generate_cert_and_send_email, params: { premium_identifier: Time.now.to_i, user_id: @user.id, price: 29, email: 'johndoe@chefsteps.com'}
       response.should be_success
 
       cert = PremiumGiftCertificate.find_by_purchaser_id(@user.id)
@@ -36,14 +36,14 @@ describe Api::V0::PremiumGiftCertificateController do
 
     it 'should be idempotent' do
       premium_id = Time.now.to_i
-      post :generate_cert_and_send_email, { premium_identifier: premium_id, user_id: @user.id, price: 29, email: 'johndoe@chefsteps.com'}
+      post :generate_cert_and_send_email, params: { premium_identifier: premium_id, user_id: @user.id, price: 29, email: 'johndoe@chefsteps.com'}
       response.should be_success
 
       cert = PremiumGiftCertificate.find_by_purchaser_id(@user.id)
       expect(cert).not_to be_nil
 
       #a second call should return 201
-      post :generate_cert_and_send_email, { premium_identifier: premium_id, user_id: @user.id, price: 29, email: 'johndoe@chefsteps.com'}
+      post :generate_cert_and_send_email, params: { premium_identifier: premium_id, user_id: @user.id, price: 29, email: 'johndoe@chefsteps.com'}
       expect(response.code).to eq("201")
 
       #and only one email sent
@@ -51,13 +51,13 @@ describe Api::V0::PremiumGiftCertificateController do
     end
 
     it 'should send an email to john doe' do
-      post :generate_cert_and_send_email, { premium_identifier: Time.now.to_i, user_id: @user.id, price: 29, email: 'johndoe@chefsteps.com'}
+      post :generate_cert_and_send_email, params: { premium_identifier: Time.now.to_i, user_id: @user.id, price: 29, email: 'johndoe@chefsteps.com'}
       email = ActionMailer::Base.deliveries.first
       expect(email.to.first).to eq('johndoe@chefsteps.com')
     end
 
     it 'should have the correct email subject' do
-      post :generate_cert_and_send_email, { premium_identifier: Time.now.to_i, user_id: @user.id, price: 29, email: 'johndoe@chefsteps.com'}
+      post :generate_cert_and_send_email, params: { premium_identifier: Time.now.to_i, user_id: @user.id, price: 29, email: 'johndoe@chefsteps.com'}
       email = ActionMailer::Base.deliveries.first
       expect(email.subject).to eq("ChefSteps Premium Gift Certificate")
     end

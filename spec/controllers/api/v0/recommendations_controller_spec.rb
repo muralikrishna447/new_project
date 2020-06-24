@@ -18,7 +18,7 @@ describe Api::V0::RecommendationsController do
 
   # GET /api/v0/recommendations - old skool
   it 'should respond old-skool style if no platform set' do
-    get :index, { tags:['garlic']}
+    get :index, params: { tags:['garlic']}
     response.should be_success
     parsed = JSON.parse response.body
     parsed.count.should eq 1
@@ -27,7 +27,7 @@ describe Api::V0::RecommendationsController do
 
   # GET /api/v0/recommendations - new skool
   it 'should respond new-skool style if platform set, known slot, and signed out' do
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
@@ -42,7 +42,7 @@ describe Api::V0::RecommendationsController do
     @circulator = Fabricate :circulator, notes: 'some notes', circulator_id: '1212121212121212', name: 'my name'
     @circulator_user = Fabricate :circulator_user, user: @user, circulator: @circulator, owner: true
     sign_in @user
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
@@ -58,7 +58,7 @@ describe Api::V0::RecommendationsController do
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
 
     sign_in @user
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
@@ -66,7 +66,7 @@ describe Api::V0::RecommendationsController do
   end
 
   it 'should return something even if not logged in' do
-    get :index, {connected: 'true', platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
+    get :index, params: {connected: 'true', platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
@@ -78,7 +78,7 @@ describe Api::V0::RecommendationsController do
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
 
     sign_in @user
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
@@ -91,7 +91,7 @@ describe Api::V0::RecommendationsController do
     @owner_ad2 = Fabricate :advertisement, matchname: 'homeHeroOwner', published: true, title: "More Things", image: "{\"url\":\"http://foo/bar\",\"filename\":\"98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"mimetype\":\"image/jpeg\",\"size\":93111,\"key\":\"Vp8xHWW7TRKYRH3FsLBu_98rjmQR0RrC3wcxCwqTv_Joule-5-visual-doneness.jpg\",\"container\":\"chefsteps-staging\",\"isWriteable\":true}"
     sign_in @user
     Utils.should_receive(:weighted_random_sample).and_return([@owner_ad2])
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 1}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 1}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
@@ -103,7 +103,7 @@ describe Api::V0::RecommendationsController do
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
 
     sign_in @user
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 1, connected: 'true'}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 1, connected: 'true'}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
@@ -115,7 +115,7 @@ describe Api::V0::RecommendationsController do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
     sign_in @user
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
@@ -128,7 +128,7 @@ describe Api::V0::RecommendationsController do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', referral_code: 'borscht'
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
     sign_in @user
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 2, connected: 'true'}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 2
@@ -142,7 +142,7 @@ describe Api::V0::RecommendationsController do
     @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', referral_code: 'borscht'
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
     sign_in @user
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'referPage', limit: 2, connected: 'true'}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'referPage', limit: 2, connected: 'true'}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
@@ -154,7 +154,7 @@ describe Api::V0::RecommendationsController do
     controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
 
     sign_in @user
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3, connected: "false"}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'homeHero', limit: 3, connected: "false"}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 1
@@ -162,14 +162,14 @@ describe Api::V0::RecommendationsController do
   end
 
   it 'should respond new-skool but empty if not known platform' do
-    get :index, { platform: 'blah', page: '/lasers', slot: 'homeHero', limit: 3}
+    get :index, params: { platform: 'blah', page: '/lasers', slot: 'homeHero', limit: 3}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 0
   end
 
   it 'should respond new-skool but empty if not known slot' do
-    get :index, { platform: 'jouleApp', page: '/lasers', slot: 'blah', limit: 3}
+    get :index, params: { platform: 'jouleApp', page: '/lasers', slot: 'blah', limit: 3}
     response.should be_success
     parsed = JSON.parse response.body
     parsed['results'].count.should eq 0

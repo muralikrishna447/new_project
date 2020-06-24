@@ -1,4 +1,4 @@
-class AddBylineToActivity < ActiveRecord::Migration
+class AddBylineToActivity < ActiveRecord::Migration[5.2]
   def change
     add_column :activities, :byline, :string
   end

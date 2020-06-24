@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   has_merit
 
   include User::Google
@@ -13,11 +13,6 @@ class User < ActiveRecord::Base
 
   include ActsAsSanitized
   sanitize_input :bio, :name, :location, :website
-
-  has_many :followerships
-  has_many :followers, through: :followerships
-  has_many :inverse_followerships, class_name: 'Followership', foreign_key: 'follower_id'
-  has_many :followings, through: :inverse_followerships, source: :user
 
   has_many :user_activities
   has_many :activities, through: :user_activities
@@ -208,7 +203,7 @@ class User < ActiveRecord::Base
   end
 
   def class_enrollment(assembly)
-    enrollments.where(enrollable_id: assembly.id, enrollable_type: assembly.class).first
+    enrollments.where('enrollable_id= ? and enrollable_type =?', assembly.id, assembly.class).first
   end
 
   def disconnect_service!(service)
@@ -423,7 +418,7 @@ class User < ActiveRecord::Base
   def merge_relations(user_to_merge)
     Upload.where(user_id: user_to_merge.id).update_all(user_id: id)
     Event.where(user_id: user_to_merge.id).update_all(user_id: id)
-    Activity.where(creator: user_to_merge.id).update_all(creator: id)
+    Activity.where('creator =?', user_to_merge.id).update_all(creator: id)
     PremiumGiftCertificate.where(purchaser_id: user_to_merge.id).update_all(purchaser_id: id)
     merge_likes(user_to_merge)
     merge_circulator_users(user_to_merge)

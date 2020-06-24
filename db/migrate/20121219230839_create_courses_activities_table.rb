@@ -1,4 +1,4 @@
-class CreateCoursesActivitiesTable < ActiveRecord::Migration
+class CreateCoursesActivitiesTable < ActiveRecord::Migration[5.2]
   def up
     create_table :inclusions do |t|
       t.references :course

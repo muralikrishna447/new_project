@@ -1,4 +1,4 @@
-class AddDirectionsToSteps < ActiveRecord::Migration
+class AddDirectionsToSteps < ActiveRecord::Migration[5.2]
   def change
     add_column :steps, :directions, :text
   end

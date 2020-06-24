@@ -1,10 +1,9 @@
-class CirculatorUser < ActiveRecord::Base
+class CirculatorUser < ApplicationRecord
   acts_as_paranoid
   belongs_to :circulator
   belongs_to :user
 
   after_commit :user_sync
-  after_destroy :user_sync
 
   def user_sync
     Resque.enqueue(UserSync, self.user.id)

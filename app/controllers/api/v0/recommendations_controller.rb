@@ -1,7 +1,7 @@
 module Api
   module V0
     class RecommendationsController < BaseController
-      before_filter :ensure_authorized_or_anonymous
+      before_action :ensure_authorized_or_anonymous
 
       # Recommend one or more pieces of content, potentially including ads, that should be
       # shown to a user. The inputs are:

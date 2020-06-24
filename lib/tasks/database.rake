@@ -19,11 +19,9 @@ namespace :db do
       raise 'Error dumping database' unless Kernel.system(command)
 
       File.open(filename, "a") { |f| f << "SET search_path TO #{ActiveRecord::Base.connection.schema_search_path};\n\n" }
-      if ActiveRecord::Base.connection.supports_migrations?
-        File.open(filename, "a") do |f|
-          f.puts ActiveRecord::Base.connection.dump_schema_information
-          f.print "\n"
-        end
+      File.open(filename, "a") do |f|
+        f.puts ActiveRecord::Base.connection.dump_schema_information
+        f.print "\n"
       end
       Rake::Task["db:structure:dump"].reenable
     end

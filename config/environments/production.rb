@@ -1,7 +1,7 @@
 DOMAIN = 'www.chefsteps.com'
 CDN_DOMAIN = 'd1w42w8pbelamn.cloudfront.net'
 
-Delve::Application.configure do
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
@@ -37,7 +37,7 @@ Delve::Application.configure do
   # config.log_level = :debug
 
   config.log_level = (ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].downcase : 'info').to_sym
-  logger = Logger.new(STDOUT)
+  logger = ActiveSupport::Logger.new(STDOUT)
   logger.formatter = proc do |severity, datetime, progname, msg|
     "[#{severity}] #{msg}\n"
   end
@@ -107,11 +107,30 @@ Delve::Application.configure do
     :list_id => 'a61ebdcaa6'
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
-  config.middleware.insert_before('Rack::Prerender', 'PreauthEnforcer', [/.*/], [/^\/playground/,/^\/users\/set_location/])
-
-  config.middleware.insert_before 'PreauthEnforcer', Rack::HostRedirect, {
-    'chefsteps.com' => 'www.chefsteps.com'
-  }
 
   Rails.application.routes.default_url_options[:protocol] = 'https'
+
+  # New Code
+  # Eager load code on boot. This eager loads most of Rails and
+  # your application in memory, allowing both threaded web servers
+  # and those relying on copy on write to perform better.
+  # Rake tasks automatically ignore this option for performance.
+  config.eager_load = true
+
+  # Disable serving static files from the `/public` folder by default since
+  # Apache or NGINX already handles this.
+  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+
+  # Compress JavaScripts and CSS.
+  config.assets.js_compressor = :uglifier
+  # config.assets.css_compressor = :sass
+
+  # Store uploaded files on the local file system (see config/storage.yml for options)
+  config.active_storage.service = :local
+
+  # Use a real queuing backend for Active Job (and separate queues per environment)
+  # config.active_job.queue_adapter     = :resque
+  # config.active_job.queue_name_prefix = "rails5-2_sample_#{Rails.env}"
+
+  config.action_mailer.perform_caching = false
 end

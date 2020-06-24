@@ -1,6 +1,6 @@
 class Tf2RedemptionsController < ApplicationController
-  before_filter :auth_user, except: [:index]
-  skip_before_filter :verify_authenticity_token
+  before_action :auth_user, except: [:index]
+  skip_before_action :verify_authenticity_token
 
   # Landing page description
   def index

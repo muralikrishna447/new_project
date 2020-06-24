@@ -1,4 +1,4 @@
-class Tf2Redemption < ActiveRecord::Base
+class Tf2Redemption < ApplicationRecord
   belongs_to :user
 
   validates_uniqueness_of :redemption_code

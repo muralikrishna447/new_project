@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-  before_filter :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, only: [:create]
 
   def create
     @event = Event.new(event_params)

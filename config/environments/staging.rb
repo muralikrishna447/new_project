@@ -35,7 +35,7 @@ Delve::Application.configure do
   # config.force_ssl = true
 
   config.log_level = (ENV['LOG_LEVEL'] ? ENV['LOG_LEVEL'].downcase : 'info').to_sym
-  logger = Logger.new(STDOUT)
+  logger = ActiveSupport::Logger.new(STDOUT)
   logger.formatter = proc do |severity, datetime, progname, msg|
     "[#{severity}] #{msg}\n"
   end
@@ -115,9 +115,7 @@ Delve::Application.configure do
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 
-  config.middleware.insert_before 'PreauthEnforcer', Rack::HostRedirect, {
-    'chocolateyshatner.com' => 'www.chocolateyshatner.com'
-  }
+
 
   Rails.application.routes.default_url_options[:protocol] = 'https'
 end

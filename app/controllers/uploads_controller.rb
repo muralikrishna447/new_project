@@ -1,5 +1,5 @@
 class UploadsController < ApplicationController
-  before_filter :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, only: [:create]
 
   def show
     @upload = Upload.find(params[:id])

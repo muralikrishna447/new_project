@@ -166,7 +166,7 @@ describe Api::V0::FirmwareController do
 
   it 'should get manifests for wifi firmware' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -192,7 +192,7 @@ describe Api::V0::FirmwareController do
 
   it 'should return no updates if both versions are greater or equal to manifest' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '70', 'espFirmwareVersion' => '23'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -201,7 +201,7 @@ describe Api::V0::FirmwareController do
 
   it 'should return no updates if no version info provided' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5'}
+    post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -209,7 +209,7 @@ describe Api::V0::FirmwareController do
 
   it 'should return no updates if no bootloaderVersion provided' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5',
+    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5',
                     'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -220,7 +220,7 @@ describe Api::V0::FirmwareController do
     BetaFeatureService.stub(:user_has_feature).with(anything(), "allow_dfu_downgrade")
       .and_return(true)
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '700', 'espFirmwareVersion' => '230'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -229,7 +229,7 @@ describe Api::V0::FirmwareController do
 
   it 'should return an upgrade for ESP, but not downgrade app' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '70', 'espFirmwareVersion' => '19'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -241,7 +241,7 @@ describe Api::V0::FirmwareController do
 
   it 'should return an upgrade for staging ESP' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.49.9', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.49.9', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '70', 'espFirmwareVersion' => 's22'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -252,7 +252,7 @@ describe Api::V0::FirmwareController do
 
   it 'should not return an upgrade for staging ESP' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.49.9', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.49.9', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '70', 'espFirmwareVersion' => 's24'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -260,14 +260,14 @@ describe Api::V0::FirmwareController do
   end
 
   it 'should return unauthorized if not logged in' do
-    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
+    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
     response.code.should == '401'
   end
 
   it 'should get no updates if manifest version not enabled' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     set_version_enabled('2.41.3', false)
-    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -278,7 +278,7 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu_blacklist')
       .and_return(true)
-    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -289,7 +289,7 @@ describe Api::V0::FirmwareController do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     BetaFeatureService.stub(:user_has_feature).with(anything(), 'manifest_urgency')
       .and_return(true)
-    post :updates, {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -298,7 +298,7 @@ describe Api::V0::FirmwareController do
 
   it 'should get no updates if old app version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5',
+    post :updates, params: {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5',
                     'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1', 'bootloaderVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -308,7 +308,7 @@ describe Api::V0::FirmwareController do
   it 'should get firmware version' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
 
-    post :updates, {'appVersion'=> '2.41.4', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.41.4', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '10', 'espFirmwareVersion' => '1'}
 
     response.should be_success
@@ -344,7 +344,7 @@ describe Api::V0::FirmwareController do
     ]
 
     for v in hw_versions
-      post :updates, {'appVersion'=> '2.41.4', 'hardwareVersion' => v[:hw_version],  'bootloaderVersion' => '21',
+      post :updates, params: {'appVersion'=> '2.41.4', 'hardwareVersion' => v[:hw_version],  'bootloaderVersion' => '21',
                       'appFirmwareVersion' => '10', 'espFirmwareVersion' => '1'}
       response.should be_success
       resp = JSON.parse(response.body)
@@ -358,7 +358,7 @@ describe Api::V0::FirmwareController do
 
   it 'should not return firmware version if up to date' do
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, {'appVersion'=> '2.41.3', 'appFirmwareVersion' => '61', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '2.41.3', 'appFirmwareVersion' => '61', 'bootloaderVersion' => '21',
                     'espFirmwareVersion' => @esp_version, 'hardwareVersion' => 'JL.p5'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -370,7 +370,7 @@ describe Api::V0::FirmwareController do
       to_return(:status => 404, :body => "", :headers => {})
     request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
     set_version_enabled('0.10.0', true)
-    post :updates, {'appVersion'=> '0.10.0', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+    post :updates, params: {'appVersion'=> '0.10.0', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
                     'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
     response.should be_success
     resp = JSON.parse(response.body)
@@ -390,7 +390,7 @@ describe Api::V0::FirmwareController do
       "appFirmwareVersion" => "42",
       "hardwareVersion" => "JA"
     }
-    post :updates, params
+    post :updates, params: params
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 1
@@ -405,7 +405,7 @@ describe Api::V0::FirmwareController do
       "appFirmwareVersion" => "42",
       "hardwareVersion" => "XX"
     }
-    post :updates, params
+    post :updates, params: params
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -416,7 +416,7 @@ describe Api::V0::FirmwareController do
     params = {
       "appVersion" => "2.66.1",
     }
-    post :updates, params
+    post :updates, params: params
     response.should be_success
     resp = JSON.parse(response.body)
     resp['updates'].length.should == 0
@@ -460,7 +460,7 @@ describe Api::V0::FirmwareController do
         'hardwareVersion' => 'JL.p5',
         'bootloaderVersion' => '21',
       }
-      post :updates, params
+      post :updates, params: params
       response.should be_success
       resp = JSON.parse(response.body)
       resp['updates'].length.should == 3
@@ -485,7 +485,7 @@ describe Api::V0::FirmwareController do
         'hardwareVersion' => 'JL.p5',
         'bootloaderVersion' => '24',
       }
-      post :updates, params
+      post :updates, params: params
       response.should be_success
       resp = JSON.parse(response.body)
       resp['updates'].length.should == 2
@@ -506,7 +506,7 @@ describe Api::V0::FirmwareController do
         'hardwareVersion' => 'JL.p5',
         'bootloaderVersion' => '27',
       }
-      post :updates, params
+      post :updates, params: params
       response.should be_success
       resp = JSON.parse(response.body)
       resp['updates'].length.should == 2
@@ -529,7 +529,7 @@ describe Api::V0::FirmwareController do
         'hardwareVersion' => 'J6',
         'bootloaderVersion' => 'v3.1.1',
       }
-      post :updates, params
+      post :updates, params: params
       response.should be_success
       resp = JSON.parse(response.body)
       resp['updates'].length.should == 1

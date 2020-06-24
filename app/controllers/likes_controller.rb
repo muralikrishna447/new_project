@@ -1,5 +1,5 @@
 class LikesController < ApplicationController
-  before_filter :authenticate_user!, only: [:create, :unlike]
+  before_action :authenticate_user!, only: [:create, :unlike]
 
 
   def create
@@ -12,7 +12,7 @@ class LikesController < ApplicationController
         reindex(params[:likeable_type], params[:likeable_id])
       end
     end
-    render nothing: true
+    head :ok
     # redirect_to request.referrer
   end
 

@@ -1,7 +1,7 @@
 module Api
   module V0
     class ContentController < BaseController
-      before_filter :ensure_authorized_or_anonymous
+      before_action :ensure_authorized_or_anonymous
       DEFAULT_LOCALE = 'en-US'
 
       # Unfortunately this method needs to be defined before it is called

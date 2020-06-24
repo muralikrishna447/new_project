@@ -12,12 +12,12 @@ describe Api::Admin::UsersController do
   context 'unauthenticated admin user' do
     # GET /api/admin/users/:id
     it 'should not authorize request' do
-      get :show, id: @user_1.id
+      get :show, params: {id: @user_1.id}
       response.should_not be_success
     end
 
     it 'should not authorize request for circulators' do
-      get :circulators, id: @user_1.id
+      get :show, params: {id: @user_1.id}
       response.should_not be_success
     end
   end
@@ -35,7 +35,7 @@ describe Api::Admin::UsersController do
     end
 
     it 'should authorize' do
-      get :circulators, id: @user_1.id
+      get :circulators, params: {id: @user_1.id}
       response.should be_success
     end
   end
@@ -49,13 +49,13 @@ describe Api::Admin::UsersController do
 
     # GET /api/admin/users/:id
     it 'should get a user' do
-      get :show, id: @user_1.id
+      get :show, params: {id: @user_1.id}
       response.should be_success
     end
 
     # GET /api/admin/users?email=:email
     it 'should get a user' do
-      get :index, {email: @user_1.email}
+      get :index, params: {email: @user_1.email}
       response.should be_success
       users = JSON.parse(response.body)
       users.length.should eq(1)
@@ -63,7 +63,7 @@ describe Api::Admin::UsersController do
     end
 
     it 'should return a users circulators' do
-      get :circulators, id: @user_1.id
+      get :circulators, params: {id: @user_1.id}
       response.should be_success
       circulators = JSON.parse(response.body)
       circulators.length.should eq(1)
@@ -71,7 +71,7 @@ describe Api::Admin::UsersController do
     end
 
     it 'should return a users actor_addresses' do
-      get :actor_addresses, id: @user_1.id
+      get :actor_addresses, params: {id: @user_1.id}
       response.should be_success
       actor_addresses = JSON.parse(response.body)
       actor_addresses.length.should eq(1)

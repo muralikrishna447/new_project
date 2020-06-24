@@ -5,7 +5,7 @@ module Api
   class BaseController < BaseApplicationController
     instrument_action :all
 
-    skip_before_filter :verify_authenticity_token
+    skip_before_action :verify_authenticity_token
 
     rescue_from Exception do |exception|
       logger.error exception

@@ -1,3 +1,3 @@
-class StripeEvent < ActiveRecord::Base
+class StripeEvent < ApplicationRecord
   serialize :data, JSON
 end

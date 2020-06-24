@@ -16,7 +16,7 @@ class ApplicationController < BaseApplicationController
     end
   end
 
-  before_filter :set_analytics_cookie
+  before_action :set_analytics_cookie
   def set_analytics_cookie
     referrer = request.referrer
     cookie_value = AnalyticsParametizer.cookie_value(params, cookies, referrer)
@@ -29,7 +29,7 @@ class ApplicationController < BaseApplicationController
 
 
   # For dynamically setting the host to whatever it needs to be for the environment we're testing.
-  before_filter :set_mailer_host
+  before_action :set_mailer_host
   def set_mailer_host
     ActionMailer::Base.default_url_options[:host] = request.host_with_port
   end
@@ -148,13 +148,13 @@ private
   end
 
   # See http://stackoverflow.com/questions/14734243/rails-csrf-protection-angular-js-protect-from-forgery-makes-me-to-log-out-on
-  after_filter  :set_csrf_cookie_for_ng
+  before_action  :set_csrf_cookie_for_ng
 
   def set_csrf_cookie_for_ng
     cookies['XSRF-TOKEN'] = form_authenticity_token if protect_against_forgery?
   end
 
-  before_filter :set_share_a_sale
+  before_action :set_share_a_sale
   def set_share_a_sale
     if params[:SSAID].present? && params[:SSAIDDATA].present?
       cookies['SSAID'] = params[:SSAID]
@@ -191,7 +191,7 @@ private
 
   # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
   # do not use CSRF for CORS options
-  skip_before_filter :verify_authenticity_token, :only => [:options]
+  skip_before_action :verify_authenticity_token, :only => [:options]
 
 
   def authenticate_cors_user
@@ -211,7 +211,7 @@ private
     (params[:client] == "iOS")
   end
 
-  before_filter :set_coupon
+  before_action :set_coupon
   def set_coupon
     session[:coupon] = params[:coupon] || session[:coupon]
   end
@@ -224,7 +224,6 @@ private
   # # if Rails.env.production?
   #  # unless Rails.application.config.consider_all_requests_local
   rescue_from ActionController::RoutingError, with: :render_404
-  rescue_from ActionController::UnknownController, with: :render_404
   rescue_from AbstractController::ActionNotFound, with: :render_404
   rescue_from ActiveRecord::RecordNotFound, with: :render_404
   #   #end

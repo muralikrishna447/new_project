@@ -1,4 +1,4 @@
-class RenameActivityIngredientToRecipeIngredient < ActiveRecord::Migration
+class RenameActivityIngredientToRecipeIngredient < ActiveRecord::Migration[5.2]
   def change
     remove_index(:activity_ingredients, [:activity_id, :ingredient_id])
     rename_table :activity_ingredients, :recipe_ingredients
