@@ -59,11 +59,15 @@ module ActsAsRevisionable
       extend ClassMethods
       include InstanceMethods
       class_name = acts_as_revisionable_options[:class_name].to_s if acts_as_revisionable_options[:class_name]
-      has_many_options = {:as => :revisionable, :order => 'revision DESC', :class_name => class_name}
+      # has_many_options = {:as => :revisionable, :order => 'revision DESC', :class_name => class_name}
+      has_many_options = {:as => :revisionable, :class_name => class_name}
       has_many_options[:dependent] = :destroy unless options[:dependent] == :keep
-      has_many :revision_records, has_many_options
-      alias_method_chain :update, :revision if options[:on_update]
-      alias_method_chain :destroy, :revision if options[:on_destroy]
+      has_many :revision_records, -> { order "revision DESC" }, has_many_options
+      # alias_method_chain :update, :revision if options[:on_update]
+      # alias_method_chain :destroy, :revision if options[:on_destroy]
+      # The above line is supporting old version (rails <=4.2) and not removed for feature reference
+      alias_method :update, :update_with_revision if options[:on_update]
+      alias_method :destroy, :destroy_with_revision if options[:on_destroy]
     end
   end
   
@@ -81,15 +85,17 @@ module ActsAsRevisionable
     # Load a revision for a record with a particular id. Associations added since the revision
     # was created will still be in the restored record.
     # If you want to save a revision with associations properly, use restore_revision!
-    def restore_revision(id, revision_number)
+    def restore_revision(id, revision_number, save = false)
       revision_record = revision(id, revision_number)
-      return revision_record.restore if revision_record
+      return nil unless revision_record
+
+      revision_record.restore(save)
     end
 
     # Load a revision for a record with a particular id and save it to the database. You should
     # always use this method to save a revision if it has associations.
     def restore_revision!(id, revision_number)
-      record = restore_revision(id, revision_number)
+      record = restore_revision(id, revision_number, true)
       if record
         record.store_revision do
           save_restorable_associations(record, revisionable_associations)
@@ -155,15 +161,15 @@ module ActsAsRevisionable
             
             if reflection == :has_and_belongs_to_many
               associated_records = associated_records.collect{|r| r}
-              record.send(association, true).clear
+              record.send(association).reload.clear
               associated_records.each do |assoc_record|
                 record.send(association) << assoc_record
               end
             else
               if reflection == :has_many
-                existing = associated_records.all
+                existing = associated_records
                 existing.each do |existing_association|
-                  associated_records.delete(existing_association) unless associated_records.include?(existing_association)
+                  associated_records.delete(existing_association) if existing_association.marked_for_destruction?
                 end
               end
 
@@ -174,7 +180,11 @@ module ActsAsRevisionable
             end
           end
         end
-        record.save! unless record.new_record?
+        unless record.new_record?
+          object =  record.class.find(record.id)
+          record.attributes.each{ |key, value| object[key] = value }
+          object.save! && record.save!
+        end
       end
     end
   end
@@ -211,7 +221,7 @@ module ActsAsRevisionable
         begin
           revision_record_class.transaction do
             begin
-              read_only = self.class.first(:conditions => {self.class.primary_key => self.id}, :readonly => true)
+              read_only = self.class.where("#{self.class.primary_key} =?", self.id).readonly(true).first
               if read_only
                 revision = read_only.create_revision!
                 truncate_revisions!
@@ -246,7 +256,7 @@ module ActsAsRevisionable
     # Create a revision record based on this record and save it to the database.
     def create_revision!
       revision_options = self.class.acts_as_revisionable_options
-      revision = revision_record_class.new(self, revision_options[:encoding])
+      revision = revision_record_class.new(self)
       if revision_options[:meta].is_a?(Hash)
         revision_options[:meta].each do |attribute, value|
           set_revision_meta_attribute(revision, attribute, value)
@@ -284,7 +294,7 @@ module ActsAsRevisionable
     # Destroy the record while recording the revision.
     def destroy_with_revision
       store_revision do
-        destroy_without_revision
+        self.delete
       end
     end
     

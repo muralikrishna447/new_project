@@ -33,7 +33,7 @@ describe Api::V0::ChargebeeController do
         }
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
 
-        post :webhook, params
+        post :webhook, params: params
 
         response.code.should eq("200")
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be true
@@ -43,7 +43,7 @@ describe Api::V0::ChargebeeController do
         params[:content][:subscription][:status] = "cancelled"
         params[:content][:subscription][:resource_version] += 1
 
-        post :webhook, params
+        post :webhook, params: params
 
         response.code.should eq("200")
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
@@ -52,7 +52,7 @@ describe Api::V0::ChargebeeController do
         params[:content][:subscription][:status] = "active"
         params[:content][:subscription][:resource_version] -= 1
 
-        post :webhook, params
+        post :webhook, params: params
 
         response.code.should eq("200")
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
@@ -62,7 +62,7 @@ describe Api::V0::ChargebeeController do
 
     context 'without authentication' do
       it 'rejects unauthenticated requests' do
-        post :webhook, {}
+        post :webhook, params: {}
         response.code.should eq("403")
       end
     end
@@ -197,7 +197,7 @@ describe Api::V0::ChargebeeController do
           ChargeBee::HostedPage.should_not_receive(:checkout_new)
 
           params = { :is_gift => true, :plan_id => 'test' }
-          post :generate_checkout_url, params
+          post :generate_checkout_url, params: params, as: :json
 
           response.code.should eq("200")
         end
@@ -207,7 +207,7 @@ describe Api::V0::ChargebeeController do
           ChargeBee::HostedPage.should_receive(:checkout_new).and_return(result)
 
           params = { :is_gift => false, :plan_id => 'test' }
-          post :generate_checkout_url, params
+          post :generate_checkout_url, params: params, as: :json
 
           response.code.should eq("200")
         end
@@ -260,7 +260,7 @@ describe Api::V0::ChargebeeController do
 
       describe 'claim_gifts' do
         it 'rejects requests without gift_ids' do
-          post :claim_gifts, {}
+          post :claim_gifts, params: {}
           response.code.should eq("400")
         end
 
@@ -273,7 +273,7 @@ describe Api::V0::ChargebeeController do
             params = {
                 :gift_ids => [gift.id]
             }
-            post :claim_gifts, params
+            post :claim_gifts, params: params
             response.code.should eq("401")
           end
         end
@@ -287,7 +287,7 @@ describe Api::V0::ChargebeeController do
             params = {
                 :gift_ids => [gift.id]
             }
-            post :claim_gifts, params
+            post :claim_gifts, params: params
             response.code.should eq("401")
           end
         end
@@ -303,7 +303,7 @@ describe Api::V0::ChargebeeController do
             params = {
                 :gift_ids => [gift.id]
             }
-            post :claim_gifts, params
+            post :claim_gifts, params: params
             response.code.should eq("200")
           end
         end
@@ -317,7 +317,7 @@ describe Api::V0::ChargebeeController do
         end
 
         it 'rejects requests without gift_ids' do
-          get :claim_complete, {}
+          get :claim_complete, params: {}
           response.code.should eq("400")
         end
 
@@ -325,19 +325,19 @@ describe Api::V0::ChargebeeController do
           gift_ids = []
           (0..31).each {|i| gift_ids.push(i.to_s)}
 
-          get :claim_complete, {:gift_ids => gift_ids}
+          get :claim_complete, params: {:gift_ids => gift_ids}
           response.code.should eq("400")
         end
 
         it 'returns false if at least one gift is not claimed' do
-          get :claim_complete, {:gift_ids => ['1', '2', '3']}
+          get :claim_complete, params: {:gift_ids => ['1', '2', '3']}
           response.code.should eq("200")
           response_data = JSON.parse(response.body)
           response_data["complete"].should be false
         end
 
         it 'returns true if all gifts are claimed' do
-          get :claim_complete, {:gift_ids => ['2', '3']}
+          get :claim_complete, params: {:gift_ids => ['2', '3']}
           response.code.should eq("200")
           response_data = JSON.parse(response.body)
           response_data["complete"].should be true
@@ -349,7 +349,7 @@ describe Api::V0::ChargebeeController do
       describe 'generate_checkout_url' do
         it 'returns unauthorized' do
           params = { :is_gift => false, :plan_id => 'test' }
-          post :generate_checkout_url, params
+          post :generate_checkout_url, params: params
           response.code.should eq("401")
         end
       end

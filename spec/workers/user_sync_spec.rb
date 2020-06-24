@@ -61,7 +61,6 @@ describe UserSync do
       # 0, 1 current and ever according to db
       owned_circulator = Fabricate :circulator, serial_number: 'circ123', circulator_id: '1233'
       cu = CirculatorUser.create! user: @user_with_code, circulator: owned_circulator, owner: true
-      cu.run_callbacks(:commit)
 
       # Fake the resque
       @user_sync_with_code.sync_mailchimp

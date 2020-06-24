@@ -1,5 +1,4 @@
-class UserAcquisition < ActiveRecord::Base
+class UserAcquisition < ApplicationRecord
 
   has_one :user
-
 end

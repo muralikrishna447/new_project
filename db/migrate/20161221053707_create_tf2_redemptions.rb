@@ -1,4 +1,4 @@
-class CreateTf2Redemptions < ActiveRecord::Migration
+class CreateTf2Redemptions < ActiveRecord::Migration[5.2]
   def change
     create_table :tf2_redemptions do |t|
       t.integer :user_id

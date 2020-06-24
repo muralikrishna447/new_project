@@ -20,30 +20,30 @@ describe Api::V0::PagesController do
 
   # GET /api/v0/pages/:id
   it 'should get a page' do
-    get :show, id: @page.id
+    get :show, params: {id: @page.id}
     response.should be_success
     JSON.parse(response.body)['title'].should eq(@page.title)
   end
 
   it 'should get a page by slug' do
-    get :show, id: @page.slug
+    get :show, params: {id: @page.slug}
     response.should be_success
     JSON.parse(response.body)['title'].should eq(@page.title)
   end
 
   it 'should return 404 for pages not found by id' do
-    get :show, id: 9999
+    get :show, params: {id: 9999}
     response.code.should == '404'
   end
 
   it 'should return 404 for pages not found by slug' do
-    get :show, id: 'doesnt-exist'
+    get :show, params: {id: 'doesnt-exist'}
     response.code.should == '404'
   end
 
   # POST /api/v0/pages
   it 'should create a page' do
-    post :create, page: { title: 'Another Page'}
+    post :create, params: {page: {title: 'Another Page'}}
     response.should be_success
     page = JSON.parse(response.body)
     page['title'].should eq('Another Page')
@@ -51,7 +51,7 @@ describe Api::V0::PagesController do
 
   # PUT /api/v0/pages/:id
   it 'should update a page' do
-    put :update, id: @page.id, page: { title: 'Sous Vide' }
+    put :update, params: {id: @page.id, page: {title: 'Sous Vide'}}
     response.should be_success
     page = JSON.parse(response.body)
     page['title'].should eq('Sous Vide')
@@ -67,7 +67,7 @@ describe Api::V0::PagesController do
       title: 'Sous Vide',
       components: components
     }
-    post :update, id: @page.id, page: page
+    post :update, params: {id: @page.id, page: page}
     response.should be_success
     page = JSON.parse(response.body)
     page['title'].should eq('Sous Vide')
@@ -86,7 +86,7 @@ describe Api::V0::PagesController do
       title: 'Sous Vide',
       components: components
     }
-    post :update, id: @page.id, page: page
+    post :update, params: {id: @page.id, page: page}
     response.should_not be_success
   end
 
@@ -100,7 +100,7 @@ describe Api::V0::PagesController do
       title: 'Sous Vide',
       components: components
     }
-    post :update, id: @page.id, page: page
+    post :update, params: {id: @page.id, page: page}
     response.should be_success
     page = JSON.parse(response.body)
     puts page
@@ -115,7 +115,7 @@ describe Api::V0::PagesController do
     end
 
     it 'should create a page with components' do
-      post :update, id: @page.id, page: @data
+      post :update, params: { id: @page.id, page: @data }, as: :json
       page = JSON.parse(response.body)
       response.should be_success
       page['components'].count.should eq(@data['components'].count)
@@ -124,7 +124,7 @@ describe Api::V0::PagesController do
     end
 
     it 'should check component meta key as camelcase' do
-      post :update, id: @page.id, page: @data
+      post :update, params: { id: @page.id, page: @data }, as: :json
       response.should be_success
       @page.components[1].meta['items'].first['content'].keys.should eq(@data['components'][1]['meta']['items'].first['content'].keys)
       @page.components[5].meta['items'].first['content'].keys.should eq(@data['components'][5]['meta']['items'].first['content'].keys)
@@ -135,14 +135,14 @@ describe Api::V0::PagesController do
       request_component = @data['components'][1]['meta']['items'].first['content']
       hero_component_data.select{|k, _v| return_keys.include? k}.values.should eq(request_component.select{|k, _v| return_keys.include? k}.values)
 
-      post :update, id: @page.id, page: @data.deep_transform_keys{ |key| key.to_s.underscore }
+      post :update, params: { id: @page.id, page: @data.deep_transform_keys{ |key| key.to_s.underscore } }, as: :json
       page = JSON.parse(response.body)
       response.should be_success
       page['components'][1]['meta']['items'].first['content'].keys.should_not eq(@data['components'][1]['meta']['items'].first['content'].keys)
     end
 
     it 'should check all components meta data values' do
-      post :update, id: @page.id, page: @data
+      post :update, params: { id: @page.id, page: @data }, as: :json
       response.should be_success
       @page.components.length.times.each do |index|
         verify_big_data(
@@ -156,7 +156,7 @@ describe Api::V0::PagesController do
       @data['invalid_column'] = 'test'
       @data['components'][0]['invalid_column'] = 'test'
       @data['components'][6]['invalid_column'] = 'unwanted'
-      post :update, id: @page.id, page: @data
+      post :update, params: { id: @page.id, page: @data }, as: :json
       response.should be_success
       page = JSON.parse(response.body)
       page['shortDescription'].should eq(@data['shortDescription'])
@@ -173,7 +173,7 @@ describe Api::V0::PagesController do
       @data['components'][0]['meta']['new_key'] = 'test'
       @data['components'][1]['meta']['items'][0]['content']['NewContent'] = 'First Recipe'
       @data['components'][1]['meta']['items'][0]['content']['new_content'] = 'Second Recipe'
-      post :update, id: @page.id, page: @data
+      post :update, params: { id: @page.id, page: @data }, as: :json
       response.should be_success
       @page.components[0].meta['NewKey'].should eq(@data['components'][0]['meta']['NewKey'])
       @page.components[0].meta['new_key'].should eq(@data['components'][0]['meta']['new_key'])
@@ -183,14 +183,14 @@ describe Api::V0::PagesController do
 
     it 'should accept component destroy key' do
       @data['components'][0]['_destroy'] = true
-      post :update, id: @page.id, page: @data
+      post :update, params: { id: @page.id, page: @data }, as: :json
       response.should be_success
       page = JSON.parse(response.body)
       page['components'].count.should eq(@data['components'].count - 1 )
     end
 
     it 'should check components meta data minimum properties' do
-      post :update, id: @page.id, page: @data
+      post :update, params: { id: @page.id, page: @data }, as: :json
       response.should be_success
       @page.components.map(&:meta).should_not be_blank
       @page.components.map(&:meta).compact.count.should eq(@data['components'].map{|c| c['meta']}.compact.count)
@@ -199,19 +199,19 @@ describe Api::V0::PagesController do
 
     it 'should return error for component type blank' do
       @data['components'] << { 'id': '', "componentType": nil }
-      post :update, id: @page.id, page: @data
+      post :update, params: { id: @page.id, page: @data }, as: :json
       response.should_not be_success
       response.code.should == '500'
     end
 
     it 'should return 404 for pages not found by id' do
-      post :update, id: 122, page: @data
+      post :update, params: {id: 122, page: @data }, as: :json
       response.should_not be_success
     end
 
     it 'should not update a page if components do not exist' do
       @data['components'] << { id: 1111, position: 20 }
-      post :update, id: @page.id, page: @data
+      post :update, params: { id: @page.id, page: @data }, as: :json
       response.should_not be_success
     end
   end
@@ -222,7 +222,7 @@ describe Api::V0::PagesController do
     case request.class.name
     when 'String'
       request.should eq response
-    when 'Fixnum', 'TrueClass', 'FalseClass'
+    when 'Fixnum', 'TrueClass', 'FalseClass', 'Integer'
       request.to_s.should eq response.to_s
     when 'Hash'
       request.each_pair do |key, _|

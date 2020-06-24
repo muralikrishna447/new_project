@@ -22,7 +22,7 @@ ActiveAdmin.register Activity, as: 'Publishing Schedule' do
     def update
       @activity = Activity.find(params[:id])
       begin
-        @activity.publishing_schedule.update_attributes!(params[:activity][:publishing_schedule_attributes])
+        @activity.publishing_schedule.update_attributes!(publishing_schedule_params)
         redirect_to admin_publishing_schedules_path
         return
       rescue Exception => e
@@ -45,6 +45,12 @@ ActiveAdmin.register Activity, as: 'Publishing Schedule' do
       flash[:notice] = "Schedule removed for \"#{activity.title}\""
       redirect_to admin_publishing_schedules_path
     end
+
+    private
+
+    def publishing_schedule_params
+      params[:activity].require(:publishing_schedule_attributes).permit(:publish_at_pacific)
+    end
   end
 
   action_item :view, only: [:edit] do
@@ -62,7 +68,7 @@ ActiveAdmin.register Activity, as: 'Publishing Schedule' do
     end
 
     column :premium do |activity|
-      activity.premium? ? status_tag( "PREMIUM", :ok ) : ""
+      activity.premium? ? status_tag('PREMIUM') : ""
     end
 
     column :title, sortable: :title do |activity|

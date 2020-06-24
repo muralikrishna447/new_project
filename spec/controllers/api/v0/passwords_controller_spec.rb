@@ -13,14 +13,14 @@ describe Api::V0::PasswordsController do
     end
 
     it 'should not update a user password if current password is not correct' do
-      put :update, {id: @user.id, current_password: 'SomeWrongPassword', new_password: 'SomeNewPassword'}
+      put :update, params: {id: @user.id, current_password: 'SomeWrongPassword', new_password: 'SomeNewPassword'}
       response.should_not be_success
     end
 
     it 'should update a users password' do
       old_encrypted_password = @user.encrypted_password
       new_password = "MyNewPassword"
-      put :update, {id: @user.id, current_password: @user.password, new_password: new_password}
+      put :update, params: {id: @user.id, current_password: @user.password, new_password: new_password}
       @user.reload
       response.should be_success
       @user.encrypted_password.should_not eq(old_encrypted_password)
@@ -40,22 +40,22 @@ describe Api::V0::PasswordsController do
     end
 
     it 'should not update a user password if token is not present' do
-      post :update_from_email, {id: @user.id, password: 'SomeNewPassword'}
+      post :update_from_email, params: {id: @user.id, password: 'SomeNewPassword'}
       response.should_not be_success
     end
 
     it 'should update a user password if a valid token is present' do
-      post :update_from_email, {id: @user.id, password: 'SomeNewPassword', token: @password_token}
+      post :update_from_email, params: {id: @user.id, password: 'SomeNewPassword', token: @password_token}
       response.should be_success
     end
 
     it 'should not update if password is too short' do
-      post :update_from_email, {id: @user.id, password: 'a', token: @password_token}
+      post :update_from_email, params: {id: @user.id, password: 'a', token: @password_token}
       response.code.should eq("400")
     end
 
     it 'should not update a user password if valid token has expired' do
-      post :update_from_email, {id: @user.id, password: 'SomeNewPassword', token: @expired_password_token}
+      post :update_from_email, params: {id: @user.id, password: 'SomeNewPassword', token: @expired_password_token}
       response.should_not be_success
     end
 
@@ -63,12 +63,12 @@ describe Api::V0::PasswordsController do
 
   context 'POST /reset' do
     it 'should send a password reset email' do
-      post :send_reset_email, email: @user.email
+      post :send_reset_email, params: {email: @user.email}
       response.should be_success
     end
 
     it 'should return an error if user does not exist for email provided' do
-      post :send_reset_email, email: 'some_random@email.com'
+      post :send_reset_email, params: {email: 'some_random@email.com'}
       response.should_not be_success
     end
   end

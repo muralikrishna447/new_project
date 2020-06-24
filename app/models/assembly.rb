@@ -1,4 +1,4 @@
-class Assembly < ActiveRecord::Base
+class Assembly < ApplicationRecord
   extend FriendlyId
   include PublishableModel
   friendly_id :title, use: [:slugged, :history, :finders]

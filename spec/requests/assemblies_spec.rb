@@ -37,7 +37,8 @@ describe 'AssembliesController', pending: true do
         user = Fabricate :user, name: 'Test User', email: 'test@test.com', password: 'password'
         enrollment = Fabricate :enrollment, user: user, enrollable: @course
         # NOTE A way to get current_user auth in request specs
-        post_via_redirect user_session_path, 'user[email]' => user.email, 'user[password]' => user.password
+        post user_session_path, params: {'user[email]' => user.email, 'user[password]' => user.password}
+        follow_redirect!
         get class_path(@course)
         expect(response).to render_template("courses_show")
       end

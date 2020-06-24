@@ -1,4 +1,4 @@
-class ChargebeeGiftRedemptions < ActiveRecord::Base
+class ChargebeeGiftRedemptions < ApplicationRecord
 
   validates_presence_of :gift_id, :user_id, :plan_amount, :currency_code
 

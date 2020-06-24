@@ -1,7 +1,7 @@
 class EnrollmentsController < ApplicationController
 
-  before_filter :authenticate_user!, only: [:create]
-  before_filter :load_enrollable
+  before_action :authenticate_user!, only: [:create]
+  before_action :load_enrollable
 
 private
 

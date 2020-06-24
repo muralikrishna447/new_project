@@ -16,12 +16,12 @@ describe LegalController do
       end
 
       it 'renders English when English specified' do
-        get :cookie_policy, language: 'English'
+        get :cookie_policy, params: {language: 'English'}
         expect(response.body).to include("COOKIE POLICY")
       end
 
       it 'renders English when invalid language specified' do
-        get :cookie_policy, language: 'foobar'
+        get :cookie_policy, params: {language: 'foobar'}
         expect(response.body).to include("COOKIE POLICY")
       end
 
@@ -38,12 +38,12 @@ describe LegalController do
       end
 
       it 'renders French when French specified' do
-        get :cookie_policy, language: 'French'
+        get :cookie_policy, params: {language: 'French'}
         expect(response.body).to include("POLITIQUE RELATIVE AUX COOKIES CHEFSTEPS")
       end
 
       it 'renders German when invalid language specified' do
-        get :cookie_policy, language: 'foobar'
+        get :cookie_policy, params: {language: 'foobar'}
         expect(response.body).to include("COOKIE-GRUNDSÄTZE VON CHEFSTEPS")
       end
 
@@ -54,7 +54,7 @@ describe LegalController do
       it 'renders for each country_code' do
         countries = ['US', 'CA', 'GB', 'DK', 'FI', 'FR', 'DE', 'IE', 'IT', 'NL', 'NO', 'ES', 'SE', 'CH', 'EU']
         countries.each { |country|
-          get :cookie_policy, country_code: country
+          get :cookie_policy, params: {country_code: country}
           expect(response).to be_success
           expect(response.body).to include("Cookie Policy")
         }

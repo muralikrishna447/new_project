@@ -1,4 +1,4 @@
-class AddMoreActivityFields < ActiveRecord::Migration
+class AddMoreActivityFields < ActiveRecord::Migration[5.2]
   def change
     add_column :activities, :difficulty, :string
     add_column :activities, :cooked_this_count, :integer, default: 0

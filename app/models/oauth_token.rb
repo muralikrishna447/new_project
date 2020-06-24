@@ -1,4 +1,4 @@
-class OauthToken < ActiveRecord::Base
+class OauthToken < ApplicationRecord
   belongs_to :user
 
   validates_presence_of :service, :user_id, :token, :token_expires_at

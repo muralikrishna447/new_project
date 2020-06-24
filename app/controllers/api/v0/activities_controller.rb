@@ -2,7 +2,7 @@ module Api
   module V0
     class ActivitiesController < BaseController
 
-      before_filter :ensure_authorized, only: [:likes_by_user]
+      before_action :ensure_authorized, only: [:likes_by_user]
 
       has_scope :sort, default: 'newest' do |controller, scope, value|
         case value
@@ -43,21 +43,18 @@ module Api
         if params[:search_all] && ! params[:sort]
           params[:sort] = "relevance"
         end
-        @activities = apply_scopes(Activity).uniq().page(params[:page]).per(per)
+        @activities = Kaminari.paginate_array(apply_scopes(Activity).uniq).page(params[:page]).per(per)
         render json: @activities, each_serializer: Api::ActivityIndexSerializer
       end
 
       def show
         t1 = Time.now
         begin
-          @activity = Activity.friendly.find(params[:id])
+          @activity = Activity.includes([[ingredients: :ingredient], [steps: [ingredients: :ingredient]], [equipment: :equipment]]).friendly.find(params[:id])
           @version = params[:version]
-          @last_revision = @activity.last_revision()
-          cache_revision = @last_revision ? @last_revision.revision : '0'
-          if @version && @version.to_i <= @last_revision.revision
-            @activity = @activity.restore_revision(@version)
-            cache_revision = @version
-          end
+          @last_revision = @activity.last_revision
+          cache_key = "activity-#{@activity.id}"
+          cache_revision = fetch_cache_revision
         rescue ActiveRecord::RecordNotFound
           render_api_response 404, {message:'Activity not found'}
           return
@@ -102,7 +99,7 @@ module Api
 
         if can_see
           except = trimmed ? [:steps, :ingredients, :equipment] : []
-          cache_key = "activity-#{@activity.id}-v#{cache_revision}-t#{trimmed}"
+          cache_key += "-v#{cache_revision}-t#{trimmed}"
           logger.info "fetching activity from #{cache_key}"
           metric_suffix = 'hit'
           serialized = Rails.cache.fetch(cache_key, expires_in: 60.minutes) do
@@ -115,7 +112,7 @@ module Api
           # Because we are fetching objects through the cache, the
           # return type will always be a string.  Need to manually set
           # content-type
-          render text: serialized, content_type: 'application/json'
+          render plain: serialized, content_type: 'application/json'
 
           # TODO: look into breaking this into separate methods and
           # using a filter, or hooking into ActiveSupport for timing
@@ -148,6 +145,37 @@ module Api
         else
           render json: []
         end
+      end
+
+      private
+
+      def fetch_cache_revision
+        if @version.blank?
+          # If no version is specified and there are prior revisions,
+          # the cache key should use the last revision plus one to
+          # indicate the current database record.
+          if @last_revision
+            cache_revision = @last_revision.revision + 1
+          else
+            # Otherwise there are no prior revisions, so we're on version zero.
+            cache_revision = '0'
+          end
+        else
+          # If a version is specified, always use that version in the cache key.
+          cache_revision = @version
+          if @last_revision
+            # When a prior revision exists and the version requested is older
+            # than the current database record, set the activity to the correct revision.
+            if @version.to_i <= @last_revision.revision
+              @activity = @activity.restore_revision(@version)
+            elsif @version.to_i > (@last_revision.revision + 1)
+              raise ActiveRecord::RecordNotFound
+            end
+          elsif @version.to_i > 0
+            raise ActiveRecord::RecordNotFound
+          end
+        end
+        cache_revision
       end
     end
   end

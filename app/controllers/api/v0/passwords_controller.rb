@@ -1,8 +1,8 @@
 module Api
   module V0
     class PasswordsController < BaseController
-      before_filter :ensure_authorized, only: [:update]
-      before_filter :ensure_password_token, only: [:update_from_email]
+      before_action :ensure_authorized, only: [:update]
+      before_action :ensure_password_token, only: [:update_from_email]
 
       def update
         Librato.increment("api.password_update_requests")

@@ -1,4 +1,4 @@
-class CreateGiftingModel < ActiveRecord::Migration
+class CreateGiftingModel < ActiveRecord::Migration[5.2]
   def change
     create_table :gift_certificates do |t|
       t.integer :purchaser_id

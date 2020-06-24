@@ -1,4 +1,4 @@
-class CreatePollItems < ActiveRecord::Migration
+class CreatePollItems < ActiveRecord::Migration[5.2]
   def change
     create_table :poll_items do |t|
       t.string :title

@@ -2,7 +2,7 @@ module Api
   module V0
     class LikesController < BaseController
 
-      before_filter :ensure_authorized
+      before_action :ensure_authorized
 
       def create
         if params[:likeable_type] && params[:likeable_id]

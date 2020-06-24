@@ -47,7 +47,7 @@
       .step-content-group
 
         .step-content(   cs-contenteditable="getStepOpenForEdit()"
-                                  creator="activity.creator"
+                                  creator="activity.user"
                                   ng-model="step.directions"
                                   placeholder="'Click to write step directions'" )
 
@@ -60,13 +60,13 @@
         %h5
           Special Sauce
         .step-special-sauce(   cs-contenteditable="getStepOpenForEdit()"
-                                  creator="activity.creator"
+                                  creator="activity.user"
                                   ng-model="step.extra"
                                 placeholder="'Click to add special sauce'")
         %h5
           Appliance Instruction
         .step-content(   cs-contenteditable="getStepOpenForEdit()"
-                                creator="activity.creator"
+                                creator="activity.user"
                                 ng-model="step.appliance_instruction_text"
                                 placeholder="'Click to add appliance instructions'" )
         %h5

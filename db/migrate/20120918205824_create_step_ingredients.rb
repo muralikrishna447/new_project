@@ -1,4 +1,4 @@
-class CreateStepIngredients < ActiveRecord::Migration
+class CreateStepIngredients < ActiveRecord::Migration[5.2]
   def change
     create_table :step_ingredients do |t|
       t.integer :step_id, null: false

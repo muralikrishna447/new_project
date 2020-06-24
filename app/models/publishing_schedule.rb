@@ -1,4 +1,4 @@
-class PublishingSchedule < ActiveRecord::Base
+class PublishingSchedule < ApplicationRecord
   belongs_to :activity
 
   validates :publish_at, inclusion: { in: (DateTime.now..DateTime.now+1000.years),  message: "must be in future" }

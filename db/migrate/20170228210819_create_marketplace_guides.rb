@@ -1,4 +1,4 @@
-class CreateMarketplaceGuides < ActiveRecord::Migration
+class CreateMarketplaceGuides < ActiveRecord::Migration[5.2]
   def change
     create_table :marketplace_guides do |t|
       t.string :guide_id

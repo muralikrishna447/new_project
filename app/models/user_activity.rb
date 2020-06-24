@@ -1,4 +1,4 @@
-class UserActivity < ActiveRecord::Base
+class UserActivity < ApplicationRecord
 
   belongs_to :user
   belongs_to :activity

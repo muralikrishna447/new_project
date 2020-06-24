@@ -1,4 +1,4 @@
-class Event < ActiveRecord::Base
+class Event < ApplicationRecord
 
   belongs_to :user, counter_cache: true
   belongs_to :trackable, polymorphic: true

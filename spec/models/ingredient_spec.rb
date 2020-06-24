@@ -74,9 +74,9 @@ describe Ingredient do
     activity_ingredient3.note.should == "whole"
     step_ingredient3.reload
     step_ingredient3.note.should == "whole, pebbly"
-    Ingredient.exists?(ingredient).should == true
-    Ingredient.exists?(ingredient2).should == false
-    Ingredient.exists?(ingredient3).should == false
+    Ingredient.exists?(ingredient.id).should == true
+    Ingredient.exists?(ingredient2.id).should == false
+    Ingredient.exists?(ingredient3.id).should == false
   end
 
   it "copies over details from merged ingredients" do

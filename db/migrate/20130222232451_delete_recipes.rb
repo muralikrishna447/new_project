@@ -1,4 +1,4 @@
-class DeleteRecipes < ActiveRecord::Migration
+class DeleteRecipes < ActiveRecord::Migration[5.2]
   def change
     drop_table  :recipes
     drop_table :activity_recipes

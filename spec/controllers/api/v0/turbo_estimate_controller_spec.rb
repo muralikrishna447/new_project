@@ -12,7 +12,7 @@ describe Api::V0::TurboEstimateController do
     describe 'get_turbo_estimate' do
         it "should respond with an estimate result" do
             sign_in_user
-            get :get_turbo_estimate, {
+            get :get_turbo_estimate, params: {
                 guide_id: steak_guide_id,
                 set_point: 60,
                 thickness_mm: 25.4,
@@ -26,7 +26,7 @@ describe Api::V0::TurboEstimateController do
         end
         
         it "should respond with 401 if user is not logged in" do
-            get :get_turbo_estimate, {
+            get :get_turbo_estimate, params: {
                 guide_id: steak_guide_id,
                 set_point: 60,
                 thickness_mm: 25.4,
@@ -38,7 +38,7 @@ describe Api::V0::TurboEstimateController do
         
         it "should respond with status 400 with a message if missing parameters" do
             sign_in_user
-            get :get_turbo_estimate, {
+            get :get_turbo_estimate, params: {
                 guide_id: steak_guide_id,
                 # set_point: 60,
                 thickness_mm: 25.4,
@@ -51,7 +51,7 @@ describe Api::V0::TurboEstimateController do
         
         it "should respond with status 400 with a message if guide not supported" do
             sign_in_user
-            get :get_turbo_estimate, {
+            get :get_turbo_estimate, params: {
                 guide_id: 'some-other-guide',
                 set_point: 60,
                 thickness_mm: 25.4,

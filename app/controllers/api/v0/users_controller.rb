@@ -7,12 +7,12 @@ module Api
       # Required since this only this controller contains the code to actually
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
-      before_filter :ensure_authorized, except: [:create, :log_upload_url, :make_premium, :update_settings]
-      before_filter(BaseController.make_service_filter(
+      before_action :ensure_authorized, except: [:create, :log_upload_url, :make_premium, :update_settings]
+      before_action(BaseController.make_service_filter(
         [ExternalServiceTokenChecker::SPREE_SERVICE]), only: [:make_premium, :update_settings]
       )
 
-      skip_filter :detect_country unless ENV['CS_FORCE_DETECT_COUNTRY']
+      skip_before_action :detect_country unless ENV['CS_FORCE_DETECT_COUNTRY']
 
       LOG_UPLOAD_URL_EXPIRATION = 60*30 #Seconds
 
@@ -60,12 +60,12 @@ module Api
       end
 
 
-      # Authenticated by user token (see before_filters)
+      # Authenticated by user token (see before_actions)
       def update_my_settings
         update_settings_impl(@user_id_from_token, "me")
       end
 
-      # Authenticated by External Service (see before_filters)
+      # Authenticated by External Service (see before_actions)
       def update_settings
         update_settings_impl(params[:id], "external")
       end

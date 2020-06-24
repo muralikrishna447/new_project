@@ -1,4 +1,4 @@
-class AddFieldsToCircTable < ActiveRecord::Migration
+class AddFieldsToCircTable < ActiveRecord::Migration[5.2]
   def change
     add_column :circulators, :hardware_options, :integer
     add_column :circulators, :hardware_version, :string

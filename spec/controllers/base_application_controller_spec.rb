@@ -3,7 +3,7 @@ require 'spec_helper'
 describe BaseApplicationController, type: :controller do
   controller do
     def show
-      render text: "Fall through to standard render"
+      render plain: "Fall through to standard render"
     end
   end
 
@@ -40,7 +40,7 @@ describe BaseApplicationController, type: :controller do
 
     it 'should return no cors headers when origin not specifies' do
       request.headers['host'] = @prod_host
-      get :show, id: 1
+      get :show, params: {id: 1}
 
       should_have_no_cors_headers
     end
@@ -48,7 +48,7 @@ describe BaseApplicationController, type: :controller do
     it 'should basic cors headers when origin is specified' do
       request.headers['host'] = @prod_host
       request.headers['origin'] = @prod_different_origin
-      get :show, id: 1
+      get :show, params: {id: 1}
 
       should_have_cors_headers(@prod_different_origin, false)
     end
@@ -56,7 +56,7 @@ describe BaseApplicationController, type: :controller do
     it 'should allow credentials for localhost testing' do
       request.headers['host'] = @localhost_host
       request.headers['origin'] = @localhost_origin
-      get :show, id: 1
+      get :show, params: { id: 1 }
 
       should_have_cors_headers(@localhost_origin, true)
     end
@@ -64,7 +64,7 @@ describe BaseApplicationController, type: :controller do
     it 'should allow credentials with prod origin'  do
       request.headers['host'] = @prod_host
       request.headers['origin'] = @prod_origin
-      get :show, id: 1
+      get :show, params: { id: 1 }
 
       should_have_cors_headers(@prod_origin, true)
     end
@@ -72,28 +72,28 @@ describe BaseApplicationController, type: :controller do
     it 'should handle bad origins gracefully' do |variable|
       request.headers['host'] = @prod_host
       request.headers['origin'] = "file://" # this was actually seen in prod
-      get :show, id: 1
+      get :show, params: { id: 1 }
       should_have_no_cors_headers
     end
 
     it 'should handle a gibberish origins gracefully' do |variable|
       request.headers['host'] = @prod_host
       request.headers['origin'] = "sdfw54%&*"
-      get :show, id: 1
+      get :show, params: { id: 1 }
       should_have_no_cors_headers
     end
 
     it 'should set the cs_geo cookie' do
       request.headers['host'] = @prod_host
       request.headers['origin'] = @prod_origin
-      get :show, id: 1
+      get :show, params: { id: 1 }
       response.cookies['cs_geo'].should_not be_nil
     end
 
     it 'should set the cs_geo/country cookie value to US' do
       request.headers['host'] = @prod_host
       request.headers['origin'] = @prod_origin
-      get :show, id: 1
+      get :show, params: { id: 1 }
       cs_geo = JSON.parse(response.cookies['cs_geo'])
       cs_geo['country'].should == 'US'
     end

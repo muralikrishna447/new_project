@@ -31,12 +31,12 @@ describe Api::V0::Shopping::ProductGroupsController do
     end
 
     it "US should respond with ERROR" do
-      get :index, :iso2 => 'US'
+      get :index, params: {:iso2 => 'US'}
       response.should_not be_success
     end
 
     it "CA should respond with ERROR" do
-      get :index, :iso2 => 'CA'
+      get :index, params: {:iso2 => 'CA'}
       response.should_not be_success
     end
 
@@ -55,7 +55,7 @@ describe Api::V0::Shopping::ProductGroupsController do
 
   describe 'GET /product_groups' do
     it "US should respond with an array of product_groups" do
-      get :index, :iso2 => 'US'
+      get :index, params: {:iso2 => 'US'}
       response.should be_success
       product_groups = JSON.parse(response.body)
       product_groups['product_groups'].length.should eq(3)
@@ -64,7 +64,7 @@ describe Api::V0::Shopping::ProductGroupsController do
     end
 
     it "CA should respond with an array of product_groups" do
-      get :index, :iso2 => 'CA'
+      get :index, params: {:iso2 => 'CA'}
       response.should be_success
       product_groups = JSON.parse(response.body)
       product_groups['product_groups'].length.should eq(3)

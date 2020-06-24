@@ -21,7 +21,7 @@ describe SitemapsController, "#get" do
     let!(:page2) { Fabricate(:page, title: "Hummy", published: false)}
 
     it 'has expected activity in sitemap' do
-      get :show, {format: :xml}
+      get :show, params: {format: :xml}
       expect(response).to be_success
       expect(assigns(:other_routes)).to have_at_least(4).items
       expect(assigns(:main_stuff)).to have(5).items

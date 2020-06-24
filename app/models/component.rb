@@ -1,4 +1,4 @@
-class Component < ActiveRecord::Base
+class Component < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: [:slugged]
 

@@ -1,4 +1,4 @@
-class AddHomeHeroCmsToSettings < ActiveRecord::Migration
+class AddHomeHeroCmsToSettings < ActiveRecord::Migration[5.2]
   def change
     add_column :settings, :hero_cms_title, :string, default: ""
     add_column :settings, :hero_cms_image, :text, default: ""

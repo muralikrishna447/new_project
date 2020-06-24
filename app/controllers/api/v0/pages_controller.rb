@@ -2,7 +2,7 @@ module Api
   module V0
     class PagesController < BaseController
 
-      before_filter :authenticate_active_admin_user!, only: [:index, :create, :update]
+      before_action :authenticate_active_admin_user!, only: [:index, :create, :update]
 
       def index
         @pages = Page.all
@@ -27,7 +27,7 @@ module Api
 
       def update
         @page = Page.find(params[:id])
-        if @page.update_attributes(set_component_params)
+        if @page.update_attributes!(set_component_params)
           render json: @page, serializer: Api::PageSerializer
         end
       end

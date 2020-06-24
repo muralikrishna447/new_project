@@ -1,4 +1,4 @@
-class StepIngredient < ActiveRecord::Base
+class StepIngredient < ApplicationRecord
   include Quantity
 
   belongs_to :step, inverse_of: :ingredients

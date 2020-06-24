@@ -1,4 +1,4 @@
-class UserSettings < ActiveRecord::Base
+class UserSettings < ApplicationRecord
   belongs_to :user
 
   validates_inclusion_of :preferred_temperature_unit, :in => %w( c f ), :allow_nil => true

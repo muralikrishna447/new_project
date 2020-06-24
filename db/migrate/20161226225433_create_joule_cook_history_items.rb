@@ -1,4 +1,4 @@
-class CreateJouleCookHistoryItems < ActiveRecord::Migration
+class CreateJouleCookHistoryItems < ActiveRecord::Migration[5.2]
   def change
     create_table :joule_cook_history_items do |t|
       t.integer :user_id

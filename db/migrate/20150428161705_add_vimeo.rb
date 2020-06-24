@@ -1,4 +1,4 @@
-class AddVimeo < ActiveRecord::Migration
+class AddVimeo < ActiveRecord::Migration[5.2]
   def change
     add_column :activities, :vimeo_id, :string
     add_column :assemblies, :vimeo_id, :string

@@ -1,4 +1,4 @@
-class StripeOrder < ActiveRecord::Base
+class StripeOrder < ApplicationRecord
 
   serialize :data, JSON
   belongs_to :user

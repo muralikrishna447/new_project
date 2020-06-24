@@ -1,9 +1,9 @@
 module Api
   module V0
     class AuthController < BaseController
-      before_filter(BaseController.make_service_or_admin_filter(
+      before_action(BaseController.make_service_or_admin_filter(
         [ExternalServiceTokenChecker::MESSAGING_SERVICE]), only: [:validate])
-      before_filter :ensure_authorized, only: [:logout, :external_redirect, :authorize_ge_redirect, :refresh_ge]
+      before_action :ensure_authorized, only: [:logout, :external_redirect, :authorize_ge_redirect, :refresh_ge]
 
       def authenticate
         begin
@@ -41,6 +41,9 @@ module Api
               token = AuthToken.from_string(params[:token])
             rescue JSON::JWS::VerificationFailed
               logger.info ("Token verification failed")
+              render_unauthorized
+              return
+            rescue JSON::JWT::InvalidFormat
               render_unauthorized
               return
             end

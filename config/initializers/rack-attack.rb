@@ -20,7 +20,8 @@ class Rack::Attack
     is_authenticated_external_service || req.ip == madore_ip || req.ip == market_ip
   end
 
-  ActiveSupport::Notifications.subscribe('rack.attack') do |name, start, finish, request_id, req|
+  ActiveSupport::Notifications.subscribe('track.rack_attack') do |name, start, finish, request_id, payload|
+    req = payload[:request]
     unless isWhitelisted(req)
       Rails.logger.info("rack.attack throttled request path: #{req.path} ip: #{req.ip}")
       Librato.increment "api.throttled_requests", sporadic: true
@@ -28,9 +29,9 @@ class Rack::Attack
   end
 
 
-  Rack::Attack.whitelist('allow authorized external services and madore requests to go unthrottled') do |req|
-    isWhitelisted(req)
-  end
+   Rack::Attack.safelist('allow authorized external services and madore requests to go unthrottled') do |req|
+     isWhitelisted(req)
+   end
 
   ### Throttle Spammy Clients ###
 

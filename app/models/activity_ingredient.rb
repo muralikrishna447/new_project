@@ -1,4 +1,4 @@
-class ActivityIngredient < ActiveRecord::Base
+class ActivityIngredient < ApplicationRecord
   self.primary_key = 'id'
   include Quantity
 

@@ -1,7 +1,7 @@
 require "js_connect"
 
 class SsoController < ApplicationController
-  before_filter :authenticate_cors_user
+  before_action :authenticate_cors_user
 
   def index
     # 1. Get your client ID and secret here. These must match those in your jsConnect settings.

@@ -1,5 +1,5 @@
 class LegalController < ApplicationController
-  before_filter :load_vars
+  before_action :load_vars
 
   # Cookie Policy: Specific by language only
   # Warranty: Specific by country + language combination

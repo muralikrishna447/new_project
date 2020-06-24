@@ -22,7 +22,7 @@ describe Api::V0::IngredientsController do
 
   # GET /api/v0/ingredients/:id
   it 'should return a single ingredient' do
-    get :index, id: @ingredient1.id
+    get :index, params: {id: @ingredient1.id}
     response.should be_success
 
     ingredient = JSON.parse(response.body).first

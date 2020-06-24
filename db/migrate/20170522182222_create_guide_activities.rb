@@ -1,4 +1,4 @@
-class CreateGuideActivities < ActiveRecord::Migration
+class CreateGuideActivities < ActiveRecord::Migration[5.2]
   def up
     create_table :guide_activities do |t|
       t.string :guide_id

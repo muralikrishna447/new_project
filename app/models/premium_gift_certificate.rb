@@ -1,4 +1,4 @@
-class PremiumGiftCertificate < ActiveRecord::Base
+class PremiumGiftCertificate < ApplicationRecord
 
   belongs_to :user, foreign_key: :purchaser_id#, inverse_of: :premium_gift_certificates
 
