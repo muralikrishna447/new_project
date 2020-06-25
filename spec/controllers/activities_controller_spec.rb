@@ -43,6 +43,7 @@ describe ActivitiesController do
           @user2 = Fabricate :user, name: 'Another User', email: 'anotheruser@user.com', role: 'user'
           @chefsteps_activity = Fabricate :activity, title: 'A New Recipe', published: true
           @user1_activity = Fabricate :activity, title: 'A User Recipe', creator: @user1.id, published: true
+          @un_published_activity = Fabricate :activity, title: 'A Unpublished Recipe', creator: @user1, published: false
         end
 
         it 'redirects if a non admin tries to edit a chefsteps activity' do
@@ -55,6 +56,12 @@ describe ActivitiesController do
           sign_in @user2
           get :show, params: {id: @user1_activity.slug, start_in_edit: true}
           expect(response).to redirect_to(@user1_activity)
+        end
+
+        it 'redirects if a user tries to edit another users unpublished activity' do
+          sign_in @user2
+          get :show, params: { id: @un_published_activity.slug, start_in_edit: true }
+          expect(response).to redirect_to(@un_published_activity)
         end
 
         it 'allows a user to edit their own activity' do

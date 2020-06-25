@@ -644,5 +644,10 @@ describe Api::V0::AuthController do
       response.code.should eq("403")
     end
 
+    it 'should return 401 unauthorized without HTTP_AUTHORIZATION' do
+      post :upgrade_token
+      response.code.should eq("401")
+    end
+
   end
 end
