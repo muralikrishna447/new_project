@@ -58,6 +58,7 @@ class ActivitiesController < ApplicationController
     if params[:start_in_edit]
       unless can?(:update, @activity)
         redirect_to activity_path(@activity)
+        return
       end
     end
     @show_app_add = true

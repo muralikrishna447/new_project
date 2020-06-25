@@ -3,7 +3,7 @@ module Api
     class AuthController < BaseController
       before_action(BaseController.make_service_or_admin_filter(
         [ExternalServiceTokenChecker::MESSAGING_SERVICE]), only: [:validate])
-      before_action :ensure_authorized, only: [:logout, :external_redirect, :authorize_ge_redirect, :refresh_ge]
+      before_action :ensure_authorized, only: [:logout, :external_redirect, :authorize_ge_redirect, :refresh_ge, :upgrade_token]
 
       def authenticate
         begin
@@ -421,7 +421,6 @@ module Api
       end
 
       def upgrade_token
-        ensure_authorized(true)
         token_string = request.headers['HTTP_AUTHORIZATION'].split(' ')[1]
         token = AuthToken.from_string(token_string)
         logger.info "Trying to upgrade token: #{token.claim.inspect}"

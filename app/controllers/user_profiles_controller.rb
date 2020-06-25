@@ -36,7 +36,7 @@ class UserProfilesController < ApplicationController
 
   def update
     email_before_update = @user.email
-    render_unauthorized unless current_user == @user
+    return render_unauthorized unless current_user == @user
     if @user.update_attributes(user_params)
       email_after_update = @user.email
       Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], @user.id)

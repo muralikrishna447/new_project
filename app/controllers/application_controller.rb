@@ -39,7 +39,7 @@ class ApplicationController < BaseApplicationController
   expose(:current_user_presenter) { current_user.present? ? UserPresenter.new(current_user) : nil }
 
   def options
-    render :text => '', :content_type => 'text/plain'
+    render plain: ''
   end
 
   # expose devise helper method to views
@@ -236,7 +236,7 @@ private
     logger.info(exception.inspect) if exception
     respond_to do |format|
       format.html { render template: 'errors/not_found', layout: 'layouts/application', status: 404 }
-      format.all { render nothing: true, status: 404 }
+      format.all { head :not_found }
     end
   end
 
