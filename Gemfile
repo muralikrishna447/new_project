@@ -24,8 +24,8 @@ gem 'filepicker-rails'
 gem 'comma'
 gem 'hashids'
 
-gem 'librato-rails', '1.4.1'
-gem 'librato-rack', '1.0.1'
+gem 'librato-rails', '1.4.2'
+gem 'librato-rack', '1.1.1'
 
 gem 'rack-cors', require: 'rack/cors'
 gem 'rack-access-control-headers'
