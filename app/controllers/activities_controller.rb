@@ -4,9 +4,9 @@ class ActivitiesController < ApplicationController
   expose(:cache_show) { params[:token].blank? }
   expose(:version) { Version.current }
 
-  before_filter :maybe_redirect_activity, only: :show
+  before_action :maybe_redirect_activity, only: :show
 
-  after_filter :track_iphone_app_activity
+  after_action :track_iphone_app_activity
 
   def maybe_redirect_activity
     @activity = Activity.friendly.find params[:id]
@@ -29,7 +29,7 @@ class ActivitiesController < ApplicationController
     # Not a problem
   end
 
-  before_filter :require_login, only: [:new, :fork, :update_as_json]
+  before_action :require_login, only: [:new, :fork, :update_as_json]
   def require_login
     unless current_user
       flash[:error] = "You must be logged in to do this"
@@ -58,10 +58,11 @@ class ActivitiesController < ApplicationController
     if params[:start_in_edit]
       unless can?(:update, @activity)
         redirect_to activity_path(@activity)
+        return
       end
     end
     @show_app_add = true
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, @activity))
+    @activity = Activity.includes([[ingredients: :ingredient], [steps: [ingredients: :ingredient]], [equipment: :equipment]]).find_published(params[:id], params[:token], can?(:update, @activity))
     add_extra_json_info
     @upload = Upload.new
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
@@ -104,7 +105,7 @@ class ActivitiesController < ApplicationController
     @activity.title = ""
     @activity.description = ""
     @activity.title = ""
-    @activity.creator = current_user unless current_admin?
+    @activity.user = current_user unless current_admin?
     @activity.activity_type << 'Recipe'
     @include_edit_toolbar = true
     @activity.save({validate: false})
@@ -116,7 +117,7 @@ class ActivitiesController < ApplicationController
     old_activity = Activity.find(params[:id])
     @activity = old_activity.deep_copy
     @activity.title = "#{current_user.name}'s Version Of #{old_activity.title}"
-    @activity.creator = current_user unless current_admin?
+    @activity.user = current_user unless current_admin?
     @activity.save!
     track_event(@activity, 'create') unless current_admin?
     render :json => {redirect_to: activity_path(@activity, {start_in_edit: true})}
@@ -124,7 +125,7 @@ class ActivitiesController < ApplicationController
 
   def get_as_json
 
-    @activity = Activity.includes([:ingredients, :steps, :equipment]).find_published(params[:id], params[:token], can?(:update, Activity))
+    @activity = Activity.includes([[ingredients: :ingredient], [steps: [ingredients: :ingredient]], [equipment: :equipment]]).find_published(params[:id], params[:token], can?(:update, Activity))
     add_extra_json_info
     if params[:version] && params[:version].to_i <= @activity.last_revision().revision
       @activity = @activity.restore_revision(params[:version])
@@ -171,7 +172,7 @@ class ActivitiesController < ApplicationController
 
       # unless current_user && (current_user.role == 'admin' || @activity.creator == current_user)
       unless can?(:update, @activity)
-        render nothing: true, status: 401 and return
+        render body: nil, status: 401 and return
       end
       respond_to do |format|
         format.json do

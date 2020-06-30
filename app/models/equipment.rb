@@ -1,4 +1,4 @@
-class Equipment < ActiveRecord::Base
+class Equipment < ApplicationRecord
   include CaseInsensitiveTitle
 
   has_many :activity_equipment, inverse_of: :equipment, dependent: :destroy

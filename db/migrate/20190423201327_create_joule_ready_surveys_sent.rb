@@ -1,4 +1,4 @@
-class CreateJouleReadySurveysSent < ActiveRecord::Migration
+class CreateJouleReadySurveysSent < ActiveRecord::Migration[5.2]
   def change
     create_table :joule_ready_surveys_sent, id: false do |t|
       t.string :program_id

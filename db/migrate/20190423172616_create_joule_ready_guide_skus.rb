@@ -1,4 +1,4 @@
-class CreateJouleReadyGuideSkus < ActiveRecord::Migration
+class CreateJouleReadyGuideSkus < ActiveRecord::Migration[5.2]
   def change
     create_table :joule_ready_guide_skus, id: false do |t|
       t.string :guide_id

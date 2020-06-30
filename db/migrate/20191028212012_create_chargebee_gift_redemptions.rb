@@ -1,4 +1,4 @@
-class CreateChargebeeGiftRedemptions < ActiveRecord::Migration
+class CreateChargebeeGiftRedemptions < ActiveRecord::Migration[5.2]
   def change
     create_table :chargebee_gift_redemptions do |t|
       t.string :gift_id

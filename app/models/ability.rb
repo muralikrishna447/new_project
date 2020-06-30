@@ -16,7 +16,7 @@ class Ability
       can :manage, Ingredient
       can :manage, Assembly
     else
-      can :manage, Activity, creator: user
+      can :manage, Activity, user: user
       can :create, Activity
       can :create, Ingredient
       can :update, Ingredient

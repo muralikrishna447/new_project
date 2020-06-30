@@ -23,18 +23,18 @@ describe Api::V0::AuthController do
     end
 
     it 'should return a status 401 Unauthorized if the password is incorrect' do
-      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: 'abcdef'}, client_metadata: 'cooking_app'
+      post :authenticate, params: {user: {email: 'johndoe@chefsteps.com', password: 'abcdef'}, client_metadata: 'cooking_app'}
       response.should_not be_success
       response.code.should eq("403")
     end
 
     it 'should work authenticate if email case does not match' do
-      post :authenticate, user: {email: 'JOHNdoe@chefsteps.com', password: '123456'}, client_metadata: "cooking_app"
+      post :authenticate, params: {user: {email: 'JOHNdoe@chefsteps.com', password: '123456'}, client_metadata: "cooking_app"}
       response.code.should == "200"
     end
 
     it 'should persist client metadata' do
-      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}, client_metadata: "cooking_app"
+      post :authenticate, params: {user: {email: 'johndoe@chefsteps.com', password: '123456'}, client_metadata: "cooking_app"}
       response.code.should eq("200")
       token = AuthToken.from_string JSON.parse(response.body)['token']
       address_id = token['a']
@@ -42,8 +42,8 @@ describe Api::V0::AuthController do
     end
 
     it 'should re-use an existing address' do
-      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
-        token: @aa.current_token.to_jwt
+      post :authenticate, params: {user: {email: 'johndoe@chefsteps.com', password: '123456'},
+        token: @aa.current_token.to_jwt}
       response.code.should eq("200")
       token = JSON.parse(response.body)['token']
 
@@ -55,8 +55,8 @@ describe Api::V0::AuthController do
 
     it 'should reject mismatched token' do
       @aa.revoke
-      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
-        token: @aa.current_token.to_jwt
+      post :authenticate, params: {user: {email: 'johndoe@chefsteps.com', password: '123456'},
+        token: @aa.current_token.to_jwt}
 
       response.should_not be_success
       response.code.should eq("403")
@@ -67,8 +67,8 @@ describe Api::V0::AuthController do
       chunks = token.split('.')
       chunks[2] = "gibberishsignature"
       forged_token = chunks.join(".")
-      post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'},
-        token: forged_token
+      post :authenticate, params: {user: {email: 'johndoe@chefsteps.com', password: '123456'},
+        token: forged_token}
 
       response.should_not be_success
       response.code.should eq("403")
@@ -76,7 +76,7 @@ describe Api::V0::AuthController do
 
     describe 'token' do
       before :each do
-        post :authenticate, user: {email: 'johndoe@chefsteps.com', password: '123456'}, client_metadata: 'cooking_app'
+        post :authenticate, params: {user: {email: 'johndoe@chefsteps.com', password: '123456'}, client_metadata: 'cooking_app'}
         response.should be_success
         response.code.should eq("200")
         @token = JSON.parse(response.body)['token']
@@ -138,7 +138,7 @@ describe Api::V0::AuthController do
 
     it 'should validate if provided a valid service token' do
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      get :validate, token: @valid_token
+      get :validate, params: {token: @valid_token}
       response.should be_success
       json_resp = JSON.parse(response.body)
       expect(json_resp['tokenValid']).to be true
@@ -147,7 +147,7 @@ describe Api::V0::AuthController do
 
     it 'should have correct addressable_addresses field' do
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      get :validate, token: @valid_token
+      get :validate, params: {token: @valid_token}
       response.should be_success
       json_resp = JSON.parse(response.body)
       expect(json_resp['addressableAddresses']).to eq([@for_circ.address_id])
@@ -155,7 +155,7 @@ describe Api::V0::AuthController do
 
     it 'user should have empty capabilities' do
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      get :validate, token: @valid_token
+      get :validate, params: {token: @valid_token}
       response.should be_success
       json_resp = JSON.parse(response.body)
       expect(json_resp['capabilities']).to eq([])
@@ -165,7 +165,7 @@ describe Api::V0::AuthController do
       BetaFeatureService.stub(:user_has_feature).with(@user, 'predictive', anything)
         .and_return(true)
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      get :validate, token: @valid_circ_token
+      get :validate, params: {token: @valid_circ_token}
       response.should be_success
       json_resp = JSON.parse(response.body)
       expect(json_resp['capabilities']).to eq(['predictive'])
@@ -173,7 +173,7 @@ describe Api::V0::AuthController do
 
     it 'circ should have not have predictive capability if not enabled' do
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      get :validate, token: @valid_circ_token
+      get :validate, params: {token: @valid_circ_token}
       response.should be_success
       json_resp = JSON.parse(response.body)
       expect(json_resp['capabilities']).to eq([])
@@ -186,7 +186,7 @@ describe Api::V0::AuthController do
 
     it 'should not validate if valid service token provided but token to be validated is invalid' do
       request.env['HTTP_AUTHORIZATION'] = @service_token
-      get :validate, token: @invalid_token
+      get :validate, params: {token: @invalid_token}
       response.code.should == "400"
       expect(JSON.parse(response.body)['tokenValid']).to be_falsy
     end
@@ -238,7 +238,7 @@ describe Api::V0::AuthController do
     end
 
     it "should return a ge token" do
-      get :authenticate_ge, code: "DEF456", state: @state
+      get :authenticate_ge, params: {code: "DEF456", state: @state}
       response.code.should eq("200")
       body = JSON.parse(response.body)
       body["message"].should eq("Success.")
@@ -247,7 +247,7 @@ describe Api::V0::AuthController do
 
     it "should return a ge token if a token already exists for a user" do
       oauth_token = Fabricate :oauth_token, user_id: @user.id, service: "ge", token: "abc123", token_expires_at: Time.now
-      get :authenticate_ge, code: "DEF456", state: @state
+      get :authenticate_ge, params: {code: "DEF456", state: @state}
       response.code.should eq("200")
       body = JSON.parse(response.body)
       body["message"].should eq("Success.")
@@ -261,7 +261,7 @@ describe Api::V0::AuthController do
           unique: Time.now.to_f, # Could be used to help prevent replay attacks
           id: 1 # This is fake
       }, ENV['OAUTH_SECRET'])
-      get :authenticate_ge, code: "DEF456", state: @state
+      get :authenticate_ge, params: {code: "DEF456", state: @state}
       response.code.should eq("401")
       body = JSON.parse(response.body)
       body["message"].should eq("Invalid user")
@@ -269,7 +269,7 @@ describe Api::V0::AuthController do
 
     it "should return an error if it doesn't receive a token" do
       GE::Client.stub_chain(:auth_code, :get_token).and_raise(OAuth2::Error.new(OpenStruct.new({error: :invalid_token, error_description: "test"})))
-      get :authenticate_ge, code: "DEF456", state: @state
+      get :authenticate_ge, params: {code: "DEF456", state: @state}
       response.code.should eq("401")
       body = JSON.parse(response.body)
       body["message"].should eq("Invalid token")
@@ -319,7 +319,7 @@ describe Api::V0::AuthController do
         access_token: @fake_user_access_token,
         user_id: '6789'
       }
-      post :authenticate_facebook, {user:user}
+      post :authenticate_facebook, params: {user:user}
       response_body = JSON.parse(response.body)
       expect(response.code).to eq("200")
       expect(response_body['token']).not_to be_empty
@@ -348,7 +348,7 @@ describe Api::V0::AuthController do
         access_token: @fake_user_access_token,
         user_id: '54321'
       }
-      post :authenticate_facebook, {user:user}
+      post :authenticate_facebook, params: {user:user}
       expect(response.code).to eq("200")
       expect(response.body['token']).not_to be_empty
       u = User.where(email: 'existing@test.com').first
@@ -377,7 +377,7 @@ describe Api::V0::AuthController do
         access_token: @fake_user_access_token,
         user_id: '54321'
       }
-      post :authenticate_facebook, {user:user}
+      post :authenticate_facebook, params: {user:user}
       expect(response.code).to eq("400")
       # expect(response.body['token']).not_to be_empty
       # u = User.where(email: 'existing@test.com').first
@@ -399,7 +399,7 @@ describe Api::V0::AuthController do
         access_token: @fake_user_access_token,
         user_id: '54321'
       }
-      post :authenticate_facebook, {user:user}
+      post :authenticate_facebook, params: {user:user}
       expect(response.code).to eq("403")
     end
 
@@ -417,7 +417,7 @@ describe Api::V0::AuthController do
         access_token: @fake_user_access_token,
         user_id: '54321'
       }
-      post :authenticate_facebook, {user:user}
+      post :authenticate_facebook, params: {user:user}
       expect(response.code).to eq("403")
     end
 
@@ -474,10 +474,10 @@ describe Api::V0::AuthController do
       }
 
       # 1st login
-      post :authenticate_facebook, {user:user}
+      post :authenticate_facebook, params: {user:user}
 
       # 2nd login
-      post :authenticate_facebook, {user:user}
+      post :authenticate_facebook, params: {user:user}
 
       expect(response.code).to eq("200")
       expect(response.body['token']).not_to be_empty
@@ -494,34 +494,34 @@ describe Api::V0::AuthController do
     end
 
     it 'rejects unconfigured but valid path' do
-      get :external_redirect, :path => 'https://www.example.org'
+      get :external_redirect, params: {:path => 'https://www.example.org'}
       response.code.should == '404'
     end
 
     it 'rejects invalid path' do
-      get :external_redirect, :path => ':/sdas9sd'
+      get :external_redirect, params: {:path => ':/sdas9sd'}
       response.code.should == '400'
     end
 
     it 'handles basic shopify redirect' do
-      get :external_redirect, :path => 'http://test.myshopify.com'
+      get :external_redirect, params: {:path => 'http://test.myshopify.com'}
       response.code.should == '200'
     end
 
     it 'handles shopify checkout redirect' do
-      get :external_redirect, :path => 'http://test.myshopify.com?checkout_url=http%3A%2F%2Fsomecheckout.com'
+      get :external_redirect, params: {:path => 'http://test.myshopify.com?checkout_url=http%3A%2F%2Fsomecheckout.com'}
       # Actually checking the redirect requires cracking open the encrypted multipass token
       response.code.should == '200'
     end
 
     it 'handles zendesk redirect' do
-      get :external_redirect, :path => "https://#{ENV['ZENDESK_DOMAIN']}"
+      get :external_redirect, params: {:path => "https://#{ENV['ZENDESK_DOMAIN']}"}
       response.code.should == '200'
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
 
     it 'handles spree redirect' do
-      get :external_redirect, :path => "https://spree.test.com/"
+      get :external_redirect, params: {:path => "https://spree.test.com/"}
       response.code.should == '200'
       JSON.parse(response.body)['redirect'].should start_with("https://spree.test.com/")
     end
@@ -530,7 +530,7 @@ describe Api::V0::AuthController do
       redirect_base = "www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
       token = request.env['HTTP_AUTHORIZATION']
       path = "https://#{redirect_base}/some-random-path"
-      get :external_redirect, :path => path
+      get :external_redirect, params: {:path => path}
       response.code.should == '200'
       redirect_url = JSON.parse(response.body)['redirect']
       redirect_url.should start_with("https://#{redirect_base}/sso?token=")
@@ -542,14 +542,14 @@ describe Api::V0::AuthController do
     end
 
     it 'handles zendesk redirect from mapped domain but still sends JWT to main domain' do
-      get :external_redirect, :path => "https://#{ENV['ZENDESK_MAPPED_DOMAIN']}"
+      get :external_redirect, params: {:path => "https://#{ENV['ZENDESK_MAPPED_DOMAIN']}"}
       response.code.should == '200'
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
 
     it 'handles redirect by key' do
       Rails.configuration.redirect_by_key['made_up_test_key'] = "https://#{ENV['ZENDESK_DOMAIN']}"
-      get :external_redirect_by_key, :key => "made_up_test_key"
+      get :external_redirect_by_key, params: {:key => "made_up_test_key"}
       response.code.should == '200'
       JSON.parse(response.body)['redirect'].should start_with("https://#{ENV['ZENDESK_DOMAIN']}/access/jwt?jwt")
     end
@@ -557,14 +557,14 @@ describe Api::V0::AuthController do
     it 'handles shopify redirect' do
       #the controller should use the key parameter as the redirect url
       key_url = "https://#{Rails.configuration.shopify[:store_domain]}/test_url"
-      get :external_redirect_by_key, :key => key_url
+      get :external_redirect_by_key, params: {:key => key_url}
       response.code.should == '200'
       JSON.parse(response.body)['redirect'].should start_with("https://#{Rails.configuration.shopify[:store_domain]}/account/login/multipass")
     end
 
     it 'returns a proper token for amazon' do
       sign_in @user
-      get :external_redirect, :path => "https://pitangui.amazon.com?vendorId=12345"
+      get :external_redirect, params: {:path => "https://pitangui.amazon.com?vendorId=12345"}
       response.code.should eq("200")
 
       redirect = JSON.parse(response.body)['redirect']
@@ -581,7 +581,7 @@ describe Api::V0::AuthController do
 
     it 'returns a proper token for google' do
       sign_in @user
-      get :external_redirect, :path => "https://oauth-redirect.googleusercontent.com"
+      get :external_redirect, params: {:path => "https://oauth-redirect.googleusercontent.com"}
       response.code.should eq("200")
 
       redirect = JSON.parse(response.body)['redirect']
@@ -598,7 +598,7 @@ describe Api::V0::AuthController do
 
     it 'returns a proper token for facebook messenger bot' do
       sign_in @user
-      get :external_redirect, :path => "http://" + Rails.application.config.shared_config[:facebook][:messenger_endpoint] + "/auth?psid=1234"
+      get :external_redirect, params: {:path => "http://" + Rails.application.config.shared_config[:facebook][:messenger_endpoint] + "/auth?psid=1234"}
 
       response.code.should eq("200")
 
@@ -642,6 +642,11 @@ describe Api::V0::AuthController do
       controller.request.env['HTTP_AUTHORIZATION'] = "Bearer #{@short_lived_token}"
       post :upgrade_token
       response.code.should eq("403")
+    end
+
+    it 'should return 401 unauthorized without HTTP_AUTHORIZATION' do
+      post :upgrade_token
+      response.code.should eq("401")
     end
 
   end

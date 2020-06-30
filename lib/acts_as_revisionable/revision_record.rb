@@ -12,13 +12,12 @@ module ActsAsRevisionable
     class << self
       # Find a specific revision record.
       def find_revision(klass, id, revision)
-        find(:first, :conditions => {:revisionable_type => klass.base_class.to_s, :revisionable_id => id, :revision => revision})
+        where(revisionable_type: klass.base_class.to_s, revisionable_id: id, :revision => revision).first
       end
       
       # Find the last revision record for a class.
       def last_revision(klass, id, revision = nil)
-        where("revisionable_type =? and revisionable_id =?", klass.base_class.to_s, id).order('revision DESC').first
-        # find(:first, :conditions => {:revisionable_type => klass.base_class.to_s, :revisionable_id => id}, :order => "revision DESC")
+        where(revisionable_type: klass.base_class.to_s, revisionable_id: id).order('revision DESC').first
       end
 
       # Truncate the revisions for a record. Available options are :limit and :max_age.
@@ -28,12 +27,13 @@ module ActsAsRevisionable
         conditions = ['revisionable_type = ? AND revisionable_id = ?', revisionable_type.base_class.to_s, revisionable_id]
         if options[:minimum_age]
           conditions.first << ' AND created_at <= ?'
-          conditions << options[:minimum_age].ago
+          conditions << options[:minimum_age].seconds.ago
         end
 
-        start_deleting_revision = find(:first, :conditions => conditions, :order => 'revision DESC', :offset => options[:limit])
+        start_deleting_revision = where(conditions).order('revision DESC').offset(options[:limit]).first
         if start_deleting_revision
-          delete_all(['revisionable_type = ? AND revisionable_id = ? AND revision <= ?', revisionable_type.base_class.to_s, revisionable_id, start_deleting_revision.revision])
+          where('revisionable_type = ? AND revisionable_id = ? AND revision <= ?', revisionable_type.base_class.to_s,
+                revisionable_id, start_deleting_revision.revision).delete_all
         end
       end
 
@@ -41,8 +41,7 @@ module ActsAsRevisionable
       # The +revisionable_type+ argument specifies the class to delete revision records for.
       def empty_trash(revisionable_type, max_age)
         sql = "revisionable_id IN (SELECT revisionable_id from #{table_name} WHERE created_at <= ? AND revisionable_type = ? AND trash = ?) AND revisionable_type = ?"
-        args = [max_age.ago, revisionable_type.name, true, revisionable_type.name]
-        delete_all([sql] + args)
+        where(sql, max_age.seconds.ago, revisionable_type.name, true, revisionable_type.name).delete_all
       end
 
       # Create the table to store revision records.
@@ -93,7 +92,7 @@ module ActsAsRevisionable
 
     # Restore the revision to the original record. If any errors are encountered restoring attributes, they
     # will be added to the errors object of the restored record.
-    def restore
+    def restore(save = false)
       restore_class = self.revisionable_type.constantize
 
       # Check if we have a type field, if yes, assume single table inheritance and restore the actual class instead of the stored base class
@@ -111,7 +110,7 @@ module ActsAsRevisionable
       end
 
       record = restore_class.new
-      restore_record(record, revision_attributes)
+      restore_record(record, revision_attributes, save)
       return record
     end
     
@@ -146,7 +145,7 @@ module ActsAsRevisionable
     end
 
     def set_revision_number
-      last_revision = self.class.maximum(:revision, :conditions => {:revisionable_type => self.revisionable_type, :revisionable_id => self.revisionable_id}) || 0
+      last_revision = self.class.where('revisionable_type =? and  revisionable_id =?',  self.revisionable_type, self.revisionable_id).maximum(:revision) || 0
       self.revision = last_revision + 1
     end
 
@@ -180,13 +179,14 @@ module ActsAsRevisionable
       return attrs
     end
 
-    def attributes_and_associations(klass, hash)
+    def attributes_and_associations(klass, hash, primary_key: nil)
       attrs = {}
       association_attrs = {}
 
       if hash
         hash.each_pair do |key, value|
-          if klass.reflections.include?(key.to_sym)
+          next if key == primary_key
+          if klass.reflections.include?(key.to_s)
             association_attrs[key] = value
           else
             attrs[key] = value
@@ -197,7 +197,7 @@ module ActsAsRevisionable
       return [attrs, association_attrs]
     end
 
-    def restore_association(record, association, association_attributes)
+    def restore_association(record, association, association_attributes, save = false)
       association = association.to_sym
       reflection = record.class.reflections[association.to_s]
       associated_record = nil
@@ -207,20 +207,22 @@ module ActsAsRevisionable
           if association_attributes.kind_of?(Array)
             # Pop all the associated records to remove all records. In Rails 3.2 setting the value of the list
             # will immediately affect the database
-            records = record.send(association)
-            while records.pop do
+            # while records.pop do
               # no-op
-            end
+            # ends
+            ids = []
             association_attributes.each do |attrs|
-              restore_association(record, association, attrs)
+              ids << attrs['id']
+              restore_association(record, association, attrs, save)
             end
+            record.send(association).each { |obj| obj.mark_for_destruction unless obj.id.in?(ids) }
           else
             associated_record = record.send(association).build
-            restore_record(associated_record, association_attributes)
+            restore_record(associated_record, association_attributes, save)
           end
         elsif reflection.macro == :has_one
           associated_record = reflection.klass.new
-          restore_record(associated_record, association_attributes)
+          restore_record(associated_record, association_attributes, save)
           record.send("#{association}=", associated_record)
         elsif reflection.macro == :has_and_belongs_to_many
           record.send("#{association.to_s.singularize}_ids=", association_attributes)
@@ -228,21 +230,23 @@ module ActsAsRevisionable
       rescue => e
         record.errors.add(association, "could not be restored from the revision: #{e.message}")
       end
-      
       if associated_record && !associated_record.errors.empty?
         record.errors.add(association, 'could not be restored from the revision')
       end
     end
 
     # Restore a record and all its associations.
-    def restore_record(record, attributes)
+    def restore_record(record, attributes, save = false)
       primary_key = record.class.primary_key
-      primary_key = [primary_key].compact unless primary_key.is_a?(Array)
-      primary_key.each do |key|
-        record.send("#{key.to_s}=", attributes[key.to_s])
+      p_key = save ? nil : primary_key
+      if save
+        primary_key = [primary_key].compact unless primary_key.is_a?(Array)
+        primary_key.each do |key|
+          record.send("#{key.to_s}=", attributes[key.to_s])
+        end
       end
 
-      attrs, association_attrs = attributes_and_associations(record.class, attributes)
+      attrs, association_attrs = attributes_and_associations(record.class, attributes, primary_key: p_key)
       attrs.each_pair do |key, value|
         begin
           record.send("#{key}=", value)
@@ -252,10 +256,11 @@ module ActsAsRevisionable
       end
 
       association_attrs.each_pair do |key, values|
-        restore_association(record, key, values) if values
+        restore_association(record, key, values, save) if values
       end
-      
-      # Check if the record already exists in the database and restore its state.
+
+
+      # Check if the record already exists in the database and restore its st0\ate.
       # This must be done last because otherwise associations on an existing record
       # can be deleted when a revision is restored to memory.
       exists = record.class.find(record.send(record.class.primary_key)) rescue nil

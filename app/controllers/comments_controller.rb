@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
 
-  before_filter :authenticate_user!, only: [:create]
-  before_filter :load_commentable, only: [:index, :create]
+  before_action :authenticate_user!, only: [:create]
+  before_action :load_commentable, only: [:index, :create]
 
   def index
     @comments = @commentable.comments

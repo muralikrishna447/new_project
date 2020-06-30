@@ -1,4 +1,4 @@
-class AddSignupIncentiveToUser < ActiveRecord::Migration
+class AddSignupIncentiveToUser < ActiveRecord::Migration[5.2]
   def up
     add_column :users, :signup_incentive_available, :boolean, default: true
     User.update_all(signup_incentive_available: false);

@@ -1,8 +1,8 @@
-class Step < ActiveRecord::Base
+class Step < ApplicationRecord
 
   belongs_to :activity, touch: true, inverse_of: :steps
 
-  has_many :ingredients, class_name: StepIngredient, dependent: :destroy, inverse_of: :step
+  has_many :ingredients, class_name: 'StepIngredient', dependent: :destroy, inverse_of: :step
 
   serialize :presentation_hints, JSON
 
@@ -68,7 +68,7 @@ class Step < ActiveRecord::Base
     ingredient_attrs.each_with_index do |ingredient_attr, idx|
       title = ingredient_attr[:title].strip
       ingredient = Ingredient.find_or_create_by_subactivity_or_ingredient_title(title)
-      step_ingredient = ingredients.find_or_create_by_ingredient_id_and_step_id(ingredient.id, self.id)
+      step_ingredient = ingredients.find_or_create_by(ingredient_id: ingredient.id, step_id: self.id)
       step_ingredient.update_attributes(
         note: ingredient_attr[:note],
         display_quantity: ingredient_attr[:display_quantity],

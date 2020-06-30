@@ -1,4 +1,4 @@
-class CreatePremiumGiftCertificate < ActiveRecord::Migration
+class CreatePremiumGiftCertificate < ActiveRecord::Migration[5.2]
   def change
     create_table :premium_gift_certificates do |t|
       t.integer :purchaser_id

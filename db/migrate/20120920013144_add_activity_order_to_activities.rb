@@ -1,4 +1,4 @@
-class AddActivityOrderToActivities < ActiveRecord::Migration
+class AddActivityOrderToActivities < ActiveRecord::Migration[5.2]
   def change
     add_column :activities, :activity_order, :integer
 

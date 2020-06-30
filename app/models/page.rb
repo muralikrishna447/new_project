@@ -1,6 +1,6 @@
 require 'json'
 
-class Page < ActiveRecord::Base
+class Page < ApplicationRecord
   extend FriendlyId
   include PublishableModel
 

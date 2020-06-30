@@ -1,4 +1,4 @@
-class AddFirstPublishedAt < ActiveRecord::Migration
+class AddFirstPublishedAt < ActiveRecord::Migration[5.2]
   def up
     add_column :activities, :first_published_at, :datetime
   end

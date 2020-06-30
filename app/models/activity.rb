@@ -1,4 +1,4 @@
-class Activity < ActiveRecord::Base
+class Activity < ApplicationRecord
   extend FriendlyId
   include PublishableModel
   include ActsAsRevisionable
@@ -9,20 +9,20 @@ class Activity < ActiveRecord::Base
   acts_as_taggable
   acts_as_revisionable associations: [:ingredients, :as_ingredient, {:steps => :ingredients}, {:equipment => :equipment}], :dependent => :keep, :on_destroy => true
 
-  friendly_id :title, use: [:slugged, :history]
+  friendly_id :title, use: [:slugged, :history, :finders]
 
-  has_many :ingredients, dependent: :destroy, class_name: ActivityIngredient, inverse_of: :activity
-  has_many :terminal_ingredients, class_name: Ingredient, through: :ingredients, source: :ingredient
+  has_many :ingredients, dependent: :destroy, class_name: 'ActivityIngredient', inverse_of: :activity
+  has_many :terminal_ingredients, class_name: 'Ingredient', through: :ingredients, source: :ingredient
 
   # The as_ingredient relationship returns the ingredient version of the activity
-  has_one :as_ingredient, class_name: Ingredient, foreign_key: 'sub_activity_id'
+  has_one :as_ingredient, class_name: 'Ingredient', foreign_key: 'sub_activity_id'
   has_many :used_in_activities, source: :activities, through: :as_ingredient
-  belongs_to :source_activity, class_name: Activity, foreign_key: 'source_activity_id'
+  belongs_to :source_activity, class_name: 'Activity', foreign_key: 'source_activity_id'
 
   has_many :steps, inverse_of: :activity, dependent: :destroy
 
-  has_many :equipment, class_name: ActivityEquipment, inverse_of: :activity, dependent: :destroy
-  has_many :terminal_equipment, class_name: Equipment, through: :equipment, source: :equipment
+  has_many :equipment, class_name: 'ActivityEquipment', inverse_of: :activity, dependent: :destroy
+  has_many :terminal_equipment, class_name: 'Equipment', through: :equipment, source: :equipment
 
   has_many :user_activities
   has_many :users, through: :user_activities
@@ -41,9 +41,9 @@ class Activity < ActiveRecord::Base
   has_one :publishing_schedule
   has_one :guide_activity
 
-  belongs_to :creator, class_name: User, foreign_key: 'creator'
-  belongs_to :last_edited_by, class_name: User, foreign_key: 'last_edited_by_id'
-  belongs_to :currently_editing_user, class_name: User, foreign_key: 'currently_editing_user'
+  belongs_to :user, class_name: 'User', foreign_key: 'creator'
+  belongs_to :last_edited_by, class_name: 'User', foreign_key: 'last_edited_by_id'
+  belongs_to :currently_editing_user, class_name: 'User', foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
   validates :promote_order, :numericality => { greater_than_or_equal_to: 1, message: "Order should be greater than or equal to 1"}, if: -> { promoted? }
@@ -77,7 +77,7 @@ class Activity < ActiveRecord::Base
 
   attr_accessor :used_in, :forks, :upload_count, :is_promoted
 
-  include PgSearch
+  include PgSearch::Model
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
     :if => :published
 
@@ -164,7 +164,7 @@ class Activity < ActiveRecord::Base
     end
 
     add_attribute :chefsteps_generated do
-      creator.blank?
+      user.blank?
     end
 
     # Sort fields
@@ -492,7 +492,7 @@ class Activity < ActiveRecord::Base
   def containing_course
     id = recursive_find_root("Activity", self.id)
     return id if id == nil
-    return Assembly.find(id)
+    return Assembly.find_by(id: id)
   end
 
   def disqus_id
@@ -530,7 +530,7 @@ class Activity < ActiveRecord::Base
   end
 
   def chefsteps_generated
-    creator.blank?
+    user.blank?
   end
 
   private
@@ -562,7 +562,7 @@ class Activity < ActiveRecord::Base
   def update_and_create_equipment(equipment_attrs)
     equipment_attrs.each_with_index do |equipment_attr, idx|
       equipment_item = Equipment.find_or_create_by_title(equipment_attr[:title])
-      activity_equipment = equipment.find_or_create_by_equipment_id_and_activity_id(equipment_item.id, self.id)
+      activity_equipment = equipment.find_or_create_by(equipment_id: equipment_item.id, activity_id: self.id)
       equipment_attr[:optional] = 'true' if equipment_attr[:optional] == ''
       activity_equipment.update_attributes(
         optional: equipment_attr[:optional] || false,
@@ -584,7 +584,7 @@ class Activity < ActiveRecord::Base
         step_id = nil
       end
       step = steps.find_or_create_by(id: step_id)
-      step.bypass_sanitization = self.creator.blank?
+      step.bypass_sanitization = self.user.blank?
       step.update_attributes(
         title: step_attr[:title],
         directions: step_attr[:directions],
@@ -621,7 +621,7 @@ class Activity < ActiveRecord::Base
     ingredient_attrs.each_with_index do |ingredient_attr, idx|
       title = ingredient_attr[:title].strip
       ingredient = Ingredient.find_or_create_by_subactivity_or_ingredient_title(title)
-      activity_ingredient = ingredients.find_or_create_by_ingredient_id_and_activity_id(ingredient.id, self.id)
+      activity_ingredient = ingredients.find_or_create_by(ingredient_id: ingredient.id, activity_id: self.id)
       activity_ingredient.update_attributes(
           note: ingredient_attr[:note],
           display_quantity: ingredient_attr[:display_quantity],

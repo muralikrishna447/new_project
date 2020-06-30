@@ -1,7 +1,7 @@
 require 'set'
 
 class BaseApplicationController < ActionController::Base
-  before_filter :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user, :detect_country
+  before_action :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user, :detect_country
 
   ALLOWED_ORIGINS = Set['www.chefsteps.com', 'shop.chefsteps.com',
                         'www.chocolateyshatner.com', 'shop.chocolateyshatner.com',
@@ -74,7 +74,7 @@ class BaseApplicationController < ActionController::Base
     logger.info("current_user id: #{current_user.nil? ? "anon" : current_user.id}")
   end
 
-  before_filter :log_ga_client
+  before_action :log_ga_client
   def log_ga_client
     if cookies[:_ga]
       logger.info "GA cookie value [#{cookies[:_ga]}] User [#{current_user ? current_user.id : nil}]"
@@ -117,7 +117,7 @@ class BaseApplicationController < ActionController::Base
       ip_address = ip_address || get_ip_address
       logger.info("Geolocating IP: #{ip_address}")
 
-      return dummy_location if ip_address == '127.0.0.1'
+      return dummy_location if ip_address == '127.0.0.1' || ip_address == '::1'
 
       begin
         key = "geocode-cache-#{ip_address}"

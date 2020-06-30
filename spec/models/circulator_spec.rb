@@ -7,7 +7,7 @@ describe Circulator  do
   end
 
   it "can be created" do
-    c = Circulator.find(@circulator)
+    c = Circulator.find_by(id: @circulator)
     c.serial_number.should == "circ123"
   end
 

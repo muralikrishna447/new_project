@@ -1,7 +1,7 @@
 module Api
   module V0
     class ChargesController < BaseController
-      before_filter :ensure_authorized
+      before_action :ensure_authorized
 
       def google_analytics_client_id
         google_analytics_cookie.gsub(/^GA\d\.\d\./, '')

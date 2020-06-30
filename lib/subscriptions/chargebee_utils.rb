@@ -36,8 +36,11 @@ module Subscriptions
           customer_result = nil
         end
 
+        # Passing trial_end: '0' activates the subscription immediately
+        # and skips any trial period for the plan.
         subscription = {
           plan_id: plan_id,
+          trial_end: '0'
         }
         if coupon_id.present?
           subscription[:coupon_ids] = [coupon_id]

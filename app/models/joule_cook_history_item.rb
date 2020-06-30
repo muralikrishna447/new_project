@@ -1,4 +1,4 @@
-class JouleCookHistoryItem < ActiveRecord::Base
+class JouleCookHistoryItem < ApplicationRecord
   acts_as_paranoid
 
   HASHID_SALT = '3cc6500d43f5b84uyg7gyi13889639'
@@ -6,7 +6,6 @@ class JouleCookHistoryItem < ActiveRecord::Base
 
   @@db_lookup_size = 20
   paginates_per @@db_lookup_size
-
   belongs_to :user
 
   validates :idempotency_id, presence: true
@@ -16,12 +15,12 @@ class JouleCookHistoryItem < ActiveRecord::Base
   validates :set_point, presence: true
   validates :set_point, numericality: true
   validates :cook_id, presence: true
-  validates :cook_time, presence: true, if: 'automatic?'
-  validates :program_type, presence: true, if: 'automatic?'
-  validates :set_point, presence: true, if: 'automatic?'
-  validates :cook_id, presence: true, if: 'automatic?'
-  validates :timer_id, presence: true, if: 'guided?'
-  validates :program_id, presence: true, if: 'guided?'
+  validates :cook_time, presence: true, if: -> {self.automatic?}
+  validates :program_type, presence: true, if: -> {self.automatic?}
+  validates :set_point, presence: true, if: -> {self.automatic?}
+  validates :cook_id, presence: true, if: -> {self.automatic?}
+  validates :timer_id, presence: true, if: -> {self.guided?}
+  validates :program_id, presence: true, if: -> {self.guided?}
 
   def self.db_lookup_size
     @@db_lookup_size

@@ -40,6 +40,8 @@ ActiveAdmin.register Activity do
     link_to('Edit Step Ingredients', associated_ingredients_admin_activity_path(activity))
   end
 
+  # Version history is broken and viewing revisions can cause steps
+  # to be deleted, removing this for now.
   action_item :view, only: [:show, :edit] do
     link_to('Versions', versions_admin_activity_path(activity))
   end
@@ -132,6 +134,8 @@ ActiveAdmin.register Activity do
     redirect_to({action: :show}, notice: "Step's ingredients updated")
   end
 
+  # Version history is broken and viewing revisions can cause steps
+  # to be deleted, removing this for now.
   member_action :versions, method: :get do
     @activity = Activity.friendly.find(params[:id])
     @versions = []
@@ -146,6 +150,8 @@ ActiveAdmin.register Activity do
     @versions.unshift(version_popup_entry(last_rev_num + 1, @activity))
   end
 
+  # Version history is broken and viewing revisions can cause steps
+  # to be deleted, removing this for now.
   member_action :restore_version, method: :get do
     @activity = Activity.friendly.find(params[:id])
     @version = params[:version]

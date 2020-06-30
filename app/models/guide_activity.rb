@@ -2,7 +2,7 @@ require 'action_view'
 require 'action_view/helpers'
 include ActionView::Helpers::DateHelper
 
-class GuideActivity < ActiveRecord::Base
+class GuideActivity < ApplicationRecord
   validates_uniqueness_of :guide_id
   belongs_to :activity
 

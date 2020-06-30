@@ -5,7 +5,7 @@ module Api
   class BaseController < BaseApplicationController
     instrument_action :all
 
-    skip_before_filter :verify_authenticity_token
+    skip_before_action :verify_authenticity_token
 
     rescue_from Exception do |exception|
       logger.error exception
@@ -19,12 +19,12 @@ module Api
       headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Origin, Content-Type, Accept, Authorization, Token, cs-referer, X-Application-Version'
       headers['Access-Control-Max-Age'] = "1728000"
       if request.method == 'OPTIONS'
-        render :text => '', :content_type => 'text/plain'
+        render plain: ''
       end
     end
 
     def options
-      render :text => '', :content_type => 'text/plain'
+      render plain: ''
     end
 
     def default_serializer_options

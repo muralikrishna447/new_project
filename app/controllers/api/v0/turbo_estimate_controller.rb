@@ -1,7 +1,7 @@
 module Api
   module V0
     class TurboEstimateController < BaseController
-      before_filter :ensure_authorized
+      before_action :ensure_authorized
 
       def get_turbo_estimate
         estimate = TurboEstimateCalculator.new(params).get_estimate

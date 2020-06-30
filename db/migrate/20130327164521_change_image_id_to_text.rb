@@ -1,4 +1,4 @@
-class ChangeImageIdToText < ActiveRecord::Migration
+class ChangeImageIdToText < ActiveRecord::Migration[5.2]
   def change
     change_column :activities, :image_id, :text
     change_column :activities, :featured_image_id, :text

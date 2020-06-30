@@ -22,7 +22,7 @@ xml.tag! 'urlset', 'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9' do
         xml.loc(base_url + url_for(p))
       end
       # Put the highest priority on ChefSteps activities
-      if p.is_a?(Activity) && ! p.creator
+      if p.is_a?(Activity) && ! p.user
         xml.priority(1)
       end
       xml.changefreq("daily")

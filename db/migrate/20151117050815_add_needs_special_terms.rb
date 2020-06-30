@@ -1,4 +1,4 @@
-class AddNeedsSpecialTerms < ActiveRecord::Migration
+class AddNeedsSpecialTerms < ActiveRecord::Migration[5.2]
   def up
     add_column :users, :needs_special_terms, :boolean, default: false
   end

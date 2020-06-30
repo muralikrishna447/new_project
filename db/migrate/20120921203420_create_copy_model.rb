@@ -1,4 +1,4 @@
-class CreateCopyModel < ActiveRecord::Migration
+class CreateCopyModel < ActiveRecord::Migration[5.2]
   def change
     create_table :copies do |t|
       t.string :location

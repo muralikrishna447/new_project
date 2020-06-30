@@ -1,4 +1,4 @@
-class CreateCirculators < ActiveRecord::Migration
+class CreateCirculators < ActiveRecord::Migration[5.2]
   def change
     create_table :circulators do |t|
       t.string :serial_number

@@ -1,4 +1,4 @@
-class Version < ActiveRecord::Base
+class Version < ApplicationRecord
 
   after_update :purge_cache
 

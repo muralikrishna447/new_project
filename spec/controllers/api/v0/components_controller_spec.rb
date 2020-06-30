@@ -18,7 +18,7 @@ describe Api::V0::ComponentsController do
 
     # GET /api/v0/components/:id
     it 'should get a component by id' do
-      get :show, id: @component.id
+      get :show, params: {id: @component.id}
       response.should be_success
       component = JSON.parse(response.body)
       component['componentType'].should eq('matrix')
@@ -26,7 +26,7 @@ describe Api::V0::ComponentsController do
 
     # GET /api/v0/components/:slug
     it 'should get a component by slug' do
-      get :show, id: @component.slug
+      get :show,  params: {id: @component.slug}
       response.should be_success
       component = JSON.parse(response.body)
       component['componentType'].should eq('matrix')
@@ -34,19 +34,19 @@ describe Api::V0::ComponentsController do
 
     # GET /api/v0/components/:id
     it 'should return 404 when component not found by id' do
-      get :show, id: 9999
+      get :show,  params: {id: 9999}
       response.code.should == '404'
     end
 
     # GET /api/v0/components/:slug
     it 'should return 404 when component not found by slug' do
-      get :show, id: 'not-a-slug'
+      get :show,  params: {id: 'not-a-slug'}
       response.code.should == '404'
     end
 
     # POST /api/v0/components
     it 'should create a component' do
-      post :create, component: {component_type: 'matrix'}
+      post :create,  params: {component: {component_type: 'matrix'}}
       response.should be_success
       component = JSON.parse(response.body)
       puts component
@@ -55,7 +55,7 @@ describe Api::V0::ComponentsController do
 
     # PUT /api/v0/components/:id
     it 'should update a component' do
-      post :update, id: @component.id, component: {component_type: 'madlib'}
+      post :update,  params: {id: @component.id, component: {component_type: 'madlib'}}
       response.should be_success
       component = JSON.parse(response.body)
       component['componentType'].should eq('madlib')
@@ -63,7 +63,7 @@ describe Api::V0::ComponentsController do
 
     # DELETE /api/v0/components/:id
     it 'should destroy a component' do
-      post :destroy, id: @component.id
+      post :destroy,  params: {id: @component.id}
       response.should be_success
     end
   end
@@ -78,7 +78,7 @@ describe Api::V0::ComponentsController do
 
     # GET /api/v0/components/:id
     it 'should get a component by id' do
-      get :show, id: @component.id
+      get :show,  params: {id: @component.id}
       response.should be_success
       component = JSON.parse(response.body)
       component['componentType'].should eq('matrix')
@@ -86,19 +86,19 @@ describe Api::V0::ComponentsController do
 
     # POST /api/v0/components
     it 'should fail to create a component' do
-      post :create, component: {component_type: 'matrix'}
+      post :create,  params: {component: {component_type: 'matrix'}}
       response.code.should == '401'
     end
 
     # PUT /api/v0/components/:id
     it 'should fail to update a component' do
-      post :update, id: @component.id, component: {component_type: 'madlib'}
+      post :update,  params: {id: @component.id, component: {component_type: 'madlib'}}
       response.code.should == '401'
     end
 
     # DELETE /api/v0/components/:id
     it 'should fail to destroy a component' do
-      post :destroy, id: @component.id
+      post :destroy,  params: {id: @component.id}
       response.code.should == '401'
     end
   end

@@ -2,7 +2,7 @@
 
   .nell-card-header
     %h6.no-margin-padding
-      {{obj.creator && 'COMMUNITY' || 'CHEFSTEPS'}} {{obj.activity_type[0] || "Recipe" | uppercase}}
+      {{obj.user && 'COMMUNITY' || 'CHEFSTEPS'}} {{obj.activity_type[0] || "Recipe" | uppercase}}
     %h3 {{obj.title}}
 
   .nell-card-media

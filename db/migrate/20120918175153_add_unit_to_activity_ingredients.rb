@@ -1,5 +1,5 @@
-class AddUnitToActivityIngredients < ActiveRecord::Migration
-  class ActivityIngredient < ActiveRecord::Base; end
+class AddUnitToActivityIngredients < ActiveRecord::Migration[5.2]
+  class ActivityIngredient < ApplicationRecord; end
   def change
     add_column :activity_ingredients, :unit, :string
     add_column :activity_ingredients, :quantity_temp, :decimal

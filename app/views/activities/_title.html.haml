@@ -8,7 +8,7 @@
     %csEditPair.section-tiny#title-edit-pair
       %csEditPairShow
 
-        -creator = @activity.creator
+        -creator = @activity.user
         -if  creator|| @activity.source_activity_id
           %h5.no-bold
           -if creator
@@ -19,7 +19,7 @@
             = link_to creator.name, user_profile_path(creator)
 
           -if @activity.source_activity_id
-            -if @activity.creator
+            -if @activity.user
               &middot;
             {{sourceActivityTypeString()}}
             = link_to @activity.source_activity.title, activity_path(@activity.source_activity)

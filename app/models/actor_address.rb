@@ -1,4 +1,4 @@
-class ActorAddress < ActiveRecord::Base
+class ActorAddress < ApplicationRecord
   belongs_to :actor, polymorphic: true
 
   ADDRESS_LENGTH = 16

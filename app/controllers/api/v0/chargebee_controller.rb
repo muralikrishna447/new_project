@@ -2,11 +2,11 @@ module Api
   module V0
     class ChargebeeController < BaseController
 
-      before_filter :ensure_authorized
+      before_action :ensure_authorized
 
-      before_filter :webhook_authorize, :only => [:webhook]
-      skip_before_filter :log_current_user, :only => [:webhook]
-      skip_before_filter :ensure_authorized, :only => [:webhook]
+      before_action :webhook_authorize, :only => [:webhook]
+      skip_before_action :log_current_user, :only => [:webhook]
+      skip_before_action :ensure_authorized, :only => [:webhook]
 
       rescue_from ChargeBee::InvalidRequestError, with: :render_invalid_chargebee_request
 
@@ -74,7 +74,7 @@ module Api
       def sync_subscriptions
         result = ChargeBee::Subscription.list({
                                                   "customer_id[is]" => current_api_user.id,
-                                                  "status[in]" => Subscription::ACTIVE_PLAN_STATUSES
+                                                  "status[in]" => Subscription::ACTIVE_OR_CANCELLED_PLAN_STATUSES
                                               })
 
         if result

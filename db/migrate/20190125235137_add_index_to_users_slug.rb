@@ -1,4 +1,4 @@
-class AddIndexToUsersSlug < ActiveRecord::Migration
+class AddIndexToUsersSlug < ActiveRecord::Migration[5.2]
   def change
 
     # SELECT slug, COUNT(id) as CNT from users GROUP BY slug HAVING count(id) > 1;

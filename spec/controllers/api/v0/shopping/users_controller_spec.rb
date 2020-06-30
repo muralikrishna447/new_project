@@ -12,11 +12,11 @@ describe Api::V0::Shopping::UsersController do
 
     describe 'autoredirect' do
       it 'should redirect from and to multipass' do
-        get :multipass, {product_id: 123, quantity: 1, autoredirect: true}
+        get :multipass, params: {product_id: 123, quantity: 1, autoredirect: true}
         response.should redirect_to("https://test.myshopify.com/account/login/multipass/abc123")
       end
       it 'should redirect from add_to_cart to multipass' do
-        get :add_to_cart, {variant_id: 123}
+        get :add_to_cart, params: {variant_id: 123}
         response.should redirect_to("https://test.myshopify.com/account/login/multipass/abc123")
       end
     end

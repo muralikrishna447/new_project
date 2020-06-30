@@ -1,4 +1,4 @@
-class PrivateToken < ActiveRecord::Base
+class PrivateToken < ApplicationRecord
 
   def self.token
     PrivateToken.exists? && PrivateToken.first.token

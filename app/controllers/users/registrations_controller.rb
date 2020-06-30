@@ -1,6 +1,5 @@
 class Users::RegistrationsController < Devise::RegistrationsController
-  # append_after_filter :aweber_signup, :only => :create
-  skip_before_filter :require_no_authentication, on: :create, if: proc {|c| request.xhr?}
+  skip_before_action :require_no_authentication, on: :create, if: proc {|c| request.xhr?}
 
   def welcome
   end

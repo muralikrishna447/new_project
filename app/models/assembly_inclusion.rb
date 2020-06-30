@@ -1,4 +1,4 @@
-class AssemblyInclusion < ActiveRecord::Base
+class AssemblyInclusion < ApplicationRecord
 
   belongs_to :assembly
   belongs_to :includable, polymorphic: true

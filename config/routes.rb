@@ -1,6 +1,6 @@
 require 'resque/server'
 
-Delve::Application.routes.draw do
+Rails.application.routes.draw do
 
   # Resque
   resque_constraint = lambda do |request|

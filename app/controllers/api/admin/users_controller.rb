@@ -2,7 +2,7 @@ module Api
   module Admin
     class UsersController < ApiAdminController
 
-      before_filter :load_user, only: [:actor_addresses, :circulators, :show]
+      before_action :load_user, only: [:actor_addresses, :circulators, :show]
 
       # /api/admin/users/:id
       def show

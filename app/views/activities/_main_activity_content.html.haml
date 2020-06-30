@@ -51,7 +51,7 @@
                 %a( ng-bind-html='item.title'
                     ng-href='/activities/{{item.slug}}'
                     target='_blank')
-                %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe")
+                %span.text-orange(ng-show='item.user' tooltip="Community contributed recipe")
                   %i.icon-group
 
           .section.noprint(ng-show='(! editMode) && (activity.forks.length > 0)')
@@ -61,7 +61,7 @@
                 %a( ng-bind-html='item.title'
                     ng-href='/activities/{{item.slug}}'
                     target='_blank')
-                %span.text-orange(ng-show='item.creator' tooltip="Community contributed recipe")
+                %span.text-orange(ng-show='item.user' tooltip="Community contributed recipe")
                   %i.icon-group
 
       .ng-cloak.assembly-activity.relative(ng-controller="StepsController")

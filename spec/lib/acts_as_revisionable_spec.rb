@@ -76,7 +76,7 @@ describe ActsAsRevisionable do
       has_many :composite_key_things, :class_name => 'RevisionableTestCompositeKeyThing', :dependent => :destroy
       include ActsAsRevisionable
 
-      attr_protected :secret
+      #attr_protected :secret
 
       acts_as_revisionable :limit => 3, :dependent => :keep, :associations => [:one_thing, :non_revisionable_test_models, {:many_things => :sub_things}, :composite_key_things]
 
@@ -113,7 +113,7 @@ describe ActsAsRevisionable do
       include ActsAsRevisionable
       # acts_as_revisionable :limit => 3, :dependent => :keep, :associations => [:one_thing, :non_revisionable_test_models, {:many_things => :sub_things}, :composite_key_things]
 
-      acts_as_revisionable :meta => {:label => lambda{|record| "name was '#{record.name}'"}, :updated_by => :updated_by, :version => 1}, :class_name => RevisionRecord2
+      acts_as_revisionable :on_update => true, :meta => {:label => lambda{|record| "name was '#{record.name}'"}, :updated_by => :updated_by, :version => 1}, :class_name => RevisionRecord2
     end
 
     module ActsAsRevisionable
@@ -156,12 +156,12 @@ describe ActsAsRevisionable do
   end
 
   context "injected methods" do
-    it "should be able to RevisionableTestModelinject revisionable behavior onto ActiveRecord::Base" do
+    it "should be able to inject revisionable behavior onto ActiveRecord::Base" do
       ActiveRecord::Base.should respond_to(:acts_as_revisionable)
     end
 
     it "should add as has_many :record_revisions association" do
-      # RevisionableTestModel.new.revision_records.should == []
+      RevisionableTestModel.new.revision_records.should == []
     end
 
     it "should parse the revisionable associations" do
@@ -229,6 +229,21 @@ describe ActsAsRevisionable do
         record.save!
       end
       ActsAsRevisionable::RevisionRecord.count.should == 1
+    end
+
+    it "should always store revisions whenever a record is saved if :on_update is true" do
+      record = OtherRevisionableTestModel.create!(:name => "test")
+      record.name = "new name"
+      record.store_revision do
+        record.name = "new name"
+        record.save!
+      end
+      RevisionRecord2.count.should == 1
+      record.store_revision do
+        record.name = "newer name"
+        record.save!
+      end
+      RevisionRecord2.count.should == 2
     end
 
     it "should only store revisions when a record is destroyed in a store_revision block" do
@@ -346,6 +361,7 @@ describe ActsAsRevisionable do
         end
       end
       ActsAsRevisionable::RevisionRecord.count.should == 3
+      record.revision_records.collect{|r| r.revision}.should == [5, 4, 3]
     end
 
     it "should not save a revision if an update raises an exception" do
@@ -354,6 +370,17 @@ describe ActsAsRevisionable do
         model.save!
       end
       model.reload
+      ActsAsRevisionable::RevisionRecord.count.should == 0
+
+      allow(model).to receive(:save).and_raise("update failed")
+      model.name = 'new_name'
+      begin
+        model.store_revision do
+          ActsAsRevisionable::RevisionRecord.count.should == 1
+          model.save
+        end
+      rescue
+      end
       ActsAsRevisionable::RevisionRecord.count.should == 0
     end
 
@@ -410,11 +437,8 @@ describe ActsAsRevisionable do
       restored = model.restore_revision(1)
       restored.name.should == 'test'
       restored.secret.should == 1234
-      restored.id.should == model.id
 
-      restored.store_revision do
-        restored.save!
-      end
+      model.restore_revision!(1)
       RevisionableTestModel.count.should == 1
       ActsAsRevisionable::RevisionRecord.count.should == 2
       restored_model = RevisionableTestModel.find(model.id)
@@ -475,15 +499,14 @@ describe ActsAsRevisionable do
       # restore to memory
       restored = model.restore_revision(1)
       restored.name.should == 'test'
-      restored.id.should == model.id
-      restored.many_things.collect{|t| t.name}.sort.should == ['many_thing_3', 'new_many_thing_1']
-      restored.many_other_things.collect{|t| t.name}.sort.should == ['many_other_thing_3', 'new_many_other_thing_1']
+      restored.many_things.collect{|t| t.name}.sort.should == ['many_thing_1', 'many_thing_2']
+      restored.many_things.detect{|t| t.name == 'many_thing_1'}.sub_things.collect{|t| t.name}.sort.should == ['sub_thing_1', 'sub_thing_2']
       restored.valid?.should == true
 
       # make sure the restore to memory didn't affect the database
       model.reload
       model.name.should == 'new_name'
-      model.many_things(true).collect{|t| t.name}.sort.should == ['many_thing_3', 'new_many_thing_1']
+      model.many_things.collect{|t| t.name}.sort.should == ['many_thing_3', 'new_many_thing_1']
       model.many_things.detect{|t| t.name == 'new_many_thing_1'}.sub_things.collect{|t| t.name}.sort.should == ['new_sub_thing_1', 'sub_thing_3']
       model.many_other_things.collect{|t| t.name}.sort.should == ['many_other_thing_3', 'new_many_other_thing_1']
 
@@ -495,8 +518,10 @@ describe ActsAsRevisionable do
       ActsAsRevisionable::RevisionRecord.count.should == 2
       restored_model = RevisionableTestModel.find(model.id)
       restored_model.name.should == 'test'
-      restored.many_things.collect{|t| t.name}.sort.should == ['many_thing_3', 'new_many_thing_1']
-      restored.many_other_things.collect{|t| t.name}.sort.should == ['many_other_thing_3', 'new_many_other_thing_1']
+      restored_model.many_things.collect{|t| t.name}.sort.should == ['many_thing_1', 'many_thing_2']
+      restored_model.many_things.detect{|t| t.name == 'many_thing_1'}.sub_things.collect{|t| t.name}.sort.should == ['sub_thing_1', 'sub_thing_2']
+      restored_model.many_things.detect{|t| t.name == 'many_thing_2'}.sub_things.collect{|t| t.name}.sort.should == []
+      restored_model.many_other_things.collect{|t| t.name}.sort.should == ['many_other_thing_3', 'new_many_other_thing_1']
     end
 
     it "should restore a record with has_one associations" do
@@ -524,14 +549,13 @@ describe ActsAsRevisionable do
       # restore to memory
       restored = model.restore_revision(1)
       restored.name.should == 'test'
-      restored.one_thing.name.should == 'new_other'
-      restored.one_thing.id.should == model.one_thing.id
+      restored.one_thing.name.should == 'other'
 
       # make sure restore to memory didn't affect the database
       model.reload
       ActsAsRevisionable::RevisionRecord.count.should == 1
       model.name.should == 'new_name'
-      model.one_thing(true).name.should == 'new_other'
+      model.one_thing.name.should == 'new_other'
 
       model.restore_revision!(1)
       RevisionableTestModel.count.should == 1
@@ -539,7 +563,7 @@ describe ActsAsRevisionable do
       ActsAsRevisionable::RevisionRecord.count.should == 2
       restored_model = RevisionableTestModel.find(model.id)
       restored_model.name.should == 'test'
-      restored_model.one_thing.name.should == 'new_other'
+      restored_model.one_thing.name.should == 'other'
       restored_model.one_thing.id.should == model.one_thing.id
     end
 
@@ -573,12 +597,12 @@ describe ActsAsRevisionable do
       # restore to memory
       restored = model.restore_revision(1)
       restored.name.should == 'test'
-      restored.non_revisionable_test_models.collect{|r| r.name}.sort.should == ["111", "333"]
+      restored.non_revisionable_test_models.collect{|r| r.name}.sort.should == ['111', 'two']
 
       # make sure the restore to memory didn't affect the database
       model.reload
       model.name.should == 'new_name'
-      model.non_revisionable_test_models(true).collect{|r| r.name}.sort.should == ['111', '333']
+      model.non_revisionable_test_models.collect{|r| r.name}.sort.should == ['111', '333']
 
       model.restore_revision!(1)
       NonRevisionableTestModelsRevisionableTestModel.count.should == 2
@@ -587,7 +611,7 @@ describe ActsAsRevisionable do
       ActsAsRevisionable::RevisionRecord.count.should == 2
       restored_model = RevisionableTestModel.find(model.id)
       restored_model.name.should == 'test'
-      restored_model.non_revisionable_test_models.collect{|r| r.name}.sort.should == ["111", "333"]
+      restored_model.non_revisionable_test_models.collect{|r| r.name}.sort.should == ["111", "two"]
     end
 
     it "should handle namespaces and single table inheritance" do
@@ -609,7 +633,6 @@ describe ActsAsRevisionable do
       restored = model.restore_revision(1)
       restored.class.should == ActsAsRevisionable::RevisionableNamespaceModel
       restored.name.should == 'test'
-      restored.id.should == model.id
     end
 
     it "should handle single table inheritance" do
@@ -631,7 +654,6 @@ describe ActsAsRevisionable do
       restored = model.restore_revision(1)
       restored.class.should == ActsAsRevisionable::RevisionableSubclassModel
       restored.name.should == 'test'
-      restored.id.should == model.id
       restored.type_name.should == 'RevisionableSubclassModel'
     end
 
@@ -651,13 +673,37 @@ describe ActsAsRevisionable do
       RevisionableTestCompositeKeyThing.count.should == 2
       ActsAsRevisionable::RevisionRecord.count.should == 0
 
+      model.store_revision do
+        thing_1 = model.composite_key_things.detect{|t| t.name == 'thing_1'}
+        thing_1.name = 'new_thing_1'
+        thing_2 = model.composite_key_things.detect{|t| t.name == 'thing_2'}
+        model.composite_key_things.delete(thing_2)
+        model.composite_key_things << thing_3
+        model.save!
+        thing_1.save!
+      end
+
       model.reload
+      ActsAsRevisionable::RevisionRecord.count.should == 1
       RevisionableTestCompositeKeyThing.count.should == 2
+      model.composite_key_things.collect{|t| t.name}.sort.should == ['new_thing_1', 'thing_3']
+
+      # restore to memory
+      restored = model.restore_revision(1)
+      restored.composite_key_things.collect{|t| t.name}.sort.should == ['thing_1', 'thing_2']
+      restored.valid?.should == true
+
       # make sure the restore to memory didn't affect the database
       model.reload
+      model.composite_key_things.collect{|t| t.name}.sort.should == ['new_thing_1', 'thing_3']
+      RevisionableTestCompositeKeyThing.count.should == 2
+
       model.restore_revision!(1)
       RevisionableTestModel.count.should == 1
       RevisionableTestCompositeKeyThing.count.should == 2
+      restored_model = RevisionableTestModel.find(model.id)
+      restored_model.name.should == 'test'
+      restored_model.composite_key_things.collect{|t| t.name}.sort.should == ['thing_1', 'thing_2']
     end
 
     it "should restore a deleted record" do
@@ -684,6 +730,10 @@ describe ActsAsRevisionable do
       end
       model.reload
       RevisionRecord2.count.should == 1
+      model.name.should == 'new_name'
+
+      model.destroy
+      RevisionRecord2.count.should == 0
     end
 
     it "should not destroy revisions if :dependent => :keep was specified" do
@@ -725,6 +775,11 @@ describe ActsAsRevisionable do
 
       now = Time.now
       ActsAsRevisionable::RevisionRecord.count.should == 4
+      ActsAsRevisionable::RevisionableNamespaceModel.empty_trash(60)
+      ActsAsRevisionable::RevisionRecord.count.should == 4
+      Time.stub(:now => now + 61)
+      ActsAsRevisionable::RevisionableNamespaceModel.empty_trash(60)
+      ActsAsRevisionable::RevisionRecord.count.should == 1
     end
   end
 end

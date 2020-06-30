@@ -4,7 +4,7 @@ module Api
   module V0
     module Shopping
       class ProductGroupsController < BaseController
-        before_filter :ensure_authorized_or_anonymous
+        before_action :ensure_authorized_or_anonymous
 
         def index
           # Silently Fails over to US if no iso2 param is provided

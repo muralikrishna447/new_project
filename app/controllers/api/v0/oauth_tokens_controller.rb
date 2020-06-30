@@ -1,7 +1,7 @@
 module Api
   module V0
     class OauthTokensController < BaseController
-      before_filter :ensure_authorized
+      before_action :ensure_authorized
       
       def index
         user = User.find @user_id_from_token

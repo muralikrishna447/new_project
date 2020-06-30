@@ -2,7 +2,7 @@ describe Api::V0::ChargesController do
   context 'POST /create' do
 
     it 'should error if not logged in' do
-      post :create, sku: ''
+      post :create, params: {sku: ''}
       expect(response.status).to eq(401)
     end
 
@@ -24,33 +24,33 @@ describe Api::V0::ChargesController do
       end
 
       it 'should error if purchasing anything other than premium membership' do
-        post :create, sku: '1000'
+        post :create, params: {sku: '1000'}
         expect(response.status).to eq(500)
       end
 
       it 'should queue charge when called correctly' do
         Resque.should_receive(:enqueue).with(StripeChargeProcessor, 1)
         Resque.should_receive(:enqueue).with(UserSync, @user.id)
-        post :create, {sku: @premium[:sku], stripeToken: 'xxx', price: '5000', gift: 'false'}.merge(@billing_address)
+        post :create, params: {sku: @premium[:sku], stripeToken: 'xxx', price: '5000', gift: 'false'}.merge(@billing_address)
         expect(response.status).to eq(200)
       end
 
       it 'should set the utm params if the cookie is set' do
         request.cookies[:utm] = "{'utm_campaign': 'railstest'}"
         options = {sku: @circulator[:sku], stripeToken: 'xxx', price: '20000', gift: 'false'}.merge(@billing_address).merge(@shipping_address)
-        post :create, options
+        post :create, params: options
         expect(response.status).to eq(200)
       end
 
       it 'should error if user is already premium' do
         @user.make_premium_member(10)
-        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '5000'
+        post :create, params: {sku: @premium[:sku], stripeToken: 'xxx', price: '5000'}
         expect(response.status).to eq(500)
       end
 
       it "should create the stripe_order object and set the user to premium when ordering the circulator" do
         options = {sku: @circulator[:sku], stripeToken: 'xxx', price: '20000', gift: 'false'}.merge(@billing_address).merge(@shipping_address)
-        post :create, options
+        post :create, params: options
         stripe_order = StripeOrder.last
         stripe_order.user_id.should == @user.id
         stripe_order.data.should include('billing_name'=> 'Joe Example', 'billing_address_line1'=> '123 Any Place', 'billing_address_city'=> 'Seattle', 'billing_address_state'=> 'WA', 'billing_address_zip'=> '98101', 'billing_address_country'=> 'United States')
@@ -65,7 +65,7 @@ describe Api::V0::ChargesController do
         @user.premium_member.should == true
 
         options = {sku: @circulator[:sku], stripeToken: 'xxx', price: '17000', gift: 'false'}.merge(@billing_address).merge(@shipping_address)
-        post :create, options
+        post :create, params: options
         expect(response.status).to eq(200)
         stripe_order = StripeOrder.last
         stripe_order.should_not be_blank
@@ -78,7 +78,7 @@ describe Api::V0::ChargesController do
 
       it "should create the stripe_order without the billing and shipping" do
         options = {sku: @premium[:sku], stripeToken: 'xxx', price: '5000', gift: 'false'}
-        post :create, options
+        post :create, params: options
         expect(response.status).to eq(200)
         stripe_order = StripeOrder.last
         stripe_order.user_id.should == @user.id
@@ -89,17 +89,17 @@ describe Api::V0::ChargesController do
 
       it 'should let give premium as a gift even if you are already premium yourself' do
         @user.make_premium_member(11)
-        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '5000', gift: "true"
+        post :create, params: {sku: @premium[:sku], stripeToken: 'xxx', price: '5000', gift: "true"}
         expect(response.status).to eq(200)
       end
 
       it 'should work when price is not greater' do
-        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '6000', gift: "true"
+        post :create, params: {sku: @premium[:sku], stripeToken: 'xxx', price: '6000', gift: "true"}
         expect(response.status).to eq(200)
       end
 
       it 'should error out when price is greater' do
-        post :create, sku: @premium[:sku], stripeToken: 'xxx', price: '1000', gift: "true"
+        post :create, params: {sku: @premium[:sku], stripeToken: 'xxx', price: '1000', gift: "true"}
         expect(response.status).to eq(500)
       end
 
@@ -110,14 +110,14 @@ describe Api::V0::ChargesController do
         @user.premium_member.should == true
 
         options = {sku: @circulator[:sku], stripeToken: 'xxx', price: '17000', gift: 'false'}.merge(@billing_address).merge(@shipping_address)
-        post :create, options
+        post :create, params: options
         expect(response.status).to eq(500)
       end
 
       it 'should redeem a valid gift certificate' do
         gc = Fabricate :premium_gift_certificate
         User.any_instance.should_receive(:make_premium_member)
-        put :redeem, id: gc.token
+        put :redeem, params: {id: gc.token}
       end
     end
   end

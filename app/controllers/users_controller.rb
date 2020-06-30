@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
-  skip_before_filter :set_analytics_cookie, only: [:session_me]
+  skip_before_action :set_analytics_cookie, only: [:session_me]
 
   def show
     @user = User.find(params[:id])
     user_json = @user.to_json(only: [:id, :name], methods: :avatar_url)
     encrypted = ChefstepsBloom.encrypt(user_json)
-    render text: encrypted
+    render plain: encrypted
   end
 
   def get_user
@@ -15,7 +15,7 @@ class UsersController < ApplicationController
       user_json.merge!({employee: true}) if @user.role == 'admin' && /@chefsteps.com\z/.match(@user.email)
       render json: user_json.to_json
     else
-      render text: 'Authorized Access', status: 401
+      render plain: 'Authorized Access', status: 401
     end
   end
 
@@ -86,7 +86,7 @@ class UsersController < ApplicationController
 
   def preauth_init
     if ENV['PREAUTH_BYPASS_TOKEN'].nil?
-      return render text: 'Unauthorized', status: 401
+      return render plain: 'Unauthorized', status: 401
     end
 
     logger.info "Setting preauth cookie to ENV['PREAUTH_BYPASS_TOKEN']"

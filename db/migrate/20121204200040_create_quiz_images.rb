@@ -1,4 +1,4 @@
-class CreateQuizImages < ActiveRecord::Migration
+class CreateQuizImages < ActiveRecord::Migration[5.2]
   def change
     create_table :quiz_images do |t|
       t.string :file_name
