@@ -75,6 +75,7 @@ class Activity < ApplicationRecord
 
   serialize :activity_type, Array
 
+  #The attribute is_promoted act as checkbox in form. If user added any value to promote_order then is_promoted value will be 1 or viseversa.
   attr_accessor :used_in, :forks, :upload_count, :is_promoted
 
   include PgSearch::Model
