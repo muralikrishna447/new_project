@@ -8,8 +8,8 @@
             %th Published
             %td= activity.published
           %tr
-            %th Is Promoted
-            %td= activity.promoted
+            %th Is Promoted in Gallery
+            %td= activity_promoted?(activity)
           %tr
             %th Link
             %td= link_to_publishable(activity)

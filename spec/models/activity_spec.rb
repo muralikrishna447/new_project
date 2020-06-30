@@ -624,13 +624,11 @@ describe Activity, 'Save with Promote order' do
   it 'has_promoted? method returns true if promote_order is available' do
     activity.promote_order = 1
     expect(activity.has_promoted?).to be true
-    expect(activity.promoted).to eq 'Yes'
   end
 
   it 'has_promoted? method returns true if promote_order is nil' do
     activity.promote_order = nil
     expect(activity.has_promoted?).to be false
-    expect(activity.promoted).to eq 'No'
   end
 
 end
