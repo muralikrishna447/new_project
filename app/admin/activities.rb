@@ -63,6 +63,9 @@ ActiveAdmin.register Activity do
     column :is_promoted do |activity|
       activity_promoted?(activity)
     end
+    column :rank do |activity|
+      activity.promote_order
+    end
     column :published_at
     actions
   end
