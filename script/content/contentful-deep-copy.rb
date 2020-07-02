@@ -94,7 +94,9 @@ end
 
 # Deep copies a guide from the original to the shallow-copied entry.
 def deep_copy_guide!(original, copy)
-  copy.default_program = deep_copy(expand_link(original.default_program))
+  if original.default_program
+    copy.default_program = deep_copy(expand_link(original.default_program))
+  end
 
   programs = []
   original.programs.each { |program| programs << deep_copy(expand_link(program)) }
@@ -107,13 +109,17 @@ end
 
 # Deep copies a program from the original to the shallow-copied entry.
 def deep_copy_program!(original, copy)
-  fresh_times = []
-  original.fresh_times.each { |time| fresh_times << deep_copy(expand_link(time)) }
-  copy.fresh_times = fresh_times
+  if original.fresh_times
+    fresh_times = []
+    original.fresh_times.each { |time| fresh_times << deep_copy(expand_link(time)) }
+    copy.fresh_times = fresh_times
+  end
 
-  frozen_times = []
-  original.frozen_times.each { |time| frozen_times << deep_copy(expand_link(time)) }
-  copy.frozen_times = frozen_times
+  if original.frozen_times
+    frozen_times = []
+    original.frozen_times.each { |time| frozen_times << deep_copy(expand_link(time)) }
+    copy.frozen_times = frozen_times
+  end
 end
 
 # Recusively deep copies a Joule Contentful entry.
