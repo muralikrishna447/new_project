@@ -108,6 +108,10 @@ class Activity < ApplicationRecord
     is_promoted.to_i.positive?
   end
 
+  def self.uniq_rank
+    self.pluck(:promote_order).uniq.compact.sort
+  end
+
   def queue_algolia_sync
     Resque.enqueue(AlgoliaSync, id)
   end
