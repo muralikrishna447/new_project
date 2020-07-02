@@ -21,6 +21,7 @@ ActiveAdmin.register Activity do
   filter :updated_at
   filter :published
   filter :published_at
+  filter :promote_order, as: :select, label: 'Rank', collection: Activity.all.pluck(:promote_order).uniq.compact.sort
   filter :description
   filter :creator, as: :check_boxes, collection: [0]
 
