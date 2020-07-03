@@ -109,7 +109,7 @@ class Activity < ApplicationRecord
   end
 
   def self.uniq_rank
-    self.pluck(:promote_order).uniq.compact.sort
+    self.all.pluck(:promote_order).uniq.compact.sort
   end
 
   def queue_algolia_sync
