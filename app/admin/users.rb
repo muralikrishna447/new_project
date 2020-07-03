@@ -8,7 +8,8 @@ ActiveAdmin.register User do
                 :premium_membership_created_at, :premium_membership_price, as: :admin
 
   before_action :load_user, only: [:show, :edit, :update, :reset_password, :merge, :merge_do,
-                                   :soft_delete, :make_premium, :remove_premium, :undelete]
+                                   :soft_delete, :make_premium, :remove_premium, :undelete,
+                                   :generate_reset_password_url]
 
   menu parent: 'More'
   filter :email
@@ -21,6 +22,10 @@ ActiveAdmin.register User do
 
   action_item :view, only: [:show] do
     link_to 'Send Password Reset Email', reset_password_admin_user_path(user), method: :post, data: { confirm: 'Are you sure?' }
+  end
+
+  action_item :view, only: [:show] do
+    link_to 'Create Reset Password Link', generate_reset_password_url_admin_user_path(user), method: :post
   end
 
   action_item :view, only: [:show] do
@@ -49,6 +54,17 @@ ActiveAdmin.register User do
     logger.info "Admin dashboard: sending password reset email for: #{@user.email}"
     @user.send_password_reset_email
     redirect_to({action: :show}, notice: "Password reset email has been sent to #{@user.email}")
+  end
+
+  member_action :generate_reset_password_url, method: :post do
+    logger.info "Admin dashboard: generating reset password link for: #{@user.email}"
+    aa = ActorAddress.create_for_user(@user, client_metadata: 'password_reset')
+    exp = ((Time.now + 1.day).to_f * 1000).to_i
+    token = aa.current_token(exp: exp, restrict_to: 'password reset').to_jwt
+    url = "https://www.chefsteps.com/passwords/edit_from_email/#/?token=#{token}"
+    notice = "Reset password URL - #{url.slice(0,90)}... <a class='copy-url' title= 'Copied to clipboard' data-url=#{url}>"\
+             "<i class='icon-copy'></i></a> <span class='copy-notify'></span>"
+    redirect_to({action: :show}, notice: notice.html_safe)
   end
 
   member_action :soft_delete, method: :post do
