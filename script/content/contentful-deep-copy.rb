@@ -40,7 +40,6 @@ COMMON_ENTRIES = {}
 
 
 def transform_slug(slug)
-  return slug if IS_DRY_RUN
   "#{slug}-#{SLUG_SUFFIX}"
 end
 
