@@ -190,5 +190,17 @@ module Delve
     if config.cookie_domain == '.localhost'
       config.cookie_domain = nil
     end
+
+    # Adding conditional reaping_frequency in database configuration only for heroku workers.
+    # `reaping_frequency` which is attempts to find and recover connections from dead threads.
+    # Web app should continue with default database configuration as it is.
+    if ENV['ENABLE_REAPER']
+      def config.database_configuration
+        parsed = super
+        parsed[Rails.env] = {} unless parsed[Rails.env]
+        parsed[Rails.env]['reaping_frequency'] = ENV['ENABLE_REAPER'].to_i
+        parsed
+      end
+    end
   end
 end

@@ -11,5 +11,5 @@ release:
     - echo "Running migrations..." && DISABLE_DB_STRUCTURE_DUMP=true bundle exec rake db:migrate && echo "Running asset sync..." && bundle exec rake cs_assets:sync
 run:
   web: bundle exec unicorn -p $PORT -c ./config/unicorn.rb
-  worker: env TERM_CHILD=1 QUEUE=* bundle exec rake resque:work
-  giftworker:  env TERM_CHILD=1 QUEUE=ChargeBeeGiftProcessor bundle exec rake resque:work
+  worker: env TERM_CHILD=1 ENABLE_REAPER=0 QUEUE=* bundle exec rake resque:work
+  giftworker:  env TERM_CHILD=1 ENABLE_REAPER=0 QUEUE=ChargeBeeGiftProcessor bundle exec rake resque:work
