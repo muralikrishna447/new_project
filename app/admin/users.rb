@@ -61,7 +61,8 @@ ActiveAdmin.register User do
     aa = ActorAddress.create_for_user(@user, client_metadata: 'password_reset')
     exp = ((Time.now + 1.day).to_f * 1000).to_i
     token = aa.current_token(exp: exp, restrict_to: 'password reset').to_jwt
-    url = "https://www.chefsteps.com/passwords/edit_from_email/#/?token=#{token}"
+    base_url = "https://www.#{Rails.application.config.shared_config[:chefsteps_endpoint]}"
+    url = "#{base_url}/passwords/edit_from_email/#/?token=#{token}"
     notice = "Reset password URL - #{url.slice(0,90)}... <a class='copy-url' title= 'Copied to clipboard' data-url=#{url}>"\
              "<i class='icon-copy'></i></a> <span class='copy-notify'></span>"
     redirect_to({action: :show}, notice: notice.html_safe)
