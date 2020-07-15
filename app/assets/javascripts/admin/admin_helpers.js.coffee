@@ -236,8 +236,34 @@ $ ->
     scheduleDiff()
     $('#loading-right').fadeOut()
 
+copyText = (text) ->
+  element = document.createElement('DIV')
+  selectElementText = (element) ->
+    `var range`
+    if document.selection
+      range = document.body.createTextRange()
+      range.moveToElementText element
+      range.select()
+    else if window.getSelection
+      range = document.createRange()
+      range.selectNode element
+      window.getSelection().removeAllRanges()
+      window.getSelection().addRange range
+    return
+  element.textContent = text
+  document.body.appendChild element
+  selectElementText element
+  document.execCommand 'copy'
+  element.remove()
+  return
 
 
-
+$(document).on 'click', ".copy-url", ->
+  txt = $(this).attr("data-url")
+  copyText(txt)
+  $(".copy-notify").text("URL has been copied to clipboard")
+  setTimeout ( ->
+    $('.copy-notify').text('');
+  ), 3000
 
 
