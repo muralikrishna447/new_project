@@ -185,6 +185,7 @@ module Delve
     shared_config = HashWithIndifferentAccess.new(YAML.load_file(Rails.root.join('config/shared_config.yml')))
     config.shared_config = shared_config[Rails.env]
     config.shared_config[:bloom] = shared_config[bloom_env][:bloom]
+    config.shared_config[:geo_config] = shared_config[:geo_config]
 
     config.cookie_domain = "." + Rails.application.config.shared_config[:chefsteps_endpoint].split(":").first
     if config.cookie_domain == '.localhost'
