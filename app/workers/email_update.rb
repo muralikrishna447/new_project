@@ -9,7 +9,7 @@ class EmailUpdate
       Rails.logger.info msg
       raise msg
     end
-    
-    Shopify::Customer.update_email(user, old_email_address)
+
+    ChargeBee::Customer.update(user.id,{ email: new_email_address })
   end
 end
