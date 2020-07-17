@@ -74,7 +74,3 @@ test:
   facebook:
     app_id: "249352241894051"
     messenger_endpoint: "imaginarymessenger.com"
-
-geo_config:
-  maxmind: "https://download.maxmind.com/app/geoip_download"
-

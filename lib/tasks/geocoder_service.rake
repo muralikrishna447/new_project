@@ -16,8 +16,11 @@ namespace :geocoder_service do
                                               raw_response: true)
       # File moving from ~/tmp to application tmp folders
       FileUtils.mv(tempfile.file.path, paths.storage)
+      Librato.increment "mmdb.maxmind.download.success"
+      Rails.logger.info "Geocode mmdb Download from Maxmind success"
       true
     rescue => e
+      Librato.increment "mmdb.maxmind.download.failed"
       Rails.logger.error "Geocode mmdb Download from Maxmind failed : #{e}"
       Rails.logger.error e.backtrace.join("\n")
       false
@@ -34,7 +37,18 @@ namespace :geocoder_service do
       break if status
     end
     tar_extract.close
+    if status
+      Rails.logger.info "mmdb extracted successfully"
+      Librato.increment "mmdb.extraction.success"
+    else
+      Rails.logger.error "mmdb extraction failed: File Not available"
+      Librato.increment "mmdb.extraction.failed.not.available"
+    end
     status
+  rescue Exception => e
+    Rails.logger.error "mmdb extraction failed: #{e}"
+    Librato.increment "mmdb.extraction.failed"
+    false
   end
 
   def write_file(entry)
@@ -49,7 +63,7 @@ namespace :geocoder_service do
         tmp_dir: "#{Rails.root}/tmp/maxmind",
         storage: "#{Rails.root}/tmp/maxmind/country.tar.gz",
         mmdb: "#{Rails.root}/tmp/maxmind/country.mmdb",
-        maxmind: "#{Rails.application.config.shared_config[:geo_config][:maxmind]}"\
+        maxmind: "#{Rails.configuration.geoip.maxmind}"\
                  "?edition_id=GeoLite2-Country&"\
                  "license_key=#{Rails.configuration.geoip.license}&suffix=tar.gz"
     )
