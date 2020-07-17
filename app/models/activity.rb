@@ -46,6 +46,7 @@ class Activity < ApplicationRecord
   belongs_to :currently_editing_user, class_name: 'User', foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
+  validates :promote_order, :numericality => { greater_than_or_equal_to: 1, message: "Order should be greater than or equal to 1"}, if: -> { promoted? }
 
   scope :with_video, -> { where("youtube_id <> '' OR vimeo_id <> ''") }
   scope :recipes, -> { where("activity_type iLIKE '%Recipe%'") }
@@ -74,7 +75,8 @@ class Activity < ApplicationRecord
 
   serialize :activity_type, Array
 
-  attr_accessor :used_in, :forks, :upload_count
+  #The attribute is_promoted act as checkbox in form. If user added any value to promote_order then is_promoted value will be 1 or viseversa.
+  attr_accessor :used_in, :forks, :upload_count, :is_promoted
 
   include PgSearch::Model
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -95,7 +97,21 @@ class Activity < ApplicationRecord
   # algolia HTTP calls, taking up to 15 seconds. Queue to resque instead.
   # Leaving auto_remove on for simplicity since it is rare. Not using their enqueue
   # mechanism b/c it doesn't trigger reliably on a tags-only change b/c it is too clever.
+  before_save :set_promote_order
   after_save :queue_algolia_sync
+
+  def set_promote_order
+    self.promote_order = nil unless promoted?
+  end
+
+  def promoted?
+    is_promoted.to_i.positive?
+  end
+
+  def self.uniq_rank
+    self.all.pluck(:promote_order).uniq.compact.sort
+  end
+
   def queue_algolia_sync
     Resque.enqueue(AlgoliaSync, id)
   end
@@ -158,6 +174,7 @@ class Activity < ApplicationRecord
 
     # Sort fields
     attribute :likes_count
+    attribute :promote_order
     add_attribute :date do
       published ? published_at : created_at
     end
@@ -170,10 +187,16 @@ class Activity < ApplicationRecord
     end
     add_slave "ChefStepsPopular", per_environment: true do
     end
+    add_slave "ChefStepsPromoted", per_environment: true do
+    end
   end
 
   def has_title
     title.present?
+  end
+
+  def has_promoted?
+    promote_order.present?
   end
 
   def has_video
