@@ -5,7 +5,8 @@ class HomeController < ApplicationController
 
   def embeddable_signup
     @hide_nav = true
-    render
+    # the view file has removed in https://github.com/ChefSteps/ChefSteps/commit/6d2c82c4573993166af8d7f43b21d8ae6c7da864
+    render_404
   end
 
   def terms
