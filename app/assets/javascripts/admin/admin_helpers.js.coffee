@@ -266,4 +266,10 @@ $(document).on 'click', ".copy-url", ->
     $('.copy-notify').text('');
   ), 3000
 
+$(document).ready ->
+  $('#activity_is_promoted').click ->
+    if $(this).prop('checked')
+      $('#activity_promote_order_input').removeClass('hide')
+    else
+      $('#activity_promote_order_input').addClass('hide')
 
