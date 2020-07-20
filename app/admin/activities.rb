@@ -8,7 +8,7 @@ ActiveAdmin.register Activity do
   config.sort_order = 'activity_order_asc'
   before_action :load_activity, only: [:show, :edit, :update, :destroy]
 
-  permit_params :title, :byline, :youtube_id, :vimeo_id, :yield, :timing,
+  permit_params :title, :byline, :youtube_id, :vimeo_id, :yield, :timing, :promote_order, :is_promoted,
                 :difficulty, :description, :short_description, :equipment, :ingredients,
                 :nesting_level, :transcript, :featured_image_id, :image_id,
                 :steps_attributes, :source_activity, :source_activity_id,
@@ -21,6 +21,7 @@ ActiveAdmin.register Activity do
   filter :updated_at
   filter :published
   filter :published_at
+  filter :promote_order, as: :select, label: 'Rank', collection: -> { Activity.uniq_rank }
   filter :description
   filter :creator, as: :check_boxes, collection: [0]
 
@@ -60,6 +61,12 @@ ActiveAdmin.register Activity do
       truncate(activity.description, length: 50)
     end
     column :published
+    column :is_promoted do |activity|
+      activity_promoted?(activity)
+    end
+    column :rank do |activity|
+      activity.promote_order
+    end
     column :published_at
     actions
   end
@@ -105,7 +112,7 @@ ActiveAdmin.register Activity do
     end
 
     def actitity_params
-      params.require(:activity).permit( :title, :byline, :youtube_id, :vimeo_id, :yield, :timing,
+      params.require(:activity).permit( :title, :byline, :youtube_id, :vimeo_id, :yield, :timing, :promote_order, :is_promoted,
                                        :difficulty, :description, :short_description, :equipment, :ingredients,
                                        :nesting_level, :transcript, :featured_image_id, :image_id,
                                        :steps_attributes, :child_activity_ids, :source_activity, :source_activity_id,

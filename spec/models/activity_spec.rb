@@ -565,3 +565,70 @@ describe Activity, 'gallery_path' do
   # end
 
 end
+
+describe Activity, 'Save with Promote order' do
+  let(:activity) { Fabricate.build(:activity) }
+  let(:promote_order_err_msg) { ['Order should be greater than or equal to 1'] }
+
+  it 'should promote_order needs to save if is_promoted is 1' do
+    activity.is_promoted = '1'
+    activity.promote_order = 1
+    activity.save!
+
+    expect(activity.promote_order).to eq(1)
+  end
+
+  it 'should not save activity if promote_order nil when is_promoted is 1' do
+    activity.is_promoted = '1'
+    activity.promote_order = nil
+    expect(activity.save).to be false
+    expect(activity.errors.messages[:promote_order]).to eq promote_order_err_msg
+  end
+
+  it 'should not save activity if promote_order 0 when is_promoted is 1' do
+    activity.is_promoted = '1'
+    activity.promote_order = 0
+    expect(activity.save).to be false
+    expect(activity.errors.messages[:promote_order]).to eq promote_order_err_msg
+  end
+
+  it 'should not save activity if promote_order negative when is_promoted is 1' do
+    activity.is_promoted = '1'
+    activity.promote_order = -1
+    expect(activity.save).to be false
+    expect(activity.errors.messages[:promote_order]).to eq promote_order_err_msg
+  end
+
+  it 'promote_order should not save if is_promoted is 0' do
+    activity.is_promoted = '0'
+    activity.promote_order = 1
+    activity.save
+    expect(activity.promote_order).to be_nil
+  end
+
+  it 'promoted? method returns true is is_promoted is 1' do
+    activity.is_promoted = '1'
+    expect(activity.promoted?).to be true
+  end
+
+  it 'promoted? method returns false is is_promoted is 0' do
+    activity.is_promoted = '0'
+    expect(activity.promoted?).to be false
+  end
+
+  it 'promoted? method returns true is is_promoted is -1' do
+    activity.is_promoted = '-1'
+    expect(activity.promoted?).to be false
+  end
+
+  it 'has_promoted? method returns true if promote_order is available' do
+    activity.promote_order = 1
+    expect(activity.has_promoted?).to be true
+  end
+
+  it 'has_promoted? method returns true if promote_order is nil' do
+    activity.promote_order = nil
+    expect(activity.has_promoted?).to be false
+  end
+
+end
