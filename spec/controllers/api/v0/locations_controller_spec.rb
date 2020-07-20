@@ -1,18 +1,19 @@
 describe Api::V0::LocationsController do
   context 'GET /locations' do
-    before :each do
-      # We cache location data by IP, so clear this out between invocations
-      Rails.cache.clear
-    end
+
+    let(:default_result) { { country: 'US', long_country: 'United States' } }
+    let(:registered_result) { { country: 'PT', long_country: 'Portugal' } }
 
     def mock_geo_ip(type)
       case type
-      when 'error', 'not_found'
-        controller.stub(:get_location_from_mmdb).and_raise('error')
+      when 'error'
+        allow(GeoIPService).to receive(:get_geocode).and_raise('error')
+      when 'not_found'
+        allow(GeoIPService).to receive(:get_geocode).and_raise(GeoIPService::GeocodeError)
       when 'success'
-        controller.stub(:get_location_from_mmdb).and_return({country: 'US', long_country: 'United States'})
+        allow(GeoIPService).to receive(:get_geocode).and_return(default_result)
       when 'registered'
-          controller.stub(:get_location_from_mmdb).and_return({country: 'PT', long_country: 'Portugal'})
+        allow(GeoIPService).to receive(:get_geocode).and_return(registered_result)
       end
     end
 
@@ -21,7 +22,7 @@ describe Api::V0::LocationsController do
       get :index
       response.should be_success
       location = JSON.parse(response.body)
-      location.should include('country' => 'US', 'latitude' => nil, 'longitude' => nil, 'city' => nil, 'state' => nil, 'zip' => nil)
+      location.should include('country' => 'US', 'long_country' => nil)
     end
 
     it "should respond with blank and defaulted to US" do
@@ -30,7 +31,7 @@ describe Api::V0::LocationsController do
       get :index
       response.should be_success
       location = JSON.parse(response.body)
-      location.should include('country' => 'US', 'latitude' => nil, 'longitude' => nil, 'city' => nil, 'state' => nil, 'zip' => nil)
+      location.should include('country' => 'US', 'long_country' => nil)
     end
 
     it "should respond with location data" do

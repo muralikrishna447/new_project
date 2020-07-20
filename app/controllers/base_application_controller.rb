@@ -47,7 +47,8 @@ class BaseApplicationController < ActionController::Base
       location[:country] = 'US' if location[:country].blank?
       cookies['cs_geo'] = {
           :value => location.to_json,
-          :domain => :all
+          :domain => :all,
+          :expires => Rails.configuration.geoip.cache_expiry.from_now
       }
     end
   end
@@ -85,23 +86,14 @@ class BaseApplicationController < ActionController::Base
     def null_location
       return {
         country: nil,
-        latitude: nil,
-        longitude: nil,
-        city: nil,
-        state: nil,
-        zip: nil
+        long_country: nil
       }
     end
 
     def dummy_location
       return {
           country: 'US',
-          long_country: 'United States',
-          latitude: 47.6103,
-          longitude: -122.3341,
-          city: 'Seattle',
-          state: 'WA',
-          zip: '98101'
+          long_country: 'United States'
       }
     end
 
@@ -119,13 +111,14 @@ class BaseApplicationController < ActionController::Base
       return dummy_location if ip_address == '127.0.0.1' || ip_address == '::1'
 
       begin
-        location = get_location_from_mmdb(ip_address)
-        # TODO: we should narrow the scope of this rescue block, but not
-        # sure all the ways in which Geoip2 can fail
+        location = GeoIPService.get_geocode(ip_address)
       rescue IPAddr::InvalidAddressError => e
         metric_suffix = 'ip.not.found'
         logger.error "Geocode Not Found for #{ip_address}: #{e}"
         logger.error e.backtrace.join("\n")
+      rescue GeoIPService::GeocodeError => e
+        metric_suffix = 'geo.mmdb.not.found'
+        logger.error e.message
       rescue Exception => e
         metric_suffix = 'fail'
         logger.error "Geocode failed: #{e}"
@@ -142,23 +135,6 @@ class BaseApplicationController < ActionController::Base
     end
 
     protected
-
-    class GeocodeError < StandardError
-    end
-
-  def get_location_from_mmdb(ip_address)
-    unless GEO_IP
-      Librato.increment "maxmind.object.not.found"
-      Rails.logger.error "Maxmind Object Not Found"
-      return null_location
-    end
-
-    object = GEO_IP.get(ip_address)['country']
-    {
-        country: object.dig('iso_code'),
-        long_country: object.dig('names', 'en')
-    }
-  end
 
   # This subscribe / track logic does not belong here but since it's curently
   # found in no less than three places throughout our code base this is the
