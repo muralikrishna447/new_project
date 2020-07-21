@@ -36,4 +36,4 @@ Rails.configuration.geoip.bucket = {
 
 Rails.configuration.geoip.maxmind = "https://download.maxmind.com/app/geoip_download"
 
-GeoIPService.initiate unless Rails.env.development? || Rails.env.test?
+GeoipService.initiate unless Rails.env.development? || Rails.env.test?

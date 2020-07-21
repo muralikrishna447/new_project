@@ -1,4 +1,4 @@
-class GeoIPService
+class GeoipService
   class GeocodeError < StandardError
     def message
       'GeoIP database not loaded'

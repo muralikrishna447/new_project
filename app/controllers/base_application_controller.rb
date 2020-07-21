@@ -111,7 +111,7 @@ class BaseApplicationController < ActionController::Base
       return dummy_location if ip_address == '127.0.0.1' || ip_address == '::1'
 
       begin
-        location = GeoIPService.get_geocode(ip_address)
+        location = GeoipService.get_geocode(ip_address)
       rescue Exception => e
         metric_suffix = 'fail'
         logger.error "Geocode failed: #{e}"

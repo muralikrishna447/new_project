@@ -7,13 +7,13 @@ describe Api::V0::LocationsController do
     def mock_geo_ip(type)
       case type
       when 'error'
-        allow(GeoIPService).to receive(:get_geocode).and_raise('error')
+        allow(GeoipService).to receive(:get_geocode).and_raise('error')
       when 'not_found'
-        allow(GeoIPService).to receive(:get_geocode).and_raise(GeoIPService::GeocodeError)
+        allow(GeoipService).to receive(:get_geocode).and_raise(GeoipService::GeocodeError)
       when 'success'
-        allow(GeoIPService).to receive(:get_geocode).and_return(default_result)
+        allow(GeoipService).to receive(:get_geocode).and_return(default_result)
       when 'registered'
-        allow(GeoIPService).to receive(:get_geocode).and_return(registered_result)
+        allow(GeoipService).to receive(:get_geocode).and_return(registered_result)
       end
     end
 
