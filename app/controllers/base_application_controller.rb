@@ -112,13 +112,6 @@ class BaseApplicationController < ActionController::Base
 
       begin
         location = GeoIPService.get_geocode(ip_address)
-      rescue IPAddr::InvalidAddressError => e
-        metric_suffix = 'ip.not.found'
-        logger.error "Geocode Not Found for #{ip_address}: #{e}"
-        logger.error e.backtrace.join("\n")
-      rescue GeoIPService::GeocodeError => e
-        metric_suffix = 'geo.mmdb.not.found'
-        logger.error e.message
       rescue Exception => e
         metric_suffix = 'fail'
         logger.error "Geocode failed: #{e}"

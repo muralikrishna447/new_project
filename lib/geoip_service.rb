@@ -27,4 +27,3 @@ class GeoIPService
     }
   end
 end
-GeoIPService.initiate unless Rails.env.development? || Rails.env.test?

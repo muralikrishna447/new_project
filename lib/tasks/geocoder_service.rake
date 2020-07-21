@@ -2,10 +2,17 @@ require 'rubygems/package'
 
 namespace :geocoder_service do
   desc 'Download the Maxmind mmdb file for ip geocode service'
-  task maxmind: :environment do
+  task update_maxmind_db: :environment do
     FileUtils.mkdir_p(paths.tmp_dir)
     MMDBCloud.upload(paths.mmdb) if download_from_maxmind && extract_tar
     FileUtils.rm_rf(paths.tmp_dir)
+    Librato.tracker.flush
+  end
+
+  desc 'Age calculation for last mmdb uploaded file to s3'
+  task s3_maxmind_db_age_calculator: :environment do
+    MMDBCloud.calculate_mmdb_file_age
+    Librato.tracker.flush
   end
 
   def download_from_maxmind
@@ -37,13 +44,10 @@ namespace :geocoder_service do
       break if status
     end
     tar_extract.close
-    if status
-      Rails.logger.info "mmdb extracted successfully"
-      Librato.increment "mmdb.extraction.success"
-    else
-      Rails.logger.error "mmdb extraction failed: File Not available"
-      Librato.increment "mmdb.extraction.failed.not.available"
-    end
+    raise StandardError.new('File Not found') unless status
+
+    Rails.logger.info "mmdb extracted successfully"
+    Librato.increment "mmdb.extraction.success"
     status
   rescue Exception => e
     Rails.logger.error "mmdb extraction failed: #{e}"
