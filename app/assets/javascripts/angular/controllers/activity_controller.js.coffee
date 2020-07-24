@@ -128,7 +128,7 @@ window.deepCopy = (obj) ->
       $scope.$emit 'openLoginModal'
 
   $scope.createdByAdmin = ->
-    return true if $scope.activity && $scope.activity.user == null
+    return true if $scope.activity && $scope.activity.creator == 0
     false
 
 
@@ -694,7 +694,7 @@ window.deepCopy = (obj) ->
 
   # Only ChefSteps content that looks like a recipe
   $scope.shouldIncludeJSONLD = ->
-    ($scope.activity.ingredients?.length > 0) && ! $scope.user
+    ($scope.activity.ingredients?.length > 0) && ! $scope.creator
 
   renderedText = (x) ->
     return '' if ! x
