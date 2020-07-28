@@ -46,4 +46,7 @@ class Subscription < ApplicationRecord
     ACTIVE_PLAN_STATUSES.include?(self.status)
   end
 
+  after_commit :on => [:create, :update] do
+    Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user_id)
+  end
 end
