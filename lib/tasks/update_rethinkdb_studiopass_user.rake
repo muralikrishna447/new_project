@@ -9,10 +9,7 @@ namespace :update_rethinkdb do
         Rails.logger.info("Subscription Id -- #{subscription.id} ")
         begin
           Retriable.retriable tries: 3 do
-            Faraday.get do |req|
-              req.url "#{end_point}/users/#{subscription.user_id}/update?apiKey=xchefsteps&ssoId=#{subscription.user_id}"
-              req.options[:timeout] = 30
-            end
+            Forum.perform('update_user', end_point, subscription.user_id)
           end
           Librato.increment "studiopass.user.update.rethinkdb.suceess"
           Rails.logger.info("Studiopass user updated successfully -- #{subscription.id}")
