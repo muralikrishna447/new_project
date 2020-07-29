@@ -39,7 +39,7 @@ class MMDBCloud
     s3 = Aws::S3::Client.new(region: Rails.configuration.geoip.s3_region)
     begin
       latest_uploaded_file = Retriable.retriable tries: 3 do
-        s3.get_object(
+        s3.head_object(
             {
                 bucket: Rails.configuration.geoip.bucket,
                 key: Rails.configuration.geoip.s3_key
