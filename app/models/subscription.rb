@@ -1,5 +1,5 @@
 class Subscription < ApplicationRecord
-  STUDIO_PLAN_ID = 'chefsteps_studio_pass'#ENV['STUDIO_PLAN_ID']
+  STUDIO_PLAN_ID = ENV['STUDIO_PLAN_ID']
   EXISTING_PREMIUM_COUPON = ENV['EXISTING_PREMIUM_COUPON']
   ACTIVE_PLAN_STATUSES = ['active', 'in_trial', 'non_renewing']
   ACTIVE_OR_CANCELLED_PLAN_STATUSES = Array.new(ACTIVE_PLAN_STATUSES).concat(['cancelled'])
