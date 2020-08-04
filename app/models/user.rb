@@ -102,6 +102,10 @@ class User < ApplicationRecord
     Subscription::user_has_studio?(self)
   end
 
+  def cancelled_studio?
+    Subscription.user_has_cancelled_studio?(self)
+  end
+
   def premium?
     self.premium_member || admin || self.studio?
   end
