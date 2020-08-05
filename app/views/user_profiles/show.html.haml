@@ -37,8 +37,6 @@
       %ul.nav.nav-tabs
         %li.active
           = link_to 'Favorites', '#favorites', data: {toggle: 'tab'}
-        %li
-          = link_to 'Photos', '#photos', data: {toggle: 'tab'}
         -if @show_recipes_tab
           %li
             = link_to @is_current_user ? 'My Recipes' : @user.name + '\'s Recipes', '#recipes', data: {toggle: 'tab'}
@@ -55,15 +53,6 @@
               %h4 "#{@is_current_user ? 'Looks like you' : @user.name} hasn't favorited any recipes yet."
               %a.btn.btn-primary(href='/gallery')
                 See our Recipe Gallery
-        .tab-pane#photos
-          - if @user.uploads.count > 0
-            - @user.uploads.each do |upload|
-              - upload_title = capture do
-                = link_to upload.title, user_upload_path(@user, upload)
-              = render 'shared/media_list_item', image: upload.image_id, title: upload_title, text: upload.notes
-          - else
-            .well-clear
-              %h4 "#{@is_current_user ? 'Looks like you' : @user.name} hasn't uploaded any photos yet."
 
 
         -if @show_recipes_tab
