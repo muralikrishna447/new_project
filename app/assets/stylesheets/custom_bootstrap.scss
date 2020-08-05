@@ -24,14 +24,13 @@
   clear: both;
 }
 
-.cs-nav-item {
-  & .icon-search:before {
-    font-family: 'Chefsteps' !important;
-    content: "\e91b" !important;
-  }
-
-  & .icon-profile:before {
-    font-family: 'Chefsteps' !important;
-    content: "\e917";
-  }
+.cs-nav-item .icon-search:before {
+  font-family: 'Chefsteps' !important;
+  content: "\e91b" !important;
 }
+
+.profile-image .icon-profile:before {
+  font-family: 'Chefsteps' !important;
+  content: "\e917";
+}
+
