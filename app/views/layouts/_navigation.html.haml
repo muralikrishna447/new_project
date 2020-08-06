@@ -51,10 +51,6 @@
       %a.cs-nav-item.cs-nav-icon-item.hide-mobile(href='/gallery')
         %span.icon-search
 
-      -##cart-icon.cs-nav-item.cs-nav-icon-item.hide-mobile
-      -#  %a{:href => "#{ Rails.application.config.shared_config[:spree_endpoint] }/cart"}
-      -#    %span.icon-cart
-
       - if current_user
         .dropdown.dropdown-right.cs-nav-icon-item.hide-mobile(ng-controller='csDropdownController as dropdown')
           #profile-dropdown-toggle.dropdown-toggle.profile-image(ng-click='dropdown.toggle($event)')
