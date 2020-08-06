@@ -35,11 +35,26 @@ module Api
           }
 
           result = ChargeBee::HostedPage.checkout_gift(data)
-          render_api_response(200, result.hosted_page)
         else
-          studio_pass_checkout
+          data = {
+              :subscription => {
+                  :plan_id => params[:plan_id].present? ? params[:plan_id] : Subscription::STUDIO_PLAN_ID
+              },
+              :customer => {
+                  :id => current_api_user.id,
+                  :email => current_api_user.email
+              }
+          }
+
+          coupon = get_applicable_coupon
+          if coupon.present?
+            data[:subscription][:coupon] = coupon
+          end
+
+          result = ChargeBee::HostedPage.checkout_new(data)
         end
 
+        render_api_response(200, result.hosted_page)
       end
 
       def create_portal_session
@@ -202,32 +217,6 @@ module Api
       end
 
       private
-
-      def studio_pass_checkout
-        # Key - 'ALREADY_SUBSCRIBED','ALREADY_CANCELLED_SUBSCRIBED' error message is controlled in Angluar Js,
-        # and respective popup will be shown to user at checkout page.
-        if current_api_user.studio?
-          render_api_response(400, {message: 'ALREADY_SUBSCRIBED'})
-        elsif current_api_user.cancelled_studio?
-          render_api_response(400, {message: 'ALREADY_CANCELLED_SUBSCRIBED'})
-        else
-          data = {
-            :subscription => {
-              :plan_id => params[:plan_id].present? ? params[:plan_id] : Subscription::STUDIO_PLAN_ID
-            },
-            :customer => {
-              :id => current_api_user.id,
-              :email => current_api_user.email
-            }
-          }
-
-          coupon = get_applicable_coupon
-          data[:subscription][:coupon] = coupon unless coupon.blank?
-
-          result = ChargeBee::HostedPage.checkout_new(data)
-          render_api_response(200, result.hosted_page)
-        end
-      end
 
       def render_invalid_chargebee_request(exception = nil)
         Rails.logger.error("ChargeBee::InvalidRequestError.  current_api_user.id=#{current_api_user.id} exception=#{exception}")
