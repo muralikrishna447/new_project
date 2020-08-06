@@ -1,6 +1,6 @@
 class Upload < ApplicationRecord
   extend FriendlyId
-  friendly_id :title, use: [:slugged, :history]
+  friendly_id :title, use: [:slugged, :history, :finders]
 
   belongs_to :activity
   belongs_to :user
