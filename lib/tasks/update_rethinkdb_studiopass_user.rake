@@ -9,7 +9,7 @@ namespace :update_rethinkdb do
         Rails.logger.info("Subscription Id -- #{subscription.id} ")
         begin
           Retriable.retriable tries: 3 do
-            Forum.perform('update_user', end_point, subscription.user_id)
+            Resque.enqueue(Forum, 'update_user', end_point, subscription.user_id)
           end
           Librato.increment "studiopass.user.update.rethinkdb.suceess"
           Rails.logger.info("Studiopass user updated successfully -- #{subscription.id}")
