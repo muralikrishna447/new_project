@@ -18,13 +18,11 @@
           %h1= @user.name
           -if @user.premium?
             ChefSteps Premium Member
-          -if can? :manage, User
-            =link_to @user.email, "mailto:" + @user.email, { target: "_blank", class: "profile-email-addr"}
 
 .container
   .row
     .span2(ng-controller="LoginController")
-      .well.profile-badges
+      .profile-badges
         = render "devise/sessions/new_angular"
 
       - if current_user
@@ -39,10 +37,6 @@
       %ul.nav.nav-tabs
         %li.active
           = link_to 'Favorites', '#favorites', data: {toggle: 'tab'}
-        %li
-          = link_to 'Classes', '#courses', data: {toggle: 'tab'}
-        %li
-          = link_to 'Photos', '#photos', data: {toggle: 'tab'}
         -if @show_recipes_tab
           %li
             = link_to @is_current_user ? 'My Recipes' : @user.name + '\'s Recipes', '#recipes', data: {toggle: 'tab'}
@@ -56,38 +50,10 @@
                 = render 'shared/media_list_item', image: like.likeable.featured_image, title: likeable_title, text: ''
           - else
             .well-clear
-              %h4 Looks like you haven't favorited any recipes yet.
+              %h4 "#{@is_current_user ? 'Looks like you' : @user.name} hasn't favorited any recipes yet."
               %a.btn.btn-primary(href='/gallery')
                 See our Recipe Gallery
-        .tab-pane#courses
-          - if @user.enrollments.any?
-            - @user.enrollments.includes(:enrollable).each do |enrollment|
-              - case enrollment.enrollable_type
-              - when 'Course'
-                - course_title = capture do
-                  = link_to enrollment.enrollable.title, enrollment.enrollable
-                - course_text = capture do
-                  - if current_user == @user
-                    %h4
-                      Lesson
-                      = @user.viewed_activities_in_course(enrollment.enrollable).count
-                      of
-                      = enrollment.enrollable.viewable_activities.count
-                    = where_user_left_off_in_course(enrollment.enrollable, @user, 'btn btn-primary')
-              - when 'Assembly'
-                - course_title = capture do
-                  = link_to enrollment.enrollable.title, enrollment.enrollable
-                - course_text = capture do
-                  - if current_user == @user
-                    - if @user.completed_course?(enrollment.enrollable)
-                      = "Complete!"
-                    - else
-                      = link_to "Continue Class #{content_tag :i, nil, class: 'icon-chevron-right'}".html_safe, class_path(enrollment.enrollable), class: 'btn btn-primary'
-              = render 'shared/media_list_item', image: enrollment.enrollable.featured_image, title: course_title, text: course_text
-          - else
-            .tab-pane-header
-              %h4 Enroll into your first Class today!
-              = link_to 'Classes', classes_path, class: 'btn btn-primary'
+
 
         -if @show_recipes_tab
           .tab-pane#recipes
