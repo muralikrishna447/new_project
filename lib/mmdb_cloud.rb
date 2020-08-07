@@ -47,8 +47,8 @@ class MMDBCloud
         )
       end
       age = Date.today.mjd - latest_uploaded_file.last_modified.to_date.mjd
-      Librato.increment "mmdb.s3.last.modified.#{age}.days.ago" if age > 5
-      Librato.increment ".s3.file.age.calculation.success"
+      Librato.measure 'mmdb.s3.last.modified.days.ago', age
+      Librato.increment "mmdb.s3.file.age.calculation.success"
       Rails.logger.info "S3 Geocode mmdb file is older than #{age} days"
     rescue Exception => e
       Librato.increment "mmdb.s3.file.age.calculation.failed"
