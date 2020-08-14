@@ -13,6 +13,7 @@ class UsersController < ApplicationController
       @user = User.find(params[:userId])
       user_json = {id: @user.id.to_s, name: @user.name, avatarUrl: @user.avatar_url, email: @user.email}
       user_json.merge!({employee: true}) if @user.role == 'admin' && /@chefsteps.com\z/.match(@user.email)
+      user_json.merge!({studioPass:  @user.studio? })
       render json: user_json.to_json
     else
       render plain: 'Authorized Access', status: 401
