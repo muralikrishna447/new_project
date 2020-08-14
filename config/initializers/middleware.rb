@@ -4,11 +4,11 @@ Rails.application.config.middleware.insert_before Delve::Application.middleware_
 
 middleware_conf = {
     staging: {
-        enforcer: [[/^\/loaderio/, /^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/, /^\/password/, /^\/sso/, /^\/guides/, /^\/\.well-known/, /^\/admin\/slack_display\.json/]],
+        enforcer: [[/^\/loaderio/, /^\/api/, /^\/users/, /^\/getUser/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/, /^\/password/, /^\/sso/, /^\/guides/, /^\/\.well-known/, /^\/admin\/slack_display\.json/]],
         redirect: {'chocolateyshatner.com' => 'www.chocolateyshatner.com'}
     },
     staging2: {
-        enforcer: [[/^\/loaderio/, /^\/api/, /^\/users/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/, /^\/password/, /^\/sso/, /^\/guides/, /^\/\.well-known/, /^\/admin\/slack_display\.json/]],
+        enforcer: [[/^\/loaderio/, /^\/api/, /^\/users/, /^\/getUser/, /^\/assets/, /^\/logout/, /^\/sign_out/, /^\/sign_in/, /^\/stripe_webhooks/, /^\/password/, /^\/sso/, /^\/guides/, /^\/\.well-known/, /^\/admin\/slack_display\.json/]],
         redirect: {'vanillanimoy.com' => 'www.vanillanimoy.com'}
     },
     production: {
