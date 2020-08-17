@@ -16,14 +16,17 @@
 
         .span10
           %h1= @user.name
-          -if @user.premium?
-            ChefSteps Premium Member
 
 .container
   .row
     .span2(ng-controller="LoginController")
       .profile-badges
         = render "devise/sessions/new_angular"
+
+      - if @user.studio?
+        %label.studio-pass-badge Studio Pass
+      - elsif @user.premium_member
+        %label.premium-badge Premium
 
       - if current_user
         - if current_user == @user
