@@ -86,23 +86,14 @@ class BaseApplicationController < ActionController::Base
     def null_location
       return {
         country: nil,
-        latitude: nil,
-        longitude: nil,
-        city: nil,
-        state: nil,
-        zip: nil
+        long_country: nil
       }
     end
 
     def dummy_location
       return {
           country: 'US',
-          long_country: 'United States',
-          latitude: 47.6103,
-          longitude: -122.3341,
-          city: 'Seattle',
-          state: 'WA',
-          zip: '98101'
+          long_country: 'United States'
       }
     end
 
@@ -120,13 +111,7 @@ class BaseApplicationController < ActionController::Base
       return dummy_location if ip_address == '127.0.0.1' || ip_address == '::1'
 
       begin
-        key = "geocode-cache-#{ip_address}"
-        location = Rails.cache.fetch(key, expires_in: conf.cache_expiry) do
-          metric_suffix = 'miss'
-          get_location_from_api(ip_address)
-        end
-      # TODO: we should narrow the scope of this rescue block, but not
-      # sure all the ways in which Geoip2 can fail
+        location = GeoipService.get_geocode(ip_address)
       rescue Exception => e
         metric_suffix = 'fail'
         logger.error "Geocode failed: #{e}"
@@ -143,51 +128,6 @@ class BaseApplicationController < ActionController::Base
     end
 
     protected
-
-    class GeocodeError < StandardError
-    end
-
-    def get_location_from_api(ip_address)
-      conn = Faraday.new(
-        :url => "https://geoip.maxmind.com", request: { timeout: 2, open_timeout: 1}
-      ) do |faraday|
-        faraday.request  :url_encoded             # form-encode POST params
-        faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-      end
-      conf = Rails.configuration.geoip
-      conn.basic_auth(conf.user, conf.license)
-      resp = conn.get "/geoip/v2.1/city/#{ip_address}"
-      geocode = JSON.parse resp.body
-
-      if geocode["error"] || !geocode["location"]
-        raise GeocodeError.new("Geocoding failed for #{ip_address}")
-      end
-
-      country = (
-        Utils.spelunk(geocode, ['country', 'iso_code']) ||
-        Utils.spelunk(geocode, ['registered_country', 'iso_code'])
-      )
-
-      long_country = (
-        Utils.spelunk(geocode, ['country', 'names', 'en']) ||
-        Utils.spelunk(geocode, ['registered_country', 'names', 'en'])
-      )
-
-      if country == nil
-        raise GeocodeError.new("No country info for #{ip_address}")
-      end
-
-      location = {
-        country: country,
-        long_country: long_country,
-        latitude: geocode["location"]["latitude"],
-        longitude: geocode["location"]["longitude"],
-        city: Utils.spelunk(geocode, ["city", "names", "en"]),
-        state: Utils.spelunk(geocode, ["subdivisions", 0, "iso_code"]),
-        zip: Utils.spelunk(geocode, ["postal", "code"]),
-      }
-      return location
-    end
 
   # This subscribe / track logic does not belong here but since it's curently
   # found in no less than three places throughout our code base this is the
