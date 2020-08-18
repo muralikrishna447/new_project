@@ -101,7 +101,7 @@ class Activity < ApplicationRecord
   after_save :queue_algolia_sync
 
   def set_promote_order
-    self.promote_order = nil unless promoted?
+    self.promote_order = nil if self.is_promoted.present? && !promoted?
   end
 
   def promoted?
