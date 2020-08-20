@@ -12,7 +12,7 @@ describe Users::RegistrationsController do
       session[:user_return_to] = sign_in_url
       post :create, params: {user: {email: "test@example.com", password: "apassword", name: "Test User"}}
       response.should_not redirect_to sign_in_url
-      response.should redirect_to welcome_url(email: assigns(:user).email)
+      response.should redirect_to '/welcome'
     end
 
     # it "should do email sign up" do

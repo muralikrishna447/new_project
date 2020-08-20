@@ -92,6 +92,7 @@ gem 'quickbase_client'
 gem 'ruby-protocol-buffers' # JR QR Codes
 
 gem 'chargebee', '~>2'
+gem 'maxmind-db'
 
 group :test do
   gem 'webmock'
