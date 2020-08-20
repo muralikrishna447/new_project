@@ -16,14 +16,18 @@
 
         .span10
           %h1= @user.name
-          -if @user.premium?
-            ChefSteps Premium Member
 
 .container
   .row
     .span2(ng-controller="LoginController")
       .profile-badges
         = render "devise/sessions/new_angular"
+
+      .subscription-badge
+        - if @user.studio?
+          = image_tag 'https://d92f495ogyf88.cloudfront.net/static/badge-studio-pass.png'
+        - if @user.premium_member
+          = image_tag 'https://d92f495ogyf88.cloudfront.net/static/badge-premium.png'
 
       - if current_user
         - if current_user == @user
