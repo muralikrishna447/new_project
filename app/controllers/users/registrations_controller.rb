@@ -37,7 +37,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         if session[:user_return_to] && (session[:user_return_to] != root_url && session[:user_return_to] != sign_in_url)
           redirect_to session[:user_return_to], notice: "Thanks for joining the ChefSteps community!"
         else
-          redirect_to welcome_url(email: @user.email)
+          redirect_to '/welcome'
         end
       else
         return render status: 200, json: {success: true, info: "Logged in", user: @user.to_json(methods: :authentication_token, include: [:enrollments])}
