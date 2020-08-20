@@ -77,7 +77,6 @@ Rails.application.routes.draw do
     get "sign_up", to: 'users/registrations#new'
     get "sign_out", to: 'users/sessions#destroy'
     get "complete_registration", to: 'users/registrations#complete_registration'
-    get 'welcome', to: 'users/registrations#welcome'
     match '/users/auth/google/callback', to: 'users/omniauth_callbacks#google', via: [:get, :post, :options]
     match '/users/auth/facebook/callback', to: 'users/omniauth_callbacks#facebook', via: [:get, :post, :options]
     delete '/users/social/disconnect', to: "users/omniauth_callbacks#destroy"
