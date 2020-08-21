@@ -25,9 +25,9 @@
 
       .subscription-badge
         - if @user.studio?
-          = image_tag 'https://d92f495ogyf88.cloudfront.net/static/badge-studio-pass.png'
+          = image_tag 'https://d92f495ogyf88.cloudfront.net/static/studio-pass-badge.svg'
         - if @user.premium_member
-          = image_tag 'https://d92f495ogyf88.cloudfront.net/static/badge-premium.png'
+          = image_tag 'https://d92f495ogyf88.cloudfront.net/static/premium-badge.svg'
 
       - if current_user
         - if current_user == @user
