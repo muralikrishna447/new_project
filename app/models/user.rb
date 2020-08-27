@@ -106,8 +106,18 @@ class User < ApplicationRecord
     Subscription.user_has_cancelled_studio?(self)
   end
 
+  # This method indicates whether the user has the Premium capability and
+  # is allowed to access Premium features. It does not directly indicate
+  # whether someone has purchased or received a Premium membership. Use
+  # premium_member? for that.
   def premium?
     self.premium_member || admin || self.studio?
+  end
+
+  # Indicates whether a user has purchased or otherwise received a Premium
+  # membership.
+  def premium_member?
+    self.premium_member
   end
 
   def viewed_activities_in_course(course)
@@ -155,7 +165,7 @@ class User < ApplicationRecord
   def make_premium_member(price, send_welcome_email = false)
     # Not an error b/c we do this on both main and worker, can be
     # racing each other.
-    return if self.premium?
+    return if self.premium_member?
 
     self.premium_member = true
     self.premium_membership_created_at = DateTime.now
