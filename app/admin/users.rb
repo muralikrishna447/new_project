@@ -38,7 +38,7 @@ ActiveAdmin.register User do
 
   action_item :view, only: [:show] do
     unless user.admin?
-      if user.premium?
+      if user.premium_member?
         link_to('Remove premium membership', remove_premium_admin_user_path(user), method: :post)
       else
         link_to('Grant premium membership', make_premium_admin_user_path(user), method: :post)

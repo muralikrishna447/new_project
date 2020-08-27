@@ -38,12 +38,12 @@ describe User do
 
   context "premium member" do
     it "should default false" do
-      @user.premium?.should be false
+      @user.premium_member?.should be false
     end
 
     it "make_premium_member should set correct fields" do
       @user.make_premium_member(10)
-      @user.premium?.should be true
+      @user.premium_member?.should be true
       @user.premium_membership_created_at.should be > DateTime.now - 1.hour
       expect(@user.premium_membership_price).to eq(10)
     end
