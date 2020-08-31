@@ -35,6 +35,7 @@ class Step < ApplicationRecord
                 "-- ingredient ids #{ingredients.pluck(:ingredient_id)} "\
                 "-- ingredients count #{ingredients.count} at #{Time.now}"
     end
+    logger.info("updating activity #{activity.id} & step id #{id} by ingredients params -- #{ingredients_attrs}")
     logger.info(log_data["Before"])
     ingredients.destroy_all()
     ingredients.reload()
