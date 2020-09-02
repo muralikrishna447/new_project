@@ -29,6 +29,14 @@ class Step < ApplicationRecord
 
   def update_ingredients_json(ingredients_attrs)
     # Easiest just to be rid of all of the old join records, we'll make them from scratch
+    log_data = Proc.new do |action|
+      "#{action} updating activity #{activity.id} for -- Step Id -- #{id} "\
+                "-- step_ingredient ids #{ingredients.pluck(:id)} " \
+                "-- ingredient ids #{ingredients.pluck(:ingredient_id)} "\
+                "-- ingredients count #{ingredients.count} at #{Time.now}"
+    end
+    logger.info("updating activity #{activity.id} & step id #{id} by ingredients params -- #{ingredients_attrs}")
+    logger.info(log_data["Before"])
     ingredients.destroy_all()
     ingredients.reload()
     if ingredients_attrs
@@ -40,16 +48,18 @@ class Step < ApplicationRecord
           the_ingredient = Ingredient.find_or_create_by_id_or_subactivity_or_ingredient_title(i[:ingredient][:id], title)
 
           StepIngredient.create!({
-                                    step_id: self.id,
-                                    ingredient_id: the_ingredient.id,
-                                    note: i[:note],
-                                    display_quantity: i[:display_quantity],
-                                    unit: i[:unit],
-                                    ingredient_order: idx
-                                })
+                                     step_id: self.id,
+                                     ingredient_id: the_ingredient.id,
+                                     note: i[:note],
+                                     display_quantity: i[:display_quantity],
+                                     unit: i[:unit],
+                                     ingredient_order: idx
+                                 })
         end
       end
     end
+    ingredients.reload()
+    logger.info(log_data["After"])
     self
   end
 
