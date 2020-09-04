@@ -39,7 +39,7 @@ class Step < ApplicationRecord
     logger.info(log_data["Before"])
     ingredients.destroy_all()
     ingredients.reload()
-    if ingredients_attrs
+    if ingredients_attrs.present?
       ingredients_attrs.each_with_index do |i, idx|
         title = i[:ingredient][:title]
         unless title.nil? || title.blank?
