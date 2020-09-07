@@ -2588,7 +2588,10 @@ CREATE TABLE public.users (
     deleted_at timestamp without time zone,
     first_joule_purchased_at timestamp without time zone,
     joule_purchase_count integer DEFAULT 0,
-    referral_code character varying(255)
+    referral_code character varying(255),
+    remember_token character varying,
+    opt_in boolean,
+    country_code text
 );
 
 
