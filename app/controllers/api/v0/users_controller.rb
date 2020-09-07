@@ -30,7 +30,7 @@ module Api
       end
 
       def create
-        opt_in = (params[:opt_in] == "true") #email list opt_in
+        opt_in = (params['user']['opt_in'] == "true") #email list opt_in
         params[:source] ||= "api_standard"
         # TODO - deprecate this branch completely, in the short-run we need to
         # verify that this branch is not used.
