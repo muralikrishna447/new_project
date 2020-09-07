@@ -603,7 +603,7 @@ class Activity < ApplicationRecord
         appliance_instruction_text: step_attr[:appliance_instruction_text],
         appliance_instruction_image: step_attr[:appliance_instruction_image]
       )
-      step.update_ingredients_json(step_attr[:ingredients])
+      step.update_ingredients_json(step_attr[:ingredients]) if step_attr.key?('ingredients')
       step_attr[:id] = step.id
     end
   end
