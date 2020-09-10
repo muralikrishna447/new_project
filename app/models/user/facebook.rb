@@ -27,7 +27,7 @@ module User::Facebook
     # Use the class method if the ChefSteps user does not exist
     def facebook_connect(user)
       logger.info "Class Methods facebook_connect with user_options: #{user.inspect}"
-      user_options = {email: user[:email], provider: user[:provider], facebook_user_id: user[:user_id]}
+      user_options = {email: user[:email], provider: user[:provider], facebook_user_id: user[:user_id], opt_in: user[:opt_in]}
       User.where("users.email = :email OR (users.provider = :provider AND users.facebook_user_id = :facebook_user_id)", user_options).
         first_or_initialize(user_options.merge(password: Devise.friendly_token[0,20], name: user[:name]))
     end

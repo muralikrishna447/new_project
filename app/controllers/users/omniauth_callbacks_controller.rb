@@ -67,7 +67,7 @@ private
       if @new_signup
         sign_in @user
         cookies.delete(:viewed_activities)
-        subscribe_and_track @user, false, "ajax_signup_form_social"
+        subscribe_and_track @user, @user.opt_in, "ajax_signup_form_social"
 
         return render status: 200, json: {success: true, new_user: @new_signup, info: "Signed Up", user: current_user.as_json(include: :enrollments)}
       else

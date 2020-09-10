@@ -153,7 +153,7 @@ describe Api::V0::UsersController do
 
     it 'should call email signup' do
       Api::BaseController.any_instance.should_receive(:email_list_signup)
-      post :create, params: {user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}}
+      post :create, params: {user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword", opt_in: 'true'}}
       response.should be_success
     end
 
