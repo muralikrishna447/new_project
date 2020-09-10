@@ -109,4 +109,112 @@ describe ActivitiesController do
       end
     end
   end
+
+  describe 'update' do
+    context 'update_as_json with steps' do
+      before :each do
+        @admin = Fabricate :user, name: 'An Admin', email: 'admin@chefsteps.com', role: 'admin'
+        @chefsteps_activity = Fabricate :activity, title: 'A New Recipe', published: true
+        @step = Fabricate :step, title: "First Step"
+        @chefsteps_activity.steps << @step
+      end
+
+      it 'add new steps and removing existing steps for activity' do
+        sign_in @admin
+        put :update_as_json, params: {format: 'json', id: @chefsteps_activity.slug, activity: {title: 'New Title'},
+                                      steps: [{title: 'New Step'}]}
+        expect(@chefsteps_activity.steps.count).to eq(1)
+      end
+
+      it 'add the steps with existing steps for activity' do
+        sign_in @admin
+        put :update_as_json, params: {format: 'json', id: @chefsteps_activity.slug, activity: {title: 'New Title'},
+                                      steps: [@step.attributes, {title: 'New Step'}]}
+        expect(@chefsteps_activity.steps.count).to eq(2)
+      end
+
+      it 'existing steps should avaliable if steps params blank for activity' do
+        sign_in @admin
+        put :update_as_json, params: {format: 'json', id: @chefsteps_activity.slug, activity: {title: 'New Title'}, steps: []}
+        expect(@chefsteps_activity.steps.count).to eq(1)
+      end
+    end
+
+    context 'update_as_json with steps and ingredients' do
+      before :each do
+        @admin = Fabricate :user, name: 'An Admin', email: 'admin@chefsteps.com', role: 'admin'
+        @chefsteps_activity = Fabricate :activity, title: 'A New Recipe', published: true
+        @step = Fabricate :step, title: "First Step"
+        @ingredient = Fabricate :ingredient, title: "Cold Water"
+        @chefsteps_activity.steps << @step
+        @ingredients = [{"unit"=>"a/n", "display_quantity"=>nil, "note"=>"",
+                         "ingredient"=>{"title"=>"Banana water"}}]
+      end
+
+      it 'add new steps with new ingredients and removing existing steps for activity' do
+        sign_in @admin
+         put :update_as_json, params: {format: 'json', id: @chefsteps_activity.slug, activity: {title: 'New Title'},
+                                       steps: [{title: 'New Step', "ingredients"=> @ingredients}]}
+        @chefsteps_activity.reload
+        expect(@chefsteps_activity.steps.count).to eq(1)
+        expect(@chefsteps_activity.steps.first.ingredients.count).to eq(1)
+      end
+
+      it 'Existing step and ingredients with new step without ingredients for activity' do
+        sign_in @admin
+        StepIngredient.create!({step_id: @step.id, ingredient_id: @ingredient.id })
+        @step.reload
+        existing_step_ingredients = [{"quantity"=>"0.0", "unit"=>"a/n", "display_quantity"=>nil, "note"=>"",
+                                     "ingredient"=> {title: 'Cold Water', id: @step.ingredients.first.ingredient_id}}]
+        put :update_as_json, params: {format: 'json', id: @chefsteps_activity.slug, activity: {title: 'New Title'},
+                                      steps: [@step.attributes.merge("ingredients"=> existing_step_ingredients), {title: 'New Step'}]}
+        @chefsteps_activity.reload
+        expect(@chefsteps_activity.steps.count).to eq(2)
+        expect(@chefsteps_activity.steps.first.ingredients.map(&:title)).to eq(['Cold Water'])
+        expect(@chefsteps_activity.steps.first.ingredients.count).to eq(1)
+        expect(@chefsteps_activity.steps.map(&:title)).to eq(["First Step",'New Step'])
+        expect(@chefsteps_activity.steps.last.ingredients.count).to eq(0)
+      end
+
+      it 'existing steps with new ingredients for activity' do
+        sign_in @admin
+        put :update_as_json, params: {format: 'json', id: @chefsteps_activity.slug, activity: {title: 'New Title'},
+                                      steps: [@step.attributes.merge(ingredients: @ingredients), {title: 'New Step'}]}
+        expect(@chefsteps_activity.steps.count).to eq(2)
+        expect(@chefsteps_activity.steps.first.ingredients.map(&:title)).to eq(["Banana water"])
+        expect(@chefsteps_activity.steps.first.ingredients.count).to eq(1)
+      end
+
+      it 'should delete existing step ingredients if ingredients has empty' do
+        sign_in @admin
+        StepIngredient.create!({step_id: @step.id, ingredient_id: @ingredient.id })
+        @step.reload
+        expect(@chefsteps_activity.steps.first.ingredients.map(&:title)).to eq(['Cold Water'])
+        expect(@chefsteps_activity.steps.first.ingredients.count).to eq(1)
+        put :update_as_json, params: {format: 'json', id: @chefsteps_activity.slug, activity: {title: 'New Title'},
+                                      steps: [@step.attributes.merge("ingredients"=> nil), {title: 'New Step'}]}
+        @chefsteps_activity.reload
+        expect(@chefsteps_activity.steps.count).to eq(2)
+        expect(@chefsteps_activity.steps.first.ingredients.count).to eq(0)
+        expect(@chefsteps_activity.steps.map(&:title)).to eq(["First Step",'New Step'])
+        expect(@chefsteps_activity.steps.last.ingredients.count).to eq(0)
+      end
+
+      it 'should not delete existing step ingredients if no ingredients params' do
+        sign_in @admin
+        StepIngredient.create!({step_id: @step.id, ingredient_id: @ingredient.id })
+        @step.reload
+        expect(@chefsteps_activity.steps.first.ingredients.map(&:title)).to eq(['Cold Water'])
+        expect(@chefsteps_activity.steps.first.ingredients.count).to eq(1)
+        put :update_as_json, params: {format: 'json', id: @chefsteps_activity.slug, activity: {title: 'New Title'},
+                                      steps: [@step.attributes, {title: 'New Step'}]}
+        @chefsteps_activity.reload
+        expect(@chefsteps_activity.steps.count).to eq(2)
+        expect(@chefsteps_activity.steps.first.ingredients.count).to eq(1)
+        expect(@chefsteps_activity.steps.first.ingredients.map(&:title)).to eq(["Cold Water"])
+        expect(@chefsteps_activity.steps.map(&:title)).to eq(["First Step",'New Step'])
+        expect(@chefsteps_activity.steps.last.ingredients.count).to eq(0)
+      end
+    end
+  end
 end
