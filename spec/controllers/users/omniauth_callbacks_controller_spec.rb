@@ -57,7 +57,7 @@ describe Users::OmniauthCallbacksController do
 
         it "should do email signup" do
           Users::OmniauthCallbacksController.any_instance.should_receive(:email_list_signup)
-          get :facebook, params: {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}, xhr: true
+          get :facebook, params: {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User", opt_in: 'true'}}, xhr: true
         end
       end
 

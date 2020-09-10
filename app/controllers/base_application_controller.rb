@@ -53,6 +53,12 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
+  def detect_country_code
+    return geolocate_ip[:country].presence || 'US' unless cookies['cs_geo'].present?
+
+    JSON.parse(cookies['cs_geo'])['country']
+  end
+
   helper_method :facebook_app_id
   def facebook_app_id
     Rails.application.config.shared_config[:facebook][:app_id]
@@ -132,8 +138,8 @@ class BaseApplicationController < ActionController::Base
   # This subscribe / track logic does not belong here but since it's curently
   # found in no less than three places throughout our code base this is the
   # least invasive place to store it
-  def subscribe_and_track(user, optout, signup_method)
-    email_list_signup(user, signup_method) unless optout
+  def subscribe_and_track(user, opt_in, signup_method)
+    email_list_signup(user, signup_method) if opt_in
     mixpanel.alias(user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
     mixpanel.track(user.id, 'Signed Up', { signup_method: signup_method })
     Resque.enqueue(Forum, 'initial_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
@@ -174,11 +180,12 @@ class BaseApplicationController < ActionController::Base
       }
       logger.info "[mailchimp] Subscribing [#{user.email}] to list #{[listname]}, merge_vars: #{merge_vars}"
 
+      double_opt_in = %w[AU DE].include? user.country_code
       Gibbon::API.lists.subscribe(
         id: listname,
         email: {email: user.email},
         merge_vars: merge_vars,
-        double_optin: false,
+        double_optin: double_opt_in,
         send_welcome: false
       )
 

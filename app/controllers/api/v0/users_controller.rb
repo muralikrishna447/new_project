@@ -30,7 +30,6 @@ module Api
       end
 
       def create
-        optout = (params[:optout] && params[:optout]=="true") #email list optout
         params[:source] ||= "api_standard"
         # TODO - deprecate this branch completely, in the short-run we need to
         # verify that this branch is not used.
@@ -39,7 +38,8 @@ module Api
           render_unauthorized
         else
           @user = User.new(user_params)
-          create_new_user(@user, optout, params[:source])
+          @user.country_code = detect_country_code
+          create_new_user(@user, @user.opt_in, params[:source])
         end
       end
 
@@ -156,10 +156,10 @@ module Api
         end
       end
 
-      def create_new_user(user, optout, source)
+      def create_new_user(user, opt_in, source)
         if user.save
           aa = ActorAddress.create_for_user @user, client_metadata: "create"
-          subscribe_and_track user, optout, source
+          subscribe_and_track user, opt_in, source
           Resque.enqueue(UserSync, @user.id)
           Resque.enqueue(EmployeeAccountProcessor, @user.id)
           render json: {status: 200, message: 'Success', token: aa.current_token.to_jwt}, status: 200
@@ -173,7 +173,7 @@ module Api
         params.require(:user).permit(:name, :email, :password, :password_confirmation,
                                      :remember_me, :location, :quote, :website, :chef_type, :from_aweber,
                                      :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from,
-                                     :referrer_id, :survey_results, :events_count)
+                                     :referrer_id, :survey_results, :events_count, :opt_in)
       end
 
       def user_settings_params
