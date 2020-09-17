@@ -7,7 +7,7 @@ module Api
       # Required since this only this controller contains the code to actually
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
-      before_action :ensure_authorized, except: [:create, :log_upload_url, :make_premium, :update_settings]
+      before_action :ensure_authorized, except: [:create, :log_upload_url, :make_premium, :update_settings, :update_user_consent]
       before_action(BaseController.make_service_filter(
         [ExternalServiceTokenChecker::SPREE_SERVICE]), only: [:make_premium, :update_settings]
       )
