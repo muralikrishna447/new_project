@@ -138,6 +138,17 @@ module Api
         return render_api_response 200, {:message => "Success"}
       end
 
+      def update_user_consent
+        @user = current_user
+        @user.country_code = detect_country_code unless @user.country_code.present?
+        if @user.update(user_consent_params)
+          email_list_signup(@user, 'api_standard') if @user.opt_in
+          render json: { message: 'Success' }, status: 200
+        else
+          render json: { message: 'Update Failed' }, status: 500
+        end
+      end
+
       private
 
       def update_settings_impl(user_id, mode)
@@ -184,6 +195,9 @@ module Api
                                             :preferred_temperature_unit)
       end
 
+      def user_consent_params
+        params.require(:user).permit(:opt_in, :is_consent_displayed)
+      end
     end
   end
 end
