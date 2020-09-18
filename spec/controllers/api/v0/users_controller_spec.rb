@@ -157,6 +157,13 @@ describe Api::V0::UsersController do
       response.should be_success
     end
 
+    it 'should create user with is_consent_displayed as true' do
+      Api::BaseController.any_instance.should_receive(:email_list_signup)
+      post :create, params: {user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword", opt_in: 'true'}}
+      expect(User.find_by_email('newuser@chefsteps.com').is_consent_displayed).to eq(true)
+      response.should be_success
+    end
+
     it 'should not call email signup if the user opts out' do
       Api::BaseController.any_instance.should_not_receive(:email_list_signup)
       post :create, params: {optout: "true", user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword"}}
@@ -426,4 +433,66 @@ describe Api::V0::UsersController do
       response.code.should == "401"
     end
   end
+
+  context '#update_user_consent' do
+    before :each do
+      @user = Fabricate :user, id: 200, email: 'test-api@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
+    end
+
+    it 'should update user opt_in as true and is_consent_displayed true' do
+      sign_in @user
+      Api::BaseController.any_instance.should_receive(:email_list_signup)
+      post :update_user_consent, params: {user: {opt_in: true, is_consent_displayed: true}}
+
+      response.should be_success
+    end
+
+    it 'should call email_list_signup if opt_in is true' do
+      sign_in @user
+      Api::BaseController.any_instance.should_receive(:email_list_signup)
+      post :update_user_consent, params: {user: {opt_in: true, is_consent_displayed: true}}
+
+      response.should be_success
+      user = User.find(200)
+      expect(user.opt_in).to eq(true)
+      expect(user.is_consent_displayed).to eq(true)
+    end
+
+    it 'should take the country code from cookie' do
+      sign_in @user
+      request.cookies['cs_geo'] = {country: 'IN'}.to_json
+      post :update_user_consent, params: {user: {opt_in: true, is_consent_displayed: true}}
+
+      response.should be_success
+      user = User.find(200)
+      expect(user.country_code).to eq('IN')
+    end
+
+    it 'should update only opt_in as true' do
+      sign_in @user
+      post :update_user_consent, params: {user: {opt_in: true}}
+
+      response.should be_success
+      user = User.find(200)
+      expect(user.opt_in).to eq(true)
+    end
+
+    it 'should update only opt_in as false' do
+      sign_in @user
+      post :update_user_consent, params: {user: {opt_in: false}}
+
+      response.should be_success
+      user = User.find(200)
+      expect(user.opt_in).to eq(false)
+    end
+
+    it 'should not allow params other than opt_in is_consent_displayed' do
+      sign_in @user
+      Api::BaseController.any_instance.should_receive(:email_list_signup)
+      post :update_user_consent, params: {user: {opt_in: true, is_consent_displayed: true, not_valid: false}}
+
+      response.should be_success
+    end
+  end
+
 end

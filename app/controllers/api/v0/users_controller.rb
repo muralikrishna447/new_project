@@ -39,6 +39,8 @@ module Api
         else
           @user = User.new(user_params)
           @user.country_code = detect_country_code
+          # consent showed up during signing up by email and password
+          @user.is_consent_displayed = true
           create_new_user(@user, @user.opt_in, params[:source])
         end
       end
