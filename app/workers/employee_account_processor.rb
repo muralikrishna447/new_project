@@ -5,6 +5,7 @@ class EmployeeAccountProcessor
     chefsteps.com
     breville.com
     breville.com.au
+    breville.co.nz
     breville.ca
     brevilleusa.com
     sageappliances.com
