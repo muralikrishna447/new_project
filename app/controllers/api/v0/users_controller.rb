@@ -7,7 +7,7 @@ module Api
       # Required since this only this controller contains the code to actually
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
-      before_action :ensure_authorized, except: [:create, :log_upload_url, :make_premium, :update_settings]
+      before_action :ensure_authorized, except: [:create, :log_upload_url, :make_premium, :update_settings, :update_user_consent]
       before_action(BaseController.make_service_filter(
         [ExternalServiceTokenChecker::SPREE_SERVICE]), only: [:make_premium, :update_settings]
       )
@@ -39,6 +39,8 @@ module Api
         else
           @user = User.new(user_params)
           @user.country_code = detect_country_code
+          # consent showed up during signing up by email and password
+          @user.is_consent_displayed = true
           create_new_user(@user, @user.opt_in, params[:source])
         end
       end
@@ -138,6 +140,17 @@ module Api
         return render_api_response 200, {:message => "Success"}
       end
 
+      def update_user_consent
+        @user = current_user
+        @user.country_code = detect_country_code unless @user.country_code.present?
+        if @user.update(user_consent_params)
+          email_list_signup(@user, 'api_standard') if @user.opt_in
+          render json: { message: 'Success' }, status: 200
+        else
+          render json: { message: 'Update Failed' }, status: 500
+        end
+      end
+
       private
 
       def update_settings_impl(user_id, mode)
@@ -184,6 +197,9 @@ module Api
                                             :preferred_temperature_unit)
       end
 
+      def user_consent_params
+        params.require(:user).permit(:opt_in, :is_consent_displayed)
+      end
     end
   end
 end
