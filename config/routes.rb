@@ -310,6 +310,7 @@ Rails.application.routes.draw do
       get 'turbo_estimate', to: 'turbo_estimate#get_turbo_estimate'
 
       post 'users/make_premium', to: 'users#make_premium'
+      post 'users/update_user_consent', to: 'users#update_user_consent'
 
       post 'firmware/updates', to: 'firmware#updates'
       get 'auth/external_redirect', to: 'auth#external_redirect'
