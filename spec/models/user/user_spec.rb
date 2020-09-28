@@ -519,6 +519,21 @@ describe User do
     end
   end
 
+  context 'User data sanitized' do
+    it 'need to sanitize with script tag' do
+      new_user = Fabricate(:user)
+      new_user.bio = 'Bio<script>alert("text")</script>'
+      new_user.save
+      User.last.bio.should eq "Bio"
+    end
+    it 'need to sanitize with curly brackets' do
+      new_user = Fabricate(:user)
+      new_user.bio = '{{interpolate}}'
+      new_user.save
+      User.last.bio.should eq "interpolate"
+    end
+  end
+
   describe 'create_restricted_token' do
     let(:user) { Fabricate(:user) }
     let(:restriction) { 'my_restriction' }
