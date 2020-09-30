@@ -13,8 +13,8 @@ ActiveAdmin.register Activity do
                 :nesting_level, :transcript, :featured_image_id, :image_id,
                 :steps_attributes, :source_activity, :source_activity_id,
                 :source_type, :author_notes, :currently_editing_user, :include_in_gallery,
-                :creator, :premium, :studio, :summary_tweet, :published, :activity_type => [],
-                :tag_list => [], :child_activity_ids => []
+                :creator, :premium, :studio, :summary_tweet, :published, :featured_image_tag,
+                :activity_type => [], :tag_list => [], :child_activity_ids => []
 
   filter :title
   filter :created_at
@@ -117,7 +117,8 @@ ActiveAdmin.register Activity do
                                        :nesting_level, :transcript, :featured_image_id, :image_id,
                                        :steps_attributes, :child_activity_ids, :source_activity, :source_activity_id,
                                        :source_type, :author_notes, :currently_editing_user, :include_in_gallery,
-                                       :creator, :premium, :studio, :summary_tweet, :published, :activity_type => [], :tag_list => [])
+                                       :creator, :premium, :studio, :summary_tweet, :published, :featured_image_tag,
+                                       :activity_type => [], :tag_list => [])
     end
   end
 

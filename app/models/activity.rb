@@ -76,7 +76,7 @@ class Activity < ApplicationRecord
   serialize :activity_type, Array
 
   #The attribute is_promoted act as checkbox in form. If user added any value to promote_order then is_promoted value will be 1 or viseversa.
-  attr_accessor :used_in, :forks, :upload_count, :is_promoted
+  attr_accessor :used_in, :forks, :upload_count, :is_promoted, :featured_image_tag
 
   include PgSearch::Model
   multisearchable :against => [:attached_classes_weighted, :title, :tags_weighted, :description, :ingredients_weighted, :steps_weighted],
@@ -234,6 +234,10 @@ class Activity < ApplicationRecord
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
+  end
+
+  def self.featured_image_tag_enum
+    %w[New Old]
   end
 
   def optional_equipment

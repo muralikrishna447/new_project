@@ -137,7 +137,8 @@ CREATE TABLE public.activities (
     first_published_at timestamp without time zone,
     studio boolean DEFAULT false,
     byline character varying(255),
-    promote_order integer
+    promote_order integer,
+    featured_image_tag character varying
 );
 
 
