@@ -222,6 +222,54 @@ module Api
 
       end
 
+      def authenticate_apple
+        Librato.increment('api.authenticate_apple_requests')
+
+        begin
+          decoded_token = CsAuth::Apple.decode_and_validate_token(params[:identity_token], params[:auth_code])
+        rescue CsAuth::Apple::InvalidTokenError => e
+          Librato.increment('api.authenticate_apple_invalid_tokens')
+          logger.info "Invalid Apple identity token: #{e.message}"
+          render_unauthorized && return
+        end
+
+        apple_user_id = decoded_token['sub']
+        logger.info "Starting authenticate_apple for user with apple_user_id #{apple_user_id}"
+        cs_apple_user = User.find_by(apple_user_id: apple_user_id)
+
+        # If a user matching the Apple user ID already exists, we always match
+        # to that account, regardless of email address. We accept that a user may
+        # change their email address with Apple and it won't be reflected on our side.
+        # If there is no account matching the Apple user ID and a user account with
+        # the same email address already exists, we can't know that it's for the
+        # same person so we block the login.
+        cs_email_user = User.find_by_email(decoded_token['email'])
+        if !cs_apple_user && cs_email_user && cs_email_user.provider != 'apple'
+          logger.info "Existing ChefSteps user with id #{cs_email_user.id} attempted to log in with Apple id #{apple_user_id}"
+          render_api_response(409, { reason: 'EXISTING_ACCOUNT_WITH_EMAIL' }) && return
+        end
+
+        new_user = false
+        unless cs_apple_user
+          new_user = true
+          cs_apple_user = User.apple_connect(
+            apple_user_id: apple_user_id,
+            name: params[:name],
+            email: decoded_token['email']
+          )
+          cs_apple_user.save!
+          subscribe_and_track(cs_apple_user, false, 'apple')
+          logger.info "New ChefSteps user with id #{cs_apple_user.id} connected with apple"
+        end
+
+        aa = ActorAddress.find_for_user_and_unique_key(cs_apple_user, 'apple')
+        unless aa
+          aa = ActorAddress.create_for_user(cs_apple_user, client_metadata: 'apple', unique_key: 'apple')
+        end
+        logger.info "ActorAddress created for apple user: #{aa.inspect}"
+        render_api_response 200, {token: aa.current_token.to_jwt, newUser: new_user}
+      end
+
       # Modified from https://github.com/zendesk/zendesk_jwt_sso_examples/blob/master/ruby_on_rails_jwt.rb
       # General doc: https://support.zendesk.com/hc/en-us/articles/203663816-Setting-up-single-sign-on-with-JWT-JSON-Web-Token-
       def zendesk_sso_url(return_to)

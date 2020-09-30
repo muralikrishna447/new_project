@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   include User::Google
   include User::Facebook
+  include User::Apple
   include Gravtastic
   include UpdateWhitelistAttributes
   extend FriendlyId
