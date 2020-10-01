@@ -27,6 +27,11 @@ Spork.prefork do
   # in spec/support/ and its subdirectories.
   Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+  # Make sure tests run fast by disabling retries with exponential backoff.
+  Retriable.configure do |c|
+    c.tries = 1
+  end
+
   RSpec.configure do |config|
     config.mock_with :rspec
     config.fixture_path = "#{::Rails.root}/spec/fixtures"
