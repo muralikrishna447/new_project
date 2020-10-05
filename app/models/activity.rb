@@ -164,6 +164,8 @@ class Activity < ApplicationRecord
     # Filter/facet/tags
     attribute :difficulty, :published, :include_in_gallery
 
+    attribute :featured_image_tag
+
     tags do
       tags.map(&:name)
     end
