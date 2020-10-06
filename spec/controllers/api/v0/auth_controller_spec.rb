@@ -488,6 +488,109 @@ describe Api::V0::AuthController do
 
   end
 
+  context 'POST authenticate_apple' do
+    let(:identity_token) { 'identity_token' }
+    let(:apple_user_id) { 'apple_user_id' }
+    let(:auth_code) { 'auth_code' }
+    let(:fullname) { 'User Name' }
+    let(:params) { { identity_token: identity_token, auth_code: auth_code, name: fullname } }
+
+    context 'token is invalid' do
+      before :each do
+        allow(CsAuth::Apple).to receive(:decode_and_validate_token)
+            .with(identity_token, auth_code).and_raise CsAuth::Apple::InvalidTokenError
+      end
+
+      it 'renders unauthorized' do
+        post :authenticate_apple, params: params
+        expect(response.code).to eq('403')
+      end
+    end
+
+    context 'token is valid' do
+      let(:decoded_token) { { 'email' => token_email, 'sub' => apple_user_id } }
+
+      before :each do
+        allow(CsAuth::Apple).to receive(:decode_and_validate_token)
+            .with(identity_token, auth_code).and_return(decoded_token)
+      end
+
+      context 'apple user email matches existing user' do
+        before :each do
+          Fabricate :user, email: existing_email, password: '123456', name: fullname, provider: provider, apple_user_id: existing_apple_user_id
+        end
+
+        context 'with another account matching apple user id' do
+          before :each do
+            Fabricate :user, email: 'b@b.com', password: '123456', name: fullname, provider: 'email', apple_user_id: nil
+          end
+
+          let(:existing_apple_user_id) { apple_user_id }
+          let(:provider)  { 'apple' }
+          let(:existing_email) { 'a@a.com' }
+          let(:token_email) { 'b@b.com' }
+
+          it 'issues token with newUser false for account with matching apple user id' do
+            post :authenticate_apple, params: params
+            expect(response.code).to eq('200')
+            body = JSON.parse(response.body)
+            expect(body.fetch('newUser')).to be false
+            apple_user = User.find_by(apple_user_id: existing_apple_user_id)
+            expect(body['token']).to eq(ActorAddress.find_for_user_and_unique_key(apple_user, provider).current_token.to_jwt)
+          end
+        end
+
+        context 'with account having non-apple provider' do
+          let(:existing_apple_user_id) { nil }
+          let(:provider) { 'email' }
+          let(:existing_email) { 'a@a.com' }
+          let(:token_email) { existing_email }
+
+          it 'renders 409 conflict' do
+            post :authenticate_apple, params: params
+            expect(response.code).to eq('409')
+            expect(JSON.parse(response.body).fetch('reason')).to eq('EXISTING_ACCOUNT_WITH_EMAIL')
+            expect(User.find_by(apple_user_id: apple_user_id)).to be nil
+          end
+        end
+      end
+
+      context 'no existing user with email provider' do
+        let(:token_email) { 'a@a.com' }
+        let(:provider) { 'apple' }
+
+        context 'user with matching apple id exists' do
+          before :each do
+            Fabricate :user, email: token_email, password: '123456', name: fullname, provider: provider, apple_user_id: apple_user_id
+          end
+
+          it 'issues token with newUser false' do
+            post :authenticate_apple, params: params
+            expect(response.code).to eq('200')
+            body = JSON.parse(response.body)
+            expect(body.fetch('newUser')).to be false
+            apple_user = User.find_by(apple_user_id: apple_user_id)
+            expect(body['token']).to eq(ActorAddress.find_for_user_and_unique_key(apple_user, provider).current_token.to_jwt)
+          end
+        end
+
+        context 'user with matching apple id does not exist' do
+          it 'creates user with apple id and issues token with newUser true' do
+            post :authenticate_apple, params: params
+            expect(response.code).to eq('200')
+            body = JSON.parse(response.body)
+            expect(body.fetch('newUser')).to be true
+            user = User.find_by(apple_user_id: apple_user_id)
+            expect(user).not_to be nil
+            expect(user.email).to eq(token_email)
+            expect(user.name).to eq(fullname)
+            expect(body['token']).to eq(ActorAddress.find_for_user_and_unique_key(user, provider).current_token.to_jwt)
+          end
+        end
+      end
+    end
+  end
+
   context 'GET /external_redirect' do
     before :each do
       request.env['HTTP_AUTHORIZATION'] = "Bearer #{@aa.current_token.to_jwt}"

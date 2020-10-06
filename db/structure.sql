@@ -4299,6 +4299,13 @@ CREATE UNIQUE INDEX index_user_settings_on_user_id ON public.user_settings USING
 
 
 --
+-- Name: index_users_on_apple_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_users_on_apple_user_id ON public.users USING btree (apple_user_id);
+
+
+--
 -- Name: index_users_on_authentication_token; Type: INDEX; Schema: public; Owner: -
 --
 

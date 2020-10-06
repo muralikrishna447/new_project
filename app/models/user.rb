@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   include User::Google
   include User::Facebook
+  include User::Apple
   include Gravtastic
   include UpdateWhitelistAttributes
   extend FriendlyId
@@ -384,7 +385,8 @@ class User < ApplicationRecord
         'autostart',
         'joule_ready',
         'beta_guides',
-        'update_during_pairing'
+        'update_during_pairing',
+        'app_review_prompts',
     ]
     cache_key = "user-capabilities-#{id}"
     user_capabilities = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do

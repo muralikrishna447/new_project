@@ -112,6 +112,7 @@ end
 group :development, :test do
   gem "simplecov", require: false
   gem 'angularjs-rails'
+  gem 'dotenv-rails'
 end
 
 # Use SCSS for stylesheets

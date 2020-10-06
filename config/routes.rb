@@ -257,6 +257,7 @@ Rails.application.routes.draw do
       match '/authorize_ge_redirect', to: 'auth#authorize_ge_redirect', via: [:get, :post, :options]
       match '/authenticate_ge', to: 'auth#authenticate_ge', via: [:get, :post, :options]
       match '/refresh_ge', to: 'auth#refresh_ge', via: [:get, :post, :options]
+      match '/authenticate_apple', to: 'auth#authenticate_apple', via: [:post, :options]
       
       match '/logout', to: 'auth#logout', via: [:post, :options]
       match '/validate', to: 'auth#validate', via: [:get, :post, :options]
