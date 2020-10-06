@@ -279,7 +279,7 @@ window.deepCopy = (obj) ->
   $scope.activityDifficulties = ["Easy", "Intermediate", "Advanced"]
 
   # Activity Featured Image Tag
-  $scope.activityFeaturedImageTag = ["None", "New", "Old"]
+  $scope.activityFeaturedImageTag = ["None", "New", "Updated", "Fresh"]
 
   $scope.hasActivityDifficulty = (t) ->
     ($scope.activity?.difficulty || "").toUpperCase() == t.toUpperCase()
