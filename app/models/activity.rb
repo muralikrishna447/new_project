@@ -239,7 +239,7 @@ class Activity < ApplicationRecord
   end
 
   def self.featured_image_tag_enum
-    %w[New Old]
+    %w[New Updated Fresh]
   end
 
   def optional_equipment
