@@ -278,11 +278,21 @@ window.deepCopy = (obj) ->
   # Activity difficulties
   $scope.activityDifficulties = ["Easy", "Intermediate", "Advanced"]
 
+  # Activity Featured Image Tag
+  $scope.activityFeaturedImageTag = ["None", "New", "Updated", "Fresh"]
+
   $scope.hasActivityDifficulty = (t) ->
     ($scope.activity?.difficulty || "").toUpperCase() == t.toUpperCase()
 
+  $scope.hasActivityFeaturedImageTag = (t) ->
+    ($scope.activity?.featured_image_tag || "None") == t
+
+
   $scope.setActivityDifficulty = (t) ->
     $scope.activity.difficulty = t.toLowerCase()
+
+  $scope.setActivityFeaturedImageTag = (t) ->
+    $scope.activity.featured_image_tag = if t == 'None' then null else t
 
   # These IDs are stored in the database, don't go changing them!!
   $scope.sourceActivityTypes = [

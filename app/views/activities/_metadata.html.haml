@@ -28,6 +28,12 @@
       .csfilepicker(ng-model="activity.featured_image_id")
 
     %div(ng-show="csAuthentication.isAdmin()")
+      %h6 Featured Image Tag
+      .btn-toolbar
+        %button.btn(ng-repeat="actFeaturedImageTag in activityFeaturedImageTag" type="button" ng-click="setActivityFeaturedImageTag(actFeaturedImageTag)" ng-class="{active: hasActivityFeaturedImageTag(actFeaturedImageTag)}")
+          {{actFeaturedImageTag}}
+
+    %div(ng-show="csAuthentication.isAdmin()")
       %h6 Include In Galleries
       .btn-toolbar
         .btn-group
