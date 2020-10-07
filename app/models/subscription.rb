@@ -1,7 +1,9 @@
 class Subscription < ApplicationRecord
-  STUDIO_PLAN_ID = ENV['STUDIO_PLAN_ID']
+  STUDIO_PLAN_ID = ENV['STUDIO_PLAN_ID'] || 'chefsteps_studio_pass'
+  MONTHLY_STUDIO_PLAN_ID = ENV['MONTHLY_STUDIO_PLAN_ID'] || 'chefsteps_studio_pass_monthly'
   EXISTING_PREMIUM_COUPON = ENV['EXISTING_PREMIUM_COUPON']
   ACTIVE_PLAN_STATUSES = ['active', 'in_trial', 'non_renewing']
+  ONLY_ACTIVE_PLAN_STATUSES = %w[active in_trial]
   ACTIVE_OR_CANCELLED_PLAN_STATUSES = Array.new(ACTIVE_PLAN_STATUSES).concat(['cancelled'])
   CANCELLED_STATUS = ['cancelled']
 
@@ -23,11 +25,11 @@ class Subscription < ApplicationRecord
   end
 
   def self.user_has_studio?(user)
-    self.user_has_subscription?(user, STUDIO_PLAN_ID)
+    self.user_has_subscription?(user, [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID])
   end
 
   def self.user_has_cancelled_studio?(user)
-    self.user_has_cancelled_subscription?(user, STUDIO_PLAN_ID)
+    self.user_has_cancelled_subscription?(user, [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID])
   end
 
   def self.create_or_update_by_params(params, user_id)
@@ -53,6 +55,26 @@ class Subscription < ApplicationRecord
 
     subscription.save!
     subscription
+  end
+
+  def is_yearly_studio?
+    plan_id == STUDIO_PLAN_ID
+  end
+
+  def is_monthly_studio?
+    plan_id == MONTHLY_STUDIO_PLAN_ID
+  end
+
+  def self.duration(plan_id = nil)
+    types = {
+      'Monthly' => MONTHLY_STUDIO_PLAN_ID,
+      'Annual' => STUDIO_PLAN_ID
+    }
+    plan_id ? types.invert[plan_id] : types
+  end
+
+  def plan_type
+    Subscription.duration(plan_id)
   end
 
   def is_active

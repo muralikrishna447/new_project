@@ -62,8 +62,11 @@ module Api
                                                   "status[in]" => Subscription::ACTIVE_OR_CANCELLED_PLAN_STATUSES
                                               })
 
+        scheduled_sub_ids, next_billing = [], []
         if result
           result.each do |entry|
+            scheduled_sub_ids << entry.subscription.id if entry.subscription.has_scheduled_changes && entry.subscription.status.in?(Subscription::ONLY_ACTIVE_PLAN_STATUSES)
+            next_billing << Time.at(entry.subscription.next_billing_at) if entry.subscription.next_billing_at.present?
             params = {
                 :plan_id => entry.subscription.plan_id,
                 :status => entry.subscription.status,
@@ -72,8 +75,30 @@ module Api
             Subscription.create_or_update_by_params(params, current_api_user.id)
           end
         end
+        serialized_user = JSON.parse(Api::UserMeSerializer.new(current_api_user).to_json)
+        serialized_user['scheduled'] = list_scheduled_subscriptions(scheduled_sub_ids)
+        # nearest billing date
+        serialized_user['next_billing_date'] = next_billing.sort.first
+        render json: serialized_user
+      end
 
-        render json: current_api_user, serializer: Api::UserMeSerializer
+      def switch_subscription
+        plan_id = Subscription.duration[params[:plan_type].to_s]
+        unless plan_id
+          render_api_response(400, {message: 'INVALID_PLAN_TYPE'})
+          return
+        end
+
+        subscriptions = ChargeBee::Subscription.list({
+          "customer_id[is]" => current_api_user.id,
+          "status[in]" => Subscription::ONLY_ACTIVE_PLAN_STATUSES
+        })
+        latest_active_sub = subscriptions.max_by{|a| a.subscription.resource_version}&.subscription
+        if latest_active_sub.blank?
+          render_api_response(400, {message: 'NOT_YET_SUBSCRIBED'})
+        else
+          schedule_subscription(latest_active_sub.id, plan_id)
+        end
       end
 
       def gifts
@@ -227,6 +252,29 @@ module Api
           result = ChargeBee::HostedPage.checkout_new(data)
           render_api_response(200, result.hosted_page)
         end
+      end
+
+      def list_scheduled_subscriptions(subscription_ids)
+        subscription_ids.map do |id|
+          object = ChargeBee::Subscription.retrieve_with_scheduled_changes(id)
+          {
+            subscription_id: id,
+            plan_name: object.subscription.plan_id,
+            type: Subscription.duration(object.subscription.plan_id),
+            starts_at: object.subscription.next_billing_at ? Time.at(object.subscription.next_billing_at) : 'Never'
+          }
+        end
+      end
+
+      def schedule_subscription(subscription_id, plan_id)
+        ChargeBee::Subscription.update(
+          subscription_id,
+          { plan_id: plan_id, end_of_term: true, prorate: false }
+        )
+        render_api_response(201, {message: 'SCHEDULED_SUCCESS'})
+      rescue StandardError => e
+        Rails.logger.error(e)
+        render_api_response(500, {message: 'UPDATE_FAILED'})
       end
 
       def render_invalid_chargebee_request(exception = nil)

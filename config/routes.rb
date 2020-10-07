@@ -323,6 +323,7 @@ Rails.application.routes.draw do
         post '/create_portal_session', to: 'chargebee#create_portal_session'
         post '/update_payment_method_session', to: 'chargebee#update_payment_method_session'
         post '/generate_checkout_url', to: 'chargebee#generate_checkout_url'
+        post '/switch_subscription', to: 'chargebee#switch_subscription'
         post '/sync_subscriptions', to: 'chargebee#sync_subscriptions'
         get '/gifts', to: 'chargebee#gifts'
         post '/claim_gifts', to: 'chargebee#claim_gifts'
