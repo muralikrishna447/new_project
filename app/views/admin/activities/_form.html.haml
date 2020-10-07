@@ -38,6 +38,7 @@
       = render '/shared/filepicker_group', label_text: "Hero Image", param: "activity[image_id]", value: @activity.image_id
     %li
       = render '/shared/filepicker_group', label_text: "Featured Image", param: "activity[featured_image_id]", value: @activity.featured_image_id
+    = f.input :featured_image_tag, as: :select, collection: Activity.featured_image_tag_enum, include_blank: 'None'
     = f.input :transcript
     = f.input :timing
     = f.input :difficulty, as: :select, collection: Activity.difficulty_enum

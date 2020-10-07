@@ -164,6 +164,8 @@ class Activity < ApplicationRecord
     # Filter/facet/tags
     attribute :difficulty, :published, :include_in_gallery
 
+    attribute :featured_image_tag
+
     tags do
       tags.map(&:name)
     end
@@ -234,6 +236,10 @@ class Activity < ApplicationRecord
 
   def self.difficulty_enum
     ['easy', 'intermediate', 'advanced']
+  end
+
+  def self.featured_image_tag_enum
+    %w[New Updated Fresh]
   end
 
   def optional_equipment

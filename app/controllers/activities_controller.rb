@@ -280,7 +280,8 @@ class ActivitiesController < ApplicationController
                                       :nesting_level, :transcript, :tag_list, :featured_image_id, :image_id,
                                       :steps_attributes, :child_activity_ids, :source_activity, :source_activity_id,
                                       :source_type, :author_notes, :currently_editing_user, :include_in_gallery,
-                                      :creator, :premium, :studio, :summary_tweet, :published, :activity_type => [])
+                                      :creator, :premium, :studio, :summary_tweet, :published, :featured_image_tag,
+                                      :activity_type => [])
   end
 
 end
