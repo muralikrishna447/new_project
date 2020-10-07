@@ -96,6 +96,8 @@ module Api
         latest_active_sub = subscriptions.max_by{|a| a.subscription.resource_version}&.subscription
         if latest_active_sub.blank?
           render_api_response(400, {message: 'NOT_YET_SUBSCRIBED'})
+        elsif latest_active_sub.plan_id == plan_id
+          remove_schedule_subscription(latest_active_sub.id)
         else
           schedule_subscription(latest_active_sub.id, plan_id)
         end
@@ -271,6 +273,14 @@ module Api
           subscription_id,
           { plan_id: plan_id, end_of_term: true, prorate: false }
         )
+        render_api_response(201, {message: 'SCHEDULED_SUCCESS'})
+      rescue StandardError => e
+        Rails.logger.error(e)
+        render_api_response(500, {message: 'UPDATE_FAILED'})
+      end
+
+      def remove_schedule_subscription(subscription_id)
+        ChargeBee::Subscription.remove_scheduled_changes(subscription_id)
         render_api_response(201, {message: 'SCHEDULED_SUCCESS'})
       rescue StandardError => e
         Rails.logger.error(e)
