@@ -13,6 +13,7 @@ development:
   facebook: &development_facebook
     app_id: "249352241894051"
     messenger_endpoint: "facebook.com"
+  survey_redirect_url: "https://forms.office.com/Pages/ResponsePage.aspx?id=tBfDO7Mv6EWUEJgk7rcuFhk2nX5Z49JKv5BqQ_DxV3hUNkdPT0JYMkhBUVhIQkZPOTFHVjVCTzhVUC4u"
 
 production:
   env: "production"
@@ -29,6 +30,7 @@ production:
   facebook:
     app_id: "380147598730003"
     messenger_endpoint: "facebook.com"
+  survey_redirect_url: "https://forms.office.com/Pages/ResponsePage.aspx?id=tBfDO7Mv6EWUEJgk7rcuFhk2nX5Z49JKv5BqQ_DxV3hUNkdPT0JYMkhBUVhIQkZPOTFHVjVCTzhVUC4u"
 
 staging:
   env: "staging"
@@ -45,6 +47,7 @@ staging:
   facebook: &staging_facebook
     app_id: "642634055780525"
     messenger_endpoint: "facebook.com"
+  survey_redirect_url: "https://forms.office.com/Pages/ResponsePage.aspx?id=tBfDO7Mv6EWUEJgk7rcuFhk2nX5Z49JKv5BqQ_DxV3hUNkdPT0JYMkhBUVhIQkZPOTFHVjVCTzhVUC4u"
 
 staging2:
   env: "staging"
@@ -59,6 +62,7 @@ staging2:
   facebook:
     <<: *staging_facebook
     messenger_endpoint: "facebook.com"
+  survey_redirect_url: "https://forms.office.com/Pages/ResponsePage.aspx?id=tBfDO7Mv6EWUEJgk7rcuFhk2nX5Z49JKv5BqQ_DxV3hUNkdPT0JYMkhBUVhIQkZPOTFHVjVCTzhVUC4u"
 
 test:
   env: "test"
@@ -74,3 +78,4 @@ test:
   facebook:
     app_id: "249352241894051"
     messenger_endpoint: "imaginarymessenger.com"
+  survey_redirect_url: "https://forms.office.com/Pages/ResponsePage.aspx?id=tBfDO7Mv6EWUEJgk7rcuFhk2nX5Z49JKv5BqQ_DxV3hUNkdPT0JYMkhBUVhIQkZPOTFHVjVCTzhVUC4u"

@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   get '/jewel', to: redirect('/joule')
   get '/Joule', to: redirect('/joule')
   get '/StovetopSousVide', to: redirect('/activities/cook-sous-vide-tonight-stovetop-method')
+  get '/survey', to: redirect(Rails.application.config.shared_config[:survey_redirect_url])
 
   # Legal Documents
   get '/eula-ios' => 'legal#eula'
@@ -258,7 +259,7 @@ Rails.application.routes.draw do
       match '/authenticate_ge', to: 'auth#authenticate_ge', via: [:get, :post, :options]
       match '/refresh_ge', to: 'auth#refresh_ge', via: [:get, :post, :options]
       match '/authenticate_apple', to: 'auth#authenticate_apple', via: [:post, :options]
-      
+
       match '/logout', to: 'auth#logout', via: [:post, :options]
       match '/validate', to: 'auth#validate', via: [:get, :post, :options]
       resources :activities, only: [:index, :show] do
@@ -307,7 +308,7 @@ Rails.application.routes.draw do
         post :admin_notify_clients, on: :member
         post :coefficients, on: :collection
       end
-            
+
       get 'turbo_estimate', to: 'turbo_estimate#get_turbo_estimate'
 
       post 'users/make_premium', to: 'users#make_premium'
