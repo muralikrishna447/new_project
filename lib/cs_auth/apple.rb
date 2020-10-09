@@ -139,7 +139,7 @@ module CsAuth::Apple
 
   def self.validate_token_iat(decoded_token)
     # The token must have been issued in the last 30 seconds.
-    unless decoded_token['iat'].present? && Time.at(decoded_token['iat']).between?(30.seconds.ago, Time.now)
+    unless decoded_token['iat'].present? && Time.at(decoded_token['iat']).between?(5.minutes.ago, Time.now)
       raise CsAuth::Apple::InvalidTokenError, "Invalid token iat #{decoded_token['iat']}"
     end
     true

@@ -243,15 +243,15 @@ describe CsAuth::Apple do
   describe 'validate_token_iat' do
     let(:decoded_token) { { 'iat' => iat } }
 
-    context 'iat is within the last 30 seconds' do
-      let(:iat) { (Time.now - 10.seconds).to_i }
+    context 'iat is within the last 5 minutes' do
+      let(:iat) { (Time.now - 1.minute).to_i }
       it 'validates' do
         expect(CsAuth::Apple.validate_token_iat(decoded_token)).to be true
       end
     end
 
-    context 'iat is older than 30 seconds' do
-      let(:iat) { (Time.now - 60.seconds).to_i }
+    context 'iat is older than 5 minutes' do
+      let(:iat) { (Time.now - 6.minutes).to_i }
       it 'raises InvalidTokenError' do
         expect { CsAuth::Apple.validate_token_iat(decoded_token) }.to raise_error CsAuth::Apple::InvalidTokenError
       end
