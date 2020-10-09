@@ -7,7 +7,7 @@ class FreshStepsProxy < Rack::Proxy
   # browser-sync was pinging multiple times per second. Although without the proxy, rails returns 406 so
   # it is still doing work. Curious.
 
-  PREFIX_INCLUDE = %w(/gallery /classes /logout /sign-in /sign_in /users/sign_in /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-staging /joule-overview /recommended /market /joule-split /orders /butchers)
+  PREFIX_INCLUDE = %w(/gallery /shop /classes /logout /sign-in /sign_in /users/sign_in /fs_pages /fs_activities /gift /admin/components /tpq /about /press /press-faq /joule /joule-staging /joule-overview /recommended /market /joule-split /orders /butchers)
   EXACT = %w(/ /sous-vide /grilling /getpremium /indoor-barbecue /thanksgiving /holiday /premium /password-reset /chefsteps-debuts-joule /jobs /gifting /sso /sign-up /steak-by-joule /gifs /404 /forum-welcome /preorder-sweepstakes /preorder-sweepstakes-legal /components /lamarzocco-ultimate-espresso-kit /getting-started-with-joule /known-issues /food52 /Food52 /voice-control /cooking-challenge /equipment-we-love /opi-submissions /conversational-cooking /joule-one-million-meals /who-we-are /breville-research-opportunity /make-dinner-easy /a-better-way-to-turkey-learn-more /turbo /studiopass /studiopassgiftredeem /subscriptions /cuts-preview /live /truffles /knives /welcome)
 
   PREFIX_EXCLUDE = %w(/joule/warranty /joule/weee-compliance)
