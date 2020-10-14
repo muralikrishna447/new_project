@@ -63,7 +63,9 @@ module Api
                                               })
 
         scheduled_sub_ids, next_billing = [], []
+        latest_sub = nil
         if result
+          latest_sub = result.max_by{|res| res.subscription.resource_version}&.subscription
           result.each do |entry|
             scheduled_sub_ids << entry.subscription.id if entry.subscription.has_scheduled_changes && entry.subscription.status.in?(Subscription::ONLY_ACTIVE_PLAN_STATUSES)
             next_billing << Time.at(entry.subscription.next_billing_at) if entry.subscription.next_billing_at.present?
@@ -79,6 +81,17 @@ module Api
         serialized_user['scheduled'] = list_scheduled_subscriptions(scheduled_sub_ids)
         # nearest billing date
         serialized_user['next_billing_date'] = next_billing.sort.first
+        serialized_user['current_status'] = latest_sub&.status
+        serialized_user['scheduled_cancel'] = false
+        case latest_sub&.status
+        when 'non_renewing'
+          # subscription cancelled after trail period
+          serialized_user['subscription_end_date'] = Time.at(latest_sub.current_term_end)
+          serialized_user['scheduled_cancel'] = true
+        when 'in_trial'
+          serialized_user['trail_end_date'] = Time.at(latest_sub.trial_end)
+          serialized_user['scheduled_cancel'] = true if latest_sub.cancelled_at.present?
+        end
         render json: serialized_user
       end
 
