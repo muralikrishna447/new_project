@@ -355,7 +355,6 @@ class Activity < ApplicationRecord
     if ingredient_attrs
       reject_invalid_ingredients(ingredient_attrs)
       update_and_create_ingredients(ingredient_attrs)
-      delete_old_ingredients(ingredient_attrs)
     end
     self
   end
@@ -625,18 +624,22 @@ class Activity < ApplicationRecord
   end
 
   def update_and_create_ingredients(ingredient_attrs)
+    return unless ingredient_attrs
+
+    ingredients.destroy_all()
     ingredient_attrs.each_with_index do |ingredient_attr, idx|
       title = ingredient_attr[:title].strip
       ingredient = Ingredient.find_or_create_by_subactivity_or_ingredient_title(title)
-      activity_ingredient = ingredients.find_or_create_by(ingredient_id: ingredient.id, activity_id: self.id)
-      activity_ingredient.update_attributes(
-          note: ingredient_attr[:note],
-          display_quantity: ingredient_attr[:display_quantity],
-          unit: ingredient_attr[:unit],
-          ingredient_order: idx
-      )
-      ingredient_attr[:id] = ingredient.id
+      ActivityIngredient.create!({
+                                     activity_id: self.id,
+                                     ingredient_id: ingredient.id,
+                                     note: ingredient_attr[:note],
+                                     display_quantity: ingredient_attr[:display_quantity],
+                                     unit: ingredient_attr[:unit],
+                                     ingredient_order: idx
+                                 })
     end
+    ingredients.reload()
   end
 
   def reject_invalid_ingredients(ingredient_attrs)
