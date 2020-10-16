@@ -77,6 +77,7 @@ module Api
             Subscription.create_or_update_by_params(params, current_api_user.id)
           end
         end
+        Rails.logger.info("Sync subscription resource_version = #{latest_sub&.resource_version} total_sub=#{result.count} user_status=#{Subscription.duration(latest_sub&.plan_id || 'not_avail')}")
         serialized_user = JSON.parse(Api::UserMeSerializer.new(current_api_user).to_json)
         serialized_user['scheduled'] = list_scheduled_subscriptions(scheduled_sub_ids)
         # nearest billing date
@@ -104,15 +105,19 @@ module Api
 
         subscriptions = ChargeBee::Subscription.list({
           "customer_id[is]" => current_api_user.id,
-          "status[in]" => Subscription::ONLY_ACTIVE_PLAN_STATUSES
+          "status[in]" => Subscription::ACTIVE_OR_CANCELLED_PLAN_STATUSES
         })
-        latest_active_sub = subscriptions.max_by{|a| a.subscription.resource_version}&.subscription
-        if latest_active_sub.blank?
+        latest_sub = subscriptions.max_by{|a| a.subscription.resource_version}&.subscription
+
+        Rails.logger.info("Switch subscription resource_version = #{latest_sub&.resource_version} total_sub=#{subscriptions.count} user_status=#{Subscription.duration(latest_sub&.plan_id || 'not_avail')} requested_type=#{params[:plan_type].to_s}")
+        if latest_sub.blank?
           render_api_response(400, {message: 'NOT_YET_SUBSCRIBED'})
-        elsif latest_active_sub.plan_id == plan_id
-          remove_schedule_subscription(latest_active_sub.id)
+        elsif latest_sub.status == 'non_renewing'
+          render_api_response(400, {message: 'CANCEL_SCHEDULED'})
+        elsif latest_sub.plan_id == plan_id && latest_sub.status != 'cancelled'
+          remove_schedule_subscription(latest_sub.id)
         else
-          schedule_subscription(latest_active_sub.id, plan_id)
+          schedule_subscription(latest_sub.id, plan_id, latest_sub.status)
         end
       end
 
@@ -281,11 +286,11 @@ module Api
         end
       end
 
-      def schedule_subscription(subscription_id, plan_id)
-        ChargeBee::Subscription.update(
-          subscription_id,
-          { plan_id: plan_id, end_of_term: true, prorate: false }
-        )
+      def schedule_subscription(subscription_id, plan_id, status)
+        options = { plan_id: plan_id, prorate: false }
+        # cancelled subscription will not accept end_of_term param while updating
+        options[:end_of_term] = true unless status == 'cancelled'
+        ChargeBee::Subscription.update(subscription_id, options)
         render_api_response(201, {message: 'SCHEDULED_SUCCESS'})
       rescue StandardError => e
         Rails.logger.error(e)

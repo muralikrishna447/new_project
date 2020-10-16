@@ -22,6 +22,6 @@ class Api::UserMeSerializer < ApplicationSerializer
   end
 
   def plan_type
-    object.subscriptions.active.order('resource_version desc').first&.plan_type
+    object.subscriptions.order('resource_version desc').first&.plan_type
   end
 end
