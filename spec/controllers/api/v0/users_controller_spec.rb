@@ -45,6 +45,7 @@ describe Api::V0::UsersController do
       result.delete('encrypted_bloom_info')
 
       result.delete('request_id')
+      result.delete('plan_type').should == nil
       result.delete('premium').should == false
       result.delete('studio').should == false
       result.delete('used_circulator_discount').should == false
@@ -81,6 +82,7 @@ describe Api::V0::UsersController do
       result.delete('encrypted_bloom_info')
 
       result.delete('request_id')
+      result.delete('plan_type').should == nil
       result.delete('premium').should == false
       result.delete('studio').should == false
       result.delete('used_circulator_discount').should == false
