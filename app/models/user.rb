@@ -462,4 +462,11 @@ class User < ApplicationRecord
     logger.info("Merging circulator users into user with id #{id}: #{circulator_users_to_merge.inspect}")
     circulator_users_to_merge.update_all(user_id: id)
   end
+
+  def self.fetchCount
+    Rails.cache.fetch("userCount", expires_in: 1.hour){
+      User.count
+    }
+  end
+
 end
