@@ -72,6 +72,7 @@ describe Api::V0::ChargebeeController do
 
     context 'Studio Pass with authentication' do
       plan_id = 'StudioTestPlan'
+      end_date = (Time.now + 1.month).to_i
       let(:active_subscription) {
         double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"active", :resource_version=>1591801241502, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: nil, cancelled_at: nil})
       }
@@ -80,6 +81,15 @@ describe Api::V0::ChargebeeController do
       }
       let(:cancelled_subscription) {
         double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"cancelled", :resource_version=>1591801241503, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: nil, cancelled_at: nil})
+      }
+      let(:non_renewing_subscription){
+        double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"non_renewing", :resource_version=>1591801241503, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: end_date, trial_end: nil, cancelled_at: nil})
+      }
+      let(:in_trial_subscription){
+        double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"in_trial", :resource_version=>1591801241503, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: end_date, cancelled_at: nil})
+      }
+      let(:cancelled_in_trial_subscription){
+        double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"in_trial", :resource_version=>1591801241503, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: end_date, cancelled_at: Time.now.to_i})
       }
       let(:entry_active) {
         double('entry', :subscription => active_subscription)
@@ -91,6 +101,15 @@ describe Api::V0::ChargebeeController do
 
       let(:lower_version_entry_active) {
         double('entry', :subscription => active1_subscription)
+      }
+      let(:entry_non_renewing) {
+        double('entry', :subscription => non_renewing_subscription)
+      }
+      let(:entry_in_trial) {
+        double('entry', :subscription => in_trial_subscription)
+      }
+      let(:entry_cancelled_in_trial) {
+        double('entry', :subscription => cancelled_in_trial_subscription)
       }
 
       before do
@@ -120,6 +139,10 @@ describe Api::V0::ChargebeeController do
           expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
           expect(response_data["subscriptions"][0]['status']).to eq('active')
           expect(response_data["subscriptions"][0]['is_active']).to be_truthy
+          expect(response_data['scheduled_cancel']).to be false
+          expect(response_data['current_status']).to eq('active')
+          expect(response_data['scheduled']).to eq([])
+          expect(response_data['next_billing_date']).to be nil
         end
         it 'return status as cancelled for unsubscribed user' do
           ChargeBee::Subscription.should_receive(:list).and_return([higher_version_entry_cancelled])
@@ -130,6 +153,10 @@ describe Api::V0::ChargebeeController do
           expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
           expect(response_data["subscriptions"][0]['status']).to eq('cancelled')
           expect(response_data["subscriptions"][0]['is_active']).to be_falsey
+          expect(response_data['scheduled_cancel']).to be false
+          expect(response_data['current_status']).to eq('cancelled')
+          expect(response_data['scheduled']).to eq([])
+          expect(response_data['next_billing_date']).to be nil
         end
         it 'Only latest resource_version record should get updated' do
           ChargeBee::Subscription.should_receive(:list).and_return([lower_version_entry_active, higher_version_entry_cancelled])
@@ -140,9 +167,104 @@ describe Api::V0::ChargebeeController do
           expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
           expect(response_data["subscriptions"][0]['status']).to eq('cancelled')
           expect(response_data["subscriptions"][0]['is_active']).to be_falsey
+          expect(response_data['scheduled_cancel']).to be false
+          expect(response_data['current_status']).to eq('cancelled')
+          expect(response_data['scheduled']).to eq([])
+          expect(response_data['next_billing_date']).to be nil
+        end
+        it 'scheduled_cancel should be true when status is non_renewing' do
+          ChargeBee::Subscription.should_receive(:list).and_return([entry_non_renewing])
+          get :sync_subscriptions
+          expect(response.code).to eq("200")
+          response_data = JSON.parse(response.body)
+          expect(response_data["subscriptions"].length).to be 1
+          expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
+          expect(response_data["subscriptions"][0]['status']).to eq('non_renewing')
+          expect(response_data["subscriptions"][0]['is_active']).to be_truthy
+          expect(response_data['scheduled_cancel']).to be true
+          expect(response_data['current_status']).to eq('non_renewing')
+          expect(response_data['scheduled']).to eq([])
+          expect(response_data['next_billing_date']).to be nil
+          expect(response_data['subscription_end_date'].to_datetime.strftime("%FT%T")).to eq(Time.at(end_date).strftime("%FT%T"))
+          expect(response_data['trail_end_date']).to be nil
+        end
+        it 'scheduled_cancel should be true when status is in_trail without cancel' do
+          ChargeBee::Subscription.should_receive(:list).and_return([entry_in_trial])
+          get :sync_subscriptions
+          expect(response.code).to eq("200")
+          response_data = JSON.parse(response.body)
+          expect(response_data["subscriptions"].length).to be 1
+          expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
+          expect(response_data["subscriptions"][0]['status']).to eq('in_trial')
+          expect(response_data["subscriptions"][0]['is_active']).to be_truthy
+          expect(response_data['scheduled_cancel']).to be false
+          expect(response_data['current_status']).to eq('in_trial')
+          expect(response_data['scheduled']).to eq([])
+          expect(response_data['next_billing_date']).to be nil
+          expect(response_data['trail_end_date'].to_datetime.strftime("%FT%T")).to eq(Time.at(end_date).strftime("%FT%T"))
+          expect(response_data['subscription_end_date']).to be nil
+        end
+        it 'scheduled_cancel should be true when status is in_trail and cancelled' do
+          ChargeBee::Subscription.should_receive(:list).and_return([entry_cancelled_in_trial])
+          get :sync_subscriptions
+          expect(response.code).to eq("200")
+          response_data = JSON.parse(response.body)
+          expect(response_data["subscriptions"].length).to be 1
+          expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
+          expect(response_data["subscriptions"][0]['status']).to eq('in_trial')
+          expect(response_data["subscriptions"][0]['is_active']).to be_truthy
+          expect(response_data['scheduled_cancel']).to be true
+          expect(response_data['current_status']).to eq('in_trial')
+          expect(response_data['scheduled']).to eq([])
+          expect(response_data['next_billing_date']).to be nil
+          expect(response_data['trail_end_date'].to_datetime.strftime("%FT%T")).to eq(Time.at(end_date).strftime("%FT%T"))
+          expect(response_data['subscription_end_date']).to be nil
         end
       end
 
+      describe 'switch_subscription' do
+        before do
+          BetaFeatureService.stub(:user_has_feature).with(anything, anything, anything).and_return(false)
+          BetaFeatureService.stub(:get_groups_for_user).with(anything).and_return([])
+          Subscription::STUDIO_PLAN_ID = plan_id
+        end
+        it 'switch subscription without subscribe' do
+          ChargeBee::Subscription.should_receive(:list).with(anything).and_return([])
+          post :switch_subscription, params: {plan_type: 'Annual'}, as: :json
+          expect(response.code).to eq("400")
+          response_data = JSON.parse(response.body)
+          expect(response_data["message"]).to eq('NOT_YET_SUBSCRIBED')
+        end
+        it 'switch subscription with invalid type' do
+          post :switch_subscription, params: {plan_type: 'Invalid'}, as: :json
+          expect(response.code).to eq("400")
+          response_data = JSON.parse(response.body)
+          expect(response_data["message"]).to eq('INVALID_PLAN_TYPE')
+        end
+        it 'switch subscription with non_renewing' do
+          ChargeBee::Subscription.should_receive(:list).with(anything).and_return([entry_non_renewing])
+          post :switch_subscription, params: {plan_type: 'Annual'}, as: :json
+          expect(response.code).to eq("400")
+          response_data = JSON.parse(response.body)
+          expect(response_data["message"]).to eq('CANCEL_SCHEDULED')
+        end
+        it 'switch subscription with same plan_id' do
+          ChargeBee::Subscription.should_receive(:remove_scheduled_changes).with('StudioPassSub1').and_return([entry_active])
+          ChargeBee::Subscription.should_receive(:list).with(anything).and_return([entry_active])
+          post :switch_subscription, params: {plan_type: 'Annual'}, as: :json
+          expect(response.code).to eq("201")
+          response_data = JSON.parse(response.body)
+          expect(response_data["message"]).to eq('SCHEDULED_SUCCESS')
+        end
+        it 'switch subscription with different plan_id' do
+          ChargeBee::Subscription.should_receive(:update).with(anything, anything).and_return([entry_active])
+          ChargeBee::Subscription.should_receive(:list).with(anything).and_return([entry_active])
+          post :switch_subscription, params: {plan_type: 'Monthly'}, as: :json
+          expect(response.code).to eq("201")
+          response_data = JSON.parse(response.body)
+          expect(response_data["message"]).to eq('SCHEDULED_SUCCESS')
+        end
+      end
     end
 
     context 'Studio Pass without authentication' do
