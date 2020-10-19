@@ -180,7 +180,7 @@ describe Activity do
       end
 
       it "creates unique ingredients for each non-empty attribute set" do
-        activity.ingredients.should have(2).ingredients
+        activity.ingredients.should have(3).ingredients
       end
 
       it "creates ingredient with specified attributes" do
@@ -199,10 +199,18 @@ describe Activity do
       end
 
       it "updates existing ingredients" do
-        activity.ingredients.should have(2).ingredients
+        activity.ingredients.should have(3).ingredients
         activity.ingredients.first.title.should == 'Soup'
         activity.ingredients.first.display_quantity.should == '15'
         activity.ingredients.first.unit.should == 'foobars'
+      end
+
+      it "creates duplicate ingredients with different notes and quantity" do
+        ingredient_attrs << ({title: 'Pepper', note: 'black-new', display_quantity: '2', unit: 'kg'})
+        activity.update_ingredients(ingredient_attrs)
+        activity.ingredients.should have(4).ingredients
+        activity.ingredients.last.note.should == 'black-new'
+        activity.ingredients[1].note.should == 'black'
       end
     end
 
@@ -214,7 +222,7 @@ describe Activity do
       end
 
       it "deletes ingredients not included in attribute set" do
-        activity.ingredients.should have(1).ingredients
+        activity.ingredients.should have(2).ingredients
         activity.ingredients.first.title.should == 'Pepper'
         activity.ingredients.first.display_quantity.should == '1'
         activity.ingredients.first.unit.should == 'kg'
