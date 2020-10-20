@@ -72,6 +72,7 @@ describe Api::V0::ChargebeeController do
 
     context 'Studio Pass with authentication' do
       plan_id = 'StudioTestPlan'
+      monthly_plan_id = 'StudioTestPlanMonthly'
       end_date = (Time.now + 1.month).to_i
       let(:active_subscription) {
         double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"active", :resource_version=>1591801241502, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: nil, cancelled_at: nil})
@@ -227,6 +228,7 @@ describe Api::V0::ChargebeeController do
           BetaFeatureService.stub(:user_has_feature).with(anything, anything, anything).and_return(false)
           BetaFeatureService.stub(:get_groups_for_user).with(anything).and_return([])
           Subscription::STUDIO_PLAN_ID = plan_id
+          Subscription::MONTHLY_STUDIO_PLAN_ID = monthly_plan_id
         end
         it 'switch subscription without subscribe' do
           ChargeBee::Subscription.should_receive(:list).with(anything).and_return([])
