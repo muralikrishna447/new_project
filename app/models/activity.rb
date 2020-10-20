@@ -46,6 +46,7 @@ class Activity < ApplicationRecord
   belongs_to :currently_editing_user, class_name: 'User', foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
+  validates :slug, presence: true, on: :update
   validates :promote_order, :numericality => { greater_than_or_equal_to: 1, message: "Order should be greater than or equal to 1"}, if: -> { promoted? }
 
   scope :with_video, -> { where("youtube_id <> '' OR vimeo_id <> ''") }
@@ -222,6 +223,14 @@ class Activity < ApplicationRecord
   end
 
   after_commit :create_or_update_as_ingredient, :if => :persisted?
+
+  before_save :check_slug, on: :update, if: :slug_changed?
+
+  def check_slug
+    self.slug = slug.parameterize
+  end
+
+
   def create_or_update_as_ingredient
     if self.id then
       i = Ingredient.find_or_create_by(sub_activity_id: id)

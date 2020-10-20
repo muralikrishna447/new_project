@@ -24,6 +24,7 @@
                               wrapper_html: { class: @activity.has_promoted? ? '' : 'hide' },
                               input_html: { min: 1, value: @activity.promote_order.presence || 1 }
     = f.input :title
+    = f.input :slug unless f.object.new_record?
     %li
       = f.label "Activity Type", class: "label"
       - Activity::TYPES.each do |type|
