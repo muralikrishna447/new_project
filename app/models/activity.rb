@@ -46,7 +46,7 @@ class Activity < ApplicationRecord
   belongs_to :currently_editing_user, class_name: 'User', foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
-  validates :slug, presence: true, on: :update
+  validates :slug, presence: true, uniqueness: true, on: :update
   validates :promote_order, :numericality => { greater_than_or_equal_to: 1, message: "Order should be greater than or equal to 1"}, if: -> { promoted? }
 
   scope :with_video, -> { where("youtube_id <> '' OR vimeo_id <> ''") }
