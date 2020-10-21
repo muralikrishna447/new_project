@@ -11,7 +11,7 @@ ActiveAdmin.register Activity do
   permit_params :title, :byline, :youtube_id, :vimeo_id, :yield, :timing, :promote_order, :is_promoted,
                 :difficulty, :description, :short_description, :equipment, :ingredients,
                 :nesting_level, :transcript, :featured_image_id, :image_id,
-                :steps_attributes, :source_activity, :source_activity_id,
+                :steps_attributes, :source_activity, :source_activity_id, :slug,
                 :source_type, :author_notes, :currently_editing_user, :include_in_gallery,
                 :creator, :premium, :studio, :summary_tweet, :published, :featured_image_tag,
                 :activity_type => [], :tag_list => [], :child_activity_ids => []
