@@ -17,6 +17,7 @@ end
 
 describe Activity do
   let(:activity) { Fabricate(:activity, title: 'foo') }
+  let(:slug_error_msg) { ["can't be blank"] }
 
   describe 'changes queue AlgoliaSync' do
     it 'queues algolia on update_attributes' do
@@ -57,6 +58,21 @@ describe Activity do
         activity.equipment.should have(2).equipment
         activity.equipment.first.title.should == 'Blender'
         activity.equipment.first.optional.should == false
+      end
+
+      it "update slug" do
+        activity.update_attribute('slug', 'foo test')
+        activity.slug.should == 'foo-test'
+      end
+
+      it "update the slug with url format if any special character contains" do
+        activity.update_attribute('slug', 'foo Test & 123!')
+        activity.slug.should == 'foo-test-123'
+      end
+
+      it 'raise the error if slug is empty' do
+        activity.update_attributes(slug: '')
+        expect(activity.errors.messages[:slug]).to eq slug_error_msg
       end
     end
 
