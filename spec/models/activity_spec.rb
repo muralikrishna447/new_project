@@ -17,6 +17,7 @@ end
 
 describe Activity do
   let(:activity) { Fabricate(:activity, title: 'foo') }
+  let(:slug_error_msg) { ["can't be blank"] }
 
   describe 'changes queue AlgoliaSync' do
     it 'queues algolia on update_attributes' do
@@ -57,6 +58,21 @@ describe Activity do
         activity.equipment.should have(2).equipment
         activity.equipment.first.title.should == 'Blender'
         activity.equipment.first.optional.should == false
+      end
+
+      it "update slug" do
+        activity.update_attribute('slug', 'foo test')
+        activity.slug.should == 'foo-test'
+      end
+
+      it "update the slug with url format if any special character contains" do
+        activity.update_attribute('slug', 'foo Test & 123!')
+        activity.slug.should == 'foo-test-123'
+      end
+
+      it 'raise the error if slug is empty' do
+        activity.update_attributes(slug: '')
+        expect(activity.errors.messages[:slug]).to eq slug_error_msg
       end
     end
 
@@ -180,7 +196,7 @@ describe Activity do
       end
 
       it "creates unique ingredients for each non-empty attribute set" do
-        activity.ingredients.should have(2).ingredients
+        activity.ingredients.should have(3).ingredients
       end
 
       it "creates ingredient with specified attributes" do
@@ -199,10 +215,18 @@ describe Activity do
       end
 
       it "updates existing ingredients" do
-        activity.ingredients.should have(2).ingredients
+        activity.ingredients.should have(3).ingredients
         activity.ingredients.first.title.should == 'Soup'
         activity.ingredients.first.display_quantity.should == '15'
         activity.ingredients.first.unit.should == 'foobars'
+      end
+
+      it "creates duplicate ingredients with different notes and quantity" do
+        ingredient_attrs << ({title: 'Pepper', note: 'black-new', display_quantity: '2', unit: 'kg'})
+        activity.update_ingredients(ingredient_attrs)
+        activity.ingredients.should have(4).ingredients
+        activity.ingredients.last.note.should == 'black-new'
+        activity.ingredients[1].note.should == 'black'
       end
     end
 
@@ -214,7 +238,7 @@ describe Activity do
       end
 
       it "deletes ingredients not included in attribute set" do
-        activity.ingredients.should have(1).ingredients
+        activity.ingredients.should have(2).ingredients
         activity.ingredients.first.title.should == 'Pepper'
         activity.ingredients.first.display_quantity.should == '1'
         activity.ingredients.first.unit.should == 'kg'

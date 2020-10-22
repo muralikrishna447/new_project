@@ -46,6 +46,7 @@ class Activity < ApplicationRecord
   belongs_to :currently_editing_user, class_name: 'User', foreign_key: 'currently_editing_user'
 
   validates :title, presence: true
+  validates :slug, presence: true, uniqueness: true, on: :update
   validates :promote_order, :numericality => { greater_than_or_equal_to: 1, message: "Order should be greater than or equal to 1"}, if: -> { promoted? }
 
   scope :with_video, -> { where("youtube_id <> '' OR vimeo_id <> ''") }
@@ -222,6 +223,14 @@ class Activity < ApplicationRecord
   end
 
   after_commit :create_or_update_as_ingredient, :if => :persisted?
+
+  before_save :check_slug, on: :update, if: :slug_changed?
+
+  def check_slug
+    self.slug = slug.parameterize
+  end
+
+
   def create_or_update_as_ingredient
     if self.id then
       i = Ingredient.find_or_create_by(sub_activity_id: id)
@@ -355,7 +364,6 @@ class Activity < ApplicationRecord
     if ingredient_attrs
       reject_invalid_ingredients(ingredient_attrs)
       update_and_create_ingredients(ingredient_attrs)
-      delete_old_ingredients(ingredient_attrs)
     end
     self
   end
@@ -625,18 +633,22 @@ class Activity < ApplicationRecord
   end
 
   def update_and_create_ingredients(ingredient_attrs)
+    return unless ingredient_attrs
+
+    ingredients.destroy_all()
     ingredient_attrs.each_with_index do |ingredient_attr, idx|
       title = ingredient_attr[:title].strip
       ingredient = Ingredient.find_or_create_by_subactivity_or_ingredient_title(title)
-      activity_ingredient = ingredients.find_or_create_by(ingredient_id: ingredient.id, activity_id: self.id)
-      activity_ingredient.update_attributes(
-          note: ingredient_attr[:note],
-          display_quantity: ingredient_attr[:display_quantity],
-          unit: ingredient_attr[:unit],
-          ingredient_order: idx
-      )
-      ingredient_attr[:id] = ingredient.id
+      ActivityIngredient.create!({
+                                     activity_id: self.id,
+                                     ingredient_id: ingredient.id,
+                                     note: ingredient_attr[:note],
+                                     display_quantity: ingredient_attr[:display_quantity],
+                                     unit: ingredient_attr[:unit],
+                                     ingredient_order: idx
+                                 })
     end
+    ingredients.reload()
   end
 
   def reject_invalid_ingredients(ingredient_attrs)
