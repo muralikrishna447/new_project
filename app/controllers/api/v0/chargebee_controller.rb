@@ -61,7 +61,7 @@ module Api
                                                   "customer_id[is]" => user_id,
                                                   "status[in]" => Subscription::ACTIVE_OR_CANCELLED_PLAN_STATUSES
                                               })
-        return nil unless result.present?
+        return nil unless result.count != 0
 
         # Priorities of subscription
         # 1) latest active subscription
