@@ -34,8 +34,6 @@ class Subscription < ApplicationRecord
 
   # this method should be called only with latest subscription or any active subscription
   def self.create_or_update_by_params(params, user_id)
-    return find_by_user_id(user_id) unless [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID].include?(params[:plan_id])
-
 
     attributes = { :user_id => user_id }
 
