@@ -32,8 +32,12 @@ class Subscription < ApplicationRecord
     self.user_has_cancelled_subscription?(user, [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID])
   end
 
+  # this method should be called only with latest subscription or any active subscription
   def self.create_or_update_by_params(params, user_id)
-    attributes = { :plan_id => params[:plan_id], :user_id => user_id }
+    return find_by_user_id(user_id) unless [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID].include?(params[:plan_id])
+
+
+    attributes = { :user_id => user_id }
 
     begin
       subscription = self.where(attributes).first_or_create! do |sub|
@@ -46,12 +50,11 @@ class Subscription < ApplicationRecord
       subscription = self.where(attributes).first!
     end
 
-    if params[:resource_version].to_i > subscription.resource_version
-      #resource_version will be uniq for each request from chargebee.
-      #It should be updated everytime.
-      subscription.resource_version = params[:resource_version]
-      subscription.status = params[:status]
-    end
+    # if params[:resource_version].to_i > subscription.resource_version
+    subscription.resource_version = params[:resource_version]
+    subscription.status = params[:status]
+    subscription.plan_id = params[:plan_id]
+    # end
 
     subscription.save!
     subscription

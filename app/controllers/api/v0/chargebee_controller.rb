@@ -56,32 +56,45 @@ module Api
         render_api_response(200, result.hosted_page)
       end
 
-      def sync_subscriptions
+      def fetch_active_or_latest_sub(user_id)
         result = ChargeBee::Subscription.list({
-                                                  "customer_id[is]" => current_api_user.id,
+                                                  "customer_id[is]" => user_id,
                                                   "status[in]" => Subscription::ACTIVE_OR_CANCELLED_PLAN_STATUSES
                                               })
+        return nil unless result.present?
 
-        scheduled_sub_ids, next_billing = [], []
-        latest_sub = nil
-        if result
-          latest_sub = result.max_by{|res| res.subscription.resource_version}&.subscription
-          result.each do |entry|
-            scheduled_sub_ids << entry.subscription.id if entry.subscription.has_scheduled_changes && entry.subscription.status.in?(Subscription::ONLY_ACTIVE_PLAN_STATUSES)
-            next_billing << Time.at(entry.subscription.next_billing_at) if entry.subscription.next_billing_at.present?
-            params = {
-                :plan_id => entry.subscription.plan_id,
-                :status => entry.subscription.status,
-                :resource_version => entry.subscription.resource_version
-            }
-            Subscription.create_or_update_by_params(params, current_api_user.id)
-          end
-        end
-        Rails.logger.info("Sync subscription resource_version = #{latest_sub&.resource_version} total_sub=#{result.count} user_status=#{Subscription.duration(latest_sub&.plan_id || 'not_avail')}")
+        # Priorities of subscription
+        # 1) latest active subscription
+        # 2) any one of [active, in_trial, non_renewing] subscription
+        # 3) latest subscription
+        latest_sub = result.max_by{|res| res.subscription.resource_version}.subscription
+        latest_sub.status == 'active' ? latest_sub : ( result.detect{|res| Subscription::ACTIVE_PLAN_STATUSES.include?(res.subscription.status)}&.subscription || latest_sub )
+      end
+      
+      def import_subscription(user_id)
+        chargebee_subscription = fetch_active_or_latest_sub(user_id)
+        return nil unless chargebee_subscription.present?
+
+        params = {
+            :plan_id => chargebee_subscription.plan_id,
+            :status => chargebee_subscription.status,
+            :resource_version => chargebee_subscription.resource_version
+        }
+        Subscription.create_or_update_by_params(params, user_id)
+        chargebee_subscription
+      end
+
+      def sync_subscriptions
+        latest_sub = import_subscription(current_api_user.id)
+        scheduled_sub_ids = []
+        scheduled_sub_ids << latest_sub&.id if latest_sub&.has_scheduled_changes && latest_sub&.status&.in?(Subscription::ONLY_ACTIVE_PLAN_STATUSES)
+        next_billing = latest_sub&.next_billing_at.present? ? Time.at(latest_sub&.next_billing_at) : nil
+
+        Rails.logger.info("Sync subscription resource_version = #{latest_sub&.resource_version} user_status=#{Subscription.duration(latest_sub&.plan_id || 'not_avail')}")
         serialized_user = JSON.parse(Api::UserMeSerializer.new(current_api_user).to_json)
         serialized_user['scheduled'] = list_scheduled_subscriptions(scheduled_sub_ids)
         # nearest billing date
-        serialized_user['next_billing_date'] = next_billing.sort.first
+        serialized_user['next_billing_date'] = next_billing
         serialized_user['current_status'] = latest_sub&.status
         serialized_user['scheduled_cancel'] = false
         case latest_sub&.status
@@ -103,21 +116,17 @@ module Api
           return
         end
 
-        subscriptions = ChargeBee::Subscription.list({
-          "customer_id[is]" => current_api_user.id,
-          "status[in]" => Subscription::ACTIVE_OR_CANCELLED_PLAN_STATUSES
-        })
-        latest_sub = subscriptions.max_by{|a| a.subscription.resource_version}&.subscription
+        subscription = fetch_active_or_latest_sub(current_api_user.id)
 
-        Rails.logger.info("Switch subscription resource_version = #{latest_sub&.resource_version} total_sub=#{subscriptions.count} user_status=#{Subscription.duration(latest_sub&.plan_id || 'not_avail')} requested_type=#{params[:plan_type].to_s}")
-        if latest_sub.blank?
+        Rails.logger.info("Switch subscription resource_version = #{subscription&.resource_version} user_status=#{Subscription.duration(subscription&.plan_id || 'not_avail')} requested_type=#{params[:plan_type].to_s}")
+        if subscription.blank?
           render_api_response(400, {message: 'NOT_YET_SUBSCRIBED'})
-        elsif latest_sub.status == 'non_renewing'
+        elsif subscription.status == 'non_renewing'
           render_api_response(400, {message: 'CANCEL_SCHEDULED'})
-        elsif latest_sub.plan_id == plan_id && latest_sub.status != 'cancelled'
-          remove_schedule_subscription(latest_sub.id)
+        elsif subscription.plan_id == plan_id && subscription.status != 'cancelled'
+          remove_schedule_subscription(subscription.id)
         else
-          schedule_subscription(latest_sub.id, plan_id, latest_sub.status)
+          schedule_subscription(subscription.id, plan_id, subscription.status)
         end
       end
 
@@ -236,7 +245,8 @@ module Api
         content = params[:content]
         if content
           if content[:customer] && content[:customer][:id] && content[:subscription] && content[:subscription][:plan_id]
-            Subscription.create_or_update_by_params(content[:subscription], content[:customer][:id])
+            # Subscription.create_or_update_by_params(content[:subscription], content[:customer][:id])
+            import_subscription(content[:customer][:id])
             Rails.logger.info("chargebee_controller.webhook - updating event id=#{params[:id]} and event_type=#{params[:event_type]}")
           else
             Rails.logger.info("chargebee_controller.webhook - ignoring event id=#{params[:id]} and event_type=#{params[:event_type]}")

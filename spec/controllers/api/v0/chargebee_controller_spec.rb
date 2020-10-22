@@ -9,12 +9,27 @@ describe Api::V0::ChargebeeController do
     end
 
     context 'with authentication' do
+      plan_id = 'StudioTestPlan'
+      monthly_plan_id = 'StudioTestPlanMonthly'
+      Subscription::STUDIO_PLAN_ID = plan_id
+      Subscription::MONTHLY_STUDIO_PLAN_ID = monthly_plan_id
+      let(:active_subscription) {
+        double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"active", :resource_version=>1591801241502, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: nil, cancelled_at: nil})
+      }
+      let(:entry_active) {
+        double('entry', :subscription => active_subscription)
+      }
+      let(:cancelled_subscription) {
+        double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"cancelled", :resource_version=>1591801241503, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: nil, cancelled_at: nil})
+      }
+      let(:higher_version_entry_cancelled) {
+        double('entry', :subscription => cancelled_subscription)
+      }
       before(:each) do
         @request.env['HTTP_AUTHORIZATION'] = "Basic testKey"
       end
 
       it 'creates and updates a subscription' do
-        plan_id = "testPlan"
         params = {
           api_version: "v2",
           content: {
@@ -31,6 +46,7 @@ describe Api::V0::ChargebeeController do
           id: "ev___test__5SK0bLNFRFuFaqltU",
           object: "event"
         }
+        ChargeBee::Subscription.should_receive(:list).exactly(2).times.and_return([entry_active], [higher_version_entry_cancelled])
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
 
         post :webhook, params: params
@@ -38,19 +54,9 @@ describe Api::V0::ChargebeeController do
         response.code.should eq("200")
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be true
 
-
         # Cancel the subscription
         params[:content][:subscription][:status] = "cancelled"
         params[:content][:subscription][:resource_version] += 1
-
-        post :webhook, params: params
-
-        response.code.should eq("200")
-        expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
-
-        # Ignores out of order requests
-        params[:content][:subscription][:status] = "active"
-        params[:content][:subscription][:resource_version] -= 1
 
         post :webhook, params: params
 
@@ -159,17 +165,17 @@ describe Api::V0::ChargebeeController do
           expect(response_data['scheduled']).to eq([])
           expect(response_data['next_billing_date']).to be nil
         end
-        it 'Only latest resource_version record should get updated' do
+        it 'Get any active subscription or the latest subscriptions' do
           ChargeBee::Subscription.should_receive(:list).and_return([lower_version_entry_active, higher_version_entry_cancelled])
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
           expect(response_data["subscriptions"].length).to be 1
           expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
-          expect(response_data["subscriptions"][0]['status']).to eq('cancelled')
-          expect(response_data["subscriptions"][0]['is_active']).to be_falsey
+          expect(response_data["subscriptions"][0]['status']).to eq('active')
+          expect(response_data["subscriptions"][0]['is_active']).to be_truthy
           expect(response_data['scheduled_cancel']).to be false
-          expect(response_data['current_status']).to eq('cancelled')
+          expect(response_data['current_status']).to eq('active')
           expect(response_data['scheduled']).to eq([])
           expect(response_data['next_billing_date']).to be nil
         end
