@@ -10,6 +10,7 @@ describe Api::V0::ActivitiesController do
 
     @activity_unpublished = Fabricate :activity, title: 'Activity Unpublished', published: false, id: 3
     @activity_unpublished.steps << Fabricate(:step, activity_id: @activity_unpublished.id, title: 'hello', youtube_id: 'REk30BRVtgE')
+    @new_premium_user = Fabricate :user, name: 'prender Another User', email: 'premium_user@anotheruser.com', role: 'user', premium_member: true
   end
 
   # GET /api/v0/activities
@@ -173,6 +174,8 @@ describe Api::V0::ActivitiesController do
 
       # Prerender should see full text of premium activity
       it 'premium activity' do
+        sign_in @new_premium_user
+        controller.request.env['HTTP_AUTHORIZATION'] = @new_premium_user.valid_website_auth_token.to_jwt
         get :show, params: {id: @activity_premium}
         expect_not_trimmed(response)
       end
@@ -228,6 +231,8 @@ describe Api::V0::ActivitiesController do
 
         it 'enrolled' do
           enrollment = Fabricate :enrollment, enrollable: @assembly, user: @user
+          sign_in @new_premium_user
+          controller.request.env['HTTP_AUTHORIZATION'] = @new_premium_user.valid_website_auth_token.to_jwt
           get :show, params: {id: @activity_premium}
           expect_not_trimmed(response)
         end

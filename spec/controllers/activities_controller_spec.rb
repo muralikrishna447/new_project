@@ -7,8 +7,11 @@ describe ActivitiesController do
     context 'outside an assembly' do
       before :each do
         @activity = Fabricate :activity, title: 'A Single Activity', description: 'an activity description', published: true
+        @studio_activity = Fabricate :activity, title: 'A studio pass Activity', description: 'an activity description', published: true, studio: true
         step = Fabricate :step, extra: "Hola"
         @activity.steps << step
+        @normal_user = Fabricate :user, name: 'A User', email: 'noraml_user@user.com', role: 'user'
+        @premium_user = Fabricate :user, name: 'Another User', email: 'premium_anotheruser@user.com', role: 'user', premium_member: true
       end
 
       it 'goes to an activity' do
@@ -34,6 +37,42 @@ describe ActivitiesController do
       it 'shows smart app banner ad' do
         get :show, params: {id: @activity.slug}
         assigns(:show_app_add).should_not be_nil
+      end
+
+      it 'stduiopass activity steps and ingredients should not be included for non-studio or non-premium or non-admin user' do
+        sign_in @premium_user
+        get :get_as_json, params: {id: @studio_activity.slug}
+        response.code.should eq("200")
+        res = JSON.parse(response.body)
+        expect(res).to have_key('steps')
+        expect(res).to have_key('ingredients')
+      end
+
+      it 'stduiopass activity steps and ingredients should included for studio or premium or admin user' do
+        sign_in @normal_user
+        get :get_as_json, params: {id: @studio_activity.slug}
+        response.code.should eq("200")
+        res = JSON.parse(response.body)
+        expect(res).not_to have_key('steps')
+        expect(res).not_to have_key('ingredients')
+      end
+
+      it 'normal activity steps and ingredients should included for normal user' do
+        sign_in @normal_user
+        get :get_as_json, params: {id: @activity.slug}
+        response.code.should eq("200")
+        res = JSON.parse(response.body)
+        expect(res).to have_key('steps')
+        expect(res).to have_key('ingredients')
+      end
+
+      it 'normal activity steps and ingredients should included for studio user as well' do
+        sign_in @premium_user
+        get :get_as_json, params: {id: @activity.slug}
+        response.code.should eq("200")
+        res = JSON.parse(response.body)
+        expect(res).to have_key('steps')
+        expect(res).to have_key('ingredients')
       end
 
       context 'start in edit' do
