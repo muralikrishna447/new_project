@@ -2,9 +2,14 @@ require 'spec_helper'
 
 describe Subscriptions::ChargebeeUtils do
   describe 'create_subscription' do
+    plan_id = 'StudioTestPlan'
+    monthly_plan_id = 'StudioTestPlanMonthly'
+    Subscription::STUDIO_PLAN_ID = plan_id
+    Subscription::MONTHLY_STUDIO_PLAN_ID = monthly_plan_id
+
     let(:user_id) { '1234' }
     let(:email) { 'a@b.com'}
-    let(:plan_id) { 'my_plan_id' }
+    let(:plan_id) { plan_id }
     let(:coupon_id) { 'my_coupon_id' }
 
     before :each do
