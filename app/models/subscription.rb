@@ -1,7 +1,9 @@
 class Subscription < ApplicationRecord
   STUDIO_PLAN_ID = ENV['STUDIO_PLAN_ID']
+  MONTHLY_STUDIO_PLAN_ID = ENV['MONTHLY_STUDIO_PLAN_ID']
   EXISTING_PREMIUM_COUPON = ENV['EXISTING_PREMIUM_COUPON']
   ACTIVE_PLAN_STATUSES = ['active', 'in_trial', 'non_renewing']
+  ONLY_ACTIVE_PLAN_STATUSES = %w[active in_trial]
   ACTIVE_OR_CANCELLED_PLAN_STATUSES = Array.new(ACTIVE_PLAN_STATUSES).concat(['cancelled'])
   CANCELLED_STATUS = ['cancelled']
 
@@ -23,15 +25,17 @@ class Subscription < ApplicationRecord
   end
 
   def self.user_has_studio?(user)
-    self.user_has_subscription?(user, STUDIO_PLAN_ID)
+    self.user_has_subscription?(user, [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID])
   end
 
   def self.user_has_cancelled_studio?(user)
-    self.user_has_cancelled_subscription?(user, STUDIO_PLAN_ID)
+    self.user_has_cancelled_subscription?(user, [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID])
   end
 
+  # this method should be called only with latest subscription or any active subscription
   def self.create_or_update_by_params(params, user_id)
-    attributes = { :plan_id => params[:plan_id], :user_id => user_id }
+
+    attributes = { :user_id => user_id }
 
     begin
       subscription = self.where(attributes).first_or_create! do |sub|
@@ -44,15 +48,34 @@ class Subscription < ApplicationRecord
       subscription = self.where(attributes).first!
     end
 
-    if params[:resource_version].to_i > subscription.resource_version
-      #resource_version will be uniq for each request from chargebee.
-      #It should be updated everytime.
-      subscription.resource_version = params[:resource_version]
-      subscription.status = params[:status]
-    end
+    # if params[:resource_version].to_i > subscription.resource_version
+    subscription.resource_version = params[:resource_version]
+    subscription.status = params[:status]
+    subscription.plan_id = params[:plan_id]
+    # end
 
     subscription.save!
     subscription
+  end
+
+  def is_yearly_studio?
+    plan_id == STUDIO_PLAN_ID
+  end
+
+  def is_monthly_studio?
+    plan_id == MONTHLY_STUDIO_PLAN_ID
+  end
+
+  def self.duration(plan_id = nil)
+    types = {
+      'Monthly' => MONTHLY_STUDIO_PLAN_ID,
+      'Annual' => STUDIO_PLAN_ID
+    }
+    plan_id ? types.invert[plan_id] : types
+  end
+
+  def plan_type
+    Subscription.duration(plan_id)
   end
 
   def is_active
