@@ -74,7 +74,6 @@ private
         # Trigger as a login
         sign_in @user
         remember_me(current_user)
-        mixpanel.track(current_user.id, 'Signed In')
         return render status: 200, json: {success: true, new_user: @new_signup, info: "Logged in", user: current_user.as_json(include: :enrollments)}
       end
     end

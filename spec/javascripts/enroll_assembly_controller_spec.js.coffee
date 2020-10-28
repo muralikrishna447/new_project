@@ -15,16 +15,8 @@ describe "EnrollAssemblyController", ->
     # we're just declaring the httpBackend here, we're not setting up expectations or when's - they change on each test
     scope.httpBackend = _$httpBackend_
     $controller("EnrollAssemblyController", {$scope: scope})
-    mixpanel = {
-      people:
-        track_charge: ((price)-> true)
-        append: ((key, value) -> true)
-        set: ((key, value) -> true)
-      track: ((key, objects) -> true)
-    }
     gaq = jasmine.createSpyObj('gaq', ['push'])
 
-    $window.mixpanel = mixpanel
     $window._gaq = gaq
     # mixpanel = jasmine.createSpyObj 'mixpanel', ['people', "track"]
   ))

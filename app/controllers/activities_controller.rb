@@ -270,7 +270,7 @@ class ActivitiesController < ApplicationController
   private
   def track_iphone_app_activity
     if from_ios_app?
-      mixpanel.track(mixpanel_anonymous_id, '[iOS App] Activty Viewed', {slug: @activity.slug, title: @activity.title, context: "iOS App"})
+      Rails.logger.info("[iOS App] Activty Viewed. slug:#{@activity.slug}, title: #{@activity.title}, context: 'iOS App'")
     end
   end
 

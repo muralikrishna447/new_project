@@ -16,9 +16,6 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
     $http(
       method: 'POST'
       url: url
-    ).success((data, status, headers, config) ->
-        eventData = {'Activity': likeable_type + "_" + likeable_id}
-        mixpanel.track('Liked', eventData)
     )
 
 
@@ -30,8 +27,6 @@ angular.module('ChefStepsApp').controller 'LikesController', ["$scope", "$resour
     $http(
       method: 'POST'
       url: url
-    ).success((data, status, headers, config) ->
-        mixpanel.track('Unliked', {'Activity': likeable_type + "_" + likeable_id})
     )
 
   $scope.toggleLikeObject = (likeable_type, likeable_id) ->

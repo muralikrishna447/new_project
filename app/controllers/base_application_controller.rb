@@ -140,8 +140,7 @@ class BaseApplicationController < ActionController::Base
   # least invasive place to store it
   def subscribe_and_track(user, opt_in, signup_method)
     email_list_signup(user, signup_method) if opt_in
-    mixpanel.alias(user.id, mixpanel_anonymous_id) if mixpanel_anonymous_id
-    mixpanel.track(user.id, 'Signed Up', { signup_method: signup_method })
+    Rails.logger.info("User Signed Up - #{user.id} signup_method: #{signup_method}")
     Resque.enqueue(Forum, 'initial_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
 
     ua = UserAcquisition.new(
@@ -216,19 +215,6 @@ class BaseApplicationController < ActionController::Base
   end
 
   private
-  def mixpanel
-    @mixpanel ||= ChefstepsMixpanel.new
-  end
-
-  def mixpanel_anonymous_id
-    begin
-      JSON.parse(cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"])['distinct_id']
-    rescue
-      id = request.session_options[:id]
-      cookies["mp_#{mixpanel.instance_variable_get('@token')}_mixpanel"] = {distinct_id: id}.to_json
-      id
-    end
-  end
 
   def allowed_origin?(origin)
     ALLOWED_ORIGINS.include?(origin)

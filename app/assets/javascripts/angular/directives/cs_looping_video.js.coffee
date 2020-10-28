@@ -16,7 +16,6 @@
       if scope == currentScope
         scope.video[0].play()
         scope.playing = true
-        mixpanel.track "Video Loop Played", {"name": scope.videoName, "url": $location.absUrl()}
       else
         scope.video[0].pause()
         scope.playing = false
@@ -24,7 +23,6 @@
   this.pause = (currentScope) ->
     currentScope.video[0].pause()
     currentScope.playing = false
-    mixpanel.track "Video Loop Paused", {"name": currentScope.videoName, "url": $location.absUrl()}
 
   angular.element($document[0].body).on 'click', (e) =>
     videos = this.videos
@@ -108,7 +106,6 @@
       scope.playbackRate = rate
       scope.video[0].playbackRate = rate
       scope.showDisplay = true
-      mixpanel.track "Video Loop Playback Rate Changed", {"name": scope.videoName, "rate": rate, "url": $location.absUrl()}
       $timeout (->
         scope.showDisplay = false
       ), 1000

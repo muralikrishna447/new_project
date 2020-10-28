@@ -70,7 +70,6 @@ class Users::SessionsController < Devise::SessionsController
 
   def remember_and_track
     remember_me(current_user)
-    mixpanel.track(current_user.id, 'Signed In')
   end
 
 end

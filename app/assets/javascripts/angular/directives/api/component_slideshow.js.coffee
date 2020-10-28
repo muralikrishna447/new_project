@@ -271,34 +271,25 @@
     scope.trackNumViewed = (num) ->
       console.log 'trackNumViewed: ', num
       if num < 2 <= 5 && !numViewed2to5
-        mixpanel.track 'Slideshow Viewed > 2'
         numViewed2to5 = true
       if 5 < num <= 10 && !numViewed5to10
-        mixpanel.track 'Slideshow Viewed > 5'
         numViewed5to10 = true
       if 10 < num <= 15 && !numViewed10to15
-        mixpanel.track 'Slideshow Viewed > 10'
         numViewed10to15 = true
       if 15 < num <= 20 && !numViewed15to20
-        mixpanel.track 'Slideshow Viewed > 15'
         numViewed15to20 = true
       if 20 < num <= 25 && !numViewed20to25
-        mixpanel.track 'Slideshow Viewed > 20'
         numViewed20to25 = true
       if 25 < num <= 30 && !numViewed25to30
-        mixpanel.track 'Slideshow Viewed > 30'
         numViewed25to30 = true
       if num == numImages && !numViewedAll
-        mixpanel.track 'Slideshow Viewed All'
         numViewedAll = true
 
     scope.toggleFullscreen = ->
       scope.fullscreen = ! scope.fullscreen
-      mixpanel.track 'Slideshow Fullscreen Toggled', { value: scope.fullscreen }
 
     scope.closeOverlay = ->
       scope.showOverlay = false
-      mixpanel.track 'Slideshow Started'
 
     # Using this method to set the slide background image because background-size: contain handles different sized images well
     scope.backgroundImage = (slide) ->
@@ -339,7 +330,6 @@
 
     # Preload the first set of images
     scope.preload(0)
-    mixpanel.track 'Slideshow Loaded'
 
   templateUrl: '/client_views/component_slideshow.html'
 ]

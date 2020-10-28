@@ -9,7 +9,6 @@
     if ! $scope.showPopup && ! $scope.editMode && ! csAuthentication.currentUser() && ! $rootScope.nellPopupShowing
       $rootScope.showMadlibPopup = true
       localStorageService.set('madlibPopupShown', true)
-      mixpanel.track('Popup CTA Shown', _.extend({source : $scope.registrationSource}, $rootScope.splits))
 
   $scope.shouldShowPopupCTA = ->
     $rootScope.showMadlibPopup

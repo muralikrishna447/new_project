@@ -14,9 +14,6 @@
       a.go-button:hover{text-decoration:none;opacity:1}
       .wrapper{max-width:750px;width:90%;margin:0 auto 100px;}
       .wrapper p{font-size:16px;line-height:1.5}
-    = render 'layouts/mixpanel'
-    :javascript
-      mixpanel.track('Beta Invite Page Viewed');
 
   %body
     .wrapper
@@ -25,7 +22,7 @@
 
       %img.hero-image(src="https://d3awvtnmmsvyot.cloudfront.net/api/file/DlgwWNi9QJKGxb43IpQP?cache=true")
       .wrapper-inner
-        %a.go-button(href="https://www.chefsteps.com/forum" target="_blank" onclick="mixpanel.track('Beta Invite Button Clicked');")
+        %a.go-button(href="https://www.chefsteps.com/forum" target="_blank")
           Go to the new ChefSteps community
         %p
           Community is a core tenet at ChefSteps, and we've been busy building custom software to power it and make it better. Today, we're excited to open it up to public beta testing and would like to invite you to check it out.

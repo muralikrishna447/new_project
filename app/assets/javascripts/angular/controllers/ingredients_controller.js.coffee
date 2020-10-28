@@ -26,7 +26,6 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.outclickProduct = (ai) ->
     window.open(ai.ingredient.product_url, '_blank')
-    mixpanel.track('Buy Clicked', {source: 'ingredientList', 'activitySlug' : $scope.activity.slug, 'productSlug' : ai.ingredient.slug});
 
   $scope.removeIngredient = (index) ->
     $scope.getIngredientsList().splice(index, 1)
@@ -93,13 +92,10 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
 
   $scope.toggleIngredientsMenu = ->
     $scope.showIngredientsMenu = ! $scope.showIngredientsMenu
-    if $scope.showIngredientsMenu
-      mixpanel.track('Ingredients Menu Opened', {'slug' : $scope.activity.slug});
 
   $scope.setScaling = (newScale) ->
     $scope.csGlobals.scaling = newScale
     window.updateUnits(true)
-    mixpanel.track('Scaling Changed', {'slug' : $scope.activity.slug, 'scale' : newScale});
 
   $scope.isActiveScale = (scale) ->
     return "active" if scale == $scope.csGlobals.scaling
@@ -111,7 +107,6 @@ angular.module('ChefStepsApp').controller 'IngredientsController', ["$scope", "$
   $scope.setUnits = (unit) ->
     $scope.csGlobals.units = unit
     window.updateUnits(true)
-    mixpanel.track('Units Button Pushed', {'slug' : $scope.activity.slug});
 
   $scope.isActiveUnit = (unit) ->
     return "active" if $scope.csGlobals.units == unit

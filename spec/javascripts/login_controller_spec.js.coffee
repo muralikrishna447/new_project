@@ -39,11 +39,7 @@ describe "LoginController", ->
 
     q = $q
     gapi = { auth: jasmine.createSpyObj("auth", ["signIn"]) }
-    mixpanel = {
-      track: jasmine.createSpy("mixpanel.track")
-    }
     $window.gapi = gapi
-    $window.mixpanel = mixpanel
     window = $window
     scope.urlService = jasmine.createSpy("urlService")
     scope.urlService.currentSiteAsHttps = jasmine.createSpy("scope.urlService.currentSiteAsHttps")
@@ -369,9 +365,6 @@ describe "LoginController", ->
       scope.sendInvitation()
       scope.httpBackend.flush()
 
-    it "should call mixpanel track", ->
-      expect(window.mixpanel.track).toHaveBeenCalledWith("Google Invites Sent")
-
     it "should call switchModal", ->
       expect(scope.switchModal).toHaveBeenCalledWith("googleInvite", "welcome")
 
@@ -383,11 +376,6 @@ describe "LoginController", ->
     it "should call the facebook.friendInvites method", ->
       scope.sendInvites()
       expect(scope.facebook.friendInvites).toHaveBeenCalled()
-
-    it "should call mixpanel track", ->
-      scope.sendInvites()
-      scope.$apply()
-      expect(window.mixpanel.track).toHaveBeenCalledWith("Facebook Invites Sent")
 
     it "should set invitationsNextText to Next", ->
       scope.sendInvites()
