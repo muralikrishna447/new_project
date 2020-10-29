@@ -182,7 +182,12 @@ module ActsAsRevisionable
         end
         unless record.new_record?
           object =  record.class.find(record.id)
-          record.attributes.each{ |key, value| object[key] = value }
+          if record.class.respond_to?('non_restore_columns')
+            record.attributes.except(*record.class.non_restore_columns).each{ |key, value| object[key] = value}
+            record.class.non_restore_columns.each { |attr| record[attr] = object[attr] }
+          else
+            record.attributes.each{ |key, value| object[key] = value }
+          end
           object.save! && record.save!
         end
       end
