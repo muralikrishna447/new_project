@@ -1,5 +1,6 @@
 class Activity < ApplicationRecord
   extend FriendlyId
+  PREVIEW_JSON_COL = %w[usedIn id title byline description image youtubeId vimeoId url likesCount shortDescription tagList chefstepsGenerated heroImage premium studio creator sourceActivity]
   include PublishableModel
   include ActsAsRevisionable
 
@@ -424,7 +425,8 @@ class Activity < ApplicationRecord
     end
   end
 
-  def to_json
+  def to_json(dependency = true)
+    return super(only: PREVIEW_JSON_COL) unless dependency
     super(
       include: {
         tags: {},

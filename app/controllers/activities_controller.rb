@@ -131,8 +131,11 @@ class ActivitiesController < ApplicationController
       @activity = @activity.restore_revision(params[:version])
     end
 
+    # If activity is studio or premium and user should be studio|premium|admin or reqquest from circulator
+    # param_info denotes circulator
+    is_studio_pass = (@activity.studio || @activity.premium) ? (current_user&.premium? || params[:param_info] == "a9a77bd9f") : true
     t1 = Time.new
-    activity_json = @activity.to_json
+    activity_json = @activity.to_json(is_studio_pass)
     t2 = Time.new
     Librato.timing 'activitiescontroller.get_as_json.render', (t2-t1)*1000
     render :json => activity_json
