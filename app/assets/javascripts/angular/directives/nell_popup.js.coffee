@@ -16,7 +16,6 @@
 
       # This could be in a service, though I don't see all that much advantage
       $rootScope.nellPopupShowing = true
-      mixpanel.track 'Nell Shown', $scope.info
 
       $scope.obj = null
       if $scope.info.resourceClass
@@ -38,18 +37,15 @@
 
     $scope.doHideNellPopup = ->
       $scope.closeNellPopup()
-      mixpanel.track 'Nell Closed', $scope.info
 
     $scope.abandonNellPopup = ->
       $scope.closeNellPopup()
-      mixpanel.track 'Nell Abandoned', $scope.info
 
     $scope.$on 'hideNellPopup', (event) ->
       $scope.doHideNellPopup()
 
     $scope.outclickProduct = ->
       window.open($scope.obj.product_url, '_blank')
-      mixpanel.track('Buy Clicked', {source: 'nellCard', 'productSlug' : $scope.info.slug});
 
 
   template: '''

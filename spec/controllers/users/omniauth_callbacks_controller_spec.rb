@@ -37,10 +37,6 @@ describe Users::OmniauthCallbacksController do
     end
 
     context "xhr" do
-      before do
-        ApplicationController.any_instance.stub(:mixpanel_anonymous_id).and_return(1)
-      end
-
       context "user does not exist" do
         it "should return a json" do
           get :facebook, params: {user: {provider: "facebook", uid: "123", email: "test@example.com", name: "Test User"}}, xhr: true

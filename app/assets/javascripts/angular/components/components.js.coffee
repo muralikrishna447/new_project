@@ -21,7 +21,6 @@
 @components.controller 'homeController', ['csAuthentication', (csAuthentication) ->
   @editable = csAuthentication.isAdmin()
   @showEditable = false
-  mixpanel.track('Viewed New Homepage', {'url' : window.location.pathname})
   this
 ]
 

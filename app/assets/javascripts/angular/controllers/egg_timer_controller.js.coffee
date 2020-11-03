@@ -67,7 +67,6 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     $http.get("https://egg-timer.herokuapp.com/egg_time/", params: params).success((data, status) ->
       $scope.output = data
       $scope.loading = false
-      mixpanel.track('Egg Calculated', angular.extend({},  $scope.inputs, {water_temp: $scope.water_temp}, $scope.output))
 
     ).error((data, status, headers, config) ->
       debugger
@@ -81,7 +80,6 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
       $scope.visitedStates.push name
     if name == "results"
       $scope.update()
-    mixpanel.track('Egg Calculator Page', {'state' : name})
 
   $scope.stateVisited = (name) ->
     "visited" if $scope.visitedStates.indexOf(name) >= 0
@@ -126,7 +124,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     else
       $scope.showSettings = ! $scope.showSettings
 
-  # To get started; makes sure we get our mixpanel track
+  # To get started;
   $scope.goState('white')
 
 

@@ -18,7 +18,7 @@
       scope.item.content.buttonMessage or scope.buttonMessage
 
     scope.track = ->
-      mixpanel.track('Component Item Clicked', {itemTypeName: scope.itemTypeName, buttonMessage: scope.getButtonMessage(), title: scope.item.content.title, url: scope.item.content.url})
+      console.log('Component Item Clicked')
 
   template:
     """

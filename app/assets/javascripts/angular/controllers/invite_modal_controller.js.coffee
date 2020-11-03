@@ -43,7 +43,7 @@
   $scope.sendInvites = ->
     $scope.inviteSite = 'facebook'
     $scope.facebook.friendInvites($scope.authentication.currentUser().id).then( ->
-      mixpanel.track("Facebook Invites Sent")
+      console.log("Facebook Invites Sent")
     )
     #This is a promise so you can do promisey stuff with it.
     # This version uses the chefsteps styling
@@ -181,7 +181,6 @@
         body: $scope.emailObject.bodyText
         from: "google_invite"
     ).success( (data, status) ->
-      mixpanel.track("Google Invites Sent")
       $scope.dataLoadingService.stop()
       $scope.showThankYou = true
     )
@@ -203,7 +202,6 @@
         body: $scope.emailObject.bodyText
         from: "email_invite"
     ).success( (data, status) ->
-      mixpanel.track("Email Invites Sent")
       $scope.dataLoadingService.stop()
       $scope.showThankYou = true
     )

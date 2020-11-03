@@ -8,7 +8,5 @@
       'discounted_price': $scope.discounted_price
       'price': $scope.assembly.price
 
-    mixpanel.track('Course Landing Viewed',
-      _.extend(eventData, $rootScope.splits));
     _gaq.push(['_trackEvent', 'Course', 'Viewed', $scope.assembly.title, null, true]);
 ]
