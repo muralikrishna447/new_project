@@ -304,7 +304,7 @@ module Api
         render_api_response(201, {message: 'SCHEDULED_SUCCESS'})
       rescue StandardError => e
         Rails.logger.error(e)
-        render_api_response(500, {message: 'UPDATE_FAILED'})
+        render_api_response(400, {message: 'UPDATE_FAILED', error_message: e.message})
       end
 
       def remove_schedule_subscription(subscription_id)
@@ -312,7 +312,7 @@ module Api
         render_api_response(201, {message: 'SCHEDULED_SUCCESS'})
       rescue StandardError => e
         Rails.logger.error(e)
-        render_api_response(500, {message: 'UPDATE_FAILED'})
+        render_api_response(400, {message: 'UPDATE_FAILED', error_message: e.message})
       end
 
       def render_invalid_chargebee_request(exception = nil)

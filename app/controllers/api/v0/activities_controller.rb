@@ -112,6 +112,7 @@ module Api
           # Because we are fetching objects through the cache, the
           # return type will always be a string.  Need to manually set
           # content-type
+          serialized = JSON.parse(serialized).slice(*Activity::PREVIEW_JSON_COL).to_json if (@activity.studio || @activity.premium) && !user_premium
           render plain: serialized, content_type: 'application/json'
 
           # TODO: look into breaking this into separate methods and
