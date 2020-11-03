@@ -3,7 +3,8 @@ class Api::UserMeSerializer < ApplicationSerializer
   # that will break some clients so not doing it now.
   #format_keys :lower_camel
 
-  attributes :id, :name, :slug, :email, :avatar_url, :encrypted_bloom_info, :premium, :studio, :used_circulator_discount, :admin, :needs_special_terms, :joule_purchase_count, :referral_code, :capabilities, :is_consent_displayed
+  attributes :id, :name, :slug, :email, :avatar_url, :encrypted_bloom_info, :premium, :studio, :used_circulator_discount, :admin, :needs_special_terms, :joule_purchase_count, :referral_code, :capabilities, :is_consent_displayed, :plan_type
+
 
   has_one :settings, serializer: Api::UserSettingsSerializer
   has_many :subscriptions, serializer: Api::UserSubscriptionsSerializer
@@ -19,5 +20,8 @@ class Api::UserMeSerializer < ApplicationSerializer
   def admin
     object.admin?
   end
-  
+
+  def plan_type
+    object.subscriptions.order('resource_version desc').first&.plan_type
+  end
 end
