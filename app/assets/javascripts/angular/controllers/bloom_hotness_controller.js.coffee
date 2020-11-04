@@ -16,5 +16,5 @@
     "/forum/posts/#{post.slug}"
 
   $scope.track = (post) ->
-    mixpanel.track('Bloom Hot Clicked', {'title': post.title})
+    console.log('Bloom Hot Clicked')
 ]

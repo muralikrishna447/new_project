@@ -7,7 +7,6 @@
     $scope.collection = []
     if $scope.collectionName == 'knives'
       $http.get('/pages/knife-collection.json').success (data) ->
-        mixpanel.track('Page viewed', {'title' : 'knife-collection'})
         _.each data, (item) ->
           $scope.collection.push(item)
 
@@ -73,7 +72,7 @@
         return 'cs-showcase-item-standard'
 
     $scope.trackBuyButtonClick = (item) ->
-      mixpanel.track('Buy Button Clicked', {'context' : $scope.collectionName, 'title' : item.title, 'price' : item.price})
+      console.log('Buy Button Clicked')
 
     updateCurrent: (item, progress) ->
       if $scope.currentItem != item

@@ -16,16 +16,11 @@
   @show = !csAuthentication.currentUser()
 
   @signup = ->
-    mixpanel.track 'Banner Signup Clicked'
     @dismissed = true
     $scope.$emit 'openSignupModal', @source
 
   @dismiss = ->
-    mixpanel.track 'Banner Dismissed'
     @dismissed = true
-
-  if @show
-    mixpanel.track 'Banner Signup Shown'
 
   return this
 ]

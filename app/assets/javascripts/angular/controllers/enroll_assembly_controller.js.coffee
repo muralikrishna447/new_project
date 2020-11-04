@@ -60,8 +60,6 @@ angular.module('ChefStepsApp').controller 'EnrollAssemblyController', ["$scope",
 
   $scope.closeModal = (abandon = true) ->
     $scope.assemblyWelcomeModalOpen = false
-    if abandon
-      mixpanel.track('Modal Abandoned', {'context' : 'course', 'title' : $scope.assembly.title, 'slug' : $scope.assembly.slug})
 
   # Enroll in a free or premium class. The UI won't present the option of
   # enrolling in premium if the user isn't premium, but if someone tries, it
@@ -81,5 +79,4 @@ angular.module('ChefStepsApp').controller 'EnrollAssemblyController', ["$scope",
       $scope.enroll()
       $scope.assemblyWelcomeModalOpen = true
       eventData = {'class' : $scope.assembly.title}
-      mixpanel.track('Class Enrolled', eventData)
 ]

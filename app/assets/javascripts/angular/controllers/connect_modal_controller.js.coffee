@@ -13,7 +13,6 @@
           data.intent if data
       controller: 'ConnectController'
     )
-    mixpanel.track('Connect Opened')
 
   $scope.$on('$destroy', unbind)
 ]

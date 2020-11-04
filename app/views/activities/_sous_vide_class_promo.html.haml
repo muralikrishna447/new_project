@@ -4,22 +4,16 @@
       .item-content
         - if @activity.difficulty == 'easy'
           / TEST: http://localhost:3000/activities/celery-root-puree
-          :javascript
-            mixpanel.track('Activity Sous Vide CTA viewed', {'activity':'#{@activity.slug}', 'message':'discover-a-new-way', 'destination':'cooking-sous-vide-getting-started'});
-
           %h3 Discover a new way to get cooking
           %h4
             %i
               Check out our beginner’s guide to cooking sous vide.
-          %a.btn.btn-primary(href='/classes/cooking-sous-vide-getting-started/landing' onclick="mixpanel.track('Activity Sous Vide CTA clicked', {'activity':'#{@activity.slug}', 'destination':'cooking-sous-vide-getting-started'});" no-nell-popup='true')
+          %a.btn.btn-primary(href='/classes/cooking-sous-vide-getting-started/landing' no-nell-popup='true')
             Take me there!
         - else
           / TEST: http://localhost:3000/activities/chicken-liver-pate
-          :javascript
-            mixpanel.track('Activity Sous Vide CTA viewed', {'activity':'#{@activity.slug}', 'message':'more-sv-recipes', 'destination':'cooking-sous-vide-beyond-the-basics'});
-
           %h3 Want more amazing sous vide recipes?
           %h4
             Enroll in <em>Cooking Sous Vide: Beyond the Basics</em>.
-          %a.btn.btn-primary(href='/classes/cooking-sous-vide-beyond-the-basics/landing' onclick="mixpanel.track('Activity Sous Vide CTA clicked', {'activity':'#{@activity.slug}', 'destination':'cooking-sous-vide-beyond-the-basics'});" no-nell-popup='true')
+          %a.btn.btn-primary(href='/classes/cooking-sous-vide-beyond-the-basics/landing' no-nell-popup='true')
             Take me there!

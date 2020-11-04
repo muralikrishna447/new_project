@@ -7,7 +7,6 @@
     $scope.followed = false
 
     followTopic = ->
-      mixpanel.track 'Topic Followed', { topic: $scope.topic }
       $scope.followed = true
 
     $scope.tryFollowTopic = ->

@@ -448,7 +448,6 @@ window.deepCopy = (obj) ->
     $scope.activity = $scope.activities[id]
     $scope.activity.printed = false
     cs_event.track(id, 'Activity', 'show')
-    mixpanel.track('Activity Viewed', $scope.getEventData());
     $scope.csGlobals.units = "grams"
     $scope.csGlobals.scaling = 1
     $timeout ->
@@ -542,8 +541,6 @@ window.deepCopy = (obj) ->
     $scope.maximizeDescription = ! $scope.maximizeDescription
     # Fugly!
     window.setMaximizeDescription($scope.maximizeDescription)
-    if $scope.maximizeDescription
-     mixpanel.track('Activity Description Maximized', {'slug' : $scope.activity.slug});
 
   $scope.ingredientSpanClass = ->
     if $scope.activity && $scope.activity.description
@@ -553,7 +550,6 @@ window.deepCopy = (obj) ->
 
   $scope.tellMeMore = ->
     $rootScope.$broadcast "hideNellPopup"
-    mixpanel.track('Why By Weight Tell Me More', {'title' : $scope.activity.title, 'slug' : $scope.activity.slug})
 
   $scope.showNell = (view) ->
     $rootScope.$broadcast "showNellPopup",
@@ -604,7 +600,6 @@ window.deepCopy = (obj) ->
     if $scope.probablyCooked()
       reportedCooked = true
       eventData = $scope.getExtendedEventData()
-      mixpanel?.track "Activity Probably Cooked2", eventData
 
   # various ways of tracking printing; if you google it you'll find out how unreliable they all are
   window.onbeforeprint = ->
@@ -633,7 +628,6 @@ window.deepCopy = (obj) ->
   # Track everything we know about the user engagement on this activity, then reset it
   # in case loading new activity in class
   $scope.trackActivityEngagementFinal =  ->
-    mixpanel?.track "Activity Engagement Final", $scope.getExtendedEventData()
     $scope.resetPageLoadedTime()
     $scope.activity.printed = false
 
@@ -641,7 +635,6 @@ window.deepCopy = (obj) ->
     $scope.trackActivityEngagementFinal()
 
     # http://stackoverflow.com/questions/8350215/delay-page-close-with-javascript
-    # Without this, a lot of times the mixpanel event doesn't get recorded; request shows as cancelled in network tab
     # Hmm, and even with this it doesn't work in mobile safari. I tried 'pagehide' stuff but didn't have any luck
     # with that either; so now we track this final engagement when we can but also track send an event as soon
     # as we think we've cooked, see maybeReportCooked()
@@ -670,7 +663,6 @@ window.deepCopy = (obj) ->
   # One time stuff
   if $scope.parsePreloaded()
     $scope.schedulePostPlayEvent()
-    mixpanel?.track('Activity Viewed', $scope.getEventData());
 
     if ! $scope.maybeRestoreFromLocalStorage()
       $scope.saveBaseToLocalStorage()

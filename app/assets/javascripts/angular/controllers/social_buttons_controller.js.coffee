@@ -13,7 +13,6 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     # abtest = localStorageService.get('Split Test: Social Buttons Solid vs Outline')
     # mixpanel.track('Share', { 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat})
     social_attributes = _.extend({ 'Network': mixpanel_name, 'URL' : $scope.socialURL(), 'ShareCat' : share_cat}, $rootScope.splits)
-    mixpanel.track('Share', social_attributes)
 
   $scope.shareTwitter = ->
     $scope.twitterCount = if $scope.twitterCount? then $scope.twitterCount + 1 else 1
@@ -39,7 +38,6 @@ angular.module('ChefStepsApp').controller 'SocialButtonsController', ["$scope", 
     $scope.openSocialWindow 'Email', "mailto:?subject="+ encodeURIComponent($scope.emailSubject()) + "&body=" + encodeURIComponent($scope.emailBody())
 
   $scope.shareEmbedly = ->
-    mixpanel.track('Share', { 'Network': 'Embedly', 'URL' : $scope.socialURL()})
     embedly 'modal',
       url: $scope.socialURL() + "?utm_source=embedly"
 

@@ -64,7 +64,6 @@
     %link{href: "//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css", rel: "stylesheet", type: "text/css"}
     %link(href="/chefsteps-icons.css" rel="stylesheet" type="text/css")
 
-    = render 'layouts/mixpanel'
     = render 'layouts/google_analytics'
     = render 'layouts/filepicker'
     = render 'layouts/twitter'
@@ -153,9 +152,3 @@
 
   .cs-icons
     = inline_svg('cs-icons.svg')
-
--# This load on every page, so a convenient place to make sure mixpanel identity is known
-- if !is_consent_needed?
-  - if current_user
-    :javascript
-      mixpanel.identify("#{current_user.id}")

@@ -41,10 +41,10 @@ angular.module('ChefStepsApp').controller 'StreamsController', ["$scope", "$reso
 ]
 
 window.track_viewed_profile_through_stream = ->
-  mixpanel.track('Viewed User Profile through Stream', {'url' : window.location.pathname});
+  console.log('Viewed User Profile through Stream');
 
 window.track_viewed_item_through_stream = ->
-  mixpanel.track('Viewed Item through Stream', {'url' : window.location.pathname});
+  console.log('Viewed Item through Stream');
 
 window.track_viewed_course_through_signed_in_homepage = ->
-  mixpanel.track('Viewed Course Through Signed In Homepage', {'url' : window.location.pathname});  
+  console.log('Viewed Course Through Signed In Homepage');

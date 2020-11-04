@@ -76,6 +76,3 @@
         .modal-footer
           %a.btn.btn-primary.btn-large(ng-href='{{upload.path}}')
             Done
-
-:javascript
-  mixpanel.track('Assembly Upload Page Viewed', {'context' : 'course', 'title' : "#{assembly.title}", 'slug' : "#{assembly.slug}"});

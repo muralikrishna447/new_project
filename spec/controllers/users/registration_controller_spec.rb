@@ -5,7 +5,6 @@ describe Users::RegistrationsController do
   describe "#create" do
     before do
       @request.env["devise.mapping"] = Devise.mappings[:user]
-      ApplicationController.any_instance.stub(:mixpanel_anonymous_id).and_return(4)
     end
 
     it 'should redirect a user coming from the sign_in path to the welcome page (to prevent a redirect loop)' do

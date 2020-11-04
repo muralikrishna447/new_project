@@ -1,4 +1,6 @@
+# No longer used mixpanel analytics
 ActiveAdmin.register_page 'Mixpanel' do
+  menu false
   require 'csv'
   require 'json'
   

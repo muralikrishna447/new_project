@@ -189,7 +189,7 @@ namespace :courses do
 
     # Knife add
     old_description = course.description
-    new_description = old_description + '<hr /><a href="/knife-collection" onclick="mixpanel.track(&#x27;Clicked Knife Ad&#x27;, {&#x27;url&#x27; : window.location.pathname});"><img alt="Sddgrd4aqzqgviiz9f1g?v=line" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/sddgrD4AQzqGvIiZ9f1G?v=line" /></a><hr />'
+    new_description = old_description + '<hr /><a href="/knife-collection"><img alt="Sddgrd4aqzqgviiz9f1g?v=line" src="https://d3awvtnmmsvyot.cloudfront.net/api/file/sddgrD4AQzqGvIiZ9f1G?v=line" /></a><hr />'
     course.description = new_description
     if course.save
       course.uploads.each do |upload|

@@ -41,7 +41,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
 
   trackRegistration = (source, method) ->
     properties = _.extend({source : source, method: method}, $rootScope.splits)
-    mixpanel.track('Signed Up JS', properties)
 
     _gaq.push(['_trackEvent', 'Sign Up', 'Complete', null, null, true])
 
@@ -97,8 +96,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
 
     $scope.resetMessages()
     $scope.reset_users()
-    if abandon
-      mixpanel.track('Modal Abandoned')
     if form == "login"
       $scope.showForm = "signIn"
       $scope.notifyParent() if abandon && $scope.loginModalOpen
@@ -358,7 +355,7 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
   $scope.sendInvites = ->
     $scope.invitationsNextText = "Next"
     $scope.facebook.friendInvites($scope.authentication.currentUser().id).then( ->
-      mixpanel.track("Facebook Invites Sent")
+      console.log("Facebook Invites Sent")
     )
     #This is a promise so you can do promisey stuff with it.
     # This version uses the chefsteps styling
@@ -379,7 +376,6 @@ angular.module('ChefStepsApp').controller 'LoginController', ["$scope", "$rootSc
       data:
         emails: friendEmails
     ).success( (data, status) ->
-      mixpanel.track("Google Invites Sent")
       $scope.dataLoading -= 1
       $scope.switchModal('googleInvite', 'welcome')
     )
