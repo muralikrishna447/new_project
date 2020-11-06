@@ -16,4 +16,11 @@ class Api::StepSerializer < ApplicationSerializer
     filepicker_to_s3_url(object.appliance_instruction_image)
   end
 
+  def title
+    CGI.unescapeHTML(object.title.to_s)
+  end
+
+  def appliance_instruction_text
+    CGI.unescapeHTML(object.appliance_instruction_text.to_s)
+  end
 end

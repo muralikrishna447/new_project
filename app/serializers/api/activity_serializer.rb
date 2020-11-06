@@ -30,4 +30,20 @@ class Api::ActivitySerializer < ApplicationSerializer
     object.chefsteps_generated
   end
 
+  def title
+    CGI.unescapeHTML(object.title.to_s)
+  end
+
+  def description
+    CGI.unescapeHTML(object.description.to_s)
+    end
+
+  def short_description
+    CGI.unescapeHTML(object.short_description.to_s)
+  end
+
+  def byline
+    CGI.unescapeHTML(object.byline.to_s)
+  end
+
 end
