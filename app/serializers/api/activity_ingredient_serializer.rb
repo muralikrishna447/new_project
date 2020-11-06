@@ -4,6 +4,10 @@ class Api::ActivityIngredientSerializer < ApplicationSerializer
 
   has_one :ingredient, serializer: Api::IngredientIndexSerializer
 
+  def title
+    CGI.unescapeHTML(object.title.to_s)
+  end
+
   def order
     object.ingredient_order
   end
