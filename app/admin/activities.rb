@@ -122,6 +122,10 @@ ActiveAdmin.register Activity do
     end
   end
 
+  after_destroy do |activity|
+    activity.queue_algolia_sync
+  end
+
   member_action :associated_ingredients, method: :get do
     @activity = Activity.friendly.find(params[:id])
   end
