@@ -34,3 +34,22 @@
   content: "\e917";
 }
 
+#email {
+  & p {
+    color: #414141;
+    margin-bottom: 1rem;
+  }
+  & p.bold {
+    font-weight: bold;
+  }
+  .rounded {
+    border-radius: 20px;
+    padding: 6px 10px;
+  }
+  .un-subscribed {
+    color: #414141;
+    border: 3px solid #414141;
+    background: white;
+    font-weight: bold;
+  }
+}

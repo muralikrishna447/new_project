@@ -112,7 +112,11 @@ Rails.application.routes.draw do
   match '/mp', to: redirect('/classes/spherification'), via: [:get, :post, :options]
   match '/MP', to: redirect('/classes/spherification'), via: [:get, :post, :options]
 
-  resources :user_profiles, only: [:show, :edit, :update], path: 'profiles'
+  resources :user_profiles, only: [:show, :edit, :update], path: 'profiles' do
+    member do
+      put 'marketing_subscription' => 'user_profiles#marketing_subscription'
+    end
+  end
 
   # For universal deep links inside the app
   match '/.well-known/apple-app-site-association', to: "guides#apple", via: [:get, :post, :options]
@@ -297,6 +301,7 @@ Rails.application.routes.draw do
         get :log_upload_url, on: :collection
         post :settings, on: :collection, to: 'users#update_my_settings'
         post :settings, on: :member, to: 'users#update_settings'
+        match :mailchimp_webhook, on: :collection, :via => [:get, :post]
       end
 
       resources :circulators, only: [:index, :create, :update, :destroy] do
@@ -312,6 +317,7 @@ Rails.application.routes.draw do
 
       post 'users/make_premium', to: 'users#make_premium'
       post 'users/update_user_consent', to: 'users#update_user_consent'
+      post 'users/mailchimp_webhook', to: 'users#mailchimp_webhook'
 
       post 'firmware/updates', to: 'firmware#updates'
       get 'auth/external_redirect', to: 'auth#external_redirect'

@@ -14,6 +14,8 @@
           = link_to 'Profile', '#profile', data: {toggle: 'tab'}
         %li
           = link_to 'Passwords', '#passwords', data: {toggle: 'tab'}
+        %li
+          = link_to 'Email', '#email', data: {toggle: 'tab'}
       .tab-content
         .tab-pane.active#profile
           = form_for @user, url: user_profile_path(@user), method: :put do |f|
@@ -65,6 +67,20 @@
                       = f.password_field :current_password
                   %li
                     = f.submit "Update", class: "btn btn-primary"
+          / .row
+          /   .span6
+          /     = link_to "Cancel My Account", registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete, class: "uppercase-link brick"
+        .tab-pane#email
+          / = link_to edit_registration_path(@user), class: 'btn btn-primary' do
+          /   %i.icon-cogs
+          /   Settings
+          .row
+            .span6
+              %p.bold ChefSteps Email Newsletters
+              %p Subscribe to our newsletter to find out what's cooking at ChefSteps
+              - marketing_sub_class = @user.is_marketing_subscription ? 'btn btn-primary rounded un-subscribed' : 'btn btn-primary rounded'
+              = form_for(@user, url: marketing_subscription_user_profile_path(@user), html: { method: :put }) do |f|
+                = f.submit (@user.is_marketing_subscription ? "UnSubscribe" : "Subscribe"), class: marketing_sub_class
           / .row
           /   .span6
           /     = link_to "Cancel My Account", registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete, class: "uppercase-link brick"
