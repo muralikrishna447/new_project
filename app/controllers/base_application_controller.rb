@@ -218,6 +218,23 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
+  def subscribe_from_mailchimp(user)
+    list_id = Rails.configuration.mailchimp[:list_id]
+    begin
+      Gibbon::API.lists.subscribe(:id => list_id, :email => {:email => user.email})
+    rescue Exception => e
+      case Rails.env
+      when "production", "staging", "staging2"
+        logger.warn("[mailchimp] error: #{e.message}")
+        unless e.message.include?("already subscribed to list")
+          logger.error("[mailchimp] Failed to subscribe the user to mailchimp")
+        end
+      else
+        logger.debug("[mailchimp] subscribe error, ignoring - did you set MAILCHIMP_API_KEY? Message: #{e.message}")
+      end
+    end
+  end
+
     def get_ip_address
       (cookies[:cs_location] || request.ip)
     end

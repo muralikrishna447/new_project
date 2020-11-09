@@ -51,10 +51,10 @@ class UserProfilesController < ApplicationController
   end
 
   def marketing_subscription
-    if @user.is_marketing_subscription
-      email_list_signup(@user, 'profile_page')
-    else
+    if @user.subscribed?
       unsubscribe_from_mailchimp(@user)
+    else
+      subscribe_from_mailchimp(@user)
     end
     redirect_to user_profile_path(@user), notice: 'User profile updated!'
   end
