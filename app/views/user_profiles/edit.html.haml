@@ -75,12 +75,14 @@
           /   %i.icon-cogs
           /   Settings
           .row
-            .span6
+            .span8
+              - meta = marketing_subscription_content(@user)
               %p.bold ChefSteps Email Newsletters
               %p Subscribe to our newsletter to find out what's cooking at ChefSteps
-              - marketing_sub_class = @user.subscribed? ? 'btn btn-primary rounded un-subscribed' : 'btn btn-primary rounded'
+              -if meta[:message].present?
+                %p #{meta[:message]}
               = form_for(@user, url: marketing_subscription_user_profile_path(@user), html: { method: :put }) do |f|
-                = f.submit (@user.subscribed? ? "UnSubscribe" : "Subscribe"), class: marketing_sub_class
+                = f.submit meta[:button_text], class: meta[:button_klass]
           / .row
           /   .span6
           /     = link_to "Cancel My Account", registration_path(@user), data: { confirm: "Are you sure?" }, method: :delete, class: "uppercase-link brick"

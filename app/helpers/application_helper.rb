@@ -360,4 +360,22 @@ module ApplicationHelper
       return token unless yield(token)
     end
   end
+
+  def marketing_subscription_content(user)
+    {
+        subscribed: {
+            button_klass: 'btn btn-primary rounded un-subscribed',
+            button_text: 'UnSubscribe'
+        },
+        un_subscribed: {
+            button_klass: 'btn btn-primary rounded',
+            button_text: 'Subscribe'
+        },
+        pending: {
+            button_klass: 'btn btn-primary rounded',
+            button_text: 'Resend the invitation',
+            message: 'Your subscription is still pending, please check your inbox or junk mail to consent the newsletter invitation.'
+        }
+    }['pending'.to_sym]
+  end
 end
