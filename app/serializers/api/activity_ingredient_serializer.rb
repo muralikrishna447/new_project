@@ -14,7 +14,7 @@ class Api::ActivityIngredientSerializer < ApplicationSerializer
 
   def sub_activity
     if object.sub_activity_id
-      sub_activity = Activity.find(object.sub_activity_id)
+      sub_activity = Activity.find_by_id(object.sub_activity_id)
       Api::ActivityIndexSerializer.new(sub_activity, root: false)
     end
   end
