@@ -363,11 +363,11 @@ module ApplicationHelper
 
   def marketing_subscription_content(user)
     {
-        subscribe: {
+        subscribed: {
             button_klass: 'btn btn-primary rounded un-subscribed',
             button_text: 'UnSubscribe'
         },
-        unsubscribe: {
+        unsubscribed: {
             button_klass: 'btn btn-primary rounded',
             button_text: 'Subscribe'
         },
