@@ -71,7 +71,7 @@ class User < ApplicationRecord
                           :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from,
                           :referrer_id, :survey_results, :events_count]
 
-  enum marketing_mail_status: %w(unsubscribe subscribed pending)
+  enum marketing_mail_status: %w(unsubscribe subscribe pending)
 
   def settings_hash
     return {} if self.settings.nil?
