@@ -367,7 +367,7 @@ module ApplicationHelper
             button_klass: 'btn btn-primary rounded un-subscribed',
             button_text: 'UnSubscribe'
         },
-        un_subscribed: {
+        unsubscribe: {
             button_klass: 'btn btn-primary rounded',
             button_text: 'Subscribe'
         },
@@ -376,6 +376,6 @@ module ApplicationHelper
             button_text: 'Resend the invitation',
             message: 'Your subscription is still pending, please check your inbox or junk mail to consent the newsletter invitation.'
         }
-    }['pending'.to_sym]
+    }[user.marketing_mail_status.to_sym]
   end
 end

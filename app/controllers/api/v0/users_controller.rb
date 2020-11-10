@@ -159,6 +159,17 @@ module Api
         else
           Rails.logger.info("mailchimp_webhook request header --- #{req_header}")
           Rails.logger.info("mailchimp_webhook request params --- #{params.inspect}")
+          if params['type'].present? && params.dig('data', 'email').present?
+            user = User.find_by_email(params.dig('data', 'email'))
+            if user.present?
+              obj.update(marketing_mail_status: params['type'])
+              Rails.logger.info("mailchimp_webhook user #{params['data']['email']} updated to #{params['type']}")
+            else
+              Rails.logger.info("mailchimp_webhook user #{params['data']['email']} could find out db")
+            end
+          else
+            Rails.logger.info("mailchimp_webhook invalid request")
+          end
           render json: { message: 'Success' }, status: 200
         end
       end
