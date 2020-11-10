@@ -51,10 +51,13 @@ class UserProfilesController < ApplicationController
   end
 
   def marketing_subscription
-    if @user.subscribed?
-      unsubscribe_from_mailchimp(@user)
-    else
-      email_list_signup(@user, 'profile_page')
+    # To avoid the multiple tab issue, checking current user marketing mail status and request marketing mail status
+    if @user.marketing_mail_status == params[:user][:marketing_mail_status]
+      if @user.subscribed?
+        unsubscribe_from_mailchimp(@user)
+      else
+        email_list_signup(@user, 'profile_page')
+      end
     end
     redirect_to user_profile_path(@user), notice: 'User profile updated!'
   end

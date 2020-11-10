@@ -82,6 +82,7 @@
               -if meta[:message].present?
                 %p #{meta[:message]}
               = form_for(@user, url: marketing_subscription_user_profile_path(@user), html: { method: :put }) do |f|
+                = f.hidden_field :marketing_mail_status, value: @user.marketing_mail_status
                 = f.submit meta[:button_text], class: meta[:button_klass]
           / .row
           /   .span6

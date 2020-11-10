@@ -165,12 +165,12 @@ module Api
               list_id = Rails.configuration.mailchimp[:list_id]
               info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => user.email}]})
               user.update(marketing_mail_status: info['data'].first['status'])
-              Rails.logger.info("mailchimp_webhook user #{params['data']['email']} updated to #{params['type']}")
+              Rails.logger.info("mailchimp_webhook user #{params['data']['email']} has been #{info['data'].first['status']}}")
             else
-              Rails.logger.info("mailchimp_webhook user #{params['data']['email']} could find out db")
+              Rails.logger.info("mailchimp_webhook user #{params['data']['email']} is not available")
             end
           else
-            Rails.logger.info("mailchimp_webhook invalid request")
+            Rails.logger.info('Invalid request from mailchimp_webhook')
           end
           render json: { message: 'Success' }, status: 200
         end
