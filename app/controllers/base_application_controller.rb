@@ -187,7 +187,7 @@ class BaseApplicationController < ActionController::Base
         double_optin: double_opt_in,
         send_welcome: false
       )
-
+      user.update(marketing_mail_status: 'pending') if double_opt_in
     rescue Exception => e
       case Rails.env
       when "production", "staging", "staging2"
