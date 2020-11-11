@@ -157,22 +157,30 @@ module Api
           Rails.logger.info("mailchimp_webhook head request triggered --- #{req_header}")
           head :ok
         else
-          Rails.logger.info("mailchimp_webhook request header --- #{req_header}")
-          Rails.logger.info("mailchimp_webhook request params --- #{params.inspect}")
-          if params['type'].present? && params.dig('data', 'email').present?
-            user = User.find_by_email(params.dig('data', 'email'))
-            if user.present?
-              list_id = Rails.configuration.mailchimp[:list_id]
-              info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => user.email}]})
-              user.update(marketing_mail_status: info['data'].first['status'])
-              Rails.logger.info("mailchimp_webhook user #{params['data']['email']} has been #{info['data'].first['status']}}")
+          begin
+            Rails.logger.info("mailchimp_webhook request header --- #{req_header}")
+            Rails.logger.info("mailchimp_webhook request params --- #{params.inspect}")
+            email_id = params.dig('data', 'email')
+            if params['type'].present? && email_id.present?
+              user = User.find_by_email(email_id)
+              if user.present?
+                list_id = Rails.configuration.mailchimp[:list_id]
+                info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => user.email}]})
+                user.update(marketing_mail_status: info['data'].first['status'])
+                Rails.logger.info("mailchimp_webhook user #{email_id} has been #{info['data'].first['status']}}")
+                render json: { message: 'Success' }, status: 200
+              else
+                Rails.logger.info("mailchimp_webhook user #{email_id} is not available")
+                render json: {status: 400, message: "Bad Request.  Invalid email id #{email_id}"}, status: 400
+              end
             else
-              Rails.logger.info("mailchimp_webhook user #{params['data']['email']} is not available")
+              Rails.logger.info('Invalid request from mailchimp_webhook')
+              render json: {status: 400, message: "Bad Request.  Could not update the user with params #{params}"}, status: 400
             end
-          else
-            Rails.logger.info('Invalid request from mailchimp_webhook')
+          rescue Exception => e
+            logger.error("mailchimp_webhook failed to update the user Error Message: #{e.message}")
+            render json: {status: 500, message: 'Server error'}, status: 500
           end
-          render json: { message: 'Success' }, status: 200
         end
       end
 
