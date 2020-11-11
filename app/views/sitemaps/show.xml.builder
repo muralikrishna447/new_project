@@ -11,6 +11,14 @@ xml.tag! 'urlset', 'xmlns' => 'http://www.sitemaps.org/schemas/sitemap/0.9' do
       xml.lastmod(Time.now.xmlschema)
     }
   end
+  @catalog_routes.each do |url|
+    xml.url {
+      xml.loc("#{base_url}/cuts/#{url}")
+      xml.changefreq("daily")
+      xml.priority(1)
+      xml.lastmod(Time.now.xmlschema)
+    }
+  end
   @main_stuff.each do |p|
     xml.url {
       if p.is_a?(Assembly) && p.assembly_type == "Course"

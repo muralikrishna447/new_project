@@ -9,7 +9,8 @@ class SitemapsController < ApplicationController
                   Assembly.prereg_courses() |
                   Page.published()
 
-    @other_routes = ["/", "/about", "/gallery", "/jobs", "/classes", "/joule", "/joule/app", "/joule/hardware", "/joule/discussion", "/joule/specs", "/press", "/press/faq", "/premium"]
+    @other_routes = ["/", "/about", "/gallery", "/jobs", "/classes", "/joule", "/joule/app", "/joule/hardware", "/joule/discussion", "/joule/specs", "/press", "/press/faq", "/premium", '/cuts']
+    @catalog_routes = CutsService.get_routes
     respond_to do |format|
       format.xml {
         render
