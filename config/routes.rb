@@ -317,7 +317,6 @@ Rails.application.routes.draw do
 
       post 'users/make_premium', to: 'users#make_premium'
       post 'users/update_user_consent', to: 'users#update_user_consent'
-      post 'users/mailchimp_webhook', to: 'users#mailchimp_webhook'
 
       post 'firmware/updates', to: 'firmware#updates'
       get 'auth/external_redirect', to: 'auth#external_redirect'
