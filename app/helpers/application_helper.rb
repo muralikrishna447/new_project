@@ -374,7 +374,7 @@ module ApplicationHelper
         pending: {
             button_klass: 'btn btn-primary rounded',
             button_text: 'Resend the invitation',
-            message: 'We have sent you an email to opt-in to the subscription plan. Please check your inbox (or spam folder) for our email to confirm subscription.'
+            message: 'Check your inbox for an opt-in email to confirm your subscription to our newsletter.'
         }
     }[user.marketing_mail_status.to_sym]
   end
