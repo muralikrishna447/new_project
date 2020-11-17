@@ -1,7 +1,7 @@
 class UserProfilesController < ApplicationController
   expose(:encourage_profile) { Copy.find_by_location('encourage-profile') }
   expose(:user_presenter) { UserPresenter.new(user)}
-  before_action :load_user, only: [:edit, :update]
+  before_action :load_user, only: [:edit, :update, :marketing_subscription]
 
   TIMELINE_EVENT_LIMIT = 50
 
@@ -48,6 +48,18 @@ class UserProfilesController < ApplicationController
     else
       render 'edit'
     end
+  end
+
+  def marketing_subscription
+    # To avoid the multiple tab issue, checking current user marketing mail status and request marketing mail status
+    if @user.marketing_mail_status == params[:user][:marketing_mail_status]
+      if @user.subscribed?
+        unsubscribe_from_mailchimp(@user)
+      else
+        email_list_signup(@user, 'profile_page')
+      end
+    end
+    redirect_to user_profile_path(@user), notice: 'User profile updated!'
   end
 
   private

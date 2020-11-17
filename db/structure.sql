@@ -2594,7 +2594,8 @@ CREATE TABLE public.users (
     opt_in boolean,
     country_code text,
     apple_user_id character varying,
-    is_consent_displayed boolean DEFAULT false
+    is_consent_displayed boolean DEFAULT false,
+    marketing_mail_status integer DEFAULT 0
 );
 
 

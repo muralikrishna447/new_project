@@ -71,6 +71,8 @@ class User < ApplicationRecord
                           :viewed_activities, :signed_up_from, :bio, :image_id, :referred_from,
                           :referrer_id, :survey_results, :events_count]
 
+  enum marketing_mail_status: %w(unsubscribed subscribed pending)
+
   def settings_hash
     return {} if self.settings.nil?
     UserSettings::API_FIELDS.reduce({}) do |h, key|
