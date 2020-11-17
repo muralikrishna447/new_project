@@ -153,7 +153,7 @@ module Api
 
       def mailchimp_webhook
         req_header = request.headers.env.select{|k, _v| k.match('HTTP').present? }
-        if request.head?
+        if request.head? || request.get?
           Rails.logger.info("mailchimp_webhook head request triggered --- #{req_header}")
           head :ok
         else
