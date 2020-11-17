@@ -497,4 +497,26 @@ describe Api::V0::UsersController do
     end
   end
 
+  context 'mailchimp webhook' do
+    it 'should receive success response if head request' do
+      head :mailchimp_webhook
+
+      response.should be_success
+    end
+
+    it 'should not allow invalid params' do
+      post :mailchimp_webhook, params: {}
+
+      response.should_not be_success
+      expect(response.status).to eq(400)
+    end
+
+    it 'should not allow invalid email id' do
+      post :mailchimp_webhook, params: {type: 'subscribed', data: {email: 'invalid@mail.com'}}
+
+      response.should_not be_success
+      expect(response.status).to eq(400)
+    end
+  end
+
 end

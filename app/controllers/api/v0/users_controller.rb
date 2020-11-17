@@ -7,7 +7,7 @@ module Api
       # Required since this only this controller contains the code to actually
       # set the cookie and not just generate the token
       include Devise::Controllers::Rememberable
-      before_action :ensure_authorized, except: [:create, :log_upload_url, :make_premium, :update_settings, :update_user_consent]
+      before_action :ensure_authorized, except: [:create, :log_upload_url, :make_premium, :update_settings, :update_user_consent, :mailchimp_webhook]
       before_action(BaseController.make_service_filter(
         [ExternalServiceTokenChecker::SPREE_SERVICE]), only: [:make_premium, :update_settings]
       )
@@ -148,6 +148,39 @@ module Api
           render json: { message: 'Success' }, status: 200
         else
           render json: { message: 'Update Failed' }, status: 500
+        end
+      end
+
+      def mailchimp_webhook
+        req_header = request.headers.env.select{|k, _v| k.match('HTTP').present? }
+        if request.head?
+          Rails.logger.info("mailchimp_webhook head request triggered --- #{req_header}")
+          head :ok
+        else
+          begin
+            Rails.logger.info("mailchimp_webhook request header --- #{req_header}")
+            Rails.logger.info("mailchimp_webhook request params --- #{params.inspect}")
+            email_id = params.dig('data', 'email')
+            if params['type'].present? && email_id.present?
+              user = User.find_by_email(email_id)
+              if user.present?
+                list_id = Rails.configuration.mailchimp[:list_id]
+                info = Gibbon::API.lists.member_info({:id => list_id, :emails => [{:email => user.email}]})
+                user.update(marketing_mail_status: info['data'].first['status'])
+                Rails.logger.info("mailchimp_webhook user #{email_id} has been #{info['data'].first['status']}}")
+                render json: { message: 'Success' }, status: 200
+              else
+                Rails.logger.info("mailchimp_webhook user #{email_id} is not available")
+                render json: {status: 400, message: "Bad Request.  Invalid email id #{email_id}"}, status: 400
+              end
+            else
+              Rails.logger.info('Invalid request from mailchimp_webhook')
+              render json: {status: 400, message: "Bad Request.  Could not update the user with params #{params}"}, status: 400
+            end
+          rescue Exception => e
+            logger.error("mailchimp_webhook failed to update the user Error Message: #{e.message}")
+            render json: {status: 500, message: 'Server error'}, status: 500
+          end
         end
       end
 
