@@ -34,25 +34,15 @@ class Subscription < ApplicationRecord
 
   # this method should be called only with latest subscription or any active subscription
   def self.create_or_update_by_params(params, user_id)
+    subscription = where(user_id: user_id, plan_id: params[:plan_id]).first
 
-    attributes = { :user_id => user_id }
+    subscription = find_or_initialize_by(user_id: user_id) unless subscription.present?
 
-    begin
-      subscription = self.where(attributes).first_or_create! do |sub|
-        sub.user_id = user_id
-        sub.plan_id = params[:plan_id]
-        sub.status = params[:status]
-        sub.resource_version = params[:resource_version]
-      end
-    rescue ActiveRecord::RecordNotUnique
-      subscription = self.where(attributes).first!
-    end
-
-    # if params[:resource_version].to_i > subscription.resource_version
-    subscription.resource_version = params[:resource_version]
-    subscription.status = params[:status]
-    subscription.plan_id = params[:plan_id]
-    # end
+    subscription.assign_attributes(
+        plan_id: params[:plan_id],
+        status: params[:status],
+        resource_version: params[:resource_version]
+    )
 
     subscription.save!
     subscription
