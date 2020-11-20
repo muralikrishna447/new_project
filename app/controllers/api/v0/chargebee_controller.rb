@@ -86,13 +86,13 @@ module Api
 
       def sync_subscriptions
         latest_sub = import_subscription(current_api_user.id)
-        scheduled_sub_ids = []
-        scheduled_sub_ids << latest_sub&.id if latest_sub&.has_scheduled_changes && latest_sub&.status&.in?(Subscription::ONLY_ACTIVE_PLAN_STATUSES)
         next_billing = latest_sub&.next_billing_at.present? ? Time.at(latest_sub&.next_billing_at) : nil
 
         Rails.logger.info("Sync subscription resource_version = #{latest_sub&.resource_version} user_status=#{Subscription.duration(latest_sub&.plan_id || 'not_avail')}")
         serialized_user = JSON.parse(Api::UserMeSerializer.new(current_api_user).to_json)
-        serialized_user['scheduled'] = list_scheduled_subscriptions(scheduled_sub_ids)
+        upcoming_subs = list_scheduled_subscriptions(current_api_user.id)
+        serialized_user['scheduled'] = upcoming_subs
+        Rails.logger.info("Scheduled subscriptions are having more than the limit for user #{current_api_user.id}") if upcoming_subs.length > 1
         # nearest billing date
         serialized_user['next_billing_date'] = next_billing
         serialized_user['current_status'] = latest_sub&.status
@@ -263,8 +263,6 @@ module Api
         # and respective popup will be shown to user at checkout page.
         if current_api_user.studio?
           render_api_response(400, {message: 'ALREADY_SUBSCRIBED'})
-        elsif current_api_user.cancelled_studio?
-          render_api_response(400, {message: 'ALREADY_CANCELLED_SUBSCRIBED'})
         else
           data = {
             :subscription => {
@@ -284,16 +282,23 @@ module Api
         end
       end
 
-      def list_scheduled_subscriptions(subscription_ids)
-        subscription_ids.map do |id|
-          object = ChargeBee::Subscription.retrieve_with_scheduled_changes(id)
-          {
-            subscription_id: id,
-            plan_name: object.subscription.plan_id,
-            type: Subscription.duration(object.subscription.plan_id),
-            starts_at: object.subscription.next_billing_at ? Time.at(object.subscription.next_billing_at) : 'Never'
-          }
-        end
+      def list_scheduled_subscriptions(user_id)
+        object = ChargeBee::Estimate.upcoming_invoices_estimate(user_id)
+        return [] unless object.present?
+
+        object.estimate&.invoice_estimates&.map do |estimate|
+          estimate&.line_items.map do |item|
+            amount = (item.amount - item.discount_amount).fdiv(100)
+            amount = amount.to_i == amount ? amount.to_i : amount
+            {
+                subscription_id: item.subscription_id,
+                plan_name: item.entity_id,
+                type: Subscription.duration(item.entity_id),
+                starts_at: item.date_from ? Time.at(item.date_from) : 0,
+                amount: amount
+            }
+          end
+        end.flatten
       end
 
       def schedule_subscription(subscription_id, plan_id, status)
