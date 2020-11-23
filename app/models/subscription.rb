@@ -34,7 +34,8 @@ class Subscription < ApplicationRecord
 
   # this method should be called only with latest subscription or any active subscription
   def self.create_or_update_by_params(params, user_id)
-    subscription = where(user_id: user_id, plan_id: [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID]).first
+    studio_plans = [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID]
+    subscription = studio_plans.include?(params[:plan_id]) ? where(user_id: user_id, plan_id: studio_plans).first : nil
 
     subscription = find_or_initialize_by(user_id: user_id, plan_id: params[:plan_id]) unless subscription.present?
 
