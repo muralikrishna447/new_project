@@ -371,6 +371,10 @@ module ApplicationHelper
             button_klass: 'btn btn-primary rounded',
             button_text: 'Subscribe'
         },
+        cleaned: {
+            button_klass: 'btn btn-primary rounded',
+            button_text: 'Subscribe'
+        },
         pending: {
             button_klass: 'btn btn-primary rounded',
             button_text: 'Resend the invitation',
