@@ -626,7 +626,8 @@ class Activity < ApplicationRecord
         presentation_hints: step_attr[:presentation_hints],
         extra: step_attr[:extra],
         appliance_instruction_text: step_attr[:appliance_instruction_text],
-        appliance_instruction_image: step_attr[:appliance_instruction_image]
+        appliance_instruction_image: step_attr[:appliance_instruction_image],
+        appliance_instruction_image_type: step_attr[:appliance_instruction_image_type]
       )
       step.update_ingredients_json(step_attr[:ingredients]) if step_attr.key?('ingredients')
       step_attr[:id] = step.id
