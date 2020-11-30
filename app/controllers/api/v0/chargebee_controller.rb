@@ -244,10 +244,11 @@ module Api
       def webhook
         content = params[:content]
         if content
-          if content[:customer] && content[:customer][:id] && content[:subscription] && content[:subscription][:plan_id]
+          if content[:customer] && content[:customer][:id] && content[:subscription] && content[:subscription][:plan_id] && User.where(id: content[:customer][:id]).exists?
             # Subscription.create_or_update_by_params(content[:subscription], content[:customer][:id])
-            import_subscription(content[:customer][:id])
             Rails.logger.info("chargebee_controller.webhook - updating event id=#{params[:id]} and event_type=#{params[:event_type]}")
+            import_subscription(content[:customer][:id])
+            Rails.logger.info("chargebee_controller.webhook - completed event id=#{params[:id]} and event_type=#{params[:event_type]}")
           else
             Rails.logger.info("chargebee_controller.webhook - ignoring event id=#{params[:id]} and event_type=#{params[:event_type]}")
           end
