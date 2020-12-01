@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe Api::V0::ChargebeeController do
+  plan_id = 'StudioTestPlan'
+  monthly_plan_id = 'StudioTestPlanMonthly'
+  Subscription::STUDIO_PLAN_ID = plan_id
+  Subscription::MONTHLY_STUDIO_PLAN_ID = monthly_plan_id
+
   context 'webhook' do
 
     before(:each) do
@@ -9,10 +14,6 @@ describe Api::V0::ChargebeeController do
     end
 
     context 'with authentication' do
-      plan_id = 'StudioTestPlan'
-      monthly_plan_id = 'StudioTestPlanMonthly'
-      Subscription::STUDIO_PLAN_ID = plan_id
-      Subscription::MONTHLY_STUDIO_PLAN_ID = monthly_plan_id
       let(:active_subscription) {
         double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"active", :resource_version=>1591801241502, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: nil, cancelled_at: nil})
       }
@@ -77,8 +78,6 @@ describe Api::V0::ChargebeeController do
   context 'APIs' do
 
     context 'Studio Pass with authentication' do
-      plan_id = 'StudioTestPlan'
-      monthly_plan_id = 'StudioTestPlanMonthly'
       end_date = (Time.now + 1.month).to_i
       let(:active_subscription) {
         double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"active", :resource_version=>1591801241502, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: nil, cancelled_at: nil})
@@ -119,6 +118,32 @@ describe Api::V0::ChargebeeController do
         double('entry', :subscription => cancelled_in_trial_subscription)
       }
 
+      let(:line_items_data) {
+        ->(discount_amount) {
+          double('line_items', { subscription_id: "124D46Za3",
+                                 entity_id: plan_id,
+                                 date_from: end_date,
+                                 amount: 6900,
+                                 discount_amount: discount_amount })
+        }
+      }
+
+      let(:yearly_with_discount) {
+        double('line_items', { line_items: [line_items_data[3450]] })
+      }
+
+      let(:upcoming_invoices_with_discount) {
+        double('estimate', {estimate: double('invoice_estimate', {invoice_estimates: [yearly_with_discount]})})
+      }
+
+      let(:yearly_without_discount) {
+        double('line_items', { line_items: [line_items_data[0]] })
+      }
+
+      let(:upcoming_invoices_without_discount) {
+        double('estimate', {estimate: double('invoice_estimate', {invoice_estimates: [yearly_without_discount]})})
+      }
+
       before do
         @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
         controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
@@ -131,14 +156,16 @@ describe Api::V0::ChargebeeController do
         end
         it 'return empty result when no subscription' do
           ChargeBee::Subscription.should_receive(:list).and_return([])
+          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return([])
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
           response_data["subscriptions"].should eq([])
         end
 
-        it 'return status as active for subscribed user' do
+        it 'return status as active for subscribed user with 50% of coupon applied' do
           ChargeBee::Subscription.should_receive(:list).and_return([entry_active])
+          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return(upcoming_invoices_with_discount)
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
@@ -148,11 +175,39 @@ describe Api::V0::ChargebeeController do
           expect(response_data["subscriptions"][0]['is_active']).to be_truthy
           expect(response_data['scheduled_cancel']).to be false
           expect(response_data['current_status']).to eq('active')
-          expect(response_data['scheduled']).to eq([])
+          expect(response_data['scheduled'].length).to eq(1)
+          expect(response_data['scheduled'][0]['amount']).to eq(34.5)
+          expect(response_data['scheduled'][0]['plan_name']).to eq(plan_id)
+          expect(response_data['scheduled'][0]['subscription_id']).to eq('124D46Za3')
+          expect(response_data['scheduled'][0]['starts_at'].to_datetime.strftime("%FT%T")).to eq(Time.at(end_date).strftime("%FT%T"))
+          expect(response_data['scheduled'][0]['type']).to eq('Annual')
           expect(response_data['next_billing_date']).to be nil
         end
+
+        it 'return status as active for subscribed user with none of coupon applied' do
+          ChargeBee::Subscription.should_receive(:list).and_return([entry_active])
+          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return(upcoming_invoices_without_discount)
+          get :sync_subscriptions
+          expect(response.code).to eq("200")
+          response_data = JSON.parse(response.body)
+          expect(response_data["subscriptions"].length).to be 1
+          expect(response_data["subscriptions"][0]['plan_id']).to match(plan_id)
+          expect(response_data["subscriptions"][0]['status']).to eq('active')
+          expect(response_data["subscriptions"][0]['is_active']).to be_truthy
+          expect(response_data['scheduled_cancel']).to be false
+          expect(response_data['current_status']).to eq('active')
+          expect(response_data['scheduled'].length).to eq(1)
+          expect(response_data['scheduled'][0]['amount']).to eq(69)
+          expect(response_data['scheduled'][0]['plan_name']).to eq(plan_id)
+          expect(response_data['scheduled'][0]['subscription_id']).to eq('124D46Za3')
+          expect(response_data['scheduled'][0]['starts_at'].to_datetime.strftime("%FT%T")).to eq(Time.at(end_date).strftime("%FT%T"))
+          expect(response_data['scheduled'][0]['type']).to eq('Annual')
+          expect(response_data['next_billing_date']).to be nil
+        end
+
         it 'return status as cancelled for unsubscribed user' do
           ChargeBee::Subscription.should_receive(:list).and_return([higher_version_entry_cancelled])
+          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return([])
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
@@ -167,6 +222,7 @@ describe Api::V0::ChargebeeController do
         end
         it 'Get any active subscription or the latest subscriptions' do
           ChargeBee::Subscription.should_receive(:list).and_return([lower_version_entry_active, higher_version_entry_cancelled])
+          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return([])
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
@@ -181,6 +237,7 @@ describe Api::V0::ChargebeeController do
         end
         it 'scheduled_cancel should be true when status is non_renewing' do
           ChargeBee::Subscription.should_receive(:list).and_return([entry_non_renewing])
+          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return([])
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
@@ -197,6 +254,7 @@ describe Api::V0::ChargebeeController do
         end
         it 'scheduled_cancel should be true when status is in_trail without cancel' do
           ChargeBee::Subscription.should_receive(:list).and_return([entry_in_trial])
+          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return([])
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
@@ -213,6 +271,7 @@ describe Api::V0::ChargebeeController do
         end
         it 'scheduled_cancel should be true when status is in_trail and cancelled' do
           ChargeBee::Subscription.should_receive(:list).and_return([entry_cancelled_in_trial])
+          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return([])
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
