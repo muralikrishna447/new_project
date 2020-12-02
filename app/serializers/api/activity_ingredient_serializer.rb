@@ -15,6 +15,10 @@ class Api::ActivityIngredientSerializer < ApplicationSerializer
   def sub_activity
     if object.sub_activity_id
       sub_activity = Activity.find_by_id(object.sub_activity_id)
+      unless sub_activity.present?
+        activity_name = object.step&.activity&.name
+        Rails.logger.warn("#{object.title} recipe is attached as an ingredient in #{activity_name} recipe which is no longer available")
+      end
       Api::ActivityIndexSerializer.new(sub_activity, root: false)
     end
   end

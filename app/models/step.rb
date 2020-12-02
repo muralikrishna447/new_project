@@ -14,6 +14,8 @@ class Step < ApplicationRecord
 
   default_scope { ordered }
 
+  enum appliance_instruction_image_type: %w(custom control_freak smart_over_air)
+
   def title(index=nil)
     return "Step %d" % (index.to_i + 1) if self[:title].blank? and index.present?
     return "" if self[:title] == "-"

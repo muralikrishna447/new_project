@@ -112,4 +112,11 @@ angular.module('ChefStepsApp').controller 'StepController', ["$scope", "$rootSco
       result += ' well-white-with-border'
     result
 
+  $scope.applianceImageTypes = ->
+    [
+      {text: 'Control Freak', value: 'control_freak'},
+      {text: 'Smart Over Air', value: 'smart_over_air'},
+      {text: 'Custom', value: 'custom'}
+    ]
+
 ]

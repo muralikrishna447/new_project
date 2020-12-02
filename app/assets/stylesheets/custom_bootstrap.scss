@@ -53,3 +53,12 @@
     font-weight: bold;
   }
 }
+
+
+.appliance-block {
+  & > .appliance-image {
+    display: block;
+    margin: 10px 0;
+    width: 30%;
+  }
+}

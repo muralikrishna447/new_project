@@ -6,6 +6,22 @@
     %i.icon-chevron-down(ng-show="! showMediaEdit")
   %div.anim-basic-fade(collapse="showMediaEdit")
     .well
+      %h4 Appliance
+      %div
+        %h5 Appliance Instruction
+        .step-content(cs-contenteditable="getStepOpenForEdit()"
+                      creator="activity.user"
+                      ng-model="step.appliance_instruction_text"
+                      placeholder="'Click to add appliance instructions'")
+      %div.appliance-block
+        %h5 Appliance Instruction Image
+        %select( type="text"
+                 cs-emit-focus
+                 ng-model="step.appliance_instruction_image_type"
+                 ng-options="type.value as type.text for type in applianceImageTypes()")
+        .csfilepicker(ng-model="step.appliance_instruction_image" ng-if="step.appliance_instruction_image_type == 'custom'" )
+        %img.appliance-image(src="https://d92f495ogyf88.cloudfront.net/static/control-freak.png" ng-if="step.appliance_instruction_image_type == 'control_freak'")
+        %img.appliance-image(src="https://d92f495ogyf88.cloudfront.net/static/smart-over-air.png" ng-if="step.appliance_instruction_image_type == 'smart_over_air'")
       %h4 Video
       %div
         %h5.inline Youtube ID
