@@ -10,9 +10,19 @@ class Menu < ApplicationRecord
   scope :studio, -> { where(is_studio: true) }
   scope :premium, -> { where(is_premium: true) }
   scope :not_logged, -> { where(is_not_logged: true) }
+  scope :by_parent, -> menu_id { where(parent_id: menu_id).by_position }
+  scope :all_permission, -> { where("is_free = :val OR is_studio = :val OR is_premium = :val OR is_not_logged = :val", val: true) }
 
+  before_create do
+    self.position = if parent_id.present?
+                      by_parent(parent_id).last&.position.to_i + 1
+                    else
+                      main_menus.last&.position.to_i + 1
+                    end
+  end
 
   def self.get_menus(type)
+    # type = 'all_permission' will triggered by admin panel
     mappings = { free: 'free_user_menu_cache', studio: 'studio_user_menu_cache',
                  premium: 'premium_user_menu_cache', not_logged: 'not_logged_user_menu_cache' }
     menu_list = send(type).by_position.group_by(&:parent_id)

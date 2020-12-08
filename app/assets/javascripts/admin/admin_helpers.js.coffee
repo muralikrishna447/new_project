@@ -280,4 +280,39 @@ $(document).ready ->
     if dropDown == ''
       dropDown = 'main_menus'
     $('.reorder-menu-form.' +  dropDown).removeClass('hide')
+    $(".admin-preview .dropdown-menu").removeClass('show')
+    if dropDown != 'main_menus'
+      $("[data-menu-id='#{dropDown}']").find('.dropdown-menu').addClass('show')
 
+$(document).on 'click', ".admin-preview .dropdown-toggle", ->
+  showSubMenu = $(this).next().hasClass('show')
+  $(".admin-preview .dropdown-menu").removeClass('show')
+  unless showSubMenu
+    $(this).next().addClass('show')
+
+
+$(document).ready ->
+  $(".sortable").sortable(
+    stop: (event, ui) ->
+      selectedId = $('#reorder_menu_dropdown').val() || 'main_menus'
+
+      order = $("##{selectedId}").serializeArray().map((obj) =>
+        if obj['name'].startsWith('menu_ids')
+          obj['value']
+      ).filter((obj) => obj)
+
+      $("[data-parent-id='#{selectedId}']").html()
+      console.log('=======')
+      console.log(order)
+      newHTML = order.map((id) =>
+        $("[data-parent-id='#{selectedId}']").append($("[data-menu-id='#{id}']")[0])
+      )
+  )
+
+$(document).ready ->
+  $('#menu_permissions').change ->
+    if $(this).val()
+      $('.cs-menu-permission').hide()
+      $("[data-#{$(this).val()}]").show()
+    else
+      $('.cs-menu-permission').show()

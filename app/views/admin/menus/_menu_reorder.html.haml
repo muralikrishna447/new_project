@@ -14,19 +14,3 @@
           %td
             %i.icon-reorder.icon-large
   = submit_tag 'Submit'
-
-.cs-nav-container.nav-fixed
-  - menu_list = Menu.get_menus('studio')
-  - menu_list[0].each do |menu|
-    - if menu_list[menu.id]
-      .dropdown.cs-nav-item
-        .dropdown-toggle
-          "#{menu.name}"
-        .dropdown-menu
-          .dropdown-wrapper
-            .dropdown-menu-item
-              - menu_list[menu.id].each do |sub_menu|
-                %a(href="#{sub_menu.url}") #{sub_menu.name}
-    - else
-      %a.cs-nav-item(href="#{menu.url}") #{menu.name}
-

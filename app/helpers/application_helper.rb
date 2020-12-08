@@ -390,5 +390,14 @@ module ApplicationHelper
     { dropdown_option: dropdown_option, reorder_menus: all_menus }
   end
 
+  def menu_permission_attr(menu)
+    {
+      "data-is-studio": menu.is_studio,
+      "data-is-premium": menu.is_premium,
+      "data-is-free": menu.is_free,
+      "data-is-not-logged": menu.is_not_logged,
+    }
+  end
+
 
 end
