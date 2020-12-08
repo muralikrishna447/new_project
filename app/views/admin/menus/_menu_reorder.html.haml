@@ -1,0 +1,32 @@
+= form_tag(update_reorder_menus_admin_menus_path, method: 'post', id: html_id , class: klass) do
+  %table#menu-reorder.nested-records.sortable.ui-sortable{:style => "display: table;"}
+    %tbody
+      %tr.template-row.ui-sortable-handle{:style => ""}
+        %td
+          %label ''
+        %td
+          %i.icon-reorder.icon-large
+      - menus.each do |menu|
+        %tr.ui-sortable-handle{:style => ""}
+          %td
+            %label #{menu.name}
+            = hidden_field_tag "menu_ids[]", menu.id
+          %td
+            %i.icon-reorder.icon-large
+  = submit_tag 'Submit'
+
+.cs-nav-container.nav-fixed
+  - menu_list = Menu.get_menus('studio')
+  - menu_list[0].each do |menu|
+    - if menu_list[menu.id]
+      .dropdown.cs-nav-item
+        .dropdown-toggle
+          "#{menu.name}"
+        .dropdown-menu
+          .dropdown-wrapper
+            .dropdown-menu-item
+              - menu_list[menu.id].each do |sub_menu|
+                %a(href="#{sub_menu.url}") #{sub_menu.name}
+    - else
+      %a.cs-nav-item(href="#{menu.url}") #{menu.name}
+

@@ -382,4 +382,13 @@ module ApplicationHelper
         }
     }[user.marketing_mail_status.to_sym]
   end
+
+  def reorder_menu_list
+    all_menus = { main_menus: Menu.main_menus }.merge( Menu.child_menus.group_by(&:parent_id) )
+    select_menu = all_menus[:main_menus].map{|a| [a.name, a.id]}.to_h
+    dropdown_option = select_menu.invert.slice(*all_menus.keys).invert.to_a
+    { dropdown_option: dropdown_option, reorder_menus: all_menus }
+  end
+
+
 end

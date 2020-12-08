@@ -273,3 +273,11 @@ $(document).ready ->
     else
       $('#activity_promote_order_input').addClass('hide')
 
+$(document).ready ->
+  $('#reorder_menu_dropdown').change ->
+    $('.reorder-menu-form').addClass('hide')
+    dropDown = $(this).val()
+    if dropDown == ''
+      dropDown = 'main_menus'
+    $('.reorder-menu-form.' +  dropDown).removeClass('hide')
+

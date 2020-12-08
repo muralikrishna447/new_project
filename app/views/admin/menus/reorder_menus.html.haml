@@ -1,0 +1,7 @@
+- menu_list = reorder_menu_list
+= select_tag "reorder_menu_dropdown", options_for_select(menu_list[:dropdown_option]), include_blank: 'Main Menus'
+
+
+- menu_list[:reorder_menus].each do |id, objects|
+    = render 'admin/menus/menu_reorder',  menus: objects, html_id: id, klass: id == :main_menus ? "reorder-menu-form #{id.to_s}" : "reorder-menu-form #{id.to_s} hide"
+
