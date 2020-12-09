@@ -90,9 +90,13 @@ module Api
 
         Rails.logger.info("Sync subscription resource_version = #{latest_sub&.resource_version} user_status=#{Subscription.duration(latest_sub&.plan_id || 'not_avail')}")
         serialized_user = JSON.parse(Api::UserMeSerializer.new(current_api_user).to_json)
-        upcoming_subs = list_scheduled_subscriptions(current_api_user.id)
-        serialized_user['scheduled'] = upcoming_subs
-        Rails.logger.info("Scheduled subscriptions are having more than the limit for user #{current_api_user.id}") if upcoming_subs.length > 1
+        if latest_sub&.status && %w[cancelled non_renewing].exclude?(latest_sub.status)
+          upcoming_subs = list_scheduled_subscriptions(current_api_user.id)
+          serialized_user['scheduled'] = upcoming_subs
+          Rails.logger.info("Scheduled subscriptions are having more than the limit for user #{current_api_user.id}") if upcoming_subs.length > 1
+        else
+          serialized_user['scheduled'] = []
+        end
         # nearest billing date
         serialized_user['next_billing_date'] = next_billing
         serialized_user['current_status'] = latest_sub&.status
@@ -286,7 +290,14 @@ module Api
       end
 
       def list_scheduled_subscriptions(user_id)
-        object = ChargeBee::Estimate.upcoming_invoices_estimate(user_id)
+        object = nil
+        begin
+          object = ChargeBee::Estimate.upcoming_invoices_estimate(user_id)
+        rescue ChargeBee::InvalidRequestError => e
+          Rails.logger.error("Chargebee Invoice Estimate failed for #{user_id} - #{e.message}")
+          Rails.logger.error(e.backtrace)
+        end
+
         return [] unless object.present?
 
         object.estimate&.invoice_estimates&.map do |estimate|

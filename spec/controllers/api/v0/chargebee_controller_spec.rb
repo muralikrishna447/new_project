@@ -156,7 +156,7 @@ describe Api::V0::ChargebeeController do
         end
         it 'return empty result when no subscription' do
           ChargeBee::Subscription.should_receive(:list).and_return([])
-          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return([])
+          ChargeBee::Estimate.should_not_receive(:upcoming_invoices_estimate)
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
@@ -207,7 +207,7 @@ describe Api::V0::ChargebeeController do
 
         it 'return status as cancelled for unsubscribed user' do
           ChargeBee::Subscription.should_receive(:list).and_return([higher_version_entry_cancelled])
-          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return([])
+          ChargeBee::Estimate.should_not_receive(:upcoming_invoices_estimate)
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
@@ -237,7 +237,7 @@ describe Api::V0::ChargebeeController do
         end
         it 'scheduled_cancel should be true when status is non_renewing' do
           ChargeBee::Subscription.should_receive(:list).and_return([entry_non_renewing])
-          ChargeBee::Estimate.should_receive(:upcoming_invoices_estimate).and_return([])
+          ChargeBee::Estimate.should_not_receive(:upcoming_invoices_estimate)
           get :sync_subscriptions
           expect(response.code).to eq("200")
           response_data = JSON.parse(response.body)
