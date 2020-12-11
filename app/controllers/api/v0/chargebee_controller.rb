@@ -268,8 +268,8 @@ module Api
         # and respective popup will be shown to user at checkout page.
         if current_api_user.studio?
           render_api_response(400, {message: 'ALREADY_SUBSCRIBED'})
-        elsif current_api_user.cancelled_studio?
-          render_api_response(400, {message: 'ALREADY_CANCELLED_SUBSCRIBED'})
+        #elsif current_api_user.cancelled_studio?
+          #render_api_response(400, {message: 'ALREADY_CANCELLED_SUBSCRIBED'})
         else
           data = {
             :subscription => {
