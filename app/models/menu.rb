@@ -15,9 +15,9 @@ class Menu < ApplicationRecord
 
   before_create do
     self.position = if parent_id.present?
-                      by_parent(parent_id).last&.position.to_i + 1
+                      Menu.by_parent(parent_id).last&.position.to_i + 1
                     else
-                      main_menus.last&.position.to_i + 1
+                      Menu.main_menus.last&.position.to_i + 1
                     end
   end
 
