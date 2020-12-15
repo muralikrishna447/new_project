@@ -1,6 +1,7 @@
 class Subscription < ApplicationRecord
   STUDIO_PLAN_ID = ENV['STUDIO_PLAN_ID']
   MONTHLY_STUDIO_PLAN_ID = ENV['MONTHLY_STUDIO_PLAN_ID']
+  STUDIO_PASS_PLAN_IDS = [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID]
   EXISTING_PREMIUM_COUPON = ENV['EXISTING_PREMIUM_COUPON']
   ACTIVE_PLAN_STATUSES = ['active', 'in_trial', 'non_renewing']
   ONLY_ACTIVE_PLAN_STATUSES = %w[active in_trial]
@@ -33,9 +34,9 @@ class Subscription < ApplicationRecord
   end
 
   # this method should be called only with latest subscription or any active subscription
+  # monthly and yearly plan are considered as a single record, other plans are created separately
   def self.create_or_update_by_params(params, user_id)
-    studio_plans = [STUDIO_PLAN_ID, MONTHLY_STUDIO_PLAN_ID]
-    subscription = studio_plans.include?(params[:plan_id]) ? where(user_id: user_id, plan_id: studio_plans).first : nil
+    subscription = STUDIO_PASS_PLAN_IDS.include?(params[:plan_id]) ? where(user_id: user_id, plan_id: STUDIO_PASS_PLAN_IDS).first : nil
 
     subscription = find_or_initialize_by(user_id: user_id, plan_id: params[:plan_id]) unless subscription.present?
 

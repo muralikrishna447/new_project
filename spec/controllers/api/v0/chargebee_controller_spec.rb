@@ -47,7 +47,6 @@ describe Api::V0::ChargebeeController do
           id: "ev___test__5SK0bLNFRFuFaqltU",
           object: "event"
         }
-        ChargeBee::Subscription.should_receive(:list).exactly(2).times.and_return([entry_active], [higher_version_entry_cancelled])
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
 
         post :webhook, params: params
