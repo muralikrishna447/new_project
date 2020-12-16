@@ -27,9 +27,12 @@ module CookieConsentHelper
   end
 
   # Returns true if user consent is needed before analytics are enabled, else returns false
+  # Manual Cookie concent is disabled. We are using Evidon to manage cookie concent.
+  # This code will be removed after finalizing the feature with evidon.
   def is_consent_needed?
-    country = get_country
-    COUNTRIES_THAT_REQUIRE_CONSENT.include?(country) and !is_consent_in_cookie?
+    false
+    #country = get_country
+    #COUNTRIES_THAT_REQUIRE_CONSENT.include?(country) and !is_consent_in_cookie?
   end
 
   def get_country
