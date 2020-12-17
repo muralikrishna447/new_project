@@ -12,7 +12,7 @@
 .cs-nav-container.nav-fixed.admin-preview
     .cs-nav
         .cs-nav-center{'data-parent-id' => 'main_menus'}
-            - menu_list = Menu.get_menus('all_permission')
+            - menu_list = Menu.get_preview_menus
             - menu_list[0].each do |menu|
                 - if menu_list[menu.id]
                     .dropdown.cs-nav-item.cs-menu-permission{'data-menu-id' => menu.id, **menu_permission_attr(menu)}

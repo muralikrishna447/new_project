@@ -34,22 +34,24 @@ ActiveAdmin.register Menu do
 
   controller do
     def update
-      if @menu.is_parent_menu? && params[:menu][:parent_id].present?
-        parent_sub_menu = Menu.find(params[:menu][:parent_id]).sub_menus.by_position.last
-        sub_menu_position = parent_sub_menu.present? ? parent_sub_menu.position : 0
-        sub_menu_position += 1
-        @menu.position = sub_menu_position
-        @menu.sub_menus.by_position.each do |sub_menu|
+      Menu.transaction do
+        if @menu.is_parent_menu? && params[:menu][:parent_id].present?
+          parent_sub_menu = Menu.find(params[:menu][:parent_id]).sub_menus.by_position.last
+          sub_menu_position = parent_sub_menu.present? ? parent_sub_menu.position : 0
           sub_menu_position += 1
-          sub_menu.parent_id = params[:menu][:parent_id]
-          sub_menu.position = sub_menu_position
-          sub_menu.save
+          @menu.position = sub_menu_position
+          @menu.sub_menus.by_position.each do |sub_menu|
+            sub_menu_position += 1
+            sub_menu.parent_id = params[:menu][:parent_id]
+            sub_menu.position = sub_menu_position
+            sub_menu.save
+          end
+        elsif !@menu.is_parent_menu? && params[:menu][:parent_id].blank?
+          main_menu_position = Menu.main_menus.last.position.to_i + 1
+          @menu.position = main_menu_position
         end
-      elsif !@menu.is_parent_menu? && params[:menu][:parent_id].blank?
-        main_menu_position = Menu.main_menus.last.position.to_i + 1
-        @menu.position = main_menu_position
+        update!
       end
-      update!
     end
 
 
