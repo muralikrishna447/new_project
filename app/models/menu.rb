@@ -30,4 +30,8 @@ class Menu < ApplicationRecord
     menu_list.sort.to_h
   end
 
+  def is_parent_menu?
+    parent_id.blank?
+  end
+
 end
