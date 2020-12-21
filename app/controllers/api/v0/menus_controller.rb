@@ -11,7 +11,7 @@ module Api
 
       def fetch_user_permission
         token = request.authorization&.split(' ')&.last
-        user = if token.present?
+        user = if token.present? && token != 'null'
                  current_token = AuthToken.from_string(token)
                  ActorAddress.find_for_token(current_token).try(:actor)
                end
