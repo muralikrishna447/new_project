@@ -348,7 +348,7 @@ module Api
         ChargeBee::Subscription.update(subscription_id, options)
         return true, ''
       rescue StandardError => e #revert back
-        plan_id = plan_id == "chefsteps_studio_pass" ? "chefsteps_studio_pass_monthly" : "chefsteps_studio_pass"
+        plan_id = plan_id == Subscription::STUDIO_PLAN_ID ? Subscription::MONTHLY_STUDIO_PLAN_ID : Subscription::STUDIO_PLAN_ID
         status, _message = schedule_subscription_api(subscription_id, plan_id, status)
         return false, e.message.include?('coupon_ids') ? 'Entered coupon code is invalid or expired for the selected plan' : e.message
       end
