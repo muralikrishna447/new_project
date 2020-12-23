@@ -348,7 +348,7 @@ module Api
         ChargeBee::Subscription.update(subscription_id, options)
         return true, ''
       rescue StandardError => e #revert back
-        plan_id == "chefsteps_studio_pass" ? "chefsteps_studio_pass_monthly" : "chefsteps_studio_pass"
+        plan_id = plan_id == "chefsteps_studio_pass" ? "chefsteps_studio_pass_monthly" : "chefsteps_studio_pass"
         status, _message = schedule_subscription_api(subscription_id, plan_id, status)
         return false, e.message
       end
