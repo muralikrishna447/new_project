@@ -401,11 +401,11 @@ module ApplicationHelper
 
 
   def get_menu_list(user)
-    permission =  if user.admin?
+    permission =  if user&.admin?
                     'admin'
-                  elsif user.studio?
+                  elsif user&.studio?
                     'studio'
-                  elsif user.premium_member?
+                  elsif user&.premium_member?
                     'premium'
                   else
                     'free'
