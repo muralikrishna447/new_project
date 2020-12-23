@@ -400,4 +400,18 @@ module ApplicationHelper
   end
 
 
+  def get_menu_list(user)
+    permission =  if user.admin?
+                    'admin'
+                  elsif user.studio?
+                    'studio'
+                  elsif user.premium_member?
+                    'premium'
+                  else
+                    'free'
+                  end
+    Menu.get_menus(permission.to_sym)
+  end
+
+
 end

@@ -2,26 +2,20 @@
   Sign In
 
 
+- menu_list = get_menu_list(current_user)
+- menu_list[0].each do |menu|
+  - if menu_list[menu['id']]
+    .dropdown.cs-nav-item.cs-menu-permission
+      .dropdown-toggle #{menu['name']}
+      .dropdown-menu
+        .dropdown-wrapper
+          .dropdown-menu-item
+            - menu_list[menu['id']].each do |sub_menu|
+              %a.cs-menu-permission{"href": sub_menu['url']} #{sub_menu['name']}
+  - else
+    %a.cs-nav-item.cs-menu-permission{"href": menu['url']} #{menu['name']}
 
-%a.cs-nav-item(href='/gallery')
-  %span.hide-desktop Search
-  Recipes
 
--if Subscription::IS_STUDIO_LIVE
-  %a.cs-nav-item(href='/studiopass')
-    Studio Pass
-
-%a.cs-nav-item(href='/premium')
-  Premium
-
-%a.cs-nav-item(href='/cuts')
-  Cuts
-
-%a.cs-nav-item(href='/joule')
-  Joule
-
-%a.cs-nav-item(href='https://support.chefsteps.com/')
-  Support
 
 - if current_user
   %hr.cs-nav-item.hide-desktop
