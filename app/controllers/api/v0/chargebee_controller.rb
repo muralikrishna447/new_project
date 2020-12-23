@@ -128,9 +128,11 @@ module Api
         elsif subscription.status == 'non_renewing'
           render_api_response(400, {message: 'CANCEL_SCHEDULED'})
         elsif subscription.plan_id == plan_id && subscription.status != 'cancelled'
-          remove_schedule_subscription(subscription.id)
+          #plan_id - chefstep_studio_pass , removing scheduled
+          #apply coupon for current
+          remove_schedule_subscription(subscription.id, plan_id, subscription.status, params[:coupon_code])
         else
-          schedule_subscription(subscription.id, plan_id, subscription.status)
+          schedule_subscription(subscription.id, plan_id, subscription.status, params[:coupon_code])
         end
       end
 
@@ -315,23 +317,48 @@ module Api
         end.flatten
       end
 
-      def schedule_subscription(subscription_id, plan_id, status)
+      def schedule_subscription_api(subscription_id, plan_id, status, coupon_code = nil)
         options = { plan_id: plan_id, prorate: false }
+        options[:coupon_ids] = [coupon_code] if coupon_code.present?
         # cancelled subscription will not accept end_of_term param while updating
         options[:end_of_term] = true unless status == 'cancelled'
         ChargeBee::Subscription.update(subscription_id, options)
-        render_api_response(201, {message: 'SCHEDULED_SUCCESS'})
+        return true, ''
       rescue StandardError => e
-        Rails.logger.error(e)
-        render_api_response(400, {message: 'UPDATE_FAILED', error_message: e.message})
+        return false, e.message
       end
 
-      def remove_schedule_subscription(subscription_id)
+      def schedule_subscription(subscription_id, plan_id, status, coupon_code)
+        status, message = schedule_subscription_api(subscription_id, plan_id, status, coupon_code)
+        send_response(status, message)
+      end
+
+      def send_response(status, message)
+        status.present? ? render_api_response(201, {message: 'SCHEDULED_SUCCESS'}) : render_api_response(400, {message: 'UPDATE_FAILED', error_message: message})
+      end
+
+      def remove_schedule_subscription(subscription_id, plan_id, status, coupon_code)
+        status, message = remove_schedule_api_call(subscription_id)
+        status, message = update_coupon_or_revert(subscription_id, plan_id, status, coupon_code) if status && coupon_code.present?
+        send_response(status, message)
+      end
+
+      def update_coupon_or_revert(subscription_id, plan_id, status, coupon_code)
+        options = { prorate: false, coupon_ids: [coupon_code]}
+        ChargeBee::Subscription.update(subscription_id, options)
+        return true, ''
+      rescue StandardError => e #revert back
+        plan_id == "chefsteps_studio_pass" ? "chefsteps_studio_pass_monthly" : "chefsteps_studio_pass"
+        status, _message = schedule_subscription_api(subscription_id, plan_id, status)
+        return false, e.message
+      end
+
+      def remove_schedule_api_call(subscription_id)
         ChargeBee::Subscription.remove_scheduled_changes(subscription_id)
-        render_api_response(201, {message: 'SCHEDULED_SUCCESS'})
+        return true, ''
       rescue StandardError => e
         Rails.logger.error(e)
-        render_api_response(400, {message: 'UPDATE_FAILED', error_message: e.message})
+        return false, e.message
       end
 
       def render_invalid_chargebee_request(exception = nil)
