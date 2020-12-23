@@ -3,7 +3,7 @@
 
 
 - menu_list = get_menu_list(current_user)
-- menu_list[0].each do |menu|
+- menu_list[0]&.each do |menu|
   - if menu_list[menu['id']]
     .dropdown.cs-nav-item.cs-menu-permission
       .dropdown-toggle #{menu['name']}
