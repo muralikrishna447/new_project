@@ -2,6 +2,6 @@
 / http://stackoverflow.com/questions/2382329/how-can-i-get-browser-to-prompt-to-save-password
 %iframe#blackhole(name="blackhole" style="display:none" src="/dummy.html")
 %form#fakelogin(target="blackhole" action="" method="post" style="display:none;")
-  %input(type="text" name="email" id="email")
+  %input(type="text" name="email" id="email" aria-label="email")
   %input(type="password" name="password" id="password")
   %input(type="submit" value="Login" id="dummy_submit")
