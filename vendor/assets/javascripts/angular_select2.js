@@ -210,6 +210,8 @@ angular.module('ui.select2', []).value('uiSelect2Config', {}).directive('uiSelec
               convertToAngularModel(elm.select2('data'))
             );
           }
+          // For fixing WCAG compliance adding aria-label select2 search field in select element
+          $(document).find(".select2-search-field > .select2-input").attr('aria-label', 'Search')
         });
       };
     }
