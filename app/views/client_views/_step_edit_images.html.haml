@@ -25,11 +25,11 @@
       %h4 Video
       %div
         %h5.inline Youtube ID
-        %input.nohtml.inline(type="text" ng-model="step.youtube_id" style="width: 50%;")
+        %input.nohtml.inline(type="text" ng-model="step.youtube_id" style="width: 50%;" aria-label="Youtube ID" )
       %div
         %h5.inline Vimeo ID
-        %input.nohtml.inline(type="text" ng-model="step.vimeo_id" placeholder="Vimeo ID" style="width: 50%;")
+        %input.nohtml.inline(type="text" ng-model="step.vimeo_id" placeholder="Vimeo ID" style="width: 50%;" aria-label="Vimeo ID" )
       .section
       %h4 Image
       .csfilepicker(ng-model="step.image_id")
-      %input.nohtml(ng-show="!!step.image_id" type="text" ng-model="step.image_description" placeholder="Image description" style="width: 100%;")
+      %input.nohtml(ng-show="!!step.image_id" type="text" ng-model="step.image_description" placeholder="Image description" style="width: 100%;" aria-label="Image" )

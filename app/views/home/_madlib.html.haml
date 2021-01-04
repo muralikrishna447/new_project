@@ -6,12 +6,12 @@
       .madlib-item
         I am
         %span.input-underlined
-          %input(type="text" placeholder="name" required="true" id="madlib-name" ng-model="register_user.name" ng-class="hasError(register_error.errors.name)" ng-keypress="validNameAndEmail()")
+          %input(type="text" placeholder="name" required="true" id="madlib-name" ng-model="register_user.name" ng-class="hasError(register_error.errors.name)" ng-keypress="validNameAndEmail()" aria-label="Name" )
           %p.bubble(ng-show="register_error.errors.name")
             {{register_error.errors.name[0]}}
         and my email is
         %span.input-underlined<
-          %input(type="email" placeholder="email" required="true" id="madlib-email" ng-model="register_user.email" ng-class="hasError(register_error.errors.email)" ng-keypress="validNameAndEmail()")
+          %input(type="email" placeholder="email" required="true" id="madlib-email" ng-model="register_user.email" ng-class="hasError(register_error.errors.email)" ng-keypress="validNameAndEmail()" aria-label="Email" )
           %p.bubble(ng-show="register_error.errors.email")
             {{register_error.errors.email[0]}}
         &#46;
