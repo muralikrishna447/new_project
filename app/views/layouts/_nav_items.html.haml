@@ -28,10 +28,6 @@
   %a.cs-nav-item.hide-desktop(ng-href="/subscriptions")
     Subscription
 
-- if current_user
-  %a.cs-nav-item.hide-desktop(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/account")
-    Order History
-
 %a.cs-nav-item.hide-desktop(ng-href="/logout" ng-if='authentication.currentUser()')
   Sign Out
 
