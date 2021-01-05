@@ -1,0 +1,16 @@
+= render 'layouts/filepicker'
+= semantic_form_for [:admin, @menu] do |f|
+  = f.inputs "Menu Creation" do
+
+    = f.input :name
+    = f.input :url
+    = f.input :parent_id, as: :select, collection: Menu.main_menus.except_menu(@menu.id.to_i), include_blank: 'None'
+    = f.input :is_studio, as: :boolean, label: 'Studiopass', input_html: { checked: @menu.is_studio }
+    = f.input :is_premium, as: :boolean, label: 'Premium', input_html: { checked:  @menu.is_premium }
+    = f.input :is_free, as: :boolean, label: 'Free', input_html: { checked:  @menu.is_free }
+    = f.input :is_not_logged, as: :boolean, label: 'Not-logged', input_html: { checked:  @menu.is_not_logged }
+
+  = f.actions do
+    = f.action :submit
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
+
