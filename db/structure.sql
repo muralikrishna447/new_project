@@ -1309,6 +1309,44 @@ ALTER SEQUENCE public.marketplace_guides_id_seq OWNED BY public.marketplace_guid
 
 
 --
+-- Name: menus; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.menus (
+    id bigint NOT NULL,
+    name character varying,
+    url character varying,
+    parent_id integer,
+    is_studio boolean DEFAULT false,
+    is_premium boolean DEFAULT false,
+    is_free boolean DEFAULT false,
+    is_not_logged boolean DEFAULT false,
+    "position" integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: menus_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.menus_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: menus_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.menus_id_seq OWNED BY public.menus.id;
+
+
+--
 -- Name: merit_actions; Type: TABLE; Schema: public; Owner: -
 --
 

@@ -1,0 +1,28 @@
+- menu_list = reorder_menu_list
+= select_tag "reorder_menu_dropdown", options_for_select(menu_list[:dropdown_option]), include_blank: 'Main Menus'
+
+
+- menu_list[:reorder_menus].each do |id, objects|
+    = render 'admin/menus/menu_reorder',  menus: objects, html_id: id, klass: id == :main_menus ? "reorder-menu-form #{id.to_s}" : "reorder-menu-form #{id.to_s} hide"
+
+
+%label Preview
+= select_tag "menu_permissions", options_for_select([%w[Studio is-studio], %w[Premium is-premium], %w[Free is-free], ['Not Logged In', 'is-not-logged'] ]), include_blank: 'All'
+
+.cs-nav-container.nav-fixed.admin-preview
+    .cs-nav
+        .cs-nav-center{'data-parent-id' => 'main_menus'}
+            - menu_list = Menu.get_preview_menus
+            - menu_list[0].each do |menu|
+                - if menu_list[menu.id]
+                    .dropdown.cs-nav-item.cs-menu-permission{'data-menu-id' => menu.id, **menu_permission_attr(menu)}
+                        .dropdown-toggle #{menu.name}
+                        .dropdown-menu
+                            .dropdown-wrapper
+                                .dropdown-menu-item{'data-parent-id' => menu.id}
+                                    - menu_list[menu.id].each do |sub_menu|
+                                        %a.cs-menu-permission{"href": sub_menu.url,'data-menu-id': sub_menu.id, **menu_permission_attr(sub_menu)} #{sub_menu.name}
+                - else
+                    %a.cs-nav-item.cs-menu-permission{"href": menu.url, "data-menu-id": menu.id, **menu_permission_attr(menu)} #{menu.name}
+
+
