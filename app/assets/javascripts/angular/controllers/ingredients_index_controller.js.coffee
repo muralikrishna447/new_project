@@ -132,8 +132,9 @@ angular.module('ChefStepsApp').controller 'IngredientsIndexController', ["$scope
   $scope.uses = (ingredient) ->
     result = ingredient.activities
     _.each ingredient.steps, (step) ->
-      entry = _.find(result, (activity) -> activity.id == step.activity.id)
-      result.push(step.activity) if ! entry
+      if step.activity
+        entry = _.find(result, (activity) -> activity.id == step.activity.id)
+        result.push(step.activity) if ! entry
     result
 
   $scope.openUses = (ingredient) ->
