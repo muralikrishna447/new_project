@@ -47,7 +47,6 @@ describe Api::V0::ChargebeeController do
           id: "ev___test__5SK0bLNFRFuFaqltU",
           object: "event"
         }
-        ChargeBee::Subscription.should_receive(:list).exactly(2).times.and_return([entry_active], [higher_version_entry_cancelled])
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
 
         post :webhook, params: params
@@ -412,17 +411,17 @@ describe Api::V0::ChargebeeController do
           expect(response_data["message"]).to eq 'ALREADY_SUBSCRIBED'
         end
 
-        it 'When user already cancelled studio pass returns 400' do
-          allow_any_instance_of(User).to receive(:studio?).and_return(false)
-          allow_any_instance_of(User).to receive(:cancelled_studio?).and_return(true)
+        #it 'When user already cancelled studio pass returns 400' do
+          #allow_any_instance_of(User).to receive(:studio?).and_return(false)
+          #allow_any_instance_of(User).to receive(:cancelled_studio?).and_return(true)
 
-          params = { :is_gift => false, :plan_id => 'test' }
-          post :generate_checkout_url, params: params, as: :json
+          #params = { :is_gift => false, :plan_id => 'test' }
+          #post :generate_checkout_url, params: params, as: :json
 
-          response.code.should eq("400")
-          response_data = JSON.parse(response.body)
-          expect(response_data["message"]).to eq 'ALREADY_CANCELLED_SUBSCRIBED'
-        end
+          #response.code.should eq("400")
+          #response_data = JSON.parse(response.body)
+          #expect(response_data["message"]).to eq 'ALREADY_CANCELLED_SUBSCRIBED'
+        #end
       end
 
       describe 'gifts' do

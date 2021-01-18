@@ -7,8 +7,8 @@
 
     .cs-nav-left
       %a(href='/')
-        %img.logo-color(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" id="chefsteps-logo")
-        %img.logo-white(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-white.png" id="chefsteps-logo")
+        %img.logo-color(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" alt="chefsteps-logo")
+        %img.logo-white(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-white.png" alt="chefsteps-logo")
 
     .cs-nav-right
 
@@ -69,9 +69,6 @@
               - if Subscription::IS_STUDIO_LIVE
                 .dropdown-menu-item
                   %a(ng-href="/subscriptions")Subscription
-
-              .dropdown-menu-item
-                %a(ng-href="#{ Rails.application.config.shared_config[:spree_endpoint] }/account")Order History
 
               .dropdown-menu-item
                 %a(ng-href="/logout")Sign Out

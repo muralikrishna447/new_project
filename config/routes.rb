@@ -277,6 +277,11 @@ Rails.application.routes.draw do
       resources :locations, only: [:index]
       resources :oauth_tokens, only: [:index]
       resources :pages, only: [:index, :show, :create, :update]
+
+      resource :menus do
+        get :list, on: :collection
+      end
+
       resources :passwords, only: [:update] do
         post :send_reset_email, on: :collection
         post :update_from_email, on: :collection

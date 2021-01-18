@@ -80,7 +80,7 @@
                 %div.error-text(ng-repeat="field_error in register_error.errors.email")
                   {{field_error}}
             %div(ng-class="{error: login_error.errors.password}")
-              %input.input-block-level.password-with-show-button(name="password" type="{{passwordType}}" ng-model="register_user.password" placeholder="Password" ng-class="hasError(register_error.errors.password)")
+              %input.input-block-level.password-with-show-button(name="password" type="{{passwordType}}" ng-model="register_user.password" placeholder="Password" ng-class="hasError(register_error.errors.password)" aria-label="password")
               %a.btn.show-password(ng-click="togglePassword()")
                 Show
               %div(ng-show="register_error.errors.email")

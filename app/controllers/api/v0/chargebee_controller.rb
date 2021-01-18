@@ -59,7 +59,8 @@ module Api
       def fetch_active_or_latest_sub(user_id)
         result = ChargeBee::Subscription.list({
                                                   "customer_id[is]" => user_id,
-                                                  "status[in]" => Subscription::ACTIVE_OR_CANCELLED_PLAN_STATUSES
+                                                  "status[in]" => Subscription::ACTIVE_OR_CANCELLED_PLAN_STATUSES,
+                                                  "plan_id[in]" => Subscription::STUDIO_PASS_PLAN_IDS
                                               })
         return nil unless result.count != 0
 
@@ -253,7 +254,11 @@ module Api
           if content[:customer] && content[:customer][:id] && content[:subscription] && content[:subscription][:plan_id] && User.where(id: content[:customer][:id]).exists?
             # Subscription.create_or_update_by_params(content[:subscription], content[:customer][:id])
             Rails.logger.info("chargebee_controller.webhook - updating event id=#{params[:id]} and event_type=#{params[:event_type]}")
-            import_subscription(content[:customer][:id])
+            if Subscription::STUDIO_PASS_PLAN_IDS.include?(content[:subscription][:plan_id].to_s)
+              import_subscription(content[:customer][:id])
+            else
+              Subscription.create_or_update_by_params(content[:subscription], content[:customer][:id])
+            end
             Rails.logger.info("chargebee_controller.webhook - completed event id=#{params[:id]} and event_type=#{params[:event_type]}")
           else
             Rails.logger.info("chargebee_controller.webhook - ignoring event id=#{params[:id]} and event_type=#{params[:event_type]}")
@@ -270,8 +275,8 @@ module Api
         # and respective popup will be shown to user at checkout page.
         if current_api_user.studio?
           render_api_response(400, {message: 'ALREADY_SUBSCRIBED'})
-        elsif current_api_user.cancelled_studio?
-          render_api_response(400, {message: 'ALREADY_CANCELLED_SUBSCRIBED'})
+        #elsif current_api_user.cancelled_studio?
+          #render_api_response(400, {message: 'ALREADY_CANCELLED_SUBSCRIBED'})
         else
           data = {
             :subscription => {

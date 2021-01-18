@@ -382,4 +382,36 @@ module ApplicationHelper
         }
     }[user.marketing_mail_status.to_sym]
   end
+
+  def reorder_menu_list
+    all_menus = { main_menus: Menu.main_menus }.merge( Menu.child_menus.group_by(&:parent_id) )
+    select_menu = all_menus[:main_menus].map{|a| [a.name, a.id]}.to_h
+    dropdown_option = select_menu.invert.slice(*all_menus.keys).invert.to_a
+    { dropdown_option: dropdown_option, reorder_menus: all_menus }
+  end
+
+  def menu_permission_attr(menu)
+    {
+      "data-is-studio": menu.is_studio,
+      "data-is-premium": menu.is_premium,
+      "data-is-free": menu.is_free,
+      "data-is-not-logged": menu.is_not_logged,
+    }
+  end
+
+
+  def get_menu_list(user)
+    permission =  if user&.admin?
+                    'admin'
+                  elsif user&.studio?
+                    'studio'
+                  elsif user&.premium_member?
+                    'premium'
+                  else
+                    'free'
+                  end
+    Menu.get_menus(permission.to_sym)
+  end
+
+
 end
