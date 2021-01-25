@@ -1,4 +1,4 @@
-angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$http", "csEggCalculatorService", "csUtilities", "$sce", ($scope, $http, csEggCalculatorService, csUtilities, $sce) ->
+angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$http", "csEggCalculatorService", "csUtilities", "$sce", "csConfig", ($scope, $http, csEggCalculatorService, csUtilities, $sce, csConfig) ->
 
   $scope.eggService = csEggCalculatorService
   $scope.utils = csUtilities
@@ -64,7 +64,7 @@ angular.module('ChefStepsApp').controller 'EggTimerController', ["$scope", "$htt
     $scope.water_temp = params.water_temp
 
     $scope.loading = true
-    $http.get("https://egg-timer.herokuapp.com/egg_time/", params: params).success((data, status) ->
+    $http.get(csConfig.eggtimer_endpoint, params: params).success((data, status) ->
       $scope.output = data
       $scope.loading = false
 
