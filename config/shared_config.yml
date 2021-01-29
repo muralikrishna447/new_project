@@ -3,6 +3,7 @@ development:
   chefsteps_endpoint: "localhost:3000"
   freshsteps_endpoint: "localhost:4000"
   catalog_endpoint: "localhost:7777"
+  eggtimer_endpoint: "https://uazswzurog.execute-api.us-east-1.amazonaws.com/v1/egg-timer"
   spree_domain: "localhost"
   spree_endpoint: "http://localhost:3001"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
@@ -20,6 +21,7 @@ production:
   chefsteps_endpoint: "chefsteps.com"
   freshsteps_endpoint: "d3ro0sksttkvbt.cloudfront.net"
   spree_domain: "shop.chefsteps.com"
+  eggtimer_endpoint: "https://hhpkx5i1n7.execute-api.us-east-1.amazonaws.com/v1/egg-timer"
   spree_endpoint: "https://shop.chefsteps.com"
   catalog_endpoint: "chefsteps-catalog.herokuapp.com"
   segment_write_key: "CohfhzCATDidS52kLILe3ZZ3mVYYgzsP"
@@ -39,6 +41,7 @@ staging:
   spree_domain: "shop.chocolateyshatner.com"
   spree_endpoint: "https://shop.chocolateyshatner.com"
   catalog_endpoint: "staging-chefsteps-catalog.herokuapp.com"
+  eggtimer_endpoint: "https://uazswzurog.execute-api.us-east-1.amazonaws.com/v1/egg-timer"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom: &staging_bloom
     api_endpoint: "https://cs-bloom-api-staging.herokuapp.com"
@@ -56,6 +59,7 @@ staging2:
   catalog_endpoint: "staging-chefsteps-catalog.herokuapp.com"
   spree_domain: "shop.vanillanimoy.com"
   spree_endpoint: "https://shop.vanillanimoy.com"
+  eggtimer_endpoint: "https://uazswzurog.execute-api.us-east-1.amazonaws.com/v1/egg-timer"
   segment_write_key: "d1iKTmkGittQwXQbBSY7egXumHgmTai4"
   bloom:
     <<: *staging_bloom
@@ -70,6 +74,7 @@ test:
   freshsteps_endpoint: "test.url"
   catalog_endpoint: "chefsteps-catalog.herokuapp.com"
   spree_domain: "spree.test.com"
+  eggtimer_endpoint: "https://uazswzurog.execute-api.us-east-1.amazonaws.com/v1/egg-timer"
   spree_endpoint: "https://spree.test.com"
   bloom:
     api_endpoint: "bloomAPI"
