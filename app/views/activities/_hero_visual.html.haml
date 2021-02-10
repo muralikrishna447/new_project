@@ -11,5 +11,5 @@
                   container-slug="{{getObject().slug}}")
 
   %img(ng-switch-when="image" ng-src="{{heroMedia.heroImageURL(heroImageSize || 888)}}" alt="{{getObject().title}}" title="{{getObject().title}}")
-  %h4.image-loading-indicator(ng-show="editMode") Loading ...
+  %span.head4_text.image-loading-indicator(ng-show="editMode") Loading ...
 
