@@ -1,9 +1,9 @@
 .section.clearfix(ng-show="getStepOpenForEdit()" ng-scope)
   .btn.btn-secondary.step-media-button(ng-click="showMediaEdit = ! showMediaEdit")
-    %i.icon-edit
+    %span.icon-edit
     Add Photo or Video
-    %i.icon-chevron-up(ng-show="showMediaEdit")
-    %i.icon-chevron-down(ng-show="! showMediaEdit")
+    %span.icon-chevron-up(ng-show="showMediaEdit")
+    %span.icon-chevron-down(ng-show="! showMediaEdit")
   %div.anim-basic-fade(collapse="showMediaEdit")
     .well
       %h4 Appliance

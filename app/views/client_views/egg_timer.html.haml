@@ -6,10 +6,10 @@
       .egg-settings
         .egg-settings-toggle
           %a(ng-click="toggleShowSettings($event)")
-            %i.fa.fa-times
+            %span.fa.fa-times
         .band
           %h5
-            %i.icon-gear
+            %span.icon-gear
             SETTINGS
         .indent-group
           %h4 Degree Units
@@ -40,16 +40,16 @@
               .control-group.text-center
                 .controls
                   %a(ng-click="incrementWhite(-1)")
-                    %i.icon-angle-left
+                    %span.icon-angle-left
                     Runny
                   %input(type="range" ng-model='inputs.perceptual_white_viscosity' min="0" max="13" step=".01" aria-label="Runny")
                   %a(ng-click="incrementWhite(1)")
                     Firm
-                    %i.icon-angle-right
+                    %span.icon-angle-right
               .egg-footer
                 .btn.btn-primary(ng-click="goState('yolk')")
                   NEXT
-                  %i.icon-angle-right
+                  %span.icon-angle-right
 
             .page.anim-basic-fade(ng-switch-when="yolk")
               %h4.text-center What texture would you like your egg yolk?
@@ -61,19 +61,19 @@
               .control-group.text-center
                 .controls
                   %a(ng-click="incrementYolk(-1)")
-                    %i.icon-angle-left
+                    %span.icon-angle-left
                     Runny
                   %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
                   %a(ng-click="incrementYolk(1)")
                     Firm
-                    %i.icon-angle-right
+                    %span.icon-angle-right
               .egg-footer
                 .btn.btn-left.btn-primary(ng-click="goState('white')")
-                  %i.icon-angle-left
+                  %span.icon-angle-left
                   PREV
                 .btn.btn-right.btn-primary(ng-click="goState('results')")
                   NEXT
-                  %i.icon-angle-right
+                  %span.icon-angle-right
 
             .page.anim-basic-fade(ng-switch-when="results")
               .section
@@ -83,12 +83,12 @@
                 .labeled-time
                   %h3(ng-show="! loading") {{utils.formatTime(output.items[1], needsSeconds())}}
                   %h3(ng-show="loading")
-                    %i.icon-spinner.icon-spin
+                    %span.icon-spinner.icon-spin
               %div
                 .labeled-time
                   %span Or, to ice and reheat
                   %h3(ng-show="loading")
-                    %i.icon-spinner.icon-spin
+                    %span.icon-spinner.icon-spin
                   %h3(ng-show="! loading") {{utils.formatTime(output.items[4], needsSeconds())}}
               .section-tiny.text-center
                 Add data for more accurate time:

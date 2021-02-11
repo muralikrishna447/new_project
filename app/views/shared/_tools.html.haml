@@ -6,8 +6,8 @@
         ng-if="! inClass")
     .tool-group
       .icon-holder
-        %i.icon-heart-empty(ng-if="!current_user_likes")
-        %i.icon-heart(ng-if="current_user_likes")
+        %span.icon-heart-empty(ng-if="!current_user_likes")
+        %span.icon-heart(ng-if="current_user_likes")
       .tool-name(ng-pluralize
               count='getObject().likes_count || 0'
               when="  { '0' : 'Be the first to like', '1' : '1 Like', 'other' : '{} Likes'}")
@@ -17,7 +17,7 @@
     %a(cs-smooth-scroll-to='#discussion')
       .tool-group
         .icon-holder
-          %i.icon-cs-comment-filled
+          %span.icon-cs-comment-filled
         .tool-name(ng-pluralize
                   count='commentCount'
                   when="  { '-1' : 'Comments', '0' : 'Be the first to comment!', '1' : '1 Comment', 'other' : '{} Comments'}")
@@ -27,21 +27,21 @@
       ng-click="doPrint()")
     .tool-group
       .icon-holder
-        %i.icon-print
+        %span.icon-print
       .tool-name
         Print
 
   %li(ng-click="shareEmail()")
     .tool-group
       .icon-holder
-        %i.icon-envelope-alt
+        %span.icon-envelope-alt
       .tool-name
         Email
 
   %li(ng-click="shareEmbedly()")
     .tool-group
       .icon-holder
-        %i.fa.fa-code
+        %span.fa.fa-code
       .tool-name
         Embed this recipe
 
@@ -51,7 +51,7 @@
           tooltip-placement="left")
       .tool-group
         .icon-holder
-          %i.icon-edit
+          %span.icon-edit
         .tool-name
           Edit
 
@@ -62,7 +62,7 @@
           tooltip-placement="left")
       .tool-group
         .icon-holder
-          %i.icon-code-fork
+          %span.icon-code-fork
         .tool-name
           Fork this recipe
 

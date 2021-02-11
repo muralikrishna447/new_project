@@ -48,15 +48,15 @@
                   %div(ng-switch on="currentIncludable.includable_type")
                     %div(ng-switch-when='Activity')
                       %a(ng-href="/activities/{{currentIncludable.includable_slug}}" target="_blank")
-                        %i.icon-edit
+                        %span.icon-edit
                         edit
                     %div(ng-switch-when='Assignment')
                       %a(ng-href="/admin/assignments/{{currentIncludable.includable_slug}}/edit" target="_blank")
-                        %i.icon-edit
+                        %span.icon-edit
                         edit
                     %div(ng-switch-when='Page')
                       %a(ng-href="/admin/pages/{{currentIncludable.includable_slug}}/edit" target="_blank")
-                        %i.icon-edit
+                        %span.icon-edit
                         edit
 
 
@@ -103,9 +103,9 @@
     %h4.next-activity-name(ng-show="nextInclusion()" ng-bind-html="'NEXT: ' + nextInclusion().includable_title")
     .course-nav-buttons-group
       .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! prevInclusion()}" ng-click="loadPrevInclusion()")
-        %i.icon-chevron-up
+        %span.icon-chevron-up
       .course-nav-item.btn.btn-secondary(ng-class="{disabled: ! nextInclusion()}" ng-click="loadNextInclusion()")
-        %i.icon-chevron-down
+        %span.icon-chevron-down
 
 %div(nell-popup)
   / .footer-group(ng-class="{'hide-when-menu-showing': showCourseMenu}")
