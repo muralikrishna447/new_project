@@ -52,7 +52,7 @@
                     ng-href='/activities/{{item.slug}}'
                     target='_blank')
                 %span.text-orange(ng-show='item.user' tooltip="Community contributed recipe")
-                  %i.icon-group
+                  %span.icon-group
 
           .section.noprint(ng-show='(! editMode) && (activity.forks.length > 0)')
             %h5 Forks
@@ -62,7 +62,7 @@
                     ng-href='/activities/{{item.slug}}'
                     target='_blank')
                 %span.text-orange(ng-show='item.user' tooltip="Community contributed recipe")
-                  %i.icon-group
+                  %span.icon-group
 
       .ng-cloak.assembly-activity.relative(ng-controller="StepsController")
         = render 'activities/steps'

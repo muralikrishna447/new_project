@@ -20,7 +20,7 @@
       %span(ng-show="!!ai.note" ng-bind-html="', ' + (ai.note | shortcode)")>
       .for-sale(ng-if="ai.ingredient.product_url")
         %a(ng-click="outclickProduct(ai)")
-          %i.icon-shopping-cart
+          %span.icon-shopping-cart
           -# .for-sale-where(ng-bind-html="'BUY AT '+ csUrlService.urlAsNiceText(ai.ingredient.product_url)")
 
   %csEditPairEdit.ingredient-edit-half
@@ -60,6 +60,6 @@
     .btn-toolbar.action-button-group
       .btn-group
         .btn.drag-handle.btn-small.btn-secondary(tooltip="Drag to reorder")
-          %i.icon-sort
+          %span.icon-sort
         .btn.remove-button.btn-small.btn-secondary(tooltip="Remove ingredient" ng-click="removeIngredient($index)")
-          %i.icon-remove
+          %span.icon-remove

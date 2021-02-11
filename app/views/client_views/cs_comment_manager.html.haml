@@ -3,16 +3,16 @@
   .comment-icon-group.noprint(ng-click="toggleShowComments($event)")
     .comments-no-count.anim-basic-fade(ng-show="commentCount <= 0")
       .comments-no-count-maybe-hover(ng-show="showWhenZero")
-        %i.icon-cs-comment-open
+        %span.icon-cs-comment-open
         .plus +
 
     .comments-with-count.anim-basic-fade(ng-show="commentCount > 0")
-      %i.icon-cs-comment-filled
+      %span.icon-cs-comment-filled
       .comment-count( ng-class="{'three-digits' : commentCount > 99}")
         {{commentCount}}
 
   .comment-container.anim-basic-fade(ng-show="commentsOpen || staticRender")
-    %i.icon-cs-close(ng-click='toggleShowComments($event)')
+    %span.icon-cs-close(ng-click='toggleShowComments($event)')
     %cscomments(  ng-if="commentsEverOpened || staticRender"
                   comments-type="{{commentsType}}"
                   comments-id="{{commentsId}}"

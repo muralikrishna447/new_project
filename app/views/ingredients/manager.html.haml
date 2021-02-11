@@ -8,20 +8,20 @@
       .form-horizontal
         %input.search-query(type="search" placeholder="Ingredient name..." ng-model="searchString")
         %button.btn#exact-match(btn-checkbox type="button" ng-model="exactMatch")
-          %i.icon-asterisk(tooltip="Exact Match Only")
+          %span.icon-asterisk(tooltip="Exact Match Only")
         .btn-toolbar
           .btn-group
             %button.btn(ng-model="includeRecipes" btn-checkbox type="button")
-              %i.icon-th-list(tooltip="Include recipes" )
+              %span.icon-th-list(tooltip="Include recipes" )
             %button.btn#refresh-button(ng-click="refreshIngredients()")
-              %i.icon-refresh(tooltip="Refresh list (use when you make changes in another window)")
+              %span.icon-refresh(tooltip="Refresh list (use when you make changes in another window)")
           .btn-group
             %button.btn#merge-button(ng-disabled="! canMerge()" ng-click="setMergeKeeper(null); mergeModalOpen = true" )
               .icon-pair(tooltip="Merge selected ingredients (No Undo!)")
-                %i.icon-arrow-right
-                %i.icon-arrow-left
+                %span.icon-arrow-right
+                %span.icon-arrow-left
             %button.btn#delete-button(ng-disabled="! canDelete()" ng-click="deleteSelected()" )
-              %i.icon-trash(tooltip="Delete selected ingredients (No Undo!)")
+              %span.icon-trash(tooltip="Delete selected ingredients (No Undo!)")
         %i.loading-spinner.icon-spinner.icon-spin.pull-right(ng-show="dataLoading")
 
 

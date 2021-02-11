@@ -8,22 +8,22 @@
     .span3.offset3
       .facebook-button.pull-right
         %button(ng-click="facebookConnect('socialConnect')" class="btn btn-secondary btn-facebook" ng-disabled="dataLoadingService.isLoading() || authentication.currentUser().facebook_user_id")
-          %i.icon-facebook
+          %span.icon-facebook
           %b Facebook
         %div(ng-show="authentication.currentUser().facebook_user_id")
           Connected!
           %a(ng-click="disconnectSocial('facebook')")
-            %i.icon-remove
+            %span.icon-remove
     .span3
       .google-button
         -# %span.g-signin
         %button(ng-click="signInCallback();googleSignin()" class="btn btn-secondary btn-google" ng-disabled="dataLoadingService.isLoading() || authentication.currentUser().google_user_id")
-          %i.icon-google-plus
+          %span.icon-google-plus
           %b Google
         %div(ng-show="authentication.currentUser().google_user_id")
           Connected!
           %a(ng-click="disconnectSocial('google')")
-            %i.icon-remove
+            %span.icon-remove
     -# .span2
     -#   .twitter-button
     -#     -# %span.g-signin
