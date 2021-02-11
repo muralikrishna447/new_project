@@ -1,19 +1,19 @@
 .step-sidebar-group.relative.section(ng-show="editMode")
   .btn-edit-step(ng-click="toggleStepOpenForEdit()")
-    %i.icon-edit-sign(ng-class="{'active' : getStepOpenForEdit()}")
+    %span.icon-edit-sign(ng-class="{'active' : getStepOpenForEdit()}")
   .btn-edit-step(ng-show="getStepOpenForEdit()" ng-click="toggleStepDetailsOpenForEdit()")
-    %i.icon-gear(ng-class="{'active' : getStepDetailsOpenForEdit()}")
+    %span.icon-gear(ng-class="{'active' : getStepDetailsOpenForEdit()}")
 
   .step-edit-tools.anim-basic-fade(ng-if="getStepDetailsOpenForEdit()")
     .section
       .btn-link(  ng-click="reorderStep($index, -1)" 
                       ng-class="disableIf(! canMoveStep($index, -1))")
-        %i.icon-arrow-up
+        %span.icon-arrow-up
         Move step up
 
       .btn-link(  ng-click="reorderStep($index, 1)" 
                       ng-class="disableIf(! canMoveStep($index, 1))")
-        %i.icon-arrow-down
+        %span.icon-arrow-down
         Move step down
 
     .section(ng-hide="step.is_aside || (! csAuthentication.isAdmin())")
@@ -46,29 +46,29 @@
         .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
                             btn-radio="'left'"
                             type="button")
-          %i.icon-double-angle-left
+          %span.icon-double-angle-left
         .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
                             btn-radio="'leftInset'"
                             type="button")
-          %i.icon-angle-left
+          %span.icon-angle-left
         .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
                             btn-radio="'center'"
                             type="button")
-          %i.icon-resize-horizontal
+          %span.icon-resize-horizontal
         .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
                             btn-radio="'rightInset'"
                             type="button")
-          %i.icon-angle-right
+          %span.icon-angle-right
         .btn.btn-primary( ng-model="step.presentation_hints.aside_position"
                             btn-radio="'right'"
                             type="button")
-          %i.icon-double-angle-right
+          %span.icon-double-angle-right
 
     .section
       .btn-link(  cs-require-confirm
                   message="Are you sure you want to delete this step?"
                   action="removeStep($index)")
-        %i.icon-trash
+        %span.icon-trash
         Delete step
 
 

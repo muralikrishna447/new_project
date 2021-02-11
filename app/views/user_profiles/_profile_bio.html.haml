@@ -3,13 +3,13 @@
     - if is_current_user?(user)
       = link_to edit_registration_path(user), class: "edit-account uppercase-link" do
         Edit Account Settings
-        %i.icon-double-chevron-right
+        %span.icon-double-chevron-right
     .span1
       = image_tag user_presenter.profile_image_url()
     .span3
       - if is_current_user?(user)
         .uppercase-link.edit-profile
-          %i.icon-edit.icon-large
+          %span.icon-edit.icon-large
           %span Edit
       %h3{ data: {'attribute-invisible' => 'profile-name', attribute: 'profile-name' }, class: ('invisible' unless user.name.present?)}
         = user.name
@@ -17,13 +17,13 @@
         %span{ data: {attribute: 'profile-chef_type'}}= user.chef_type.titleize
       %ul.unstyled
         %li{ data: {"attribute-invisible" => "profile-location"}, class: ('invisible' unless user.location.present?) }
-          %i.icon-map-marker.icon-large
+          %span.icon-map-marker.icon-large
           %span{ data: {attribute: 'profile-location'}}= user.location
         %li{ data: {"attribute-invisible" => "profile-website"}, class: ('invisible' unless user.website.present?) }
-          %i.icon-globe.icon-large
+          %span.icon-globe.icon-large
           %a{href: user.website, data: { attribute: 'profile-website'}, target: '_blank'}= user.website
         %li
-          %i.icon-calendar.icon-large
+          %span.icon-calendar.icon-large
           %span= "Joined on #{user.created_at.strftime("%m/%d/%y")}"
 
   -# .row{ data: {"attribute-invisible" => "profile-quote"}, class: ('invisible' unless user.quote.present?)}

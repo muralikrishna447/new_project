@@ -22,15 +22,15 @@
         .span2.offset3
           .facebook-button
             %button(ng-click="sendInvites()" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
-              %i.icon-facebook
+              %span.icon-facebook
               %b Facebook
         .span2
           .google-button.google-invite
             %button.btn-google.btn.btn-secondary(ng-click="inviteSite='google'; loadGoogleContacts(); showThankYou = false" ng-show="authentication.currentUser() && !!authentication.currentUser().google_access_token" ng-disabled="dataLoading")
-              %i.icon-google-plus
+              %span.icon-google-plus
               %b Google
             %button.btn-google.btn.btn-secondary(ng-click="formFor = 'googleInvite'; googleSignin(); showThankYou = false" ng-show="authentication.currentUser() && !authentication.currentUser().google_access_token" ng-disabled="dataLoading")
-              %i.icon-google-plus
+              %span.icon-google-plus
               %b Google
             -# .button-group
             -#   .facebook-button.facebook-invite
@@ -47,7 +47,7 @@
         .span2
           .email-button
             %button.btn-email.btn.btn-secondary(ng-click="inviteSite='email'; showThankYou = false")
-              %i.icon-envelope
+              %span.icon-envelope
               %b Email
       .row-fluid.point-to-google(ng-if="inviteSite == 'google' && inviteFriends.length > 0")
         .span2.offset5

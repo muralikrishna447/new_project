@@ -5,7 +5,7 @@
       .tag(   ng-repeat="tagName in group.tags" 
               ng-click="csTagService.toggleTag(ngModel, tagName)"
               ng-class="{active: csTagService.hasTag(ngModel, tagName)}")
-        %i.icon-tag
+        %span.icon-tag
           {{tagName}}
 
 
