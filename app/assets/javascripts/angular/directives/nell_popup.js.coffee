@@ -53,7 +53,7 @@
       <div class="nell-backdrop" ng-click='abandonNellPopup()' ng-show='nellPopupShowing'/>
       <div ng-class="getClass()">
         <div class='close-x' ng-click='abandonNellPopup()' ng-show='nellPopupShowing && ! nellLoading'>
-          <i class='icon-remove'/>
+          <span class='icon-remove'/>
         </div>
         <cs-loading-spinner ng-hide="! nellLoading"></cs-loading-spinner>
         <div ng-include='info.include' ng-hide="nellLoading"></div>

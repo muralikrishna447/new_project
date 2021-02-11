@@ -7,7 +7,7 @@ angular.module('ChefStepsApp').directive 'csfilepicker', ->
     '<div>' +
       '<div class="btn-toolbar" style="display: inline-block;">' +
         '<div class="drop-target relative" ng-click="pickOrRemoveFile()" >' +
-          '<i ng-show="uploadProgress < 0" class="{{hasFile() && \'icon-remove\' || \'icon-plus\'}}"></i>' +
+          '<span ng-show="uploadProgress < 0" class="{{hasFile() && \'icon-remove\' || \'icon-plus\'}}"></span>' +
           '<div class="upload-progress" ng-show="uploadProgress >= 0">' +
             '{{uploadProgress}}%' +
           '</div>' +
