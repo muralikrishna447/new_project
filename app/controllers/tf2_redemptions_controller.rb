@@ -4,6 +4,7 @@ class Tf2RedemptionsController < ApplicationController
 
   # Landing page description
   def index
+    render template: 'tf2_redemptions/under_construction'
   end
 
   # Show current user's redemption codes
