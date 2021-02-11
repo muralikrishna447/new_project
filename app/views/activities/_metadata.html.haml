@@ -24,7 +24,7 @@
 
     %div(ng-show="csAuthentication.isAdmin()")
       %h6 Featured Image (For Thumbnails)
-      %img(ng-if="hasFeaturedImage()" ng-src="{{featuredImageURL(200)}}")
+      %img(ng-if="hasFeaturedImage()" ng-src="{{featuredImageURL(200)}}" alt="Featured Image")
       .csfilepicker(ng-model="activity.featured_image_id")
 
     %div(ng-show="csAuthentication.isAdmin()")
