@@ -12,6 +12,7 @@ class Tf2RedemptionsController < ApplicationController
     @message = params[:message]
     @current_redemptions = current_user.tf2_redemptions
     @max_redemptions = current_user.max_tf2_redemptions
+    render template: 'tf2_redemptions/under_construction'
   end
 
   # Redeem a code for the current user
