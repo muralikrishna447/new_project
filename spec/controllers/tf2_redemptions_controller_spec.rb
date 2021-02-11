@@ -23,7 +23,7 @@ describe Tf2RedemptionsController do
     it "should display page if authenticated" do
       sign_in @user
       get :show
-      expect(response).to render_template(:show)
+      expect(response).to render_template("tf2_redemptions/under_construction")
     end
 
     it "should set current_redemptions and max_redemptions" do
