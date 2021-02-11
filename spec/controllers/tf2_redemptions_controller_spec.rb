@@ -3,7 +3,7 @@ describe Tf2RedemptionsController do
   describe 'index' do
     it 'should load the page' do
       get :index
-      expect(response).to render_template(:index)
+      expect(response).to render_template("tf2_redemptions/under_construction")
     end
   end
 
