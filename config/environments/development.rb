@@ -103,6 +103,12 @@ Rails.application.configure do
     :api_key => '4494fae45457c6a2c4d1f3ba59609353-us12',
     :list_id => '5f55993b84'
   }
+  # production config
+  # config.mailchimp = {
+  #     :api_key => '9313964af6c314dce3ad71b871894b77-us3',
+  #     :list_id => 'a61ebdcaa6'
+  #   }
+  #
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 
   ENV['AWS_ACCESS_KEY_ID'] = 'AKIAI3LT2ZFRGC25RWQA'

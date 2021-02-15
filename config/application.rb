@@ -202,5 +202,9 @@ module Delve
         parsed
       end
     end
+
+    blocked_words = %w(cunt shit bitch)
+    regex_str = blocked_words.map{|a| "\\b#{a}\\b"}.join('|')
+    config.blocked_words = Regexp.new regex_str
   end
 end

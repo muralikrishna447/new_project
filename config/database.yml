@@ -13,13 +13,15 @@
 # gem 'pg'
 #
 development: &development
-             adapter: postgresql
-             encoding: unicode
-             database: delve_development
-             pool: 5
-             username: delve
-             password:
-             host: localhost
+  adapter: postgresql
+  encoding: unicode
+  database: delve_development_11june20
+  pool: 5
+  username: delve
+  password: password
+  host: localhost
+  reaping_frequency: 0
+
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -45,4 +47,18 @@ test: &test
   database: delve_test
   pool: 5
   username: delve
-  password:
+  password: password
+  host: localhost
+
+staging:
+  <<: *development
+
+staging2:
+  <<: *development
+
+production:
+  <<: *development
+
+angular:
+  <<: *test
+  database: delve_angular

@@ -2,7 +2,7 @@ development:
   env: "development"
   chefsteps_endpoint: "localhost:3000"
   freshsteps_endpoint: "localhost:4000"
-  catalog_endpoint: "localhost:7777"
+  catalog_endpoint: "localhost:3333"
   eggtimer_endpoint: "https://uazswzurog.execute-api.us-east-1.amazonaws.com/v1/egg-timer"
   spree_domain: "localhost"
   spree_endpoint: "http://localhost:3001"
