@@ -94,7 +94,7 @@
   template: '''
     <div class='new-ingredient-input'>
       <div typeahead-popup matches='matches' active='activeIdx' select='select(activeIdx)'></div>
-      <div class="btn btn-secondary btn-small include-recipes" ng-model="$parent.includeRecipes" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" tooltip="Include sub-recipes in autocomplete" tooltip-placement="bottom")><i class="icon-filter"/></div>
+      <div class="btn btn-secondary btn-small include-recipes" ng-model="$parent.includeRecipes" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" tooltip="Include sub-recipes in autocomplete" tooltip-placement="bottom")><span class="icon-filter"/></div>
       <input autocomplete="off" placeholder="Add ingredient, e.g. 20 g onion, minced" type="text" ng-model="inputText" aria-label="Add ingredient">
     </div>
   '''
