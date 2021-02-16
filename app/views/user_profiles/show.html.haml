@@ -54,7 +54,7 @@
                 = render 'shared/media_list_item', image: like.likeable.featured_image, title: likeable_title, text: ''
           - else
             .well-clear
-              %h4 "#{@is_current_user ? 'Looks like you' : @user.name} hasn't favorited any recipes yet."
+              %h4 "#{@is_current_user ? 'Looks like you' : @user.name} haven’t favorited any recipes yet."
               %a.btn.btn-primary(href='/gallery')
                 See our Recipe Gallery
 
