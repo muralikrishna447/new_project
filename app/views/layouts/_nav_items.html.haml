@@ -36,14 +36,14 @@
     .dropdown-toggle(ng-click='dropdown.toggle($event)')
       Admin
     .dropdown-menu(ng-show='dropdown.showMenu')
-      .dropdown-wrapper
-        .dropdown-menu-item
+      %ul.dropdown-wrapper
+        %li.dropdown-menu-item
           %a(href="/forum/admin/dashboard")
             Comments Dashboard
-        .dropdown-menu-item
+        %li.dropdown-menu-item
           %a(href="/ingredients/manager")
             Manage Ingredients
-        .dropdown-menu-item
+        %li.dropdown-menu-item
           %a(href="/equipment")
             Manage Equipment
 
