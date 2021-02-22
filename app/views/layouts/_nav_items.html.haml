@@ -6,14 +6,14 @@
 - menu_list[0]&.each do |menu|
   - if menu_list[menu['id']]
     .dropdown.cs-nav-item.cs-menu-permission
-      .dropdown-toggle #{menu['name']}
+      .dropdown-toggle{"tabindex": "2"} #{menu['name']}
       .dropdown-menu
         .dropdown-wrapper
           .dropdown-menu-item
             - menu_list[menu['id']].each do |sub_menu|
               %a.cs-menu-permission{"href": sub_menu['url']} #{sub_menu['name']}
   - else
-    %a.cs-nav-item.cs-menu-permission{"href": menu['url']} #{menu['name']}
+    %a.cs-nav-item.cs-menu-permission{"href": menu['url'], "tabindex": "2"} #{menu['name']}
 
 
 
@@ -33,7 +33,7 @@
 
 - if current_admin?
   .dropdown.cs-nav-item(ng-controller='csDropdownController as dropdown')
-    .dropdown-toggle(ng-click='dropdown.toggle($event)')
+    .dropdown-toggle(ng-click='dropdown.toggle($event)' tabindex="2")
       Admin
     .dropdown-menu(ng-show='dropdown.showMenu')
       .dropdown-wrapper

@@ -6,7 +6,7 @@
       = render 'layouts/nav_items'
 
     .cs-nav-left
-      %a(href='/')
+      %a(href='/' tabindex="1")
         %img.logo-color(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-h.png" alt="chefsteps-logo")
         %img.logo-white(src="https://d92f495ogyf88.cloudfront.net/static/chefsteps-logo-white.png" alt="chefsteps-logo")
 
@@ -48,7 +48,7 @@
       //          %span.flag-icon(ng-class="dropdown.flagIconClass(country.code)")>
       //          {{country.name}}
 
-      %a.cs-nav-item.cs-nav-icon-item.hide-mobile(href='/gallery' aria-label="gallery" )
+      %a.cs-nav-item.cs-nav-icon-item.hide-mobile(href='/gallery' aria-label="gallery" tabindex="3")
         %span.icon-search
 
       - if current_user
@@ -56,7 +56,7 @@
           #profile-dropdown-toggle.dropdown-toggle.profile-image(ng-click='dropdown.toggle($event)')
             - if current_user.image_id.blank?
               //.profile-button
-              %span.icon-profile
+              %span.icon-profile{"tabindex": "3"}
             - else
               .cs-nav-profile
                 .profile-image
