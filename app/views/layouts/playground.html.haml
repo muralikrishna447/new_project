@@ -69,7 +69,7 @@
         window.chefstepsUserId = null
 
     :javascript
-      angular.module('csConfig', []).constant('csConfig', #{Rails.application.config.shared_config.to_json});
+      angular.module('csConfig', []).constant('csConfig', #{raw Rails.application.config.shared_config.to_json});
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :'ng-click' => "$broadcast('bodyClicked')", :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' =>  "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'"}
     #rails-flash.hide
