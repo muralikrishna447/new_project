@@ -19,6 +19,10 @@
       .tab-content
         .tab-pane.active#profile
           = form_for @user, url: user_profile_path(@user), method: :put do |f|
+            - if @user.errors.full_messages.any?
+              - @user.errors.messages.each do |_field, message|
+                %label.profile-error-msg
+                  = message.first
             .row
               .span12
                 .upload-wrapper.profile-edit-image
@@ -28,11 +32,11 @@
             .row
               .span6
                 %div.section
-                  = f.label :name
-                  = f.text_field :name, class: 'input-block-level'
+                  = f.label :name, class: 'required'
+                  = f.text_field :name, class: 'input-block-level', required: true,  'aria-required' => "true"
                 %div
-                  = f.label :email
-                  = f.text_field :email, class: 'input-block-level'
+                  = f.label :email, class: 'required'
+                  = f.text_field :email, class: 'input-block-level', required: true,  'aria-required' => "true", "pattern" => "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$"
                 %div
                   = f.label :website
                   = f.text_field :website, class: 'input-block-level'
