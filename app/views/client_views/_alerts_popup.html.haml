@@ -1,4 +1,4 @@
 .cs-alert(ng-repeat="alert in csAlertService.getAlerts()")
   %div.icon(ng-switch="alert.class")
-    %i.icon.icon-info-sign(ng-switch-default)
+    %span.icon.icon-info-sign(ng-switch-default)
   %h4(ng-bind-html="alert.message" ng-class="alert.class")

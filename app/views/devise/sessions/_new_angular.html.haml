@@ -3,7 +3,7 @@
     %form(ng-submit="login()" form-autofill-fix class="no-margin-modal-form")
       .sign-in-body.modal-body.login-modal-body(ng-switch-when="signIn")
         .close-x.pull-right(ng-click="closeModal('login')")
-          %i.icon-remove
+          %span.icon-remove
         .row-fluid
           %h3 Sign in
           .form-horizontal(ng-show="!authentication.loggedIn()")
@@ -11,11 +11,11 @@
             .button-group
               .facebook-button.facebook-login
                 %a(ng-click="facebookConnect(registrationSource)" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
-                  %i.icon-facebook
+                  %span.icon-facebook
                   %b Facebook
               .google-button.google-plus-login
                 %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google" ng-disabled="dataLoading")
-                  %i.icon-google-plus
+                  %span.icon-google-plus
                   %b Google
               .tiny-note
                 OR
@@ -48,7 +48,7 @@
     %form(ng-submit="register(registrationSource)" form-autofill-fix class="no-margin-modal-form")
       .sign-up-body.modal-body.login-modal-body(ng-switch-when="signUp")
         .close-x.pull-right(ng-click="closeModal('login')")
-          %i.icon-remove
+          %span.icon-remove
         .row-fluid
           %h3 Sign up
           .form-horizontal(ng-show="!authentication.loggedIn()")
@@ -56,12 +56,12 @@
             .button-group
               .facebook-button.facebook-login
                 %a(ng-click="facebookConnect(registrationSource)" class="btn btn-secondary btn-facebook" ng-disabled="dataLoading")
-                  %i.icon-facebook
+                  %span.icon-facebook
                   %b Facebook
               .google-button.google-plus-login
                 -# %span.g-signin
                 %a(ng-click="googleSignin('#{google_app_id}')" class="btn btn-secondary btn-google" ng-disabled="dataLoading")
-                  %i.icon-google-plus
+                  %span.icon-google-plus
                   %b Google
               .tiny-note
                 OR
@@ -103,7 +103,7 @@
   %form
     .modal-body.invite-modal-body
       .close-x.pull-right(ng-click="closeModal('googleInvite')")
-        %i.icon-remove
+        %span.icon-remove
       .row-fluid
         %h3 Select who you want to invite
         %p
@@ -133,7 +133,7 @@
 .welcome-modal(close="closeModal('welcome')" modal="welcomeModalOpen" options="modalOptions" ng-cloak)
   .modal-body.welcome-modal-body
     .close-x.pull-right(ng-click="closeModal('welcome')")
-      %i.icon-remove
+      %span.icon-remove
     .row-fluid
       %h3 Welcome to ChefSteps
       %p

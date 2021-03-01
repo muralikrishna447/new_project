@@ -348,6 +348,10 @@ h4
         padding: 10px
         @include boxsizing
 
+label.required
+  &:after
+    content: " *"
+
 .image-loading-indicator
   z-index: -1
   position: absolute
@@ -1534,6 +1538,10 @@ csequipmenteditpair
   color: red
   text-transform: uppercase
 
+.profile-error-msg
+  font-size: 14px
+  color: red
+
 .add-section
   margin-top: $baseline
   margin-bottom: $baseline
@@ -1563,7 +1571,7 @@ csequipmenteditpair
     font-size: 40px
     text-align: center
     background-color: $orange
-    i
+    i, span
       color: white
       position: relative
       top: 10px

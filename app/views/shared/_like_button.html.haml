@@ -6,10 +6,10 @@
   %span(ng-switch on="current_user_likes")
     %span(ng-switch-when='true')
       .btn.btn-primary
-        %i.icon-star
+        %span.icon-star
         {{likes_count}}
     %span(ng-switch-when='false')
       .btn.btn-primary(ng-click="likeObject('#{likeable_object.class.to_s}', '#{likeable_object.id}')")
-        %i.icon-star-empty
+        %span.icon-star-empty
         %span(ng-show="likes_count > 0")
           {{likes_count}}

@@ -2,10 +2,10 @@
 .standard-item(ng-cloak ng-if="editMode")
   .btn.btn-secondary.noprint.section( ng-show="editMode && csAuthentication.isAdmin()"
                                       ng-click="showHeroVisualEdit = ! showHeroVisualEdit")
-    %i.icon-edit
+    %span.icon-edit
     Edit hero visual
-    %i.icon-chevron-up(ng-show="showHeroVisualEdit")
-    %i.icon-chevron-down(ng-show="! showHeroVisualEdit")
+    %span.icon-chevron-up(ng-show="showHeroVisualEdit")
+    %span.icon-chevron-down(ng-show="! showHeroVisualEdit")
 
   %div.anim-basic-fade.noprint(collapse="! (showHeroVisualEdit || ! csAuthentication.isAdmin())" )
     %div

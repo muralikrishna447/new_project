@@ -1,9 +1,9 @@
 %div(ng-show="! editMode")
   .step-actions.btn-group.noprint
     .btn.step-action-item.step-image-btn.btn-primary(ng-show="step.image_id")
-      %i.icon-picture
+      %span.icon-picture
     .btn.step-action-item.step-video-btn.btn-primary(ng-show="step.youtube_id")
-      %i.icon-facetime-video
+      %span.icon-facetime-video
 
   .step-video-outer(ng-switch="!! step.youtube_id")
     .step-video(id="{{'step-video-' + $index}}" ng-switch-when="true" )

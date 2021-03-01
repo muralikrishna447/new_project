@@ -1,8 +1,8 @@
 .btn.btn-secondary.noprint.edit-meta-button(ng-cloak ng-show="editMode" ng-click="editMeta = ! editMeta")
-  %i.icon-edit
+  %span.icon-edit
   Details ...
-  %i.icon-chevron-up(ng-show="editMeta")
-  %i.icon-chevron-down(ng-show="! editMeta")
+  %span.icon-chevron-up(ng-show="editMeta")
+  %span.icon-chevron-down(ng-show="! editMeta")
 
 %div(ng-show="editMode && editMeta")
   .meta-edit.well.noprint
@@ -24,7 +24,7 @@
 
     %div(ng-show="csAuthentication.isAdmin()")
       %h6 Featured Image (For Thumbnails)
-      %img(ng-if="hasFeaturedImage()" ng-src="{{featuredImageURL(200)}}")
+      %img(ng-if="hasFeaturedImage()" ng-src="{{featuredImageURL(200)}}" alt="Featured Image")
       .csfilepicker(ng-model="activity.featured_image_id")
 
     %div(ng-show="csAuthentication.isAdmin()")
