@@ -6,7 +6,7 @@
 - menu_list[0]&.each do |menu|
   - if menu_list[menu['id']]
     .dropdown.cs-nav-item.cs-menu-permission
-      .dropdown-toggle{"tabindex": "2"} #{menu['name']}
+      .dropdown-toggle.parent_menu{"tabindex": "2"} #{menu['name']}
       .dropdown-menu
         .dropdown-wrapper
           .dropdown-menu-item
