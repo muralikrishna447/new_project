@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Api::V0::OauthTokensController do
+  include Docs::V0::OauthTokens::Api
 
   before :each do
     @user = Fabricate :user, id: 100, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
@@ -13,39 +14,42 @@ describe Api::V0::OauthTokensController do
 
   end
 
-  context 'GET /index' do
-    it 'should return a users oauth tokens' do
-      request.env['HTTP_AUTHORIZATION'] = @token
+  describe 'GET #index' do
+    include Docs::V0::OauthTokens::Index
+    context 'GET /index', :dox do
+      it 'should return a users oauth tokens' do
+        request.env['HTTP_AUTHORIZATION'] = @token
 
-      token = "abc"
-      service = "ge"
+        token = "abc"
+        service = "ge"
 
-      Fabricate(:oauth_token, service: service, token: token, user_id: @user.id, token_expires_at: Time.now+1.year)
+        Fabricate(:oauth_token, service: service, token: token, user_id: @user.id, token_expires_at: Time.now+1.year)
 
-      get :index
+        get :index
 
-      response.code.should == "200"
-      result = JSON.parse(response.body)
+        response.code.should == "200"
+        result = JSON.parse(response.body)
 
-      result["results"].length.should == 1
-      result["status"].should == 200
-      result["results"].first["service"].should == service
-      result["results"].first["token"].should == token
+        result["results"].length.should == 1
+        result["status"].should == 200
+        result["results"].first["service"].should == service
+        result["results"].first["token"].should == token
 
-    end
+      end
 
-    it 'should return an empty result if the user has no tokens' do
-      request.env['HTTP_AUTHORIZATION'] = @token
+      it 'should return an empty result if the user has no tokens' do
+        request.env['HTTP_AUTHORIZATION'] = @token
 
-      get :index
+        get :index
 
-      response.code.should == "200"
-      result = JSON.parse(response.body)
+        response.code.should == "200"
+        result = JSON.parse(response.body)
 
-      result["results"].length.should == 0
-      result["results"].should == []
-      result["status"].should == 200
+        result["results"].length.should == 0
+        result["results"].should == []
+        result["status"].should == 200
 
+      end
     end
   end
 end
