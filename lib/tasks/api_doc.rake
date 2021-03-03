@@ -17,7 +17,7 @@ namespace :api_doc do
     version = args[:version] || :v0
     docs_path = args[:docs_path] || "api/#{version}/docs"
 
-    `yarn run redoc-cli bundle -o public/#{docs_path}/index.html spec/docs/#{version}/schema/apispec.json`
+    `npx redoc-cli bundle -o public/#{docs_path}/index.html spec/docs/#{version}/schema/apispec.json`
   end
 
   task :generate, [:version, :docs_path] => :html do |_, args|
