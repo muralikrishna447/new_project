@@ -66,4 +66,7 @@ $ ->
   unless areCookiesEnabled()
     $(".cookies-disabled").show()
 
-
+$ ->
+  $('.parent_menu').on 'keyup', (e) ->
+    if e.which == 13
+      $(this).trigger('click')
