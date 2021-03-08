@@ -102,7 +102,7 @@
 
   %body{@body_tag_attributes || {:'ng-app' => "ChefStepsApp"}, :'ng-click' => "$broadcast('bodyClicked')", :class => "#{Rails.env} #{'fs-course' if @hide_nav} controller-#{controller_name} action-#{action_name}", 'ng-init' =>  "environmentConfiguration.google_app_id = '#{google_app_id}'; environmentConfiguration.environment = '#{Rails.env}'; is_static_render=#{is_static_render};"}
 
-    #rails-flash.hide
+    #rails-flash.hide(role='status')
       = flash.to_json
 
     = render 'shared/cookie_consent_banner'
