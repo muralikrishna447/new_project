@@ -1,4 +1,5 @@
 describe Api::V0::ActivitiesController do
+  include Docs::V0::Activities::Api
   algolia_stub = nil
 
   before :each do
@@ -13,86 +14,92 @@ describe Api::V0::ActivitiesController do
     @new_premium_user = Fabricate :user, name: 'prender Another User', email: 'premium_user@anotheruser.com', role: 'user', premium_member: true
   end
 
-  # GET /api/v0/activities
-  context 'GET /activities' do
-    it 'should return an array of activities' do
-      get :index
-      response.should be_success
+  context 'GET /activities', :dox do
+    # GET /api/v0/activities
+    describe 'GET #index' do
+      include Docs::V0::Activities::Index
+      it 'should return an array of activities' do
+        get :index
+        response.should be_success
 
-      JSON.parse(response.body).count.should == 2
+        JSON.parse(response.body).count.should == 2
+      end
+
+      it 'should return only published activities' do
+        get :index, params: {published_status: 'published'}
+        response.should be_success
+        activities = JSON.parse(response.body)
+        activities.map{|a|a['published']}.should include(true)
+        activities.map{|a|a['published']}.should_not include(false)
+      end
+
+      it 'should return only unpublished activities' do
+        get :index, params: {published_status: 'unpublished'}
+        response.should be_success
+        activities = JSON.parse(response.body)
+        activities.map{|a|a['published']}.should include(false)
+        activities.map{|a|a['published']}.should_not include(true)
+      end
     end
 
-    it 'should return only published activities' do
-      get :index, params: {published_status: 'published'}
-      response.should be_success
-      activities = JSON.parse(response.body)
-      activities.map{|a|a['published']}.should include(true)
-      activities.map{|a|a['published']}.should_not include(false)
-    end
+    # GET /api/v0/activities/:id
+    describe 'GET #show' do
+      include Docs::V0::Activities::Show
+      it 'should return activity even with invalid token' do
+        controller.request.env['HTTP_AUTHORIZATION'] = "badtoken"
+        get :show, params: {id: @activity_published}
+        response.should be_success
+        expect_activity_object(response, @activity_published)
+      end
 
-    it 'should return only unpublished activities' do
-      get :index, params: {published_status: 'unpublished'}
-      response.should be_success
-      activities = JSON.parse(response.body)
-      activities.map{|a|a['published']}.should include(false)
-      activities.map{|a|a['published']}.should_not include(true)
-    end
+      it 'should not return unpublished activity with invalid token' do
+        controller.request.env['HTTP_AUTHORIZATION'] = "badtoken"
+        get :show, params: {id: @activity_unpublished}
+        response.should_not be_success
+      end
 
-    it 'should return activity even with invalid token' do
-      controller.request.env['HTTP_AUTHORIZATION'] = "badtoken"
-      get :show, params: {id: @activity_published}
-      response.should be_success
-      expect_activity_object(response, @activity_published)
-    end
+      it 'returns 404 for non-existent activity fetched by id' do
+        get :show, params: {id: 99999}
+        response.status.should == 404
+      end
 
-    it 'should not return unpublished activity with invalid token' do
-      controller.request.env['HTTP_AUTHORIZATION'] = "badtoken"
-      get :show, params: {id: @activity_unpublished}
-      response.should_not be_success
-    end
+      it 'returns 404 for non-existent activity fetched by slug' do
+        get :show, params: {id: 'doesnt-exist'}
+        response.status.should == 404
+      end
 
-    it 'returns 404 for non-existent activity fetched by id' do
-      get :show, params: {id: 99999}
-      response.status.should == 404
-    end
+      it 'should return a single activity' do
+        get :show, params: {id: @activity_published.id}
+        response.should be_success
 
-    it 'returns 404 for non-existent activity fetched by slug' do
-      get :show, params: {id: 'doesnt-exist'}
-      response.status.should == 404
+        activity = JSON.parse(response.body)
+
+        activity['title'].should == 'Activity Published'
+        activity['description'].should == ''
+        activity['image'].should == nil
+        activity['url'].should == 'http://test.host/activities/activity-published'
+        activity['likesCount'].should == nil
+
+        activity['ingredients'].should == []
+        activity['steps'].count.should == 1
+        activity['equipment'].should == []
+      end
+
+      it 'should cache activity JSON' do
+        # first one to prime cache
+        get :show, params: {id: @activity_published.id}
+
+        @activity_published.title = 'bleh'
+        @activity_published.save
+
+        get :show, params: {id: @activity_published.id}
+        activity = JSON.parse(response.body)
+        activity['title'].should_not == 'bleh'
+      end
     end
   end
 
-  # GET /api/v0/activities/:id
-  it 'should return a single activity' do
-    get :show, params: {id: @activity_published.id}
-    response.should be_success
-
-    activity = JSON.parse(response.body)
-
-    activity['title'].should == 'Activity Published'
-    activity['description'].should == ''
-    activity['image'].should == nil
-    activity['url'].should == 'http://test.host/activities/activity-published'
-    activity['likesCount'].should == nil
-
-    activity['ingredients'].should == []
-    activity['steps'].count.should == 1
-    activity['equipment'].should == []
-  end
-
-  it 'should cache activity JSON' do
-    # first one to prime cache
-    get :show, params: {id: @activity_published.id}
-
-    @activity_published.title = 'bleh'
-    @activity_published.save
-
-    get :show, params: {id: @activity_published.id}
-    activity = JSON.parse(response.body)
-    activity['title'].should_not == 'bleh'
-  end
-
-  context 'GET /activities/:id/likes' do
+  context 'GET /activities/:id/likes', :dox do
     before :each do
       @user1 = Fabricate :user, name: 'User 1', email: 'user1@user1.com', password: '123456'
       @user2 = Fabricate :user, name: 'User 2', email: 'user2@user2.com', password: '123456'
@@ -101,24 +108,27 @@ describe Api::V0::ActivitiesController do
       @like3 = Fabricate :like, likeable: @activity_unpublished, user: @user1
     end
 
-    it 'should return users who liked an activity' do
-      get :likes, params: {id: @activity_published.id}
-      response.should be_success
-      parsed = JSON.parse response.body
-      ids = parsed.map{|user| user['userId']}
-      expect(ids.include?(@user1.id)).to be true
-    end
+    describe 'GET #likes' do
+      include Docs::V0::Activities::Likes
+      it 'should return users who liked an activity' do
+        get :likes, params: {id: @activity_published.id}
+        response.should be_success
+        parsed = JSON.parse response.body
+        ids = parsed.map{|user| user['userId']}
+        expect(ids.include?(@user1.id)).to be true
+      end
 
-    it 'should not return users who did not like an activity' do
-      get :likes, params: {id: @activity_unpublished.id}
-      response.should be_success
-      parsed = JSON.parse response.body
-      ids = parsed.map{|user| user['id']}
-      expect(ids.include?(@user2.id)).to be false
+      it 'should not return users who did not like an activity' do
+        get :likes, params: {id: @activity_unpublished.id}
+        response.should be_success
+        parsed = JSON.parse response.body
+        ids = parsed.map{|user| user['id']}
+        expect(ids.include?(@user2.id)).to be false
+      end
     end
   end
 
-  context 'GET /activities/:id/likes_by_user' do
+  context 'GET /activities/:id/likes_by_user', :dox do
     before :each do
       @user1 = Fabricate :user, name: 'User 1', email: 'user1@user1.com', password: '123456'
       @user2 = Fabricate :user, name: 'User 2', email: 'user2@user2.com', password: '123456'
@@ -127,36 +137,40 @@ describe Api::V0::ActivitiesController do
       @like2 = Fabricate :like, likeable: @activity_published, user: @user2
     end
 
-    it 'should return user1s like of an activity' do
-      controller.request.env['HTTP_AUTHORIZATION'] = @user1.valid_website_auth_token.to_jwt
-      get :likes_by_user, params: {id: @activity_published.id}
-      response.should be_success
-      parsed = JSON.parse response.body
-      expect(parsed).to eq([{"id"=>@like1.id, "userId"=>@user1.id}])
-    end
+    describe 'GET #likes_by_user' do
+      include Docs::V0::Activities::LikesByUser
+      it 'should return user1s like of an activity' do
+        controller.request.env['HTTP_AUTHORIZATION'] = @user1.valid_website_auth_token.to_jwt
+        get :likes_by_user, params: {id: @activity_published.id}
+        response.should be_success
+        parsed = JSON.parse response.body
+        expect(parsed).to eq([{"id"=>@like1.id, "userId"=>@user1.id}])
+      end
 
-    it 'should not return any likes of activity' do
-      controller.request.env['HTTP_AUTHORIZATION'] = @user3.valid_website_auth_token.to_jwt
-      get :likes_by_user, params: {id: @activity_published.id}
-      response.should be_success
-      parsed = JSON.parse response.body
-      expect(parsed).to eq([])
+      it 'should not return any likes of activity' do
+        controller.request.env['HTTP_AUTHORIZATION'] = @user3.valid_website_auth_token.to_jwt
+        get :likes_by_user, params: {id: @activity_published.id}
+        response.should be_success
+        parsed = JSON.parse response.body
+        expect(parsed).to eq([])
+      end
     end
   end
 
-  context 'GET activities access rules' do
+  context 'GET activities access rules', :dox do
+    include Docs::V0::Activities::Show
     context 'no user' do
-      it 'published activity' do
+      it 'no user published activity' do
         get :show, params: {id: @activity_published}
         expect_not_trimmed(response)
       end
 
-      it 'premium activity' do
+      it 'no user premium activity' do
         get :show, params: {id: @activity_premium}
         expect_trimmed(response)
       end
 
-      it 'unpublished activity' do
+      it 'no user unpublished activity' do
         get :show, params: {id: @activity_unpublished}
         response.should_not be_success
       end
@@ -167,20 +181,20 @@ describe Api::V0::ActivitiesController do
         controller.request.env['HTTP_USER_AGENT'] = 'prerender'
       end
 
-      it 'published activity' do
+      it 'prerender.io published activity' do
         get :show, params: {id: @activity_published}
         expect_not_trimmed(response)
       end
 
       # Prerender should see full text of premium activity
-      it 'premium activity' do
+      it 'prerender.io premium activity' do
         sign_in @new_premium_user
         controller.request.env['HTTP_AUTHORIZATION'] = @new_premium_user.valid_website_auth_token.to_jwt
         get :show, params: {id: @activity_premium}
         expect_not_trimmed(response)
       end
 
-      it 'unpublished activity' do
+      it 'prerender.io unpublished activity' do
         get :show, params: {id: @activity_unpublished}
         response.should_not be_success
       end
@@ -193,17 +207,17 @@ describe Api::V0::ActivitiesController do
         controller.request.env['HTTP_AUTHORIZATION'] = @user.valid_website_auth_token.to_jwt
       end
 
-      it 'published activity' do
+      it 'normal non-premium user published activity' do
         get :show, params: {id: @activity_published}
         expect_not_trimmed(response)
       end
 
-      it 'premium activity' do
+      it 'normal non-premium user premium activity' do
         get :show, params: {id: @activity_premium}
         expect_trimmed(response)
       end
 
-      it 'unpublished activity' do
+      it 'normal non-premium user unpublished activity' do
         get :show, params: {id: @activity_unpublished}
         response.should_not be_success
       end
@@ -246,17 +260,17 @@ describe Api::V0::ActivitiesController do
         sign_in @premium_user
       end
 
-      it 'published activity' do
+      it 'premium user published activity' do
         get :show, params: {id: @activity_published}
         expect_not_trimmed(response)
       end
 
-      it 'premium activity' do
+      it 'premium user premium activity' do
         get :show, params: {id: @activity_premium}
         expect_not_trimmed(response)
       end
 
-      it 'unpublished activity' do
+      it 'premium user unpublished activity' do
         get :show, params: {id: @activity_unpublished}
         response.should_not be_success
       end
@@ -269,17 +283,17 @@ describe Api::V0::ActivitiesController do
         controller.request.env['HTTP_AUTHORIZATION'] = @admin_user.valid_website_auth_token.to_jwt
       end
 
-      it 'published activity' do
+      it 'admin user published activity' do
         get :show, params: {id: @activity_published}
         expect_not_trimmed(response)
       end
 
-      it 'premium activity' do
+      it 'admin user premium activity' do
         get :show, params: {id: @activity_premium}
         expect_not_trimmed(response)
       end
 
-      it 'unpublished activity' do
+      it 'admin user unpublished activity' do
         get :show, params: {id: @activity_unpublished}
         expect_not_trimmed(response)
       end
@@ -332,7 +346,8 @@ describe Api::V0::ActivitiesController do
     end
   end
 
-  context 'versions' do
+  context 'versions', :dox do
+    include Docs::V0::Activities::Show
     before :each do
       @revisable_activity = Fabricate :activity, title: 'Revisable Activity', description: 'This is version 1', published: true, id: 5
       @activity_v1 = ActsAsRevisionable::RevisionRecord.new(@revisable_activity)

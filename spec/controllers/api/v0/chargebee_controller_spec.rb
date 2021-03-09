@@ -1,19 +1,21 @@
 require 'spec_helper'
 
 describe Api::V0::ChargebeeController do
+  include Docs::V0::Chargebee::Api
+
   plan_id = 'StudioTestPlan'
   monthly_plan_id = 'StudioTestPlanMonthly'
   Subscription::STUDIO_PLAN_ID = plan_id
   Subscription::MONTHLY_STUDIO_PLAN_ID = monthly_plan_id
 
   context 'webhook' do
-
     before(:each) do
       @user = Fabricate :user, email: 'johndoe@chefsteps.com', password: '123456', name: 'John Doe'
       Api::V0::ChargebeeController.any_instance.stub(:chargebee_webhook_key).and_return('testKey')
     end
 
-    context 'with authentication' do
+    include Docs::V0::Chargebee::Webhook
+    context 'with authentication', :dox do
       let(:active_subscription) {
         double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"active", :resource_version=>1591801241502, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: nil, cancelled_at: nil})
       }
@@ -66,7 +68,7 @@ describe Api::V0::ChargebeeController do
       
     end
 
-    context 'without authentication' do
+    context 'without authentication', :dox do
       it 'rejects unauthenticated requests' do
         post :webhook, params: {}
         response.code.should eq("403")
@@ -75,8 +77,7 @@ describe Api::V0::ChargebeeController do
   end
 
   context 'APIs' do
-
-    context 'Studio Pass with authentication' do
+    context 'Studio Pass with authentication', :dox do
       end_date = (Time.now + 1.month).to_i
       let(:active_subscription) {
         double('subscription', {:id=>"StudioPassSub1", :customer_id=>@user.id, :plan_id=> plan_id, :status=>"active", :resource_version=>1591801241502, :object=>"subscription", has_scheduled_changes: false, next_billing_at: nil, current_term_end: nil, trial_end: nil, cancelled_at: nil})
@@ -149,6 +150,7 @@ describe Api::V0::ChargebeeController do
       end
 
       describe 'sync_subscriptions' do
+        include Docs::V0::Chargebee::SyncSubscriptions
         before do
           BetaFeatureService.stub(:user_has_feature).with(anything, anything, anything).and_return(false)
           BetaFeatureService.stub(:get_groups_for_user).with(anything).and_return([])
@@ -288,6 +290,7 @@ describe Api::V0::ChargebeeController do
       end
 
       describe 'switch_subscription' do
+        include Docs::V0::Chargebee::SwitchSubscription
         before do
           BetaFeatureService.stub(:user_has_feature).with(anything, anything, anything).and_return(false)
           BetaFeatureService.stub(:get_groups_for_user).with(anything).and_return([])
@@ -333,14 +336,15 @@ describe Api::V0::ChargebeeController do
       end
     end
 
-    context 'Studio Pass without authentication' do
+    context 'Studio Pass without authentication', :dox do
+      include Docs::V0::Chargebee::SyncSubscriptions
       it 'rejects unauthenticated requests' do
         get :sync_subscriptions
         expect(response.code).to eq("401")
       end
     end
 
-    context 'authenticated' do
+    context 'authenticated', :dox do
       let(:subscription) {
         double('subscription', :id => 'subscription1', :plan_id => 'test', :plan_quantity => 1, :plan_unit_price => 6900, :plan_amount => 6900, :currency_code => 'USD')
       }
@@ -375,6 +379,7 @@ describe Api::V0::ChargebeeController do
       end
 
       describe 'generate_checkout_url' do
+        include Docs::V0::Chargebee::GenerateCheckoutUrl
         let(:result) {
           double('result', :hosted_page => {})
         }
@@ -425,6 +430,7 @@ describe Api::V0::ChargebeeController do
       end
 
       describe 'gifts' do
+        include Docs::V0::Chargebee::Gifts
         it 'returns empty result when no gifts' do
           list_result = []
           list_result.define_singleton_method(:next_offset) do
@@ -470,6 +476,7 @@ describe Api::V0::ChargebeeController do
       end
 
       describe 'claim_gifts' do
+        include Docs::V0::Chargebee::ClaimGifts
         it 'rejects requests without gift_ids' do
           post :claim_gifts, params: {}
           response.code.should eq("400")
@@ -521,6 +528,7 @@ describe Api::V0::ChargebeeController do
       end
 
       describe 'claim_complete' do
+        include Docs::V0::Chargebee::ClaimComplete
         before(:each) do
           ChargebeeGiftRedemptions.create!(:gift_id => '1', :user_id => 1, :plan_amount => 6900, :currency_code => 'USD')
           ChargebeeGiftRedemptions.create!(:gift_id => '2', :user_id => 1, :plan_amount => 6900, :currency_code => 'USD', :complete => true)
@@ -556,7 +564,8 @@ describe Api::V0::ChargebeeController do
       end
     end
 
-    context 'not authenticated' do
+    context 'not authenticated', :dox do
+      include Docs::V0::Chargebee::GenerateCheckoutUrl
       describe 'generate_checkout_url' do
         it 'returns unauthorized' do
           params = { :is_gift => false, :plan_id => 'test' }
