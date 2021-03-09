@@ -230,6 +230,9 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
+    dox (2.0.0)
+      rails (>= 4.0)
+      rspec-core
     dry-inflector (0.2.0)
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
@@ -935,6 +938,7 @@ DEPENDENCIES
   devise
   devise-token_authenticatable
   dotenv-rails
+  dox
   fabrication
   faraday (= 0.9)
   filepicker-rails
