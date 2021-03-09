@@ -1,4 +1,5 @@
 describe Api::V0::FirmwareController do
+  include Docs::V0::Firmware::Api
 
   def mock_s3_json(key, data)
     firmware_base = "https://chefsteps-firmware-staging.s3.amazonaws.com"
@@ -164,377 +165,382 @@ describe Api::V0::FirmwareController do
     mock_s3_json("joule/JOULE_ESP32_FIRMWARE/143-b2-hw-opt/metadata.json", joule_esp32_b2_hw_option_manifest)
   end
 
-  it 'should get manifests for wifi firmware' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 1
-    update = resp['updates'].first
+  describe 'POST #updates' do
+    include Docs::V0::Firmware::Updates
+    context "firmware updates", :dox do
+      it 'should get manifests for wifi firmware' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 1
+        update = resp['updates'].first
 
-    update['type'].should == 'WIFI_FIRMWARE'
-    transfer = update['transfer']
-    transfer.length.should == 2
+        update['type'].should == 'WIFI_FIRMWARE'
+        transfer = update['transfer']
+        transfer.length.should == 2
 
-    transfer[1]['type'].should == 'http'
-    transfer[1]['host'].should == Rails.application.config.firmware_download_host
-    transfer[1]['sha256'].should == @sha256
-    transfer[1]['filename'].should == @filename
-    transfer[1]['totalBytes'].should == @totalBytes
+        transfer[1]['type'].should == 'http'
+        transfer[1]['host'].should == Rails.application.config.firmware_download_host
+        transfer[1]['sha256'].should == @sha256
+        transfer[1]['filename'].should == @filename
+        transfer[1]['totalBytes'].should == @totalBytes
 
-    transfer[0]['type'].should == 'tftp'
-    Rails.application.config.tftp_hosts.include?(transfer[0]['host']).should == true
-    transfer[0]['sha256'].should == @sha256
-    transfer[0]['filename'].should == @filename
-    transfer[0]['totalBytes'].should == @totalBytes
-  end
+        transfer[0]['type'].should == 'tftp'
+        Rails.application.config.tftp_hosts.include?(transfer[0]['host']).should == true
+        transfer[0]['sha256'].should == @sha256
+        transfer[0]['filename'].should == @filename
+        transfer[0]['totalBytes'].should == @totalBytes
+      end
 
-  it 'should return no updates if both versions are greater or equal to manifest' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '70', 'espFirmwareVersion' => '23'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
-  end
-
-  it 'should return no updates if no version info provided' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
-  end
-
-  it 'should return no updates if no bootloaderVersion provided' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5',
-                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
-  end
-
-  it 'should allow downgrades if beta feature allows it' do
-    BetaFeatureService.stub(:user_has_feature).with(anything(), "allow_dfu_downgrade")
-      .and_return(true)
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '700', 'espFirmwareVersion' => '230'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 2
-  end
-
-  it 'should return an upgrade for ESP, but not downgrade app' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '70', 'espFirmwareVersion' => '19'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 1
-    update = resp['updates'].first
-    update['type'].should == 'WIFI_FIRMWARE'
-  end
-
-
-  it 'should return an upgrade for staging ESP' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, params: {'appVersion'=> '2.49.9', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '70', 'espFirmwareVersion' => 's22'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 1
-    update = resp['updates'].first
-    update['type'].should == 'WIFI_FIRMWARE'
-  end
-
-  it 'should not return an upgrade for staging ESP' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, params: {'appVersion'=> '2.49.9', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '70', 'espFirmwareVersion' => 's24'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
-  end
-
-  it 'should return unauthorized if not logged in' do
-    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
-    response.code.should == '401'
-  end
-
-  it 'should get no updates if manifest version not enabled' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    set_version_enabled('2.41.3', false)
-    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
-  end
-
-  it 'should get no updates if dfu blacklisted' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu_blacklist')
-      .and_return(true)
-    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
-  end
-
-  it 'should get proper urgency if beta feature is enabled' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    BetaFeatureService.stub(:user_has_feature).with(anything(), 'manifest_urgency')
-      .and_return(true)
-    post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['urgency'].should == 'critical'
-  end
-
-  it 'should get no updates if old app version' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, params: {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5',
-                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1', 'bootloaderVersion' => '1'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
-  end
-
-  it 'should get firmware version' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-
-    post :updates, params: {'appVersion'=> '2.41.4', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '10', 'espFirmwareVersion' => '1'}
-
-    response.should be_success
-    resp = JSON.parse(response.body)
-
-    resp['urgency'].should == 'normal'
-    resp['releaseNotes'].should == @release_notes
-    resp['releaseNotesUrl'].should == @release_notes_url_1
-    resp['updates'].length.should == 1
-    update = resp['updates'].first
-    update['type'].should == 'APPLICATION_FIRMWARE'
-
-
-    update['bootModeType'].should == 'APPLICATION_BOOT_MODE'
-    update['transfer'].length.should == 1
-
-    expect(update['transfer'][0]['url']).to include('APPLICATION_FIRMWARE/61/application.bin')
-    update['transfer'][0]['type'].should == 'download'
-
-  end
-
-  it 'should respect hardware version whitelists' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-
-    hw_versions = [
-      {:hw_version => 'JL.p5', :enabled => true},
-      {:hw_version => 'JL.p4', :enabled => false},
-      {:hw_version => 'J5', :enabled => true},
-      {:hw_version => 'J6', :enabled => true},
-      {:hw_version => 'J7', :enabled => true},
-      {:hw_version => 'JA', :enabled => true},
-      {:hw_version => 'JB', :enabled => true},
-    ]
-
-    for v in hw_versions
-      post :updates, params: {'appVersion'=> '2.41.4', 'hardwareVersion' => v[:hw_version],  'bootloaderVersion' => '21',
-                      'appFirmwareVersion' => '10', 'espFirmwareVersion' => '1'}
-      response.should be_success
-      resp = JSON.parse(response.body)
-      if v[:enabled]
-        resp['updates'].length.should > 0
-      else
+      it 'should return no updates if both versions are greater or equal to manifest' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '70', 'espFirmwareVersion' => '23'}
+        response.should be_success
+        resp = JSON.parse(response.body)
         resp['updates'].length.should == 0
       end
-    end
-  end
 
-  it 'should not return firmware version if up to date' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    post :updates, params: {'appVersion'=> '2.41.3', 'appFirmwareVersion' => '61', 'bootloaderVersion' => '21',
-                    'espFirmwareVersion' => @esp_version, 'hardwareVersion' => 'JL.p5'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
-  end
+      it 'should return no updates if no version info provided' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 0
+      end
 
-  it 'should get no updates if no manifest found' do
-    WebMock.stub_request(:head, "https://chefsteps-firmware-staging.s3.amazonaws.com/manifests/0.10.0/manifest").
-      to_return(:status => 404, :body => "", :headers => {})
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    set_version_enabled('0.10.0', true)
-    post :updates, params: {'appVersion'=> '0.10.0', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
-                    'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].should be_empty
-  end
+      it 'should return no updates if no bootloaderVersion provided' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5',
+                        'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 0
+      end
 
-  it 'should fail if bad token' do
-    request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
-    post :updates
-    response.should_not be_success
-  end
+      it 'should allow downgrades if beta feature allows it' do
+        BetaFeatureService.stub(:user_has_feature).with(anything(), "allow_dfu_downgrade")
+          .and_return(true)
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '700', 'espFirmwareVersion' => '230'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 2
+      end
 
-  it 'should return a Joule ESP32 update for supported hardware versions' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    params = {
-      "appVersion" => "2.66.1",
-      "appFirmwareVersion" => "42",
-      "hardwareVersion" => "JA"
-    }
-    post :updates, params: params
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 1
-    resp['updates'][0]['type'].should == 'JOULE_ESP32_FIRMWARE'
-    resp['updates'][0]['version'].to_i.should == @joule_esp32_fw_ver
-  end
+      it 'should return an upgrade for ESP, but not downgrade app' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        post :updates, params: {'appVersion'=> '2.48.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '70', 'espFirmwareVersion' => '19'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 1
+        update = resp['updates'].first
+        update['type'].should == 'WIFI_FIRMWARE'
+      end
 
-  it 'should return no updates for an unsupported Joule ESP32 hardware version' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    params = {
-      "appVersion" => "2.66.1",
-      "appFirmwareVersion" => "42",
-      "hardwareVersion" => "XX"
-    }
-    post :updates, params: params
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
-  end
 
-  it 'should return no ESP32 updates if no appFirmwareVersion supplied' do
-    request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-    params = {
-      "appVersion" => "2.66.1",
-    }
-    post :updates, params: params
-    response.should be_success
-    resp = JSON.parse(response.body)
-    resp['updates'].length.should == 0
-  end
+      it 'should return an upgrade for staging ESP' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        post :updates, params: {'appVersion'=> '2.49.9', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '70', 'espFirmwareVersion' => 's22'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 1
+        update = resp['updates'].first
+        update['type'].should == 'WIFI_FIRMWARE'
+      end
 
-  describe 'bootloader' do
-    before :each do
-      @bootloader_version = '24'
-      bootloader_manifest = {
-        "releaseNotesUrl" => @release_notes_url_1,
-        "releaseNotes" => @release_notes,
-        "urgency" => "critical",
-        "updates" => [
-          {
-            "versionType" => "bootloaderVersion",
-            "type" => "BOOTLOADER_FIRMWARE",
-            "version" => @bootloader_version
-          },
-          {
-            "versionType" => "appFirmwareVersion",
-            "type" => "APPLICATION_FIRMWARE",
-            "version" => @app_firmware_version
-          },
-          {
-            "versionType" => "espFirmwareVersion",
-            "type" => "WIFI_FIRMWARE",
-            "version" => @esp_version
-          },
+      it 'should not return an upgrade for staging ESP' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        post :updates, params: {'appVersion'=> '2.49.9', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '70', 'espFirmwareVersion' => 's24'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 0
+      end
+
+      it 'should return unauthorized if not logged in' do
+        post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5'}
+        response.code.should == '401'
+      end
+
+      it 'should get no updates if manifest version not enabled' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        set_version_enabled('2.41.3', false)
+        post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 0
+      end
+
+      it 'should get no updates if dfu blacklisted' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        BetaFeatureService.stub(:user_has_feature).with(anything(), 'dfu_blacklist')
+          .and_return(true)
+        post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 0
+      end
+
+      it 'should get proper urgency if beta feature is enabled' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        BetaFeatureService.stub(:user_has_feature).with(anything(), 'manifest_urgency')
+          .and_return(true)
+        post :updates, params: {'appVersion'=> '2.41.3', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['urgency'].should == 'critical'
+      end
+
+      it 'should get no updates if old app version' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        post :updates, params: {'appVersion'=> '2.41.0', 'hardwareVersion' => 'JL.p5',
+                        'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1', 'bootloaderVersion' => '1'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 0
+      end
+
+      it 'should get firmware version' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+
+        post :updates, params: {'appVersion'=> '2.41.4', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '10', 'espFirmwareVersion' => '1'}
+
+        response.should be_success
+        resp = JSON.parse(response.body)
+
+        resp['urgency'].should == 'normal'
+        resp['releaseNotes'].should == @release_notes
+        resp['releaseNotesUrl'].should == @release_notes_url_1
+        resp['updates'].length.should == 1
+        update = resp['updates'].first
+        update['type'].should == 'APPLICATION_FIRMWARE'
+
+
+        update['bootModeType'].should == 'APPLICATION_BOOT_MODE'
+        update['transfer'].length.should == 1
+
+        expect(update['transfer'][0]['url']).to include('APPLICATION_FIRMWARE/61/application.bin')
+        update['transfer'][0]['type'].should == 'download'
+
+      end
+
+      it 'should respect hardware version whitelists' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+
+        hw_versions = [
+          {:hw_version => 'JL.p5', :enabled => true},
+          {:hw_version => 'JL.p4', :enabled => false},
+          {:hw_version => 'J5', :enabled => true},
+          {:hw_version => 'J6', :enabled => true},
+          {:hw_version => 'J7', :enabled => true},
+          {:hw_version => 'JA', :enabled => true},
+          {:hw_version => 'JB', :enabled => true},
         ]
-      }
-      mock_s3_json("manifests/2.52.0/manifest", bootloader_manifest)
-      set_version_enabled('2.52.0', true)
-    end
 
-    it 'should get wifi/bootloader/app updates in correct order' do
-      request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-      params = {
-        'appVersion'=> '2.52.0',
-        'appFirmwareVersion' => '10',
-        'espFirmwareVersion' => '10',
-        'hardwareVersion' => 'JL.p5',
-        'bootloaderVersion' => '21',
-      }
-      post :updates, params: params
-      response.should be_success
-      resp = JSON.parse(response.body)
-      resp['updates'].length.should == 3
+        for v in hw_versions
+          post :updates, params: {'appVersion'=> '2.41.4', 'hardwareVersion' => v[:hw_version],  'bootloaderVersion' => '21',
+                          'appFirmwareVersion' => '10', 'espFirmwareVersion' => '1'}
+          response.should be_success
+          resp = JSON.parse(response.body)
+          if v[:enabled]
+            resp['updates'].length.should > 0
+          else
+            resp['updates'].length.should == 0
+          end
+        end
+      end
 
-      resp['updates'][0]['type'].should == 'WIFI_FIRMWARE'
-      resp['updates'][0]['bootModeType'].should == nil
+      it 'should not return firmware version if up to date' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        post :updates, params: {'appVersion'=> '2.41.3', 'appFirmwareVersion' => '61', 'bootloaderVersion' => '21',
+                        'espFirmwareVersion' => @esp_version, 'hardwareVersion' => 'JL.p5'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 0
+      end
 
-      resp['updates'][1]['type'].should == 'BOOTLOADER_FIRMWARE'
-      resp['updates'][1]['bootModeType'].should == nil
-      expect(resp['updates'][1]['transfer'][0]['url']).to include('BOOTLOADER_FIRMWARE/24/bootloader.bin')
+      it 'should get no updates if no manifest found' do
+        WebMock.stub_request(:head, "https://chefsteps-firmware-staging.s3.amazonaws.com/manifests/0.10.0/manifest").
+          to_return(:status => 404, :body => "", :headers => {})
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        set_version_enabled('0.10.0', true)
+        post :updates, params: {'appVersion'=> '0.10.0', 'hardwareVersion' => 'JL.p5', 'bootloaderVersion' => '21',
+                        'appFirmwareVersion' => '1', 'espFirmwareVersion' => '1'}
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].should be_empty
+      end
 
-      resp['updates'][2]['type'].should == 'APPLICATION_FIRMWARE'
-      resp['updates'][2]['bootModeType'].should == 'BOOTLOADER_BOOT_MODE'
-    end
+      it 'should fail if bad token' do
+        request.env['HTTP_AUTHORIZATION'] = 'fooooooo'
+        post :updates
+        response.should_not be_success
+      end
 
-    it 'should have correct boot mode if bootloader is up to date' do
-      request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-      params = {
-        'appVersion'=> '2.52.0',
-        'appFirmwareVersion' => '10',
-        'espFirmwareVersion' => '10',
-        'hardwareVersion' => 'JL.p5',
-        'bootloaderVersion' => '24',
-      }
-      post :updates, params: params
-      response.should be_success
-      resp = JSON.parse(response.body)
-      resp['updates'].length.should == 2
+      it 'should return a Joule ESP32 update for supported hardware versions' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        params = {
+          "appVersion" => "2.66.1",
+          "appFirmwareVersion" => "42",
+          "hardwareVersion" => "JA"
+        }
+        post :updates, params: params
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 1
+        resp['updates'][0]['type'].should == 'JOULE_ESP32_FIRMWARE'
+        resp['updates'][0]['version'].to_i.should == @joule_esp32_fw_ver
+      end
 
-      resp['updates'][0]['type'].should == 'WIFI_FIRMWARE'
-      resp['updates'][0]['bootModeType'].should == nil
+      it 'should return no updates for an unsupported Joule ESP32 hardware version' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        params = {
+          "appVersion" => "2.66.1",
+          "appFirmwareVersion" => "42",
+          "hardwareVersion" => "XX"
+        }
+        post :updates, params: params
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 0
+      end
 
-      resp['updates'][1]['type'].should == 'APPLICATION_FIRMWARE'
-      resp['updates'][1]['bootModeType'].should == 'APPLICATION_BOOT_MODE'
-    end
+      it 'should return no ESP32 updates if no appFirmwareVersion supplied' do
+        request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+        params = {
+          "appVersion" => "2.66.1",
+        }
+        post :updates, params: params
+        response.should be_success
+        resp = JSON.parse(response.body)
+        resp['updates'].length.should == 0
+      end
 
-    it 'should not downgrade bootloader' do
-      request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-      params = {
-        'appVersion'=> '2.52.0',
-        'appFirmwareVersion' => '10',
-        'espFirmwareVersion' => '10',
-        'hardwareVersion' => 'JL.p5',
-        'bootloaderVersion' => '27',
-      }
-      post :updates, params: params
-      response.should be_success
-      resp = JSON.parse(response.body)
-      resp['updates'].length.should == 2
+      describe 'bootloader' do
+        before :each do
+          @bootloader_version = '24'
+          bootloader_manifest = {
+            "releaseNotesUrl" => @release_notes_url_1,
+            "releaseNotes" => @release_notes,
+            "urgency" => "critical",
+            "updates" => [
+              {
+                "versionType" => "bootloaderVersion",
+                "type" => "BOOTLOADER_FIRMWARE",
+                "version" => @bootloader_version
+              },
+              {
+                "versionType" => "appFirmwareVersion",
+                "type" => "APPLICATION_FIRMWARE",
+                "version" => @app_firmware_version
+              },
+              {
+                "versionType" => "espFirmwareVersion",
+                "type" => "WIFI_FIRMWARE",
+                "version" => @esp_version
+              },
+            ]
+          }
+          mock_s3_json("manifests/2.52.0/manifest", bootloader_manifest)
+          set_version_enabled('2.52.0', true)
+        end
 
-      resp['updates'][0]['type'].should == 'WIFI_FIRMWARE'
-      resp['updates'][0]['bootModeType'].should == nil
+        it 'should get wifi/bootloader/app updates in correct order' do
+          request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+          params = {
+            'appVersion'=> '2.52.0',
+            'appFirmwareVersion' => '10',
+            'espFirmwareVersion' => '10',
+            'hardwareVersion' => 'JL.p5',
+            'bootloaderVersion' => '21',
+          }
+          post :updates, params: params
+          response.should be_success
+          resp = JSON.parse(response.body)
+          resp['updates'].length.should == 3
 
-      resp['updates'][1]['type'].should == 'APPLICATION_FIRMWARE'
-      resp['updates'][1]['bootModeType'].should == 'APPLICATION_BOOT_MODE'
-    end
+          resp['updates'][0]['type'].should == 'WIFI_FIRMWARE'
+          resp['updates'][0]['bootModeType'].should == nil
+
+          resp['updates'][1]['type'].should == 'BOOTLOADER_FIRMWARE'
+          resp['updates'][1]['bootModeType'].should == nil
+          expect(resp['updates'][1]['transfer'][0]['url']).to include('BOOTLOADER_FIRMWARE/24/bootloader.bin')
+
+          resp['updates'][2]['type'].should == 'APPLICATION_FIRMWARE'
+          resp['updates'][2]['bootModeType'].should == 'BOOTLOADER_BOOT_MODE'
+        end
+
+        it 'should have correct boot mode if bootloader is up to date' do
+          request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+          params = {
+            'appVersion'=> '2.52.0',
+            'appFirmwareVersion' => '10',
+            'espFirmwareVersion' => '10',
+            'hardwareVersion' => 'JL.p5',
+            'bootloaderVersion' => '24',
+          }
+          post :updates, params: params
+          response.should be_success
+          resp = JSON.parse(response.body)
+          resp['updates'].length.should == 2
+
+          resp['updates'][0]['type'].should == 'WIFI_FIRMWARE'
+          resp['updates'][0]['bootModeType'].should == nil
+
+          resp['updates'][1]['type'].should == 'APPLICATION_FIRMWARE'
+          resp['updates'][1]['bootModeType'].should == 'APPLICATION_BOOT_MODE'
+        end
+
+        it 'should not downgrade bootloader' do
+          request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+          params = {
+            'appVersion'=> '2.52.0',
+            'appFirmwareVersion' => '10',
+            'espFirmwareVersion' => '10',
+            'hardwareVersion' => 'JL.p5',
+            'bootloaderVersion' => '27',
+          }
+          post :updates, params: params
+          response.should be_success
+          resp = JSON.parse(response.body)
+          resp['updates'].length.should == 2
+
+          resp['updates'][0]['type'].should == 'WIFI_FIRMWARE'
+          resp['updates'][0]['bootModeType'].should == nil
+
+          resp['updates'][1]['type'].should == 'APPLICATION_FIRMWARE'
+          resp['updates'][1]['bootModeType'].should == 'APPLICATION_BOOT_MODE'
+        end
 
 
-    # Temp Tests TODO Remove when we clean this special function out
-    it 'should force a specific version if is 143' do
-      request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
-      params = {
-        'appVersion'=> '2.52.0',
-        'appFirmwareVersion' => '143',
-        'espFirmwareVersion' => 'v3.1.1',
-        'hardwareVersion' => 'J6',
-        'bootloaderVersion' => 'v3.1.1',
-      }
-      post :updates, params: params
-      response.should be_success
-      resp = JSON.parse(response.body)
-      resp['updates'].length.should == 1
-      resp['updates'][0]['version'].should == '143-b2-hw-opt'
-      resp['updates'][0]['type'].should == 'JOULE_ESP32_FIRMWARE'
+        # Temp Tests TODO Remove when we clean this special function out
+        it 'should force a specific version if is 143' do
+          request.env['HTTP_AUTHORIZATION'] = @token.to_jwt
+          params = {
+            'appVersion'=> '2.52.0',
+            'appFirmwareVersion' => '143',
+            'espFirmwareVersion' => 'v3.1.1',
+            'hardwareVersion' => 'J6',
+            'bootloaderVersion' => 'v3.1.1',
+          }
+          post :updates, params: params
+          response.should be_success
+          resp = JSON.parse(response.body)
+          resp['updates'].length.should == 1
+          resp['updates'][0]['version'].should == '143-b2-hw-opt'
+          resp['updates'][0]['type'].should == 'JOULE_ESP32_FIRMWARE'
+        end
+      end
     end
   end
 end
