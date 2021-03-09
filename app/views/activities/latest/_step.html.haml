@@ -22,12 +22,12 @@
     =render 'activities/step_side_edit_buttons'
 
     .step-number-container.section(ng-if="! step.hide_number")
-      %h1.step-number
+      %span.head1_text.step-number
         %div(ng-bind="stepNumber($index)")
 
-    %h5(ng-if="getStepOpenForEdit()")
+    %span.head5_text(ng-if="getStepOpenForEdit()")
       Step Title
-    %h4.text-center(  cs-contenteditable="getStepOpenForEdit()"
+    %span.head4_text.text-center(  cs-contenteditable="getStepOpenForEdit()"
                       ng-model="step.title"
                       placeholder="'Click to write step title'")
 
@@ -42,7 +42,7 @@
                                               ng-class="asideClass()")
         =render 'activities/step_side_edit_buttons'
         %div(ng-include="'_aside.html'")
-      %h5(ng-if="getStepOpenForEdit()")
+      %span.head5_text(ng-if="getStepOpenForEdit()")
         Directions
       .step-content-group
 
@@ -57,7 +57,7 @@
                               show-when-zero="{{hovered}}")
 
       %div(ng-if="getStepOpenForEdit() && csAuthentication.isAdmin()" )
-        %h5
+        %span.head5_text
           Special Sauce
         .step-special-sauce(   cs-contenteditable="getStepOpenForEdit()"
                                   creator="activity.user"
