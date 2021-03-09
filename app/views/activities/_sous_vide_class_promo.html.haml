@@ -4,16 +4,16 @@
       .item-content
         - if @activity.difficulty == 'easy'
           / TEST: http://localhost:3000/activities/celery-root-puree
-          %h3 Discover a new way to get cooking
-          %h4
+          %span.head3_text Discover a new way to get cooking
+          %span.head3_text
             %i
               Check out our beginner’s guide to cooking sous vide.
           %a.btn.btn-primary(href='/classes/cooking-sous-vide-getting-started/landing' no-nell-popup='true')
             Take me there!
         - else
           / TEST: http://localhost:3000/activities/chicken-liver-pate
-          %h3 Want more amazing sous vide recipes?
-          %h4
+          %span.head3_text Want more amazing sous vide recipes?
+          %span.head4_text
             Enroll in <em>Cooking Sous Vide: Beyond the Basics</em>.
           %a.btn.btn-primary(href='/classes/cooking-sous-vide-beyond-the-basics/landing' no-nell-popup='true')
             Take me there!

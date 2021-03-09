@@ -32,20 +32,20 @@
 
           .section
             .quarter-medium-item(ng-show="editMode || !! activity.yield")
-              %h5 Yield
+              %span.head5_text Yield
               .inline.no-p-margin(  cs-contenteditable="editMode"
                         ng-model="activity.yield"
                         itemprop="recipeYield")
               .inline.extra-info(ng-bind-html="maybeDisplayCurrentScaling()")
 
             .quarter-medium-item(ng-show="editMode || !! activity.timing")
-              %h5 Timing
+              %span.head5_text Timing
               .inline.no-p-margin(  cs-contenteditable="editMode"
                         ng-model="activity.timing")
               .inline.extra-info(ng-bind-html="maybeWarnCurrentScaling()")
 
           .section.noprint(ng-show='(! editMode) && (activity.used_in.length > 0)')
-            %h5 Used In
+            %span.head5_text Used In
             %ul.no-bullet
               %li(ng-repeat="item in activity.used_in | orderBy:'creator.id':true | limitTo:10")
                 %a( ng-bind-html='item.title'
@@ -55,7 +55,7 @@
                   %span.icon-group
 
           .section.noprint(ng-show='(! editMode) && (activity.forks.length > 0)')
-            %h5 Forks
+            %span.head5_text Forks
             %ul.no-bullet
               %li(ng-repeat="item in activity.forks | orderBy:'creator.id':true | limitTo:10")
                 %a( ng-bind-html='item.title'

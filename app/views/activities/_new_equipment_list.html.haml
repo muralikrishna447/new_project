@@ -1,5 +1,5 @@
 .section(cs-watch-focus ng-hide="editMode && ! csAuthentication.isAdmin()")
-  %h5 Equipment
+  %span.head5_text Equipment
   %p(ui-sortable="sortOptions" ng-model="#{model}")
     %span(ng-repeat="item in #{model} | filter:#{required_string}Equipment")><
       %csEquipmentEditPair.inline<(csOptional="#{! required}")

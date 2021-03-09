@@ -85,7 +85,7 @@
     - if ! ENV["CS_NO_DISQUS"]
       .row.section
         .span8.offset2
-          %h3 Comments
+          %span.head3_text Comments
           #discussion
             %cscomments(comments-type="activity" comments-id="{{activity.id}}" seo-bot="#{is_static_render}")
 
