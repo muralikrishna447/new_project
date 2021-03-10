@@ -10,11 +10,11 @@
   %div.anim-basic-fade.noprint(collapse="! (showHeroVisualEdit || ! csAuthentication.isAdmin())" )
     %div
       %div.chunk
-        %h5 Youtube ID
+        %span.head5_text Youtube ID
         %input(type="text" ng-model="getObject().youtube_id")
       %div.chunk
-        %h5 Vimeo ID
+        %span.head5_text Vimeo ID
         %input(type="text" ng-model="getObject().vimeo_id")
       %div.chunk
-        %h5 Hero Image
+        %span.head5_text Hero Image
         .csfilepicker(ng-model="getObject().image_id")

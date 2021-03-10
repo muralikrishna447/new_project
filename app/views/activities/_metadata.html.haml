@@ -7,34 +7,34 @@
 %div(ng-show="editMode && editMeta")
   .meta-edit.well.noprint
     %div(ng-show="csAuthentication.isAdmin()")
-      %h6 Activity Type
+      %span.head6_text Activity Type
       .btn-toolbar
         %button.btn(ng-repeat="actType in activityTypes" type="button" ng-click="toggleActivityType(actType)" ng-class="{active: hasActivityType(actType)}")
           {{actType}}
 
-    %h6 Tags
+    %span.head6_text Tags
     .btn.btn-small.btn-primary(ng-click="showTagsModal = true") Select Tags...
     %input(type="hidden" ng-model="activity.tags" ui-select2="tagsSelect2()")
 
     %div(ng-show="csAuthentication.isAdmin()")
-      %h6 Difficulty
+      %span.head6_text Difficulty
       .btn-toolbar
         %button.btn(ng-repeat="actDifficulty in activityDifficulties" type="button" ng-click="setActivityDifficulty(actDifficulty)" ng-class="{active: hasActivityDifficulty(actDifficulty)}")
           {{actDifficulty}}
 
     %div(ng-show="csAuthentication.isAdmin()")
-      %h6 Featured Image (For Thumbnails)
+      %span.head6_text Featured Image (For Thumbnails)
       %img(ng-if="hasFeaturedImage()" ng-src="{{featuredImageURL(200)}}" alt="Featured Image")
       .csfilepicker(ng-model="activity.featured_image_id")
 
     %div(ng-show="csAuthentication.isAdmin()")
-      %h6 Featured Image Tag
+      %span.head6_text Featured Image Tag
       .btn-toolbar
         %button.btn(ng-repeat="actFeaturedImageTag in activityFeaturedImageTag" type="button" ng-click="setActivityFeaturedImageTag(actFeaturedImageTag)" ng-class="{active: hasActivityFeaturedImageTag(actFeaturedImageTag)}")
           {{actFeaturedImageTag}}
 
     %div(ng-show="csAuthentication.isAdmin()")
-      %h6 Include In Galleries
+      %span.head6_text Include In Galleries
       .btn-toolbar
         .btn-group
           %button.btn(type="button" ng-click="activity.include_in_gallery = true" ng-class="{active: activity.include_in_gallery}")
@@ -43,14 +43,14 @@
             No
 
     -if can? :manage, User
-      %h6 Premium Only?
+      %span.head6_text Premium Only?
       .btn-toolbar
         .btn-group
           %button.btn(type="button" ng-click="activity.premium = true" ng-class="{active: activity.premium}")
             Yes
           %button.btn(type="button" ng-click="activity.premium = false" ng-class="{active: ! activity.premium}")
             No
-      %h6 Studio Pass Only?
+      %span.head6_text Studio Pass Only?
       .btn-toolbar
         .btn-group
           %button.btn(type="button" ng-click="activity.studio = true" ng-class="{active: activity.studio}")
@@ -60,7 +60,7 @@
 
   %div(ng-cloak close="showTagsModal = false" modal="showTagsModal" options="modalOptions")
     .modal-header
-      %h2 Choose Tags
+      %span.head2_text Choose Tags
       Pick all that apply. It is ok to have more than one in a category.
     .modal-body.tag-bg
       %csTagChooser(  ng-model="activity.tags"

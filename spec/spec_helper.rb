@@ -1,7 +1,7 @@
 require 'spork'
 require 'webmock/test_unit'
 require 'rspec/collection_matchers'
-
+require 'dox'
 
 Spork.prefork do
   unless ENV['DRB'].nil?
@@ -31,6 +31,8 @@ Spork.prefork do
   Retriable.configure do |c|
     c.tries = 1
   end
+
+  Dir[Rails.root.join('spec/docs/**/*.rb')].each { |f| require f }
 
   RSpec.configure do |config|
     config.mock_with :rspec
