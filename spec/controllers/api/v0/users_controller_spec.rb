@@ -58,6 +58,7 @@ describe Api::V0::UsersController do
         result.delete('capabilities').should == []
         result.delete('settings').should == nil
         result.delete('subscriptions').should == []
+        result.delete('opt_in').should == nil
         result.delete('is_consent_displayed').should == false
         result.empty?.should == true
       end
@@ -100,6 +101,7 @@ describe Api::V0::UsersController do
         result['settings'].delete('country_iso2').should == 'GB'
         result.delete('settings').should == {}
         result.delete('subscriptions').should == []
+        result.delete('opt_in').should == nil
         result.delete('is_consent_displayed').should == false
         result.empty?.should == true
       end
