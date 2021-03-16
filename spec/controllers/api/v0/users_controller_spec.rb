@@ -59,7 +59,6 @@ describe Api::V0::UsersController do
         result.delete('settings').should == nil
         result.delete('subscriptions').should == []
         result.delete('opt_in').should == nil
-        result.delete('is_consent_displayed').should == false
         result.empty?.should == true
       end
 
@@ -102,7 +101,6 @@ describe Api::V0::UsersController do
         result.delete('settings').should == {}
         result.delete('subscriptions').should == []
         result.delete('opt_in').should == nil
-        result.delete('is_consent_displayed').should == false
         result.empty?.should == true
       end
 
@@ -167,10 +165,10 @@ describe Api::V0::UsersController do
         response.should be_success
       end
 
-      it 'should create user with is_consent_displayed as true' do
+      it 'should create user with opt_in as true' do
         Api::BaseController.any_instance.should_receive(:email_list_signup)
         post :create, params: {user: {name: "New User", email: "newuser@chefsteps.com", password: "newUserPassword", opt_in: 'true'}}
-        expect(User.find_by_email('newuser@chefsteps.com').is_consent_displayed).to eq(true)
+        expect(User.find_by_email('newuser@chefsteps.com').opt_in).to eq(true)
         response.should be_success
       end
 
@@ -469,10 +467,10 @@ describe Api::V0::UsersController do
         @user = Fabricate :user, id: 200, email: 'test-api@chefsteps.com', password: '123456', name: 'John Doe', role: 'user'
       end
 
-      it 'should update user opt_in as true and is_consent_displayed true' do
+      it 'should update user opt_in as true' do
         sign_in @user
         Api::BaseController.any_instance.should_receive(:email_list_signup)
-        post :update_user_consent, params: {user: {opt_in: true, is_consent_displayed: true}}
+        post :update_user_consent, params: {user: {opt_in: true}}
 
         response.should be_success
       end
@@ -480,18 +478,17 @@ describe Api::V0::UsersController do
       it 'should call email_list_signup if opt_in is true' do
         sign_in @user
         Api::BaseController.any_instance.should_receive(:email_list_signup)
-        post :update_user_consent, params: {user: {opt_in: true, is_consent_displayed: true}}
+        post :update_user_consent, params: {user: {opt_in: true}}
 
         response.should be_success
         user = User.find(200)
         expect(user.opt_in).to eq(true)
-        expect(user.is_consent_displayed).to eq(true)
       end
 
       it 'should take the country code from cookie' do
         sign_in @user
         request.cookies['cs_geo'] = {country: 'IN'}.to_json
-        post :update_user_consent, params: {user: {opt_in: true, is_consent_displayed: true}}
+        post :update_user_consent, params: {user: {opt_in: true}}
 
         response.should be_success
         user = User.find(200)
@@ -516,10 +513,10 @@ describe Api::V0::UsersController do
         expect(user.opt_in).to eq(false)
       end
 
-      it 'should not allow params other than opt_in is_consent_displayed' do
+      it 'should not allow params other than opt_in' do
         sign_in @user
         Api::BaseController.any_instance.should_receive(:email_list_signup)
-        post :update_user_consent, params: {user: {opt_in: true, is_consent_displayed: true, not_valid: false}}
+        post :update_user_consent, params: {user: {opt_in: true, not_valid: false}}
 
         response.should be_success
       end
