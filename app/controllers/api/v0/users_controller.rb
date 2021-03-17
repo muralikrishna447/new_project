@@ -143,7 +143,7 @@ module Api
         @user.country_code = detect_country_code unless @user.country_code.present?
         if @user.update(user_consent_params)
           email_list_signup(@user, 'api_standard') if @user.opt_in
-          render json: { message: 'Success' }, status: 200
+          render json: { message: 'Success', opt_in: @user.opt_in }, status: 200
         else
           render json: { message: 'Update Failed' }, status: 500
         end
