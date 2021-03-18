@@ -39,8 +39,6 @@ module Api
         else
           @user = User.new(user_params)
           @user.country_code = detect_country_code
-          # consent showed up during signing up by email and password
-          @user.is_consent_displayed = true
           create_new_user(@user, @user.opt_in, params[:source])
         end
       end
@@ -145,7 +143,7 @@ module Api
         @user.country_code = detect_country_code unless @user.country_code.present?
         if @user.update(user_consent_params)
           email_list_signup(@user, 'api_standard') if @user.opt_in
-          render json: { message: 'Success' }, status: 200
+          render json: { message: 'Success', opt_in: @user.opt_in }, status: 200
         else
           render json: { message: 'Update Failed' }, status: 500
         end
@@ -231,7 +229,7 @@ module Api
       end
 
       def user_consent_params
-        params.require(:user).permit(:opt_in, :is_consent_displayed)
+        params.require(:user).permit(:opt_in)
       end
     end
   end
