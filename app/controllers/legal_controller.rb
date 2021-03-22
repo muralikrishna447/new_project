@@ -160,6 +160,7 @@ class LegalController < ApplicationController
     end
 
     @languages = @country[:languages].map { |e| [e]  }
+    @dropdown_languages = @country[:languages].map { |e| ["Change to #{e}", e]  }
 
     # language is a query string parameter
     # If it matches one of the available languages, then we will use that
