@@ -22,7 +22,10 @@ ActiveAdmin.register Activity, as: 'Publishing Schedule' do
     def update
       @activity = Activity.find(params[:id])
       begin
-        @activity.publishing_schedule.update_attributes!(publishing_schedule_params)
+        publishing_schedule = PublishingSchedule.find_or_initialize_by(activity_id: @activity.id)
+        publishing_schedule.active = true
+        publishing_schedule.assign_attributes(publishing_schedule_params)
+        publishing_schedule.save!
         redirect_to admin_publishing_schedules_path
         return
       rescue Exception => e
@@ -35,13 +38,13 @@ ActiveAdmin.register Activity, as: 'Publishing Schedule' do
       @activity = Activity.includes(:publishing_schedule).find(params[:id])
       if ! @activity.publishing_schedule
         suggested_dt = DateTime.now + 1.day
-        @activity.publishing_schedule = PublishingSchedule.new(publish_at: suggested_dt)
+        @activity.build_publishing_schedule(publish_at: suggested_dt)
       end
     end
 
     def destroy
       activity = Activity.includes(:publishing_schedule).find(params[:id])
-      activity.publishing_schedule.destroy
+      activity.publishing_schedule.try(:destroy)
       flash[:notice] = "Schedule removed for \"#{activity.title}\""
       redirect_to admin_publishing_schedules_path
     end
