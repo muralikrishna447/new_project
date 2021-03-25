@@ -3,7 +3,7 @@ class Api::UserMeSerializer < ApplicationSerializer
   # that will break some clients so not doing it now.
   #format_keys :lower_camel
 
-  attributes :id, :name, :slug, :email, :avatar_url, :encrypted_bloom_info, :premium, :studio, :used_circulator_discount, :admin, :needs_special_terms, :joule_purchase_count, :referral_code, :capabilities, :opt_in, :plan_type
+  attributes :id, :name, :slug, :email, :avatar_url, :encrypted_bloom_info, :premium, :studio, :used_circulator_discount, :admin, :needs_special_terms, :joule_purchase_count, :referral_code, :capabilities, :opt_in, :plan_type, :premium_member
 
 
   has_one :settings, serializer: Api::UserSettingsSerializer
