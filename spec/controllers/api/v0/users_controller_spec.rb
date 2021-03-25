@@ -50,6 +50,7 @@ describe Api::V0::UsersController do
         result.delete('request_id')
         result.delete('plan_type').should == nil
         result.delete('premium').should == false
+        result.delete('premium_member').should == false
         result.delete('studio').should == false
         result.delete('used_circulator_discount').should == false
         result.delete('admin').should == false
@@ -87,6 +88,7 @@ describe Api::V0::UsersController do
         result.delete('request_id')
         result.delete('plan_type').should == nil
         result.delete('premium').should == false
+        result.delete('premium_member').should == false
         result.delete('studio').should == false
         result.delete('used_circulator_discount').should == false
         result.delete('admin').should == false
