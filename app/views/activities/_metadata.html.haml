@@ -14,7 +14,7 @@
 
     %span.head6_text Tags
     .btn.btn-small.btn-primary(ng-click="showTagsModal = true") Select Tags...
-    %input(type="hidden" ng-model="activity.tags" ui-select2="tagsSelect2()")
+    %input(type="hidden" ng-model="activity.tags" ui-select2="tagsSelect2()" aria-label='Select tags')
 
     %div(ng-show="csAuthentication.isAdmin()")
       %span.head6_text Difficulty
