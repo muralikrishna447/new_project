@@ -28,8 +28,11 @@ ActiveAdmin.register PremiumGiftCertificateGroup do
       un_redeemed_counts[obj.id] || 0
     end
     column 'Download coupon report', :coupon_creation_status do |obj|
-      return 'In Progress' unless obj.coupon_creation_status
-      link_to('Download Coupons', get_all_coupons_admin_premium_gift_certificate_group_path(obj.id))
+      if obj.coupon_creation_status
+        link_to('Download Coupons', get_all_coupons_admin_premium_gift_certificate_group_path(obj.id))
+      else
+        'In Progress'
+      end
     end
   end
 
@@ -37,8 +40,8 @@ ActiveAdmin.register PremiumGiftCertificateGroup do
 
     def create
       @cert_group = PremiumGiftCertificateGroup.create(cert_group_params)
-      #:TODO: check this method and process
-      create!
+      redirect_to admin_premium_gift_certificate_groups_path,
+                  notice: "Premium Gift Certificate Groups Created"
     end
 
     private
