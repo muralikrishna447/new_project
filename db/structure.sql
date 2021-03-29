@@ -1692,6 +1692,40 @@ ALTER SEQUENCE public.polls_id_seq OWNED BY public.polls.id;
 
 
 --
+-- Name: premium_gift_certificate_groups; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.premium_gift_certificate_groups (
+    id bigint NOT NULL,
+    title character varying NOT NULL,
+    coupon_count integer NOT NULL,
+    created_by_id integer NOT NULL,
+    coupon_creation_status boolean DEFAULT false,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: premium_gift_certificate_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.premium_gift_certificate_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: premium_gift_certificate_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.premium_gift_certificate_groups_id_seq OWNED BY public.premium_gift_certificate_groups.id;
+
+
+--
 -- Name: premium_gift_certificates; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1703,7 +1737,8 @@ CREATE TABLE public.premium_gift_certificates (
     token character varying(255),
     redeemed boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    premium_gift_certificate_group_id integer
 );
 
 
@@ -3059,6 +3094,13 @@ ALTER TABLE ONLY public.polls ALTER COLUMN id SET DEFAULT nextval('public.polls_
 
 
 --
+-- Name: premium_gift_certificate_groups id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.premium_gift_certificate_groups ALTER COLUMN id SET DEFAULT nextval('public.premium_gift_certificate_groups_id_seq'::regclass);
+
+
+--
 -- Name: premium_gift_certificates id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3582,6 +3624,14 @@ ALTER TABLE ONLY public.poll_items
 
 ALTER TABLE ONLY public.polls
     ADD CONSTRAINT polls_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: premium_gift_certificate_groups premium_gift_certificate_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.premium_gift_certificate_groups
+    ADD CONSTRAINT premium_gift_certificate_groups_pkey PRIMARY KEY (id);
 
 
 --
@@ -4213,10 +4263,24 @@ CREATE INDEX index_likes_on_likeable_type_and_likeable_id ON public.likes USING 
 
 
 --
+-- Name: index_menus_on_parent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_menus_on_parent_id ON public.menus USING btree (parent_id);
+
+
+--
 -- Name: index_premium_gift_certificates_on_token; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_premium_gift_certificates_on_token ON public.premium_gift_certificates USING btree (token);
+
+
+--
+-- Name: index_premium_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_premium_group_id ON public.premium_gift_certificates USING btree (premium_gift_certificate_group_id);
 
 
 --
