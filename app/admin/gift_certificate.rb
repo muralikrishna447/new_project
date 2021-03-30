@@ -5,7 +5,7 @@ def fetch_status_count(redemption_status:)
 end
 
 ActiveAdmin.register PremiumGiftCertificateGroup do
-
+  actions :index, :new
   form partial: 'form'
 
   filter :title
@@ -13,7 +13,7 @@ ActiveAdmin.register PremiumGiftCertificateGroup do
   filter :coupon_creation_status
   filter :created_at
 
-  permit_params :title, :coupon_count
+  permit_params :title, :coupon_count, :created_by_id
 
   index do
     redeemed_counts = fetch_status_count(redemption_status: true)
@@ -39,9 +39,9 @@ ActiveAdmin.register PremiumGiftCertificateGroup do
   controller do
 
     def create
-      @cert_group = PremiumGiftCertificateGroup.create(cert_group_params)
-      redirect_to admin_premium_gift_certificate_groups_path,
-                  notice: "Premium Gift Certificate Groups Created"
+      params[:premium_gift_certificate_group][:title].strip!
+      params[:premium_gift_certificate_group][:created_by_id] = current_user.id
+      super
     end
 
     private
@@ -58,14 +58,14 @@ ActiveAdmin.register PremiumGiftCertificateGroup do
     cert_group = PremiumGiftCertificateGroup.find(params[:id])
     csv_string = CSV.generate(headers: true) do |csv|
       csv << attributes
-      PremiumGiftCertificate.joins(:user).select('premium_gift_certificates.id, token, users.email as purchaser_email')
+      cert_group.premium_gift_certificates.joins(:user).select('premium_gift_certificates.id, token, users.email as purchaser_email')
                 .find_each(batch_size: 1000) do |coupon|
         csv << [coupon.token, 'Yes', coupon.purchaser_email]
       end
-      PremiumGiftCertificate.unredeemed.find_each(batch_size: 1000) do |coupon|
+      cert_group.premium_gift_certificates.unredeemed.find_each(batch_size: 1000) do |coupon|
         csv << [coupon.token, 'No', nil]
       end
     end
-    send_data csv_string, filename: "#{cert_group.title}.csv"
+    send_data csv_string, filename: "#{cert_group.title} coupon report.csv"
   end
 end
