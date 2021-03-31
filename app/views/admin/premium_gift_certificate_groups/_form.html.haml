@@ -2,7 +2,7 @@
 = semantic_form_for [:admin, @premium_gift_certificate_group] do |f|
   = f.inputs do
     = f.input :title
-    = f.input :coupon_count, max: 5000, min: 1
+    = f.input :coupon_count, label: 'Coupon count (maximum 10000)'
 
   = f.actions do
     = f.action :submit
