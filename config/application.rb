@@ -202,5 +202,9 @@ module Delve
         parsed
       end
     end
+
+    blocked_words = YAML.load_file(Rails.root.join('config', 'offensive_words.yml'))['offensive_words']
+    regex_str = blocked_words.map{|a| "\\b#{a}\\b"}.join('|')
+    config.blocked_words = Regexp.new regex_str
   end
 end

@@ -20,6 +20,9 @@ ActiveAdmin.register User do
   filter :role
   filter :referred_from
 
+  scope('all', default: true)
+  scope('Abused Users') { |scope| scope.abused_users }
+
   action_item :view, only: [:show] do
     link_to 'Send Password Reset Email', reset_password_admin_user_path(user), method: :post, data: { confirm: 'Are you sure?' }
   end
@@ -171,4 +174,9 @@ ActiveAdmin.register User do
   after_save do |user|
     Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user.id)
   end
+
+  before_save do |user|
+    user.is_abused = user.name.match?(Rails.configuration.blocked_words)
+  end
+
 end

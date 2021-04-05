@@ -2633,8 +2633,8 @@ CREATE TABLE public.users (
     remember_token character varying,
     opt_in boolean,
     country_code text,
-    apple_user_id character varying,
-    marketing_mail_status integer DEFAULT 0
+    marketing_mail_status integer DEFAULT 0,
+    is_abused boolean DEFAULT false
 );
 
 
