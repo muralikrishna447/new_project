@@ -2631,6 +2631,7 @@ CREATE TABLE public.users (
     joule_purchase_count integer DEFAULT 0,
     referral_code character varying(255),
     remember_token character varying,
+    apple_user_id character varying,
     opt_in boolean,
     country_code text,
     marketing_mail_status integer DEFAULT 0,
