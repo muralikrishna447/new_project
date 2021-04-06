@@ -50,6 +50,7 @@ class User < ApplicationRecord
 
   scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
   scope :where_all, ->(column, key, value) { where("? LIKE ALL (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
+  scope :abused_users, -> { where(is_abused: true) }
 
   gravtastic
 
@@ -72,6 +73,10 @@ class User < ApplicationRecord
                           :referrer_id, :survey_results, :events_count]
 
   enum marketing_mail_status: %w(unsubscribed subscribed pending cleaned)
+
+  before_save do
+    self.is_abused = name.match?(Rails.configuration.blocked_words)
+  end
 
   def settings_hash
     return {} if self.settings.nil?

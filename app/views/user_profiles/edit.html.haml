@@ -21,7 +21,7 @@
           = form_for @user, url: user_profile_path(@user), method: :put do |f|
             - if @user.errors.full_messages.any?
               - @user.errors.messages.each do |_field, message|
-                %label.profile-error-msg
+                %label.profile-error-msg(role='alert')
                   = message.first
             .row
               .span12
