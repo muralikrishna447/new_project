@@ -16,8 +16,7 @@
   @show = !csAuthentication.currentUser()
 
   @signup = ->
-    @dismissed = true
-    $scope.$emit 'openSignupModal', @source
+    location.assign("/sso?path=" + window.location.href)
 
   @dismiss = ->
     @dismissed = true
