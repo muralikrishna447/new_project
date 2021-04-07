@@ -1,0 +1,10 @@
+= render 'layouts/filepicker'
+= semantic_form_for [:admin, @premium_gift_certificate_group] do |f|
+  = f.inputs do
+    = f.input :title
+    = f.input :coupon_count, label: 'Coupon count (maximum 10000)'
+
+  = f.actions do
+    = f.action :submit
+    = f.action :cancel, wrapper_html: {class: :cancel}, label: 'Cancel'
+
