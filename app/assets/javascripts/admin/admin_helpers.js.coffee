@@ -266,6 +266,14 @@ $(document).on 'click', ".copy-url", ->
     $('.copy-notify').text('');
   ), 3000
 
+$(document).on 'click', ".copy-slug", ->
+  txt = $(this).attr("data-url")
+  copyText(txt)
+  $(".flashes").html("<div class='flash flash_notice'>Slug Copied!</div>");
+  setTimeout ( ->
+    $('.flashes').text('');
+  ), 3000
+
 $(document).ready ->
   $('#activity_is_promoted').click ->
     if $(this).prop('checked')

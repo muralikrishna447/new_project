@@ -812,6 +812,42 @@ ALTER SEQUENCE public.courses_id_seq OWNED BY public.courses.id;
 
 
 --
+-- Name: embed_pdfs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.embed_pdfs (
+    id bigint NOT NULL,
+    title character varying,
+    image_id text,
+    image_alt character varying,
+    image_longdesc text,
+    pdf_id character varying,
+    slug character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: embed_pdfs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.embed_pdfs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: embed_pdfs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.embed_pdfs_id_seq OWNED BY public.embed_pdfs.id;
+
+
+--
 -- Name: enrollments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2936,6 +2972,13 @@ ALTER TABLE ONLY public.courses ALTER COLUMN id SET DEFAULT nextval('public.cour
 
 
 --
+-- Name: embed_pdfs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.embed_pdfs ALTER COLUMN id SET DEFAULT nextval('public.embed_pdfs_id_seq'::regclass);
+
+
+--
 -- Name: enrollments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3443,6 +3486,14 @@ ALTER TABLE ONLY public.copies
 
 ALTER TABLE ONLY public.courses
     ADD CONSTRAINT courses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: embed_pdfs embed_pdfs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.embed_pdfs
+    ADD CONSTRAINT embed_pdfs_pkey PRIMARY KEY (id);
 
 
 --
@@ -4095,6 +4146,13 @@ CREATE INDEX index_comments_on_commentable_id_and_commentable_type ON public.com
 --
 
 CREATE INDEX index_copies_on_location ON public.copies USING btree (location);
+
+
+--
+-- Name: index_embed_pdfs_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_embed_pdfs_on_slug ON public.embed_pdfs USING btree (slug);
 
 
 --
