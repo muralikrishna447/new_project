@@ -58,7 +58,7 @@ ActiveAdmin.register PremiumGiftCertificateGroup do
     cert_group = PremiumGiftCertificateGroup.find(params[:id])
     csv_string = CSV.generate(headers: true) do |csv|
       csv << attributes
-      cert_group.premium_gift_certificates.joins(:user).select('premium_gift_certificates.id, token, users.email as purchaser_email')
+      cert_group.premium_gift_certificates.redeemed.joins(:user).select('premium_gift_certificates.id, token, users.email as purchaser_email')
                 .find_each(batch_size: 1000) do |coupon|
         csv << [coupon.token, 'Yes', coupon.purchaser_email]
       end

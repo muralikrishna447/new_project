@@ -4,6 +4,7 @@ class PremiumGiftCertificate < ApplicationRecord
 
   scope :free_gifts, -> { where(price: 0) }
   scope :unredeemed, -> { where(redeemed: false) }
+  scope :redeemed, -> { where(redeemed: true) }
 
   after_initialize do
     self.token = self.token || unique_code { |token| PremiumGiftCertificate.unscoped.exists?(token: token) }
@@ -17,6 +18,7 @@ class PremiumGiftCertificate < ApplicationRecord
     enrollment = nil
     PremiumGiftCertificate.transaction do
       gc.redeemed = true
+      gc.purchaser_id = user.id
       gc.save!
       user.make_premium_member(gc.price)
     end
