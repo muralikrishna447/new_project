@@ -4,7 +4,7 @@ class PremiumGiftCertificate < ApplicationRecord
 
   scope :free_gifts, -> { where(price: 0) }
   scope :unredeemed, -> { where(redeemed: false) }
-  scope :redeemed, -> { where(redeemed: true) }
+  scope :coupon_redeemed, -> { where(redeemed: true) }
 
   after_initialize do
     self.token = self.token || unique_code { |token| PremiumGiftCertificate.unscoped.exists?(token: token) }
