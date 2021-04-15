@@ -2228,7 +2228,9 @@ CREATE TABLE public.steps (
     vimeo_id character varying(255),
     appliance_instruction_text text,
     appliance_instruction_image text,
-    appliance_instruction_image_type integer DEFAULT 0
+    appliance_instruction_image_type integer DEFAULT 0,
+    appliance_instruction_image_alt text,
+    image_alt text
 );
 
 
