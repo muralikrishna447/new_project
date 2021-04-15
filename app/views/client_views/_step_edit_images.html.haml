@@ -21,8 +21,9 @@
                  ng-model="step.appliance_instruction_image_type"
                  ng-options="type.value as type.text for type in applianceImageTypes()")
         .csfilepicker(ng-model="step.appliance_instruction_image" ng-if="step.appliance_instruction_image_type == 'custom'" )
-        %img.appliance-image(src="https://d92f495ogyf88.cloudfront.net/static/control-freak.png" ng-if="step.appliance_instruction_image_type == 'control_freak'")
-        %img.appliance-image(src="https://d92f495ogyf88.cloudfront.net/static/smart-over-air.png" ng-if="step.appliance_instruction_image_type == 'smart_over_air'")
+        %input.nohtml(type="text" ng-model="step.appliance_instruction_image_alt" placeholder="Appliance Image alternative text" style="width: 100%;" aria-label="Alternative text for appliance image" ng-if="step.appliance_instruction_image_type == 'custom'")
+        %img.appliance-image(src="https://d92f495ogyf88.cloudfront.net/static/control-freak.png" alt="control freak" ng-if="step.appliance_instruction_image_type == 'control_freak'")
+        %img.appliance-image(src="https://d92f495ogyf88.cloudfront.net/static/smart-over-air.png" alt="smart oven air" ng-if="step.appliance_instruction_image_type == 'smart_over_air'")
       %span.head4_text Video
       %div
         %span.head5_text.inline Youtube ID
@@ -33,4 +34,5 @@
       .section
       %span.head4_text Image
       .csfilepicker(ng-model="step.image_id")
-      %input.nohtml(ng-show="!!step.image_id" type="text" ng-model="step.image_description" placeholder="Image description" style="width: 100%;" aria-label="Image" )
+      %input.nohtml(ng-show="!!step.image_id" type="text" ng-model="step.image_alt" placeholder="Image alternative text" style="width: 100%;" aria-label="Image alternative text" )
+      %input.nohtml(ng-show="!!step.image_id" type="text" ng-model="step.image_description" placeholder="Image Long description" style="width: 100%;" aria-label="Image Long description" )
