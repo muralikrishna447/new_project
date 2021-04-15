@@ -1,6 +1,6 @@
 class Api::StepSerializer < ApplicationSerializer
   format_keys :lower_camel
-  attributes :order, :title, :directions, :image, :is_aside, :youtube_id, :vimeo_id, :hide_number, :id, :appliance_instruction_text, :appliance_image, :can_calculate
+  attributes :order, :title, :directions, :image, :is_aside, :youtube_id, :vimeo_id, :hide_number, :id, :appliance_instruction_text, :appliance_image, :can_calculate, :appliance_instruction_image_alt_text, :image_description, :image_alt
 
   has_many :ingredients, serializer: Api::ActivityIngredientSerializer
 
@@ -33,5 +33,11 @@ class Api::StepSerializer < ApplicationSerializer
 
   def appliance_instruction_text
     CGI.unescapeHTML(object.appliance_instruction_text.to_s)
+  end
+
+  def appliance_instruction_image_alt_text
+    return object.appliance_instruction_image_alt if object.appliance_instruction_image_type == 'custom'
+
+    object.appliance_instruction_image_type
   end
 end

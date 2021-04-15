@@ -618,6 +618,7 @@ class Activity < ApplicationRecord
         vimeo_id: step_attr[:vimeo_id],
         image_id: step_attr[:image_id],
         image_description: step_attr[:image_description],
+        image_alt: step_attr[:image_alt],
         audio_clip: step_attr[:audio_clip],
         audio_title: step_attr[:audio_title],
         step_order: idx,
@@ -627,7 +628,8 @@ class Activity < ApplicationRecord
         extra: step_attr[:extra],
         appliance_instruction_text: step_attr[:appliance_instruction_text],
         appliance_instruction_image: step_attr[:appliance_instruction_image],
-        appliance_instruction_image_type: step_attr[:appliance_instruction_image_type]
+        appliance_instruction_image_type: step_attr[:appliance_instruction_image_type],
+        appliance_instruction_image_alt: step_attr[:appliance_instruction_image_alt]
       )
       step.update_ingredients_json(step_attr[:ingredients]) if step_attr.key?('ingredients')
       step_attr[:id] = step.id
