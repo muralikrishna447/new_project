@@ -48,15 +48,15 @@
       //          %span.flag-icon(ng-class="dropdown.flagIconClass(country.code)")>
       //          {{country.name}}
 
-      %a.cs-nav-item.cs-nav-icon-item.hide-mobile(href='/gallery' aria-label="gallery" tabindex="3")
+      %a.cs-nav-item.cs-nav-icon-item.hide-mobile(href='/gallery' aria-label="gallery" tabindex="3" role="menuitem" aria-label="gallery search")
         %span.icon-search
 
       - if current_user
         .dropdown.dropdown-right.cs-nav-icon-item.hide-mobile(ng-controller='csDropdownController as dropdown')
-          #profile-dropdown-toggle.dropdown-toggle.profile-image(ng-click='dropdown.toggle($event)')
+          #profile-dropdown-toggle.dropdown-toggle.profile-image(ng-click='dropdown.toggle($event)' ng-keyup="$event.keyCode == 13 ? dropdown.toggle($event) : null" role="menuitem" tabindex= "3" aria-label="profile")
             - if current_user.image_id.blank?
               //.profile-button
-              %span.icon-profile{"tabindex": "3"}
+              %span.icon-profile
             - else
               .cs-nav-profile
                 .profile-image
@@ -64,14 +64,14 @@
           .dropdown-menu(ng-show='dropdown.showMenu')
             .dropdown-wrapper
               .dropdown-menu-item
-                %a(ng-href="/profiles/{{authentication.currentUser().slug}}")Profile
+                %a(ng-href="/profiles/{{authentication.currentUser().slug}}" role="menuitem")Profile
 
               - if Subscription::IS_STUDIO_LIVE
                 .dropdown-menu-item
-                  %a(ng-href="/subscriptions")Subscription
+                  %a(ng-href="/subscriptions" role="menuitem")Subscription
 
               .dropdown-menu-item
-                %a(ng-href="/logout")Sign Out
+                %a(ng-href="/logout" role="menuitem")Sign Out
       / - else
       /   %a.cs-nav-item.button.small.hide-mobile#nav-login(ng-click="openModal('login')")
       /     Sign In
