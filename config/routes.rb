@@ -277,6 +277,7 @@ Rails.application.routes.draw do
       resources :locations, only: [:index]
       resources :oauth_tokens, only: [:index]
       resources :pages, only: [:index, :show, :create, :update]
+      resources :embed_pdfs, only: :show
 
       resource :menus do
         get :list, on: :collection
