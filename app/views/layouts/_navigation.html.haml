@@ -53,7 +53,7 @@
 
       - if current_user
         .dropdown.dropdown-right.cs-nav-icon-item.hide-mobile(ng-controller='csDropdownController as dropdown')
-          #profile-dropdown-toggle.dropdown-toggle.profile-image(ng-click='dropdown.toggle($event)' ng-keyup="$event.keyCode == 13 ? dropdown.toggle($event) : null" role="menuitem" tabindex= "3" aria-label="profile")
+          #profile-dropdown-toggle.dropdown-toggle.profile-image(ng-click='dropdown.toggle($event)' ng-keyup="$event.keyCode == 13 ? dropdown.toggle($event) : null" aria-expanded="false" role="menuitem" tabindex= "3" aria-label="profile")
             - if current_user.image_id.blank?
               //.profile-button
               %span.icon-profile

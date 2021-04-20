@@ -70,3 +70,7 @@ $ ->
   $('.parent_menu').on 'keyup', (e) ->
     if e.which == 13
       $(this).trigger('click')
+
+  $('.parent_menu').on 'click', (e) ->
+    $('div.dropdown-toggle.parent_menu').each (i, e) ->
+      $(e).attr 'aria-expanded', $(e).parent().hasClass('open')
