@@ -6,7 +6,7 @@
 - menu_list[0]&.each do |menu|
   - if menu_list[menu['id']]
     .dropdown.cs-nav-item.cs-menu-permission
-      .dropdown-toggle.parent_menu{"tabindex": "2", "role": "menuItem"} #{menu['name']}
+      .dropdown-toggle.parent_menu{"tabindex": "2", "role": "menuItem", "aria-expanded": "false"} #{menu['name']}
       .dropdown-menu
         .dropdown-wrapper
           .dropdown-menu-item
@@ -33,7 +33,7 @@
 
 - if current_admin?
   .dropdown.cs-nav-item(ng-controller='csDropdownController as dropdown')
-    .dropdown-toggle(ng-click='dropdown.toggle($event)' ng-keyup="$event.keyCode == 13 ? dropdown.toggle($event) : null" tabindex="2" role= "menuItem")
+    .dropdown-toggle(ng-click='dropdown.toggle($event)' aria-expanded="false" ng-keyup="$event.keyCode == 13 ? dropdown.toggle($event) : null" tabindex="2" role= "menuItem")
       Admin
     .dropdown-menu(ng-show='dropdown.showMenu')
       %ul.dropdown-wrapper
