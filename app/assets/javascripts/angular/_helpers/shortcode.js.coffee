@@ -51,6 +51,10 @@ convertFtoC = (f) ->
             """
               <div cs-fetch='#{arg1}' type='Activity' part='#{arg2}' card='_activity_embed_card.html'></div>
             """
+          when 'fetchCuts'
+            """
+              <div cs-fetch='#{arg1}' type='Cuts'  part='#{arg2}' card='_activity_embed_card.html'></div>
+            """
           when 'linktocomments'
             "<a href='#comments'>#{contents}</a>"
           when 'quote'
