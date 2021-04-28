@@ -30,6 +30,11 @@
           {id: attrs.csFetch}
           (value) ->
             scope.obj = value
+            if attrs.type == 'Activity'
+              scope.objType = value.activity_type[0] || 'Recipe'
+            else if attrs.type == 'Cuts'
+              scope.objType = 'Cuts'
+
             scope.obj.hasVideo = value.youtube_id || value.vimeo_id
             if attrs.part? && attrs.part != "null"
               scope.fetched = scope.obj[attrs.part] || scope.obj.text_fields?[attrs.part] || ("<span style='color: red;'>ERROR: couldn't find section named '" + attrs.part + "'</span>")

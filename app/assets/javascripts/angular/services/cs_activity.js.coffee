@@ -13,6 +13,16 @@
 
 ]
 
+@app.factory 'Cuts', ['$resource', ($resource) ->
+
+  return $resource( "/cuts/api/:id",
+    {},
+    {
+      get_as_json: {url: "/cuts/api/:id", method: "GET"}
+    }
+  )
+]
+
 @app.factory 'Pdf', ['$resource', ($resource) ->
 
   return $resource( "/api/v0/embed_pdfs/:id",
