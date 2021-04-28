@@ -206,8 +206,6 @@ Rails.application.routes.draw do
 
   resources :events, only: [:create]
 
-  resources :user_surveys, only: [:create]
-
   get "/affiliates/share_a_sale" => "affiliates#share_a_sale"
 
   get "/invitations/welcome" => "home#welcome"
@@ -274,6 +272,7 @@ Rails.application.routes.draw do
       resources :likes, only: [:create, :destroy] do
         post :unlike, on: :collection
       end
+      resources :user_surveys, only: [:create]
       resources :locations, only: [:index]
       resources :oauth_tokens, only: [:index]
       resources :pages, only: [:index, :show, :create, :update]
