@@ -13,6 +13,16 @@
 
 ]
 
+@app.factory 'Cuts', ['$resource', ($resource) ->
+
+  return $resource( "/cuts/api/:id",
+    {},
+    {
+      get_as_json: {url: "/cuts/api/:id", method: "GET"}
+    }
+  )
+]
+
 # This can't be the best way to do this, but I can't figure out how to get the objects return from
 # $resource above to be Activities, not just Resources, so I can add these methods to the protoype.
 @app.service 'ActivityMethods', ["Activity", (Activity) ->
