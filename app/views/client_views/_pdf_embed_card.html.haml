@@ -1,0 +1,4 @@
+.nell-card
+  .nell-card-media
+    %a(ng-href='{{obj.pdfUrl}}' aria-label='Click here to download {{obj.title}}' target='_blank' no-nell-popup)
+      %img(ng-src='{{obj.imageUrl}}' alt="{{obj.imageAlt}}" ng-attr-longdesc='{{obj.imageLongdesc || undefined}}')
