@@ -162,32 +162,7 @@ private
     end
   end
 
-  def email_list_add_to_group(email, grouping_id, groups)
-    # Reject blank group names
-    groups = groups.reject{ |name| name.blank? } if groups.kind_of?(Array)
 
-    merge_vars = {
-      groupings: [
-        {
-          id: '8061',
-          groups: groups
-        }
-      ]
-    }
-
-    begin
-      puts "Adding user: #{email} to interest groups"
-      Gibbon::API.lists.update_member(
-        id: Rails.configuration.mailchimp[:list_id],
-        email: { email: email },
-        merge_vars: merge_vars,
-        replace_interests: false
-      )
-    rescue Exception => e
-      puts "Error adding user: #{email}"
-      puts "Error message: #{e.message}"
-    end
-  end
 
   # http://nils-blum-oeste.net/cors-api-with-oauth2-authentication-using-rails-and-angularjs/
   # do not use CSRF for CORS options
