@@ -140,7 +140,7 @@ class BaseApplicationController < ActionController::Base
     merge_vars = {
         groupings: [
             {
-                id: '8061',
+                id: grouping_id,
                 groups: groups
             }
         ]

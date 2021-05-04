@@ -111,7 +111,8 @@ Delve::Application.configure do
   #Staging mailchimp
   config.mailchimp = {
     :api_key => ENV['MAILCHIMP_API_KEY'],
-    :list_id => '739b719346'
+    :list_id => '739b719346',
+    :survey_group_id => '293870'
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 

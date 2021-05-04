@@ -104,7 +104,8 @@ Rails.application.configure do
 
   config.mailchimp = {
     :api_key => ENV['MAILCHIMP_API_KEY'],
-    :list_id => 'a61ebdcaa6'
+    :list_id => 'a61ebdcaa6',
+    :survey_group_id => '8152'
   }
   ENV['MAILCHIMP_API_KEY'] = config.mailchimp[:api_key] # for gibbon
 
