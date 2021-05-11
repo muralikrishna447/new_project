@@ -21,7 +21,7 @@
 
       .egg-not-settings
         .egg-header
-          %a.egg-hamburger(ng-click="toggleShowSettings($event)")
+          %a.egg-hamburger(ng-click="toggleShowSettings($event)" ng-keyup="$event.keyCode == 13 ? toggleShowSettings($event) : null" tabindex="3")
             .hamburger-bar
             .hamburger-bar
             .hamburger-bar
@@ -32,46 +32,46 @@
           .page-switch(ng-switch="inputs.state")
             .page.anim-basic-fade(ng-switch-when="white")
               %span.head4_text.text-center What texture would you like your egg white?
-              %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity" item-width="300")
-                %video(loop="true" playsinline="true" controls="true" ng-repeat="whiteVideo in whiteVideos" )
-                  %source(ng-src="{{trustedVideo(whiteVideo.video.mp4)}}" type="video/mp4")
-                  %source(ng-src="{{trustedVideo(whiteVideo.video.webm)}}" type="video/webm")
+              %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_white_viscosity" item-width="300" tabindex="3")
+                %video(loop="true" playsinline="true" controls="true" ng-repeat="whiteVideo in whiteVideos" tabindex="3")
+                  %source(ng-src="{{trustedVideo(whiteVideo.video.mp4)}}" type="video/mp4" tabindex="3")
+                  %source(ng-src="{{trustedVideo(whiteVideo.video.webm)}}" type="video/webm" tabindex="3")
                   Looks like your browser does not support the video tag.
               .control-group.text-center
                 .controls
-                  %a(ng-click="incrementWhite(-1)")
+                  %a(ng-click="incrementWhite(-1)" ng-keyup="$event.keyCode == 13 ? incrementWhite(-1) : null" tabindex="3")
                     %span.icon-angle-left
                     Runny
                   %input(type="range" ng-model='inputs.perceptual_white_viscosity' min="0" max="13" step=".01" aria-label="Runny")
-                  %a(ng-click="incrementWhite(1)")
+                  %a(ng-click="incrementWhite(1)" ng-keyup="$event.keyCode == 13 ? incrementWhite(1) : null" tabindex="3")
                     Firm
                     %span.icon-angle-right
               .egg-footer
-                .btn.btn-primary(ng-click="goState('yolk')")
+                .btn.btn-primary(ng-click="goState('yolk')" ng-keyup="$event.keyCode == 13 ? goState('yolk') : null" tabindex="3")
                   NEXT
                   %span.icon-angle-right
 
             .page.anim-basic-fade(ng-switch-when="yolk")
               %span.head4_text.text-center What texture would you like your egg yolk?
-              %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1" item-width="300")
-                %video(loop="true" playsinline="true" controls="true" ng-repeat="yolkVideo in yolkVideos" )
-                  %source(ng-src="{{trustedVideo(yolkVideo.video.mp4)}}" type="video/mp4")
-                  %source(ng-src="{{trustedVideo(yolkVideo.video.webm)}}" type="video/webm")
+              %csfrictionslider.egg-image-carousel(item-offset="inputs.perceptual_yolk_viscosity - 1" item-width="300" tabindex="3")
+                %video(loop="true" playsinline="true" controls="true" ng-repeat="yolkVideo in yolkVideos" tabindex="3")
+                  %source(ng-src="{{trustedVideo(yolkVideo.video.mp4)}}" type="video/mp4" tabindex="3")
+                  %source(ng-src="{{trustedVideo(yolkVideo.video.webm)}}" type="video/webm" tabindex="3")
                   Looks like your browser does not support the video tag.
               .control-group.text-center
                 .controls
-                  %a(ng-click="incrementYolk(-1)")
+                  %a(ng-click="incrementYolk(-1)" ng-keyup="$event.keyCode == 13 ? incrementYolk(-1) : null" tabindex="3")
                     %span.icon-angle-left
                     Runny
                   %input(type="range" ng-model='inputs.perceptual_yolk_viscosity' min="1" max="7" step=".01")
-                  %a(ng-click="incrementYolk(1)")
+                  %a(ng-click="incrementYolk(1)" ng-keyup="$event.keyCode == 13 ? incrementYolk(1) : null" tabindex="3")
                     Firm
                     %span.icon-angle-right
               .egg-footer
-                .btn.btn-left.btn-primary(ng-click="goState('white')")
+                .btn.btn-left.btn-primary(ng-click="goState('white')" ng-keyup="$event.keyCode == 13 ? goState('white') : null" tabindex="3")
                   %span.icon-angle-left
                   PREV
-                .btn.btn-right.btn-primary(ng-click="goState('results')")
+                .btn.btn-right.btn-primary(ng-click="goState('results')" ng-keyup="$event.keyCode == 13 ? goState('results') : null" tabindex="3")
                   NEXT
                   %span.icon-angle-right
 
@@ -99,9 +99,9 @@
                 .btn.btn-circle.medium(ng-click="goState('bathType')" ng-class="stateVisited('bathType')")
                   %span.head5_text Bath Type
               .egg-footer
-                .btn.btn-secondary(ng-click="goState('white')")
+                .btn.btn-secondary(ng-click="goState('white')" ng-keyup="$event.keyCode == 13 ? goState('white') : null" tabindex="3")
                   START OVER
-                .btn.btn-primary(ng-click="goState('share')")
+                .btn.btn-primary(ng-click="goState('share')" ng-keyup="$event.keyCode == 13 ? goState('share') : null" tabindex="3")
                   SHARE
 
             .page.anim-basic-fade(ng-switch-when="share")
