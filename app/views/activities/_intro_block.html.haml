@@ -14,32 +14,32 @@
       // Outline Buttons
       .flex-tool-abtest
         .flex-tools(ng-controller='SocialButtonsController')
-          .flex-tool(ng-click='shareFacebook()')
+          .flex-tool(ng-click='shareFacebook()' ng-keyup="$event.keyCode == 13 ? shareFacebook() : null" tabindex='3')
             .flex-button-circle.button-outline.button-facebook
               %i(cs-icon='facebook')
-          .flex-tool(ng-click='shareTwitter()')
+          .flex-tool(ng-click='shareTwitter()' ng-keyup="$event.keyCode == 13 ? shareTwitter() : null" tabindex='3')
             .flex-button-circle.button-outline.button-twitter
               %i(cs-icon='twitter')
-          .flex-tool(ng-click='shareEmail()')
+          .flex-tool(ng-click='shareEmail()' ng-keyup="$event.keyCode == 13 ? shareEmail() : null" tabindex='3')
             .flex-button-circle.button-outline.button-chefsteps
               %i(cs-icon='mail')
-          .flex-tool.flex-dropdown(cs-flex-dropdown)
+          .flex-tool.flex-dropdown(cs-flex-dropdown tabindex='3')
             .flex-dropdown-toggle(cs-flex-dropdown-toggle)
               .flex-button-circle.button-outline.button-default
                 %i(cs-icon='share')
             .flex-dropdown-menu.closed
               %ul
-                %li(ng-click='sharePinterest()')
+                %li(ng-click='sharePinterest()' ng-keyup="$event.keyCode == 13 ? sharePinterest() : null" tabindex='3')
                   %i.flex-dropdown-icon(cs-icon='pinterest')
                   Pinterest
-                %li(ng-click='shareGooglePlus()')
+                %li(ng-click='shareGooglePlus()' ng-keyup="$event.keyCode == 13 ? shareGooglePlus() : null" tabindex='3')
                   %i.flex-dropdown-icon(cs-icon='google-plus')
                   Google+
-                %li(ng-click='shareEmbedly()')
+                %li(ng-click='shareEmbedly()' ng-keyup="$event.keyCode == 13 ? shareEmbedly() : null" tabindex='3')
                   %i.flex-dropdown-icon(cs-icon='code')
                   Embed code
           .flex-tool(cs-smooth-scroll-to='#discussion')
-            .flex-button-circle.button-outline.button-default
+            .flex-button-circle.button-outline.button-default(tabindex='3')
               %i(cs-icon='comment')
             .flex-button-text(ng-if='commentCount > 0')
               {{commentCount}}
@@ -53,7 +53,7 @@
   .flex-item.flex-aside.flex-aside-right(ng-if="! inClass")
     .flex-tools(ng-hide='editMode')
       - if @course.blank?
-        .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]")
+        .flex-tool(ng-controller='LikesController' ng-class="{true:'active', false: 'inactive'}[current_user_likes]" tabindex="3")
           %div( ng-click='toggleLikeObject(getObjectTypeName(), getObject().id)'
                 ng-init='getCurrentUserLikes(getObjectTypeName(), getObject().id)')
             .flex-button-circle.button-outline.button-default(ng-if="!current_user_likes")
@@ -64,13 +64,13 @@
               Save
             .flex-button-text(ng-if="current_user_likes")
               Saved
-        .flex-tool.flex-large-only(ng-click='doPrint()')
+        .flex-tool.flex-large-only(ng-click='doPrint()' ng-keyup="$event.keyCode == 13 ? doPrint() : null" tabindex="3")
           .flex-button-circle.button-outline.button-default
             %i(cs-icon='print')
           .flex-button-text
             Print
         .flex-tool.flex-dropdown(cs-flex-dropdown)
-          .flex-dropdown-toggle(cs-flex-dropdown-toggle)
+          .flex-dropdown-toggle(cs-flex-dropdown-toggle tabindex="3")
             .flex-button-circle.button-outline.button-default
               %i(cs-icon='more')
             .flex-button-text

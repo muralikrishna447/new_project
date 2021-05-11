@@ -2,7 +2,7 @@
 
   .social-flat
     .btn-holder
-      .btn.btn-secondary.btn-social.btn-social-twitter.pulse-anim-before(ng-click="shareTwitter();")
+      .btn.btn-secondary.btn-social.btn-social-twitter.pulse-anim-before(ng-click="shareTwitter();" ng-keyup="$event.keyCode == 13 ? shareTwitter() : null" tabindex='3')
         .social-button-contents
           .social-icon-group
             %span
@@ -11,7 +11,7 @@
             %span.text-center
               {{displayCount(twitterCount)}}
     .btn-holder
-      .btn.btn-secondary.btn-social.btn-social-facebook.pulse-anim-before(ng-click="shareFacebook()")
+      .btn.btn-secondary.btn-social.btn-social-facebook.pulse-anim-before(ng-click="shareFacebook()" ng-keyup="$event.keyCode == 13 ? shareFacebook() : null" tabindex='3')
         .social-button-contents
           .social-icon-group
             %span
@@ -20,7 +20,7 @@
             %span.text-center
               {{displayCount(facebookCount)}}
     .btn-holder
-      .btn.btn-secondary.btn-social.btn-social-pinterest.pulse-anim-before(ng-show="socialMediaItem()" ng-click="sharePinterest()")
+      .btn.btn-secondary.btn-social.btn-social-pinterest.pulse-anim-before(ng-show="socialMediaItem()" ng-click="sharePinterest()" ng-keyup="$event.keyCode == 13 ? sharePinterest() : null" tabindex='3')
         .social-button-contents
           .social-icon-group
             %span
@@ -29,7 +29,7 @@
             %span.text-center
               {{displayCount(pinterestCount)}}
     .btn-holder
-      .btn.btn-secondary.btn-social.btn-social-gplus.pulse-anim-before(ng-click="shareGooglePlus()")
+      .btn.btn-secondary.btn-social.btn-social-gplus.pulse-anim-before(ng-click="shareGooglePlus()" ng-keyup="$event.keyCode == 13 ? shareGooglePlus() : null" tabindex='3')
         .social-button-contents
           .social-icon-group
             %span
