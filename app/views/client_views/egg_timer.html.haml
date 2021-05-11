@@ -111,7 +111,7 @@
                 //= render 'layouts/social_buttons', media_object: nil
                 %div(ng-include="'_egg_timer_social.html'")
               .egg-footer
-                .btn.btn-primary(ng-click="goState('white')")
+                .btn.btn-primary(ng-click="goState('white')" ng-keyup="$event.keyCode == 13 ? goState('white') : null" tabindex="3")
                   NEW EGG
 
             .page.anim-basic-fade(ng-switch-when="size")
