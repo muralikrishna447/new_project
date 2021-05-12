@@ -260,6 +260,7 @@ module Api
               Subscription.create_or_update_by_params(content[:subscription], content[:customer][:id])
             end
             Rails.logger.info("chargebee_controller.webhook - completed event id=#{params[:id]} and event_type=#{params[:event_type]}")
+            track_cancelled_sub(content[:customer][:id]) if params[:event_type] == 'subscription_cancellation_scheduled'
           else
             Rails.logger.info("chargebee_controller.webhook - ignoring event id=#{params[:id]} and event_type=#{params[:event_type]}")
           end
@@ -415,6 +416,15 @@ module Api
           claimed.occurred_at * 1000
         else
           nil
+        end
+      end
+
+      def track_cancelled_sub(user_id)
+        data = {user_id: user_id, event: 'Cancelled', properties: {category: 'Subscription'}}
+        if Analytics.track(data)
+          Rails.logger.info("Cancelled Subscription - data sent successfully to Segment: #{data}")
+        else
+          Rails.logger.error("Error: problem for tracking Cancelled Subscription data #{data}")
         end
       end
 

@@ -77,11 +77,4 @@ class Subscription < ApplicationRecord
   after_commit :on => [:create, :update] do
     Resque.enqueue(Forum, 'update_user', Rails.application.config.shared_config[:bloom][:api_endpoint], user_id)
   end
-
-  after_commit :on => [:update] do
-    return nil unless %w(non_renewing).include?(status)
-
-    data = {user_id: user.id, event: 'Cancelled', properties: {category: 'Subscription'}}
-    Analytics.track(data)
-  end
 end
