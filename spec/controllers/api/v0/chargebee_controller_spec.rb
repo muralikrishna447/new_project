@@ -65,6 +65,43 @@ describe Api::V0::ChargebeeController do
         response.code.should eq("200")
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
       end
+
+
+      it 'update cancel subscription with Analytics track' do
+        params = {
+            api_version: "v2",
+            content: {
+                customer: {
+                    id: @user.id
+                },
+                subscription: {
+                    plan_id: plan_id,
+                    resource_version: 1517507544000,
+                    status: "non_renewing"
+                }
+            },
+            event_type: "subscription_created",
+            id: "ev___test__5SK0bLNFRFuFaqltU",
+            object: "event"
+        }
+        expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
+
+        post :webhook, params: params
+
+        response.code.should eq("200")
+        expect(Subscription.user_has_subscription?(@user, plan_id)).to be true
+
+        # Cancel the subscription with Analytics track
+        params[:content][:subscription][:status] = "non_renewing"
+        params[:event_type] = 'subscription_cancellation_scheduled'
+        params[:content][:subscription][:resource_version] += 1
+        Analytics.should_receive(:track).once
+
+        post :webhook, params: params
+
+        response.code.should eq("200")
+        expect(Subscription.user_has_subscription?(@user, plan_id)).to be true
+      end
       
     end
 
