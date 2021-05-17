@@ -100,7 +100,7 @@ describe Api::V0::ChargebeeController do
 
         response.code.should eq("200")
         Analytics.should_receive(:track).once
-        expect(Subscription.user_has_subscription?(@user, plan_id)).to be false
+        expect(Subscription.user_has_subscription?(@user, plan_id)).to be true
       end
       
     end
