@@ -1,7 +1,7 @@
 require 'set'
 
 class BaseApplicationController < ActionController::Base
-  before_action :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user, :detect_country
+  before_action :cors_set_access_control_headers, :record_uuid_in_new_relic, :log_current_user, :detect_country, :log_user_agent
 
   ALLOWED_ORIGINS = Set['www.chefsteps.com', 'shop.chefsteps.com',
                         'www.chocolateyshatner.com', 'shop.chocolateyshatner.com',
@@ -74,6 +74,10 @@ class BaseApplicationController < ActionController::Base
     else
       "57601926064dbde72d57fedd0af8914f"
     end
+  end
+
+  def log_user_agent
+    logger.info("User agent: #{request.user_agent}")
   end
 
   def log_current_user
