@@ -77,11 +77,15 @@ class BaseApplicationController < ActionController::Base
   end
 
   def log_user_agent
-    logger.info("User agent: #{request.user_agent}")
+    logger.info("User agent: #{user_info} #{request.user_agent}")
   end
 
   def log_current_user
-    logger.info("current_user id: #{current_user.nil? ? "anon" : current_user.id}")
+    logger.info("current_user id: #{user_info}")
+  end
+
+  def user_info
+    current_user&.id || "anon"
   end
 
   before_action :log_ga_client
