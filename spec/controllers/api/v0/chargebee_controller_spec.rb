@@ -80,7 +80,7 @@ describe Api::V0::ChargebeeController do
                     status: "non_renewing"
                 }
             },
-            event_type: "subscription_cancellation_scheduled",
+            event_type: "subscription_created",
             id: "ev___test__5SK0bLNFRFuFaqltU",
             object: "event"
         }
@@ -95,11 +95,11 @@ describe Api::V0::ChargebeeController do
         params[:content][:subscription][:status] = "non_renewing"
         params[:event_type] = 'subscription_cancellation_scheduled'
         params[:content][:subscription][:resource_version] += 1
+        Analytics.should_receive(:track).once
 
         post :webhook, params: params
 
         response.code.should eq("200")
-        Analytics.should_receive(:track).once
         expect(Subscription.user_has_subscription?(@user, plan_id)).to be true
       end
       
