@@ -76,15 +76,15 @@ class BaseApplicationController < ActionController::Base
     end
   end
 
-  def log_user_agent
-    logger.info("User agent: #{user_info} #{request.user_agent}")
-  end
-
   def log_current_user
-    logger.info("current_user id: #{user_info}")
+    logger.info("current_user id: #{log_user_id}")
   end
 
-  def user_info
+  def log_user_agent
+    logger.info("User agent: #{log_user_id} #{request.user_agent}")
+  end
+
+  def log_user_id
     current_user&.id || "anon"
   end
 

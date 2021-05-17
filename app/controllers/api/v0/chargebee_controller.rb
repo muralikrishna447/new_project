@@ -5,7 +5,7 @@ module Api
       before_action :ensure_authorized
 
       before_action :webhook_authorize, :only => [:webhook]
-      skip_before_action :log_current_user, :only => [:webhook]
+      skip_before_action :log_current_user, :log_user_agent, :only => [:webhook]
       skip_before_action :ensure_authorized, :only => [:webhook]
 
       rescue_from ChargeBee::InvalidRequestError, with: :render_invalid_chargebee_request
