@@ -2399,6 +2399,47 @@ ALTER SEQUENCE public.subscriptions_id_seq OWNED BY public.subscriptions.id;
 
 
 --
+-- Name: suggested_recipes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.suggested_recipes (
+    id bigint NOT NULL,
+    name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: suggested_recipes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.suggested_recipes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: suggested_recipes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.suggested_recipes_id_seq OWNED BY public.suggested_recipes.id;
+
+
+--
+-- Name: suggested_recipes_users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.suggested_recipes_users (
+    suggested_recipe_id bigint NOT NULL,
+    user_id bigint NOT NULL
+);
+
+
+--
 -- Name: taggings; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3252,6 +3293,13 @@ ALTER TABLE ONLY public.subscriptions ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: suggested_recipes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.suggested_recipes ALTER COLUMN id SET DEFAULT nextval('public.suggested_recipes_id_seq'::regclass);
+
+
+--
 -- Name: taggings id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -3806,6 +3854,14 @@ ALTER TABLE ONLY public.stripe_orders
 
 ALTER TABLE ONLY public.subscriptions
     ADD CONSTRAINT subscriptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: suggested_recipes suggested_recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.suggested_recipes
+    ADD CONSTRAINT suggested_recipes_pkey PRIMARY KEY (id);
 
 
 --
@@ -4433,6 +4489,13 @@ CREATE INDEX index_subscriptions_on_user_id ON public.subscriptions USING btree 
 --
 
 CREATE UNIQUE INDEX index_subscriptions_on_user_id_and_plan_id ON public.subscriptions USING btree (user_id, plan_id);
+
+
+--
+-- Name: index_sug_recipes_users_on_sug_recipe_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sug_recipes_users_on_sug_recipe_id_and_user_id ON public.suggested_recipes_users USING btree (suggested_recipe_id, user_id);
 
 
 --
