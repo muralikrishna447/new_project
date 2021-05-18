@@ -18,6 +18,14 @@ describe Api::V0::UserSurveysController do
         expect(response).to be_success
         expect(response.body).to eq("{\"data\":\"Some Random Data\"}")
       end
+
+      it 'updates the user suggestion with interested recipe' do
+        post :create, params: {survey_results: {suggestion: "my recipe"}}
+        expect(response).to be_success
+        expect(response.body).to eq("{\"suggestion\":\"my recipe\"}")
+        expect(@user.suggested_recipes.count).to eq(1)
+      end
+
     end
   end
 end

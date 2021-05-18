@@ -11,6 +11,12 @@ module Api
                                     Rails.configuration.mailchimp[:survey_group_id],
                                     interests)
           end
+          suggestion = current_api_user.survey_results['suggestion']
+          if suggestion.present?
+            current_api_user.suggested_recipes << SuggestedRecipe.where("lower(name) =?",
+                                                                        suggestion.strip.downcase)
+                                                      .first_or_create(:name=> suggestion.strip)
+          end
           render json: current_api_user.survey_results
         end
       end

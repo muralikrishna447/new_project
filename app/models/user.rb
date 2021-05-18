@@ -46,6 +46,8 @@ class User < ApplicationRecord
 
   has_many :subscriptions, :dependent => :destroy
 
+  has_and_belongs_to_many :suggested_recipes
+
   serialize :viewed_activities, Array
 
   scope :where_any, ->(column, key, value) { where("? LIKE ANY (SELECT UNNEST(string_to_array(\"#{column}\",',')) -> ?)", '%' + value + '%', key) }
